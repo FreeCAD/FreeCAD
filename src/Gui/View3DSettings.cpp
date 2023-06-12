@@ -442,22 +442,11 @@ NaviCubeSettings::NaviCubeSettings(ParameterGrp::handle hGrp,
         [this](ParameterGrp*, ParameterGrp::ParamType, const char *Name, const char *) {
             parameterChanged(Name);
     });
-
 }
 
 NaviCubeSettings::~NaviCubeSettings()
 {
     connectParameterChanged.disconnect();
-}
-
-QString NaviCubeSettings::getDefaultSansserifFont()
-{
-    // "FreeCAD NaviCube" family susbtitutions are set in MainWindow::MainWindow
-    QFont font(QStringLiteral("FreeCAD NaviCube"));
-    font.setStyleHint(QFont::SansSerif);
-    // QFontInfo is required to get the actually matched font family
-    return QFontInfo(font).family();
-    // return QStringLiteral("FreeCAD NaviCube");
 }
 
 void NaviCubeSettings::applySettings()
@@ -466,6 +455,7 @@ void NaviCubeSettings::applySettings()
     parameterChanged("EmphaseColor");
     parameterChanged("HiliteColor");
     parameterChanged("CornerNaviCube");
+    parameterChanged("OffsetX"); // Updates OffsetY too
     parameterChanged("CubeSize");
     parameterChanged("ChamferSize");
     parameterChanged("NaviRotateToNearest");
@@ -506,9 +496,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setFontZoom(hGrp->GetFloat("FontZoom", 0.3));
     }
     else if (strcmp(Name, "FontString") == 0) {
-        std::string font =
-            hGrp->GetASCII("FontString", getDefaultSansserifFont().toStdString().c_str());
-        nc->setFont(font);
+        nc->setFont(hGrp->GetASCII("FontString"));
     }
     else if (strcmp(Name, "FontWeight") == 0) {
         nc->setFontWeight(hGrp->GetInt("FontWeight", 0));

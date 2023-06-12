@@ -810,11 +810,10 @@ def export( exportList, filename, colors = None, camera = None ):
 
         vIndex = {}
         verts = []
-        for p in range( len(mesh.Points) ):
-            vIndex[ mesh.Points[p].Index ] = p
-            verts.append( '{:.5f}'.format(mesh.Points[p].Vector.x) )
-            verts.append( '{:.5f}'.format(mesh.Points[p].Vector.y) )
-            verts.append( '{:.5f}'.format(mesh.Points[p].Vector.z) )
+        for p in mesh.Points:
+            vIndex[p.Index] = p.Index
+            pVec = p.Vector
+            verts.extend(["{:.5f}".format(pVec.x), "{:.5f}".format(pVec.y), "{:.5f}".format(pVec.z)])
 
         # create floats list to compress verts and wires being written into the JS
         if not disableCompression:

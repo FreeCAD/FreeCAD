@@ -673,7 +673,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -687,7 +687,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -1522,7 +1522,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
       <translation>- wybierz element, aby go podświetlić
-- kliknij dwukrotnie na element, aby zobaczyć fazki</translation>
+- kliknij dwukrotnie na element, aby zobaczyć podgląd sfazowania</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="49"/>
@@ -1648,7 +1648,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
       <translation>- wybierz element, aby go podświetlić
-- kliknij dwukrotnie na element, aby zobaczyć rysunki robocze</translation>
+- kliknij dwukrotnie na element, aby zobaczyć podgląd pochylenia</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="47"/>
@@ -1863,7 +1863,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
       <translation>- wybierz element, aby go podświetlić
-- kliknij dwukrotnie na element, aby zobaczyć zaokrąglenia</translation>
+- kliknij dwukrotnie na element, aby zobaczyć podgląd zaokrąglenia</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
@@ -3796,7 +3796,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,32 +3805,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez obiektu Zawartości, użyj funkcji migracji w środowisku pracy Projekt Części, aby umieścić je w obiekcie Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Aby utworzyć nowy obiekt Projektu Części, w dokumencie musi być aktywny obiekt Zawartość. Uaktywnij jeden (podwójnym kliknięciem) lub utwórz nową Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>Funkcja nie jest w korpusie</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Ta cecha musi przynależeć do zawartości w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>Funkcja nie jest w części</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>

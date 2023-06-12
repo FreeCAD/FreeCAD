@@ -579,7 +579,7 @@ hautatutako erpinean</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5735"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation>Finkatu zirkulu baten edo arku baten erradioa edo finkatu B-Spline baten polo baten pisua</translation>
+      <translation>Finkatu zirkulu baten edo arku baten erradioa edo finkatu B-spline baten polo baten pisua</translation>
     </message>
   </context>
   <context>
@@ -587,7 +587,7 @@ hautatutako erpinean</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8152"/>
       <source>Constrain refraction (Snell's law)</source>
-      <translation type="unfinished">Constrain refraction (Snell's law)</translation>
+      <translation>Murriztu errefrakzioa (Snell-en legea)</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8153"/>
@@ -2126,7 +2126,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Krokisgilea</translation>
     </message>
@@ -2218,12 +2218,12 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation>Adabegi-aniztasunak ezin du izan BSpline-aren graduak baino handiagoa.</translation>
+      <translation>Adabegi-aniztasunak ezin du izan B-spline kurbaren graduak baino handiagoa.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation>Adabegia ezin da txertatu BSpline parametro-barrutiaren kanpoaldean.</translation>
+      <translation>Adabegia ezin da txertatu B-spline parametro-barrutiaren kanpoaldean.</translation>
     </message>
   </context>
   <context>
@@ -2630,7 +2630,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="584"/>
       <source>Unexpected error. More information may be available in the Report View.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the Report View.</translation>
+      <translation>Ustekabeko errorea. Txosten-bistan informazio gehiago aurkitu daiteke.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2229"/>
@@ -2883,7 +2883,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
       <location filename="../../CommandConstraints.cpp" line="5171"/>
       <location filename="../../CommandConstraints.cpp" line="5406"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation>Oraindik ez da onartzen tangentea B-Spline ertzean.</translation>
+      <translation>Oraindik ez da onartzen tangentea B-spline kurbaren ertzean.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5780"/>
@@ -2899,7 +2899,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
       <location filename="../../CommandConstraints.cpp" line="5853"/>
       <location filename="../../CommandConstraints.cpp" line="6501"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>Hautatu B-Spline polo bat edo gehiago edo zirkuluen arku bat edo gehiago krokisean, baina ez bi motak nahastuta.</translation>
+      <translation>Hautatu B-spline polo bat edo gehiago edo zirkuluen arku bat edo gehiago krokisean, baina ez bi motak nahastuta.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5997"/>
@@ -3022,12 +3022,12 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
       <translation>Hautatu krokiseko murrizketa(k).</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="245"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="246"/>
       <source>B-Spline Degree</source>
-      <translation>B-Spline gradua</translation>
+      <translation>B-spline gradua</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="246"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="247"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
       <translation>Definitu B-spline gradua, 1 eta %1 artekoa:</translation>
     </message>
@@ -3197,7 +3197,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="286"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Balio-errorea</translation>
     </message>
   </context>
   <context>
@@ -3589,7 +3589,7 @@ Onartutako konbinazioak: bi kurba; amaiera-puntu bat eta kurba bat; bi amaiera-p
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="254"/>
       <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <translation>B-spline</translation>
     </message>
   </context>
   <context>
@@ -4677,12 +4677,12 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1153"/>
       <source>Impossible to update visibility tracking</source>
-      <translation type="unfinished">Impossible to update visibility tracking</translation>
+      <translation>Ezin da ikusgaitasun-jarraipena eguneratu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1546"/>
       <source>Impossible to update visibility tracking: </source>
-      <translation type="unfinished">Impossible to update visibility tracking: </translation>
+      <translation>Ezin da ikusgaitasun-jarraipena eguneratu: </translation>
     </message>
   </context>
   <context>
@@ -4815,7 +4815,7 @@ Hala ere, ez da aurkitu amaiera-puntuei estekatutako murrizketarik.</translation
       <location filename="../../TaskSketcherElements.cpp" line="1757"/>
       <location filename="../../TaskSketcherElements.cpp" line="1758"/>
       <source>BSpline</source>
-      <translation>BSpline</translation>
+      <translation>B-spline</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1651"/>
@@ -5922,42 +5922,42 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofilak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>&amp;Zirriborroa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Krokisgilea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher geometries</source>
       <translation>Krokisgile-geometriak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher constraints</source>
       <translation>Krokisgilearen murrizketak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher tools</source>
       <translation>Krokisgilearen tresnak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher B-spline tools</source>
       <translation>Krokisgilearen B-spline tresnak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher virtual space</source>
       <translation>Krokisgilearen espazio birtuala</translation>
     </message>
@@ -6143,9 +6143,9 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="204"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="304"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="516"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
@@ -6172,17 +6172,17 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2040"/>
       <source>Failed to delete all geometry</source>
-      <translation type="unfinished">Failed to delete all geometry</translation>
+      <translation>Huts egin du geometria osoa ezabatzeak</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2109"/>
       <source>Failed to delete all constraints</source>
-      <translation type="unfinished">Failed to delete all constraints</translation>
+      <translation>Huts egin du murrizketa guztiak ezabatzeak</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="382"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="384"/>
       <source>The constraint has invalid index information and is malformed.</source>
-      <translation type="unfinished">The constraint has invalid index information and is malformed.</translation>
+      <translation>Murrizketak indize-informazio baliogabea du eta gaizki eratuta dago.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="253"/>
@@ -6198,96 +6198,96 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
-      <translation type="unfinished">Invalid Constraint</translation>
+      <translation>Baliogabeko murrizketa</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="199"/>
       <location filename="../../DrawSketchHandlerArc.h" line="471"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="462"/>
       <source>Failed to add arc</source>
-      <translation type="unfinished">Failed to add arc</translation>
+      <translation>Huts egin du arkua gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="322"/>
       <source>Failed to add arc of ellipse</source>
-      <translation type="unfinished">Failed to add arc of ellipse</translation>
+      <translation>Huts egin du elipsearen arkua gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
-      <translation type="unfinished">Cannot create arc of hyperbola from invalid angles, try again!</translation>
+      <translation>Ezin da hirperbolaren arkua sortu angeluak baliogabeak badira, saiatu berriro.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
       <source>Cannot create arc of hyperbola</source>
-      <translation type="unfinished">Cannot create arc of hyperbola</translation>
+      <translation>Ezin da hiperbolaren arkua sortu</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="260"/>
       <source>Cannot create arc of parabola</source>
-      <translation type="unfinished">Cannot create arc of parabola</translation>
+      <translation>Ezin da parabolaren arkua sortu</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="129"/>
       <source>Error adding B-Spline pole</source>
-      <translation type="unfinished">Error adding B-Spline pole</translation>
+      <translation>Errorea B-spline poloa gehitzean</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <source>Error creating BSpline pole</source>
-      <translation type="unfinished">Error creating BSpline pole</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="206"/>
+      <source>Error creating B-spline pole</source>
+      <translation type="unfinished">Error creating B-spline pole</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <source>Error deleting last pole</source>
-      <translation type="unfinished">Error deleting last pole</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
-      <source>Error creating B-Spline</source>
-      <translation type="unfinished">Error creating B-Spline</translation>
+      <source>Error creating B-spline</source>
+      <translation type="unfinished">Error creating B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="306"/>
+      <source>Error deleting last pole</source>
+      <translation>Errorea azken poloa ezabatzean</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="124"/>
       <source>Cannot add knot point</source>
-      <translation type="unfinished">Cannot add knot point</translation>
+      <translation>Ezin da adabegi-puntua gehitu</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="195"/>
       <source>Cannot add internal alignment points</source>
-      <translation type="unfinished">Cannot add internal alignment points</translation>
+      <translation>Ezin dira barneko lerrokatze-puntuak gehitu</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="304"/>
       <source>Error removing knot</source>
-      <translation type="unfinished">Error removing knot</translation>
+      <translation>Errorea adabegia kentzean</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="172"/>
       <source>Failed to add carbon copy</source>
-      <translation type="unfinished">Failed to add carbon copy</translation>
+      <translation>Huts egin du kalkoa gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="128"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="318"/>
       <source>Failed to add circle</source>
-      <translation type="unfinished">Failed to add circle</translation>
+      <translation>Huts egin du zirkulua gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="800"/>
       <source>Failed to add an ellipse</source>
-      <translation type="unfinished">Failed to add an ellipse</translation>
+      <translation>Huts egin du elipsea gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="325"/>
       <source>Failed to extend edge</source>
-      <translation type="unfinished">Failed to extend edge</translation>
+      <translation>Huts egin du ertza luzatzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="173"/>
       <source>Failed to add external geometry</source>
-      <translation type="unfinished">Failed to add external geometry</translation>
+      <translation>Huts egin du kanpo-geometria gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="184"/>
@@ -6298,49 +6298,49 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
       <location filename="../../DrawSketchHandlerLine.h" line="122"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="432"/>
       <source>Failed to add line</source>
-      <translation type="unfinished">Failed to add line</translation>
+      <translation>Huts egin du lerroa gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="81"/>
       <source>Failed to add point</source>
-      <translation type="unfinished">Failed to add point</translation>
+      <translation>Huts egin du puntua gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="158"/>
       <source>Failed to add polygon</source>
-      <translation type="unfinished">Failed to add polygon</translation>
+      <translation>Huts egin du poligonoa gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="292"/>
       <source>Failed to add box</source>
-      <translation type="unfinished">Failed to add box</translation>
+      <translation>Huts egin du kutxa gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="700"/>
       <source>Failed to add rounded rectangle</source>
-      <translation type="unfinished">Failed to add rounded rectangle</translation>
+      <translation>Huts egin du laukizuzen biribildua gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="307"/>
       <source>Failed to add slot</source>
-      <translation type="unfinished">Failed to add slot</translation>
+      <translation>Huts egin du arteka gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="149"/>
       <source>Failed to add edge</source>
-      <translation type="unfinished">Failed to add edge</translation>
+      <translation>Huts egin du ertza gehitzeak</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
       <source>Failed to trim edge</source>
-      <translation type="unfinished">Failed to trim edge</translation>
+      <translation>Huts egin du ertza muxarratzeak</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Balio-errorea</translation>
     </message>
   </context>
   <context>
@@ -6412,7 +6412,7 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>Snap to grid</source>
-      <translation type="unfinished">Snap to grid</translation>
+      <translation>Atxiki saretari</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
@@ -6479,7 +6479,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings</translation>
+      <translation>Aktibatu/desaktibatu krokiseko sareta. Menuan sareta-ezarpenak aldatu daitezke.</translation>
     </message>
   </context>
   <context>
@@ -6487,12 +6487,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1474"/>
       <source>Toggle snap</source>
-      <translation type="unfinished">Toggle snap</translation>
+      <translation>Txandakatu atxikitzea</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings</translation>
+      <translation>Txandakatu atxikitze-funtzionaltasun guztiak. Menuan 'Atxiki saretari' eta 'Atxiki ojektuei' banaka txandakatu daitezke, eta beste atxikitze-ezarpen batzuk ere aldatu daitezke</translation>
     </message>
   </context>
 </TS>

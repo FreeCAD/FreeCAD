@@ -3796,7 +3796,7 @@ This may lead to unexpected results.</source>
       <translation>면 선택</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,32 +3805,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Body가 없는 PartDesign 개체가 있는 레거시 문서가 있는 경우 PartDesign의 마이그레이션 기능을 사용하여 Body에 넣습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>작업 바디(Body)가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>새로운 부품설계(PartDesign) 객체를 생성하기 위해서, 문서에 활성화된 바디(Body)가 있어야 합니다. 하나의 바디(Body)를 더블 클릭하여 활성화하거나 새로운 바디(Body)를 생성하세요.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>바디(Body)에 피처가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>이 피처를 사용하기 위해서는, 피처가 현재 문서에 있는 바디(Body) 객체에 속해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>피처가 파트에 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>이 피처를 사용하기 위해서는, 피처가 현재 문서에 있는 파트 객체에 속해야 합니다.</translation>
     </message>

@@ -658,12 +658,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
+      <translation>Caminho para o executável do Python (opcional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Caminho do executável do git (opcional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>

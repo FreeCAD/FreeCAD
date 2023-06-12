@@ -108,10 +108,13 @@ void DlgSettingsNavigation::saveSettings()
         hCustom->SetFloat("Q2", q2);
         hCustom->SetFloat("Q3", q3);
     }
-
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NaviCube");
-    hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());
+    if (ui->naviCubeFontName->currentIndex()) {
+        hGrp->SetASCII("FontString", ui->naviCubeFontName->currentText().toLatin1());        
+    } else {
+        hGrp->RemoveASCII("FontString");
+    }
 }
 
 void DlgSettingsNavigation::loadSettings()
@@ -171,9 +174,6 @@ void DlgSettingsNavigation::loadSettings()
         this, &DlgSettingsNavigation::onMouseButtonClicked);
 
     // fill up font styles
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/NaviCube");
-    std::string defaultSansserifFont = NaviCubeSettings::getDefaultSansserifFont().toStdString();
 
     // we purposely allow all available fonts on the system
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -182,12 +182,12 @@ void DlgSettingsNavigation::loadSettings()
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
 #endif
     ui->naviCubeFontName->addItems(familyNames);
-
+    
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
     int indexFamilyNames = familyNames.indexOf(
-        QString::fromStdString(hGrp->GetASCII("FontString", defaultSansserifFont.c_str())));
-    if (indexFamilyNames < 0)
-        indexFamilyNames = 0;
-    ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
+        QString::fromStdString(hGrp->GetASCII("FontString")));
+    ui->naviCubeFontName->setCurrentIndex(indexFamilyNames + 1);
 
 }
 

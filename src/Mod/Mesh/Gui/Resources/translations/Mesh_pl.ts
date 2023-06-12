@@ -2026,7 +2026,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation>Informacje o siatce</translation>
+      <translation>Panel informacje o siatce</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>

@@ -123,7 +123,7 @@ public:
                                       poleGeoIds.back(),
                                       1.0);// First pole defaults to 1.0 weight
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Error adding B-Spline pole"));
@@ -199,7 +199,7 @@ public:
                                       poleGeoIds[0],
                                       poleGeoIds.back());
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
@@ -300,7 +300,7 @@ public:
                 drawControlPolygonToPosition(prevCursorPosition);
                 drawCursorToPosition(prevCursorPosition);
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Error deleting last pole"));
@@ -512,7 +512,7 @@ private:
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Error creating B-spline"));

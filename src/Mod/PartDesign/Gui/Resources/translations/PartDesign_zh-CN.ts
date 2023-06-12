@@ -3795,7 +3795,7 @@ This may lead to unexpected results.</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3804,32 +3804,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 如果您的旧版文档中存在没有实体的零件设计工作台对象, 请使用零件设计工作台中的迁移功能将它们放入一个实体中。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>需要激活状态的实体</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>要创建新的 PartDesign 对象, 文档中必须有一个激活状态的实体。请 (双击) 激活或创建一个新的实体。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>特征不在实体内</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>要使用此特征, 它需隶属于文档中的实体对象。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>特征不在零件内</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>要使用此特征, 它需隶属于文档中的零件对象。</translation>
     </message>
@@ -4011,12 +4011,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
       <source>Edit fillet</source>
-      <translation type="unfinished">Edit fillet</translation>
+      <translation>编辑圆角</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
       <source>Edit linear pattern</source>
-      <translation type="unfinished">Edit linear pattern</translation>
+      <translation>编辑线性阵列</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="39"/>
@@ -4026,17 +4026,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
       <source>Edit multi-transform</source>
-      <translation type="unfinished">Edit multi-transform</translation>
+      <translation>编辑多重变换</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit polar pattern</source>
-      <translation type="unfinished">Edit polar pattern</translation>
+      <translation>编辑环形阵列</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="39"/>
       <source>Edit scaled</source>
-      <translation type="unfinished">Edit scaled</translation>
+      <translation>编辑缩放</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>

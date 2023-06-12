@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2395"/>
       <location filename="../../Command.cpp" line="2397"/>
       <source>Box selection</source>
-      <translation>窗選</translation>
+      <translation>拉框選擇</translation>
     </message>
   </context>
   <context>
@@ -1266,7 +1266,7 @@ between two vertices of them.</translation>
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -5417,7 +5417,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>窗選</translation>
+      <translation>拉框選擇</translation>
     </message>
   </context>
   <context>

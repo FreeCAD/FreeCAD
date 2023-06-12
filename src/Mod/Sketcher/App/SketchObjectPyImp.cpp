@@ -2152,6 +2152,64 @@ PyObject* SketchObjectPy::setGeometryId(PyObject* args)
     Py_Return;
 }
 
+Py::Long SketchObjectPy::getDoF() const
+{
+    auto dofs = this->getSketchObjectPtr()->getLastDoF();
+
+    return Py::Long(dofs);
+}
+
+Py::List SketchObjectPy::getConflictingConstraints() const
+{
+    auto conflictinglist = this->getSketchObjectPtr()->getLastConflicting();
+
+    Py::List conflicting;
+
+    for (auto cid : conflictinglist) {
+        conflicting.append(Py::Int(cid));
+    }
+
+    return conflicting;
+}
+
+Py::List SketchObjectPy::getRedundantConstraints() const
+{
+    auto redundantlist = this->getSketchObjectPtr()->getLastRedundant();
+
+    Py::List redundant;
+
+    for (auto cid : redundantlist) {
+        redundant.append(Py::Int(cid));
+    }
+
+    return redundant;
+}
+
+Py::List SketchObjectPy::getPartiallyRedundantConstraints() const
+{
+    auto redundantlist = this->getSketchObjectPtr()->getLastPartiallyRedundant();
+
+    Py::List redundant;
+
+    for (auto cid : redundantlist) {
+        redundant.append(Py::Int(cid));
+    }
+
+    return redundant;
+}
+
+Py::List SketchObjectPy::getMalformedConstraints() const
+{
+    auto malformedlist = this->getSketchObjectPtr()->getLastMalformedConstraints();
+
+    Py::List malformed;
+
+    for (auto cid : malformedlist) {
+        malformed.append(Py::Int(cid));
+    }
+
+    return malformed;
+}
 
 PyObject* SketchObjectPy::getCustomAttributes(const char* /*attr*/) const
 {

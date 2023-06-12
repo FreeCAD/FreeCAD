@@ -37,11 +37,13 @@ using namespace SketcherGui;
     qApp->translate("Workbench","P&rofiles");
     qApp->translate("Workbench","S&ketch");
     qApp->translate("Workbench", "Sketcher");
+    qApp->translate("Workbench", "Sketcher edit mode");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
     qApp->translate("Workbench", "Sketcher B-spline tools");
     qApp->translate("Workbench", "Sketcher virtual space");
+    qApp->translate("Workbench", "Sketcher edit tools");
 #endif
 
 /// @namespace SketcherGui @class Workbench
@@ -109,7 +111,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* sketcherEditMode =
         new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    sketcherEditMode->setCommand("Sketcher Edit Mode");
+    sketcherEditMode->setCommand("Sketcher edit mode");
     addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
     Gui::ToolBarItem* geom =
@@ -157,7 +159,7 @@ namespace
 {
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Sketcher Edit Mode"),
+    return QStringList {QString::fromLatin1("Sketcher edit mode"),
                         QString::fromLatin1("Sketcher geometries"),
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),

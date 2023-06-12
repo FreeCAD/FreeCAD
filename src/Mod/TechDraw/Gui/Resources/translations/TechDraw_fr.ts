@@ -400,7 +400,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1675"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Étendre une ligne cosmétique ou une ligne centrale aux deux extrémités :&lt;br&gt;- Spécifiez la distance delta (facultatif)&lt;br&gt;- Sélectionnez une seule ligne&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Étendre une ligne cosmétique ou une ligne centrale aux deux extrémités :
+- Spécifiez la distance delta (facultatif)
+- Sélectionnez une seule ligne
+- Cliquez sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -418,7 +421,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1778"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
-      <translation>Sélectionner plusieurs faces&lt;br&gt;    - cliquer sur cet outil</translation>
+      <translation>Sélectionnez plusieurs faces puis cliquez sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -436,7 +439,11 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1081"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Cotes horizontales uniformément espacées :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez deux ou plusieurs cotes horizontales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Cotes horizontales uniformément espacées :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner deux ou plusieurs cotes horizontales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -456,7 +463,11 @@
       <location filename="../../CommandExtensionDims.cpp" line="903"/>
       <location filename="../../CommandExtensionDims.cpp" line="1157"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Cotes horizontales uniformément espacées :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez deux ou plusieurs cotes horizontales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Cotes horizontales uniformément espacées :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner deux ou plusieurs cotes horizontales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -476,7 +487,11 @@
       <location filename="../../CommandExtensionDims.cpp" line="1045"/>
       <location filename="../../CommandExtensionDims.cpp" line="1175"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Cotes obliques uniformément espacées :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez deux ou plusieurs cotes obliques parallèles&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Cotes obliques uniformément espacées :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner deux ou plusieurs cotes obliques parallèles
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -496,7 +511,11 @@
       <location filename="../../CommandExtensionDims.cpp" line="970"/>
       <location filename="../../CommandExtensionDims.cpp" line="1166"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Cotes verticales uniformément espacées :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez deux ou plusieurs cotes verticales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Cotes verticales uniformément espacées :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner deux ou plusieurs cotes verticales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -514,7 +533,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2050"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une cote horizontale et d'angle pour un chanfrein :&lt;br&gt;- Sélectionnez deux sommets&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une cote horizontale et une cote d'angle pour un chanfrein :
+- Sélectionner deux sommets
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -532,7 +553,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="750"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation>Changer les attributs des lignes cosmétiques et des lignes centrales :&lt;br&gt;- Spécifiez les attributs de la ligne (facultatif)&lt;br&gt;- Sélectionnez une ou plusieurs lignes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Changer les attributs des lignes cosmétiques et des lignes centrales :
+- Spécifier les attributs de la ligne (facultatif)
+- Sélectionner une ou plusieurs lignes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -552,7 +576,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="228"/>
       <location filename="../../CommandExtensionPack.cpp" line="330"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez des lignes centrales aux cercles et aux arcs :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez un ou plusieurs cercles ou arcs&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajoutez des lignes centrales aux cercles et aux arcs :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner un ou plusieurs cercles ou arcs
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -570,7 +597,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="262"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez des lignes centrales aux cercles et aux arcs :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez un ou plusieurs cercles ou arcs&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajoutez des lignes centrales aux cercles et aux arcs :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner un ou plusieurs cercles ou arcs
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -588,7 +618,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1428"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer une séquence de cotes horizontales alignées :
+- Sélectionner trois sommets ou plus
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -606,7 +638,11 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1789"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner trois sommets ou plus
+- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -626,7 +662,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="1235"/>
       <location filename="../../CommandExtensionDims.cpp" line="1502"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer une séquence de cotes horizontales alignées :
+- Sélectionner trois sommets ou plus
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -646,7 +684,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="1948"/>
       <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une cote horizontale et d'angle pour un chanfrein :&lt;br&gt;- Sélectionnez deux sommets&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une cote horizontale et une cote d'angle pour un chanfrein :
+- Sélectionner deux sommets
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -666,7 +706,11 @@
       <location filename="../../CommandExtensionDims.cpp" line="1581"/>
       <location filename="../../CommandExtensionDims.cpp" line="1865"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner trois sommets ou plus
+- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -684,7 +728,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2150"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
-      <translation>Créer une cote de la longueur de l'arc :&lt;br&gt;- Sélectionner un seul arc&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer une cote de la longueur de l'arc :
+- Sélectionner un seul arc
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -704,7 +750,10 @@
       <location filename="../../CommandExtensionDims.cpp" line="1394"/>
       <location filename="../../CommandExtensionDims.cpp" line="1516"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Créer une séquence de cotes obliques alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Les deux premiers sommets définissent la direction&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer une séquence de cotes obliques alignées :
+- Sélectionner trois sommets ou plus
+- Les deux premiers sommets définissent la direction
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -724,7 +773,12 @@
       <location filename="../../CommandExtensionDims.cpp" line="1753"/>
       <location filename="../../CommandExtensionDims.cpp" line="1883"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Créer plusieurs cotes obliques uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois ou plus de sommets&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Les deux premiers sommets définissent également la direction&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer plusieurs cotes obliques uniformément espacées à partir de la même ligne de base :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner trois ou plus de sommets
+- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base
+- Les deux premiers sommets définissent également la direction
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -744,7 +798,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="1302"/>
       <location filename="../../CommandExtensionDims.cpp" line="1509"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une séquence de cotes verticales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer une séquence de cotes verticales alignées :
+- Sélectionner trois sommets ou plus
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -764,7 +820,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="2017"/>
       <location filename="../../CommandExtensionDims.cpp" line="2124"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créer une cote verticale et d'angle pour un chanfrein :&lt;br&gt;- Sélectionnez deux sommets&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une cote verticale et une cote d'angle pour un chanfrein :
+- Sélectionner deux sommets
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -784,7 +842,11 @@
       <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <location filename="../../CommandExtensionDims.cpp" line="1874"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créer plusieurs cotes verticales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Créer plusieurs cotes verticales uniformément espacées à partir de la même ligne de base :
+- Spécifier l'espacement en cascade (facultatif)
+- Sélectionner trois sommets ou plus
+- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -802,7 +864,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2228"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
-      <translation>Sélectionnez une cote ou une infobulle&lt;br&gt;    - cliquez sur cet outil&lt;br&gt;    - modifiez le champ Format, en utilisant le clavier et/ou les boutons spéciaux</translation>
+      <translation>Sélectionner une cote ou une infobulle
+- Cliquer sur cet outil
+- Modifier le champ Format en utilisant le clavier et/ou les boutons spéciaux</translation>
     </message>
   </context>
   <context>
@@ -822,7 +886,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="430"/>
       <location filename="../../CommandExtensionDims.cpp" line="537"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Diminuez le nombre de décimales du texte de la cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Diminuer le nombre de décimales du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -840,7 +906,11 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1065"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez un cercle cosmétique basé sur deux sommets :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez le sommet 1 (point central)&lt;br&gt;- Sélectionnez le sommet 2 (rayon)&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un cercle cosmétique basé sur deux sommets :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner le sommet 1 (point central)
+- Sélectionner le sommet 2 (rayon)
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -860,7 +930,12 @@
       <location filename="../../CommandExtensionPack.cpp" line="903"/>
       <location filename="../../CommandExtensionPack.cpp" line="1152"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez un arc cosmétique dans le sens inverse des aiguilles d'une montre basé sur trois sommets :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez le sommet 1 (point central)&lt;br&gt;- Sélectionnez le sommet 2 (rayon et angle de départ)&lt;br&gt;- Sélectionnez le sommet 3 (angle de fin)&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un arc cosmétique dans le sens inverse des aiguilles d'une montre basé sur trois sommets
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner le sommet 1 (point central)
+- Sélectionner le sommet 2 (rayon et angle de départ)
+- Sélectionner le sommet 3 (angle de fin)
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -880,7 +955,11 @@
       <location filename="../../CommandExtensionPack.cpp" line="966"/>
       <location filename="../../CommandExtensionPack.cpp" line="1142"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez un cercle cosmétique basé sur deux sommets :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez le sommet 1 (point central)&lt;br&gt;- Sélectionnez le sommet 2 (rayon)&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un cercle cosmétique basé sur deux sommets :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner le sommet 1 (point central)
+- Sélectionner le sommet 2 (rayon)
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -899,12 +978,18 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1030"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un cercle cosmétique basé sur trois sommets :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez 3 sommets&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un cercle cosmétique basé sur trois sommets :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner 3 sommets
+- Cliquer sur cet outil</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1163"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez un cercle cosmétique basé sur trois sommets :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez trois sommets&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un cercle cosmétique basé sur trois sommets :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner trois sommets
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -924,7 +1009,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="1605"/>
       <location filename="../../CommandExtensionPack.cpp" line="1743"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Étendre une ligne cosmétique ou une ligne centrale aux deux extrémités :&lt;br&gt;- Spécifiez la distance delta (facultatif)&lt;br&gt;- Sélectionnez une seule ligne&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Étendre une ligne cosmétique ou une ligne centrale aux deux extrémités :
+- Spécifiez la distance delta (facultatif)
+- Sélectionnez une seule ligne
+- Cliquez sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -944,7 +1032,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="154"/>
       <location filename="../../CommandExtensionPack.cpp" line="339"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez des lignes centrales à un motif circulaire de cercles :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez trois cercles ou plus formant un motif circulaire&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter des lignes centrales à un motif circulaire de cercles :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner trois cercles ou plus formant un motif circulaire
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -964,7 +1055,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="397"/>
       <location filename="../../CommandExtensionDims.cpp" line="530"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Augmentez le nombre de décimales du texte de la cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Augmenter le nombre de décimales du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -982,7 +1075,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="463"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Augmentez le nombre de décimales du texte de la cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Augmenter le nombre de décimales du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1002,7 +1097,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="130"/>
       <location filename="../../CommandExtensionDims.cpp" line="328"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Insérez un symbole &apos;⌀&apos; au début du texte de cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Insérer un symbole "⌀" au début du texte de cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1020,7 +1117,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="254"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Insérez un symbole &apos;⌀&apos; au début du texte de cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Insérer un symbole "⌀" au début du texte de cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1040,7 +1139,9 @@
       <location filename="../../CommandExtensionDims.cpp" line="163"/>
       <location filename="../../CommandExtensionDims.cpp" line="335"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Insérez un symbole &apos;&lt;unk>&apos; au début du texte de cote :&lt;br&gt;- Sélectionnez une ou plusieurs dimensions&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Insérer un symbole "□" au début du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1159,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1302"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez une ligne cosmétique parallèle à une autre ligne passant par un sommet :&lt;br&gt;- Sélectionnez une ligne&lt;br&gt;- Sélectionnez un sommet&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter une ligne cosmétique parallèle à une autre ligne passant par un sommet :
+- Sélectionner une ligne
+- Sélectionner un sommet
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1182,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="1233"/>
       <location filename="../../CommandExtensionPack.cpp" line="1372"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez une ligne cosmétique parallèle à une autre ligne passant par un sommet :&lt;br&gt;- Sélectionnez une ligne&lt;br&gt;- Sélectionnez un sommet&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter une ligne cosmétique parallèle à une autre ligne passant par un sommet :
+- Sélectionner une ligne
+- Sélectionner un sommet
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1098,7 +1205,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="1268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1381"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation>Ajoutez une ligne cosmétique perpendiculaire à une autre ligne passant par un sommet :&lt;br&gt;- Sélectionnez une ligne&lt;br&gt;- Sélectionnez un sommet&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter une ligne cosmétique perpendiculaire à une autre ligne passant par un sommet :
+- Sélectionner une ligne
+- Sélectionner un sommet
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1226,9 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1409"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation>Verrouiller ou déverrouiller la position d'une vue :&lt;br&gt;- Sélectionner une seule vue&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Verrouiller ou déverrouiller la position d'une vue :
+- Sélectionner une seule vue
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1134,7 +1246,10 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="754"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Aligner les cotes horizontales pour créer une chaîne de cotes:&lt;br&gt;- Sélectionnez deux ou plusieurs cotes horizontales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Aligner les cotes horizontales pour créer une chaîne de cotes :
+- Sélectionner deux ou plusieurs cotes horizontales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1154,7 +1269,10 @@
       <location filename="../../CommandExtensionDims.cpp" line="590"/>
       <location filename="../../CommandExtensionDims.cpp" line="829"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Aligner les cotes horizontales pour créer une chaîne de cotes:&lt;br&gt;- Sélectionnez deux ou plusieurs cotes horizontales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Aligner les cotes horizontales pour créer une chaîne de cotes :
+- Sélectionner deux ou plusieurs cotes horizontales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1174,7 +1292,10 @@
       <location filename="../../CommandExtensionDims.cpp" line="719"/>
       <location filename="../../CommandExtensionDims.cpp" line="845"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Aligner les cotes obliques pour créer une chaîne de cotes:&lt;br&gt;- Sélectionnez deux ou plusieurs cotes obliques&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Aligner les cotes obliques pour créer une chaîne de cotes :
+- Sélectionner deux ou plusieurs cotes obliques
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1194,7 +1315,10 @@
       <location filename="../../CommandExtensionDims.cpp" line="652"/>
       <location filename="../../CommandExtensionDims.cpp" line="837"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Aligner les cotes verticales pour créer une chaîne de cotes:&lt;br&gt;- Sélectionnez deux ou plusieurs cotes verticales&lt;br&gt;- La première cote définit la position&lt;br&gt;- Cliquer sur cet outil</translation>
+      <translation>Aligner les cotes verticales pour créer une chaîne de cotes :
+- Sélectionner deux ou plusieurs cotes verticales
+- La première cote définit la position
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1212,7 +1336,9 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1453"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
-      <translation>Alignez orthogonalement une vue de section avec sa vue source :&lt;br&gt;- Sélectionnez une vue de section unique&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Aligner orthogonalement une vue de section avec sa vue source :
+- Sélectionner une vue de section unique
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1356,9 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="221"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Supprimer les symboles de préfixe au début du texte de la cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Supprimer les symboles de préfixe au début du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1248,7 +1376,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="715"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
-      <translation>Sélectionnez les attributs pour les nouvelles lignes cosmétiques et les lignes centrales, et spécifiez l'espacement en cascade et la distance delta :&lt;br&gt;- Cliquez sur cet outil&lt;br&gt;- Spécifiez les attributs, espacement et distance dans la boîte de dialogue&lt;br&gt;- Appuyez sur OK</translation>
+      <translation>Sélectionner les attributs pour les nouvelles lignes cosmétiques et les lignes centrales et spécifier l'espacement en cascade et la distance delta :
+- Cliquer sur cet outil
+- Spécifier les attributs, espacement et distance dans la boîte de dialogue
+- Appuyer sur OK</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1399,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="1640"/>
       <location filename="../../CommandExtensionPack.cpp" line="1751"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>Raccourcir une ligne cosmétique ou une ligne centrale aux deux extrémités :&lt;br&gt;- Spécifiez la distance delta (facultatif)&lt;br&gt;- Sélectionnez une seule ligne&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Raccourcir une ligne cosmétique ou une ligne centrale aux deux extrémités :
+- Spécifier la distance delta (facultatif)
+- Sélectionner une seule ligne
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1288,7 +1422,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="541"/>
       <location filename="../../CommandExtensionPack.cpp" line="687"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un filetage à la vue supérieure ou inférieure des boulons/vis/tiges :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez un ou plusieurs cercles&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un filetage à la vue supérieure ou inférieure des boulons/vis/tiges :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner un ou plusieurs cercles
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1308,7 +1445,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="436"/>
       <location filename="../../CommandExtensionPack.cpp" line="678"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un corps de filetage à la vue latérale d'un boulon/vis/tige :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez deux lignes parallèles&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un corps de filetage à la vue latérale d'un boulon/vis/tige :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner deux lignes parallèles
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1328,7 +1468,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="488"/>
       <location filename="../../CommandExtensionPack.cpp" line="668"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un taraudage à la vue supérieure ou inférieure des boulons/vis/tiges :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez un ou plusieurs cercles&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un taraudage à la vue supérieure ou inférieure des boulons/vis/tiges :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner un ou plusieurs cercles
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1348,7 +1491,10 @@
       <location filename="../../CommandExtensionPack.cpp" line="384"/>
       <location filename="../../CommandExtensionPack.cpp" line="658"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez deux lignes parallèles&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner deux lignes parallèles
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1366,7 +1512,10 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="575"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :&lt;br&gt;- Spécifiez les attributs de ligne (facultatif)&lt;br&gt;- Sélectionnez deux lignes parallèles&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :
+- Spécifier les attributs de ligne (facultatif)
+- Sélectionner deux lignes parallèles
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1384,7 +1533,9 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="811"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
-      <translation>Ajouter des points à l'intersection des arêtes sélectionnées :&lt;br&gt;- Sélectionnez deux arêtes (lignes, cercles et/ou arcs)&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Ajouter des points à l'intersection des arêtes sélectionnées :
+- Sélectionner deux arêtes (lignes, cercles et/ou arcs)
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +2019,9 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1454"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
-      <translation>Sélectionnez une vue&lt;br&gt; - cliquez sur ce bouton&lt;br&gt; - sélectionnez les attributs du symbole d'état de surface dans le panneau ouvert</translation>
+      <translation>Sélectionnez une vue
+- Cliquez sur ce bouton
+- Sélectionnez les attributs du symbole d'état de surface dans le panneau ouvert</translation>
     </message>
   </context>
   <context>
@@ -2352,7 +2505,7 @@
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
-      <translation>Angle de vue relatif à +X dans la vue de base.</translation>
+      <translation>Direction de l'angle de vue par rapport à l'axe des X positifs dans la vue de base.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
@@ -3480,6 +3633,12 @@
       <translation>Modifier %1</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="363"/>
+      <source>TechDraw Increase/Decrease Decimal</source>
+      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="558"/>
       <location filename="../../CommandExtensionDims.cpp" line="567"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>Cotes horizontales</translation>
@@ -3491,6 +3650,7 @@
       <translation>Aucune cote horizontale sélectionnée</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="619"/>
       <location filename="../../CommandExtensionDims.cpp" line="628"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>Cotes verticales</translation>
@@ -3502,6 +3662,7 @@
       <translation>Aucune cote verticale sélectionnée</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="681"/>
       <location filename="../../CommandExtensionDims.cpp" line="690"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>Cotes obliques</translation>
@@ -3513,19 +3674,72 @@
       <translation>Aucune cote oblique sélectionnée</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="867"/>
       <location filename="../../CommandExtensionDims.cpp" line="876"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>Cascader horizontalement les cotes</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="933"/>
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>Cascader verticalement les cotes</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1000"/>
       <location filename="../../CommandExtensionDims.cpp" line="1009"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>Cascader obliquement les cotes</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1199"/>
+      <source>TechDraw Create Horizontal Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1265"/>
+      <source>TechDraw Create Vertical Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1331"/>
+      <source>TechDraw Create Oblique Chain Dimension</source>
+      <translation type="unfinished">TechDraw Create Oblique Chain Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1539"/>
+      <source>TechDraw Create Horizontal Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1612"/>
+      <source>TechDraw Create Vertical Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <source>TechDraw Create Oblique Coord Dimension</source>
+      <translation type="unfinished">TechDraw Create Oblique Coord Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1908"/>
+      <source>TechDraw Create Horizontal Chamfer Dimension</source>
+      <translation type="unfinished">TechDraw Create Horizontal Chamfer Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="1977"/>
+      <source>TechDraw Create Vertical Chamfer Dimension</source>
+      <translation type="unfinished">TechDraw Create Vertical Chamfer Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2163"/>
+      <source>TechDraw Create Arc Length Dimension</source>
+      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2240"/>
+      <source>TechDraw Customize Format</source>
+      <translation type="unfinished">TechDraw Customize Format</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
@@ -3953,7 +4167,7 @@ Angle, état de surface, origine</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="238"/>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation>Ajoute le symbole &apos;Soudure sur site&apos; Symbole (indicateur) au niveau de la brisure de la ligne de rappel</translation>
+      <translation>Ajouter le symbole "Soudure sur site" (indicateur) au niveau de la cassure de la ligne de repère</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="242"/>
@@ -3964,7 +4178,7 @@ at the kink in the leader line</source>
       <location filename="../../TaskWeldingSymbol.ui" line="249"/>
       <source>Adds the &apos;All Around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation>Affiche le symbole &apos;Tout autour&apos; symbole (cercle) au niveau de la brisure de la ligne de rappel</translation>
+      <translation>Ajouter le symbole "Tout autour" (cercle) au niveau de la cassure de la ligne de repère</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="253"/>
@@ -4174,6 +4388,11 @@ Only change unless you know what you are doing!</source>
       <translation>Utiliser le nouvel algorithme de recherche de face</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
+      <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
+      <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="213"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>Taille maximum des tuiles de hachures SVG</translation>
@@ -4220,11 +4439,6 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Passes pour supprimer les chevauchements d'arêtes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le nombre de fois que FreeCAD doit essayer de supprimer les arêtes qui se chevauchent et qui sont renvoyées par l'algorithme de suppression des lignes cachées. Une valeur de 0 indique qu'il n'y a pas de nettoyage, 1 indique une seule asse et 2 indique qu'une deuxième passe doit être effectuée. Les valeurs supérieures à 2 ne sont généralement pas productives. Chaque passe augmente le temps nécessaire à la production du dessin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remarque :&lt;/span&gt; les éléments en &lt;span style=&quot; font-style:italic;&quot;&gt;italiques&lt;/span&gt; sont les valeurs par défaut des nouveaux objets. Ils n'ont aucun effet sur les objets déjà en place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -4236,7 +4450,7 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="32"/>
       <source>Annotation</source>
-      <translation>Annotation</translation>
+      <translation>Annotations</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
@@ -4404,7 +4618,7 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="565"/>
       <source>Circular</source>
-      <translation>Circulaire</translation>
+      <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="574"/>
@@ -4636,11 +4850,6 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Couleur du texte monochrome</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cochez ceci pour utiliser du texte et des lignes de couleur claire sur les fonds sombres. Réglez la couleur de page sur une couleur sombre. L'utilisation de faces transparentes ou de couleur claire est recommandée avec cette option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="183"/>
       <source>Light on dark</source>
       <translation>Clair sur sombre</translation>
@@ -4671,6 +4880,15 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Couleur des sommets dans les vues</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
+
+</source>
+      <translation type="unfinished">If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
+
+</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>Couleur des contours des vues détaillées</translation>
@@ -4691,6 +4909,11 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Couleur de la grille</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
+      <source>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</source>
+      <translation type="unfinished">Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
       <source>Object faces will be transparent</source>
       <translation>Les faces de l'objet seront transparentes</translation>
@@ -4706,17 +4929,12 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Couleur de la face (si non transparente)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, FreeCAD utilisera une seule couleur pour tous les textes et lignes. Si décoché, FreeCAD tentera d'utiliser des versions plus claires des couleurs préférées.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
       <source>Monochrome</source>
       <translation>Monochrome</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="654"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="656"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remarque :&lt;/span&gt; les éléments en &lt;span style=&quot; font-style:italic;&quot;&gt;italiques&lt;/span&gt; sont les valeurs par défaut des nouveaux objets. Ils n'ont aucun effet sur les objets déjà en place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4762,7 +4980,7 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="437"/>
       <source>Use system setting for number of decimals</source>
-      <translation>Utiliser le paramètre système pour le nombre de décimales</translation>
+      <translation>Utiliser les paramètres système pour le nombre de décimales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="440"/>
@@ -4770,29 +4988,14 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <translation>Utiliser les paramètres système pour les décimales</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If using a gap, the recommended value 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contrôle la taille de l'espace entre le point de la cote et le début de la ligne d'extension pour les cotes ISO. La valeur * de largeur de ligne correspond à l'espace. Normalement, aucun espace n'est utilisé.  Si l'on utilise un espace, la valeur recommandée est 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="546"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.  Normally, no gap is used.  If a gap is used, the recommended value is 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contrôle la taille de l'espace entre le point de la cote et le début de la ligne d'extension pour les cotes ASME. La valeur * de largeur de ligne correspond à l'espace.  Normalement, aucun espace n'est utilisé.  Si un espace est utilisé, la valeur recommandée est 6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="570"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
       <translation>Contrôle la taille de l'espace entre le point de la cote et le début de la ligne d'extension pour les cotes ISO.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
       <source>Line Spacing - ISO</source>
       <translation>Interligne - ISO</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="580"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of spacing between dimension line and dimension text. Value * linewidth is the line spacing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contrôle la taille de l'espace entre la ligne de la cote et le texte de la cote. La valeur * de largeur de ligne est l'interligne.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
@@ -4812,7 +5015,7 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="371"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
-      <translation>Nombre de décimales si &apos;Utiliser les Décimales Globales&apos; n'est pas utilisé</translation>
+      <translation>Nombre de décimales si "Utiliser les paramètres système pour les décimales" n'est pas utilisé</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="88"/>
@@ -4828,11 +5031,6 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="489"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>Facteur d'écart d'extension - ISO</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank for automatic dimension format.  Use %f, %g or %w specifiers to override.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laissez vide pour un format de cote automatique. Utilisez les spécificateurs %f, %g ou %w pour les remplacer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="180"/>
@@ -4853,7 +5051,7 @@ Si cette case n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de rec
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="306"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation>Échelle du texte pour les tolérances
+      <translation>Échelle du texte pour les tolérances.
 Multiplicateur de la "Taille de la police"</translation>
     </message>
     <message>
@@ -4887,6 +5085,11 @@ Multiplicateur de la "Taille de la police"</translation>
       <translation>Taille des têtes des flèches</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
+      <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
+      <translation type="unfinished">Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
       <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions.</source>
       <translation>Contrôle la taille de l'écart entre le point de la cote et le début de la ligne d'extension pour les cotes ASME.</translation>
@@ -4897,7 +5100,30 @@ Multiplicateur de la "Taille de la police"</translation>
       <translation>Facteur d'écart d'extension - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="610"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
+Value * linewidth is the gap. 
+Normally, no gap is used. If using a gap, the recommended value 8.</source>
+      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
+Value * linewidth is the gap. 
+Normally, no gap is used. If using a gap, the recommended value 8.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
+Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
+      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
+Normally, no gap is used. If a gap is used, the recommended value is 6.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
+      <source>Controls the size of spacing between dimension line and dimension text.
+ Value * linewidth is the line spacing.</source>
+      <translation type="unfinished">Controls the size of spacing between dimension line and dimension text.
+ Value * linewidth is the line spacing.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remarque :&lt;/span&gt; les éléments en &lt;span style=&quot; font-style:italic;&quot;&gt;italiques&lt;/span&gt; sont les valeurs par défaut des nouveaux objets. Ils n'ont aucun effet sur les objets déjà en place.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4928,8 +5154,8 @@ Multiplicateur de la "Taille de la police"</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation>Qu'il s'agisse ou non d'une page &apos;s, la propriété &apos;Garder la page à jour&apos;
-peut remplacer le paramètre global &apos;Mettre à jour avec la 3D&apos;</translation>
+      <translation>Si la propriété "Garder la page à jour" d'une page peut ou
+non remplacer le paramètre global "Mettre à jour avec la 3D".</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -4953,7 +5179,7 @@ Cela peut ralentir le temps de réponse.</translation>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
       <translation>Distribuer automatiquement les vues secondaires
-pour les ProjectionGroups</translation>
+pour les groupes de projection</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="164"/>
@@ -5065,7 +5291,7 @@ pour les ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="571"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
-      <translation>Répertoire de départ pour le menu &apos;Insérer une page à l'aide d'un Modèle&apos;</translation>
+      <translation>Répertoire de départ pour le menu "Insérer une page à l'aide d'un modèle"</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="598"/>
@@ -5174,7 +5400,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="70"/>
       <source>Use Polygon Approximation</source>
-      <translation>Utiliser l'approximation du polygone</translation>
+      <translation>Utiliser l'approximation polygonale</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
@@ -5317,7 +5543,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
-      <translation>Échelle par défaut pour les vues si &apos;le type d'échelle&apos; est &apos;personnalisé&apos;</translation>
+      <translation>Échelle par défaut pour les vues si "Afficher le type d'échelle" est "personnalisé"</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="238"/>
@@ -5523,7 +5749,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="106"/>
       <source>Circular</source>
-      <translation>Circulaire</translation>
+      <translation>Cercle</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
@@ -6579,9 +6805,8 @@ be used instead of the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Si cette case est cochée,
-le contenu de la spécification du format de la tolérance
-sera utilisé à la place de la valeur de la tolérance</translation>
+      <translation>Si cette case est cochée, le contenu de la spécification du format
+de la tolérance sera utilisé à la place de la valeur de la tolérance</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="179"/>
@@ -7645,7 +7870,8 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="476"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reconstruire l'affichage maintenant. Peut être lent pour les modèles complexes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Reconstruire l'affichage maintenant.
+Peut être lent pour les modèles complexes.</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="479"/>
@@ -7826,33 +8052,48 @@ en utilisant l'espacement X/Y donné</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau interdit, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal prohibited, whole part</source>
+      <translation type="unfinished">Material removal prohibited, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;N'importe quelle méthode est autorisée, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Any method allowed, whole part</source>
+      <translation type="unfinished">Any method allowed, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau nécessaire, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal required, whole part</source>
+      <translation type="unfinished">Material removal required, whole part</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau nécessaire&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal required</source>
+      <translation type="unfinished">Material removal required</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériaux interdit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Material removal prohibited</source>
+      <translation type="unfinished">Material removal prohibited</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;N'importe quelle méthode est autorisée&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Any method allowed</source>
+      <translation type="unfinished">Any method allowed</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
+      <source>Rotation angle</source>
+      <translation type="unfinished">Rotation angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
+      <source>Use ISO standard</source>
+      <translation type="unfinished">Use ISO standard</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
+      <source>Use ASME standard</source>
+      <translation type="unfinished">Use ASME standard</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
@@ -7860,24 +8101,9 @@ en utilisant l'espacement X/Y donné</translation>
       <translation>Angle du symbole :</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation angle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle de rotation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ISO standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utiliser la norme ISO&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
       <source>ISO</source>
       <translation>ISO</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ASME standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utiliser la norme ASME&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
@@ -8048,7 +8274,9 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="342"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Supprimer les symboles de préfixe au début du texte de la cote :&lt;br&gt;- Sélectionnez une ou plusieurs cotes&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Supprimer les symboles de préfixe au début du texte de la cote :
+- Sélectionner une ou plusieurs cotes
+- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -8145,7 +8373,7 @@ en utilisant l'espacement X/Y donné</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Extensions : taraudages/filetages</translation>
     </message>
@@ -8161,81 +8389,86 @@ en utilisant l'espacement X/Y donné</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
+      <source>Stacking</source>
+      <translation type="unfinished">Stacking</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Add Lines</source>
       <translation>Ajouter des lignes</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Add Vertices</source>
       <translation>Ajouter des sommets</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Attributes</source>
       <translation>Attributs TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Centerlines</source>
       <translation>Lignes centrales TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>Cotes d'extension TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw Pages</source>
       <translation>Pages TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Stacking</source>
       <translation>Empaquetage TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Views</source>
       <translation>Vues TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Clips</source>
       <translation>Rognages TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Dimensions</source>
       <translation>Cotes TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Tool Attributes</source>
       <translation>Attributs de l'outil TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw File Access</source>
       <translation>Accès fichier TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Decoration</source>
       <translation>Décoration TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
       <translation>Annotation TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>Views</source>
       <translation>Vues</translation>
     </message>
@@ -8401,7 +8634,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../DlgStringListEditor.ui" line="31"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double-cliquer pour éditer une ligne. De nouvelles lignes seront ajoutées à la liste à l'emplacement courant.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Double-cliquer pour éditer une ligne. De nouvelles lignes seront ajoutées à la liste à l'emplacement courant.</translation>
     </message>
   </context>
   <context>
@@ -8449,11 +8682,10 @@ en utilisant l'espacement X/Y donné</translation>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation>Créer une cote axonométrique&lt;br&gt;
-                - sélectionner la première arête pour définir la direction et la longueur de la ligne de la cote&lt;br&gt;
-                - sélectionner la deuxième arête pour définir la direction des lignes d'extension&lt;br&gt;
-                - optionnel : sélectionner deux sommets supplémentaires qui définissent la mesure au lieu de la longueur&lt;br&gt;
-                  de la première arête sélectionnée</translation>
+      <translation>Créer une cote axonométrique
+- Sélectionner la première arête pour définir la direction et la longueur de la ligne de la cote
+- Sélectionner la deuxième arête pour définir la direction des lignes d'extension
+- Optionnel : sélectionner deux sommets supplémentaires qui définissent la mesure au lieu de la longueur de la première arête sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -8470,11 +8702,11 @@ en utilisant l'espacement X/Y donné</translation>
                 - click the tool button, a panel openes&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Ajouter une tolérance de trou ou d'arbre à une cote&lt;br&gt;
-                - sélectionnez une cote de longueur ou une cote de diamètre&lt;br&gt;
-                - cliquez sur le bouton de l'outil, un panneau s'ouvre&lt;br&gt;
-                - sélectionnez la tolérance d'arbre/tolérance de trou&lt;br&gt;
-                - sélectionnez la tolérance ISO 286 désirée à l'aide de la boîte combinée</translation>
+      <translation>Ajouter une tolérance de trou ou d'arbre à une cote
+- Sélectionner une cote de longueur ou une cote de diamètre
+- Cliquer sur le bouton de l'outil, un panneau s'ouvre
+- Sélectionner la tolérance d'arbre/tolérance de trou
+- Sélectionner la tolérance ISO 286 désirée à l'aide de la boîte combinée</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
@@ -8599,13 +8831,13 @@ en utilisant l'espacement X/Y donné</translation>
       <location filename="../../ViewProviderBalloon.cpp" line="181"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this balloon now because
-there is an open task dialog.</translation>
+      <translation>Vous ne pouvez pas supprimer cette infobulle maintenant car
+il y a une tâche en cours.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="184"/>
       <source>Can Not Delete</source>
-      <translation type="unfinished">Can Not Delete</translation>
+      <translation>Impossible de supprimer</translation>
     </message>
   </context>
 </TS>

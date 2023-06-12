@@ -1828,7 +1828,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>Create solid from a shell or compound</source>
-      <translation>Crear sólido desde una funda o un compuesto</translation>
+      <translation>Crear sólido desde un cascarón o un compuesto</translation>
     </message>
   </context>
   <context>
@@ -2356,7 +2356,7 @@ de proyección.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="473"/>
       <source>Shell</source>
-      <translation>Funda</translation>
+      <translation>Cascarón</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="525"/>
@@ -2580,7 +2580,7 @@ Nota: La ubicación se expresa en el espacio local del objeto que se adjunta.</t
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
       <location filename="../../DlgBooleanOperation.ui" line="124"/>
       <source>Shells</source>
-      <translation>Fundas</translation>
+      <translation>Cascarones</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
@@ -2906,7 +2906,7 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Si está marcada, la extrusión de alambres cerrados dará sólidos, no fundas.</translation>
+      <translation>Si está marcada, la extrusión de alambres cerrados dará sólidos, no cascarones.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
@@ -3204,12 +3204,12 @@ Por favor selecciona primero una o más aristas.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Escribir sólidos y fundas como</translation>
+      <translation>Escribir sólidos y cascarones como</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Los sólidos y las fundas se exportarán como superficie recortada</translation>
+      <translation>Los sólidos y cascarones se exportarán como superficie recortada</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3219,12 +3219,12 @@ Por favor selecciona primero una o más aristas.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation>Los sólidos serán exportados como múltiples objetos sólidos B-Rep, fundas como funda</translation>
+      <translation>Los sólidos serán exportados como objetos B-Rep sólidos manifold, cascarones como cascarón</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Sólidos (tipo 186) y fundas (tipo 514) / modo B-REP</translation>
+      <translation>Sólidos (tipo 186) y cascarones (tipo 514) / modo B-REP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -4067,7 +4067,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Si está marcada, al girar los alambres se producirán sólidos. Si no, al girar un alambre se obtendrá una funda.</translation>
+      <translation>Si está marcada, al girar los alambres se producirán sólidos. Si no, al girar un alambre se obtendrá una cascarón.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -5538,12 +5538,12 @@ arrastrando un rectángulo de selección en la vista 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Shell from faces</source>
-      <translation>Funda a partir de caras</translation>
+      <translation>Cascarón a partir de caras</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="61"/>
       <source>Solid from shell</source>
-      <translation>Sólido a partir de funda</translation>
+      <translation>Sólido a partir de cascarón</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
@@ -5829,7 +5829,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
-      <translation>Funda</translation>
+      <translation>Cascarón</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
@@ -5964,7 +5964,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Empty Shell</source>
-      <translation>Funda vacía</translation>
+      <translation>Cascarón vacío</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
@@ -6024,62 +6024,62 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: Unknown check</source>
-      <translation type="unfinished">Boolean operation: Unknown check</translation>
+      <translation>Operación booleana: Chequeo desconocido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: Bad type</source>
-      <translation type="unfinished">Boolean operation: Bad type</translation>
+      <translation>Operación booleana: Tipo incorrecto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: Self-intersection found</source>
-      <translation type="unfinished">Boolean operation: Self-intersection found</translation>
+      <translation>Operación booleana: Autointersección encontrada</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: Edge too small</source>
-      <translation type="unfinished">Boolean operation: Edge too small</translation>
+      <translation>Operación booleana: Arista demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: Non-recoverable face</source>
-      <translation type="unfinished">Boolean operation: Non-recoverable face</translation>
+      <translation>Operación booleana: Cara no recuperable</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: Incompatibility of vertex</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of vertex</translation>
+      <translation>Operación booleana: incompatibilidad de vértices</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: Incompatibility of edge</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of edge</translation>
+      <translation>Operación booleana: incompatibilidad de arista</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: Incompatibility of face</source>
-      <translation type="unfinished">Boolean operation: Incompatibility of face</translation>
+      <translation>Operación booleana: incompatibilidad de cara</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: Aborted</source>
-      <translation type="unfinished">Boolean operation: Aborted</translation>
+      <translation>Operación booleana: operación abortada</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
-      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
+      <translation>Operación booleana: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: Invalid curve on surface</source>
-      <translation type="unfinished">Boolean operation: Invalid curve on surface</translation>
+      <translation>Operación booleana: Curva inválida en la superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: Not valid</source>
-      <translation type="unfinished">Boolean operation: Not valid</translation>
+      <translation>Operación booleana: no válida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6596,7 +6596,7 @@ Se creará un 'Filtro Compuesto' para cada forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
       <source>Shells</source>
-      <translation>Fundas</translation>
+      <translation>Cascarones</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="65"/>

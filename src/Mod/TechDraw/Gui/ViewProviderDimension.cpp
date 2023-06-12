@@ -70,6 +70,9 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
                                      group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
+    ADD_PROPERTY_TYPE(Arrowsize, (Preferences::dimArrowSize()),
+                                     group, (App::PropertyType)(App::Prop_None),
+                                                                     "Arrow size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
@@ -195,6 +198,7 @@ void ViewProviderDimension::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
+        (p == &Arrowsize) ||
         (p == &LineWidth) ||
         (p == &StandardAndStyle) ||
         (p == &RenderingExtent) ||
@@ -238,6 +242,11 @@ std::string ViewProviderDimension::prefFont() const
 double ViewProviderDimension::prefFontSize() const
 {
     return Preferences::dimFontSizeMM();
+}
+
+double ViewProviderDimension::prefArrowSize() const
+{
+    return Preferences::dimArrowSize();
 }
 
 double ViewProviderDimension::prefWeight() const

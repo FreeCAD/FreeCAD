@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2469"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation>Fixer une longueur d'une ligne ou la distance entre une ligne et un sommet ou entre deux cercles</translation>
+      <translation>Fixer la longueur d'une ligne ou la distance entre une ligne et un sommet ou entre deux cercles</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8152"/>
       <source>Constrain refraction (Snell's law)</source>
-      <translation type="unfinished">Constrain refraction (Snell's law)</translation>
+      <translation>Contrainte de réfraction (loi de Snell)</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8153"/>
@@ -913,7 +913,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1398"/>
       <source>Create corner-preserving fillet</source>
-      <translation>Crée un congé conservant l'angle</translation>
+      <translation>Créer un congé conservant l'angle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1399"/>
@@ -1230,7 +1230,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Mauvaise sélection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="844"/>
@@ -1799,7 +1799,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6591"/>
       <location filename="../../CommandConstraints.cpp" line="6678"/>
       <source>Add radiam constraint</source>
-      <translation>Ajouter une contrainte de rayon</translation>
+      <translation>Ajouter une contrainte de rayon/diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7000"/>
@@ -1889,12 +1889,12 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="159"/>
       <source>Add sketch box</source>
-      <translation>Ajouter une zone d'esquisse</translation>
+      <translation>Ajout d'un rectangle à l'esquisse</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
       <source>Add centered sketch box</source>
-      <translation>Ajouter une zone d'esquisse centrée</translation>
+      <translation>Ajout d'un rectanlge centré à l'esquisse</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="526"/>
@@ -2121,7 +2121,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -2588,7 +2588,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1652"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation>Sélectionner uniquement des sommets de l’esquisse. Le dernier sommet sélectionné peut être l’origine.</translation>
+      <translation>Sélectionner uniquement les sommets de l'esquisse. Le dernier sommet sélectionné peut être l'origine.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1898"/>
@@ -2625,7 +2625,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="584"/>
       <source>Unexpected error. More information may be available in the Report View.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the Report View.</translation>
+      <translation>Erreur inattendue. Plus d'informations peuvent être disponibles dans la vue rapport.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2229"/>
@@ -2640,17 +2640,17 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2296"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation>Sélectionnez deux sommets de l'esquisse ou plus.</translation>
+      <translation>Sélectionner deux sommets de l'esquisse ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2321"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Sélectionnez deux sommets ou plus de l'esquisse pour une contrainte de coïncidence, ou deux ou plusieurs cercles, ellipses, arcs ou arcs d'ellipse pour une contrainte concentrique.</translation>
+      <translation>Sélectionner deux sommets ou plus de l’esquisse pour une contrainte de coïncidence, ou deux ou plusieurs cercles, ellipses, arcs ou arcs d’ellipse pour une contrainte concentrique.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2406"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Sélectionnez deux sommets de l'esquisse pour une contrainte de coïncidence, ou deux cercles, ellipses, arcs ou arcs d'ellipse pour une contrainte concentrique.</translation>
+      <translation>Sélectionner deux sommets de l'esquisse pour une contrainte de coïncidence, ou deux cercles, ellipses, arcs ou arcs d'ellipse pour une contrainte concentrique.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2521"/>
@@ -2727,7 +2727,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="3641"/>
       <location filename="../../CommandConstraints.cpp" line="3760"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
-      <translation>Sélectionnez soit une seule ligne ou jusqu'à deux points de l'esquisse.</translation>
+      <translation>Sélectionner soit une seule ligne soit jusqu'à deux points de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3382"/>
@@ -2978,7 +2978,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../CommandConstraints.cpp" line="8174"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation>Sélectionner deux extrémités d'une ligne pour agir comme des rayons, et une arête qui représente une limite. Le premier point sélectionné correspond à l'indice n1, le deuxième à n2 et la valeur de référence définit le rapport n2/n1.</translation>
+      <translation>Sélectionner deux extrémités de lignes pour agir comme des rayons, et une arête qui représente une limite. Le premier point sélectionné correspond à l'indice n1, le deuxième à n2, et la valeur définit la rapport n2/n1.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8183"/>
@@ -3017,12 +3017,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <translation>Sélectionner les contraintes de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="245"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="246"/>
       <source>B-Spline Degree</source>
       <translation>Degré de la B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="246"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="247"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
       <translation>Définir le degré de la B-spline, entre 1 et %1 :</translation>
     </message>
@@ -3187,12 +3187,14 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="241"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation>Définit la multiplicité du nœud au dernier point fourni, entre 1 et %1 : remarquez que la multiplicité peut être ignorée dans certaines circonstances. Veuillez vous référer à la documentation pour plus de détails.</translation>
+      <translation>Définir la multiplicité du nœud au dernier point fourni, entre 1 et %1.
+Remarque: la multiplicité peut être ignorée dans certaines circonstances.
+Voir la documentation pour plus de détails.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="286"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Erreur de valeur</translation>
     </message>
   </context>
   <context>
@@ -4669,12 +4671,12 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1153"/>
       <source>Impossible to update visibility tracking</source>
-      <translation type="unfinished">Impossible to update visibility tracking</translation>
+      <translation>Impossible de mettre à jour le suivi de visibilité</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1546"/>
       <source>Impossible to update visibility tracking: </source>
-      <translation type="unfinished">Impossible to update visibility tracking: </translation>
+      <translation>Impossible de mettre à jour le suivi de visibilité : </translation>
     </message>
   </context>
   <context>
@@ -5261,7 +5263,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="6865"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Fixer le rayon/diamètre d'un cercle ou d'un arc</translation>
+      <translation>Fixer le rayon/diamètre d'un arc ou d'un cercle</translation>
     </message>
   </context>
   <context>
@@ -5278,7 +5280,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="6863"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Fixer le rayon/diamètre d'un cercle ou d'un arc</translation>
+      <translation>Fixer le rayon/diamètre d'un arc ou d'un cercle</translation>
     </message>
   </context>
   <context>
@@ -5913,42 +5915,42 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofils</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>Es&amp;quisse</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher geometries</source>
       <translation>Géométries d'esquisse</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher constraints</source>
       <translation>Contraintes d'esquisse</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher tools</source>
       <translation>Outils d'esquisse</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher B-spline tools</source>
       <translation>Outils d'esquisse des B-splines</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher virtual space</source>
       <translation>Espace virtuel de l'esquisse</translation>
     </message>
@@ -6135,9 +6137,9 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="204"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="304"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="516"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
@@ -6164,17 +6166,17 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2040"/>
       <source>Failed to delete all geometry</source>
-      <translation type="unfinished">Failed to delete all geometry</translation>
+      <translation>Impossible de supprimer toute la géométrie</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2109"/>
       <source>Failed to delete all constraints</source>
-      <translation type="unfinished">Failed to delete all constraints</translation>
+      <translation>Impossible de supprimer toutes les contraintes</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="382"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="384"/>
       <source>The constraint has invalid index information and is malformed.</source>
-      <translation type="unfinished">The constraint has invalid index information and is malformed.</translation>
+      <translation>La contrainte a des informations d'index non valides et est mal formée.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="253"/>
@@ -6190,96 +6192,96 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
-      <translation type="unfinished">Invalid Constraint</translation>
+      <translation>Contrainte invalide</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="199"/>
       <location filename="../../DrawSketchHandlerArc.h" line="471"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="462"/>
       <source>Failed to add arc</source>
-      <translation type="unfinished">Failed to add arc</translation>
+      <translation>Impossible d'ajouter un arc</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="322"/>
       <source>Failed to add arc of ellipse</source>
-      <translation type="unfinished">Failed to add arc of ellipse</translation>
+      <translation>Impossible d'ajouter un arc d'ellipse</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
-      <translation type="unfinished">Cannot create arc of hyperbola from invalid angles, try again!</translation>
+      <translation>Impossible de créer un arc d'hyperbole à partir d'angles invalides, essayez à nouveau !</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
       <source>Cannot create arc of hyperbola</source>
-      <translation type="unfinished">Cannot create arc of hyperbola</translation>
+      <translation>Impossible de créer un arc d'hyperbole</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="260"/>
       <source>Cannot create arc of parabola</source>
-      <translation type="unfinished">Cannot create arc of parabola</translation>
+      <translation>Impossible de créer un arc de parabole</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="129"/>
       <source>Error adding B-Spline pole</source>
-      <translation type="unfinished">Error adding B-Spline pole</translation>
+      <translation>Erreur lors de l'ajout d'un pôle de B-Spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <source>Error creating BSpline pole</source>
-      <translation type="unfinished">Error creating BSpline pole</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="206"/>
+      <source>Error creating B-spline pole</source>
+      <translation type="unfinished">Error creating B-spline pole</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <source>Error deleting last pole</source>
-      <translation type="unfinished">Error deleting last pole</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
-      <source>Error creating B-Spline</source>
-      <translation type="unfinished">Error creating B-Spline</translation>
+      <source>Error creating B-spline</source>
+      <translation type="unfinished">Error creating B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="306"/>
+      <source>Error deleting last pole</source>
+      <translation>Erreur lors de la suppression du dernier pôle</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="124"/>
       <source>Cannot add knot point</source>
-      <translation type="unfinished">Cannot add knot point</translation>
+      <translation>Impossible d'ajouter un nœud</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="195"/>
       <source>Cannot add internal alignment points</source>
-      <translation type="unfinished">Cannot add internal alignment points</translation>
+      <translation>Impossible d'ajouter des points d'alignement internes</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="304"/>
       <source>Error removing knot</source>
-      <translation type="unfinished">Error removing knot</translation>
+      <translation>Erreur lors de la suppression du nœud</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="172"/>
       <source>Failed to add carbon copy</source>
-      <translation type="unfinished">Failed to add carbon copy</translation>
+      <translation>Impossible d'ajouter une copie carbone</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="128"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="318"/>
       <source>Failed to add circle</source>
-      <translation type="unfinished">Failed to add circle</translation>
+      <translation>Impossible d'ajouter un cercle</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="800"/>
       <source>Failed to add an ellipse</source>
-      <translation type="unfinished">Failed to add an ellipse</translation>
+      <translation>Impossible d'ajouter une ellipse</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="325"/>
       <source>Failed to extend edge</source>
-      <translation type="unfinished">Failed to extend edge</translation>
+      <translation>Impossible d'étendre l'arête</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="173"/>
       <source>Failed to add external geometry</source>
-      <translation type="unfinished">Failed to add external geometry</translation>
+      <translation>Impossible d'ajouter la géométrie externe</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="184"/>
@@ -6290,49 +6292,49 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../DrawSketchHandlerLine.h" line="122"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="432"/>
       <source>Failed to add line</source>
-      <translation type="unfinished">Failed to add line</translation>
+      <translation>Impossible d'ajouter une ligne</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="81"/>
       <source>Failed to add point</source>
-      <translation type="unfinished">Failed to add point</translation>
+      <translation>Impossiblr d'ajouter un point</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="158"/>
       <source>Failed to add polygon</source>
-      <translation type="unfinished">Failed to add polygon</translation>
+      <translation>Impossible d'ajouter un polygone</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="292"/>
       <source>Failed to add box</source>
-      <translation type="unfinished">Failed to add box</translation>
+      <translation>Impossible d'ajouter un rectangle</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="700"/>
       <source>Failed to add rounded rectangle</source>
-      <translation type="unfinished">Failed to add rounded rectangle</translation>
+      <translation>Impossible d'ajouter un rectangle arrondi</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="307"/>
       <source>Failed to add slot</source>
-      <translation type="unfinished">Failed to add slot</translation>
+      <translation>Impossible d'ajouter une rainure</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="149"/>
       <source>Failed to add edge</source>
-      <translation type="unfinished">Failed to add edge</translation>
+      <translation>Impossible d'ajouter une arête</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
       <source>Failed to trim edge</source>
-      <translation type="unfinished">Failed to trim edge</translation>
+      <translation>Impossible d'ajuster une arête</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Erreur de valeur</translation>
     </message>
   </context>
   <context>
@@ -6340,7 +6342,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Interpolate B-spline</source>
-      <translation>Interpoler une B-spline</translation>
+      <translation>Créer une B-spline par interpolation</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
@@ -6353,7 +6355,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Interpolate periodic B-spline</source>
-      <translation>Interpoler une B-spline périodique</translation>
+      <translation>Créer une B-spline périodique par interpolation</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
@@ -6404,7 +6406,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>Snap to grid</source>
-      <translation type="unfinished">Snap to grid</translation>
+      <translation>Aimanter à la grille</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
@@ -6416,12 +6418,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1371"/>
       <source>Snap angle</source>
-      <translation>Aimanter à l'angle</translation>
+      <translation>Angle d'aimantation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation>Pas angulaire pour les outils qui utilisent la fonction "Aimanter à l'angle" (ligne par exemple). Maintenez la touche CTRL enfoncée pour activer la fonction "Aimanter à l'angle". L'angle commence à partir de l'axe Est (horizontal droit).</translation>
+      <translation>Pas angulaire pour les outils qui utilisent la fonction "Aimanter à un angle" (une ligne par exemple). Maintenez la touche CTRL enfoncée pour activer la fonction "Aimanter à un angle". L'angle commence à partir de l'axe Est (horizontal droit).</translation>
     </message>
   </context>
   <context>
@@ -6471,7 +6473,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings</translation>
+      <translation>Activer/désactiver la grille dans l'esquisse. Dans le menu vous pouvez modifier les paramètres de la grille</translation>
     </message>
   </context>
   <context>
@@ -6479,12 +6481,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1474"/>
       <source>Toggle snap</source>
-      <translation type="unfinished">Toggle snap</translation>
+      <translation>Activer/désactiver l'aimantation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings</translation>
+      <translation>Activer/désactiver toutes les fonctionnalités d'aimantation. Dans le menu, vous pouvez activer/désactiver individuellement "Aimanter à la grille" et "Aimanter aux objets" et modifier les paramètres d'aimantation ultérieurs</translation>
     </message>
   </context>
 </TS>

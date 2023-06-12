@@ -2412,23 +2412,26 @@ bool CDxfRead::ReadText()
                 break;
             case 3:
                 // Additional text that goes before the type 1 text
+                // Note that if breaking the text into type-3 records splits a UFT-8 encoding we do the decoding
+                // after splicing the lines together. I'm not sure if this actually occurs, but handling the text
+                // this way will treat this condition properly.
                 get_line();
                 textPrefix.append(m_str);
                 break;
             case 1:
-                // text
+                // final text
                 // Note that we treat this as the end of the TEXT or MTEXT entity but this may cause us to miss
                 // other properties. Officially the entity ends at the start of the next entity, the BLKEND record
                 // that ends the containing BLOCK, or the ENDSEC record that ends the ENTITIES section. These are
                 // all code 0 records. Changing this would require either some sort of peek/pushback ability or the understanding
                 // that ReadText() and all the other Read... methods return having already read a code 0.
                 get_line();
+                textPrefix.append(m_str);
                 ResolveColorIndex();
                 {
-                    const char* utfStr = (this->*stringToUTF8)(m_str);
+                    const char* utfStr = (this->*stringToUTF8)(textPrefix.c_str());
                     OnReadText(c, height * 25.4 / 72.0, utfStr);
-                    if (utfStr != m_str)
-                        delete utfStr;
+                    delete utfStr;
                 }
                 return(true);
 
