@@ -1146,7 +1146,7 @@ Standard: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

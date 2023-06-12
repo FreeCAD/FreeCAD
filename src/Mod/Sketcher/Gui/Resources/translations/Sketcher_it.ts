@@ -70,8 +70,8 @@
     <name>CmdSketcherCarbonCopy</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
-      <source>Create a carbon copy</source>
-      <translation>Crea una copia carbone</translation>
+      <source>Create carbon copy</source>
+      <translation type="unfinished">Create carbon copy</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -193,8 +193,8 @@
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1047"/>
-      <source>Create a B-spline</source>
-      <translation>Crea una B-spline</translation>
+      <source>Create B-spline</source>
+      <translation>B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1048"/>
@@ -229,8 +229,8 @@
     <name>CmdSketcherCompCreateConic</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
-      <source>Create a conic</source>
-      <translation>Sezione conica</translation>
+      <source>Create conic</source>
+      <translation type="unfinished">Create conic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -267,8 +267,8 @@
     <name>CmdSketcherCompCreateFillets</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1431"/>
-      <source>Fillets</source>
-      <translation>Raccordi</translation>
+      <source>Create fillet</source>
+      <translation>Raccorda</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1432"/>
@@ -290,8 +290,8 @@
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="236"/>
-      <source>Create rectangles</source>
-      <translation>Crea Rettangolo</translation>
+      <source>Create rectangle</source>
+      <translation>Rettangolo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="237"/>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1854"/>
       <source>Block the selected edge from moving</source>
-      <translation type="unfinished">Block the selected edge from moving</translation>
+      <translation>Blocca il bordo selezionato dallo spostamento</translation>
     </message>
   </context>
   <context>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2182"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>Crea un vincolo coincidente tra i punti, o un vincolo concentrico tra cerchi, archi ed ellissi</translation>
     </message>
   </context>
   <context>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2469"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Fissare una lunghezza di una linea o la distanza tra una linea e un vertice o tra due cerchi</translation>
     </message>
   </context>
   <context>
@@ -513,8 +513,8 @@
       <location filename="../../CommandConstraints.cpp" line="1587"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>Crea sia un vincolo di distanza orizzontale e che verticale
+sul vertice selezionato</translation>
     </message>
   </context>
   <context>
@@ -593,8 +593,7 @@ on the selected vertex</translation>
       <location filename="../../CommandConstraints.cpp" line="8153"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law)constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Crea un vincolo di rifrazione (legge di Snell) tra due punti finali di raggi e con un bordo come interfaccia.</translation>
     </message>
   </context>
   <context>
@@ -707,8 +706,8 @@ rispetto a una linea o a un terzo punto</translation>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
-      <source>Create an arc of ellipse</source>
-      <translation>Arco di ellisse</translation>
+      <source>Create arc of ellipse</source>
+      <translation type="unfinished">Create arc of ellipse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -720,8 +719,8 @@ rispetto a una linea o a un terzo punto</translation>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
-      <source>Create an arc of hyperbola</source>
-      <translation>Crea un arco di iperbole</translation>
+      <source>Create arc of hyperbola</source>
+      <translation type="unfinished">Create arc of hyperbola</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -733,8 +732,8 @@ rispetto a una linea o a un terzo punto</translation>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
-      <source>Create an arc of parabola</source>
-      <translation>Arco di parabola</translation>
+      <source>Create arc of parabola</source>
+      <translation type="unfinished">Create arc of parabola</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -751,8 +750,8 @@ rispetto a una linea o a un terzo punto</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
-      <source>Create a B-spline via control points in the sketch.</source>
-      <translation>Crea una B-spline tramite punti di controllo nello schizzo.</translation>
+      <source>Create a B-spline by control points in the sketch.</source>
+      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
     </message>
   </context>
   <context>
@@ -894,8 +893,8 @@ rispetto a una linea o a un terzo punto</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
-      <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>Crea una B-spline periodica tramite punti di controllo nello schizzo.</translation>
+      <source>Create a periodic B-spline by control points in the sketch.</source>
+      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
     </message>
   </context>
   <context>
@@ -1097,8 +1096,8 @@ rispetto a una linea o a un terzo punto</translation>
     <name>CmdSketcherExternal</name>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
-      <source>Create an external geometry</source>
-      <translation>Crea una geometria esterna</translation>
+      <source>Create external geometry</source>
+      <translation type="unfinished">Create external geometry</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -1142,7 +1141,7 @@ rispetto a una linea o a un terzo punto</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1186"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>Inserisce il nodo al parametro specificato. Se esiste già un nodo con quel parametro, la molteplicità viene aumentata di uno.</translation>
     </message>
   </context>
   <context>
@@ -1150,12 +1149,12 @@ rispetto a una linea o a un terzo punto</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1252"/>
       <source>Join curves</source>
-      <translation type="unfinished">Join curves</translation>
+      <translation>Unisci le curve</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1253"/>
       <source>Join two curves at selected end points</source>
-      <translation type="unfinished">Join two curves at selected end points</translation>
+      <translation>Unisce due curve ai punti finali selezionati</translation>
     </message>
   </context>
   <context>
@@ -1680,12 +1679,12 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <location filename="../../CommandConstraints.cpp" line="2974"/>
       <source>Add circle to circle distance constraint</source>
-      <translation type="unfinished">Add circle to circle distance constraint</translation>
+      <translation>Aggiungi il vincolo di distanza da cerchio a cerchio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2712"/>
       <source>Add circle to line distance constraint</source>
-      <translation type="unfinished">Add circle to line distance constraint</translation>
+      <translation>Aggiungi il vincolo di distanza dal cerchio alla linea</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2750"/>
@@ -2027,7 +2026,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1349"/>
       <source>Join Curves</source>
-      <translation type="unfinished">Join Curves</translation>
+      <translation>Unisci le curve</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="822"/>
@@ -2115,7 +2114,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="111"/>
       <source>Add Knot Point</source>
-      <translation type="unfinished">Add Knot Point</translation>
+      <translation>Aggiungi punto di nodo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="151"/>
@@ -2218,12 +2217,12 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6529"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
+      <translation>La molteplicità del nodo non può essere superiore al grado della BSpline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6535"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
+      <translation>Il nodo non può essere inserito al di fuori dell'intervallo di parametri B-Spline.</translation>
     </message>
   </context>
   <context>
@@ -2287,8 +2286,20 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <translation>Non allegare</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2414,15 +2425,6 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2438,9 +2440,6 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
@@ -2618,12 +2617,12 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8200"/>
       <source>Number of selected objects is not 3</source>
-      <translation type="unfinished">Number of selected objects is not 3</translation>
+      <translation>Il numero di oggetti selezionati non è 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>Errore</translation>
     </message>
@@ -2650,12 +2649,12 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2321"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>Seleziona due o più vertici dallo schizzo per un vincolo coincidente, o due o più cerchi, ellissi, archi o archi di ellisse per un vincolo concentrico.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2406"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation type="unfinished">Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
+      <translation>Seleziona due vertici dallo schizzo per un vincolo coincidente, o due cerchi, ellissi, archi o archi di ellisse per un vincolo concentrico.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2521"/>
@@ -2671,7 +2670,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2774"/>
       <location filename="../../CommandConstraints.cpp" line="2998"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points or two circles from the sketch.</translation>
+      <translation>Selezionare esattamente una linea o un punto e una linea o due punti o due cerchi dallo schizzo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2892"/>
@@ -2854,7 +2853,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
       <location filename="../../CommandConstraints.cpp" line="5070"/>
       <location filename="../../CommandConstraints.cpp" line="5109"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>Il vincolo tangente al nodo B-spline è supportato solo con le linee!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2249"/>
@@ -2864,7 +2863,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3199"/>
       <source>Select either one point and several curves, or one curve and several points.</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points.</translation>
+      <translation>Selezionare un punto e diverse curve, oppure una curva e diversi punti.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4114"/>
@@ -3032,9 +3031,9 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
       <translation>Definisci il grado B-Spline, tra 1 e %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>Errore Kernel CAD</translation>
     </message>
@@ -3091,7 +3090,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1315"/>
       <source>Too many curves on point</source>
-      <translation type="unfinished">Too many curves on point</translation>
+      <translation>Troppe curve sul punto</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1316"/>
@@ -3102,12 +3101,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1325"/>
       <source>Too few curves on point</source>
-      <translation type="unfinished">Too few curves on point</translation>
+      <translation>Troppe poche curve sul punto</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1343"/>
       <source>Two end points, or coincident point should be selected.</source>
-      <translation type="unfinished">Two end points, or coincident point should be selected.</translation>
+      <translation>Dovrebbero essere selezionati due punti finali o un punto coincidente.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="94"/>
@@ -3177,22 +3176,22 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="533"/>
       <source>Unsupported visual layer operation</source>
-      <translation type="unfinished">Unsupported visual layer operation</translation>
+      <translation>Operazione di livello visivo non supportata</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="534"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Attualmente non è supportato spostare la geometria esterna su un altro livello visivo. La geometria esterna sarà omessa</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="240"/>
       <source>Set knot multiplicity</source>
-      <translation type="unfinished">Set knot multiplicity</translation>
+      <translation>Imposta molteplicità di nodo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="241"/>
       <source>Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</source>
-      <translation type="unfinished">Set knot multiplicity at the last point provided, between 1 and %1:Note that multiplicity may be ignored under certain circumstances.Please refer to documentation for details</translation>
+      <translation>Imposta la molteplicità del nodo all'ultimo punto fornito, tra 1 e %1:Nota che la molteplicità può essere ignorata in determinate circostanze. Per favore fare riferimento alla documentazione per i dettagli</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="286"/>
@@ -3373,7 +3372,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="134"/>
       <source>Associated constraints</source>
-      <translation type="unfinished">Associated constraints</translation>
+      <translation>Vincoli associati</translation>
     </message>
   </context>
   <context>
@@ -3534,7 +3533,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="243"/>
       <source>Internal</source>
-      <translation type="unfinished">Internal</translation>
+      <translation>Interno</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="244"/>
@@ -3677,7 +3676,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Radiam Constraint</source>
-      <translation type="unfinished">Radiam Constraint</translation>
+      <translation>Vincolo raggio o diametro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
@@ -3707,7 +3706,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Select Vertical Axis</source>
-      <translation type="unfinished">Select Vertical Axis</translation>
+      <translation>Seleziona l'asse verticale</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="672"/>
@@ -3717,12 +3716,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="682"/>
       <source>Layer 0</source>
-      <translation type="unfinished">Layer 0</translation>
+      <translation>Livello 0</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="683"/>
       <source>Layer 1</source>
-      <translation type="unfinished">Layer 1</translation>
+      <translation>Livello 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="684"/>
@@ -3958,7 +3957,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Widget del pannello attività</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="30"/>
@@ -4612,7 +4611,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>Seleziona per attivare o disattivare i filtri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
@@ -4627,7 +4626,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
-      <translation type="unfinished">Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</translation>
+      <translation>Mostra/nascondi tutti i vincoli elencati dalla vista 3D. (lo stesso vale per tutti i vincoli elencati nella lista sottostante)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -4652,17 +4651,17 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
       <source>Show only filtered Constraints</source>
-      <translation type="unfinished">Show only filtered Constraints</translation>
+      <translation>Mostra solo vincoli filtrati</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="853"/>
       <source>Extended information (in widget)</source>
-      <translation type="unfinished">Extended information (in widget)</translation>
+      <translation>Informazioni estese (nel widget)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="854"/>
       <source>Hide internal alignment (in widget)</source>
-      <translation type="unfinished">Hide internal alignment (in widget)</translation>
+      <translation>Nascondi allineamento interno (nel widget)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1153"/>
@@ -4691,7 +4690,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>Seleziona per attivare o disattivare i filtri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
@@ -4747,7 +4746,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
       <location filename="../../TaskSketcherElements.cpp" line="1648"/>
       <location filename="../../TaskSketcherElements.cpp" line="1654"/>
       <source>Internal</source>
-      <translation type="unfinished">Internal</translation>
+      <translation>Interno</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1596"/>
@@ -4847,27 +4846,27 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="139"/>
       <source>Click to select the conflicting constraints.</source>
-      <translation type="unfinished">Click to select the conflicting constraints.</translation>
+      <translation>Fare clic per selezionare i vincoli in conflitto.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="141"/>
       <source>Click to select the redundant constraints.</source>
-      <translation type="unfinished">Click to select the redundant constraints.</translation>
+      <translation>Fare clic per selezionare i vincoli ridondanti.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="144"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements.</source>
-      <translation type="unfinished">The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements.</translation>
+      <translation>Lo schizzo ha elementi senza vincoli che danno origine a quei gradi di libertà. Fare clic per selezionare gli elementi senza vincoli.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="147"/>
       <source>Click to select the malformed constraints.</source>
-      <translation type="unfinished">Click to select the malformed constraints.</translation>
+      <translation>Fare clic per selezionare i vincoli malformati.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="150"/>
       <source>Some constraints in combination are partially redundant. Click to select the partially redundant constraints.</source>
-      <translation type="unfinished">Some constraints in combination are partially redundant. Click to select the partially redundant constraints.</translation>
+      <translation>Alcuni vincoli combinati sono parzialmente ridondanti. Clicca per selezionare i vincoli parzialmente ridondanti.</translation>
     </message>
   </context>
   <context>
@@ -4888,14 +4887,14 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Vertici aperti e non molteplici</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Evidenzia vertici aperti e non molteplici che potrebbero portare a errori se si usa lo schizzo per generare solidi.
+Questo è basato esclusivamente sulla forma topologica dello schizzo e non sul suo insieme di geometria/vincolo.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
@@ -5151,7 +5150,7 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       <location filename="../../ViewProviderSketch.cpp" line="3375"/>
       <source>%n DoF(s)</source>
       <translation type="unfinished">
-        <numerusform>%n Gradi di libertà</numerusform>
+        <numerusform>%n Grado(i) di libertà</numerusform>
         <numerusform>%n DoF(s)</numerusform>
       </translation>
     </message>
@@ -5807,7 +5806,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
       <source>Solver used to determine whether a group is redundant or conflicting</source>
-      <translation>Solver utilizzato per determinare se un gruppo è ridondante o in conflitto</translation>
+      <translation>Risolutore utilizzato per determinare se un gruppo è ridondante o in conflitto</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
@@ -5932,28 +5931,38 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
+      <source>Sketcher edit mode</source>
+      <translation type="unfinished">Sketcher edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher geometries</source>
       <translation>Geometrie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher constraints</source>
       <translation>Vincoli</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher tools</source>
       <translation>Strumenti</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher B-spline tools</source>
       <translation>Strumenti Sketcher B-spline</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher virtual space</source>
       <translation>Spazio virtuale dello Sketcher</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>Sketcher edit tools</source>
+      <translation type="unfinished">Sketcher edit tools</translation>
     </message>
   </context>
   <context>
@@ -5980,7 +5989,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid settings</source>
-      <translation type="unfinished">Grid settings</translation>
+      <translation>Impostazioni griglia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
@@ -5990,12 +5999,12 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
       <source>Automatically adapt grid spacing based on the viewer dimensions.</source>
-      <translation type="unfinished">Automatically adapt grid spacing based on the viewer dimensions.</translation>
+      <translation>Adatta automaticamente la spaziatura della griglia in base alle dimensioni del visualizzatore.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <translation>Spaziatura automatica griglia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="73"/>
@@ -6006,45 +6015,45 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.
-If 'Grid Auto Spacing' is enabled, will be used as base value.</translation>
+      <translation>Distanza tra due righe successive della griglia.
+Se la 'Spaziatura automatica della griglia' è abilitata, verrà usato come valore base.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="115"/>
       <source>Pixel size threshold</source>
-      <translation type="unfinished">Pixel size threshold</translation>
+      <translation>Soglia dimensione pixel</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="125"/>
       <source>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
 The grid spacing change if it becomes smaller than this number of pixel.</source>
-      <translation type="unfinished">While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
-The grid spacing change if it becomes smaller than this number of pixel.</translation>
+      <translation>Durante l'utilizzo della 'Spaziatura automatica della griglia' questo imposta una soglia in pixel alla spaziatura della griglia.
+La spaziatura della griglia cambia se diventa più piccola di questo numero di pixel.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="151"/>
       <source>Grid display</source>
-      <translation type="unfinished">Grid display</translation>
+      <translation>Visualizzazione griglia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>Linee di griglia secondarie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>Linee principali della griglia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>Linea principale della griglia ogni:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>Ogni N linee ci sarà una linea principale. Impostare a 1 per disabilitare le linee principali.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
@@ -6077,35 +6086,35 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="323"/>
       <source>Line pattern used for grid division.</source>
-      <translation type="unfinished">Line pattern used for grid division.</translation>
+      <translation>Modello di linea utilizzato per le linee della griglia.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="343"/>
       <source>Distance between two subsequent division lines</source>
-      <translation type="unfinished">Distance between two subsequent division lines</translation>
+      <translation>Distanza tra due linee successive della griglia</translation>
     </message>
   </context>
   <context>
     <name>GridSpaceAction</name>
     <message>
       <location filename="../../Command.cpp" line="1118"/>
-      <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <source>Grid auto spacing</source>
+      <translation type="unfinished">Grid auto spacing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
       <source>Resize grid automatically depending on zoom.</source>
-      <translation type="unfinished">Resize grid automatically depending on zoom.</translation>
+      <translation>Ridimensiona automaticamente la griglia a seconda dello zoom.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1122"/>
       <source>Spacing</source>
-      <translation type="unfinished">Spacing</translation>
+      <translation>Spaziatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
-      <source>Distance between two subsequent grid lines</source>
-      <translation>Distanza tra due linee successive della griglia</translation>
+      <source>Distance between two subsequent grid lines.</source>
+      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
     </message>
   </context>
   <context>
@@ -6113,54 +6122,54 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../../App/SketchObject.cpp" line="327"/>
       <source>The Sketch has malformed constraints!</source>
-      <translation type="unfinished">The Sketch has malformed constraints!</translation>
+      <translation>Lo schizzo contiene vincoli malformati!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="333"/>
       <source>The Sketch has partially redundant constraints!</source>
-      <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
+      <translation>Lo schizzo contiene vincoli parzialmente ridondanti!</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="8962"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
+      <translation>Le parabole sono state convertite. I file convertiti non si apriranno nelle versioni precedenti di FreeCAD!!
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>Errore</translation>
     </message>
@@ -6180,6 +6189,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation>Il vincolo ha informazioni sull'indice non valide ed è malformato.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6187,9 +6199,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6230,13 +6239,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="206"/>
       <source>Error creating B-spline pole</source>
-      <translation type="unfinished">Error creating B-spline pole</translation>
+      <translation>Errore nella creazione del polo B-Spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <source>Error creating B-spline</source>
-      <translation type="unfinished">Error creating B-spline</translation>
+      <translation>Errore nella creazione della Bspline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="306"/>
@@ -6331,37 +6340,11 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation>Impossibile tagliare il bordo</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation>Errore di valore</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateBSplineByInterpolation</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="979"/>
-      <source>Interpolate B-spline</source>
-      <translation type="unfinished">Interpolate B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="980"/>
-      <source>Create a B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by interpolation, i.e. via knots in the sketch.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1011"/>
-      <source>Interpolate periodic B-spline</source>
-      <translation type="unfinished">Interpolate periodic B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1013"/>
-      <source>Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by interpolation, i.e. via knots in the sketch.</translation>
     </message>
   </context>
   <context>
@@ -6369,13 +6352,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1173"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-spline da nodi</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1174"/>
       <location filename="../../CommandCreateGeo.cpp" line="1176"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Crea una B-spline con i nodi</translation>
     </message>
   </context>
   <context>
@@ -6383,13 +6366,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1179"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>B-spline periodica dai nodi</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <location filename="../../CommandCreateGeo.cpp" line="1183"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Crea una B-spline periodica dai nodi</translation>
     </message>
   </context>
   <context>
@@ -6397,12 +6380,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1360"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Aggancia agli oggetti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1361"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>I nuovi punti si agganciano all'oggetto attualmente preselezionato. Si aggancerà anche al punto medio delle linee e degli archi.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1365"/>
@@ -6413,18 +6396,18 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../Command.cpp" line="1367"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+      <translation>I nuovi punti si agganciano alla linea della griglia più vicina.
+I punti devono essere impostati più vicino di un quinto della spaziatura della griglia per essere agganciati.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1371"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Angolo di aggancio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1373"/>
-      <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle start from the East axis (horizontal right)</translation>
+      <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
+      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
     </message>
   </context>
   <context>
@@ -6434,7 +6417,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../Command.cpp" line="1615"/>
       <location filename="../../Command.cpp" line="1622"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Geometria normale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1609"/>
@@ -6448,7 +6431,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../Command.cpp" line="1617"/>
       <location filename="../../Command.cpp" line="1624"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Geometria esterna</translation>
     </message>
   </context>
   <context>
@@ -6456,12 +6439,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1734"/>
       <source>Configure rendering order</source>
-      <translation type="unfinished">Configure rendering order</translation>
+      <translation>Configura l'ordine di rendering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1735"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation type="unfinished">Reorder the items in the list to configure rendering order.</translation>
+      <translation>Riordina gli elementi nella lista per configurare l'ordine di rendering.</translation>
     </message>
   </context>
   <context>
@@ -6473,8 +6456,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../Command.cpp" line="1220"/>
-      <source>Toggle the grid in the sketch. In the menu you can change grid settings</source>
-      <translation>Attiva/disattiva la griglia nello schizzo. Nel menu puoi modificare le impostazioni della griglia</translation>
+      <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
+      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
     </message>
   </context>
   <context>
@@ -6486,8 +6469,34 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
-      <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings</source>
-      <translation>Attiva/disattiva tutte le funzionalità di snap. Nel menu puoi attivare 'Aggancia alla griglia' e 'Aggancia agli oggetti' individualmente, e modificare ulteriori impostazioni di snap</translation>
+      <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
+      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateBSplineByInterpolation</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="979"/>
+      <source>Create B-spline by knots</source>
+      <translation type="unfinished">Create B-spline by knots</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="980"/>
+      <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
+      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1011"/>
+      <source>Create periodic B-spline by knots</source>
+      <translation type="unfinished">Create periodic B-spline by knots</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1013"/>
+      <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
+      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
     </message>
   </context>
 </TS>
