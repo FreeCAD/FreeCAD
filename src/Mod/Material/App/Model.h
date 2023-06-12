@@ -62,20 +62,20 @@ public:
     virtual ~ModelProperty();
 
     const std::string &getName() const {  return _name; }
-    const std::string &getType() const {  return _type; }
+    const std::string &getPropertyType() const {  return _propertyType; }
     const std::string &getUnits() const {  return _units; }
     const std::string &getURL() const {  return _url; }
     const std::string &getDescription() const {  return _description; }
 
     void setName(const std::string& name) { _name = name; }
-    void setType(const std::string& type) { _type = type; }
+    virtual void setPropertyType(const std::string& type) { _propertyType = type; }
     void setUnits(const std::string& units) { _units = units; }
     void setURL(const std::string& url) { _url = url; }
     void setDescription(const std::string& description) { _description = description; }
 
 private:
     std::string _name;
-    std::string _type;
+    std::string _propertyType;
     std::string _units;
     std::string _url;
     std::string _description;
@@ -93,28 +93,37 @@ public:
     enum ValueType {
         None = 0,
         String = 1,
-        Int = 2,
-        Float = 3,
-        Quantity = 4,
-        // Distribution = 5,
-        // List = 6,
-        // Array = 7,
-        // Table = 8,
-        // Color = 9,
-        // Image = 10,
-        // ImageRef = 11
+        Boolean = 2,
+        Int = 3,
+        Float = 4,
+        Quantity = 5,
+        Distribution = 6,
+        List = 7,
+        Array = 8,
+        Table = 9,
+        Color = 10,
+        Image = 11,
+        File = 12,
+        URL = 13
     };
 
     ValueType getType(void) const { return _valueType; }
 
     const std::string& getModelUUID(void) const;
     const std::string& getString(void) const;
-    double getFloat(void) const;
+    bool getBoolean(void) const;
     int getInt(void) const;
+    double getFloat(void) const;
     const Base::Quantity& getQuantity(void) const;
+    const std::string& getURL(void) const;
 
     void setModelUUID(const std::string& uuid);
+    void setPropertyType(const std::string& type) override;
+    void setValue(const std::string& value);
     void setString(const std::string& value);
+    void setBoolean(bool value);
+    void setBoolean(int value);
+    void setBoolean(const std::string& value);
     void setInt(int value);
     void setInt(const std::string& value);
     void setFloat(double value);
@@ -122,13 +131,19 @@ public:
     void setQuantity(const Base::Quantity& value);
     void setQuantity(double value, const std::string& units);
     void setQuantity(const std::string& value);
+    void setURL(const std::string& value);
+
+protected:
+    void setType(const std::string& type);
+    void setType(ValueType type) { _valueType = type; }
 
 private:
     std::string _modelUUID;
     ValueType _valueType;
     std::string _valueString;
-    double _valueFloat;
+    bool _valueBoolean;
     int _valueInt;
+    double _valueFloat;
     Base::Quantity _valueQuantity;
 };
 

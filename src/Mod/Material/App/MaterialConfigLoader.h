@@ -47,6 +47,12 @@ private:
         return fcmat.value(QString::fromStdString(name), QString::fromStdString(default)).toString().toStdString();
     }
 
+    static void setProperty(Material *finalModel, const std::string &name, const std::string &value)
+    {
+        if (value.length() > 0)
+            finalModel->setProperty(name, value);
+    }
+
     static std::string getAuthorAndLicense(const std::string& path);
     static void addMechanical(const QSettings &fcmat, Material *finalModel);
     static void addFluid(const QSettings &fcmat, Material *finalModel);

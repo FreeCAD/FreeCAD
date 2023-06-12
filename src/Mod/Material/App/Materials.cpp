@@ -114,4 +114,25 @@ void Material::addModel(const std::string &uuid)
 }
 
 
+void Material::setProperty(const std::string& name, const std::string &value)
+{
+    _properties[name].setValue(value); // may not be a string type
+}
+
+void Material::setProperty(const std::string& name, int value)
+{
+    _properties[name].setInt(value);
+}
+
+void Material::setProperty(const std::string& name, double value)
+{
+    _properties[name].setFloat(value);
+}
+
+void Material::setProperty(const std::string& name, const Base::Quantity value)
+{
+    _properties[name].setQuantity(value);
+}
+
+
 #include "moc_Materials.cpp"

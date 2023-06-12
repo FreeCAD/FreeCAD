@@ -41,7 +41,7 @@ std::string ModelPropertyPy::representation() const
     str << "Property [Name=(";
     str << ptr->getName();
     str << "), Type=(";
-    str << ptr->getType();
+    str << ptr->getPropertyType();
     str << "), Units=(";
     str << ptr->getUnits();
     str << "), URL=(";
@@ -72,7 +72,7 @@ Py::String ModelPropertyPy::getName() const
 
 Py::String ModelPropertyPy::getType() const
 {
-    return Py::String(getModelPropertyPtr()->getType());
+    return Py::String(getModelPropertyPtr()->getPropertyType());
 }
 
 Py::String ModelPropertyPy::getUnits() const

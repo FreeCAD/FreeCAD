@@ -51,7 +51,7 @@ ModelProperty::ModelProperty()
 ModelProperty::ModelProperty(const std::string& name, const std::string& type,
                         const std::string& units, const std::string& url,
                         const std::string& description):
-    _name(name), _type(type), _units(units), _url(url), _description(description)
+    _name(name), _propertyType(type), _units(units), _url(url), _description(description)
 {
 
 }
@@ -65,13 +65,13 @@ TYPESYSTEM_SOURCE(Materials::ModelValueProperty, Materials::ModelProperty)
 
 ModelValueProperty::ModelValueProperty()
 {
-
+    _valueType = ValueType::None;
 }
 
 ModelValueProperty::ModelValueProperty(const ModelProperty &property) :
     ModelProperty(property)
 {
-
+    setType(getPropertyType());
 }
 
 ModelValueProperty::~ModelValueProperty()
@@ -84,52 +84,137 @@ void ModelValueProperty::setModelUUID(const std::string& uuid)
     _modelUUID = uuid;
 }
 
+void ModelValueProperty::setPropertyType(const std::string& type)
+{
+    ModelProperty::setPropertyType(type);
+    setType(type);
+}
+
+void ModelValueProperty::setType(const std::string& type)
+{
+    if (type == "String")
+    {
+       setType(ValueType::String);
+    } else if (type == "Boolean")
+    {
+       setType(ValueType::Boolean);
+    } else if (type == "Int")
+    {
+       setType(ValueType::Int);
+    } else if (type == "Float")
+    {
+       setType(ValueType::Float);
+    } else if (type == "URL")
+    {
+       setType(ValueType::URL);
+    } else if (type == "Quantity")
+    {
+       setType(ValueType::String);
+    } else if (type == "Color")
+    {
+       setType(ValueType::String);
+    } else if (type == "File")
+    {
+       setType(ValueType::String);
+    } else if (type == "Image")
+    {
+       setType(ValueType::String);
+    } else {
+        // Error. Throw someting
+       setType(ValueType::None);
+    }
+}
+
+void ModelValueProperty::setValue(const std::string& value)
+{
+    if (_valueType == ValueType::Boolean)
+       setBoolean(value);
+    else if (_valueType == ValueType::Int)
+       setInt(value);
+    else if (_valueType == ValueType::Float)
+       setFloat(value);
+    else if (_valueType == ValueType::URL)
+       setURL(value);
+    else
+       setString(value);
+}
+
 void ModelValueProperty::setString(const std::string& value)
 {
-    _valueType = ValueType::String;
+    // _valueType = ValueType::String;
     _valueString = value;
+}
+
+void ModelValueProperty::setBoolean(bool value)
+{
+    // _valueType = ValueType::Boolean;
+    _valueBoolean = value;
+}
+
+void ModelValueProperty::setBoolean(int value)
+{
+    // _valueType = ValueType::Boolean;
+    _valueBoolean = (value != 0);
+}
+
+void ModelValueProperty::setBoolean(const std::string& value)
+{
+    // _valueType = ValueType::Boolean;
+    if ((value == "true") || (value == "True"))
+       _valueBoolean = true;
+    else if ((value == "false") || (value == "False"))
+       _valueBoolean = true;
+    else
+        _valueBoolean = std::stoi(value);
 }
 
 void ModelValueProperty::setInt(int value)
 {
-    _valueType = ValueType::Int;
+    // _valueType = ValueType::Int;
     _valueInt = value;
 }
 
 void ModelValueProperty::setInt(const std::string& value)
 {
-    _valueType = ValueType::Int;
+    // _valueType = ValueType::Int;
     _valueInt = std::stoi(value);
 }
 
 void ModelValueProperty::setFloat(double value)
 {
-    _valueType = ValueType::Float;
+    // _valueType = ValueType::Float;
     _valueFloat = value;
 }
 
 void ModelValueProperty::setFloat(const std::string& value)
 {
-    _valueType = ValueType::Float;
+    // _valueType = ValueType::Float;
     _valueFloat = std::stod(value);
 }
 
 void ModelValueProperty::setQuantity(const Base::Quantity& value)
 {
-    _valueType = ValueType::Quantity;
+    // _valueType = ValueType::Quantity;
     _valueQuantity = value;
 }
 
 void ModelValueProperty::setQuantity(double value, const std::string& units)
 {
-    _valueType = ValueType::Quantity;
-    _valueQuantity = Base::Quantity(value, QString::fromStdString(units));
+    // _valueType = ValueType::Quantity;
+    // _valueQuantity = Base::Quantity(value, QString::fromStdString(units));
+    _valueString = value;
 }
 
 void ModelValueProperty::setQuantity(const std::string& value)
 {
     _valueType = ValueType::Quantity;
     // _valueQuantity = value;
+}
+
+void ModelValueProperty::setURL(const std::string& value)
+{
+    // _valueType = ValueType::URL;
+    _valueString = value; // Different type but same representation
 }
 
 

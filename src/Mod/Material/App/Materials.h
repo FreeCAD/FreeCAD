@@ -126,6 +126,11 @@ public:
     void removeTag(const std::string& tag) {}
     void addModel(const std::string& uuid);
 
+    void setProperty(const std::string& name, const std::string &value);
+    void setProperty(const std::string& name, int value);
+    void setProperty(const std::string& name, double value);
+    void setProperty(const std::string& name, const Base::Quantity value);
+
 private:
     MaterialLibrary _library;
     QDir _directory;
