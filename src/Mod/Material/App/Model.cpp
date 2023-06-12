@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <string>
 #include "Model.h"
 
 
@@ -59,6 +60,78 @@ ModelProperty::~ModelProperty()
 {
 
 }
+
+TYPESYSTEM_SOURCE(Materials::ModelValueProperty, Materials::ModelProperty)
+
+ModelValueProperty::ModelValueProperty()
+{
+
+}
+
+ModelValueProperty::ModelValueProperty(const ModelProperty &property) :
+    ModelProperty(property)
+{
+
+}
+
+ModelValueProperty::~ModelValueProperty()
+{
+
+}
+
+void ModelValueProperty::setModelUUID(const std::string& uuid)
+{
+    _modelUUID = uuid;
+}
+
+void ModelValueProperty::setString(const std::string& value)
+{
+    _valueType = ValueType::String;
+    _valueString = value;
+}
+
+void ModelValueProperty::setInt(int value)
+{
+    _valueType = ValueType::Int;
+    _valueInt = value;
+}
+
+void ModelValueProperty::setInt(const std::string& value)
+{
+    _valueType = ValueType::Int;
+    _valueInt = std::stoi(value);
+}
+
+void ModelValueProperty::setFloat(double value)
+{
+    _valueType = ValueType::Float;
+    _valueFloat = value;
+}
+
+void ModelValueProperty::setFloat(const std::string& value)
+{
+    _valueType = ValueType::Float;
+    _valueFloat = std::stod(value);
+}
+
+void ModelValueProperty::setQuantity(const Base::Quantity& value)
+{
+    _valueType = ValueType::Quantity;
+    _valueQuantity = value;
+}
+
+void ModelValueProperty::setQuantity(double value, const std::string& units)
+{
+    _valueType = ValueType::Quantity;
+    _valueQuantity = Base::Quantity(value, QString::fromStdString(units));
+}
+
+void ModelValueProperty::setQuantity(const std::string& value)
+{
+    _valueType = ValueType::Quantity;
+    // _valueQuantity = value;
+}
+
 
 TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 

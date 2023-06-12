@@ -27,6 +27,7 @@
 #include <App/Application.h>
 
 #include "Materials.h"
+#include "ModelManager.h"
 
 
 using namespace Materials;
@@ -91,5 +92,26 @@ Material::~Material()
 {
     // no need to delete child widgets, Qt does it all for us
 }
+
+void Material::addModel(const std::string &uuid)
+{
+    ModelManager manager;
+
+    const Model &model = manager.getModel(uuid);
+
+    if (&model) {
+        _modelUuids.push_back(uuid);
+
+        for (auto it = model.begin(); it != model.end(); it++)
+        {
+            std::string propertyName = it->first;
+            ModelProperty property = it->second;
+
+            // ModelValueProperty* valuePtr = new ModelValueProperty(property);
+            _properties[propertyName] = ModelValueProperty(property);
+        }
+    }
+}
+
 
 #include "moc_Materials.cpp"

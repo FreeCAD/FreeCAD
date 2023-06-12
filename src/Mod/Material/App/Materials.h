@@ -27,6 +27,8 @@
 #include <QDir>
 #include <QString>
 
+#include "model.h"
+
 namespace fs = boost::filesystem;
 
 namespace Materials {
@@ -122,7 +124,7 @@ public:
     void setReference(const std::string& reference) { _reference = reference; }
     void addTag(const std::string& tag) {}
     void removeTag(const std::string& tag) {}
-    void addModel(const std::string &uuid) { _modelUuids.push_back(uuid); }
+    void addModel(const std::string& uuid);
 
 private:
     MaterialLibrary _library;
@@ -137,8 +139,8 @@ private:
     std::string _reference;
     std::list<std::string> _tags;
     std::vector<std::string> _modelUuids;
-    // std::map<std::string, ModelProperty> _properties; - TODO: Data types yet to be defined
-    // std::map<std::string, ModelProperty> _appearanceProperties;
+    std::map<std::string, ModelValueProperty> _properties;
+    std::map<std::string, ModelValueProperty> _appearanceProperties;
 
 };
 

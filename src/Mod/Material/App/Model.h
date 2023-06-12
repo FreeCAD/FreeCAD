@@ -24,6 +24,7 @@
 #define MATERIAL_MODEL_H
 
 #include <Base/BaseClass.h>
+#include <Base/Quantity.h>
 #include <QDir>
 #include <QString>
 
@@ -78,6 +79,57 @@ private:
     std::string _units;
     std::string _url;
     std::string _description;
+};
+
+class MaterialsExport ModelValueProperty : public ModelProperty
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    explicit ModelValueProperty();
+    explicit ModelValueProperty(const ModelProperty &property);
+    virtual ~ModelValueProperty();
+
+    enum ValueType {
+        None = 0,
+        String = 1,
+        Int = 2,
+        Float = 3,
+        Quantity = 4,
+        // Distribution = 5,
+        // List = 6,
+        // Array = 7,
+        // Table = 8,
+        // Color = 9,
+        // Image = 10,
+        // ImageRef = 11
+    };
+
+    ValueType getType(void) const { return _valueType; }
+
+    const std::string& getModelUUID(void) const;
+    const std::string& getString(void) const;
+    double getFloat(void) const;
+    int getInt(void) const;
+    const Base::Quantity& getQuantity(void) const;
+
+    void setModelUUID(const std::string& uuid);
+    void setString(const std::string& value);
+    void setInt(int value);
+    void setInt(const std::string& value);
+    void setFloat(double value);
+    void setFloat(const std::string& value);
+    void setQuantity(const Base::Quantity& value);
+    void setQuantity(double value, const std::string& units);
+    void setQuantity(const std::string& value);
+
+private:
+    std::string _modelUUID;
+    ValueType _valueType;
+    std::string _valueString;
+    double _valueFloat;
+    int _valueInt;
+    Base::Quantity _valueQuantity;
 };
 
 class MaterialsExport Model : public Base::BaseClass
