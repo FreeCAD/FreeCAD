@@ -25,6 +25,7 @@
 #endif
 
 #include <QString>
+#include <QStringList>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -169,7 +170,17 @@ void MaterialsEditor::createPropertyTree()
     auto model = new QStandardItemModel();
     tree->setModel(model);
 
-    tree->setHeaderHidden(true);
+    QStringList headers;
+    headers.append(QString::fromStdString("Property"));
+    headers.append(QString::fromStdString("Value"));
+    headers.append(QString::fromStdString("Type"));
+    model->setHorizontalHeaderLabels(headers);
+
+    tree->setColumnWidth(0, 250);
+    tree->setColumnWidth(1, 250);
+    tree->setColumnHidden(2, true);
+
+    tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
     // tree->setItemDelegate(MaterialsDelegate())
 }
@@ -239,6 +250,16 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
     QStandardItemModel *treeModel = static_cast<QStandardItemModel *>(tree->model());
     treeModel->clear();
 
+    QStringList headers;
+    headers.append(QString::fromStdString("Property"));
+    headers.append(QString::fromStdString("Value"));
+    headers.append(QString::fromStdString("Type"));
+    treeModel->setHorizontalHeaderLabels(headers);
+
+    tree->setColumnWidth(0, 250);
+    tree->setColumnWidth(1, 250);
+    tree->setColumnHidden(2, true);
+
     const std::vector<std::string> &models = card.getModels();
     if (&models) {
         for (auto it = models.begin(); it != models.end(); it++)
@@ -252,9 +273,20 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
             addExpanded(tree, treeModel, modelRoot);
             for (auto itp = model.begin(); itp != model.end(); itp++)
             {
+                QList<QStandardItem*> items;
+
                 std::string key = itp->first;
                 auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                addExpanded(tree, modelRoot, propertyItem);
+                propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                items.append(propertyItem);
+
+                auto valueItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(key)));
+                valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                items.append(valueItem);
+
+                // addExpanded(tree, modelRoot, propertyItem);
+                modelRoot->appendRow(items);
+                tree->setExpanded(modelRoot->index(), true);
             }
         }
     }

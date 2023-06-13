@@ -110,6 +110,7 @@ public:
     ValueType getType(void) const { return _valueType; }
 
     const std::string& getModelUUID(void) const;
+    const std::string getValue(void) const;
     const std::string& getString(void) const;
     bool getBoolean(void) const;
     int getInt(void) const;

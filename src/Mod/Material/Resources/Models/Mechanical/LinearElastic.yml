@@ -47,7 +47,7 @@ Model:
     URL: 'https://en.wikipedia.org/wiki/Fracture_toughness'
     Description: "Unit MPa * m^0.5 is not possible ATM in FreeCAD thus String. Keep in mind the unit is fixed MPa * m^0.5. https://github.com/FreeCAD/FreeCAD/pull/2156"
   UltimateStrain:
-    Type: 'Float'
+    Type: 'Quantity'
     Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
     Description: " "

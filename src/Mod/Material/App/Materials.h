@@ -131,6 +131,8 @@ public:
     void setProperty(const std::string& name, double value);
     void setProperty(const std::string& name, const Base::Quantity value);
 
+    const std::string getPropertyValue(const std::string &name) const;
+
 private:
     MaterialLibrary _library;
     QDir _directory;

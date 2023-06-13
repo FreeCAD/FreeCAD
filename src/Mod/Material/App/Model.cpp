@@ -84,6 +84,26 @@ void ModelValueProperty::setModelUUID(const std::string& uuid)
     _modelUUID = uuid;
 }
 
+const std::string ModelValueProperty::getValue(void) const
+{
+    switch (_valueType){
+        case ValueType::String:
+        case ValueType::URL:
+            return _valueString;
+
+        case ValueType::Boolean:
+            return (_valueBoolean) ? "true" : "false";
+
+        case ValueType::Int:
+            return std::to_string(_valueInt);
+
+        case ValueType::Float:
+            return std::to_string(_valueFloat);
+    }
+
+    return "";
+}
+
 void ModelValueProperty::setPropertyType(const std::string& type)
 {
     ModelProperty::setPropertyType(type);

@@ -296,12 +296,12 @@ void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *final
     if (useLinearElastic)
     {
         finalModel->addModel(ModelUUID_Mechanical_LinearElastic);
-    } else if (useIso)
+    } else 
     {
-        finalModel->addModel(ModelUUID_Mechanical_IsotropicLinearElastic);
-    } else if (useDensity)
-    {
-        finalModel->addModel(ModelUUID_Mechanical_Density);
+        if (useIso)
+            finalModel->addModel(ModelUUID_Mechanical_IsotropicLinearElastic);
+        if (useDensity)
+            finalModel->addModel(ModelUUID_Mechanical_Density);
     }
 
     // Now add the data

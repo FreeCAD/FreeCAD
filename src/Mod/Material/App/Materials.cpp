@@ -134,5 +134,10 @@ void Material::setProperty(const std::string& name, const Base::Quantity value)
     _properties[name].setQuantity(value);
 }
 
+const std::string Material::getPropertyValue(const std::string &name) const
+{
+    // const ModelValueProperty &property = _properties.at(name);
+    return _properties.at(name).getValue();
+}
 
 #include "moc_Materials.cpp"

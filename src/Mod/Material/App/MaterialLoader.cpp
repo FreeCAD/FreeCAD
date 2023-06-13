@@ -97,42 +97,28 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
         }
     }
 
-    ModelManager modelManager;
     // Add material models
     if (yamlModel["Models"]) {
         auto models = yamlModel["Models"];
         for(auto it = models.begin(); it != models.end(); it++) {
             std::string modelName = (it->first).as<std::string>();
-            Base::Console().Log("Model: '%s'\n", modelName.c_str());
-            MaterialLoader::showYaml(it->second);
+
+            // Add the model uuid
             auto modelNode = models[modelName];
             std::string modelUUID = modelNode["UUID"].as<std::string>();
-            auto materialModel = modelManager.getModel(modelUUID);
-            Base::Console().Log("\tModel: '%s', UUID '%s'\n", materialModel.getName().c_str(), materialModel.getUUID().c_str());
-
             finalModel->addModel(modelUUID);
+
+            // Add the property values
+            auto properties = yamlModel["Models"][modelName];
+            for (auto itp = properties.begin(); itp != properties.end(); itp++)
+            {
+                std::string propertyName = (itp->first).as<std::string>();
+                std::string propertyValue = (itp->second).as<std::string>();
+
+                finalModel->setProperty(propertyName, propertyValue);
+            }
         }
     }
-
-    // // Add property list
-    // auto yamlProperties = yamlModel[base];
-    // for(auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
-    //     std::string propName = it->first.as<std::string>();
-    //     if (exclude.count(propName) == 0) {
-    //         // showYaml(it->second);
-    //         auto yamlProp = yamlProperties[propName];
-    //         auto propType = yamlProp["Type"].as<std::string>();
-    //         auto propUnits = yamlProp["Units"].as<std::string>();
-    //         auto propURL = yamlProp["URL"].as<std::string>();
-    //         auto propDescription = yamlProp["Description"].as<std::string>();
-
-    //         ModelProperty property(propName, propType,
-    //                        propUnits, propURL,
-    //                        propDescription);
-
-    //         finalModel->addProperty(property);
-    //     }
-    // }
 
     std::string path = directory.absolutePath().toStdString();
     Base::Console().Log("\tPath '%s'\n", path.c_str());
