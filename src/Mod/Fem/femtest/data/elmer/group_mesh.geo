@@ -4,7 +4,7 @@
 General.NumThreads = X;
 
 // open brep geometry
-Merge "/tmp/tmp0TVZbM.brep";
+Merge "tmp0TVZbM.brep";
 
 // group data
 Physical Surface("Face1") = {1};
@@ -43,7 +43,7 @@ Coherence Mesh; // Remove duplicate vertices
 // save
 // Ignore Physical definitions and save all elements;
 Mesh.SaveAll = 1;
-Save "/tmp/tmpjVhNNb.unv";
+Save "tmpjVhNNb.unv";
 
 
 // **********************************************************************
