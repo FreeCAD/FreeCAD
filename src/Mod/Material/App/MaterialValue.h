@@ -23,6 +23,7 @@
 #ifndef MATERIAL_MATERIALVALUE_H
 #define MATERIAL_MATERIALVALUE_H
 
+#include <string>
 // #include <Base/BaseClass.h>
 
 // namespace fs = boost::filesystem;

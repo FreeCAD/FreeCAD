@@ -42,8 +42,8 @@ ModelManager::ModelManager()
     // TODO: Add a mutex or similar
     if (_modelMap == nullptr) {
         _modelMap = new std::map<std::string, Model*>();
-    if (_libraryList == nullptr)
-        _libraryList = new std::list<ModelLibrary*>();
+        if (_libraryList == nullptr)
+            _libraryList = new std::list<ModelLibrary*>();
 
         // Load the libraries
         ModelLoader loader(_modelMap, _libraryList);

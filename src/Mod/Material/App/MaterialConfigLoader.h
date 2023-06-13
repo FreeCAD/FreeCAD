@@ -42,9 +42,9 @@ public:
     static Material *getMaterialFromPath(const MaterialLibrary &library, const std::string &path);
 
 private:
-    static std::string value(const QSettings &fcmat, const std::string &name, const std::string &default)
+    static std::string value(const QSettings &fcmat, const std::string &name, const std::string &defaultValue)
     {
-        return fcmat.value(QString::fromStdString(name), QString::fromStdString(default)).toString().toStdString();
+        return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue)).toString().toStdString();
     }
 
     static void setProperty(Material *finalModel, const std::string &name, const std::string &value)
