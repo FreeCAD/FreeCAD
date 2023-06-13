@@ -315,7 +315,7 @@ public:
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),

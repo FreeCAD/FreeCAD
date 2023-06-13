@@ -3395,17 +3395,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="92"/>
@@ -4047,7 +4047,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -5710,8 +5710,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
@@ -5803,20 +5803,20 @@ Voulez-vous continuer ?</translation>
       <translation>Aucune référence sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>

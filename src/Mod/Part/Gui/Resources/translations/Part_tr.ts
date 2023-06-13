@@ -5687,8 +5687,8 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1'i düzenle</translation>
     </message>
@@ -5780,20 +5780,20 @@ Devam etmek istiyor musun?</translation>
       <translation>Seçilen referans yok</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Kenar</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
