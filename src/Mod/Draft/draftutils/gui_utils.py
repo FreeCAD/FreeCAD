@@ -123,42 +123,40 @@ def autogroup(obj):
                 return
 
     # autogroup code
+    active_group = None
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
         if active_group:
-            found = False
-            for o in active_group.Group:
-                if o.Name == obj.Name:
-                    found = True
-            if not found:
-                gr = active_group.Group
+            gr = active_group.Group
+            if not obj in gr:
                 gr.append(obj)
                 active_group.Group = gr
 
-    else:
-
-        if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
-            # NativeIFC handling
-            try:
-                import ifc_tools
-                parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
+        # NativeIFC handling
+        try:
+            import ifc_tools
+            parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+            if parent != active_group:
                 ifc_tools.aggregate(obj, parent)
-            except:
-                pass
+        except:
+            pass
 
-        elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
-            # add object to active Arch Container
-            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+        # add object to active Arch Container
+        active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        if active_arch_obj != active_group:
             if obj in active_arch_obj.InListRecursive:
                 # do not autogroup if obj points to active_arch_obj to prevent cyclic references
                 return
             active_arch_obj.addObject(obj)
 
-        elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
-            # add object to active part and change it's placement accordingly
-            # so object does not jump to different position, works with App::Link
-            # if not scaled. Modified accordingly to realthunder suggestions
-            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+        # add object to active part and change it's placement accordingly
+        # so object does not jump to different position, works with App::Link
+        # if not scaled. Modified accordingly to realthunder suggestions
+        active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+        if active_part != active_group:
             if obj in active_part.InListRecursive:
                 # do not autogroup if obj points to active_part to prevent cyclic references
                 return
