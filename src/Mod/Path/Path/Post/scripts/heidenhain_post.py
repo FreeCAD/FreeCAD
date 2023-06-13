@@ -344,88 +344,91 @@ def export(objectslist, filename, argstring):
         Cmd_Count = 0  # command line number
         LBLIZE_STAUS = False
 
-        # useful to get idea of object kind
-        if isinstance(obj.Proxy, Path.Tool.Controller.ToolController):
-            Object_Kind = "TOOL"
-            # like we go to change tool position
-            MACHINE_LAST_POSITION["X"] = 99999
-            MACHINE_LAST_POSITION["Y"] = 99999
-            MACHINE_LAST_POSITION["Z"] = 99999
-        elif isinstance(obj.Proxy, Path.Op.ProfileEdges.ObjectProfile):
-            Object_Kind = "PROFILE"
-            if LBLIZE_ACTIVE:
-                LBLIZE_STAUS = True
-        elif isinstance(obj.Proxy, Path.Op.MillFace.ObjectFace):
-            Object_Kind = "FACE"
-            if LBLIZE_ACTIVE:
-                LBLIZE_STAUS = True
-        elif isinstance(obj.Proxy, Path.Op.Helix.ObjectHelix):
-            Object_Kind = "HELIX"
+        if hasattr(obj, "Proxy"):
+            # useful to get idea of object kind
+            if isinstance(obj.Proxy, Path.Tool.Controller.ToolController):
+                Object_Kind = "TOOL"
+                # like we go to change tool position
+                MACHINE_LAST_POSITION["X"] = 99999
+                MACHINE_LAST_POSITION["Y"] = 99999
+                MACHINE_LAST_POSITION["Z"] = 99999
+            elif isinstance(obj.Proxy, Path.Op.ProfileEdges.ObjectProfile):
+                Object_Kind = "PROFILE"
+                if LBLIZE_ACTIVE:
+                    LBLIZE_STAUS = True
+            elif isinstance(obj.Proxy, Path.Op.MillFace.ObjectFace):
+                Object_Kind = "FACE"
+                if LBLIZE_ACTIVE:
+                    LBLIZE_STAUS = True
+            elif isinstance(obj.Proxy, Path.Op.Helix.ObjectHelix):
+                Object_Kind = "HELIX"
 
-        commands = PathUtils.getPathWithPlacement(obj).Commands
+            commands = PathUtils.getPathWithPlacement(obj).Commands
 
-        # If used compensated path, store, recompute and diff when asked
-        if hasattr(obj, "UseComp") and SOLVE_COMPENSATION_ACTIVE:
-            if obj.UseComp:
-                if hasattr(obj.Path, "Commands") and Object_Kind == "PROFILE":
-                    # Take a copy of compensated path
-                    STORED_COMPENSATED_OBJ = commands
-                # Find mill compensation
-                if hasattr(obj, "Side") and hasattr(obj, "Direction"):
-                    if obj.Side == "Outside" and obj.Direction == "CW":
-                        Compensation = "L"
-                    elif obj.Side == "Outside" and obj.Direction == "CCW":
-                        Compensation = "R"
-                    elif obj.Side != "Outside" and obj.Direction == "CW":
-                        Compensation = "R"
-                    else:
-                        Compensation = "L"
-                    # set obj.UseComp to false and recompute() to get uncompensated path
-                    obj.UseComp = False
-                    obj.recompute()
-                    commands = PathUtils.getPathWithPlacement(obj).Commands
-                    # small edges could be skipped and movements joints can add edges
-                    NameStr = ""
-                    if hasattr(obj, "Label"):
-                        NameStr = str(obj.Label)
-                    if len(commands) != len(STORED_COMPENSATED_OBJ):
-                        # not same number of edges
-                        obj.UseComp = True
+            # If used compensated path, store, recompute and diff when asked
+            if hasattr(obj, "UseComp") and SOLVE_COMPENSATION_ACTIVE:
+                if obj.UseComp:
+                    if hasattr(obj.Path, "Commands") and Object_Kind == "PROFILE":
+                        # Take a copy of compensated path
+                        STORED_COMPENSATED_OBJ = commands
+                    # Find mill compensation
+                    if hasattr(obj, "Side") and hasattr(obj, "Direction"):
+                        if obj.Side == "Outside" and obj.Direction == "CW":
+                            Compensation = "L"
+                        elif obj.Side == "Outside" and obj.Direction == "CCW":
+                            Compensation = "R"
+                        elif obj.Side != "Outside" and obj.Direction == "CW":
+                            Compensation = "R"
+                        else:
+                            Compensation = "L"
+                        # set obj.UseComp to false and recompute() to get uncompensated path
+                        obj.UseComp = False
                         obj.recompute()
                         commands = PathUtils.getPathWithPlacement(obj).Commands
-                        POSTGCODE.append("; MISSING EDGES UNABLE TO GET COMPENSATION")
-                        if not SKIP_WARNS:
-                            (
-                                PostUtils.editor(
-                                    "--solve-comp command ACTIVE\n\n"
-                                    + "UNABLE to solve "
-                                    + NameStr
-                                    + " compensation\n\n"
-                                    + "Some edges are missing\n"
-                                    + "try to change Join Type to Miter or Square\n"
-                                    + "try to use a smaller Tool Diameter\n"
-                                    + "Internal Path could have too small corners\n\n"
-                                    + "use --no-warns to not prompt this message"
-                                )
+                        # small edges could be skipped and movements joints can add edges
+                        NameStr = ""
+                        if hasattr(obj, "Label"):
+                            NameStr = str(obj.Label)
+                        if len(commands) != len(STORED_COMPENSATED_OBJ):
+                            # not same number of edges
+                            obj.UseComp = True
+                            obj.recompute()
+                            commands = PathUtils.getPathWithPlacement(obj).Commands
+                            POSTGCODE.append(
+                                "; MISSING EDGES UNABLE TO GET COMPENSATION"
                             )
-                    else:
-                        if not SKIP_WARNS:
-                            (
-                                PostUtils.editor(
-                                    "--solve-comp command ACTIVE\n\n"
-                                    + "BE CAREFUL with solved "
-                                    + NameStr
-                                    + " compensation\n\n"
-                                    + "USE AT YOUR OWN RISK\n"
-                                    + "Simulate it before use\n"
-                                    + "Offset Extra ignored use DR+ on TOOL CALL\n"
-                                    + "Path could be different and/or give tool radius errors\n\n"
-                                    + "use --no-warns to not prompt this message"
+                            if not SKIP_WARNS:
+                                (
+                                    PostUtils.editor(
+                                        "--solve-comp command ACTIVE\n\n"
+                                        + "UNABLE to solve "
+                                        + NameStr
+                                        + " compensation\n\n"
+                                        + "Some edges are missing\n"
+                                        + "try to change Join Type to Miter or Square\n"
+                                        + "try to use a smaller Tool Diameter\n"
+                                        + "Internal Path could have too small corners\n\n"
+                                        + "use --no-warns to not prompt this message"
+                                    )
                                 )
-                            )
-                        # we can try to solve compensation
-                        POSTGCODE.append("; COMPENSATION ACTIVE")
-                        COMPENSATION_DIFF_STATUS[0] = True
+                        else:
+                            if not SKIP_WARNS:
+                                (
+                                    PostUtils.editor(
+                                        "--solve-comp command ACTIVE\n\n"
+                                        + "BE CAREFUL with solved "
+                                        + NameStr
+                                        + " compensation\n\n"
+                                        + "USE AT YOUR OWN RISK\n"
+                                        + "Simulate it before use\n"
+                                        + "Offset Extra ignored use DR+ on TOOL CALL\n"
+                                        + "Path could be different and/or give tool radius errors\n\n"
+                                        + "use --no-warns to not prompt this message"
+                                    )
+                                )
+                            # we can try to solve compensation
+                            POSTGCODE.append("; COMPENSATION ACTIVE")
+                            COMPENSATION_DIFF_STATUS[0] = True
 
         for c in commands:
             Cmd_Count += 1
