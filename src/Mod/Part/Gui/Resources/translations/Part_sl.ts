@@ -4153,7 +4153,7 @@ združevalo v sestave (počasneje vendar z več podrobnostmi).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Največje odstopanje odvisno od očrtanega okvirja oblikovanca</translation>
+      <translation>Največje odstopanje odvisno od očrtnega kvadra oblikovanca</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
@@ -4358,22 +4358,22 @@ združevalo v sestave (počasneje vendar z več podrobnostmi).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="254"/>
       <source>Bounding box color</source>
-      <translation>Barva očrtanega okvirja</translation>
+      <translation>Barva očrtanega kvadra</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Barva očrtanega okvirja v 3D pogledu</translation>
+      <translation>Barva očrtnega kvadra v 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="287"/>
       <source>Bounding box font size</source>
-      <translation>Velikost pisave mejnega kvadra</translation>
+      <translation>Velikost pisave očrtnega kvadra</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="294"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>Velikost pisave mejnih kvadrov v 3D pogledu</translation>
+      <translation>Velikost pisave očrtnih kvadrov v 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="328"/>
@@ -5712,8 +5712,8 @@ v 3D pogledu za pot vlečenja.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -5805,20 +5805,20 @@ Ali želite nadaljevati?</translation>
       <translation>Noben sklic ni izbran</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Ploskev</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Rob</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>

@@ -425,7 +425,7 @@ public:
                         EditCurve[1].y,
                         geometryCreationMode == Construction ? "True" : "False");
                 }
-                catch (const Base::Exception& e) {
+                catch (const Base::Exception&) {
                     addedGeometry = false;
                     Gui::NotifyError(sketchgui,
                                      QT_TRANSLATE_NOOP("Notifications", "Error"),
@@ -455,7 +455,7 @@ public:
                         std::max(startAngle, endAngle),
                         geometryCreationMode == Construction ? "True" : "False");
                 }
-                catch (const Base::Exception& e) {
+                catch (const Base::Exception&) {
                     addedGeometry = false;
                     Gui::NotifyError(sketchgui,
                                      QT_TRANSLATE_NOOP("Notifications", "Error"),
