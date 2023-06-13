@@ -52,6 +52,11 @@ private:
         if (value.length() > 0)
             finalModel->setProperty(name, value);
     }
+    static void setAppearanceProperty(Material *finalModel, const std::string &name, const std::string &value)
+    {
+        if (value.length() > 0)
+            finalModel->setAppearanceProperty(name, value);
+    }
 
     static std::string getAuthorAndLicense(const std::string& path);
     static void addMechanical(const QSettings &fcmat, Material *finalModel);

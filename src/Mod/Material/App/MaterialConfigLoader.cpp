@@ -102,15 +102,15 @@ void MaterialConfigLoader::addVectorRendering(const QSettings &fcmat, Material *
 
     if (sectionFillPattern.length() + sectionLinewidth.length() + sectionColor.length() +
             viewColor.length() + viewFillPattern.length() + viewLinewidth.length() > 0)
-        finalModel->addModel(ModelUUID_Rendering_Vector);
+        finalModel->addAppearanceModel(ModelUUID_Rendering_Vector);
 
     // Now add the data
-    setProperty(finalModel, "SectionFillPattern", sectionFillPattern);
-    setProperty(finalModel, "SectionLinewidth", sectionLinewidth);
-    setProperty(finalModel, "SectionColor", sectionColor);
-    setProperty(finalModel, "ViewColor", viewColor);
-    setProperty(finalModel, "ViewFillPattern", viewFillPattern);
-    setProperty(finalModel, "ViewLinewidth", viewLinewidth);
+    setAppearanceProperty(finalModel, "SectionFillPattern", sectionFillPattern);
+    setAppearanceProperty(finalModel, "SectionLinewidth", sectionLinewidth);
+    setAppearanceProperty(finalModel, "SectionColor", sectionColor);
+    setAppearanceProperty(finalModel, "ViewColor", viewColor);
+    setAppearanceProperty(finalModel, "ViewFillPattern", viewFillPattern);
+    setAppearanceProperty(finalModel, "ViewLinewidth", viewLinewidth);
 }
 
 void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalModel)
@@ -140,28 +140,28 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
 
     if (useAdvanced)
     {
-        finalModel->addModel(ModelUUID_Rendering_Advanced);
+        finalModel->addAppearanceModel(ModelUUID_Rendering_Advanced);
     }
     else if (useTexture)
     {
-        finalModel->addModel(ModelUUID_Rendering_Texture);
+        finalModel->addAppearanceModel(ModelUUID_Rendering_Texture);
     }
     else if (useBasic)
     {
-        finalModel->addModel(ModelUUID_Rendering_Basic);
+        finalModel->addAppearanceModel(ModelUUID_Rendering_Basic);
     }   
 
     // Now add the data
-    setProperty(finalModel, "AmbientColor", ambientColor);
-    setProperty(finalModel, "DiffuseColor", diffuseColor);
-    setProperty(finalModel, "EmissiveColor", emissiveColor);
-    setProperty(finalModel, "Shininess", shininess);
-    setProperty(finalModel, "SpecularColor", specularColor);
-    setProperty(finalModel, "Transparency", transparency);
-    setProperty(finalModel, "TexturePath", texturePath);
-    setProperty(finalModel, "TextureScaling", textureScaling);
-    setProperty(finalModel, "FragmentShader", fragmentShader);
-    setProperty(finalModel, "VertexShader", vertexShader);
+    setAppearanceProperty(finalModel, "AmbientColor", ambientColor);
+    setAppearanceProperty(finalModel, "DiffuseColor", diffuseColor);
+    setAppearanceProperty(finalModel, "EmissiveColor", emissiveColor);
+    setAppearanceProperty(finalModel, "Shininess", shininess);
+    setAppearanceProperty(finalModel, "SpecularColor", specularColor);
+    setAppearanceProperty(finalModel, "Transparency", transparency);
+    setAppearanceProperty(finalModel, "TexturePath", texturePath);
+    setAppearanceProperty(finalModel, "TextureScaling", textureScaling);
+    setAppearanceProperty(finalModel, "FragmentShader", fragmentShader);
+    setAppearanceProperty(finalModel, "VertexShader", vertexShader);
 }
 
 void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel)

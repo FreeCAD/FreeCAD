@@ -110,6 +110,7 @@ public:
     const std::string &getReference() const { return _reference; }
     const std::list<std::string> &getTags() const { return _tags; }
     const std::vector<std::string> &getModels() const { return _modelUuids; }
+    const std::vector<std::string> &getAppearanceModels() const { return _appearanceModelUuids; }
 
     void setLibrary(const MaterialLibrary &library) { _library = library; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
@@ -125,13 +126,17 @@ public:
     void addTag(const std::string& tag) {}
     void removeTag(const std::string& tag) {}
     void addModel(const std::string& uuid);
+    void addAppearanceModel(const std::string& uuid);
 
     void setProperty(const std::string& name, const std::string &value);
     void setProperty(const std::string& name, int value);
     void setProperty(const std::string& name, double value);
     void setProperty(const std::string& name, const Base::Quantity value);
 
+    void setAppearanceProperty(const std::string& name, const std::string &value);
+
     const std::string getPropertyValue(const std::string &name) const;
+    const std::string getAppearancePropertyValue(const std::string &name) const;
 
 private:
     MaterialLibrary _library;
@@ -146,6 +151,7 @@ private:
     std::string _reference;
     std::list<std::string> _tags;
     std::vector<std::string> _modelUuids;
+    std::vector<std::string> _appearanceModelUuids;
     std::map<std::string, ModelValueProperty> _properties;
     std::map<std::string, ModelValueProperty> _appearanceProperties;
 

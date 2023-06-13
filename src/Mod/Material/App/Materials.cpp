@@ -107,8 +107,26 @@ void Material::addModel(const std::string &uuid)
             std::string propertyName = it->first;
             ModelProperty property = it->second;
 
-            // ModelValueProperty* valuePtr = new ModelValueProperty(property);
             _properties[propertyName] = ModelValueProperty(property);
+        }
+    }
+}
+
+void Material::addAppearanceModel(const std::string &uuid)
+{
+    ModelManager manager;
+
+    const Model &model = manager.getModel(uuid);
+
+    if (&model) {
+        _appearanceModelUuids.push_back(uuid);
+
+        for (auto it = model.begin(); it != model.end(); it++)
+        {
+            std::string propertyName = it->first;
+            ModelProperty property = it->second;
+
+            _appearanceProperties[propertyName] = ModelValueProperty(property);
         }
     }
 }
@@ -134,10 +152,21 @@ void Material::setProperty(const std::string& name, const Base::Quantity value)
     _properties[name].setQuantity(value);
 }
 
+void Material::setAppearanceProperty(const std::string& name, const std::string &value)
+{
+    _appearanceProperties[name].setValue(value); // may not be a string type
+}
+
 const std::string Material::getPropertyValue(const std::string &name) const
 {
     // const ModelValueProperty &property = _properties.at(name);
     return _properties.at(name).getValue();
+}
+
+const std::string Material::getAppearancePropertyValue(const std::string &name) const
+{
+    // const ModelValueProperty &property = _properties.at(name);
+    return _appearanceProperties.at(name).getValue();
 }
 
 #include "moc_Materials.cpp"

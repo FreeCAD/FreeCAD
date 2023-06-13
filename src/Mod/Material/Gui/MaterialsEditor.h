@@ -53,8 +53,10 @@ public:
     Materials::MaterialManager &getMaterialManager() { return _materialManager; }
     Materials::ModelManager &getModelManager() { return _modelManager; }
 
+    void clearCardAppearance(void);
     void clearCardProperties(void);
     void clearCard(void);
+    void updateCardAppearance(const Materials::Material& card);
     void updateCardProperties(const Materials::Material &card);
     void updateCard(const std::string& uuid);
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
@@ -67,6 +69,7 @@ private:
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    void createAppearanceTree();
     void createPropertyTree();
     void createMaterialTree();
     void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);

@@ -120,6 +120,29 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
         }
     }
 
+    // Add appearance models
+    if (yamlModel["AppearanceModels"]) {
+        auto models = yamlModel["AppearanceModels"];
+        for(auto it = models.begin(); it != models.end(); it++) {
+            std::string modelName = (it->first).as<std::string>();
+
+            // Add the model uuid
+            auto modelNode = models[modelName];
+            std::string modelUUID = modelNode["UUID"].as<std::string>();
+            finalModel->addAppearanceModel(modelUUID);
+
+            // Add the property values
+            auto properties = yamlModel["AppearanceModels"][modelName];
+            for (auto itp = properties.begin(); itp != properties.end(); itp++)
+            {
+                std::string propertyName = (itp->first).as<std::string>();
+                std::string propertyValue = (itp->second).as<std::string>();
+
+                finalModel->setAppearanceProperty(propertyName, propertyValue);
+            }
+        }
+    }
+
     std::string path = directory.absolutePath().toStdString();
     Base::Console().Log("\tPath '%s'\n", path.c_str());
     (*materialMap)[uuid] = finalModel;
