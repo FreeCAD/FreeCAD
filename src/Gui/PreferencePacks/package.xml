@@ -19,7 +19,7 @@
     </preferencepack>
     <preferencepack>
       <name>Dark theme</name>
-      <description>Applies a dark background and a darker stylesheets, you can choose other dark stylesheets as you wish.</description>
+      <description>Applies a dark background and a darker stylesheet, you can choose other stylesheets as you wish.</description>
       <version>0.5.0</version>
       <tag>built-in</tag>
       <tag>dark</tag>
@@ -29,7 +29,7 @@
     </preferencepack>
     <preferencepack>
       <name>Light theme</name>
-      <description>Applies a light background and a darker stylesheets, you can choose other light stylesheets as you wish.</description>
+      <description>Applies a light background and a light stylesheet, you can choose other stylesheets as you wish.</description>
       <version>0.5.0</version>
       <tag>built-in</tag>
       <tag>light</tag>
