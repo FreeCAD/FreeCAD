@@ -190,7 +190,7 @@ class _ArchPipe(ArchComponent.Component):
             obj.IfcType = "Pipe Segment"
         else:
             # IFC2x3 does not know a Pipe Segment
-            obj.IfcType = "Undefined"
+            obj.IfcType = "Building Element Proxy"
 
     def setProperties(self,obj):
 

@@ -516,7 +516,7 @@ class ProfileTaskPanel:
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
         else:
-            self.type = "Undefined"
+            self.type = "Building Element Proxy"
         self.form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout(self.form)
         self.comboCategory = QtGui.QComboBox(self.form)
