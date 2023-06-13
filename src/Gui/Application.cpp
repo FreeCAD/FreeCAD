@@ -2518,6 +2518,17 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
 }
 
+void Application::checkForDeprecatedSettings()
+{
+    // From 0.21, `FCBak` will be the intended default backup format
+    // TODO: Check for `FCStd#` and warn user.
+    bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension", true);
+    if (!useFCBakExtension) {
+        Base::Console().Warning("`.FCStd#` backup format is deprecated from 0.21 and may be removed in future versions. Please use `.FCBak` instead.\n");
+    }
+}
+
 void Application::checkForPreviousCrashes()
 {
     try {

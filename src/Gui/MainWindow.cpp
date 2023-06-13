@@ -1448,6 +1448,9 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    // TODO: Check for deprecated settings
+    Application::Instance->checkForDeprecatedSettings();
+
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
