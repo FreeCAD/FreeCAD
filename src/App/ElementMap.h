@@ -127,10 +127,10 @@ public:
                            bool forceTag = false) const;
 
     /// Remove \c name from the map
-    bool erase(const MappedName& name);
+    void erase(const MappedName& name);
 
     /// Remove \c idx and all the MappedNames associated with it
-    bool erase(const IndexedName& idx);
+    void erase(const IndexedName& idx);
 
     unsigned long size() const;
 

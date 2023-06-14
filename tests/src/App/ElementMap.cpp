@@ -166,15 +166,30 @@ TEST_F(ElementMapTest, eraseMappedName)
     elementMap.setElementName(element, anotherMappedName, 0);
 
     // Act
-    auto eraseResult = elementMap.erase(anotherMappedName);
-    auto findAllResult = elementMap.findAll(element);
-    auto secondEraseResult = elementMap.erase(anotherMappedName);
+    auto sizeBefore = elementMap.size();
+    auto findAllBefore = elementMap.findAll(element);
+
+    elementMap.erase(anotherMappedName);
+    auto sizeAfter = elementMap.size();
+    auto findAllAfter = elementMap.findAll(element);
+
+    elementMap.erase(anotherMappedName);
+    auto sizeAfterRepeat = elementMap.size();
+    auto findAllAfterRepeat = elementMap.findAll(element);
 
     // Assert
-    EXPECT_EQ(eraseResult, true);
-    EXPECT_EQ(findAllResult.size(), 1);
-    EXPECT_EQ(findAllResult[0].first, mappedName);
-    EXPECT_EQ(secondEraseResult, false);
+    EXPECT_EQ(sizeBefore, 2);
+    EXPECT_EQ(findAllBefore.size(), 2);
+    EXPECT_EQ(findAllBefore[0].first, mappedName);
+    EXPECT_EQ(findAllBefore[1].first, anotherMappedName);
+
+    EXPECT_EQ(sizeAfter, 1);
+    EXPECT_EQ(findAllAfter.size(), 1);
+    EXPECT_EQ(findAllAfter[0].first, mappedName);
+
+    EXPECT_EQ(sizeAfterRepeat, 1);
+    EXPECT_EQ(findAllAfterRepeat.size(), 1);
+    EXPECT_EQ(findAllAfterRepeat[0].first, mappedName);
 }
 
 TEST_F(ElementMapTest, eraseIndexedName)
@@ -197,15 +212,27 @@ TEST_F(ElementMapTest, eraseIndexedName)
 
     // Act
     auto sizeBefore = elementMap.size();
-    auto eraseResult = elementMap.erase(element2);
+    auto findAllBefore = elementMap.findAll(element2);
+
+    elementMap.erase(element2);
     auto sizeAfter = elementMap.size();
-    auto eraseAfterResult = elementMap.erase(element2);
+    auto findAllAfter = elementMap.findAll(element2);
+
+    elementMap.erase(element2);
+    auto sizeAfterRepeat = elementMap.size();
+    auto findAllAfterRepeat = elementMap.findAll(element2);
 
     // Assert
-    EXPECT_EQ(eraseResult, true);
     EXPECT_EQ(sizeBefore, 4);
-    EXPECT_EQ(eraseAfterResult, false);
+    EXPECT_EQ(findAllBefore.size(), 2);
+    EXPECT_EQ(findAllBefore[0].first, mappedName2);
+    EXPECT_EQ(findAllBefore[1].first, anotherMappedName2);
+
     EXPECT_EQ(sizeAfter, 2);
+    EXPECT_EQ(findAllAfter.size(), 0);
+
+    EXPECT_EQ(sizeAfterRepeat, 2);
+    EXPECT_EQ(findAllAfterRepeat.size(), 0);
 }
 
 TEST_F(ElementMapTest, findMappedName)
