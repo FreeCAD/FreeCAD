@@ -83,7 +83,7 @@ public:
     const std::string &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
     const std::string &getUUID() const { return _uuid; }
-    const bool getDereferenced() const { return _dereferenced; }
+    bool getDereferenced() const { return _dereferenced; }
 
     void markDereferenced() { _dereferenced = true; }
 

@@ -45,7 +45,7 @@ public:
     const std::string &getUUID() const { return _uuid; }
     const YAML::Node &getModel() const { return _model; }
     YAML::Node *getModelPtr() { return &_model; }
-    const bool getDereferenced() const { return _dereferenced; }
+    bool getDereferenced() const { return _dereferenced; }
 
     void markDereferenced() { _dereferenced = true; }
 
