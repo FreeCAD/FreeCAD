@@ -316,6 +316,16 @@ bool FileInfo::hasExtension(const char* Ext) const
 #endif
 }
 
+bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
+{
+    for (const char* Ext : Exts) {
+        if (hasExtension(Ext)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool FileInfo::exists() const
 {
 #if defined (FC_OS_WIN32)
