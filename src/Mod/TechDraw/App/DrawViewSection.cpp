@@ -1122,14 +1122,13 @@ void DrawViewSection::makeLineSets(void)
 
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
-    std::string ext = fi.extension();
     if (!fi.isReadable()) {
         Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(),
                                 fileSpec.c_str());
         return;
     }
 
-    if (ext == "pat" || ext == "PAT") {
+    if (fi.hasExtension("pat")) {
         if (!fileSpec.empty() && !NameGeomPattern.isEmpty()) {
             m_lineSets.clear();
             m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());
