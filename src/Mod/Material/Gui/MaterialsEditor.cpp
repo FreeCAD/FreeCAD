@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <limits>
 #include <QString>
 #include <QStringList>
 
@@ -32,6 +33,8 @@
 #include <Gui/Command.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Application.h>
+#include <Gui/PrefWidgets.h>
+#include <Gui/SpinBox.h>
 
 #include <QItemSelectionModel>
 
@@ -170,6 +173,7 @@ void MaterialsEditor::createPropertyTree()
     auto tree = ui->treePhysicalProperties;
     auto model = new QStandardItemModel();
     tree->setModel(model);
+    // tree->setItemDelegate(new MaterialDelegate());
 
     QStringList headers;
     headers.append(QString::fromStdString("Property"));
@@ -264,13 +268,14 @@ void MaterialsEditor::clearCard(void)
     // Update the general information
     ui->editName->setText(QString::fromStdString(""));
     ui->editAuthorLicense->setText(QString::fromStdString(""));
-    // ui->editParent->setText(QString::fromStdString(card.getName()));
+    ui->editParent->setText(QString::fromStdString(""));
     ui->editSourceURL->setText(QString::fromStdString(""));
     ui->editSourceReference->setText(QString::fromStdString(""));
-    // ui->editTags->setText(QString::fromStdString(card.getName()));
+    ui->editTags->setText(QString::fromStdString(""));
     ui->editDescription->setText(QString::fromStdString(""));
 
     clearCardProperties();
+    clearCardAppearance();
 }
 
 void MaterialsEditor::updateCardAppearance(const Materials::Material &card)
@@ -353,13 +358,17 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
                 QList<QStandardItem*> items;
 
                 std::string key = itp->first;
+                Materials::ModelProperty modelProperty = itp->second;
                 auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                propertyItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
                 items.append(propertyItem);
 
                 auto valueItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(key)));
-                valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
                 items.append(valueItem);
+
+                auto typeItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(modelProperty.getPropertyType())));
+                items.append(typeItem);
 
                 // addExpanded(tree, modelRoot, propertyItem);
                 modelRoot->appendRow(items);
@@ -386,40 +395,6 @@ void MaterialsEditor::updateCard(const std::string &uuid)
     updateCardAppearance(card);
 }
 
-    // def updateCard(self, data):
-
-    //     """updates the contents of the editor with the given dictionary
-    //        the material property keys where added to the editor already
-    //        unknown material property keys will be added to the user defined group"""
-
-    //     print(data)
-    //     if "General" in data:
-    //         self.updateGeneral(data['General'])
-    //     else:
-    //         self.updateGeneral(None)
-
-    //     widget = self.widget
-    //     widget.treeProperties.model().clear()
-    //     model = widget.treeProperties.model()
-    //     model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
-
-    //     widget.treeProperties.setColumnWidth(0, 250)
-    //     widget.treeProperties.setColumnWidth(1, 250)
-    //     widget.treeProperties.setColumnWidth(2, 250)
-    //     widget.treeProperties.setColumnHidden(3, True)
-
-    //     widget.treeAppearance.model().clear()
-    //     model = widget.treeAppearance.model()
-    //     model.setHorizontalHeaderLabels(["Property", "Value", "Units", "Type"])
-
-    //     widget.treeAppearance.setColumnWidth(0, 250)
-    //     widget.treeAppearance.setColumnWidth(1, 250)
-    //     widget.treeAppearance.setColumnWidth(2, 250)
-    //     widget.treeAppearance.setColumnHidden(3, True)
-    
-    //     self.updateTab(widget.treeProperties, data, "Models")
-    //     self.updateTab(widget.treeAppearance, data, "AppearanceModels")
-
 void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected)
 {
     QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->treeMaterials->model());
@@ -437,6 +412,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
             }
             catch(const std::exception& e)
             {
+                Base::Console().Log("Error %s\n", e.what());
                 clearCard();
                 // std::cerr << e.what() << '\n';
             }
@@ -445,4 +421,78 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
     }
 }
 
+MaterialDelegate::MaterialDelegate(QObject* parent)
+    : QStyledItemDelegate(parent)
+{
+}
+
+QWidget* MaterialDelegate::createEditor(
+    QWidget* parent, const QStyleOptionViewItem&, const QModelIndex& index) const
+{
+    if (index.column() != 1)
+        return nullptr;
+
+    const QStandardItemModel *treeModel = static_cast<const QStandardItemModel *>(index.model());
+
+    // Check we're not the material model root. This is also used to access the entry columns
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group)
+        return nullptr;
+
+    int row = index.row();
+
+    QString propertyName = group->child(row, 0)->text();
+    QString propertyType = QString::fromStdString("String");
+    if (group->child(row, 2))
+        propertyType = group->child(row, 2)->text();
+
+    QString propertyValue = QString::fromStdString("");
+    if (group->child(row, 1))
+        propertyValue = group->child(row, 1)->text();
+
+    QWidget* editor = createWidget(parent, propertyName, propertyType, propertyValue);
+
+    return editor;
+}
+
+QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &propertyName, const QString &propertyType,
+    const QString &propertyValue) const
+{
+                    // minimum=None, maximum=None, stepsize=None, precision=12)
+    // auto ui = Gui::WidgetFactory();
+    QWidget* widget = nullptr;
+
+    std::string type = propertyType.toStdString();
+    if (type == "String" || type == "URL")
+    {
+        widget = new Gui::PrefLineEdit(parent);
+
+    } else if ((type == "Integer") || (type == "Int"))
+    {
+        Gui::UIntSpinBox *spinner = new Gui::UIntSpinBox(parent);
+        spinner->setMinimum(0);
+        spinner->setMaximum(UINT_MAX);
+        spinner->setValue(propertyValue.toUInt());
+        widget = spinner;
+    } else if (type == "Float")
+    {
+        Gui::DoubleSpinBox *spinner = new Gui::DoubleSpinBox(parent);
+        spinner->setDecimals(0);
+        spinner->setSingleStep(0);
+        spinner->setMinimum(std::numeric_limits<double>::min());
+        spinner->setMaximum(std::numeric_limits<double>::max());
+        spinner->setValue(propertyValue.toDouble());
+        widget = spinner;
+    } else
+    {
+        // Default editor
+        widget = new QLineEdit(parent);
+    }
+
+    widget->setProperty("Type", propertyType);
+    widget->setParent(parent);
+
+    return widget;
+}
 #include "moc_MaterialsEditor.cpp"

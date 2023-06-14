@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QStandardItem>
 #include <QTreeView>
+#include <QStyledItemDelegate>
 
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
@@ -39,6 +40,19 @@ namespace fs = boost::filesystem;
 namespace MatGui {
 
 class Ui_MaterialsEditor;
+
+class MaterialDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+public:
+    explicit MaterialDelegate(QObject* parent=nullptr);
+    QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &, const QModelIndex &index) const override;
+
+private:
+    QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
+                          const QString& propertyValue) const;
+};
 
 class MaterialsEditor : public QDialog
 {

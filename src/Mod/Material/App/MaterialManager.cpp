@@ -26,6 +26,7 @@
 
 #include <App/Application.h>
 
+#include "ModelManager.h"
 #include "MaterialManager.h"
 #include "MaterialLoader.h"
 
@@ -44,6 +45,8 @@ MaterialManager::MaterialManager()
 {
     // TODO: Add a mutex or similar
     if (_materialMap == nullptr) {
+        ModelManager modelManager; // Load the models first
+
         _materialMap = new std::map<std::string, Material*>();
 
         if (_materialPathMap == nullptr)

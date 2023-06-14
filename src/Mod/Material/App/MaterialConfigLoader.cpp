@@ -329,9 +329,9 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
 
     // General section
     std::string name = value(fcmat, "Name", "");
-    std::string uuid = QUuid::createUuid().toString().toStdString();
+    std::string uuid = QUuid::createUuid().toString(QUuid::WithoutBraces).toStdString();
 
-    std::string version = QUuid::createUuid().toString().toStdString();
+    std::string version = QUuid::createUuid().toString(QUuid::WithoutBraces).toStdString();
     std::string description = value(fcmat, "Description", "");
     std::string sourceReference = value(fcmat, "ReferenceSource", "");
     std::string sourceURL = value(fcmat, "SourceURL", "");

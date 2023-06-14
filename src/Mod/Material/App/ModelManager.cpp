@@ -63,6 +63,11 @@ ModelManager *ModelManager::getManager()
         manager = new ModelManager();
     return manager;
 }
+    
+const Model &ModelManager::getModel(const std::string &uuid) const
+{
+    return *(_modelMap->at(uuid));
+}
 
 const Model &ModelManager::getModelByPath(const std::string &path) const
 {
