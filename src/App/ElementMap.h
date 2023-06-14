@@ -53,7 +53,7 @@ typedef std::shared_ptr<ElementMap> ElementMapPtr;
  *   possibly a recursive elementmap
  * `mappedNames` maps a MappedName to a specific IndexedName.
  */
-class ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
+class AppExport ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
 {
 public:
     /** Default constructor: hooks internal functions to \c signalSaveDocument and 

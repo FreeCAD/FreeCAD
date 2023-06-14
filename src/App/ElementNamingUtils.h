@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "FCGlobal.h"
 
 
 namespace Data
@@ -37,7 +38,7 @@ constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 
 
 /// Check if a subname contains missing element
-bool hasMissingElement(const char *subname);
+AppExport bool hasMissingElement(const char *subname);
 
 /** Check if the name starts with elementMapPrefix()
  *
@@ -45,21 +46,21 @@ bool hasMissingElement(const char *subname);
  * @return Returns the name stripped with elementMapPrefix(), or 0 if not
  * start with the prefix
  */
-const char *isMappedElement(const char *name);
+AppExport const char *isMappedElement(const char *name);
 
 /// Strip out the trailing element name if there is mapped element name preceeds it.
-std::string newElementName(const char *name);
+AppExport std::string newElementName(const char *name);
 
 /// Strip out the mapped element name if there is one.
-std::string oldElementName(const char *name);
+AppExport std::string oldElementName(const char *name);
 
 /// Strip out the old and new element name if there is one.
-std::string noElementName(const char *name);
+AppExport std::string noElementName(const char *name);
 
 /// Find the start of an element name in a subname
-const char *findElementName(const char *subname);
+AppExport const char *findElementName(const char *subname);
 
-const char *hasMappedElementName(const char *subname);
+AppExport const char *hasMappedElementName(const char *subname);
 
 
 }// namespace Data
