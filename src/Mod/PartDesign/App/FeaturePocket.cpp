@@ -76,14 +76,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
         (!UpToFace.getValue() && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
-    // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Length of pocket too small"));
-
     double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Second length of pocket too small"));
 
     TopoDS_Shape profileshape;
     try {
