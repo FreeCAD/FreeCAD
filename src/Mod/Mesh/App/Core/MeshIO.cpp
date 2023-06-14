@@ -188,7 +188,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else {
         // read file
         bool ok = false;
-        if (fi.hasExtension("stl") || fi.hasExtension("ast")) {
+        if (fi.hasExtension({"stl", "ast"})) {
             ok = LoadSTL(str);
         }
         else if (fi.hasExtension("iv")) {
@@ -196,7 +196,7 @@ bool MeshInput::LoadAny(const char* FileName)
             if (ok && _rclMesh.CountFacets() == 0)
                 Base::Console().Warning("No usable mesh found in file '%s'", FileName);
         }
-        else if (fi.hasExtension("nas") || fi.hasExtension("bdf")) {
+        else if (fi.hasExtension({"nas", "bdf"})) {
             ok = LoadNastran( str );
         }
         else if (fi.hasExtension("obj")) {
@@ -1711,13 +1711,13 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("py")) {
         return MeshIO::PY;
     }
-    else if (file.hasExtension("wrl") || file.hasExtension("vrml")) {
+    else if (file.hasExtension({"wrl", "vrml"})) {
         return MeshIO::VRML;
     }
     else if (file.hasExtension("wrz")) {
         return MeshIO::WRZ;
     }
-    else if (file.hasExtension("nas") || file.hasExtension("bdf")) {
+    else if (file.hasExtension({"nas", "bdf"})) {
         return MeshIO::NAS;
     }
     else if (file.hasExtension("amf")) {
