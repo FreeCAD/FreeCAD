@@ -42,7 +42,7 @@ using namespace TechDrawGui;
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
     m_size = 3.0;
-    m_width = 0.75;
+    setWidth(0.75);
     draw();
 }
 void QGICMark::draw()
@@ -61,9 +61,9 @@ void QGICMark::setSize(float s)
     draw();
 }
 
-void QGICMark::setThick(float t)
+void QGICMark::setThick(float thickness)
 {
-    m_width = t;
+    setWidth(thickness);
     draw();
 }
 

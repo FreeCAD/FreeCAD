@@ -56,7 +56,7 @@ public:
     virtual void setPrettyPre();
     virtual void setPrettySel();
     virtual void setWidth(double w);
-    virtual double getWidth() { return m_width;}
+    virtual double getWidth() { return m_pen.widthF();}
     Qt::PenStyle getStyle() { return m_styleCurrent; }
     void setStyle(Qt::PenStyle s);
     void setStyle(int s);
@@ -93,7 +93,6 @@ protected:
     QColor m_colNormal;
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
-    double m_width;
     Qt::PenCapStyle m_capStyle;
 
     QBrush m_brush;

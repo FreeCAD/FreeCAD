@@ -46,7 +46,7 @@ QGIEdge::QGIEdge(int index) :
     isHiddenEdge(false),
     isSmoothEdge(false)
 {
-    m_width = 1.0;
+    setWidth(1.0);
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);
 }

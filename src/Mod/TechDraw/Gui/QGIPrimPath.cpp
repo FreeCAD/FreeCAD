@@ -41,7 +41,6 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIPrimPath::QGIPrimPath():
-    m_width(0),
     m_capStyle(Qt::RoundCap),
     m_fillStyleCurrent (Qt::NoBrush),
 //    m_fillStyleCurrent (Qt::SolidPattern),
@@ -63,7 +62,7 @@ QGIPrimPath::QGIPrimPath():
     m_pen.setStyle(m_styleCurrent);
     m_capStyle = prefCapStyle();
     m_pen.setCapStyle(m_capStyle);
-    m_pen.setWidthF(m_width);
+    m_pen.setWidthF(0);
 
     m_styleDef = Qt::NoBrush;
     m_styleSelect = Qt::SolidPattern;
@@ -197,11 +196,9 @@ QColor QGIPrimPath::getSelectColor()
     return PreferencesGui::selectQColor();
 }
 
-void QGIPrimPath::setWidth(double w)
+void QGIPrimPath::setWidth(double width)
 {
-//    Base::Console().Message("QGIPP::setWidth(%.3f)\n", w);
-    m_width = w;
-    m_pen.setWidthF(m_width);
+    m_pen.setWidthF(width);
 }
 
 void QGIPrimPath::setStyle(Qt::PenStyle s)
@@ -308,7 +305,6 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
     m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);

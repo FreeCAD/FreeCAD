@@ -42,7 +42,7 @@ QGIDimLines::QGIDimLines()
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    m_width = 0.5;
+    setWidth(0.5);
 }
 
 void QGIDimLines::draw()
