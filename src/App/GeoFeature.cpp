@@ -27,7 +27,7 @@
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 
 
 using namespace App;
@@ -101,7 +101,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return nullptr;
     if(!subname)
         subname = "";
-    const char *element = Data::ComplexGeoData::findElementName(subname);
+    const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
@@ -114,7 +114,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return nullptr;
     if(!element || !element[0]) {
         if(append) 
-            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+            elementName.second = Data::oldElementName(subname);
         return sobj;
     }
 
@@ -122,7 +122,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         if(!append) 
             elementName.second = element;
         else
-            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+            elementName.second = Data::oldElementName(subname);
         return sobj;
     }
     if(!append) 

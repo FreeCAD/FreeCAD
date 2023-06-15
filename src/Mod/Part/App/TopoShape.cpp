@@ -160,6 +160,7 @@
 #endif // _PreComp_
 
 #include <App/Material.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/BoundBox.h>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -472,7 +473,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
         }
     }
     if(!silent) {
-        if(Data::ComplexGeoData::hasMissingElement(type))
+        if(Data::hasMissingElement(type))
             FC_THROWM(Base::CADKernelError,"missing shape element: " << (type?type:"?"));
         FC_THROWM(Base::CADKernelError,"invalid shape type: " << (type?type:"?"));
     }
