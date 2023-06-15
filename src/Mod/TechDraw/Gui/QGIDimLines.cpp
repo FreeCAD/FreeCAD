@@ -51,10 +51,9 @@ void QGIDimLines::draw()
 
 QPainterPath QGIDimLines::shape() const
 {
-    QPainterPath outline;
     QPainterPathStroker stroker;
     stroker.setWidth(getEdgeFuzz());
-    outline = stroker.createStroke(path());
+    QPainterPath outline = stroker.createStroke(path());
     return outline;
 }
 
