@@ -44,6 +44,7 @@ translate = FreeCAD.Qt.translate
 FeaturePocket = 0x01
 FeatureFacing = 0x02
 FeatureOutline = 0x04
+FeatureRestMachining = 0x08
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -89,6 +90,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
 
+        if not (FeatureRestMachining & self.pocketFeatures()):
+            form.useRestMachining.hide()
+
         # if True:
         #     # currently doesn't have an effect or is experimental
         #     form.minTravel.hide()
@@ -131,6 +135,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
+        if obj.UseRestMachining != self.form.useRestMachining.isChecked():
+            obj.UseRestMachining = self.form.useRestMachining.isChecked()
+
         if FeatureOutline & self.pocketFeatures():
             if obj.UseOutline != self.form.useOutline.isChecked():
                 obj.UseOutline = self.form.useOutline.isChecked()
@@ -155,6 +162,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ).UserString
         )
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
+        self.form.useRestMachining.setChecked(obj.UseRestMachining)
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
@@ -186,6 +194,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.useStartPoint.clicked)
+        signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
         signals.append(self.form.minTravel.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
