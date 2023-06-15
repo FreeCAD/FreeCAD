@@ -73,9 +73,9 @@ void QGIEdge::setHiddenEdge(bool b) {
 void QGIEdge::setPrettyNormal() {
 //    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
-        m_colCurrent = getHiddenColor();
+        m_pen.setColor(getHiddenColor());
     } else {
-        m_colCurrent = getNormalColor();
+        m_pen.setColor(getNormalColor());
     }
     //should call QGIPP::setPrettyNormal()?
 }

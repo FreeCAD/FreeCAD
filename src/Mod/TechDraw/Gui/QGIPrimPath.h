@@ -89,7 +89,6 @@ protected:
     bool isHighlighted;
 
     QPen m_pen;
-    QColor m_colCurrent;
     QColor m_colNormal;
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;

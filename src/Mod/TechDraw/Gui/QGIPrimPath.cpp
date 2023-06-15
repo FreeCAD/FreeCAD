@@ -57,9 +57,8 @@ QGIPrimPath::QGIPrimPath():
 
     m_colOverride = false;
     m_colNormal = getNormalColor();
-    m_colCurrent = m_colNormal;
-    m_styleCurrent = Qt::SolidLine;
-    m_pen.setStyle(m_styleCurrent);
+    m_pen.setColor(m_colNormal);
+    m_pen.setStyle(Qt::SolidLine);
     m_capStyle = prefCapStyle();
     m_pen.setCapStyle(m_capStyle);
     m_pen.setWidthF(0);
@@ -121,13 +120,13 @@ void QGIPrimPath::setHighlighted(bool b)
 
 void QGIPrimPath::setPrettyNormal() {
 //    Base::Console().Message("QGIPP::setPrettyNormal()\n");
-    m_colCurrent = m_colNormal;
+    m_pen.setColor(m_colNormal);
     m_fillColorCurrent = m_colNormalFill;
 }
 
 void QGIPrimPath::setPrettyPre() {
 //    Base::Console().Message("QGIPP::setPrettyPre()\n");
-    m_colCurrent = getPreColor();
+    m_pen.setColor(getPreColor());
     if (!m_fillOverride) {
         m_fillColorCurrent = getPreColor();
     }
@@ -135,7 +134,7 @@ void QGIPrimPath::setPrettyPre() {
 
 void QGIPrimPath::setPrettySel() {
 //    Base::Console().Message("QGIPP::setPrettySel()\n");
-    m_colCurrent = getSelectColor();
+    m_pen.setColor(getSelectColor());
     if (!m_fillOverride) {
         m_fillColorCurrent = getSelectColor();
     }
@@ -201,16 +200,16 @@ void QGIPrimPath::setWidth(double width)
     m_pen.setWidthF(width);
 }
 
-void QGIPrimPath::setStyle(Qt::PenStyle s)
+void QGIPrimPath::setStyle(Qt::PenStyle style)
 {
 //    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
-    m_styleCurrent = s;
+    m_pen.setStyle(style);
 }
 
 void QGIPrimPath::setStyle(int s)
 {
 //    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
-    m_styleCurrent = static_cast<Qt::PenStyle>(s);
+    m_pen.setStyle(static_cast<Qt::PenStyle>(s));
 }
 
 
@@ -218,7 +217,7 @@ void QGIPrimPath::setNormalColor(QColor c)
 {
     m_colNormal = c;
     m_colOverride = true;
-    m_colCurrent = m_colNormal;
+    m_pen.setColor(m_colNormal);
 }
 
 void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
@@ -305,8 +304,6 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
 
     m_brush.setColor(m_fillColorCurrent);
