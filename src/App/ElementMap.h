@@ -170,7 +170,7 @@ public:
         QByteArray postfix;
         ElementIDRefs sids;
 
-        // prefix() has been moved to PostfixStringReferences.h
+        // prefix() has been moved to ElementNamingUtils.h
     };
 
     /* Note: the original addChildElements passed `ComplexGeoData& master` for getting the `Tag`,
@@ -180,6 +180,10 @@ public:
     std::vector<MappedChildElements> getChildElements() const;
 
     std::vector<MappedElement> getAll() const;
+
+    long getElementHistory(const MappedName & name,
+                           long masterTag,
+                           MappedName *original=0, std::vector<MappedName> *history=0) const;
 
 private:
     /** Serialize this map

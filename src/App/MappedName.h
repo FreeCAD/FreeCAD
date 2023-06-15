@@ -35,7 +35,6 @@
 #include <QHash>
 #include <QVector>
 
-#include "ComplexGeoData.h"
 #include "IndexedName.h"
 #include "StringHasher.h"
 #include "ElementNamingUtils.h"
@@ -100,6 +99,12 @@ public:
             this->data += QByteArray::number(element.getIndex());
             this->raw = false;
         }
+    }
+
+    explicit MappedName(const App::StringIDRef & sid)
+        :raw(false)
+    {
+        sid.toBytes(this->data);
     }
 
     MappedName()

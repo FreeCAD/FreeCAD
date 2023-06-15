@@ -1,23 +1,26 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+ *   Copyright (c) 2022 Zheng, Lei <realthunder.dev@gmail.com>              *
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
 
@@ -28,6 +31,10 @@
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
+#include "MappedName.h"
+#include "MappedElement.h"
+#include "ElementMap.h"
+#include "StringHasher.h"
 
 #ifdef __GNUC__
 # include <cstdint>
@@ -44,6 +51,8 @@ using BoundBox3d = BoundBox3<double>;
 
 namespace Data
 {
+
+struct MappedChildElements;
 
 /** Segments
  *  Subelement type of the ComplexGeoData type
@@ -164,6 +173,135 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+
+    /** @name Element name mapping */
+    //@{
+
+    /** Get element indexed name
+     *
+     * @param name: the input name
+     * @param sid: optional output of and App::StringID involved forming this mapped name
+     *
+     * @return Returns an indexed name.
+     */
+    IndexedName getIndexedName(const MappedName & name,
+                               ElementIDRefs *sid = nullptr) const;
+
+    /** Get element mapped name
+     *
+     * @param name: the input name
+     * @param allowUnmapped: If the queried element is not mapped, then return
+     *                       an empty name if \c allowUnmapped is false, or
+     *                       else, return the indexed name.
+     * @param sid: optional output of and App::StringID involved forming this mapped name
+     * @return Returns the mapped name.
+     */
+    MappedName getMappedName(const IndexedName & element,
+                             bool allowUnmapped = false,
+                             ElementIDRefs *sid = nullptr) const;
+
+    /** Return a pair of indexed name and mapped name
+     *
+     * @param name: the input name.
+     * @param sid: optional output of and App::StringID involved forming this
+     *             mapped name
+     * @param copy: if true, copy the name string, or else use it as constant
+     *              string, and caller must make sure the memory is not freed.
+     *
+     * @return Returns the MappedElement which contains both the indexed and
+     * mapped name.
+     *
+     * This function guesses whether the input name is an indexed name or
+     * mapped, and perform a lookup and return the names found. If the input
+     * name contains only alphabets and underscore followed by optional digits,
+     * it will be treated as indexed name. Or else, it will be treated as
+     * mapped name.
+     */
+    MappedElement getElementName(const char * name,
+                                 ElementIDRefs *sid = nullptr,
+                                 bool copy = false) const;
+
+    /** Get mapped element with a given prefix */
+    std::vector<MappedElement> getElementNamesWithPrefix(const char *prefix) const;
+
+    /** Get mapped element names
+     *
+     * @param element: original element name with \c Type + \c Index
+     * @param needUnmapped: if true, return the original element name if no
+     * mapping is found
+     *
+     * @return a list of mapped names of the give element along with their
+     * associated string ID references
+     */
+    std::vector<std::pair<MappedName, ElementIDRefs> >
+    getElementMappedNames(const IndexedName & element, bool needUnmapped=false) const;
+
+    /// Append the Tag (if and only if it is non zero) into the element map
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0) {
+        (void)tag;
+        (void)hasher;
+        (void)postfix;
+    }
+
+    // NOTE: getElementHistory is now in ElementMap
+
+    char elementType(const Data::MappedName &) const;
+    char elementType(const Data::IndexedName &) const;
+    char elementType(const char *name) const;
+
+    /** Reset/swap the element map
+     *
+     * @param elementMap: optional new element map
+     *
+     * @return Returns the existing element map.
+     */
+    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap=ElementMapPtr()) {
+        _elementMap.swap(elementMap);
+        return elementMap;
+    }
+
+    /// Get the entire element map
+    std::vector<MappedElement> getElementMap() const;
+
+    /// Set the entire element map
+    void setElementMap(const std::vector<MappedElement> &elements);
+
+    /// Get the current element map size
+    size_t getElementMapSize(bool flush=true) const;
+
+    /// Check if the given subname only contains an element name
+    static bool isElementName(const char *subname) {
+        return subname && *subname && findElementName(subname)==subname;
+    }
+
+    /** Element trace callback
+     *
+     * The callback has the following call signature
+     *  (const std::string &name, size_t offset, long encodedTag, long tag) -> bool
+     *
+     * @param name: the current element name.
+     * @param offset: the offset skipping the encoded element name for the next iteration.
+     * @param encodedTag: the tag encoded inside the current element, which is usually the tag
+     *                    of the previous step in the shape history.
+     * @param tag: the tag of the current shape element.
+     *
+     * @sa traceElement()
+     */
+    using TraceCallback = std::function<bool(const MappedName &, int, long, long)>;
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     * @param cb: trace callback with call signature.
+     * @sa TraceCallback
+     */
+    void traceElement(const MappedName &name, TraceCallback cb) const;
+
+    /** Flush an internal buffering for element mapping */
+    virtual void flushElementMap() const;
+    virtual unsigned long getElementMapReserve() const { return 0; }
+    //@}
+
 protected:
 
     /// from local to outside
@@ -223,6 +361,42 @@ protected:
     }
 public:
     mutable long Tag;
+
+
+public:
+    /// String hasher for element name shortening
+    mutable App::StringHasherRef Hasher;
+
+protected:
+    virtual MappedName renameDuplicateElement(int index,
+                                              const IndexedName & element,
+                                              const IndexedName & element2,
+                                              const MappedName & name,
+                                              ElementIDRefs &sids);
+
+    /// from local to outside
+    inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
+    {
+        return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
+                                               static_cast<double>(vec.y),
+                                               static_cast<double>(vec.z));
+    }
+    /// from local to inside
+    inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
+    {
+        Base::Matrix4D tmpM(getTransform());
+        tmpM.inverse();
+        Base::Vector3d tmp = tmpM * vec;
+        return Base::Vector3f(static_cast<float>(tmp.x),
+                              static_cast<float>(tmp.y),
+                              static_cast<float>(tmp.z));
+    }
+
+protected:
+    ElementMapPtr elementMap(bool flush=true) const;
+
+private:
+    ElementMapPtr _elementMap;
 };
 
 } //namespace App

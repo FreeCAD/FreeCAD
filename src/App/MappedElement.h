@@ -23,7 +23,6 @@
 #ifndef APP_MAPPED_ELEMENT_H
 #define APP_MAPPED_ELEMENT_H
 
-#include "ComplexGeoData.h"
 #include "IndexedName.h"
 #include "MappedName.h"
 

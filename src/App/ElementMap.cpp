@@ -1155,5 +1155,58 @@ std::vector<MappedElement> ElementMap::getAll() const
     return ret;
 }
 
+long ElementMap::getElementHistory(const MappedName & name,
+                                   long masterTag,
+                                   MappedName *original,
+                                   std::vector<MappedName> *history) const
+{
+    long tag = 0;
+    int len = 0;
+    int pos = name.findTagInElementName(&tag,&len,nullptr,nullptr,true);
+    if(pos < 0) {
+        if(original)
+            *original = name;
+        return tag;
+    }
+    if(!original && !history)
+        return tag;
+
+    MappedName tmp;
+    MappedName &ret = original?*original:tmp;
+    if(name.startsWith(ELEMENT_MAP_PREFIX)) {
+        unsigned offset = ELEMENT_MAP_PREFIX_SIZE;
+        ret = MappedName::fromRawData(name, offset);
+    } else
+        ret = name;
+
+    while(1) {
+        if(!len || len>pos) {
+            FC_WARN("invalid name length " << name);
+            return 0;
+        }
+        bool dehashed = false;
+        if (ret.startsWith(MAPPED_CHILD_ELEMENTS_PREFIX, len)) {
+            int offset = (int)POSTFIX_TAG_SIZE;
+            MappedName tmp = MappedName::fromRawData(ret, len+offset, pos-len-offset);
+            MappedName postfix = dehashElementName(tmp);
+            if (postfix != tmp) {
+                dehashed = true;
+                ret = MappedName::fromRawData(ret, 0, len) + postfix;
+            }
+        }
+        if (!dehashed)
+            ret = dehashElementName(MappedName::fromRawData(ret, 0, len));
+
+        long tag2 = 0;
+        pos = ret.findTagInElementName(&tag2,&len,nullptr,nullptr,true);
+        if(pos < 0 || (tag2!=tag && tag2!=-tag && tag!=masterTag && -tag!=masterTag))
+            return tag;
+        tag = tag2;
+        if(history)
+            history->push_back(ret.copy());
+    }
+}
+
+
 
 }// Namespace Data
