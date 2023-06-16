@@ -65,6 +65,10 @@ using PyObject = struct _object;
 #	pragma warning( disable : 4275 )
 #endif
 
+#ifndef _PreComp_
+#   include <xercesc/sax/ErrorHandler.hpp>
+#endif
+
 
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
@@ -279,6 +283,7 @@ protected:
     ~ParameterGrp() override;
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
+
     bool ShouldRemove() const;
 
     void _Reset();
@@ -411,16 +416,17 @@ public:
     /// Saves an XML document by calling the serializer's save method.
     void  SaveDocument() const;
     //@}
-
-private:
-
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
-    ParameterSerializer * paramSerializer;
-
-    bool          gDoNamespaces         ;
+    
+protected:
+	bool          gDoNamespaces         ;
     bool          gDoSchema             ;
     bool          gSchemaFullChecking   ;
     bool          gDoCreate             ;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
+private:
+	ParameterManager();
+    ~ParameterManager() override;
+    ParameterSerializer * paramSerializer;
 
 
     const XMLCh*  gOutputEncoding       ;
@@ -431,10 +437,41 @@ private:
     bool          gUseFilter            ;
     bool          gFormatPrettyPrint    ;
 
-private:
-    ParameterManager();
-    ~ParameterManager() override;
 };
+
+XERCES_CPP_NAMESPACE_USE
+
+class DOMTreeErrorReporter : public ErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+	DOMTreeErrorReporter();
+    ~DOMTreeErrorReporter() override = default;
+    // -----------------------------------------------------------------------
+    //  Implementation of the error handler interface
+    // -----------------------------------------------------------------------
+    void warning(const SAXParseException& toCatch) override;
+    void error(const SAXParseException& toCatch) override;
+    void fatalError(const SAXParseException& toCatch) override;
+    void resetErrors() override;
+    // -----------------------------------------------------------------------
+    //  Getter methods
+    // -----------------------------------------------------------------------
+    bool getSawErrors() const;
+private:
+	// -----------------------------------------------------------------------
+    //  Private data members
+    //
+    //  fSawErrors
+    //      This is set if we get any errors, and is queryable via a getter
+    //      method. Its used by the main code to suppress output if there are
+    //      errors.
+    // -----------------------------------------------------------------------
+	bool fSawErrors;
+};
+
 
 /** python wrapper function
 */

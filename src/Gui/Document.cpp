@@ -33,6 +33,7 @@
 # include <QStatusBar>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <xercesc/dom/DOM.hpp>
 #endif
 
 #include <App/AutoTransaction.h>
@@ -45,6 +46,7 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
+#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 
@@ -65,7 +67,6 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderDocumentObjectGroup.h"
 #include "WaitCursor.h"
-
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -680,7 +681,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 {
     auto pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
-        //Base::Console().Log("Document::slotNewObject() called\n");
         std::string cName = Obj.getViewProviderNameStored();
         for(;;) {
             if (cName.empty()) {
@@ -762,7 +762,6 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 {
     std::list<Gui::BaseView*>::iterator vIt;
     setModified(true);
-    //Base::Console().Log("Document::slotDeleteObject() called\n");
 
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
@@ -1415,88 +1414,134 @@ void Document::Restore(Base::XMLReader &reader)
  */
 void Document::RestoreDocFile(Base::Reader &reader)
 {
-    // We must create an XML parser to read from the input stream
-    std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
-    localreader->FileVersion = reader.getFileVersion();
-
-    localreader->readElement("Document");
-    long scheme = localreader->getAttributeAsInteger("SchemaVersion");
-    localreader->DocumentSchema = scheme;
-
-    bool hasExpansion = localreader->hasAttribute("HasExpansion");
-    if(hasExpansion) {
-        auto tree = TreeWidget::instance();
+	Base::DocumentReader docReader;
+	docReader.LoadDocument(reader);
+	//docReader.GetRootElement()//can be used to get Document XMLElement, but not needed.
+	const char* SchemaVersion_cstr = docReader.GetAttribute("SchemaVersion");
+	long SchemaVersion = docReader.ContentToInt( SchemaVersion_cstr );
+	
+    const char* HasExpansion_cstr = docReader.GetAttribute("HasExpansion");
+    if(HasExpansion_cstr){
+    	auto tree = TreeWidget::instance();
         if(tree) {
             auto docItem = tree->getDocumentItem(this);
             if(docItem)
-                docItem->Restore(*localreader);
+                docItem->Restore(docReader);
         }
     }
-
+    
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
-    //
-    // SchemeVersion "1"
-    if (scheme == 1) {
-        // read the viewproviders itself
-        localreader->readElement("ViewProviderData");
-        int Cnt = localreader->getAttributeAsInteger("Count");
-        for (int i=0; i<Cnt; i++) {
-            localreader->readElement("ViewProvider");
-            std::string name = localreader->getAttribute("name");
-            bool expanded = false;
-            if (!hasExpansion && localreader->hasAttribute("expanded")) {
-                const char* attr = localreader->getAttribute("expanded");
-                if (strcmp(attr,"1") == 0) {
-                    expanded = true;
-                }
-            }
-            ViewProvider* pObj = getViewProviderByName(name.c_str());
-            if (pObj) // check if this feature has been registered
-                pObj->Restore(*localreader);
-            if (pObj && expanded) {
-                auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
-            }
-            localreader->readEndElement("ViewProvider");
-        }
-        localreader->readEndElement("ViewProviderData");
+    if (SchemaVersion == 1) {
+    	auto VProviderDataDOM = docReader.FindElement("ViewProviderData");
+		if(VProviderDataDOM){
+			const char* vpd_count_cstr = docReader.GetAttribute(VProviderDataDOM,"Count");
+			if(vpd_count_cstr){
+				long Cnt = docReader.ContentToInt( vpd_count_cstr );
+				auto prev_ViewProviderDOM = docReader.FindElement(VProviderDataDOM,"ViewProvider");
+				if(prev_ViewProviderDOM){
+					const char* name_cstr = docReader.GetAttribute(prev_ViewProviderDOM,"name");
+					const char* expanded_cstr = docReader.GetAttribute(prev_ViewProviderDOM,"expanded");
+					bool expanded = false;
+					if (!HasExpansion_cstr && expanded_cstr) {
+						if (strcmp(expanded_cstr,"1") == 0) {
+							expanded = true;
+						}
+					}
+					
+					ViewProvider* pObj = getViewProviderByName(name_cstr);
+					if (pObj)
+						pObj->Restore(docReader,prev_ViewProviderDOM);
+					
+					if (pObj && expanded) {
+						auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+						this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
+					}
+				}
+				for (int i=1; i<Cnt; i++) {
+					auto ViewProviderDOM_i = docReader.FindNextElement(prev_ViewProviderDOM,"ViewProvider");
+					if(ViewProviderDOM_i){
+						const char* name_cstr_i = docReader.GetAttribute(ViewProviderDOM_i,"name");
+						const char* expanded_cstr_i = docReader.GetAttribute(ViewProviderDOM_i,"expanded");
 
-        // read camera settings
-        localreader->readElement("Camera");
-        const char* ppReturn = localreader->getAttribute("settings");
-        cameraSettings.clear();
-        if(ppReturn && ppReturn[0]) {
-            saveCameraSettings(ppReturn);
-            try {
-                const char** pReturnIgnore=nullptr;
-                std::list<MDIView*> mdi = getMDIViews();
-                for (const auto & it : mdi) {
-                    if (it->onHasMsg("SetCamera"))
-                        it->onMsg(cameraSettings.c_str(), pReturnIgnore);
-                }
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-            }
-        }
+						bool expanded = false;
+						if (!HasExpansion_cstr && expanded_cstr_i) {
+							if (strcmp(expanded_cstr_i,"1") == 0) {
+								expanded = true;
+							}
+						}
+						ViewProvider* pObj = getViewProviderByName(name_cstr_i);
+						if (pObj)
+							pObj->Restore(docReader,ViewProviderDOM_i);//Im still implementing this, which calls ExtensionContainer::Restore.
+						
+						if (pObj && expanded) {
+							auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+							this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
+						}
+						prev_ViewProviderDOM = ViewProviderDOM_i;
+					}
+				}
+			}
+		}
+		// read camera settings
+		auto CameraDOM = docReader.FindElement("Camera");
+		if(CameraDOM){
+			const char* ppReturn = docReader.GetAttribute(CameraDOM,"settings");
+			cameraSettings.clear();
+			if(ppReturn && ppReturn[0]) {
+		        saveCameraSettings(ppReturn);
+		        try {
+		            const char** pReturnIgnore=nullptr;
+		            std::list<MDIView*> mdi = getMDIViews();
+		            for (const auto & it : mdi) {
+		                if (it->onHasMsg("SetCamera"))
+		                    it->onMsg(cameraSettings.c_str(), pReturnIgnore);
+		            }
+		        }
+		        catch (const Base::Exception& e) {
+		            Base::Console().Error("%s\n", e.what());
+		        }
+		    }
+		}
         
-	    try{
-	    	localreader->readElement("ProjectUnitSystem");
-	    	int US = localreader->getAttributeAsInteger("US");
-	    	int ignore = localreader->getAttributeAsInteger("ignore");
+        /*
+		try{//if this fails then all other reading attemps will fail, since XERCES doesnt allow to get back to previous point, reading the file should restarted each time an element its not present, since it looks for it untill the end of the document.
+			//Since ProjectUnitSystem its the only optional field, and its being read at the end of this function, it does not cause any issue, but if other optional its added the way of reading XML used in Reader.cpp will be obsolete
+
+			localreader->readElement("ProjectUnitSystem");
+			Base::Console().Error("readElement(ProjectUnitSystem)\n");
+			int US = localreader->getAttributeAsInteger("US");
+			int ignore = localreader->getAttributeAsInteger("ignore");
 			d->projectUnitSystem = US;
 			d->projectUnitSystemIgnore = ignore;
+			
 		}catch (const Base::XMLParseException& e) {
 			Base::Console().Warning("ProjectUnitSystem not found: %s\n", e.getMessage().c_str());
-        }
+		}catch(const Base::XMLBaseException& e){
+	    	Base::Console().Warning("ProjectUnitSystem XMLBaseException: %s\n", e.getMessage().c_str());
+	    }catch(...) {
+			Base::Console().Error("ProjectUnitSystem catch(...)\n");
+		}
+		*/
+		
     }
-
-    localreader->readEndElement("Document");
-
-    // reset modified flag
-    reader.initLocalReader(localreader);
-    setModified(false);
+    /*
+    
+	try{
+		localreader->readEndElement("Document");
+	}catch(const Base::XMLParseException& e){
+		Base::Console().Warning("readEndElement(Document) XMLParseException: %s\n", e.getMessage().c_str());
+    }catch(const Base::XMLBaseException& e){
+	    Base::Console().Warning("readEndElement(Document) XMLBaseException: %s\n", e.getMessage().c_str());
+    }catch(...) {
+		Base::Console().Error("readEndElement(Document) unkown error.\n");
+	}
+	*/
+	
+	// reset modified flag
+	//dont see what this does:
+	//reader.initLocalReader(localreader);
+	setModified(false);
 }
 
 void Document::slotStartRestoreDocument(const App::Document& doc)

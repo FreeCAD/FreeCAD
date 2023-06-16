@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <xercesc/sax2/XMLReaderFactory.hpp>
+# include <xercesc/dom/DOM.hpp>
 #endif
 
 #include <locale>
@@ -42,7 +43,7 @@
 #include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
-
+#include <Gui/Document.h>
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -330,24 +331,11 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-            	Base::Reader reader(zipstream, jt->FileName, FileVersion);
-            	
-            	try{
-                	jt->Object->RestoreDocFile(reader);
-                }catch (const Base::XMLParseException& e) {
-		        	//For some reason catching this error in RestoreDocFile(reader) its working but
-		        	//still need to catch it here again. Im not sure how its that possible since its from a constructor.
-		        	
-		        	//It comes from trying to read "ProjectUnitSystem" from GuiDocument.xml and reaching EndDocument
-					//because was not found.
-					//I dont think EndDocument should throw error anyway.
-					if(e.getMessage() != "End of document reached"){
-		        		throw;
-		        	}
-        		}
-                
-            	if (reader.getLocalReader())
-                reader.getLocalReader()->readFiles(zipstream);
+        		Base::Reader reader(zipstream, jt->FileName, FileVersion);
+	            jt->Object->RestoreDocFile(reader);
+	            
+	        	if (reader.getLocalReader())
+	            reader.getLocalReader()->readFiles(zipstream);
             }catch(...) {
                 // For any exception we just continue with the next file.
                 // It doesn't matter if the last reader has read more or

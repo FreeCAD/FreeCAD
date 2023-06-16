@@ -220,6 +220,7 @@ public:
 
   void Save (Base::Writer &writer) const override;
   void Restore(Base::XMLReader &reader) override;
+  void Restore(Base::DocumentReader &reader) override;
 
   virtual void editProperty(const char * /*propName*/) {}
 

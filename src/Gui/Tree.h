@@ -297,6 +297,7 @@ public:
     unsigned int getMemSize () const override;
     void Save (Base::Writer &) const override;
     void Restore(Base::XMLReader &) override;
+    void Restore(Base::DocumentReader& reader) override;
 
     class ExpandInfo;
     using ExpandInfoPtr = std::shared_ptr<ExpandInfo>;

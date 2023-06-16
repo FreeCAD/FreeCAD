@@ -839,6 +839,18 @@ void ViewProvider::Restore(Base::XMLReader& reader) {
     // setStatus(Gui::isRestoring, false);
 }
 
+void ViewProvider::Restore(Base::DocumentReader& reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl) {
+    // Because some PropertyLists type properties are stored in a separate file,
+    // and is thus restored outside this function. So we rely on Gui::Document
+    // to set the isRestoring flags for us.
+    //
+    // setStatus(Gui::isRestoring, true);
+
+    TransactionalObject::Restore(reader,viewProviderEl);
+
+    // setStatus(Gui::isRestoring, false);
+}
+
 void ViewProvider::updateData(const App::Property* prop)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();

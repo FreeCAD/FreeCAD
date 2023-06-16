@@ -75,43 +75,44 @@ using namespace Base;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-class DOMTreeErrorReporter : public ErrorHandler
+DOMTreeErrorReporter::DOMTreeErrorReporter():
+	fSawErrors(false) {
+}
+
+void DOMTreeErrorReporter::warning(const SAXParseException&)
 {
-public:
-    // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() :
-            fSawErrors(false) {
-    }
+	//
+	// Ignore all warnings.
+	//
+}
 
-    ~DOMTreeErrorReporter() override = default;
+void DOMTreeErrorReporter::error(const SAXParseException& toCatch)
+{
+	fSawErrors = true;
+	std::cerr << "Error at file \"" << StrX(toCatch.getSystemId())
+	<< "\", line " << toCatch.getLineNumber()
+	<< ", column " << toCatch.getColumnNumber()
+	<< "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+}
 
+void DOMTreeErrorReporter::fatalError(const SAXParseException& toCatch)
+{
+	fSawErrors = true;
+	std::cerr << "Fatal Error at file \"" << StrX(toCatch.getSystemId())
+	<< "\", line " << toCatch.getLineNumber()
+	<< ", column " << toCatch.getColumnNumber()
+	<< "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+}
 
-    // -----------------------------------------------------------------------
-    //  Implementation of the error handler interface
-    // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch) override;
-    void error(const SAXParseException& toCatch) override;
-    void fatalError(const SAXParseException& toCatch) override;
-    void resetErrors() override;
+void DOMTreeErrorReporter::resetErrors()
+{
+	// No-op in this case
+}
 
-    // -----------------------------------------------------------------------
-    //  Getter methods
-    // -----------------------------------------------------------------------
-    bool getSawErrors() const;
-
-    // -----------------------------------------------------------------------
-    //  Private data members
-    //
-    //  fSawErrors
-    //      This is set if we get any errors, and is queryable via a getter
-    //      method. Its used by the main code to suppress output if there are
-    //      errors.
-    // -----------------------------------------------------------------------
-    bool    fSawErrors;
-};
-
+inline bool DOMTreeErrorReporter::getSawErrors() const
+{
+    return fSawErrors;
+}
 
 class DOMPrintFilter : public DOMLSSerializerFilter
 {
@@ -157,14 +158,6 @@ private :
     void operator=(const DOMErrorHandler&);
 
 };
-
-
-inline bool DOMTreeErrorReporter::getSawErrors() const
-{
-    return fSawErrors;
-}
-
-
 //**************************************************************************
 //**************************************************************************
 // ParameterManager
@@ -1862,42 +1855,6 @@ void  ParameterManager::CheckDocument() const
         << std::endl
         << StrX(e.getMessage()) << std::endl;
     }
-}
-
-
-//**************************************************************************
-//**************************************************************************
-// DOMTreeErrorReporter
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-void DOMTreeErrorReporter::warning(const SAXParseException&)
-{
-    //
-    // Ignore all warnings.
-    //
-}
-
-void DOMTreeErrorReporter::error(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Error at file \"" << StrX(toCatch.getSystemId())
-    << "\", line " << toCatch.getLineNumber()
-    << ", column " << toCatch.getColumnNumber()
-    << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::fatalError(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Fatal Error at file \"" << StrX(toCatch.getSystemId())
-    << "\", line " << toCatch.getLineNumber()
-    << ", column " << toCatch.getColumnNumber()
-    << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::resetErrors()
-{
-    // No-op in this case
 }
 
 

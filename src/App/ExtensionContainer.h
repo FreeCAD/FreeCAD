@@ -25,6 +25,14 @@
 #define APP_EXTENSIONCONTAINER_H
 
 #include "PropertyContainer.h"
+#include <xercesc/util/XercesDefs.hpp>
+
+XERCES_CPP_NAMESPACE_BEGIN
+	class DOMNode;
+	class DOMElement;
+//    class DefaultHandler;
+//    class SAX2XMLReader;
+XERCES_CPP_NAMESPACE_END
 
 
 namespace App {
@@ -177,11 +185,13 @@ public:
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
+    void Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl);
 
     //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);
+    void restoreExtensions(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl);
 
     /** Extends the rules for handling property name changed, so that extensions are given an opportunity to handle it.
      *  If an extension handles a change, neither the rest of the extensions, nor the container itself get to handle it.

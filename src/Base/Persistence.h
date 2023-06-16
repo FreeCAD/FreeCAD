@@ -31,6 +31,7 @@ namespace Base
 class Reader;
 class Writer;
 class XMLReader;
+class DocumentReader;
 
 /// Persistence class and root of the type system
 class BaseExport Persistence : public BaseClass
@@ -77,6 +78,7 @@ public:
      * \endcode
      */
     virtual void Restore(XMLReader &/*reader*/) = 0;
+    virtual void Restore(DocumentReader &/*reader*/);
     /** This method is used to save large amounts of data to a binary file.
      * Sometimes it makes no sense to write property data as XML. In case the
      * amount of data is too big or the data type has a more effective way to

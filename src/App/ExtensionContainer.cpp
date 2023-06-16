@@ -30,6 +30,7 @@
 
 #include "Extension.h"
 #include "ExtensionContainer.h"
+#include <Base/DocumentReader.h>
 
 
 using namespace App;
@@ -307,6 +308,18 @@ void ExtensionContainer::Restore(Base::XMLReader& reader) {
     App::PropertyContainer::Restore(reader);
 }
 
+void ExtensionContainer::Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl) {
+    //restore dynamic extensions.
+    //Note 1: The extension element must be read first, before all other object elements. That is
+    //        needed as the element works together with an object element attribute, which would be
+    //        cleared if another attribute is read first
+    //Note 2: This must happen before the py object of this container is used, as only in the
+    //        pyobject constructor the extension methods are added to the container.
+    restoreExtensions(reader,viewProviderEl);
+    //TODO NOW:
+    //App::PropertyContainer::Restore(reader);
+}
+
 void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
 
     //we don't save anything if there are no dynamic extensions
@@ -350,6 +363,70 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
     }
     writer.Stream() << writer.ind() << "</Extensions>" << std::endl;
     writer.decInd();
+}
+
+void ExtensionContainer::restoreExtensions(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl) {
+    //Dynamic extensions are optional (also because they are introduced late into the document format)
+    //and hence it is possible that the element does not exist. As we cannot check for the existence of
+    //an element a object attribute is set if extensions are available. Here we check that
+    //attribute, and only if it exists the extensions element will be available.
+    const char* expanded_cstr = reader.GetAttribute(viewProviderEl,"expanded");
+    if(!expanded_cstr)
+    	return;
+    auto ExtensionsDOM = reader.FindElement(viewProviderEl,"Extensions");
+    if(ExtensionsDOM){
+    	const char* cnt_cstr = reader.GetAttribute(ExtensionsDOM,"Count");
+    	if(cnt_cstr){
+    		long Cnt = reader.ContentToInt( cnt_cstr );
+    		for (int i=0 ;i<Cnt ;i++) {
+    			auto ExtensionDOM_i = reader.FindElement(ExtensionsDOM,"Extension");
+    			const char* type_cstr = reader.GetAttribute(ExtensionDOM_i,"type");
+    			const char* name_cstr = reader.GetAttribute(ExtensionDOM_i,"name");
+    			try {
+				    App::Extension* ext = getExtension(name_cstr);
+				    if(!ext) {
+				        //get the extension type asked for
+				        Base::Type extension =  Base::Type::fromName(type_cstr);
+				        if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
+				            std::stringstream str;
+				            str << "No extension found of type '" << type_cstr << "'" << std::ends;
+				            throw Base::TypeError(str.str());
+				        }
+
+				        //register the extension
+				        ext = static_cast<App::Extension*>(extension.createInstance());
+				        //check if this really is a python extension!
+				        if (!ext->isPythonExtension()) {
+				            delete ext;
+				            std::stringstream str;
+				            str << "Extension is not a python addable version: '" << type_cstr << "'" << std::ends;
+				            throw Base::TypeError(str.str());
+				        }
+				        ext->initExtension(this);
+				        if( strcmp(ext->getExtensionTypeId().getName(), type_cstr) == 0 )
+				        	ext->extensionRestore(reader);
+				    }
+				}
+				catch (const Base::XMLParseException&) {
+				    throw; // re-throw
+				}
+				catch (const Base::Exception &e) {
+				    Base::Console().Error("%s\n", e.what());
+				}
+				catch (const std::exception &e) {
+				    Base::Console().Error("%s\n", e.what());
+				}
+				catch (const char* e) {
+				    Base::Console().Error("%s\n", e);
+				}
+		#ifndef FC_DEBUG
+				catch (...) {
+				    Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
+				}
+		#endif
+			}
+    	}
+    }
 }
 
 void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {

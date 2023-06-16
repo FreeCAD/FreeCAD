@@ -498,6 +498,7 @@ public:
     //restoring the object from document:
     //this may be of interest to extensions, hence call them
     void Restore(Base::XMLReader& reader) override;
+    void Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *viewProviderEl);
     bool isRestoring() {return testStatus(Gui::isRestoring);}
 
 

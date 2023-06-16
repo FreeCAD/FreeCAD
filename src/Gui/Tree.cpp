@@ -66,6 +66,10 @@
 #include "Widgets.h"
 #include "Workbench.h"
 
+#include <Base/DocumentReader.h>
+#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/dom/DOM.hpp>
+
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
@@ -347,6 +351,21 @@ public:
             entry->restore(reader);
         }
         reader.readEndElement("Expand", level - 1);
+    }
+    
+    void restore(Base::DocumentReader& reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *expandEl) {
+	    Base::Console().Error("ExpandInfo restore\n");
+    	const char* count_cstr = reader.GetAttribute(expandEl,"count");
+    	if(count_cstr){
+    		long count = reader.ContentToInt( count_cstr );
+			Base::Console().Error("ExpandInfo count: %d\n",count);
+    		auto _expandEl = reader.FindElement(expandEl,"Expand");
+    		const char* name_cstr = reader.GetAttribute(_expandEl,"name");
+    		Base::Console().Error("ExpandInfo name_cstr: %s\n",name_cstr);
+    		auto& entry = (*this)[name_cstr];
+    		entry.reset(new ExpandInfo);
+            entry->restore(reader,_expandEl);
+    	}
     }
 };
 
@@ -3923,6 +3942,24 @@ void DocumentItem::Restore(Base::XMLReader& reader) {
             auto docItem = inst->getDocumentItem(document());
             if (docItem)
                 docItem->_ExpandInfo = _ExpandInfo;
+        }
+    }
+}
+
+void DocumentItem::Restore(Base::DocumentReader& reader) {
+    Base::Console().Error("DocumentItem::Restore() DocumentReader\n");
+    auto expandEl = reader.FindElement("Expand");
+    if( !reader.GetAttribute(expandEl,"count") )
+    	return;
+    _ExpandInfo.reset(new ExpandInfo);
+    _ExpandInfo->restore(reader,expandEl);
+    //TODO NOW
+    for (auto inst : TreeWidget::Instances) {
+        if (inst != getTree()) {
+            auto docItem = inst->getDocumentItem(document());
+            if (docItem)
+                docItem->_ExpandInfo = _ExpandInfo;
+
         }
     }
 }

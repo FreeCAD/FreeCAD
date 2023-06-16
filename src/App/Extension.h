@@ -273,6 +273,7 @@ public:
     //@{
     virtual void extensionSave(Base::Writer&) const {}
     virtual void extensionRestore(Base::XMLReader&) {}
+    virtual void extensionRestore(Base::DocumentReader&) {}
     //@}
 
     /** @name TypeHandling */
