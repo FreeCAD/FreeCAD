@@ -667,8 +667,8 @@ void NaviCubeImplementation::prepare() {
     addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, M_PI);
 
     // create the flat buttons
-    addButtonFace(PickId::ArrowNorth, SbVec3f(1, 0, 0));
-    addButtonFace(PickId::ArrowSouth, SbVec3f(-1, 0, 0));
+    addButtonFace(PickId::ArrowNorth, SbVec3f(-1, 0, 0));
+    addButtonFace(PickId::ArrowSouth, SbVec3f(1, 0, 0));
     addButtonFace(PickId::ArrowEast, SbVec3f(0, 1, 0));
     addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));

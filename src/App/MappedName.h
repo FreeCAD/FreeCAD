@@ -26,15 +26,19 @@
 #define APP_MAPPED_NAME_H
 
 
+#include <memory>
 #include <string>
 
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <QByteArray>
 #include <QHash>
+#include <QVector>
 
 #include "ComplexGeoData.h"
 #include "IndexedName.h"
+#include "StringHasher.h"
+#include "ElementNamingUtils.h"
 
 
 namespace Data
@@ -62,8 +66,8 @@ public:
         if (!name) {
             return;
         }
-        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX_SIZE;
         }
 
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
@@ -78,9 +82,9 @@ public:
     {
         auto size = nameString.size();
         const char* name = nameString.c_str();
-        if (boost::starts_with(nameString, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
-            size -= ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX_SIZE;
+            size -= ELEMENT_MAP_PREFIX_SIZE;
         }
         data = QByteArray(name, static_cast<int>(size));
     }
@@ -622,7 +626,7 @@ public:
     const char* appendToBufferWithPrefix(std::string& buf) const
     {
         if (!toIndexedName()) {
-            buf += ComplexGeoData::elementMapPrefix();
+            buf += ELEMENT_MAP_PREFIX;
         }
         appendToBuffer(buf);
         return buf.c_str();
@@ -714,7 +718,7 @@ public:
     }
 
     /// Ensure that this data is unshared, making a copy if necessary.
-    void compact();
+    void compact() const;
 
     /// Boolean conversion is the inverse of empty(), returning true if there is data in either the
     /// data or postfix, and false if there is nothing in either.
@@ -786,8 +790,7 @@ public:
         if (!searchTarget) {
             return -1;
         }
-        if (startPosition < 0
-            || startPosition >= this->data.size()) {
+        if (startPosition < 0 || startPosition >= this->data.size()) {
             if (startPosition >= data.size()) {
                 startPosition -= data.size();
             }
@@ -887,6 +890,22 @@ public:
             offset);
     }
 
+    /// Extract tag and other information from a encoded element name
+    ///
+    /// \param tag: optional pointer to receive the extracted tag
+    /// \param len: optional pointer to receive the length field after the tag field.
+    ///             This gives the length of the previous hashsed element name starting
+    ///             from the beginning of the give element name.
+    /// \param postfix: optional pointer to receive the postfix starting at the found tag field.
+    /// \param type: optional pointer to receive the element type character
+    /// \param negative: return negative tag as it is. If disabled, then always return positive tag.
+    ///                  Negative tag is sometimes used for element disambiguation.
+    /// \param recursive: recursively find the last non-zero tag
+    ///
+    /// \return Return the end position of the tag field, or return -1 if not found.
+    int findTagInElementName(long* tag = 0, int* len = 0, const char* postfix = 0, char* type = 0,
+                             bool negative = false, bool recursive = true) const;
+
     /// Get a hash for this MappedName
     std::size_t hash() const
     {
@@ -898,6 +917,110 @@ private:
     QByteArray postfix;
     bool raw;
 };
+
+
+typedef QVector<::App::StringIDRef> ElementIDRefs;
+
+struct MappedNameRef
+{
+    MappedName name;
+    ElementIDRefs sids;
+    std::unique_ptr<MappedNameRef> next;
+
+    MappedNameRef() = default;
+
+    MappedNameRef(const MappedName& name, const ElementIDRefs& sids = ElementIDRefs())
+        : name(name),
+          sids(sids)
+    {
+        compact();
+    }
+
+    MappedNameRef(const MappedNameRef& other)
+        : name(other.name),
+          sids(other.sids)
+    {}
+
+    MappedNameRef(MappedNameRef&& other)
+        : name(std::move(other.name)),
+          sids(std::move(other.sids)),
+          next(std::move(other.next))
+    {}
+
+    MappedNameRef& operator=(MappedNameRef&& other)
+    {
+        name = std::move(other.name);
+        sids = std::move(other.sids);
+        next = std::move(other.next);
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        return !name.empty();
+    }
+
+    void append(const MappedName& name, const ElementIDRefs sids = ElementIDRefs())
+    {
+        if (!name)
+            return;
+        if (!this->name) {
+            this->name = name;
+            this->sids = sids;
+            compact();
+            return;
+        }
+        std::unique_ptr<MappedNameRef> n(new MappedNameRef(name, sids));
+        if (!this->next)
+            this->next = std::move(n);
+        else {
+            this->next.swap(n);
+            this->next->next = std::move(n);
+        }
+    }
+
+    void compact()
+    {
+        if (sids.size() > 1) {
+            std::sort(sids.begin(), sids.end());
+            sids.erase(std::unique(sids.begin(), sids.end()), sids.end());
+        }
+    }
+
+    bool erase(const MappedName& name)
+    {
+        if (this->name == name) {
+            this->name.clear();
+            this->sids.clear();
+            if (this->next) {
+                this->name = std::move(this->next->name);
+                this->sids = std::move(this->next->sids);
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(this->next);
+                this->next = std::move(tmp->next);
+            }
+            return true;
+        }
+
+        for (std::unique_ptr<MappedNameRef>* p = &this->next; *p; p = &(*p)->next) {
+            if ((*p)->name == name) {
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(*p);
+                *p = std::move(tmp->next);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void clear()
+    {
+        this->name.clear();
+        this->sids.clear();
+        this->next.reset();
+    }
+};
+
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
