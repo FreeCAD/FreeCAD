@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Blaupause erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Kegelschnitt erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -706,7 +706,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Ellipsenbogen erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -719,7 +719,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Hyperbelbogen erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -732,7 +732,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Parabelbogen erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -750,7 +750,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>B-Spline mittels Kontrollpunkten in der Skizze erstellen.</translation>
     </message>
   </context>
   <context>
@@ -893,7 +893,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Geschlossenen B-Spline mittels Kontrollpunkten in der Skizze erstellen.</translation>
     </message>
   </context>
   <context>
@@ -1096,7 +1096,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Externe Geometrie erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -5931,7 +5931,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Sketcher-Modus Bearbeitung</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5961,7 +5961,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Sketcher-Werkzeuge Bearbeitung</translation>
     </message>
   </context>
   <context>
@@ -6098,7 +6098,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Automatische Rasterweite</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6113,7 +6113,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Abstand zwischen zwei aufeinanderfolgenden Rasterlinien.</translation>
     </message>
   </context>
   <context>
@@ -6406,7 +6406,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Winkelschrittweite für Werkzeuge, die 'Einrasten auf Winkel' verwenden (Linie zum Beispiel). STRG gedrückt halten, um 'Einrasten auf Winkel' zu aktivieren. Der Winkel beginnt an der positiven X-Achse der Skizze.</translation>
     </message>
   </context>
   <context>
@@ -6456,7 +6456,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Das Raster in der Skizze ein- bzw. ausschalten. Im Menü können die Rastereinstellungen geändert werden.</translation>
     </message>
   </context>
   <context>
@@ -6469,7 +6469,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Alle Einrastfunktionen ein- bzw. ausschalten. Im Menü können 'Auf Raster einrasten' und 'Auf Objekte einrasten' einzeln umgeschaltet und weitere Einrasteinstellungen geändert werden.</translation>
     </message>
   </context>
   <context>
@@ -6477,12 +6477,12 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>B-Spline durch Knoten erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Erstellt einen B-Spline durch Knoten, d.h. durch Interpolation, in der Skizze.</translation>
     </message>
   </context>
   <context>
@@ -6490,12 +6490,12 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Geschlossenen B-Spline durch Knoten erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Erstellt einen geschlossenen B-Spline durch Knoten, d.h. durch Interpolation, in der Skizze.</translation>
     </message>
   </context>
 </TS>

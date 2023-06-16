@@ -5471,7 +5471,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="292"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Waarschuwing</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="293"/>

@@ -337,7 +337,19 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+      <translation>Неабавязковы спіс фільтраў "Уласцівасць:Значэнне", якія падзелены кропкай з коскай (;).
+Дадаць ! да назвы ўласцівасці, каб інвертаваць эфект фільтра (выключыць аб'екты, якія адпавядаюць фільтру).
+Аб'екты, уласцівасць якіх змяшчае значэнне, будуць супастаўленыя.
+
+Прыклады дапушчальных фільтраў (усе без уліку рэгістра):
+Name:Wall - будуць улічвацца толькі аб'екты, у назве якіх ёсць 'сцяна' (унутранае імя);
+!Name: Wall - будуць улічвацца толькі аб'екты, у назве якіх няма 'сцяны' (унутранае імя);
+Description:Win - будуць разглядацца толькі аб'екты з словам 'акно' у іх апісанні;
+!Label:Win - будуць улічвацца толькі аб'екты, у якіх у меткі няма слова 'акно';
+IfcType:Wall - будуць улічвацца толькі аб'екты, тып Ifc якіх роўны 'Сцяна';
+!Tag:Wall - будуць улічвацца толькі аб'екты, у якіх метка не з'яўляецца 'Сцяной'.
+
+Калі вы пакінеце гэта поле пустым, фільтраванне не будзе ўжытае</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="194"/>

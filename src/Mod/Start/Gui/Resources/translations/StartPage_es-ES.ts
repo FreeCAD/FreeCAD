@@ -96,7 +96,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
       <source>Show scrollbars</source>
-      <translation type="unfinished">Show scrollbars</translation>
+      <translation>Mostrar barras de desplazamiento</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="211"/>
@@ -393,27 +393,27 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>El &lt;a href="http://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Si es la primera vez que publicas en el foro, ¡asegúrate de &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;leer las pautas&lt;/a&gt; primero!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD también mantiene un &lt;a href="https://www.freecad.org/tracker"&gt; rastreador de errores &lt;/a&gt; público donde cualquier persona puede reportar errores y proponer nuevas funcionalidades. Para evitar causar trabajo extra y tener la mejor oportunidad para resolver su error, asegúrese de leer la &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt; guía de envío de errores &lt;/a&gt; antes de publicar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>A continuación se muestran los últimos cambios agregados al &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt; código fuente de FreeCAD &lt;/a&gt;. Es posible que estos cambios aún no se reflejen en la versión de FreeCAD que está ejecutando actualmente. Marque las &lt;a href="https://www.freecad.org/wiki/Downloads"&gt; opciones disponibles &lt;/a&gt; si desea obtener una versión de desarrollo.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Las últimas publicaciones en el &lt;a href="https://forum.freecad.org"&gt; foro de FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

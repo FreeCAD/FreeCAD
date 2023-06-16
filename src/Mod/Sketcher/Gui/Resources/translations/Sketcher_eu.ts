@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Sortu kopia bat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Sortu koniko bat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -708,7 +708,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Sortu elipse-arku bat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -721,7 +721,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Sortu hiperbola-arku bat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -734,7 +734,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Sortu parabola-arku bat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -752,7 +752,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Sortu B-spline bat krokiseko kontrol-puntuak erabilita.</translation>
     </message>
   </context>
   <context>
@@ -895,7 +895,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Sortu B-spline periodiko bat krokiseko kontrol-puntuak erabilita.</translation>
     </message>
   </context>
   <context>
@@ -1098,7 +1098,7 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Sortu kanpo-geometria</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -5939,7 +5939,7 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Krokisgilearen edizio-modua</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5969,7 +5969,7 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Krokisgilearen edizio-tresnak</translation>
     </message>
   </context>
   <context>
@@ -6106,7 +6106,7 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Sareta-tarte automatikoa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6121,7 +6121,7 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Bi sareta-lerro jarraien arteko distantzia.</translation>
     </message>
   </context>
   <context>
@@ -6413,7 +6413,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>'Atxiki angeluari' (lerroa distantziarako) erabiltzen duten tresnetarako urrats angeluarra. Eutsi Ctrl sakatuta 'Atxiki angeluari'' gaitzeko. Angelua krokisaren X ardatz positiboan hasten da.</translation>
     </message>
   </context>
   <context>
@@ -6463,7 +6463,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Aktibatu/desaktibatu krokiseko sareta. Menuan sareta-ezarpenak aldatu daitezke.</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6476,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Txandakatu atxikitze-funtzionaltasun guztiak. Menuan 'Atxiki saretari' eta 'Atxiki ojektuei' banaka txandakatu daitezke, eta beste atxikitze-ezarpen batzuk ere aldatu daitezke.</translation>
     </message>
   </context>
   <context>
@@ -6484,12 +6484,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>Sortu B-spline bat adabegietatik abiatuz</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Sortu B-spline bat adabegietatik abiatuz, alegia interpolazio bidez, krokisean.</translation>
     </message>
   </context>
   <context>
@@ -6497,12 +6497,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Sortu B-spline periodiko bat adabegietatik abiatuz</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Sortu B-spline periodiko bat adabegietatik abiatuz, alegia interpolazio bidez, krokisean.</translation>
     </message>
   </context>
 </TS>

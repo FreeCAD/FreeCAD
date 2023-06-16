@@ -5382,12 +5382,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Electromagnetic Constraints</source>
-      <translation type="unfinished">Electromagnetic Constraints</translation>
+      <translation>Электромагнитные граничные условия</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Electromagnetic Constraints</source>
-      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+      <translation>&amp;Электромагнитные граничные условия</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

@@ -4746,7 +4746,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Podstawowy kolor dla wszystkich elementów</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
@@ -12729,7 +12729,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1092"/>
       <source>Movable navigation cube</source>
-      <translation>Ruchoma Kostka nawigacyjna</translation>
+      <translation>Ruchoma kostka nawigacyjna</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1093"/>

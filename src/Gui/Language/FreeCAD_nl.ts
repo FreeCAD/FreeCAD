@@ -4747,7 +4747,7 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Basiskleur voor alle elementen</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
