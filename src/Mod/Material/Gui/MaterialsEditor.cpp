@@ -175,7 +175,7 @@ void MaterialsEditor::createPropertyTree()
     auto tree = ui->treePhysicalProperties;
     auto model = new QStandardItemModel();
     tree->setModel(model);
-    // tree->setItemDelegate(new MaterialDelegate());
+    tree->setItemDelegate(new MaterialDelegate());
 
     QStringList headers;
     headers.append(QString::fromStdString("Property"));
@@ -483,12 +483,28 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
     } else if (type == "Float")
     {
         Gui::DoubleSpinBox *spinner = new Gui::DoubleSpinBox(parent);
-        spinner->setDecimals(0);
-        spinner->setSingleStep(0);
+        
+        // the magnetic permeability is the parameter for which many decimals matter
+        // the most however, even for this, 6 digits are sufficient
+        spinner->setDecimals(6);
+
+        // for almost all Float parameters of materials a step of 1 would be too large
+        spinner->setSingleStep(0.1);
+
         spinner->setMinimum(std::numeric_limits<double>::min());
         spinner->setMaximum(std::numeric_limits<double>::max());
         spinner->setValue(propertyValue.toDouble());
         widget = spinner;
+    } else if (type == "Color")
+    {
+        Gui::PrefColorButton *button = new Gui::PrefColorButton();
+        // if Value:
+        //     value = string2tuple(Value)
+        //     color = QtGui.QColor()
+        //     color.setRgb(value[0], value[1], value[2], value[3])
+        //     widget.setProperty("color", color)
+
+        widget = button;
     } else
     {
         // Default editor
