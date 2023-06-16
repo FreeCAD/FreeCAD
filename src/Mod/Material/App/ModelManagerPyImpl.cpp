@@ -65,8 +65,8 @@ PyObject* ModelManagerPy::getModel(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &uuid))
         return nullptr;
 
-    const Model &model = getModelManagerPtr()->getModel(uuid);
-    return new ModelPy(new Model(model));
+    const Model *model = getModelManagerPtr()->getModel(uuid);
+    return new ModelPy(new Model(*model));
 }
 
 PyObject* ModelManagerPy::getModelByPath(PyObject *args)

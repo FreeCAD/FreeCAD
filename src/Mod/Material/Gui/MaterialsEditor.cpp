@@ -294,18 +294,18 @@ void MaterialsEditor::updateCardAppearance(const Materials::Material &card)
     tree->setColumnWidth(1, 250);
     tree->setColumnHidden(2, true);
 
-    const std::vector<std::string> &models = card.getAppearanceModels();
-    if (&models) {
-        for (auto it = models.begin(); it != models.end(); it++)
+    const std::vector<std::string> *models = card.getAppearanceModels();
+    if (models) {
+        for (auto it = models->begin(); it != models->end(); it++)
         {
             std::string uuid = *it;
-            const Materials::Model &model = getModelManager().getModel(uuid);
-            std::string name = model.getName();
+            const Materials::Model *model = getModelManager().getModel(uuid);
+            std::string name = model->getName();
 
             auto modelRoot = new QStandardItem(QString::fromStdString(name));
             modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             addExpanded(tree, treeModel, modelRoot);
-            for (auto itp = model.begin(); itp != model.end(); itp++)
+            for (auto itp = model->begin(); itp != model->end(); itp++)
             {
                 QList<QStandardItem*> items;
 
@@ -342,18 +342,18 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
     tree->setColumnWidth(1, 250);
     tree->setColumnHidden(2, true);
 
-    const std::vector<std::string> &models = card.getModels();
-    if (&models) {
-        for (auto it = models.begin(); it != models.end(); it++)
+    const std::vector<std::string> *models = card.getModels();
+    if (models) {
+        for (auto it = models->begin(); it != models->end(); it++)
         {
             std::string uuid = *it;
-            const Materials::Model &model = getModelManager().getModel(uuid);
-            std::string name = model.getName();
+            const Materials::Model *model = getModelManager().getModel(uuid);
+            std::string name = model->getName();
 
             auto modelRoot = new QStandardItem(QString::fromStdString(name));
             modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             addExpanded(tree, treeModel, modelRoot);
-            for (auto itp = model.begin(); itp != model.end(); itp++)
+            for (auto itp = model->begin(); itp != model->end(); itp++)
             {
                 QList<QStandardItem*> items;
 

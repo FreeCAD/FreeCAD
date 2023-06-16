@@ -99,6 +99,9 @@ const std::string ModelValueProperty::getValue(void) const
 
         case ValueType::Float:
             return std::to_string(_valueFloat);
+
+        default:
+            break;
     }
 
     return "";
