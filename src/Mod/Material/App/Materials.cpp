@@ -160,13 +160,23 @@ void Material::setAppearanceProperty(const std::string& name, const std::string 
 const std::string Material::getPropertyValue(const std::string &name) const
 {
     // const ModelValueProperty &property = _properties.at(name);
-    return _properties.at(name).getValue();
+    try {
+        return _properties.at(name).getValue();
+    } catch (std::out_of_range e) {
+        Base::Console().Log("%s\n", e.what());
+        return "";
+    }
 }
 
 const std::string Material::getAppearancePropertyValue(const std::string &name) const
 {
     // const ModelValueProperty &property = _properties.at(name);
-    return _appearanceProperties.at(name).getValue();
+    try {
+        return _appearanceProperties.at(name).getValue();
+    } catch (std::out_of_range e) {
+        Base::Console().Log("%s\n", e.what());
+        return "";
+    }
 }
 
 #include "moc_Materials.cpp"

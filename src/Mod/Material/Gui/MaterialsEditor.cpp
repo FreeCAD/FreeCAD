@@ -318,6 +318,9 @@ void MaterialsEditor::updateCardAppearance(const Materials::Material &card)
                 valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
                 items.append(valueItem);
 
+                auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
+                items.append(typeItem);
+
                 // addExpanded(tree, modelRoot, propertyItem);
                 modelRoot->appendRow(items);
                 tree->setExpanded(modelRoot->index(), true);
@@ -367,7 +370,7 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
                 valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
                 items.append(valueItem);
 
-                auto typeItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(modelProperty.getPropertyType())));
+                auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
                 items.append(typeItem);
 
                 // addExpanded(tree, modelRoot, propertyItem);
@@ -397,7 +400,7 @@ void MaterialsEditor::updateCard(const std::string &uuid)
 
 void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    QStandardItemModel *model = dynamic_cast<QStandardItemModel *>(ui->treeMaterials->model());
+    QStandardItemModel *model = static_cast<QStandardItemModel *>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++)
     {

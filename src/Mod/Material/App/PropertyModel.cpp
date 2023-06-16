@@ -162,7 +162,7 @@ Property *PropertyModel::Copy() const
 void PropertyModel::Paste(const Property &from)
 {
     aboutToSetValue();
-    _model = dynamic_cast<const PropertyModel&>(from)._model;
+    _model = static_cast<const PropertyModel&>(from)._model;
     hasSetValue();
 }
 

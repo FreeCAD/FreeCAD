@@ -78,19 +78,24 @@ const std::string ModelLoader::getUUIDFromPath(const std::string &path)
 
 ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std::string &path) const
 {
-    YAML::Node yamlroot = YAML::LoadFile(path);
-    std::string base = "Model";
-    if (yamlroot["AppearanceModel"]) {
-        base = "AppearanceModel";
+    try {
+        YAML::Node yamlroot = YAML::LoadFile(path);
+        std::string base = "Model";
+        if (yamlroot["AppearanceModel"]) {
+            base = "AppearanceModel";
+        }
+        const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
+        const std::string name = yamlroot[base]["Name"].as<std::string>();
+
+        QDir modelDir(QString::fromStdString(path));
+        ModelEntry *model = new ModelEntry(library, base, name, modelDir, uuid, yamlroot);
+
+        return model;
+    } catch (std::exception e) {
+        // This should be more targeted aat individual exceptions
     }
 
-    const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
-    const std::string name = yamlroot[base]["Name"].as<std::string>();
-
-    QDir modelDir(QString::fromStdString(path));
-    ModelEntry *model = new ModelEntry(library, base, name, modelDir, uuid, yamlroot);
-
-    return model;
+    return nullptr;
 }
 
 void ModelLoader::showYaml(const YAML::Node &yaml) const
