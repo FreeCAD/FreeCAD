@@ -27,7 +27,7 @@
 #include <QDir>
 #include <QString>
 
-#include "model.h"
+#include "Model.h"
 
 namespace fs = boost::filesystem;
 
