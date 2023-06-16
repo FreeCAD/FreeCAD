@@ -72,7 +72,7 @@ int MappedName::findTagInElementName(long* tag, int* len, const char* postfix,
     //                                    pos
 
     if(pos < 0) {
-        pos = this->rfind(POSTFIX_DECIMAL_TAG); 
+        pos = this->rfind(POSTFIX_DECIMAL_TAG);
         if (pos < 0)
             return -1;
         hex = false;
@@ -107,7 +107,7 @@ int MappedName::findTagInElementName(long* tag, int* len, const char* postfix,
         //
         // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
         //                     |              |   ^^ ^^
-        //                     |              |   |   |  
+        //                     |              |   |   |
         //                     ---len = 0x10---  tag len
 
         iss >> std::hex;

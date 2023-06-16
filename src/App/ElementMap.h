@@ -56,8 +56,8 @@ typedef std::shared_ptr<ElementMap> ElementMapPtr;
 class AppExport ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
 {
 public:
-    /** Default constructor: hooks internal functions to \c signalSaveDocument and 
-     * \c signalStartRestoreDocument. This is related to the save and restore process 
+    /** Default constructor: hooks internal functions to \c signalSaveDocument and
+     * \c signalStartRestoreDocument. This is related to the save and restore process
      * of the map.
     */
     ElementMap();
@@ -65,7 +65,7 @@ public:
     /** Ensures that naming is properly assigned. It then marks as "used" all the StringID
      * that are used to make up this particular map and are stored in the hasher passed
      * as a parameter. Finally do this recursively for all childEelementMaps as well.
-     * 
+     *
      * @param hasher where all the StringID needed to build the map are stored.
     */
     // FIXME this should be made part of \c save, to achieve symmetry with the restore method
@@ -73,12 +73,12 @@ public:
 
     /** Serialize this map. Calls \c collectChildMaps to get \c childMapSet and
      * \c postfixMap, then calls the other (private) save function with those parameters.
-     * @param s: serialized stream 
+     * @param s: serialized stream
     */
     void save(std::ostream& s) const;
 
     /** Deserialize and restore this map. This function restores \c childMaps and 
-     * \c postfixes from the stream, then calls the other (private) restore function with those 
+     * \c postfixes from the stream, then calls the other (private) restore function with those
      * parameters.
      * @param hasher: where all the StringIDs are stored
      * @param s: stream to deserialize
@@ -183,7 +183,7 @@ public:
 
 private:
     /** Serialize this map
-     * @param s: serialized stream 
+     * @param s: serialized stream
      * @param childMapSet: where all child element maps are stored
      * @param postfixMap. where all postfixes are stored
     */
@@ -205,7 +205,7 @@ private:
      * @param idx: the indexed name that \c name will be bound to
      * @param sids: where StringIDs that make up the name are stored
      * @param overwrite: if true, all the names associated with \c idx will be discarded
-     * @param existing: out variable: if not overwriting, and \c name is already 
+     * @param existing: out variable: if not overwriting, and \c name is already
      * associated with another indexedName, set \c existing to that indexedname
      * @return the name just added, or an empty name if it wasn't added.
      */
@@ -213,7 +213,7 @@ private:
                        bool overwrite, IndexedName* existing);
 
     /** Utility function that adds \c postfix to \c postfixMap, and to \c postfixes
-     * if it was not present in the map. 
+     * if it was not present in the map.
     */
     static void addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
                            std::vector<QByteArray>& postfixes);

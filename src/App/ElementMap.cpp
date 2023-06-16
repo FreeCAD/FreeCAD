@@ -1,3 +1,8 @@
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <unordered_map>
+# include <random>
+#endif
 
 #include "ElementMap.h"
 #include "ElementNamingUtils.h"
@@ -5,12 +10,8 @@
 #include "App/Application.h"
 #include "Base/Console.h"
 
-// #include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
-
-#include <unordered_map>
-#include <random>
+# include <boost/algorithm/string/classification.hpp>
+# include <boost/algorithm/string/split.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);
