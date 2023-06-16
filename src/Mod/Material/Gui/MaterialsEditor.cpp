@@ -175,7 +175,6 @@ void MaterialsEditor::createPropertyTree()
     auto tree = ui->treePhysicalProperties;
     auto model = new QStandardItemModel();
     tree->setModel(model);
-    tree->setItemDelegate(new MaterialDelegate());
 
     QStringList headers;
     headers.append(QString::fromStdString("Property"));
@@ -189,7 +188,7 @@ void MaterialsEditor::createPropertyTree()
 
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
-    // tree->setItemDelegate(MaterialsDelegate())
+    tree->setItemDelegate(new MaterialDelegate(this));
 }
 
 void MaterialsEditor::createAppearanceTree()
@@ -210,7 +209,7 @@ void MaterialsEditor::createAppearanceTree()
 
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
-    // tree->setItemDelegate(MaterialsDelegate())
+    tree->setItemDelegate(new MaterialDelegate(this));
 }
 
 void MaterialsEditor::createMaterialTree()
@@ -469,7 +468,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
     QWidget* widget = nullptr;
 
     std::string type = propertyType.toStdString();
-    if (type == "String" || type == "URL")
+    if (type == "String" || type == "URL" || type == "Vector")
     {
         widget = new Gui::PrefLineEdit(parent);
 
@@ -495,6 +494,14 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
         spinner->setMaximum(std::numeric_limits<double>::max());
         spinner->setValue(propertyValue.toDouble());
         widget = spinner;
+    } else if (type == "Boolean")
+    {
+        Gui::PrefComboBox *combo = new Gui::PrefComboBox(parent);
+        combo->insertItem(0, QString::fromStdString(""));
+        combo->insertItem(1, QString::fromStdString("False"));
+        combo->insertItem(2, QString::fromStdString("True"));
+        combo->setCurrentText(propertyValue);
+        widget = combo;
     } else if (type == "Color")
     {
         Gui::PrefColorButton *button = new Gui::PrefColorButton();
@@ -503,6 +510,8 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
         //     color = QtGui.QColor()
         //     color.setRgb(value[0], value[1], value[2], value[3])
         //     widget.setProperty("color", color)
+        QColor color;
+        button->setProperty("color", color);
 
         widget = button;
     } else
