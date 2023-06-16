@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ELEMENT_NAMING_UTILS_H
+#define ELEMENT_NAMING_UTILS_H
 
 #include <string>
 #include "FCGlobal.h"
@@ -48,7 +49,7 @@ AppExport bool hasMissingElement(const char *subname);
  */
 AppExport const char *isMappedElement(const char *name);
 
-/// Strip out the trailing element name if there is mapped element name preceeds it.
+/// Strip out the trailing element name if there is mapped element name precedes it.
 AppExport std::string newElementName(const char *name);
 
 /// Strip out the mapped element name if there is one.
@@ -64,3 +65,5 @@ AppExport const char *hasMappedElementName(const char *subname);
 
 
 }// namespace Data
+
+#endif // ELEMENT_NAMING_UTILS_H
