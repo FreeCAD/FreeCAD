@@ -148,8 +148,10 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
             try {
                 auto material = getMaterialManager().getMaterialByPath(mod.path().string());
                 card->setData(QVariant(QString::fromStdString(material.getUUID())), Qt::UserRole);
-            } catch (...) {
-                Base::Console().Log("YAML error\n");
+            } catch (Materials::ModelNotFound &e) {
+                Base::Console().Log("Model not found error\n");
+            } catch (std::exception &e) {
+                Base::Console().Log("Exception '%s'\n", e.what());
             }
             addExpanded(tree, &parent, card);
         }

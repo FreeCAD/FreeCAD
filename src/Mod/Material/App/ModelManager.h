@@ -23,11 +23,21 @@
 #ifndef MATERIAL_MODELMANAGER_H
 #define MATERIAL_MODELMANAGER_H
 
+#include <Base/Exception.h>
 #include <Base/BaseClass.h>
 
 #include "Model.h"
 
 namespace Materials {
+
+
+class ModelNotFound : public Base::Exception
+{
+public:
+    ModelNotFound(){}
+    explicit ModelNotFound(char* msg){this->setMessage(msg);}
+    ~ModelNotFound() throw() override {}
+};
 
 class MaterialsExport ModelManager : public Base::BaseClass
 {

@@ -33,6 +33,7 @@
 
 #include "Model.h"
 #include "ModelLoader.h"
+#include "ModelManager.h"
 
 
 using namespace Materials;
@@ -66,14 +67,22 @@ void ModelLoader::addLibrary(ModelLibrary *model)
 
 const std::string ModelLoader::getUUIDFromPath(const std::string &path)
 {
-    YAML::Node yamlroot = YAML::LoadFile(path);
-    std::string base = "Model";
-    if (yamlroot["AppearanceModel"]) {
-        base = "AppearanceModel";
-    }
+    QFile file(QString::fromStdString(path));
+    if (!file.exists())
+        throw ModelNotFound();
 
-    const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
-    return uuid;
+    try {
+        YAML::Node yamlroot = YAML::LoadFile(path);
+        std::string base = "Model";
+        if (yamlroot["AppearanceModel"]) {
+            base = "AppearanceModel";
+        }
+
+        const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
+        return uuid;
+    } catch (YAML::Exception ex) {
+        throw ModelNotFound();
+    }
 }
 
 ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std::string &path) const
@@ -92,7 +101,7 @@ ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std
 
         return model;
     } catch (std::exception e) {
-        // This should be more targeted aat individual exceptions
+        // This should be more targeted at individual exceptions
     }
 
     return nullptr;
