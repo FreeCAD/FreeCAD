@@ -109,8 +109,8 @@ public:
     const std::string &getURL() const { return _url; }
     const std::string &getReference() const { return _reference; }
     const std::list<std::string> &getTags() const { return _tags; }
-    const std::vector<std::string> &getModels() const { return _modelUuids; }
-    const std::vector<std::string> &getAppearanceModels() const { return _appearanceModelUuids; }
+    const std::vector<std::string> *getModels() const { return &_modelUuids; }
+    const std::vector<std::string> *getAppearanceModels() const { return &_appearanceModelUuids; }
 
     void setLibrary(const MaterialLibrary &library) { _library = library; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }

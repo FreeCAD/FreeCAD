@@ -149,10 +149,10 @@ Py::String MaterialPy::getAuthorAndLicense() const
 
 Py::List MaterialPy::getModels() const
 {
-    const std::vector<std::string> &models = getMaterialPtr()->getModels();
+    const std::vector<std::string> *models = getMaterialPtr()->getModels();
     Py::List list;
 
-    for (auto it = models.begin(); it != models.end(); it++)
+    for (auto it = models->begin(); it != models->end(); it++)
     {
         std::string uuid = *it;
 
