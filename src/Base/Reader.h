@@ -48,6 +48,7 @@ XERCES_CPP_NAMESPACE_END
 namespace Base
 {
 class Persistence;
+class DocumentReader;
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
@@ -295,13 +296,16 @@ public:
     std::string getFileName() const;
     int getFileVersion() const;
     void initLocalReader(std::shared_ptr<Base::XMLReader>);
+    void initLocalDocReader(std::shared_ptr<Base::DocumentReader>);
     std::shared_ptr<Base::XMLReader> getLocalReader() const;
+    std::shared_ptr<Base::DocumentReader> getLocalDocReader() const;
 
 private:
     std::istream& _str;
     std::string _name;
     int fileVersion;
     std::shared_ptr<Base::XMLReader> localreader;
+    std::shared_ptr<Base::DocumentReader> localdocreader;
 };
 
 }

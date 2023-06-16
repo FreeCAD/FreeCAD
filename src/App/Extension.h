@@ -290,6 +290,10 @@ protected:
     virtual bool extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
     /// returns true if the property type change was handled by the extension.
     virtual bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
+    /// returns true if the property name change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName);
+    /// returns true if the property type change was handled by the extension.
+    virtual bool extensionHandleChangedPropertyType(Base::DocumentReader &reader, const char * TypeName, Property * prop);
 
     friend class App::ExtensionContainer;
 

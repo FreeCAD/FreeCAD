@@ -32,6 +32,10 @@
 #include "PropertyContainer.h"
 #include <Base/DocumentReader.h>
 
+#ifndef _PreComp_
+# include <xercesc/dom/DOM.hpp>
+#endif
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -75,8 +79,9 @@ App::Property* PropertyContainer::addDynamicProperty(
 Property *PropertyContainer::getPropertyByName(const char* name) const
 {
     auto prop = dynamicProps.getDynamicPropertyByName(name);
-    if(prop)
+    if(prop){
         return prop;
+    }
     return getPropertyData().getPropertyByName(this,name);
 }
 
@@ -199,6 +204,13 @@ void PropertyContainer::handleChangedPropertyName(Base::XMLReader &reader, const
     (void)PropName;
 }
 
+void PropertyContainer::handleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName)
+{
+    (void)reader;
+    (void)TypeName;
+    (void)PropName;
+}
+
 /**
  * @brief PropertyContainer::handleChangedPropertyType is called during restore to possibly
  * fix reading of older versions of the property container. This method is typically called
@@ -212,6 +224,13 @@ void PropertyContainer::handleChangedPropertyName(Base::XMLReader &reader, const
  */
 
 void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char *TypeName, Property *prop)
+{
+    (void)reader;
+    (void)TypeName;
+    (void)prop;
+}
+
+void PropertyContainer::handleChangedPropertyType(DocumentReader &reader, const char *TypeName, Property *prop)
 {
     (void)reader;
     (void)TypeName;
@@ -321,6 +340,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
     if(reader.hasAttribute("TransientCount"))
         transientCount = reader.getAttributeAsUnsigned("TransientCount");
 
+	
     for (int i=0;i<transientCount; ++i) {
         reader.readElement("_Property");
         Property* prop = getPropertyByName(reader.getAttribute("name"));
@@ -340,8 +360,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // type and the behaviour would be undefined.
         try {
             auto prop = getPropertyByName(PropName.c_str());
-            if(!prop || prop->getContainer() != this)
+            if(!prop || prop->getContainer() != this){
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
+            }
 
             decltype(Property::StatusBits) status;
             if(reader.hasAttribute("status")) {
@@ -403,101 +424,115 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
-void PropertyContainer::Restore(Base::DocumentReader &reader)
+void PropertyContainer::Restore(Base::DocumentReader &reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl)
 {
-	//TODO NOW
-	Base::Console().Error("PropertyContainer::Restore: DocumentReader\n");
 	reader.clearPartialRestoreProperty();
-    /*
-    reader.clearPartialRestoreProperty();
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+	
+	auto PropertiesDOM = reader.FindElement(containerEl,"Properties");
+	const char* count_cstr = reader.GetAttribute(PropertiesDOM,"Count");
+	if(count_cstr){
+		long Cnt = reader.ContentToInt( count_cstr );
+		const char* TransientCount_cstr = reader.GetAttribute(PropertiesDOM,"TransientCount");
+		int transientCount = 0;
+		if(TransientCount_cstr)
+			transientCount = reader.ContentToUnsigned( TransientCount_cstr );
+		
+		for (int i=0;i<transientCount; ++i) {
+			auto _PropertyDOM = reader.FindElement(PropertiesDOM,"_Property");
+			const char* name_cstr = reader.GetAttribute(_PropertyDOM,"name");
+			const char* status_cstr = reader.GetAttribute(_PropertyDOM,"status");
+			Property* prop = getPropertyByName(name_cstr);
+			if(prop)
+		        FC_TRACE("restore transient '" << prop->getName() << "'");
+		    if(prop && status_cstr){
+		    	int u_status = reader.ContentToUnsigned( status_cstr );
+		        prop->setStatusValue(u_status);
+		    }
+    	}
+    	if(Cnt){
+    		auto prev_PropertyDOM = reader.FindElement(PropertiesDOM,"Property");
+			readProperty(reader,prev_PropertyDOM);
+			for (int i=1 ;i<Cnt ;i++) {
+				auto PropertyDOM_i = reader.FindNextElement(prev_PropertyDOM,"Property");
+				readProperty(reader,PropertyDOM_i);
+				prev_PropertyDOM = PropertyDOM_i;
+		    }
+		    
+    	}
+	}
+}
 
-    int transientCount = 0;
-    if(reader.hasAttribute("TransientCount"))
-        transientCount = reader.getAttributeAsUnsigned("TransientCount");
-
-    for (int i=0;i<transientCount; ++i) {
-        reader.readElement("_Property");
-        Property* prop = getPropertyByName(reader.getAttribute("name"));
-        if(prop)
-            FC_TRACE("restore transient '" << prop->getName() << "'");
-        if(prop && reader.hasAttribute("status"))
-            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
-    }
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        std::string PropName = reader.getAttribute("name");
-        std::string TypeName = reader.getAttribute("type");
-        // NOTE: We must also check the type of the current property because a
-        // subclass of PropertyContainer might change the type of a property but
-        // not its name. In this case we would force to read-in a wrong property
-        // type and the behaviour would be undefined.
-        try {
-            auto prop = getPropertyByName(PropName.c_str());
-            if(!prop || prop->getContainer() != this)
-                prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
-
-            decltype(Property::StatusBits) status;
-            if(reader.hasAttribute("status")) {
-                status = decltype(status)(reader.getAttributeAsUnsigned("status"));
-                if(prop)
-                    prop->setStatusValue(status.to_ulong());
-            }
-            // name and type match
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName.c_str()) == 0) {
-                if (!prop->testStatus(Property::Transient)
-                        && !status.test(Property::Transient)
-                        && !status.test(Property::PropTransient)
-                        && !prop->testStatus(Property::PropTransient))
-                {
-                    FC_TRACE("restore property '" << prop->getName() << "'");
-                    prop->Restore(reader);
-                }else
-                    FC_TRACE("skip transient '" << prop->getName() << "'");
-            }
-            // name matches but not the type
-            else if (prop) {
-                handleChangedPropertyType(reader, TypeName.c_str(), prop);
-            }
-            // name doesn't match, the sub-class then has to know
-            // if the property has been renamed or removed
-            else {
-                handleChangedPropertyName(reader, TypeName.c_str(), PropName.c_str());
-            }
-
-            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
-                Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
-                reader.clearPartialRestoreProperty();
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::RestoreError &) {
-            reader.setPartialRestore(true);
-            reader.clearPartialRestoreProperty();
-            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
+// NOTE: We must also check the type of the current property because a
+// subclass of PropertyContainer might change the type of a property but
+// not its name. In this case we would force to read-in a wrong property
+// type and the behaviour would be undefined.
+void PropertyContainer::readProperty(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *PropertyDOM){
+	const char* name_cstr = reader.GetAttribute(PropertyDOM,"name");
+	const char* type_cstr = reader.GetAttribute(PropertyDOM,"type");
+	try {
+		
+	    auto prop = getPropertyByName(name_cstr);
+	    if(!prop || prop->getContainer() != this){
+	        prop = dynamicProps.restore(*this,name_cstr,type_cstr,reader,PropertyDOM);
+	    }
+	    
+	    decltype(Property::StatusBits) status;
+	    const char* status_cstr = reader.GetAttribute(PropertyDOM,"status");
+	    if(status_cstr){
+	    	int u_status = reader.ContentToUnsigned( status_cstr );
+	    	status = decltype(status)(u_status);
+	    	if(prop)
+	            prop->setStatusValue(status.to_ulong());
+	    }
+	    // name and type match
+	    if (prop && strcmp(prop->getTypeId().getName(), type_cstr) == 0) {
+	        if (!prop->testStatus(Property::Transient)
+	                && !status.test(Property::Transient)
+	                && !status.test(Property::PropTransient)
+	                && !prop->testStatus(Property::PropTransient))
+	        {
+	            FC_TRACE("restore property '" << prop->getName() << "'");
+	            prop->Restore(reader,PropertyDOM);
+	        }else
+	            FC_TRACE("skip transient '" << prop->getName() << "'");
+	    }
+	    // name matches but not the type
+	    else if (prop) {
+	        handleChangedPropertyType(reader, type_cstr, prop);
+	    }
+	    // name doesn't match, the sub-class then has to know
+	    // if the property has been renamed or removed
+	    else {
+	        handleChangedPropertyName(reader, type_cstr, name_cstr);
+	    }
+	    
+	    if (reader.testStatus(Base::DocumentReader::ReaderStatus::PartialRestoreInProperty)) {
+	        Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",name_cstr,type_cstr);
+	        reader.clearPartialRestoreProperty();
+	    }
+	}
+	catch (const Base::XMLParseException&) {
+	    throw; // re-throw
+	}
+	catch (const Base::RestoreError &) {
+	    reader.setPartialRestore(true);
+	    reader.clearPartialRestoreProperty();
+	    Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",name_cstr,type_cstr);
+	}
+	catch (const Base::Exception &e) {
+	    Base::Console().Error("%s\n", e.what());
+	}
+	catch (const std::exception &e) {
+	    Base::Console().Error("%s\n", e.what());
+	}
+	catch (const char* e) {
+	    Base::Console().Error("%s\n", e);
+	}
 #ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
+	catch (...) {
+	    Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
+	}
 #endif
-        reader.readEndElement("Property");
-    }
-    reader.readEndElement("Properties");
-    */
 }
 
 void PropertyContainer::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus)

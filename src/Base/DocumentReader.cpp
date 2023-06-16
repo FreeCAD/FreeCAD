@@ -19,41 +19,24 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-//#include "PreCompiled.h"
-
-//#include <locale>
-
 #include "DocumentReader.h"
-
-//#include "Reader.h"
-//#include "Base64.h"
-//#include "Console.h"
 #include "InputSource.h"
-//#include "Persistence.h"
-//#include "Sequencer.h"
-//#include "Stream.h"
 #include "XMLTools.h"
-//#ifdef _MSC_VER
-//#include <zipios++/zipios-config.h>
-//#endif
-//#include <zipios++/zipinputstream.h>
 
 #include <Base/Reader.h>
 #include <Base/Parameter.h>
+#include "Persistence.h"
+#include "Sequencer.h"
+
+
+#ifdef _MSC_VER
+#include <zipios++/zipios-config.h>
+#endif
+#include <zipios++/zipinputstream.h>
+
 #ifndef _PreComp_
-//#   include <cassert>
-//#   include <memory>
 #   include <xercesc/dom/DOM.hpp>
-//#   include <xercesc/framework/LocalFileFormatTarget.hpp>
-//#   include <xercesc/framework/LocalFileInputSource.hpp>
-//#   include <xercesc/framework/MemBufFormatTarget.hpp>
-//#   include <xercesc/framework/MemBufInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
-//#   include <xercesc/sax/ErrorHandler.hpp>
-//#   include <xercesc/sax/SAXParseException.hpp>
-//#   include <sstream>
-//#   include <string>
-//#   include <utility>
 #endif
 
 XERCES_CPP_NAMESPACE_USE
@@ -72,25 +55,8 @@ DocumentReader::DocumentReader()
     gDoSchema              = false;
     gSchemaFullChecking    = false;
     gDoCreate              = true;
-
-	/*
-    gOutputEncoding        = nullptr;
-    gMyEOLSequence         = nullptr;
-
-    gSplitCdataSections    = true;
-    gDiscardDefaultContent = true;
-    gUseFilter             = true;
-    gFormatPrettyPrint     = true;
-    */
-
 }
 
-//DocumentReader::~DocumentReader()
-//{
-    //delete parser;
-//}
-//int DocumentReader::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource& inputSource)
-//int DocumentReader::LoadDocument(std::istream& Stream,std::string filename)
 int DocumentReader::LoadDocument(Base::Reader& reader)
 {
 	FileInfo _File( reader.getFileName() );
@@ -139,7 +105,7 @@ int DocumentReader::LoadDocument(Base::Reader& reader)
         return 0;
     }
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument*   _pDocument = parser->adoptDocument();
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument = parser->adoptDocument();
     delete parser;
     delete errReporter;
 
@@ -174,9 +140,7 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElement(const cha
     for (DOMNode *clChild = _pGroupNode->getFirstChild(); clChild != nullptr;  clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             if (!strcmp(Type,StrX(clChild->getNodeName()).c_str())) {
-                if (clChild->getAttributes()->getLength() > 0) {
-					return static_cast<DOMElement*>(clChild);
-                }
+            	return static_cast<DOMElement*>(clChild);
             }
         }
     }
@@ -191,9 +155,6 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElement(XERCES_CP
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             if (!strcmp(Type,StrX(clChild->getNodeName()).c_str())) {
             	return static_cast<DOMElement*>(clChild);
-                //if (clChild->getAttributes()->getLength() > 0) {
-					//return static_cast<DOMElement*>(clChild);
-                //}
             }
         }
     }
@@ -216,41 +177,22 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindNextElement(XERCE
     return nullptr;
 }
 
-/*
-//CONTENT:
-const char * DocumentReader::GetContent(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DOMEl) const
-{
-    if (!DOMEl)
-        return nullptr;
-    return StrX(DOMEl->getAttribute(XStr("Value").unicodeForm())).c_str();
-}
-
-std::string DocumentReader::GetContentASCII(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DOMEl) const
-{
-	//return std::string(StrXUTF8(pcElem->getNodeValue()).c_str() );
-	//maybe its better to use getNodeValue()
-    if (!DOMEl)
-        return nullptr;
-    return std::string( StrXUTF8(DOMEl->getAttribute(XStr("Value").unicodeForm())).c_str() );
-}
-*/
-
-long DocumentReader::ContentToInt( const char* content ) const
+long DocumentReader::ContentToInt( const char* content )
 {
 	return atol( content );
 }
 
-unsigned long DocumentReader::ContentToUnsigned(const char* content) const
+unsigned long DocumentReader::ContentToUnsigned(const char* content)
 {
 	return strtoul(content,nullptr,10);
 }
 
-double DocumentReader::ContentToFloat(const char* content) const
+double DocumentReader::ContentToFloat(const char* content)
 {
 	return atof(content);
 }
 
-bool DocumentReader::ContentToBool(const char* content) const
+bool DocumentReader::ContentToBool(const char* content)
 {
 	if (strcmp(content,"1"))
         return false;
@@ -282,18 +224,16 @@ const char * DocumentReader::GetAttribute(const char* Attr) const
         return nullptr;
     }
     const XMLCh * attr = _pGroupNode->getAttribute( xstr.unicodeForm() );
-    //stringLen
     return strdup( StrX( attr ).c_str() );//strdup is needed since pointer from strx only exists in context where StrX() is created.
 }
-
-/*
-unsigned int Base::XMLReader::getAttributeCount() const
-{
-    return static_cast<unsigned int>(AttrMap.size());
-}
-*/
-
 //Status
+void Base::DocumentReader::setPartialRestore(bool on)
+{
+    setStatus(PartialRestore, on);
+    setStatus(PartialRestoreInDocumentObject, on);
+    setStatus(PartialRestoreInProperty, on);
+    setStatus(PartialRestoreInObject, on);
+}
 
 void Base::DocumentReader::clearPartialRestoreProperty()
 {
@@ -311,4 +251,77 @@ void Base::DocumentReader::setStatus(ReaderStatus pos, bool on)
     StatusBits.set(static_cast<size_t>(pos), on);
 }
 
+const char *Base::DocumentReader::addFile(const char* Name, Base::Persistence *Object)
+{
+    FileEntry temp;
+    temp.FileName = Name;
+    temp.Object = Object;
 
+    FileList.push_back(temp);
+    FileNames.push_back( temp.FileName );
+
+    return Name;
+}
+
+void Base::DocumentReader::readFiles(zipios::ZipInputStream &zipstream) const
+{
+    // It's possible that not all objects inside the document could be created, e.g. if a module
+    // is missing that would know these object types. So, there may be data files inside the zip
+    // file that cannot be read. We simply ignore these files.
+    // On the other hand, however, it could happen that a file should be read that is not part of
+    // the zip file. This happens e.g. if a document is written without GUI up but is read with GUI
+    // up. In this case the associated GUI document asks for its file which is not part of the ZIP
+    // file, then.
+    // In either case it's guaranteed that the order of the files is kept.
+    zipios::ConstEntryPointer entry;
+    try {
+        entry = zipstream.getNextEntry();
+    }
+    catch (const std::exception&) {
+        // There is no further file at all. This can happen if the
+        // project file was created without GUI
+        return;
+    }
+    std::vector<FileEntry>::const_iterator it = FileList.begin();
+    Base::SequencerLauncher seq("Importing project files...", FileList.size());
+    while (entry->isValid() && it != FileList.end()) {
+        std::vector<FileEntry>::const_iterator jt = it;
+        // Check if the current entry is registered, otherwise check the next registered files as soon as
+        // both file names match
+        while (jt != FileList.end() && entry->getName() != jt->FileName)
+            ++jt;
+        // If this condition is true both file names match and we can read-in the data, otherwise
+        // no file name for the current entry in the zip was registered.
+        if (jt != FileList.end()) {
+            try {
+        		Base::Reader reader(zipstream, jt->FileName, FileVersion);
+	            jt->Object->RestoreDocFile(reader);
+                if (reader.getLocalReader())
+                    reader.getLocalReader()->readFiles(zipstream);
+                if (reader.getLocalDocReader())
+                	reader.getLocalDocReader()->readFiles(zipstream);
+                    
+            }catch(...) {
+                // For any exception we just continue with the next file.
+                // It doesn't matter if the last reader has read more or
+                // less data than the file size would allow.
+                // All what we need to do is to notify the user about the
+                // failure.
+                Base::Console().Error("Reading failed from embedded file(DocumentReader): %s\n", entry->toString().c_str());
+            }
+            // Go to the next registered file name
+            it = jt + 1;
+        }
+
+        seq.next();
+
+        // In either case we must go to the next entry
+        try {
+            entry = zipstream.getNextEntry();
+        }
+        catch (const std::exception&) {
+            // there is no further entry
+            break;
+        }
+    }
+}
