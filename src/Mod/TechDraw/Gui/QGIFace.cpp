@@ -110,8 +110,8 @@ void QGIFace::draw()
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyleCurrent = m_styleDef;
-                m_styleNormal = m_fillStyleCurrent;
+                m_brush.setStyle(m_styleDef);
+                m_styleNormal = m_styleDef;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
@@ -121,7 +121,7 @@ void QGIFace::draw()
         } else if (m_mode == SvgFill) {
             m_brush.setTexture(QPixmap());
             m_styleNormal = m_styleDef;
-            m_fillStyleCurrent = m_styleNormal;
+            m_brush.setStyle(m_styleDef);
             loadSvgHatch(m_fileSpec);
             if (m_hideSvgTiles) {
                 //bitmap hatch doesn't need clipping
@@ -137,7 +137,7 @@ void QGIFace::draw()
                 m_svgHatchArea->show();
             }
         } else if (m_mode == BitmapFill) {
-            m_fillStyleCurrent = Qt::TexturePattern;
+            // m_brush.setStyle(Qt::TexturePattern);
             m_texture = textureFromBitmap(m_fileSpec);
             m_brush.setTexture(m_texture);
         } else if (m_mode == PlainFill) {
@@ -156,7 +156,7 @@ void QGIFace::setPrettyNormal() {
 //    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
         (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
-        m_fillStyleCurrent = Qt::TexturePattern;
+        // m_brush.setStyle(Qt::TexturePattern);
         m_brush.setTexture(m_texture);
     } else {
         m_brush.setTexture(QPixmap());
@@ -166,15 +166,15 @@ void QGIFace::setPrettyNormal() {
 
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
-    m_fillStyleCurrent = Qt::SolidPattern;
-    m_brush.setTexture(QPixmap());
+    m_brush.setStyle(Qt::SolidPattern);
+    // m_brush.setTexture(QPixmap());
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
 //    Base::Console().Message("QGIF::setPrettySel()\n");
-    m_fillStyleCurrent = Qt::SolidPattern;
-    m_brush.setTexture(QPixmap());
+    m_brush.setStyle(Qt::SolidPattern);
+    // m_brush.setTexture(QPixmap());
     QGIPrimPath::setPrettySel();
 }
 

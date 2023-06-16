@@ -74,6 +74,7 @@ public:
     static int getPrefArrowStyle();
     static double getPrefArrowSize();
     static double getOverlapAdjust(int style, double size);
+    void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
 
 protected:
     QPainterPath makeFilledTriangle(double length, double width, bool flipped);
@@ -90,7 +91,6 @@ protected:
     QPainterPath makePyramid(Base::Vector3d dir, double length);
 
 private:
-    QBrush m_brush;
     Qt::BrushStyle m_fill;
     double m_size;
     int m_style;

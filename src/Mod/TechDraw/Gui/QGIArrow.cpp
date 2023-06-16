@@ -44,7 +44,7 @@ QGIArrow::QGIArrow() :
     m_dir(Base::Vector3d(1.0, 0.0, 0.0))
 {
     setFlipped(false);
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     m_brush.setStyle(m_fill);
     m_colDefFill = getNormalColor();
     m_colNormalFill = m_colDefFill;
@@ -115,7 +115,7 @@ QPainterPath QGIArrow::makeFilledTriangle(double length, double width, bool flip
     path.lineTo(QPointF(Rez::guiX(length), Rez::guiX(-width)));
     path.lineTo(QPointF(Rez::guiX(length), Rez::guiX(width)));
     path.closeSubpath();
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     return path;
 }
 
@@ -134,7 +134,7 @@ QPainterPath QGIArrow::makeFilledTriangle(Base::Vector3d dir, double length, dou
     path.lineTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
     path.closeSubpath();
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     return path;
 }
 
@@ -149,7 +149,7 @@ QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
     path.moveTo(QPointF(Rez::guiX(length), Rez::guiX(-width)));
     path.lineTo(QPointF(0., 0.));
     path.lineTo(QPointF(Rez::guiX(length), Rez::guiX(width)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -166,7 +166,7 @@ QPainterPath QGIArrow::makeOpenArrow(Base::Vector3d dir, double length, double w
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(0., 0.));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -182,7 +182,7 @@ QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)  
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(length), Rez::guiX(adjWidth * (-width))));
     path.lineTo(QPointF(Rez::guiX(-length), Rez::guiX(adjWidth * width)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -200,7 +200,7 @@ QPainterPath QGIArrow::makeHashMark(Base::Vector3d dir, double length, double wi
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -210,7 +210,7 @@ QPainterPath QGIArrow::makeDot(double length, double width, bool flipped)   //cl
     QPainterPath path;
     path.moveTo(0.0, 0.0);                                  ////(0, 0) is Center of dot
     path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     return path;
 }
 
@@ -220,7 +220,7 @@ QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
     QPainterPath path;
     path.moveTo(0.0, 0.0);                                  ////(0, 0) is Center of dot
     path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -235,7 +235,7 @@ QPainterPath QGIArrow::makeForkArrow(double length, double width, bool flipped)
     path.moveTo(QPointF(Rez::guiX(length), Rez::guiX(-width)));
     path.lineTo(QPointF(0., 0.));
     path.lineTo(QPointF(Rez::guiX(length), Rez::guiX(width)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -254,7 +254,7 @@ QPainterPath QGIArrow::makeForkArrow(Base::Vector3d dir, double length, double w
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(0., 0.));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
-    setFillStyle(Qt::NoBrush);
+    m_brush.setStyle(Qt::NoBrush);
     return path;
 }
 
@@ -275,7 +275,7 @@ QPainterPath QGIArrow::makePyramid(double length, bool flipped)
     path.lineTo(QPointF(base, Rez::guiX(-half_width)));
     path.lineTo(QPointF(base, Rez::guiX(half_width)));
     path.closeSubpath();
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     return path;
 }
 
@@ -296,7 +296,7 @@ QPainterPath QGIArrow::makePyramid(Base::Vector3d dir, double length)
     path.lineTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
     path.closeSubpath();
-    setFillStyle(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
     return path;
 }
 
@@ -337,4 +337,8 @@ double QGIArrow::getOverlapAdjust(int style, double size)
             return 0.0;
     }
     return 1.0;  // Unknown
+}
+
+void QGIArrow::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QGIPrimPath::paint(painter, option, widget);
 }

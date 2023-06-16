@@ -372,7 +372,7 @@ void QGILeaderLine::draw()
     aPoint *= baseScale;
     setPos(aPoint);
 
-    m_line->setFillStyle(Qt::NoBrush);
+    m_line->m_brush.setStyle(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
     m_line->setWidth(getLineWidth());
 

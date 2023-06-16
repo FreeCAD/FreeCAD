@@ -63,16 +63,13 @@ public:
     virtual void setNormalColor(QColor c);
     virtual void setCapStyle(Qt::PenCapStyle c);
 
-    //plain color fill parms
-    void setFillStyle(Qt::BrushStyle f) { m_fillStyleCurrent = f; }
-    Qt::BrushStyle getFillStyle() { return m_fillStyleCurrent; }
-
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
     void resetFill();
     void setFillColor(QColor c);
     QColor getFillColor(void) { return m_colDefFill; }
     void setFillOverride(bool b) { m_fillOverride = b; }
+    QBrush m_brush;
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -93,10 +90,6 @@ protected:
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
     Qt::PenCapStyle m_capStyle;
-
-    QBrush m_brush;
-    Qt::BrushStyle m_fillStyleCurrent;                 //current fill style
-    QColor m_fillColorCurrent;                         //current fill color
 
     QColor m_colDefFill;                        //"no color" default normal fill color
     QColor m_colNormalFill;                     //current Normal fill color def or plain fill
