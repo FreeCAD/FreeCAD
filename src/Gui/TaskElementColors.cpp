@@ -28,7 +28,7 @@
 # include <sstream>
 #endif
 
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 
 #include "TaskElementColors.h"
@@ -84,7 +84,7 @@ public:
                 auto obj = vpParent->getObject();
                 editDoc = obj->getDocument()->getName();
                 editObj = obj->getNameInDocument();
-                editSub = Data::ComplexGeoData::noElementName(editSub.c_str());
+                editSub = Data::noElementName(editSub.c_str());
             }
         }
         if(editDoc.empty()) {
@@ -162,7 +162,7 @@ public:
             c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
             auto item = new QListWidgetItem(QIcon(px),
-                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()),
+                    QString::fromLatin1(Data::oldElementName(v.first.c_str()).c_str()),
                     ui->elementList);
             item->setData(Qt::UserRole,c);
             item->setData(Qt::UserRole+1,QString::fromLatin1(v.first.c_str()));
@@ -419,7 +419,7 @@ void ElementColors::onHideSelectionClicked() {
         if(!subs.empty()) {
             for(auto &sub : subs) {
                 if(boost::starts_with(sub,d->editSub)) {
-                    auto name = Data::ComplexGeoData::noElementName(sub.c_str()+d->editSub.size());
+                    auto name = Data::noElementName(sub.c_str()+d->editSub.size());
                     name += ViewProvider::hiddenMarker();
                     d->addItem(-1,name.c_str());
                 }

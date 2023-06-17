@@ -5702,8 +5702,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Змяніць %1</translation>
     </message>
@@ -5795,20 +5795,20 @@ Do you want to continue?</source>
       <translation>Без абраных спасылак</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6436,7 +6436,7 @@ for collision or distance filtering.</source>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
       <translation>Падзяляе злучэнне фігур на асобныя аб'екты.
-Створыць 'Фільтр злучаных фігур' для кожнай фігуры.</translation>
+Стварае 'Фільтр злучаных фігур' для кожнай фігуры.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6735,7 +6735,7 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
       <translation>Нарэзаць абраны аб'ект іншымі аб'ектамі, і падзяліце яго на часткі.
-Створыць 'Фільтр злучаных фігур' для кожнага разрэзу.</translation>
+Стварае 'Фільтр злучаных фігур' для кожнага разрэзу.</translation>
     </message>
   </context>
   <context>

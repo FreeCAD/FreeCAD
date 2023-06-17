@@ -75,7 +75,7 @@ public:
 
                 Gui::Command::commitCommand();
             }
-            catch (const Base::Exception& e) {
+            catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Failed to add point"));

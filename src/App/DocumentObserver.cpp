@@ -26,7 +26,7 @@
 #include <Base/Tools.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObserver.h"
 #include "GeoFeature.h"
@@ -353,11 +353,11 @@ const std::string &SubObjectT::getSubName() const {
 }
 
 std::string SubObjectT::getSubNameNoElement() const {
-    return Data::ComplexGeoData::noElementName(subname.c_str());
+    return Data::noElementName(subname.c_str());
 }
 
 const char *SubObjectT::getElementName() const {
-    return Data::ComplexGeoData::findElementName(subname.c_str());
+    return Data::findElementName(subname.c_str());
 }
 
 std::string SubObjectT::getNewElementName() const {

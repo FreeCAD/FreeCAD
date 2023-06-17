@@ -40,6 +40,7 @@ install_manifest.txt
 /cmake-build*/
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
+/conda/environment.yml
 OpenSCAD_rc.py
 tags
 

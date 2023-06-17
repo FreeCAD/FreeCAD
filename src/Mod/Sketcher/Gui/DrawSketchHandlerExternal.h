@@ -166,7 +166,7 @@ public:
                      * handler is destroyed by the quit() method on pressing the
                      * right button of the mouse */
                 }
-                catch (const Base::Exception& e) {
+                catch (const Base::Exception&) {
                     Gui::NotifyError(
                         sketchgui,
                         QT_TRANSLATE_NOOP("Notifications", "Error"),
