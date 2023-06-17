@@ -44,11 +44,27 @@ class ModelSelect : public QDialog
 public:
     explicit ModelSelect(QWidget* parent = nullptr);
     ~ModelSelect() override;
+
+    void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
     void accept() override;
     void reject() override;
 
 private:
+    void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
+    void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
+    void addModels(QStandardItem& parent, const std::string& top, const std::string& folder,
+                   const QIcon& icon);
+    void updateMaterialModel(const std::string& uuid);
+    void clearMaterialModel(void);
+    void createModelTree();
+    void setHeaders(QStandardItemModel *model);
+    void setColumnWidths(QTableView *table);
+    void updateModelProperties(const Materials::Model& model);
+    void createModelProperties();
+    Materials::ModelManager &getModelManager() { return _modelManager; }
+
     std::unique_ptr<Ui_ModelSelect> ui;
+    Materials::ModelManager _modelManager;
 };
 
 } // namespace MatGui

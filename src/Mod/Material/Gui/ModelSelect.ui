@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Material Models</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeView" name="treeView"/>
+     <widget class="QTreeView" name="treeModels"/>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>0</number>

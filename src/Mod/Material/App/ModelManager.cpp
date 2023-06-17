@@ -57,6 +57,16 @@ ModelManager::~ModelManager()
 {
 }
 
+bool ModelManager::isModel(const fs::path &p)
+{
+    if (!fs::is_regular_file(p))
+        return false;
+    // check file extension
+    if (p.extension() == ".yml")
+        return true;
+    return false;
+}
+
 ModelManager *ModelManager::getManager()
 {
     if (manager == nullptr)
