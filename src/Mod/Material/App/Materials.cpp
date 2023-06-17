@@ -97,18 +97,19 @@ void Material::addModel(const std::string &uuid)
 {
     ModelManager manager;
 
-    const Model *model = manager.getModel(uuid);
+    try {
+        const Model &model = manager.getModel(uuid);
 
-    if (model) {
         _modelUuids.push_back(uuid);
 
-        for (auto it = model->begin(); it != model->end(); it++)
+        for (auto it = model.begin(); it != model.end(); it++)
         {
             std::string propertyName = it->first;
             ModelProperty property = it->second;
 
             _properties[propertyName] = ModelValueProperty(property);
         }
+    } catch (ModelNotFound) {
     }
 }
 
@@ -116,18 +117,19 @@ void Material::addAppearanceModel(const std::string &uuid)
 {
     ModelManager manager;
 
-    const Model *model = manager.getModel(uuid);
+    try {
+        const Model &model = manager.getModel(uuid);
 
-    if (model) {
         _appearanceModelUuids.push_back(uuid);
 
-        for (auto it = model->begin(); it != model->end(); it++)
+        for (auto it = model.begin(); it != model.end(); it++)
         {
             std::string propertyName = it->first;
             ModelProperty property = it->second;
 
             _appearanceProperties[propertyName] = ModelValueProperty(property);
         }
+    } catch (ModelNotFound) {
     }
 }
 

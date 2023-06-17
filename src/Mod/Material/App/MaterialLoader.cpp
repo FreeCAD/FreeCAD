@@ -195,7 +195,7 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
 
         model = new MaterialYamlEntry(library, name, modelDir, uuid, yamlroot);
         showYaml(yamlroot);
-    } catch (YAML::Exception ex) {
+    } catch (YAML::Exception) {
         Base::Console().Log("YAML parsing error: '%s'\n", path.c_str());
 
         // Perhaps try parsing the older format?
@@ -216,6 +216,9 @@ void MaterialLoader::showYaml(const YAML::Node &yaml)
 
 void MaterialLoader::dereference(MaterialEntry *parent, const MaterialEntry *child)
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(child);
+
     // auto parentPtr = parent->getModelPtr();
     // auto childYaml = child->getModel();
     // auto childBase = child->getBase();
@@ -244,6 +247,8 @@ void MaterialLoader::dereference(MaterialEntry *parent, const MaterialEntry *chi
 
 void MaterialLoader::dereference(MaterialEntry *model)
 {
+    Q_UNUSED(model);
+
     // // Avoid recursion
     // if (model->getDereferenced())
     //     return;

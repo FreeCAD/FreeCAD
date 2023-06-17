@@ -38,6 +38,7 @@
 
 #include <QItemSelectionModel>
 
+#include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/ModelManager.h>
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
@@ -300,31 +301,33 @@ void MaterialsEditor::updateCardAppearance(const Materials::Material &card)
         for (auto it = models->begin(); it != models->end(); it++)
         {
             std::string uuid = *it;
-            const Materials::Model *model = getModelManager().getModel(uuid);
-            std::string name = model->getName();
+            try {
+                const Materials::Model &model = getModelManager().getModel(uuid);
+                std::string name = model.getName();
 
-            auto modelRoot = new QStandardItem(QString::fromStdString(name));
-            modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            addExpanded(tree, treeModel, modelRoot);
-            for (auto itp = model->begin(); itp != model->end(); itp++)
-            {
-                QList<QStandardItem*> items;
+                auto modelRoot = new QStandardItem(QString::fromStdString(name));
+                modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+                addExpanded(tree, treeModel, modelRoot);
+                for (auto itp = model.begin(); itp != model.end(); itp++)
+                {
+                    QList<QStandardItem*> items;
 
-                std::string key = itp->first;
-                auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
-                items.append(propertyItem);
+                    std::string key = itp->first;
+                    auto propertyItem = new QStandardItem(QString::fromStdString(key));
+                    propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                    items.append(propertyItem);
 
-                auto valueItem = new QStandardItem(QString::fromStdString(card.getAppearancePropertyValue(key)));
-                valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
-                items.append(valueItem);
+                    auto valueItem = new QStandardItem(QString::fromStdString(card.getAppearancePropertyValue(key)));
+                    valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                    items.append(valueItem);
 
-                auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
-                items.append(typeItem);
+                    auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
+                    items.append(typeItem);
 
-                // addExpanded(tree, modelRoot, propertyItem);
-                modelRoot->appendRow(items);
-                tree->setExpanded(modelRoot->index(), true);
+                    modelRoot->appendRow(items);
+                    tree->setExpanded(modelRoot->index(), true);
+                }
+            } catch (Materials::ModelNotFound) {
             }
         }
     }
@@ -351,32 +354,35 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
         for (auto it = models->begin(); it != models->end(); it++)
         {
             std::string uuid = *it;
-            const Materials::Model *model = getModelManager().getModel(uuid);
-            std::string name = model->getName();
+            try {
+                const Materials::Model &model = getModelManager().getModel(uuid);
+                std::string name = model.getName();
 
-            auto modelRoot = new QStandardItem(QString::fromStdString(name));
-            modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            addExpanded(tree, treeModel, modelRoot);
-            for (auto itp = model->begin(); itp != model->end(); itp++)
-            {
-                QList<QStandardItem*> items;
+                auto modelRoot = new QStandardItem(QString::fromStdString(name));
+                modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+                addExpanded(tree, treeModel, modelRoot);
+                for (auto itp = model.begin(); itp != model.end(); itp++)
+                {
+                    QList<QStandardItem*> items;
 
-                std::string key = itp->first;
-                Materials::ModelProperty modelProperty = itp->second;
-                auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                propertyItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
-                items.append(propertyItem);
+                    std::string key = itp->first;
+                    Materials::ModelProperty modelProperty = itp->second;
+                    auto propertyItem = new QStandardItem(QString::fromStdString(key));
+                    propertyItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
+                    items.append(propertyItem);
 
-                auto valueItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(key)));
-                valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
-                items.append(valueItem);
+                    auto valueItem = new QStandardItem(QString::fromStdString(card.getPropertyValue(key)));
+                    valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
+                    items.append(valueItem);
 
-                auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
-                items.append(typeItem);
+                    auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
+                    items.append(typeItem);
 
-                // addExpanded(tree, modelRoot, propertyItem);
-                modelRoot->appendRow(items);
-                tree->setExpanded(modelRoot->index(), true);
+                    // addExpanded(tree, modelRoot, propertyItem);
+                    modelRoot->appendRow(items);
+                    tree->setExpanded(modelRoot->index(), true);
+                }
+            } catch (Materials::ModelNotFound) {
             }
         }
     }
@@ -401,6 +407,8 @@ void MaterialsEditor::updateCard(const std::string &uuid)
 
 void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected)
 {
+    Q_UNUSED(deselected);
+
     QStandardItemModel *model = static_cast<QStandardItemModel *>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++)
@@ -463,6 +471,8 @@ QWidget* MaterialDelegate::createEditor(
 QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &propertyName, const QString &propertyType,
     const QString &propertyValue) const
 {
+    Q_UNUSED(propertyName);
+
                     // minimum=None, maximum=None, stepsize=None, precision=12)
     // auto ui = Gui::WidgetFactory();
     QWidget* widget = nullptr;

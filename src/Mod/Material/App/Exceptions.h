@@ -20,37 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGER_H
-#define MATERIAL_MODELMANAGER_H
+#ifndef MATERIAL_EXCEPTIONS_H
+#define MATERIAL_EXCEPTIONS_H
 
-#include "Exceptions.h"
-#include "Model.h"
+#include <Base/Exception.h>
+#include <Base/BaseClass.h>
 
 namespace Materials {
 
-class MaterialsExport ModelManager : public Base::BaseClass
+
+class ModelNotFound : public Base::Exception
 {
-    TYPESYSTEM_HEADER();
-
 public:
-    explicit ModelManager();
-    virtual ~ModelManager();
-
-    static ModelManager *getManager();
-
-    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    std::map<std::string, Model*> *getModels() { return _modelMap; }
-    const Model &getModel(const std::string& uuid) const;
-    const Model &getModelByPath(const std::string &path) const;
-    const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
-
-private:
-
-    static ModelManager *manager;
-    static std::list<ModelLibrary*> *_libraryList;
-    static std::map<std::string, Model*> *_modelMap;
+    ModelNotFound(){}
+    explicit ModelNotFound(char* msg){this->setMessage(msg);}
+    ~ModelNotFound() throw() override {}
 };
 
 } // namespace Materials
 
-#endif // MATERIAL_MODELMANAGER_H
+#endif // MATERIAL_EXCEPTIONS_H

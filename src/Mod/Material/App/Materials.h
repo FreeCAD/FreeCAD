@@ -123,8 +123,8 @@ public:
     void setDescription(const std::string& description) { _description = description; }
     void setURL(const std::string& url) { _url = url; }
     void setReference(const std::string& reference) { _reference = reference; }
-    void addTag(const std::string& tag) {}
-    void removeTag(const std::string& tag) {}
+    void addTag(const std::string& tag) { Q_UNUSED(tag); }
+    void removeTag(const std::string& tag) { Q_UNUSED(tag); }
     void addModel(const std::string& uuid);
     void addAppearanceModel(const std::string& uuid);
 
