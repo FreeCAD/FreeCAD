@@ -65,8 +65,12 @@ PyObject* ModelManagerPy::getModel(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &uuid))
         return nullptr;
 
-    const Model *model = getModelManagerPtr()->getModel(uuid);
-    return new ModelPy(new Model(*model));
+    try {
+        const Model model = getModelManagerPtr()->getModel(uuid);
+        return new ModelPy(new Model(model));
+    } catch (ModelNotFound) {
+        return nullptr;
+    }
 }
 
 PyObject* ModelManagerPy::getModelByPath(PyObject *args)
@@ -79,12 +83,20 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
     std::string libPath(lib);
     if (libPath.length() > 0)
     {
-        const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
-        return new ModelPy(new Model(model));
+        try {
+            const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
+            return new ModelPy(new Model(model));
+        } catch (ModelNotFound) {
+            return nullptr;
+        }
     }
 
-    const Model &model = getModelManagerPtr()->getModelByPath(path);
-    return new ModelPy(new Model(model));
+    try {
+        const Model &model = getModelManagerPtr()->getModelByPath(path);
+        return new ModelPy(new Model(model));
+    } catch (ModelNotFound) {
+        return nullptr;
+    }
 }
 
 Py::List ModelManagerPy::getModelLibraries() const

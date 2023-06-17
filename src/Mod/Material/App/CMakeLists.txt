@@ -38,6 +38,7 @@ generate_from_xml(ModelPropertyPy)
 generate_from_xml(ModelPy)
 
 SET(Python_SRCS
+    Exceptions.h
     MaterialManagerPy.xml
     MaterialManagerPyImpl.cpp
     MaterialPy.xml
