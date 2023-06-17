@@ -55,16 +55,16 @@ public:
     virtual void setPrettyNormal();
     virtual void setPrettyPre();
     virtual void setPrettySel();
-    virtual void setWidth(double w);
+    virtual void setWidth(double width);
     virtual double getWidth() { return m_pen.widthF();}
     Qt::PenStyle getStyle() { return m_styleCurrent; }
-    void setStyle(Qt::PenStyle s);
-    void setStyle(int s);
-    virtual void setNormalColor(QColor c);
+    void setStyle(Qt::PenStyle style);
+    void setStyle(int style);
+    virtual void setNormalColor(QColor color);
     virtual void setCapStyle(Qt::PenCapStyle c);
 
-    void setFill(QColor c, Qt::BrushStyle s);
-    void setFill(QBrush b);
+    void setFill(QColor color, Qt::BrushStyle style);
+    void setFill(QBrush brush);
     void resetFill();
     void setFillColor(QColor c);
     QColor getFillColor(void) { return m_colDefFill; }
@@ -82,8 +82,6 @@ protected:
     virtual QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
     virtual Qt::PenCapStyle prefCapStyle(void);
-
-    bool isHighlighted;
 
     QPen m_pen;
     QColor m_colNormal;
