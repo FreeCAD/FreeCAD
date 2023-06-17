@@ -30,6 +30,7 @@
 #include <Gui/MainWindow.h>
 
 #include "MaterialsEditor.h"
+#include "ModelSelect.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -128,11 +129,11 @@ void CmdMaterialModelSelect::activated(int iMsg)
 
     Base::Console().Log("Materials_ModelSelect\n");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Material model selection"));
-    addModule(Doc,"ModelSelect");
-    doCommand(Doc,"ModelSelect.openEditor()");
-    commitCommand();
-    // updateActive();
+    static QPointer<QDialog> dlg = nullptr;
+    if (!dlg)
+        dlg = new MatGui::ModelSelect(Gui::getMainWindow());
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->show();
 }
 
 bool CmdMaterialModelSelect::isActive()
