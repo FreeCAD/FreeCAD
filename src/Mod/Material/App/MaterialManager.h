@@ -41,7 +41,7 @@ public:
 
     static std::list<MaterialLibrary*>* getMaterialLibraries();
     std::map<std::string, Material *> *getMaterials() { return _materialMap; }
-    const Material &getMaterial(const std::string &uuid) const { return *(_materialMap->at(uuid)); }
+    const Material& getMaterial(const std::string& uuid) const;
     const Material &getMaterialByPath(const std::string &path) const;
     const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
 

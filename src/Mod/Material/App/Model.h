@@ -197,7 +197,7 @@ public:
         return !operator==(m);
     }
 
-    ModelProperty& operator[] (const std::string& key) { return _properties.at(key); } // Throw exception if not found
+    ModelProperty& operator[](const std::string& key);
     void addProperty(ModelProperty &property) { _properties[property.getName()] = property; }
 
     using iterator=typename std::map<std::string, ModelProperty>::iterator;

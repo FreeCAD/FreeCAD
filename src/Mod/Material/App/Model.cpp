@@ -25,6 +25,7 @@
 #endif
 
 #include <string>
+#include "Exceptions.h"
 #include "Model.h"
 
 
@@ -255,5 +256,14 @@ Model::Model(const ModelLibrary &library, ModelType type, const std::string &nam
 
 Model::~Model()
 {}
+
+ModelProperty& Model::operator[] (const std::string& key)
+{
+    try {
+        return _properties.at(key);
+    } catch (std::out_of_range e) {
+        throw PropertyNotFound();
+    }
+}
 
 #include "moc_Model.cpp"

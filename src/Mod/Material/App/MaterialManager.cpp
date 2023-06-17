@@ -26,6 +26,7 @@
 
 #include <App/Application.h>
 
+#include "Exceptions.h"
 #include "ModelManager.h"
 #include "MaterialManager.h"
 #include "MaterialLoader.h"
@@ -76,6 +77,15 @@ bool MaterialManager::isCard(const fs::path &p)
     return false;
 }
 
+const Material &MaterialManager::getMaterial(const std::string &uuid) const
+{
+    try {
+        return *(_materialMap->at(uuid));
+    } catch (std::out_of_range e) {
+        throw MaterialNotFound();
+    }
+}
+
 std::list<MaterialLibrary *> *MaterialManager::getMaterialLibraries()
 {
     if (_libraryList == nullptr)
@@ -95,21 +105,19 @@ std::list<MaterialLibrary *> *MaterialManager::getMaterialLibraries()
 const Material &MaterialManager::getMaterialByPath(const std::string &path) const
 {
     const std::string &uuid = getUUIDFromPath(path);
-    return *(_materialMap->at(uuid));
+    return getMaterial(uuid);
 }
 
 const std::string MaterialManager::getUUIDFromPath(const std::string &path) const
 {
     QDir dirPath(QString::fromStdString(path));
     std::string normalized = dirPath.absolutePath().toStdString();
-    Material* material = nullptr;
     try {
-        material = _materialPathMap->at(normalized);
+        Material* material = _materialPathMap->at(normalized);
+        return material->getUUID();
     } catch (std::out_of_range e) {
-        Base::Console().Log("MaterialManager::getUUIDFromPath error: '%s'\n", normalized.c_str());
-        return "";
+        throw MaterialNotFound();
     }
-    return material->getUUID();
 }
 
 const Material &MaterialManager::getMaterialByPath(const std::string &path, const std::string &libraryPath) const

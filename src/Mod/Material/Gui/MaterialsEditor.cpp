@@ -426,7 +426,6 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
             {
                 Base::Console().Log("Error %s\n", e.what());
                 clearCard();
-                // std::cerr << e.what() << '\n';
             }
 
         }

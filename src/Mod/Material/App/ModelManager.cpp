@@ -80,7 +80,6 @@ const Model &ModelManager::getModel(const std::string &uuid) const
         return *(_modelMap->at(uuid));
     } catch (std::out_of_range e) {
         throw ModelNotFound();
-        // return nullptr;
     }
 }
 
@@ -88,9 +87,8 @@ const Model &ModelManager::getModelByPath(const std::string &path) const
 {
     const std::string &uuid = ModelLoader::getUUIDFromPath(path);
     const Model &model = getModel(uuid);
-    // if (model)
-        return model;
-    // throw ModelNotFound();
+
+    return model;
 }
 
 const Model &ModelManager::getModelByPath(const std::string &path, const std::string &libraryPath) const

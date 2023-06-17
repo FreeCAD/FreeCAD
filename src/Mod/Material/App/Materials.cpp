@@ -161,23 +161,19 @@ void Material::setAppearanceProperty(const std::string& name, const std::string 
 
 const std::string Material::getPropertyValue(const std::string &name) const
 {
-    // const ModelValueProperty &property = _properties.at(name);
     try {
         return _properties.at(name).getValue();
     } catch (std::out_of_range e) {
-        Base::Console().Log("%s\n", e.what());
-        return "";
+        throw PropertyNotFound();
     }
 }
 
 const std::string Material::getAppearancePropertyValue(const std::string &name) const
 {
-    // const ModelValueProperty &property = _properties.at(name);
     try {
         return _appearanceProperties.at(name).getValue();
     } catch (std::out_of_range e) {
-        Base::Console().Log("%s\n", e.what());
-        return "";
+        throw PropertyNotFound();
     }
 }
 

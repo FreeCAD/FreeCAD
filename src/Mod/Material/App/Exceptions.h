@@ -37,6 +37,22 @@ public:
     ~ModelNotFound() throw() override {}
 };
 
+class MaterialNotFound : public Base::Exception
+{
+public:
+    MaterialNotFound(){}
+    explicit MaterialNotFound(char* msg){this->setMessage(msg);}
+    ~MaterialNotFound() throw() override {}
+};
+
+class PropertyNotFound : public Base::Exception
+{
+public:
+    PropertyNotFound(){}
+    explicit PropertyNotFound(char* msg){this->setMessage(msg);}
+    ~PropertyNotFound() throw() override {}
+};
+
 } // namespace Materials
 
 #endif // MATERIAL_EXCEPTIONS_H
