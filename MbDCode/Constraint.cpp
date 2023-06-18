@@ -45,6 +45,14 @@ void MbD::Constraint::prePosIC()
 	Item::prePosIC();
 }
 
+void MbD::Constraint::prePosKine()
+{
+	//"Preserve lam calculated from AccIC for possible use by DynIntegrator if system is not kinematic."
+	auto lamOld = lam;
+	this->prePosIC();
+	lam = lamOld;
+}
+
 void MbD::Constraint::fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	if (this->type() == MbD::essential) {
@@ -69,6 +77,11 @@ void MbD::Constraint::fillRedundantConstraints(std::shared_ptr<Constraint> sptr,
 	if (this->type() == MbD::redundant) {
 		redunConstraints->push_back(sptr);
 	}
+}
+
+void MbD::Constraint::fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	allConstraints->push_back(sptr);
 }
 
 MbD::ConstraintType MbD::Constraint::type()
@@ -122,4 +135,9 @@ void MbD::Constraint::outputStates()
 void MbD::Constraint::preDyn()
 {
 	mu = 0.0;
+}
+
+void MbD::Constraint::fillPosKineError(FColDsptr col)
+{
+	col->atiplusNumber(iG, aG);
 }

@@ -4,17 +4,17 @@
 #include "RowTypeMatrix.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class FullColumn;
-	template <typename T>
+	template<typename T>
 	class FullRow;
 
-	template <typename T>
+	template<typename T>
 	class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
 	{
 	public:
 		FullMatrix() {}
-		FullMatrix(int m) : RowTypeMatrix<std::shared_ptr<FullRow<T>>>(m) 
+		FullMatrix(int m) : RowTypeMatrix<std::shared_ptr<FullRow<T>>>(m)
 		{
 		}
 		FullMatrix(int m, int n) {
@@ -47,10 +47,17 @@ namespace MbD {
 		std::shared_ptr<FullMatrix<T>> negated();
 		void symLowerWithUpper();
 		void atijputFullColumn(int i, int j, std::shared_ptr<FullColumn<T>> fullCol);
+		void atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow);
+		void atijplusNumber(int i, int j, double value);
+		void atijminusNumber(int i, int j, double value);
 		double sumOfSquares() override;
 		void zeroSelf() override;
+		std::shared_ptr<FullMatrix<T>> copy();
+		std::shared_ptr<FullMatrix<T>> operator+(const std::shared_ptr<FullMatrix<T>> fullMat);
+		std::shared_ptr<FullColumn<T>> transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
+
 	};
-	template <>
+	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
 		for (int i = 0; i < this->size(); i++) {
@@ -59,7 +66,7 @@ namespace MbD {
 	}
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::column(int j) {
-		int n = (int) this->size();
+		int n = (int)this->size();
 		auto answer = std::make_shared<FullColumn<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i)->at(j);
@@ -70,7 +77,7 @@ namespace MbD {
 	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
 	{
 		//"a*b = a(i,j)b(j) sum j."
-		int n = (int) this->size();
+		int n = (int)this->size();
 		auto answer = std::make_shared<FullColumn<T>>(n);
 		for (int i = 0; i < n; i++)
 		{
@@ -111,7 +118,7 @@ namespace MbD {
 	template<typename T>
 	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::plusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
 	{
-		int n = (int) this->size();
+		int n = (int)this->size();
 		auto answer = std::make_shared<FullMatrix<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i)->plusFullRow(fullMat->at(i));
@@ -140,7 +147,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::symLowerWithUpper()
 	{
-		int n = (int) this->size();
+		int n = (int)this->size();
 		for (int i = 0; i < n; i++) {
 			for (int j = i + 1; j < n; j++) {
 				this->at(j)->at(i) = this->at(i)->at(j);
@@ -150,11 +157,27 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::atijputFullColumn(int i1, int j1, std::shared_ptr<FullColumn<T>> fullCol)
 	{
-		auto iOffset = i1 - 1;
 		for (int ii = 0; ii < fullCol->size(); ii++)
 		{
-			this->at(iOffset + ii)->at(j1) = fullCol->at(ii);
+			this->at(i1 + ii)->at(j1) = fullCol->at(ii);
 		}
+	}
+	template<typename T>
+	inline void FullMatrix<T>::atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow)
+	{
+		this->at(i)->atiplusFullRow(j, fullRow);
+	}
+	template<typename T>
+	inline void FullMatrix<T>::atijplusNumber(int i, int j, double value)
+	{
+		auto rowi = this->at(i);
+		rowi->at(j) += value;
+	}
+	template<typename T>
+	inline void FullMatrix<T>::atijminusNumber(int i, int j, double value)
+	{
+		auto rowi = this->at(i);
+		rowi->at(j) -= value;
 	}
 	template<>
 	inline double FullMatrix<double>::sumOfSquares()
@@ -183,6 +206,31 @@ namespace MbD {
 	inline void FullMatrix<T>::zeroSelf()
 	{
 		assert(false);
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::copy()
+	{
+		auto m = (int)this->size();
+		auto answer = std::make_shared<FullMatrix<T>>(m);
+		for (int i = 0; i < m; i++)
+		{
+			answer->at(i) = this->at(i)->copy();
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::operator+(const std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		return this->plusFullMatrix(fullMat);
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::transposeTimesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		auto sptr = std::make_shared<FullMatrix<T>>(*this);
+		//auto aaa = fullCol->transpose();
+		//auto bbb = aaa->timesFullMatrix(sptr);
+		//auto ccc = bbb->transpose();
+		return fullCol->transpose()->timesFullMatrix(sptr)->transpose();
 	}
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;

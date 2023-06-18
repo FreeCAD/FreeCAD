@@ -1,7 +1,21 @@
+#include <cmath>
+
 #include "DifferenceOperator.h"
 #include "CREATE.h"
 #include "SingularMatrixError.h"
 #include "LDUFullMatParPv.h"
+#include "FullRow.h"
+
+using namespace MbD;
+
+std::shared_ptr<FullRow<double>> DifferenceOperator::OneOverFactorials = []() {
+	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
+	for (int i = 0; i < oneOverFactorials->size(); i++)
+	{
+		oneOverFactorials->at(i) = 1.0 / std::tgamma(i+1);
+	}
+	return oneOverFactorials;
+}();
 
 void MbD::DifferenceOperator::calcOperatorMatrix()
 {
@@ -12,8 +26,7 @@ void MbD::DifferenceOperator::calcOperatorMatrix()
 
 	this->formTaylorMatrix();
 	try {
-		assert(false);
-		//operatorMatrix = CREATE<LDUFullMatParPv>::With()->inversesaveOriginal(taylorMatrix, false);
+		operatorMatrix = CREATE<LDUFullMatParPv>::With()->inversesaveOriginal(taylorMatrix, false);
 	}
 	catch (SingularMatrixError ex) {
 	}
@@ -21,8 +34,6 @@ void MbD::DifferenceOperator::calcOperatorMatrix()
 
 void MbD::DifferenceOperator::initialize()
 {
-	//OneOverFactorials: = StMFullRow new : 10.
-	//1 to : OneOverFactorials size do : [:i | OneOverFactorials at : i put : 1.0d / i factorial]
 }
 
 void MbD::DifferenceOperator::setiStep(int i)
@@ -35,9 +46,9 @@ void MbD::DifferenceOperator::setorder(int o)
 	order = o;
 }
 
-void MbD::DifferenceOperator::instanciateTaylorMatrix()
+void MbD::DifferenceOperator::instantiateTaylorMatrix()
 {
-	if (taylorMatrix->empty() || (taylorMatrix->nrow() != (order + 1))) {
+	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order + 1))) {
 		taylorMatrix = std::make_shared<FullMatrix<double>>(order + 1, order + 1);
 	}
 }
@@ -45,7 +56,7 @@ void MbD::DifferenceOperator::instanciateTaylorMatrix()
 void MbD::DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
 {
 	//| rowi hi hipower aij |
-	auto rowi = taylorMatrix->at(i);
+	auto& rowi = taylorMatrix->at(i);
 	for (int j = 0; j < k; j++)
 	{
 		rowi->at(j) = 0.0;
@@ -60,4 +71,9 @@ void MbD::DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii,
 		//aij = hipower * (OneOverFactorials at : j - k - 1);
 		//rowi at : j put : aij
 	}
+}
+
+void MbD::DifferenceOperator::settime(double t)
+{
+	time = t;
 }

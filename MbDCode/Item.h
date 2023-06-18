@@ -28,21 +28,21 @@ namespace MbD {
 		virtual void logString(std::string& str);
 
 		virtual void prePosIC();
+		virtual void prePosKine();
+
 		virtual void fillPosICError(FColDsptr col);
 		virtual void fillPosICJacob(FMatDsptr mat);
 		virtual void fillPosICJacob(SpMatDsptr mat);
-		virtual void prePostIC();
-		virtual void prePostICIteration();
-		virtual void prePostICRestart();
 		virtual void postPosIC();
 		virtual void postPosICIteration();
 		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos);
 		virtual void reactivateRedundantConstraints();
 		virtual void fillPosKineError(FColDsptr col);
-		virtual void fillPosKineJacob(FMatDsptr mat);
+		virtual void fillPosKineJacob(SpMatDsptr mat);
 		virtual void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
 		virtual void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
-		
+		virtual void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints);
+
 		virtual void fillqsu(FColDsptr col);
 		virtual void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		virtual void fillqsulam(FColDsptr col);
@@ -52,8 +52,15 @@ namespace MbD {
 		virtual std::string classname();
 		virtual void preDynFirstStep();
 		virtual void preDynStep();
+		virtual void storeDynState();
 		virtual double suggestSmallerOrAcceptDynFirstStepSize(double hnew);
-		
+		virtual void preVelIC();
+		virtual void postVelIC();
+		virtual void fillqsudot(FColDsptr col);
+		virtual void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
+		virtual void fillVelICError(FColDsptr error);
+		virtual void fillVelICJacob(SpMatDsptr jacob);
+		virtual void setqsudotlam(FColDsptr qsudotlam);
 
 		void setName(std::string& str);
 		const std::string& getName() const;

@@ -24,14 +24,20 @@ namespace MbD {
 		void prePosIC() override;
 		void evalrmem();
 		void evalAme();
-
+		void preVelIC() override;
+		FColDsptr pAjOept(int j);
 		double time = 0.0;
+		double priOeOpt(int i);
+		void evalprmempt();
+		void evalpAmept();
+
 		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;
 		std::shared_ptr<FullColumn<Symsptr>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;
-		FColDsptr rmem, prmempt, pprmemptpt, pprOeOptpt;
-		FMatDsptr aAme, pAmept, ppAmeptpt, ppAOeptpt;
+		FColDsptr rmem, prmempt, pprmemptpt, prOeOpt, pprOeOptpt;
+		FMatDsptr aAme, pAmept, ppAmeptpt, pAOept, ppAOeptpt;
 		FMatDsptr pprOeOpEpt;
 		std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> ppAOepEpt;
+		
 	};
 	using EndFrmqctptr = std::shared_ptr<EndFrameqct>;
 }

@@ -2,7 +2,7 @@
 #include "SparseVector.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class SparseColumn : public SparseVector<T>
 	{
 	public:

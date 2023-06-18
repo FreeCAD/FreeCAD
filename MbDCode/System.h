@@ -45,11 +45,13 @@ namespace MbD {
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str) override;
 		double mbdTimeValue();
+		void mbdTimeValue(double t);
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();
-		
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints();
+
 		double maximumMass();
 		double maximumMomentOfInertia();
 

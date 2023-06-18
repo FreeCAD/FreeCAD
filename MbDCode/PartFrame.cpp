@@ -64,11 +64,31 @@ FColDsptr PartFrame::getqXdot() {
 }
 
 void PartFrame::setomeOpO(FColDsptr omeOpO) {
-	//qEdot = EulerParametersDot<double>::FromqEOpAndOmegaOpO(qE, omeOpO);
+	qEdot = EulerParametersDot<double>::FromqEOpAndOmegaOpO(qE, omeOpO);
 }
 
 FColDsptr PartFrame::getomeOpO() {
 	return qE;
+}
+
+void MbD::PartFrame::setqXddot(FColDsptr x)
+{
+	qXddot = x;
+}
+
+FColDsptr MbD::PartFrame::getqXddot()
+{
+	return qXddot;
+}
+
+void MbD::PartFrame::setqEddot(FColDsptr x)
+{
+	qEddot = x;
+}
+
+FColDsptr MbD::PartFrame::getqEddot()
+{
+	return qEddot;
 }
 
 void PartFrame::setPart(Part* x) {
@@ -160,6 +180,16 @@ void MbD::PartFrame::prePosIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosIC(); });
 }
 
+void MbD::PartFrame::prePosKine()
+{
+	iqX = -1;
+	iqE = -1;
+	this->calcPostDynCorrectorIteration();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosKine(); });
+	aGeu->prePosKine();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosKine(); });
+}
+
 FColDsptr MbD::PartFrame::rOpO()
 {
 	return qX;
@@ -185,6 +215,12 @@ void MbD::PartFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::s
 {
 }
 
+void MbD::PartFrame::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	aGeu->fillConstraints(aGeu, allConstraints);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillConstraints(con, allConstraints); });
+}
+
 void MbD::PartFrame::fillqsu(FColDsptr col)
 {
 	col->atiputFullColumn(iqX, qX);
@@ -204,6 +240,18 @@ void MbD::PartFrame::fillqsulam(FColDsptr col)
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsulam(col); });
 	aGeu->fillqsulam(col);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
+}
+
+void MbD::PartFrame::fillqsudot(FColDsptr col)
+{
+	col->atiputFullColumn(iqX, qXdot);
+	col->atiputFullColumn(iqE, qEdot);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudot(col); });
+}
+
+void MbD::PartFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudotWeights(diagMat); });
 }
 
 void MbD::PartFrame::useEquationNumbers()
@@ -281,9 +329,31 @@ void MbD::PartFrame::preDyn()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preDyn(); });
 }
 
+void MbD::PartFrame::storeDynState()
+{
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->storeDynState(); });
+	aGeu->storeDynState();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->storeDynState(); });
+}
+
+void MbD::PartFrame::fillPosKineError(FColDsptr col)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosKineError(col); });
+	aGeu->fillPosKineError(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineError(col); });
+}
+
+void MbD::PartFrame::preVelIC()
+{
+	Item::preVelIC();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->preVelIC(); });
+	aGeu->preVelIC();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preVelIC(); });
+}
+
 void PartFrame::asFixed()
 {
-	for (int i = 0; i < 6; i++) {		
+	for (int i = 0; i < 6; i++) {
 		auto con = CREATE<AbsConstraint>::With(i);
 		con->setOwner(this);
 		aGabs->push_back(con);

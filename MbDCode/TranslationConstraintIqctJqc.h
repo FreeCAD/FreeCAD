@@ -10,6 +10,7 @@ namespace MbD {
         TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
         MbD::ConstraintType type() override;
+        void preVelIC() override;
 
         double pGpt;
         FRowDsptr ppGpXIpt;

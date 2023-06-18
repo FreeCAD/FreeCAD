@@ -6,7 +6,7 @@
 
 namespace MbD {
 
-	template <typename T>
+	template<typename T>
 	class EulerAngleszxz : public EulerArray<T>
 	{
 		//phiA theA psiA aA 

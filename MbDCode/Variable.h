@@ -15,6 +15,7 @@ namespace MbD {
 		const std::string& getName() const;
 		double getValue() override;
 		std::ostream& printOn(std::ostream& s) const override;
+		virtual void setValue(double val);
 
 		std::string name;
 		double value;

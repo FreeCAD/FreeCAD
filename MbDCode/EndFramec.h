@@ -8,9 +8,9 @@
 
 namespace MbD {
     class MarkerFrame;
-    //template <typename T>
+    //template<typename T>
     //class FullColumn;
-    //template <typename T>
+    //template<typename T>
     //class FullMatrix;
 
     class EndFramec : public CartesianFrame

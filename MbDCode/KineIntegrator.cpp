@@ -11,3 +11,10 @@ void MbD::KineIntegrator::preRun()
 	system->logString(str);
 	QuasiIntegrator::preRun();
 }
+
+void MbD::KineIntegrator::runInitialConditionTypeSolution()
+{
+	system->runPosKine();
+	system->runVelKine();
+	system->runAccKine();
+}

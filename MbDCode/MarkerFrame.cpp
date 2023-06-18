@@ -62,7 +62,7 @@ void MbD::MarkerFrame::calcPostDynCorrectorIteration()
 	for (int i = 0; i < 4; i++)
 	{
 		auto& pAOppEi = pAOppE->at(i);
-		prOmOpE->atijputFullColumn(1, i, pAOppEi->timesFullColumn(rpmp));
+		prOmOpE->atijputFullColumn(0, i, pAOppEi->timesFullColumn(rpmp));
 		pAOmpE->at(i) = pAOppEi->timesFullMatrix(aApm);
 	}
 }
@@ -103,6 +103,16 @@ void MbD::MarkerFrame::fillqsulam(FColDsptr col)
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });
 }
 
+void MbD::MarkerFrame::fillqsudot(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudot(col); });
+}
+
+void MbD::MarkerFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudotWeights(diagMat); });
+}
+
 void MbD::MarkerFrame::setqsu(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsu(col); });
@@ -126,6 +136,17 @@ void MbD::MarkerFrame::postPosIC()
 void MbD::MarkerFrame::preDyn()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preDyn(); });
+}
+
+void MbD::MarkerFrame::storeDynState()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->storeDynState(); });
+}
+
+void MbD::MarkerFrame::preVelIC()
+{
+	Item::preVelIC();
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preVelIC(); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)

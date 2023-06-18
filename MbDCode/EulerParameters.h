@@ -5,7 +5,7 @@
 
 namespace MbD {
 
-	template <typename T>
+	template<typename T>
 	class EulerParameters : public EulerArray<T>
 	{
 		//aA aB aC pApE
@@ -19,6 +19,7 @@ namespace MbD {
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<T>>>> ppApEpEtimesMatrix(FMatDsptr mat);
 
 		void initialize();
+		void calc();
 		void calcABC();
 		void calcpApE();
 
@@ -126,6 +127,12 @@ namespace MbD {
 		{
 			pApE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
 		}
+	}
+	template<typename T>
+	inline void EulerParameters<T>::calc()
+	{
+		this->calcABC();
+		this->calcpApE();
 	}
 	template<>
 	inline void EulerParameters<double>::calcABC()

@@ -381,6 +381,36 @@
     <ClCompile Include="LDUFullMatParPv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LDUSpMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUSpMatParPv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUSpMatParPvMarko.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUSpMatParPvPrecise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelICSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelICKineSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelKineSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerAngleszxzDot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerAngleszxzDDot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -756,6 +786,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LDUFullMatParPv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUSpMat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUSpMatParPv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUSpMatParPvMarko.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUSpMatParPvPrecise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelICSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelICKineSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelKineSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngleszxzDot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngleszxzDDot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

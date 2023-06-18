@@ -111,6 +111,11 @@ double MbD::System::mbdTimeValue()
 	return time->getValue();
 }
 
+void MbD::System::mbdTimeValue(double t)
+{
+	//time->value(t);
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::essentialConstraints2()
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
@@ -125,7 +130,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::displacem
 	return dispConstraints;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendicularConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendicularConstraints()
 {
 	auto perpenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillPerpenConstraints(perpenConstraints); });
@@ -137,6 +142,13 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::allRedund
 	auto redunConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillRedundantConstraints(redunConstraints); });
 	return redunConstraints;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::allConstraints()
+{
+	auto constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
+	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
+	return constraints;
 }
 
 double MbD::System::maximumMass()

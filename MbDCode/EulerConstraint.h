@@ -17,6 +17,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
+		void fillPosKineJacob(SpMatDsptr mat) override;
 
 		FRowDsptr pGpE;		//partial derivative of G wrt pE
 		int iqE = -1;

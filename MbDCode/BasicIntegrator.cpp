@@ -33,14 +33,14 @@ void MbD::BasicIntegrator::initializeGlobally()
 	//"Get info from system and prepare for start of simulation."
 	//"Integrator asks system for info. Not system setting integrator."
 
-	this->t = system->tstart;
+	this->sett(system->tstart);
 	this->direction = system->direction;
 	this->orderMax = system->orderMax();
 }
 
-void MbD::BasicIntegrator::setSystem(IntegratorInterface* sys)
+void MbD::BasicIntegrator::setSystem(Solver* sys)
 {
-	system = sys;
+	system = static_cast<IntegratorInterface*>(sys);
 }
 
 void MbD::BasicIntegrator::calcOperatorMatrix()
@@ -50,7 +50,6 @@ void MbD::BasicIntegrator::calcOperatorMatrix()
 
 void MbD::BasicIntegrator::incrementTime()
 {
-	//| istepNew |
 	tpast->insert(tpast->begin(), t);
 
 	if ((int)tpast->size() > (orderMax + 1)) { tpast->pop_back(); }
@@ -60,7 +59,7 @@ void MbD::BasicIntegrator::incrementTime()
 	h = hnew;
 	this->settnew(t + (direction * h));
 	this->calcOperatorMatrix();
-	//system->incrementTime(tnew);
+	system->incrementTime(tnew);
 }
 
 void MbD::BasicIntegrator::incrementTry()
@@ -110,7 +109,7 @@ void MbD::BasicIntegrator::preRun()
 
 void MbD::BasicIntegrator::preStep()
 {
-	assert(false);
+	system->preStep();
 }
 
 void MbD::BasicIntegrator::reportStats()
@@ -126,13 +125,24 @@ void MbD::BasicIntegrator::firstStep()
 void MbD::BasicIntegrator::setorder(int o)
 {
 	order = o;
-	//opBD->setorder(o);
+	opBDF->setorder(o);
 }
 
 void MbD::BasicIntegrator::settnew(double t)
 {
-tnew = t;
-//this->time(double);
+	tnew = t;
+	this->settime(t);
+}
+
+void MbD::BasicIntegrator::sett(double tt)
+{
+	t = tt;
+	opBDF->settime(tt);
+}
+
+void MbD::BasicIntegrator::settime(double tt)
+{
+	opBDF->settime(tt);
 }
 
 void MbD::BasicIntegrator::subsequentSteps()

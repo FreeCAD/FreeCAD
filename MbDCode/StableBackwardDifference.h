@@ -8,7 +8,7 @@ namespace MbD {
         //
     public:
         void formTaylorMatrix() override;
-        void instanciateTaylorMatrix() override;
+        void instantiateTaylorMatrix() override;
         void formTaylorRowwithTimeNodederivative(int i, int ii, int k) override;
     };
 }

@@ -14,7 +14,6 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 		m = spMat->nrow();
 		n = spMat->ncol();
 		matrixA = std::make_shared<SparseMatrix<double>>(m);
-		privateIndicesOfNonZerosInPivotRow = std::make_shared<std::vector<int>>();
 		rowPositionsOfNonZerosInPivotColumn = std::make_shared<std::vector<int>>();
 	}
 	if (saveOriginal) {
@@ -26,11 +25,11 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowElement = spRowi->maxElement();
-		if (maxRowElement == 0) {
+		auto maxRowMagnitude = spRowi->maxMagnitude();
+		if (maxRowMagnitude == 0) {
 			throw SingularMatrixError("");
 		}
-		auto scaling = 1.0 / maxRowElement;
+		auto scaling = 1.0 / maxRowMagnitude;
 		matrixA->at(i) = spRowi->timesconditionedWithTol(scaling, singularPivotTolerance);
 		rightHandSideB->atitimes(i, scaling);
 	}
@@ -58,8 +57,8 @@ void MbD::GESpMatParPvMarkoFast::doPivoting(int p)
 			if (i <= p) throw SingularMatrixError("");
 		}
 		else {
-			aip = spRowi->at(p);
 			markowitzPivotColCount = 0;
+			aip = spRowi->at(p);
 			if (aip < 0) aip = -aip;
 			max = aip;
 			criterionMax = aip / std::pow(2.0, spRowi->size());
@@ -91,8 +90,8 @@ void MbD::GESpMatParPvMarkoFast::doPivoting(int p)
 		i--;
 	}
 	if (p != rowPivoti) {
-		matrixA->swapRows(p, rowPivoti);
-		rightHandSideB->swapRows(p, rowPivoti);
+		matrixA->swapElems(p, rowPivoti);
+		rightHandSideB->swapElems(p, rowPivoti);
 		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
 	}
 	if (max < singularPivotTolerance) throw SingularMatrixError("");

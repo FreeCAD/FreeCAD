@@ -11,10 +11,19 @@
 #include "ICKineIntegrator.h"
 #include "KineIntegrator.h"
 #include "DiscontinuityError.h"
+#include "PosICKineNewtonRaphson.h"
+#include "PosKineNewtonRaphson.h"
+#include "VelICSolver.h"
 
 using namespace MbD;
 
 //class PosICNewtonRaphson;
+
+void MbD::SystemSolver::setSystem(Solver* sys)
+{
+	//Do not use
+	assert(false);
+}
 
 void MbD::SystemSolver::initialize()
 {
@@ -43,17 +52,16 @@ void SystemSolver::runAllIC()
 		{
 			runPosIC();
 		}
-		break;
-		//runVelIC();
-		//runAccIC();
-		//auto discontinuities = system->discontinuitiesAtIC();
-		//if (discontinuities->size() == 0) break;
-		//if (std::find(discontinuities->begin(), discontinuities->end(), "REBOUND") != discontinuities->end())
-		//{
-		//	preCollision();
-		//	runCollisionDerivativeIC();
-		//	runBasicCollision();
-		//}
+		runVelIC();
+		runAccIC();
+		auto discontinuities = system->discontinuitiesAtIC();
+		if (discontinuities->size() == 0) break;
+		if (std::find(discontinuities->begin(), discontinuities->end(), "REBOUND") != discontinuities->end())
+		{
+			preCollision();
+			runCollisionDerivativeIC();
+			runBasicCollision();
+		}
 	}
 }
 
@@ -66,10 +74,14 @@ void MbD::SystemSolver::runPosIC()
 
 void MbD::SystemSolver::runVelIC()
 {
+	icTypeSolver = CREATE<VelICSolver>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
 void MbD::SystemSolver::runAccIC()
 {
+	assert(false);
 }
 
 bool MbD::SystemSolver::needToRedoPosIC()
@@ -147,6 +159,52 @@ void MbD::SystemSolver::runQuasiKinematic()
 	}
 }
 
+void MbD::SystemSolver::runPosKine()
+{
+	icTypeSolver = CREATE<PosKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runVelKine()
+{
+	assert(false);
+	//icTypeSolver = CREATE<VelKineSolver>::With();
+	//icTypeSolver->setSystem(this);
+	//icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runAccKine()
+{
+	assert(false);
+	//icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
+	//icTypeSolver->setSystem(this);
+	//icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runPosICKine()
+{
+	icTypeSolver = CREATE<PosICKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runVelICKine()
+{
+	assert(false);
+	//icTypeSolver = CREATE<VelICKineSolver>::With();
+	//icTypeSolver->setSystem(this);
+	//icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runAccICKine()
+{
+	assert(false);
+	//icTypeSolver = CREATE<AccICKineNewtonRaphson>::With();
+	//icTypeSolver->setSystem(this);
+	//icTypeSolver->run();
+}
+
 void MbD::SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	system->partsJointsMotionsDo(f);
@@ -172,14 +230,19 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::dis
 	return system->displacementConstraints();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints()
 {
-	return system->perpendicularConstraints2();
+	return system->perpendicularConstraints();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::allRedundantConstraints()
 {
 	return system->allRedundantConstraints();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::allConstraints()
+{
+	return system->allConstraints();
 }
 
 void MbD::SystemSolver::postNewtonRaphson()
@@ -225,4 +288,9 @@ double MbD::SystemSolver::firstOutputTime()
 double MbD::SystemSolver::endTime()
 {
 	return tend;
+}
+
+void MbD::SystemSolver::settime(double tnew)
+{
+	system->mbdTimeValue(tnew);
 }

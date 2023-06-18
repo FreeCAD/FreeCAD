@@ -2,7 +2,7 @@
 #include "Array.h"
 
 namespace MbD {
-    template <typename T>
+    template<typename T>
     class FullVector : public Array<T>
     {
     public:
@@ -14,11 +14,13 @@ namespace MbD {
         FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
         double dot(std::shared_ptr<FullVector<T>> vec);
         void atiplusNumber(int i, T value);
+        void atiminusNumber(int i, T value);
         double sumOfSquares() override;
         int numberOfElements() override;
         void zeroSelf() override;
         void atitimes(int i, double factor);
         void atiplusFullVectortimes(int i, std::shared_ptr<FullVector> fullVec, double factor);
+        double maxMagnitude();
 
     };
     template<typename T>
@@ -35,6 +37,11 @@ namespace MbD {
     inline void FullVector<T>::atiplusNumber(int i, T value)
     {
         this->at(i) += value;
+    }
+    template<typename T>
+    inline void FullVector<T>::atiminusNumber(int i, T value)
+    {
+        this->at(i) -= value;
     }
     template<>
     inline double FullVector<double>::sumOfSquares()
@@ -62,7 +69,7 @@ namespace MbD {
     inline void FullVector<double>::zeroSelf()
     {
         for (int i = 0; i < this->size(); i++) {
-            this->at(i) = 0.0;;
+            this->at(i) = 0.0;
         }
     }
     template<typename T>
@@ -83,5 +90,16 @@ namespace MbD {
             auto i = i1 + ii;
             this->at(i) += fullVec->at(ii) * factor;
         }
+    }
+    template<>
+    inline double FullVector<double>::maxMagnitude()
+    {
+        auto answer = 0.0;
+        for (int i = 0; i < this->size(); i++)
+        {
+            auto mag = std::abs(this->at(i));
+            if (answer < mag) answer = mag;
+        }
+        return answer;
     }
 }

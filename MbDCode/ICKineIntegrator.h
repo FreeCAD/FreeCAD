@@ -6,6 +6,7 @@ namespace MbD {
     {
         //
     public:
+        void runInitialConditionTypeSolution() override;
 
     };
 }

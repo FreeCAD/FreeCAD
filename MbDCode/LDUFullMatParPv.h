@@ -3,11 +3,11 @@
 #include "LDUFullMat.h"
 
 namespace MbD {
-    class LDUFullMatParPv : public LDUFullMat
+	class LDUFullMatParPv : public LDUFullMat
     {
         //
     public:
-        FMatDsptr inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
+        void doPivoting(int p) override;
 
     };
 }

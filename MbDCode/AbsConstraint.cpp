@@ -34,12 +34,17 @@ void MbD::AbsConstraint::useEquationNumbers()
 
 void MbD::AbsConstraint::fillPosICJacob(SpMatDsptr mat)
 {
-    (*(mat->at(iG)))[iqXminusOnePlusAxis] += 1.0;
-    (*(mat->at(iqXminusOnePlusAxis)))[iG] += 1.0;
+    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
+    mat->atijplusNumber(iqXminusOnePlusAxis, iG, 1.0);
 }
 
 void MbD::AbsConstraint::fillPosICError(FColDsptr col)
 {
     Constraint::fillPosICError(col);
     col->at(iqXminusOnePlusAxis) += lam;
+}
+
+void MbD::AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
+{
+    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
 }

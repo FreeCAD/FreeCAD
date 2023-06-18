@@ -50,3 +50,9 @@ void MbD::TranslationConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
 	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
+
+void MbD::TranslationConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqXI, pGpXI);
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+}

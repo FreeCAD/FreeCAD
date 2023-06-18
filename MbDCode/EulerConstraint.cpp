@@ -49,6 +49,11 @@ void MbD::EulerConstraint::fillPosICJacob(SpMatDsptr mat)
 	for (int i = 0; i < 4; i++)
 	{
 		auto ii = iqE + i;
-		(*(mat->at(ii)))[ii] += twolam;
+		mat->atijplusNumber(ii, ii, twolam);
 	}
+}
+
+void MbD::EulerConstraint::fillPosKineJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqE, pGpE);
 }

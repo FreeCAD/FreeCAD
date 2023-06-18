@@ -1,5 +1,6 @@
 #include "DispCompIeqcJeqcKeqct.h"
 #include "EndFrameqc.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
@@ -27,4 +28,16 @@ void MbD::DispCompIeqcJeqcKeqct::calcPostDynCorrectorIteration()
 	auto efrmKqc = std::static_pointer_cast<EndFrameqc>(efrmK);
 	ppAjOKepEKpEK = efrmKqc->ppAjOepEpE(axisK);
 	DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration();
+}
+
+void MbD::DispCompIeqcJeqcKeqct::preVelIC()
+{
+	Item::preVelIC();
+	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);
+	priIeJeKept = pAjOKept->dot(rIeJeO);
+}
+
+double MbD::DispCompIeqcJeqcKeqct::pvaluept()
+{
+	return priIeJeKept;
 }

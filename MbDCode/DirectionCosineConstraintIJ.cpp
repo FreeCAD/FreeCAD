@@ -58,3 +58,9 @@ MbD::ConstraintType MbD::DirectionCosineConstraintIJ::type()
 {
 	return MbD::perpendicular;
 }
+
+void MbD::DirectionCosineConstraintIJ::preVelIC()
+{
+	aAijIeJe->preVelIC();
+	Item::preVelIC();
+}

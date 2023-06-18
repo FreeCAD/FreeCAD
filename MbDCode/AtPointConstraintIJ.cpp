@@ -57,3 +57,9 @@ void MbD::AtPointConstraintIJ::postPosICIteration()
 	riIeJeO->postPosICIteration();
 	Item::postPosICIteration();
 }
+
+void MbD::AtPointConstraintIJ::preVelIC()
+{
+	riIeJeO->preVelIC();
+	Item::preVelIC();
+}

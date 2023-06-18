@@ -13,6 +13,7 @@ namespace MbD {
         void useEquationNumbers() override;
         void fillPosICError(FColDsptr col) override;
         void fillPosICJacob(SpMatDsptr mat) override;
+        void fillPosKineJacob(SpMatDsptr mat) override;
 
         FRowDsptr pGpEI;
         FMatDsptr ppGpEIpEI;

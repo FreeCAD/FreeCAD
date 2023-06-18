@@ -36,11 +36,15 @@ namespace MbD {
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void fillqsulam(FColDsptr col) override;
+		void fillqsudot(FColDsptr col) override;
+		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void postPosIC() override;
 		void preDyn() override;
+		void storeDynState() override;
+		void preVelIC() override;
 
 		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);

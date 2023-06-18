@@ -42,7 +42,7 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	//auto uHolders = system->uHolders();
 	auto essentialConstraints = system->essentialConstraints2();
 	auto displacementConstraints = system->displacementConstraints();
-	auto perpendicularConstraints = system->perpendicularConstraints2();
+	auto perpendicularConstraints = system->perpendicularConstraints();
 	int eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);

@@ -6,6 +6,7 @@
 #include "EulerParameters.h"
 #include "CREATE.h"
 #include "EulerAngleszxz.h"
+#include "EulerAngleszxzDot.h"
 
 using namespace MbD;
 
@@ -157,5 +158,61 @@ void MbD::EndFrameqct::evalAme()
 		}
 		phiThePsi->calc();
 		aAme = phiThePsi->aA;
+	}
+}
+
+void MbD::EndFrameqct::preVelIC()
+{
+	time = System::getInstance().mbdTimeValue();
+	this->evalrmem();
+	this->evalAme();
+	Item::preVelIC();
+	this->evalprmempt();
+	this->evalpAmept();
+	auto aAOm = markerFrame->aAOm;
+	prOeOpt = aAOm->timesFullColumn(prmempt);
+	pAOept = aAOm->timesFullMatrix(pAmept);
+}
+
+FColDsptr MbD::EndFrameqct::pAjOept(int j)
+{
+	return pAOept->column(j);
+}
+
+double MbD::EndFrameqct::priOeOpt(int i)
+{
+	return prOeOpt->at(i);
+}
+
+void MbD::EndFrameqct::evalprmempt()
+{
+	if (rmemBlks) {
+		for (int i = 0; i < 3; i++)
+		{
+			auto& derivative = prmemptBlks->at(i);
+			auto value = derivative->getValue();
+			prmempt->at(i) = value;
+		}
+	}
+}
+
+void MbD::EndFrameqct::evalpAmept()
+{
+	if (phiThePsiBlks) {
+		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
+		auto phiThePsiDot = CREATE<EulerAngleszxzDot<double>>::With();
+		phiThePsiDot->phiThePsi = phiThePsi;
+		for (int i = 0; i < 3; i++)
+		{
+			auto& expression = phiThePsiBlks->at(i);
+			auto& derivative = pPhiThePsiptBlks->at(i);
+			auto value = expression->getValue();
+			auto valueDot = derivative->getValue();
+			phiThePsi->at(i) = value;
+			phiThePsiDot->at(i) = valueDot;
+		}
+		phiThePsi->calc();
+		phiThePsiDot->calc();
+		pAmept = phiThePsiDot->aAdot;
 	}
 }

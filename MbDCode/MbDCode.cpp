@@ -55,7 +55,7 @@ int main()
 	systemSolver->rotationLimit = 0.5;
 
 	std::string str;
-	FColDsptr qX, qE, qXdot, omeOpO;
+	FColDsptr qX, qE, qXdot, omeOpO, qXddot, qEddot;
 	FColDsptr rpmp;
 	FMatDsptr aApm;
 	FRowDsptr fullRow;
@@ -68,10 +68,14 @@ int main()
 	qE = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0, 1 });
 	assembly1->setqX(qX);
 	assembly1->setqE(qE);
-	//qXdot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
-	//omeOpO = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0, 1 });
-	//assembly1->setqXdot(qXdot);
-	//assembly1->setomeOpO(omeOpO);
+	qXdot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	omeOpO = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	assembly1->setqXdot(qXdot);
+	assembly1->setomeOpO(omeOpO);
+	qXddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	qEddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	assembly1->setqXddot(qXdot);
+	assembly1->setqEddot(omeOpO);
 	std::cout << "assembly1->getqX() " << *assembly1->getqX() << std::endl;
 	std::cout << "assembly1->getqE() " << *assembly1->getqE() << std::endl;
 	TheSystem.addPart(assembly1);
@@ -109,6 +113,14 @@ int main()
 	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0, 1.0 });
 	crankPart1->setqX(qX);
 	crankPart1->setqE(qE);
+	qXdot = std::make_shared<FullColumn<double>>(ListD{ 0, 0.096568457800423, 0 });
+	omeOpO = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0.25132741228718 });
+	crankPart1->setqXdot(qXdot);
+	crankPart1->setomeOpO(omeOpO);
+	qXddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	qEddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	crankPart1->setqXddot(qXdot);
+	crankPart1->setqEddot(omeOpO);
 	TheSystem.parts->push_back(crankPart1);
 	{
 		auto& partFrame = crankPart1->partFrame;
@@ -143,6 +155,14 @@ int main()
 	qE = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.89871703427292, 0.43852900965351 });
 	conrodPart2->setqX(qX);
 	conrodPart2->setqE(qE);
+	qXdot = std::make_shared<FullColumn<double>>(ListD{ 0, 0.19313691560085, 0 });
+	omeOpO = std::make_shared<FullColumn<double>>(ListD{ 1.670970041317e-34, 1.3045598281729e-34, -1.2731200314796e-35 });
+	crankPart1->setqXdot(qXdot);
+	crankPart1->setomeOpO(omeOpO);
+	qXddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	qEddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	crankPart1->setqXddot(qXdot);
+	crankPart1->setqEddot(omeOpO);
 	TheSystem.parts->push_back(conrodPart2);
 	{
 		auto& partFrame = conrodPart2->partFrame;
@@ -177,6 +197,14 @@ int main()
 	qE = std::make_shared<FullColumn<double>>(ListD{ 0.70710678118655, 0.70710678118655, 0.0, 0.0 });
 	pistonPart3->setqX(qX);
 	pistonPart3->setqE(qE);
+	qXdot = std::make_shared<FullColumn<double>>(ListD{ -6.3364526821409e-32, 0.19313691560085, -1.933731897626e-34 });
+	omeOpO = std::make_shared<FullColumn<double>>(ListD{ 1.670970041317e-34, 1.3045598281729e-34, 1.8896472173894e-50 });
+	crankPart1->setqXdot(qXdot);
+	crankPart1->setomeOpO(omeOpO);
+	qXddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	qEddot = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	crankPart1->setqXddot(qXdot);
+	crankPart1->setqEddot(omeOpO);
 	TheSystem.parts->push_back(pistonPart3);
 	{
 		auto& partFrame = pistonPart3->partFrame;

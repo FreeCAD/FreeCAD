@@ -16,10 +16,12 @@ namespace MbD {
 		void setOwner(Item* x);
 		Item* getOwner();
 		void prePosIC() override;
+		void prePosKine() override;
 		virtual void fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
 		virtual void fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
 		virtual void fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
-		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
+		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
+		virtual void fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints);
 		virtual MbD::ConstraintType type();
 		void fillqsulam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
@@ -29,6 +31,7 @@ namespace MbD {
 		virtual bool isRedundant();
 		void outputStates() override;
 		void preDyn() override;
+		void fillPosKineError(FColDsptr col) override;
 
 		int iG = -1;
 		double aG = 0.0;		//Constraint function

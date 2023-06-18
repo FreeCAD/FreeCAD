@@ -11,6 +11,8 @@ namespace MbD {
         DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
         void initialize() override;
         void calcPostDynCorrectorIteration() override;
+        void preVelIC() override;
+        double pvaluept();
 
         double priIeJeKept;
         FRowDsptr ppriIeJeKepXIpt;

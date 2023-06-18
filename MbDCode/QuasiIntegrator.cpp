@@ -70,13 +70,18 @@ void MbD::QuasiIntegrator::preFirstStep()
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynFirstStep(); });
 }
 
+void MbD::QuasiIntegrator::preStep()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynStep(); });
+}
+
 double MbD::QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
 {
 	auto hnew2 = hnew;
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { hnew2 = item->suggestSmallerOrAcceptDynFirstStepSize(hnew2); });
 	if (hnew2 > hmax) {
 		hnew2 = hmax;
-		std::string str = "StM: \Step size is at user specified maximum.";
+		std::string str = "StM: Step size is at user specified maximum.";
 		this->logString(str);
 	}
 	if (hnew2 < hmin) {
@@ -87,4 +92,10 @@ double MbD::QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
 		throw TooSmallStepSizeError("");
 	}
 	return hnew2;
+}
+
+void MbD::QuasiIntegrator::incrementTime(double tnew)
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->storeDynState(); });
+	IntegratorInterface::incrementTime(tnew);
 }

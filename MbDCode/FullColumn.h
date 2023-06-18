@@ -3,10 +3,13 @@
 #include <sstream> 
 
 #include "FullVector.h"
+//#include "FullRow.h"
 
 namespace MbD {
+	template<typename T>
+	class FullRow;
 
-	template <typename T>
+	template<typename T>
 	class FullColumn : public FullVector<T>
 	{
 	public:
@@ -20,11 +23,13 @@ namespace MbD {
 		std::shared_ptr<FullColumn<T>> times(double a);
 		std::shared_ptr<FullColumn<T>> negated();
 		void atiputFullColumn(int i, std::shared_ptr<FullColumn<T>> fullCol);
+		void atiplusFullColumn(int i, std::shared_ptr<FullColumn<T>> fullCol);
 		void equalSelfPlusFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i);
 		void atiminusFullColumn(int i, std::shared_ptr<FullColumn<T>> fullCol);
 		void equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i);
 		std::shared_ptr<FullColumn<T>> copy();
-		
+		std::shared_ptr<FullRow<T>> transpose();
+
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const FullColumn& fullCol)
 		{
@@ -76,6 +81,14 @@ namespace MbD {
 		}
 	}
 	template<typename T>
+	inline void FullColumn<T>::atiplusFullColumn(int i, std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		for (int ii = 0; ii < fullCol->size(); ii++)
+		{
+			this->at(i + ii) += fullCol->at(ii);
+		}
+	}
+	template<typename T>
 	inline void FullColumn<T>::equalSelfPlusFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int ii)
 	{
 		//self is subcolumn of fullCol
@@ -94,12 +107,13 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void FullColumn<T>::equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int ii)
+	inline void FullColumn<T>::equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i)
 	{
-		for (int i = 0; i < this->size(); i++)
-		{
-			this->at(i) = fullCol->at(ii + i);
-		}
+		this->equalArrayAt(fullCol, i);
+		//for (int ii = 0; ii < this->size(); ii++)
+		//{
+		//	this->at(ii) = fullCol->at(i + ii);
+		//}
 	}
 	template<>
 	inline std::shared_ptr<FullColumn<double>> FullColumn<double>::copy()
@@ -111,6 +125,11 @@ namespace MbD {
 			answer->at(i) = this->at(i);
 		}
 		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullRow<T>> FullColumn<T>::transpose()
+	{
+		return std::make_shared<FullRow<T>>(*this);
 	}
 	template<typename T>
 	inline std::ostream& FullColumn<T>::printOn(std::ostream& s) const

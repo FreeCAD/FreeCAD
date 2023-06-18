@@ -46,3 +46,9 @@ void MbD::DirectionCosineConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
 	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
+
+void MbD::DirectionCosineConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
+{
+	DirectionCosineConstraintIqcJc::fillPosKineJacob(mat);
+	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+}

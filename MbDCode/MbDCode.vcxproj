@@ -168,6 +168,8 @@
     <ClCompile Include="EndFrameqc.cpp" />
     <ClCompile Include="EndFrameqct.cpp" />
     <ClCompile Include="EulerAngleszxz.cpp" />
+    <ClCompile Include="EulerAngleszxzDDot.cpp" />
+    <ClCompile Include="EulerAngleszxzDot.cpp" />
     <ClCompile Include="EulerArray.cpp" />
     <ClCompile Include="EulerConstraint.cpp" />
     <ClCompile Include="EulerParameters.cpp" />
@@ -199,6 +201,10 @@
     <ClCompile Include="KineIntegrator.cpp" />
     <ClCompile Include="KinematicIeJe.cpp" />
     <ClCompile Include="LDUFullMatParPv.cpp" />
+    <ClCompile Include="LDUSpMat.cpp" />
+    <ClCompile Include="LDUSpMatParPv.cpp" />
+    <ClCompile Include="LDUSpMatParPvMarko.cpp" />
+    <ClCompile Include="LDUSpMatParPvPrecise.cpp" />
     <ClCompile Include="LinearMultiStepMethod.cpp" />
     <ClCompile Include="MarkerFrame.cpp" />
     <ClCompile Include="MatrixDecomposition.cpp" />
@@ -248,6 +254,10 @@
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="FullVector.cpp" />
     <ClCompile Include="VectorNewtonRaphson.cpp" />
+    <ClCompile Include="VelICKineSolver.cpp" />
+    <ClCompile Include="VelICSolver.cpp" />
+    <ClCompile Include="VelKineSolver.cpp" />
+    <ClCompile Include="VelSolver.cpp" />
     <ClCompile Include="ZRotation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +303,8 @@
     <ClInclude Include="EndFrameqct.h" />
     <ClInclude Include="enum.h" />
     <ClInclude Include="EulerAngleszxz.h" />
+    <ClInclude Include="EulerAngleszxzDDot.h" />
+    <ClInclude Include="EulerAngleszxzDot.h" />
     <ClInclude Include="EulerArray.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="EulerParameters.h" />
@@ -324,6 +336,10 @@
     <ClInclude Include="KineIntegrator.h" />
     <ClInclude Include="KinematicIeJe.h" />
     <ClInclude Include="LDUFullMatParPv.h" />
+    <ClInclude Include="LDUSpMat.h" />
+    <ClInclude Include="LDUSpMatParPv.h" />
+    <ClInclude Include="LDUSpMatParPvMarko.h" />
+    <ClInclude Include="LDUSpMatParPvPrecise.h" />
     <ClInclude Include="LinearMultiStepMethod.h" />
     <ClInclude Include="MarkerFrame.h" />
     <ClInclude Include="MatrixDecomposition.h" />
@@ -375,6 +391,10 @@
     <ClInclude Include="Variable.h" />
     <ClInclude Include="FullVector.h" />
     <ClInclude Include="VectorNewtonRaphson.h" />
+    <ClInclude Include="VelICKineSolver.h" />
+    <ClInclude Include="VelICSolver.h" />
+    <ClInclude Include="VelKineSolver.h" />
+    <ClInclude Include="VelSolver.h" />
     <ClInclude Include="ZRotation.h" />
   </ItemGroup>
   <ItemGroup>

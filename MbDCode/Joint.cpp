@@ -69,6 +69,11 @@ void MbD::Joint::prePosIC()
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosIC(); });
 }
 
+void MbD::Joint::prePosKine()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosKine(); });
+}
+
 void MbD::Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
@@ -89,9 +94,23 @@ void MbD::Joint::fillRedundantConstraints(std::shared_ptr<std::vector<std::share
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillRedundantConstraints(con, redunConstraints); });
 }
 
+void MbD::Joint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillConstraints(con, allConstraints); });
+}
+
 void MbD::Joint::fillqsulam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
+}
+
+void MbD::Joint::fillqsudot(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
+}
+
+void MbD::Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
 }
 
 void MbD::Joint::useEquationNumbers()
@@ -181,4 +200,19 @@ void MbD::Joint::outputStates()
 void MbD::Joint::preDyn()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preDyn(); });
+}
+
+void MbD::Joint::fillPosKineError(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineError(col); });
+}
+
+void MbD::Joint::fillPosKineJacob(SpMatDsptr mat)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillPosKineJacob(mat); });
+}
+
+void MbD::Joint::preVelIC()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preVelIC(); });
 }

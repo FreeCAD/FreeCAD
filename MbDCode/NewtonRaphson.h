@@ -7,7 +7,7 @@
 //#include "RowTypeMatrix.h"
 
 namespace MbD {
-    template <typename T>
+    template<typename T>
     class FullColumn;
     //class RowTypeMatrix;
     class SystemSolver;
@@ -19,7 +19,7 @@ namespace MbD {
         void initialize();
         void initializeLocally() override;
         void run() override;
-        void setSystem(SystemSolver* sys);
+        void setSystem(Solver* sys) override;
         void iterate();
         virtual void fillY() = 0;
         virtual void fillPyPx() = 0;

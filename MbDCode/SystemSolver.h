@@ -13,7 +13,7 @@
 namespace MbD {
 	class System;
 	class Constraint;
-	class NewtonRaphson;
+	class Solver;
 	class QuasiIntegrator;
 
 	class SystemSolver : public Solver
@@ -25,6 +25,7 @@ namespace MbD {
 		SystemSolver(System* x) : system(x) {
 			initialize();
 		}
+		void setSystem(Solver* sys) override;
 		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
@@ -38,6 +39,12 @@ namespace MbD {
 		void runBasicCollision();
 		void runBasicKinematic();
 		void runQuasiKinematic();
+		void runPosKine();
+		void runVelKine();
+		void runAccKine();
+		void runPosICKine();
+		void runVelICKine();
+		void runAccICKine();
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str);
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
@@ -45,8 +52,10 @@ namespace MbD {
 		//std::shared_ptr<std::vector<UHolder>> uHolders();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints();
+		
 		virtual void postNewtonRaphson();
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void discontinuityBlock();
@@ -56,10 +65,10 @@ namespace MbD {
 		double minStepSize();
 		double firstOutputTime();
 		double endTime();
-
+		void settime(double tnew);
 
 		System* system; //Use raw pointer when pointing backwards.
-		std::shared_ptr<NewtonRaphson> icTypeSolver;
+		std::shared_ptr<Solver> icTypeSolver;
 		std::shared_ptr<std::vector<std::shared_ptr<std::set<std::string>>>> setsOfRedundantConstraints;
 		
 		double errorTolPosKine = 1.0e-6;

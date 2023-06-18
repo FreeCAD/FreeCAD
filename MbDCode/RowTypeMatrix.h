@@ -5,7 +5,7 @@
 
 namespace MbD {
 
-	template <typename T>
+	template<typename T>
 	class RowTypeMatrix : public Array<T>
 	{
 	public:

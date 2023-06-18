@@ -8,7 +8,7 @@
 namespace MbD {
 	class System;
 	class PartFrame;
-	template <typename T>
+	template<typename T>
 	class DiagonalMatrix;
 
 	class Part : public Item
@@ -28,19 +28,27 @@ namespace MbD {
 		FColDsptr getqXdot();
 		void setomeOpO(FColDsptr x);
 		FColDsptr getomeOpO();
+		void setqXddot(FColDsptr x);
+		FColDsptr getqXddot();
+		void setqEddot(FColDsptr x);
+		FColDsptr getqEddot();
 		void setSystem(System& sys);
 		void asFixed();
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
 
 		void prePosIC() override;
+		void prePosKine() override;
 		void iqX(int eqnNo);
 		void iqE(int eqnNo);
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
+		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void fillqsulam(FColDsptr col) override;
+		void fillqsudot(FColDsptr col) override;
+		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
@@ -53,6 +61,10 @@ namespace MbD {
 		void postPosIC() override;
 		void outputStates() override;
 		void preDyn() override;
+		void storeDynState() override;
+		void fillPosKineError(FColDsptr col) override;
+		void fillPosKineJacob(SpMatDsptr mat) override;
+		void preVelIC() override;
 
 		int ipX = -1; 
 		int ipE = -1; 

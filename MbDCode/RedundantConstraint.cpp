@@ -46,6 +46,10 @@ void MbD::RedundantConstraint::fillPerpenConstraints(std::shared_ptr<Constraint>
 {
 }
 
+void MbD::RedundantConstraint::fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
+}
+
 void MbD::RedundantConstraint::fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 	redunConstraints->push_back(sptr);
@@ -56,5 +60,17 @@ void MbD::RedundantConstraint::setqsulam(FColDsptr col)
 }
 
 void MbD::RedundantConstraint::fillPosICError(FColDsptr col)
+{
+}
+
+void MbD::RedundantConstraint::fillPosKineError(FColDsptr col)
+{
+}
+
+void MbD::RedundantConstraint::fillPosKineJacob(SpMatDsptr mat)
+{
+}
+
+void MbD::RedundantConstraint::preVelIC()
 {
 }

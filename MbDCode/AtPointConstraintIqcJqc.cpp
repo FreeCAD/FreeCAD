@@ -44,9 +44,16 @@ void MbD::AtPointConstraintIqcJqc::fillPosICError(FColDsptr col)
 void MbD::AtPointConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	AtPointConstraintIqcJc::fillPosICJacob(mat);
-	(*(mat->at(iG)))[iqXJminusOnePlusAxis] += 1.0;
-	(*(mat->at(iqXJminusOnePlusAxis)))[iG] += 1.0;
+	mat->atijplusNumber(iG, iqXJminusOnePlusAxis, 1.0);
+	mat->atijplusNumber(iqXJminusOnePlusAxis, iG, 1.0);
 	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
 	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+}
+
+void MbD::AtPointConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
+{
+	AtPointConstraintIqcJc::fillPosKineJacob(mat);
+	mat->atijplusNumber(iG, iqXJminusOnePlusAxis, 1.0);
+	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
 }

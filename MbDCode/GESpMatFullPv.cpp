@@ -7,9 +7,52 @@ using namespace MbD;
 
 void MbD::GESpMatFullPv::doPivoting(int p)
 {
-	assert(false);
-}
+	//"Used by Gauss Elimination only."
+	//"Do full pivoting."
+	//"Swap rows but keep columns in place."
+	//"The elements below the diagonal are removed column by column."
 
+	auto max = 0.0;
+	auto pivotRow = p;
+	auto pivotCol = p;
+	for (int j = p; j < n; j++)
+	{
+		rowPositionsOfNonZerosInColumns->at(colOrder->at(j))->clear();
+	}
+	for (int i = p; i < m; i++)
+	{
+		auto& rowi = matrixA->at(i);
+		for (auto const& kv : *rowi) {
+			rowPositionsOfNonZerosInColumns->at(kv.first)->push_back(i);
+			auto aij = kv.second;
+			auto mag = aij;
+			if (mag < 0.0) mag = -mag;
+			if (max < mag) {
+				max = mag;
+				pivotRow = i;
+				pivotCol = positionsOfOriginalCols->at(kv.first);
+			}
+		}
+	}
+	if (p != pivotRow) {
+		matrixA->swapElems(p, pivotRow);
+		rightHandSideB->swapElems(p, pivotRow);
+		rowOrder->swapElems(p, pivotRow);
+	}
+	if (p != pivotCol) {
+		colOrder->swapElems(p, pivotCol);
+		positionsOfOriginalCols->at(colOrder->at(p)) = p;
+		positionsOfOriginalCols->at(colOrder->at(pivotCol)) = pivotCol;
+	}
+	pivotValues->at(p) = max;
+	if (max < singularPivotTolerance) throw SingularMatrixError("");
+	auto jp = colOrder->at(p);
+	rowPositionsOfNonZerosInPivotColumn = rowPositionsOfNonZerosInColumns->at(jp);
+	if (rowPositionsOfNonZerosInPivotColumn->front() == p) {
+		rowPositionsOfNonZerosInPivotColumn->erase(rowPositionsOfNonZerosInPivotColumn->begin());
+	}
+	markowitzPivotColCount = (int)rowPositionsOfNonZerosInPivotColumn->size();
+}
 void MbD::GESpMatFullPv::forwardEliminateWithPivot(int p)
 {
 	//app is pivot.
@@ -63,7 +106,7 @@ void MbD::GESpMatFullPv::backSubstituteIntoDU()
 	//auto rhsZeroElement = this->rhsZeroElement();
 	for (int i = n - 2; i >= 0; i--)
 	{
-		auto rowi = matrixA->at(i);
+		auto& rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto jj = keyValue.first;
@@ -95,9 +138,8 @@ void MbD::GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fu
 		matrixA = std::make_shared<SparseMatrix<double>>(m);
 		pivotValues = std::make_shared<FullColumn<double>>(m);
 		rowOrder = std::make_shared<FullColumn<int>>(m);
-		colOrder = std::make_shared<FullColumn<int>>(n);
+		colOrder = std::make_shared<FullRow<int>>(n);
 		positionsOfOriginalCols = std::make_shared<std::vector<int>>(m);
-		privateIndicesOfNonZerosInPivotRow = std::make_shared<std::vector<int>>();
 		rowPositionsOfNonZerosInColumns = std::make_shared<std::vector<std::shared_ptr<std::vector<int>>>>(n);
 		for (int j = 0; j < n; j++)
 		{
@@ -113,11 +155,11 @@ void MbD::GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fu
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowElement = spRowi->maxElement();
-		if (maxRowElement == 0) {
+		auto maxRowMagnitude = spRowi->maxMagnitude();
+		if (maxRowMagnitude == 0) {
 			throw SingularMatrixError("");
 		}
-		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowElement);
+		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude);
 		rowOrder->at(i) = i;
 		colOrder->at(i) = i;
 		positionsOfOriginalCols->at(i) = i;

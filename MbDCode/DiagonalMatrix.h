@@ -4,7 +4,7 @@
 #include "FullColumn.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class DiagonalMatrix : public Array<T>
 	{
 		//
@@ -65,7 +65,7 @@ namespace MbD {
 	inline void DiagonalMatrix<double>::zeroSelf()
 	{
 		for (int i = 0; i < this->size(); i++) {
-			this->at(i) = 0.0;;
+			this->at(i) = 0.0;
 		}
 	}
 }

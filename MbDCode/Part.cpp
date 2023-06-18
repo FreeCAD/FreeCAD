@@ -66,6 +66,26 @@ FColDsptr Part::getomeOpO() {
 	return partFrame->getomeOpO();
 }
 
+void MbD::Part::setqXddot(FColDsptr x)
+{
+	partFrame->setqXddot(x);
+}
+
+FColDsptr MbD::Part::getqXddot()
+{
+	return partFrame->getqXddot();
+}
+
+void MbD::Part::setqEddot(FColDsptr x)
+{
+	partFrame->setqEddot(x);
+}
+
+FColDsptr MbD::Part::getqEddot()
+{
+	return partFrame->getqEddot();
+}
+
 void Part::setSystem(System& sys)
 {
 	//May be needed in the future
@@ -91,6 +111,11 @@ void MbD::Part::prePosIC()
 	partFrame->prePosIC();
 }
 
+void MbD::Part::prePosKine()
+{
+	partFrame->prePosKine();
+}
+
 void MbD::Part::iqX(int eqnNo)
 {
 	partFrame->iqX = eqnNo;
@@ -109,6 +134,11 @@ void MbD::Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr
 
 void MbD::Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
+}
+
+void MbD::Part::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	partFrame->fillConstraints(allConstraints);
 }
 
 void MbD::Part::fillqsu(FColDsptr col)
@@ -151,6 +181,39 @@ void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 void MbD::Part::fillqsulam(FColDsptr col)
 {
 	partFrame->fillqsulam(col);
+}
+
+void MbD::Part::fillqsudot(FColDsptr col)
+{
+	partFrame->fillqsudot(col);
+}
+
+void MbD::Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+	//"wqXdot and wqEdot are set to their respective inertias."
+	//"When the inertias are zero, they are set to a small number for positive definiteness."
+	//"They are not set to zero because inertialess part may be underconstrained."
+	//"wqEdot(4) = 0.0d is ok because there is always the euler parameter constraint."
+
+		//| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
+	auto mMax = System::getInstance().maximumMass();
+	auto aJiMax = System::getInstance().maximumMomentOfInertia();
+	auto maxInertia = std::max(mMax, aJiMax);
+	if (maxInertia == 0) maxInertia = 1.0;
+	auto minw = 1.0e-12 * maxInertia;
+	auto maxw = maxInertia;
+	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
+	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
+	for (int i = 0; i < 3; i++)
+	{
+		wqXdot->at(i) = (maxw * m / maxInertia) + minw;
+		auto aJi = aJ->at(i);
+		wqEdot->at(i) = (maxw * aJi / maxInertia) + minw;
+	}
+	wqEdot->at(3) = minw;
+	diagMat->atiputDiagonalMatrix(partFrame->iqX, wqXdot);
+	diagMat->atiputDiagonalMatrix(partFrame->iqE, wqEdot);
+	partFrame->fillqsudotWeights(diagMat);
 }
 
 void MbD::Part::useEquationNumbers()
@@ -213,4 +276,24 @@ void MbD::Part::outputStates()
 void MbD::Part::preDyn()
 {
 	partFrame->preDyn();
+}
+
+void MbD::Part::storeDynState()
+{
+	partFrame->storeDynState();
+}
+
+void MbD::Part::fillPosKineError(FColDsptr col)
+{
+	partFrame->fillPosKineError(col);
+}
+
+void MbD::Part::fillPosKineJacob(SpMatDsptr mat)
+{
+	partFrame->fillPosKineJacob(mat);
+}
+
+void MbD::Part::preVelIC()
+{
+	partFrame->preVelIC();
 }

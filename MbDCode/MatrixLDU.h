@@ -7,6 +7,7 @@ namespace MbD {
     {
         //
     public:
+        FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal) override;
 
     };
 }

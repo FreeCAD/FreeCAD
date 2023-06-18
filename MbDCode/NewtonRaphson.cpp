@@ -38,9 +38,9 @@ void MbD::NewtonRaphson::run()
 	//self postRun.
 }
 
-void MbD::NewtonRaphson::setSystem(SystemSolver* sys)
+void MbD::NewtonRaphson::setSystem(Solver* sys)
 {
-	system = sys;
+	system = static_cast<SystemSolver*>(sys);
 }
 
 void MbD::NewtonRaphson::iterate()

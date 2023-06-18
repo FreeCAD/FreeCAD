@@ -23,11 +23,15 @@ namespace MbD {
         void postInput() override;
         void addConstraint(std::shared_ptr<Constraint> con);
         void prePosIC() override;
+        void prePosKine() override;
         void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
         virtual void fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
         virtual void fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
         void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
+        void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
         void fillqsulam(FColDsptr col) override;
+        void fillqsudot(FColDsptr col) override;
+        void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
         void useEquationNumbers() override;
         void setqsulam(FColDsptr col) override;
         void postPosICIteration() override;
@@ -39,6 +43,9 @@ namespace MbD {
         void postPosIC() override;
         void outputStates() override;
         void preDyn() override;
+        void fillPosKineError(FColDsptr col) override;
+        void fillPosKineJacob(SpMatDsptr mat) override;
+        void preVelIC() override;
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

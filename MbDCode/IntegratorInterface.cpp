@@ -17,9 +17,9 @@ tend  = system->endTime();
 direction = (tstart < tend) ? 1.0 : -1.0;
 }
 
-void MbD::IntegratorInterface::setSystem(SystemSolver* sys)
+void MbD::IntegratorInterface::setSystem(Solver* sys)
 {
-	system = sys;
+	system = static_cast<SystemSolver*>(sys);
 }
 
 void MbD::IntegratorInterface::logString(std::string& str)
@@ -43,4 +43,9 @@ void MbD::IntegratorInterface::run()
 int MbD::IntegratorInterface::orderMax()
 {
 	return system->orderMax;
+}
+
+void MbD::IntegratorInterface::incrementTime(double tnew)
+{
+	system->settime(tnew);
 }

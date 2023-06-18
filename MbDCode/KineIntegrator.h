@@ -8,6 +8,7 @@ namespace MbD {
         //
     public:
         void preRun() override;
+        void runInitialConditionTypeSolution() override;
     };
 }
 

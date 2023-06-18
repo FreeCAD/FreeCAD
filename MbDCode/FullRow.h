@@ -1,18 +1,21 @@
 #pragma once
 #include "FullVector.h"
-#include "FullColumn.h"
+//#include "FullColumn.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class FullMatrix;
+	template<typename T>
+	class FullColumn;
 
-	template <typename T>
+	template<typename T>
 	class FullRow : public FullVector<T>
 	{
 	public:
-		FullRow() {}
+		FullRow(std::vector<T> vec) : FullVector<T>(vec) {}
 		FullRow(int count) : FullVector<T>(count) {}
 		FullRow(int count, const T& value) : FullVector<T>(count, value) {}
+		FullRow(std::vector<T>::iterator begin, std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullRow(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		std::shared_ptr<FullRow<T>> times(double a);
 		std::shared_ptr<FullRow<T>> negated();
@@ -23,6 +26,8 @@ namespace MbD {
 		std::shared_ptr<FullRow<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		void equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor);
 		std::shared_ptr<FullColumn<T>> transpose();
+		std::shared_ptr<FullRow<T>> copy();
+		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
 	};
 
 	template<typename T>
@@ -93,6 +98,26 @@ namespace MbD {
 	inline std::shared_ptr<FullColumn<T>> FullRow<T>::transpose()
 	{
 		return std::make_shared<FullColumn<T>>(*this);
+	}
+	template<>
+	inline std::shared_ptr<FullRow<double>> FullRow<double>::copy()
+	{
+		auto n = (int)this->size();
+		auto answer = std::make_shared<FullRow<double>>(n);
+		for (int i = 0; i < n; i++)
+		{
+			answer->at(i) = this->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline void FullRow<T>::atiplusFullRow(int j1, std::shared_ptr<FullRow<T>> fullRow)
+	{
+		for (int jj = 0; jj < fullRow->size(); jj++)
+		{
+			auto j = j1 + jj;
+			this->at(j) += fullRow->at(jj);
+		}
 	}
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)

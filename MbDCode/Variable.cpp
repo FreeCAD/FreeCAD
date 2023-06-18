@@ -39,3 +39,8 @@ std::ostream& MbD::Variable::printOn(std::ostream& s) const
 {
 	return s << this->name;
 }
+
+void MbD::Variable::setValue(double val)
+{
+	value = val;
+}

@@ -18,3 +18,9 @@ MbD::ConstraintType MbD::DirectionCosineConstraintIqctJqc::type()
 {
 	return MbD::essential;
 }
+
+void MbD::DirectionCosineConstraintIqctJqc::preVelIC()
+{
+	DirectionCosineConstraintIJ::preVelIC();
+	pGpt = std::static_pointer_cast<DirectionCosineIeqctJeqc>(aAijIeJe)->pAijIeJept;
+}

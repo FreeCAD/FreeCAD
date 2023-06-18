@@ -6,7 +6,7 @@
 #include "DiagonalMatrix.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class SparseMatrix : public RowTypeMatrix<std::shared_ptr<SparseRow<T>>>
 	{
 	public:
@@ -27,6 +27,7 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
+		void atijplusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		void atijminusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		double sumOfSquares() override;
 		void zeroSelf() override;
@@ -35,6 +36,8 @@ namespace MbD {
 		void atijplusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
 		void atijplusTransposeFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
 		void atijplusFullMatrixtimes(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat, T factor);
+		void atijplusNumber(int i, int j, double value);
+		void atijminusNumber(int i, int j, double value);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const SparseMatrix& spMat)
@@ -44,13 +47,23 @@ namespace MbD {
 	};
 	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
 
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat)
+	{
+		auto n = diagMat->nrow();
+		for (int ii = 0; ii < n; ii++)
+		{
+			this->atijplusNumber(i + ii, j + ii, diagMat->at(ii));
+		}
+	}
+
 	template<>
 	inline void SparseMatrix<double>::atijminusDiagonalMatrix(int i1, int j1, std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	{
 		auto n = diagMat->nrow();
 		for (int ii = 0; ii < n; ii++)
 		{
-			(*(this->at(i1 + ii)))[j1 + ii] -= diagMat->at(ii);
+			this->atijminusNumber(i1 + ii, j1 + ii, diagMat->at(ii));
 		}
 	}
 	template<typename T>
@@ -80,7 +93,7 @@ namespace MbD {
 	{
 		for (int ii = 0; ii < fullCol->size(); ii++)
 		{
-			(*(this->at(i + ii)))[j] += fullCol->at(ii);
+			this->atijplusNumber(i + ii, j, fullCol->at(ii));
 		}
 	}
 	template<typename T>
@@ -106,6 +119,16 @@ namespace MbD {
 		{
 			this->at(i + ii)->atiplusFullRowtimes(j, fullMat->at(ii), factor);
 		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusNumber(int i, int j, double value)
+	{
+		this->at(i)->atiplusNumber(j, value);
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijminusNumber(int i, int j, double value)
+	{
+		this->at(i)->atiminusNumber(j, value);
 	}
 	template<typename T>
 	inline std::ostream& SparseMatrix<T>::printOn(std::ostream& s) const

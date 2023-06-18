@@ -4,7 +4,7 @@
 #include <sstream> 
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class SparseVector : public std::map<int, T>
 	{
 	public:
@@ -29,8 +29,9 @@ namespace MbD {
 		int numberOfElements();
 		double sumOfSquares();
 		void atiplusNumber(int i, double value);
+		void atiminusNumber(int i, double value);
 		void zeroSelf();
-		double maxElement();
+		double maxMagnitude();
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const SparseVector& spVec)
@@ -61,15 +62,20 @@ namespace MbD {
 	template<>
 	inline void SparseVector<double>::atiplusNumber(int i, double value)
 	{
-		this->at(i) += value;
+		(*this)[i] += value;
+	}
+	template<typename T>
+	inline void SparseVector<T>::atiminusNumber(int i, double value)
+	{
+		(*this)[i] -= value;
 	}
 	template<>
 	inline void SparseVector<double>::zeroSelf()
 	{
 		this->clear();
 	}
-	template<>
-	inline double SparseVector<double>::maxElement()
+	template<typename T>
+	inline double SparseVector<T>::maxMagnitude()
 	{
 		double max = 0.0;
 		for (const auto& keyValue : *this) {

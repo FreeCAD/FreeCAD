@@ -9,6 +9,8 @@ namespace MbD {
     {
         //system direction 
     public:
+        void setSystem(Solver* sys) override;
+        virtual void runInitialConditionTypeSolution() = 0;
 
         double direction = 1;
     };

@@ -28,13 +28,15 @@ namespace MbD {
         void run() override;
         virtual void selectOrder();
         virtual void subsequentSteps();
-        void setSystem(IntegratorInterface* sys);
+        void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
         virtual void firstStep();
         virtual void nextStep() = 0;
         
         virtual void setorder(int o);
         virtual void settnew(double t);
+        virtual void sett(double t);
+        void settime(double t);
 
         IntegratorInterface* system;
         int istep = 0, iTry = 0, maxTry = 0;

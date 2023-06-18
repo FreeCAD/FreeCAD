@@ -11,7 +11,7 @@ void MbD::BasicQuasiIntegrator::firstStep()
 	orderNew = 1;
 	this->selectFirstStepSize();
 	this->incrementTime();
-	//this->runInitialConditionTypeSolution();
+	this->runInitialConditionTypeSolution();
 	//this->reportTrialStepStats();
 
 	//while (this->isRedoingFirstStep())
@@ -46,6 +46,11 @@ void MbD::BasicQuasiIntegrator::nextStep()
 	//}
 	//this->postStep();
 	//this->reportStepStats();
+}
+
+void MbD::BasicQuasiIntegrator::runInitialConditionTypeSolution()
+{
+	system->runInitialConditionTypeSolution();
 }
 
 void MbD::BasicQuasiIntegrator::selectFirstStepSize()

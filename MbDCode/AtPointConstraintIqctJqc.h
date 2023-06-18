@@ -12,6 +12,7 @@ namespace MbD {
         void initriIeJeO() override;
         void calcPostDynCorrectorIteration() override;
         MbD::ConstraintType type() override;
+        void preVelIC() override;
 
         double pGpt;
         FRowDsptr ppGpEIpt;

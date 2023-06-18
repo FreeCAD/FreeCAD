@@ -12,6 +12,8 @@ namespace MbD {
         void initialize();
         void initializeGlobally();
         void calcPostDynCorrectorIteration() override;
+        void preVelIC() override;
+        double pvaluept();
 
         double pAijIeJept;
         FRowDsptr ppAijIeJepEIpt;

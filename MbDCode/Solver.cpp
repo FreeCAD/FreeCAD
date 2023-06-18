@@ -18,6 +18,11 @@ void MbD::Solver::initializeGlobally()
 	assert(false);
 }
 
+void MbD::Solver::assignEquationNumbers()
+{
+	assert(false);
+}
+
 void MbD::Solver::run()
 {
 	assert(false);

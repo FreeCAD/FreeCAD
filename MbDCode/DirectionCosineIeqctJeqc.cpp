@@ -1,5 +1,6 @@
 #include "DirectionCosineIeqctJeqc.h"
 #include "EndFrameqc.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
@@ -30,4 +31,16 @@ void MbD::DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
 
 	ppAjOIepEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppAjOepEpE(axisI);
 	DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration();
+}
+
+void MbD::DirectionCosineIeqctJeqc::preVelIC()
+{
+	Item::preVelIC();
+	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
+	pAijIeJept = pAjOIept->dot(aAjOJe);
+}
+
+double MbD::DirectionCosineIeqctJeqc::pvaluept()
+{
+	return pAijIeJept;
 }

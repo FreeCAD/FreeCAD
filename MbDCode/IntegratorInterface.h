@@ -13,13 +13,15 @@ namespace MbD {
 
         void initializeGlobally() override;
         virtual void preRun() = 0;
-        void setSystem(SystemSolver* sys);
+        void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
         void run() override;
         int orderMax();
-        virtual void preFirstStep() = 0;
-        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew) = 0;
+        virtual void incrementTime(double tnew);
 
+        virtual void preFirstStep() = 0;
+        virtual void preStep() = 0;
+        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew) = 0;
         SystemSolver* system;
         double tout = 0, hout = 0, hmin = 0, hmax = 0, tstart = 0, tend = 0;
         std::shared_ptr<BasicQuasiIntegrator> integrator;

@@ -32,7 +32,7 @@ void MbD::GESpMatFullPvPosIC::doPivoting(int p)
 	{
 		rowPositionsOfNonZerosInColumns->at(colOrder->at(j))->clear();
 	}
-	if (p == pivotRowLimit) {
+	if (p >= pivotRowLimit) {
 		pivotRowLimit = *std::find_if(
 			pivotRowLimits->begin(), pivotRowLimits->end(),
 			[&](int limit) { return limit > p; });
@@ -53,12 +53,12 @@ void MbD::GESpMatFullPvPosIC::doPivoting(int p)
 		}
 	}
 	if (p != pivotRow) {
-		matrixA->swapRows(p, pivotRow);
-		rightHandSideB->swapRows(p, pivotRow);
-		rowOrder->swapRows(p, pivotRow);
+		matrixA->swapElems(p, pivotRow);
+		rightHandSideB->swapElems(p, pivotRow);
+		rowOrder->swapElems(p, pivotRow);
 	}
 	if (p != pivotCol) {
-		colOrder->swapRows(p, pivotCol);
+		colOrder->swapElems(p, pivotCol);
 		positionsOfOriginalCols->at(colOrder->at(p)) = p;
 		positionsOfOriginalCols->at(colOrder->at(pivotCol)) = pivotCol;
 	}

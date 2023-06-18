@@ -56,3 +56,9 @@ void MbD::TranslationConstraintIJ::postPosICIteration()
     riIeJeIe->postPosICIteration();
     Item::postPosICIteration();
 }
+
+void MbD::TranslationConstraintIJ::preVelIC()
+{
+    riIeJeIe->preVelIC();
+    Item::preVelIC();
+}

@@ -18,3 +18,9 @@ MbD::ConstraintType MbD::TranslationConstraintIqctJqc::type()
 {
 	return MbD::essential;
 }
+
+void MbD::TranslationConstraintIqctJqc::preVelIC()
+{
+	TranslationConstraintIJ::preVelIC();
+	pGpt = std::static_pointer_cast<DispCompIeqctJeqcKeqct>(riIeJeIe)->pvaluept();
+}

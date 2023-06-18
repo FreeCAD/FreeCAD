@@ -23,3 +23,14 @@ void MbD::DispCompIeqctJeqcO::calcPostDynCorrectorIteration()
 	DispCompIeqcJeqcO::calcPostDynCorrectorIteration();
 	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpE(axis)->negated();
 }
+
+void MbD::DispCompIeqctJeqcO::preVelIC()
+{
+	Item::preVelIC();
+	priIeJeOpt = -(std::static_pointer_cast<EndFrameqct>(frmI)->priOeOpt(axis));
+}
+
+double MbD::DispCompIeqctJeqcO::pvaluept()
+{
+	return priIeJeOpt;
+}

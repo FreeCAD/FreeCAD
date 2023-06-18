@@ -6,7 +6,7 @@
 #include "FullRow.h"
 
 namespace MbD {
-	template <typename T>
+	template<typename T>
 	class SparseRow : public SparseVector<T>
 	{
 	public:

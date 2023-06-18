@@ -9,7 +9,7 @@ namespace MbD {
     public:
         void doPivoting(int p) override;
         void postSolve() override;
-        void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
+        void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
     };
 }
 

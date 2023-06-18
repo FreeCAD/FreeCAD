@@ -13,10 +13,9 @@ namespace MbD {
         void nextStep();
         //void reportStepStats();
         //void reportTrialStepStats();
-        //void runInitialConditionTypeSolution();
+        void runInitialConditionTypeSolution() override;
         void selectFirstStepSize();
         //void selectStepSize();
-        //void runInitialConditionTypeSolution();
 	};
 }
 

@@ -10,6 +10,7 @@ namespace MbD {
 		DirectionCosineConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
 		void initaAijIeJe() override;
 		MbD::ConstraintType type() override;
+		void preVelIC() override;
 
 		double pGpt;
 		FRowDsptr ppGpEIpt;

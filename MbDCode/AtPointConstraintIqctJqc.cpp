@@ -12,7 +12,7 @@ AtPointConstraintIqctJqc::AtPointConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr f
 void MbD::AtPointConstraintIqctJqc::initializeGlobally()
 {
 	riIeJeO->initializeGlobally();
-	ppGpEJpEJ = (std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO))->ppriIeJeOpEJpEJ;
+	ppGpEJpEJ = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEJpEJ;
 }
 
 void AtPointConstraintIqctJqc::initriIeJeO()
@@ -31,4 +31,10 @@ void MbD::AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
 MbD::ConstraintType MbD::AtPointConstraintIqctJqc::type()
 {
 	return MbD::essential;
+}
+
+void MbD::AtPointConstraintIqctJqc::preVelIC()
+{
+	AtPointConstraintIJ::preVelIC();
+	pGpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->priIeJeOpt;
 }

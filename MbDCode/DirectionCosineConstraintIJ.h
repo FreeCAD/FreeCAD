@@ -19,6 +19,7 @@ namespace MbD {
         void prePosIC() override;
         void postPosICIteration() override;
         MbD::ConstraintType type() override;
+        void preVelIC() override;
 
         int axisI, axisJ;
         std::shared_ptr<DirectionCosineIecJec> aAijIeJe;

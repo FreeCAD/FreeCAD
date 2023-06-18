@@ -59,7 +59,7 @@ void MbD::Item::fillPosKineError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillPosKineJacob(FMatDsptr mat)
+void MbD::Item::fillPosKineJacob(SpMatDsptr mat)
 {
 }
 
@@ -69,6 +69,11 @@ void MbD::Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr
 
 void MbD::Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
+}
+
+void MbD::Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	assert(false);
 }
 
 void MbD::Item::fillqsu(FColDsptr col)
@@ -116,11 +121,50 @@ void MbD::Item::preDynStep()
 {
 }
 
+void MbD::Item::storeDynState()
+{
+}
+
 double MbD::Item::suggestSmallerOrAcceptDynFirstStepSize(double hnew)
 {
 	//"Default is return hnew."
 	//"Best to do nothing so as not to disrupt the starting algorithm."
 	return hnew;
+}
+
+void MbD::Item::preVelIC()
+{
+	//"Assume positions are valid."
+	//"Called once before solving for velocity initial conditions."
+	//"Update all variable dependent instance variables needed for velIC even if they have 
+	//been calculated in postPosIC."
+	//"Variables dependent on t are updated."
+
+	this->calcPostDynCorrectorIteration();
+}
+
+void MbD::Item::postVelIC()
+{
+}
+
+void MbD::Item::fillqsudot(FColDsptr col)
+{
+}
+
+void MbD::Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+{
+}
+
+void MbD::Item::fillVelICError(FColDsptr error)
+{
+}
+
+void MbD::Item::fillVelICJacob(SpMatDsptr jacob)
+{
+}
+
+void MbD::Item::setqsudotlam(FColDsptr qsudotlam)
+{
 }
 
 void MbD::Item::constraintsReport()
@@ -149,16 +193,9 @@ void MbD::Item::prePosIC()
 	calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::prePostIC()
+void MbD::Item::prePosKine()
 {
-}
-
-void MbD::Item::prePostICIteration()
-{
-}
-
-void MbD::Item::prePostICRestart()
-{
+	this->prePosIC();
 }
 
 void MbD::Item::postPosIC()
