@@ -75,10 +75,11 @@ private:
 
     std::string yamlValue(const YAML::Node& node, const std::string& key,
                                           const std::string& defaultValue);
-    void addToTree(ModelEntry* model);
+    void addToTree(ModelEntry* model, std::map<std::pair<std::string, std::string>, std::string> *inheritances);
     void showYaml(const YAML::Node& yaml) const;
-    void dereference(ModelEntry* parent, const ModelEntry* child);
-    void dereference(ModelEntry* model);
+    void dereference(const std::string& uuid, ModelEntry* parent, const ModelEntry* child,
+                     std::map<std::pair<std::string, std::string>, std::string>* inheritances);
+    void dereference(ModelEntry* model, std::map<std::pair<std::string, std::string>, std::string> *inheritances);
     ModelEntry *getModelFromPath(const ModelLibrary &library, const std::string &path) const;
     void addLibrary(ModelLibrary* model);
     void loadLibrary(const ModelLibrary &library);

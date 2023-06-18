@@ -211,7 +211,7 @@ void ModelSelect::updateModelProperties(const Materials::Model &model)
         std::string key = itp->first;
         Materials::ModelProperty modelProperty = itp->second;
         
-        auto inherited = new QStandardItem(QString::fromStdString("*"));
+        auto inherited = new QStandardItem(QString::fromStdString(modelProperty.isInherited() ? "*" : ""));
         // inherited->setToolTip(QString::fromStdString(modelProperty.getDescription()));
         items.append(inherited);
         

@@ -71,12 +71,15 @@ public:
     const std::string &getUnits() const {  return _units; }
     const std::string &getURL() const {  return _url; }
     const std::string &getDescription() const {  return _description; }
+    const std::string &getInheritance() const { return _inheritance; }
+    bool isInherited() const { return (_inheritance.length() > 0); }
 
     void setName(const std::string& name) { _name = name; }
     virtual void setPropertyType(const std::string& type) { _propertyType = type; }
     void setUnits(const std::string& units) { _units = units; }
     void setURL(const std::string& url) { _url = url; }
     void setDescription(const std::string& description) { _description = description; }
+    void setInheritance(const std::string &uuid) { _inheritance = uuid; }
 
 private:
     std::string _name;
@@ -84,6 +87,7 @@ private:
     std::string _units;
     std::string _url;
     std::string _description;
+    std::string _inheritance;
 };
 
 class MaterialsExport ModelValueProperty : public ModelProperty

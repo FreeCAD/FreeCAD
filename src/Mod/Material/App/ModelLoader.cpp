@@ -122,7 +122,8 @@ void ModelLoader::showYaml(const YAML::Node &yaml) const
     Base::Console().Log("%s\n", logData.c_str());
 }
 
-void ModelLoader::dereference(ModelEntry *parent, const ModelEntry *child)
+void ModelLoader::dereference(const std::string &uuid, ModelEntry *parent, const ModelEntry *child, 
+    std::map<std::pair<std::string, std::string>, std::string> *inheritances)
 {
     auto parentPtr = parent->getModelPtr();
     auto parentBase = parent->getBase();
@@ -143,15 +144,18 @@ void ModelLoader::dereference(ModelEntry *parent, const ModelEntry *child)
         std::string name = it->first.as<std::string>();
         if (exclude.count(name) == 0) {
             // showYaml(it->second);
-            if (!parentProperties[name])
+            if (!parentProperties[name]) {
                 parentProperties[name] = it->second;
+                // parentProperties[name]["Inherits"] = childYaml[childBase]["UUID"];
+                (*inheritances)[std::pair<std::string, std::string>(uuid, name)] = yamlValue(childYaml[childBase], "UUID", "");
+            }
         }
     }
-    showYaml(*parentPtr);
+    // showYaml(*parentPtr);
 }
 
 
-void ModelLoader::dereference(ModelEntry *model)
+void ModelLoader::dereference(ModelEntry *model, std::map<std::pair<std::string, std::string>, std::string> *inheritances)
 {
     // Avoid recursion
     if (model->getDereferenced())
@@ -168,7 +172,7 @@ void ModelLoader::dereference(ModelEntry *model)
             // This requires that all models have already been loaded undereferenced
             try {
                 const ModelEntry *child = (*_modelEntryMap)[nodeName];
-                dereference(model, child);
+                dereference(model->getUUID(), model, child, inheritances);
             }
             catch (const std::out_of_range& oor) {
                 Base::Console().Log("Unable to find '%s' in model map\n", nodeName.c_str());
@@ -186,7 +190,7 @@ std::string ModelLoader::yamlValue(const YAML::Node &node, const std::string &ke
     return defaultValue;
 }
 
-void ModelLoader::addToTree(ModelEntry *model)
+void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<std::string, std::string>, std::string> *inheritances)
 {
     std::set<std::string> exclude;
     exclude.insert("Name");
@@ -230,14 +234,19 @@ void ModelLoader::addToTree(ModelEntry *model)
         if (exclude.count(propName) == 0) {
             // showYaml(it->second);
             auto yamlProp = yamlProperties[propName];
-            auto propType = yamlProp["Type"].as<std::string>();
-            auto propUnits = yamlProp["Units"].as<std::string>();
-            auto propURL = yamlProp["URL"].as<std::string>();
-            auto propDescription = yamlProp["Description"].as<std::string>();
+            auto propType = yamlValue(yamlProp, "Type", "");
+            auto propUnits = yamlValue(yamlProp, "Units", "");
+            auto propURL = yamlValue(yamlProp, "URL", "");
+            auto propDescription = yamlValue(yamlProp, "Description", "");
+            // auto inherits = yamlValue(yamlProp, "Inherits", "");
 
             ModelProperty property(propName, propType,
                            propUnits, propURL,
                            propDescription);
+
+            auto key = std::pair<std::string, std::string>(uuid, propName);
+            if (inheritances->count(key) > 0)
+                property.setInheritance((*inheritances)[key]);
 
             finalModel->addProperty(property);
         }
@@ -270,14 +279,16 @@ void ModelLoader::loadLibrary(const ModelLibrary &library)
         }
     }
 
+    std::map<std::pair<std::string, std::string>, std::string>* inheritances =
+        new std::map<std::pair<std::string, std::string>, std::string>();
     for (auto it = _modelEntryMap->begin(); it != _modelEntryMap->end(); it++) {
-        dereference(it->second);
+        dereference(it->second, inheritances);
     }
 
     for (auto it = _modelEntryMap->begin(); it != _modelEntryMap->end(); it++) {
-        addToTree(it->second);
+        addToTree(it->second, inheritances);
     }
-
+    // delete inheritances;
 }
 
 void ModelLoader::loadLibraries(void)
