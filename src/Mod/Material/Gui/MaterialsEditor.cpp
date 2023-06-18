@@ -42,6 +42,7 @@
 #include <Mod/Material/App/ModelManager.h>
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
+#include "ModelSelect.h"
 
 
 using namespace MatGui;
@@ -61,6 +62,9 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
             this, &MaterialsEditor::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
             this, &MaterialsEditor::reject);
+
+    connect(ui->buttonPhysicalAdd, &QPushButton::clicked,
+            this, &MaterialsEditor::onPhysicalAdd);
 
     QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
@@ -113,9 +117,22 @@ void MaterialsEditor::tryPython()
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
 }
 
+void MaterialsEditor::onPhysicalAdd(bool checked)
+{
+    ModelSelect dialog(this);
+    dialog.setModal(true);
+    if(dialog.exec() == QDialog::Accepted)
+    {
+        std::string selected = dialog.selectedModel();
+        Base::Console().Log("Selected model '%s'\n", selected.c_str());
+    } else {
+        Base::Console().Log("No model selected\n");
+    }
+}
+
 void MaterialsEditor::accept()
 {
-    reject();
+    QDialog::accept();
 }
 
 void MaterialsEditor::reject()

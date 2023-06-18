@@ -61,6 +61,8 @@ class MaterialsEditor : public QDialog
 public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override;
+
+    void onPhysicalAdd(bool checked);
     void accept() override;
     void reject() override;
 

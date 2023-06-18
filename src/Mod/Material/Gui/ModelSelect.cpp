@@ -59,6 +59,8 @@ ModelSelect::ModelSelect(QWidget* parent)
     QItemSelectionModel* selectionModel = ui->treeModels->selectionModel();
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &ModelSelect::onSelectModel);
+
+    ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 /*
@@ -281,14 +283,17 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
         if (item) {
             try
             {
-                std::string uuid = item->data(Qt::UserRole).toString().toStdString();
-                Base::Console().Log("\t%s\n", item->data(Qt::UserRole).toString().toStdString().c_str());
-                updateMaterialModel(uuid);
+                _selected = item->data(Qt::UserRole).toString().toStdString();
+                Base::Console().Log("\t%s\n", _selected.c_str());
+                updateMaterialModel(_selected);
+                ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
             }
             catch(const std::exception& e)
             {
+                _selected = "";
                 Base::Console().Log("Error %s\n", e.what());
                 clearMaterialModel();
+                ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
             }
 
         }
@@ -297,7 +302,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
 
 void ModelSelect::accept()
 {
-    reject();
+    QDialog::accept();
 }
 
 void ModelSelect::reject()

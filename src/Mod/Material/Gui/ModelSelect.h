@@ -48,6 +48,7 @@ public:
     ~ModelSelect() override;
 
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
+    const std::string &selectedModel() const { return _selected; }
     void accept() override;
     void reject() override;
 
@@ -66,6 +67,7 @@ private:
     Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
     std::unique_ptr<Ui_ModelSelect> ui;
+    std::string _selected;
 };
 
 } // namespace MatGui
