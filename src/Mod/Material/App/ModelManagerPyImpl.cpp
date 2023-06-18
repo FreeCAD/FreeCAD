@@ -68,7 +68,7 @@ PyObject* ModelManagerPy::getModel(PyObject *args)
     try {
         const Model model = getModelManagerPtr()->getModel(uuid);
         return new ModelPy(new Model(model));
-    } catch (ModelNotFound) {
+    } catch (ModelNotFound const &) {
         return nullptr;
     }
 }
@@ -86,7 +86,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
         try {
             const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
             return new ModelPy(new Model(model));
-        } catch (ModelNotFound) {
+        } catch (ModelNotFound const &) {
             return nullptr;
         }
     }
@@ -94,7 +94,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
     try {
         const Model &model = getModelManagerPtr()->getModelByPath(path);
         return new ModelPy(new Model(model));
-    } catch (ModelNotFound) {
+    } catch (ModelNotFound const &) {
         return nullptr;
     }
 }

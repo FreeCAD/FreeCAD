@@ -32,6 +32,33 @@ namespace fs = boost::filesystem;
 
 namespace Materials {
 
+class ModelTreeNode
+{
+public:
+    enum NodeType {
+        ModelNode,
+        FolderNode
+    };
+
+    explicit ModelTreeNode();
+    virtual ~ModelTreeNode();
+
+    NodeType getType(void) const { return _type; }
+    void setType(NodeType type) { _type = type; }
+
+    const std::map<std::string, ModelTreeNode*> *getFolder(void) const { return _folder; }
+    std::map<std::string, ModelTreeNode*> *getFolder(void) { return _folder; }
+    const Model *getModel(void) const { return _model; }
+
+    void setData(std::map<std::string, ModelTreeNode*> *folder);
+    void setData(const Model *model);
+
+private:
+    NodeType    _type;
+    std::map<std::string, ModelTreeNode*> *_folder;
+    const Model *_model;
+};
+
 class MaterialsExport ModelManager : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
@@ -44,8 +71,7 @@ public:
 
     static std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
     static std::map<std::string, Model*> *getModels() { return _modelMap; }
-    static std::map<std::string, void*>* getModelTree();
-    static std::map<std::string, void*>* getModelTree(const ModelLibrary &library);
+    static std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library);
     const Model &getModel(const std::string& uuid) const;
     const Model &getModelByPath(const std::string &path) const;
     const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;

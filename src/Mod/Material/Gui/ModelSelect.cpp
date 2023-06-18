@@ -81,12 +81,14 @@ void ModelSelect::addExpanded(QTreeView *tree, QStandardItemModel *parent, QStan
     tree->setExpanded(child->index(), true);
 }
 
-void ModelSelect::addModels(QStandardItem &parent, std::map<std::string, void*>* modelTree, const QIcon &icon)
+void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree, const QIcon &icon)
 {
     auto tree = ui->treeModels;
     for (auto& mod : *modelTree) {
-        try {
-            Materials::Model *model = reinterpret_cast<Materials::Model *>(mod.second);
+        Materials::ModelTreeNode *nodePtr = mod.second;
+        if (nodePtr->getType() == Materials::ModelTreeNode::ModelNode)
+        {
+            const Materials::Model *model = nodePtr->getModel();
             std::string uuid = model->getUUID();
 
             auto card = new QStandardItem(icon, QString::fromStdString(mod.first));
@@ -95,15 +97,11 @@ void ModelSelect::addModels(QStandardItem &parent, std::map<std::string, void*>*
             card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
 
             addExpanded(tree, &parent, card);
-        } catch (std::exception &e) {
-            Base::Console().Log("Exception '%s'\n", e.what());
-
-            // Assume is not a file, so a folder
+        } else {
             auto node = new QStandardItem(QString::fromStdString(mod.first));
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            std::map<std::string, void*>* treeMap =
-                reinterpret_cast<std::map<std::string, void*> *>(mod.second);
+            const std::map<std::string, Materials::ModelTreeNode*>* treeMap = nodePtr->getFolder();
             addModels(*node, treeMap, icon);
         }
         // if (fs::is_directory(mod)) {
@@ -156,7 +154,7 @@ void ModelSelect::createModelTree()
         addExpanded(tree, model, lib);
 
         // auto path = library->getDirectoryPath();
-        std::map<std::string, void*>* modelTree= Materials::ModelManager::getModelTree(*library);
+        std::map<std::string, Materials::ModelTreeNode*>* modelTree= Materials::ModelManager::getModelTree(*library);
         // delete modelTree;
         addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
     }

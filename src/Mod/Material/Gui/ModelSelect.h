@@ -54,7 +54,7 @@ public:
 private:
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
-    void addModels(QStandardItem& parent, std::map<std::string, void*>* modelTree,
+    void addModels(QStandardItem& parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree,
                    const QIcon& icon);
     void updateMaterialModel(const std::string& uuid);
     void clearMaterialModel(void);

@@ -1,6 +1,14 @@
 {
   "version": "0.2.0",
   "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "LLDB Launch",
+      "program": "${workspaceFolder}/../freecad-build/bin/FreeCAD",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
   {
     "name": "(Windows) Launch",
     "type": "cppvsdbg",

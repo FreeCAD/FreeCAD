@@ -37,6 +37,29 @@ ModelManager *ModelManager::manager = nullptr;
 std::list<ModelLibrary*> *ModelManager::_libraryList = nullptr;
 std::map<std::string, Model*> *ModelManager::_modelMap = nullptr;
 
+ModelTreeNode::ModelTreeNode() :
+    _folder(nullptr)
+{}
+
+ModelTreeNode::~ModelTreeNode()
+{
+    if (_folder)
+        delete _folder;
+}
+
+void ModelTreeNode::setData(std::map<std::string, ModelTreeNode*> *folder)
+{
+    setType(FolderNode);
+    _folder = folder;
+}
+
+void ModelTreeNode::setData(const Model *model)
+{
+    setType(ModelNode);
+    _model = model;
+}
+
+
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
 ModelManager::ModelManager()
@@ -100,41 +123,9 @@ const Model &ModelManager::getModelByPath(const std::string &path, const std::st
     return getModelByPath(absPath);
 }
 
-std::map<std::string, void*>* ModelManager::getModelTree()
+std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary &library)
 {
-    std::map<std::string, void*> *modelTree = new std::map<std::string, void*>();
-
-    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++)
-    {
-        auto filename = it->first;
-        auto model = it->second;
-
-        fs::path path = model->getRelativePath();
-        Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
-
-        // Start at the root
-        std::map<std::string, void*> *node = modelTree;
-        for (auto itp = path.begin(); itp != path.end(); itp++)
-        {
-            if (isModel(itp->string()))
-                (*node)[itp->string()] = model;
-            else
-            {
-                std::map<std::string, void*> *mapPtr = new std::map<std::string, void*>();
-                (*node)[itp->string()] = mapPtr;
-                node = mapPtr;
-            }
-            Base::Console().Log("'%s' ", itp->string().c_str());
-        }
-        Base::Console().Log("\n");
-    }
-
-    return modelTree;
-}
-
-std::map<std::string, void*>* ModelManager::getModelTree(const ModelLibrary &library)
-{
-    std::map<std::string, void*> *modelTree = new std::map<std::string, void*>();
+    std::map<std::string, ModelTreeNode*> *modelTree = new std::map<std::string, ModelTreeNode*>();
 
     for (auto it = _modelMap->begin(); it != _modelMap->end(); it++)
     {
@@ -147,18 +138,26 @@ std::map<std::string, void*>* ModelManager::getModelTree(const ModelLibrary &lib
             Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
 
             // Start at the root
-            std::map<std::string, void*> *node = modelTree;
+            std::map<std::string, ModelTreeNode*> *node = modelTree;
             for (auto itp = path.begin(); itp != path.end(); itp++)
             {
-                if (isModel(itp->string()))
-                    (*node)[itp->string()] = model;
-                else
-                {  
+                ModelTreeNode *child = new ModelTreeNode();
+                if (isModel(itp->string())) {
+                    child->setData(model);
+                    (*node)[itp->string()] = child;
+                } else {
+                    // Add the folder only if it's not already there
+                    std::string folderName = itp->string();
+                    std::map<std::string, ModelTreeNode*> *mapPtr;
                     if (node->count(itp->string()) == 0)
                     {
-                        (*node)[itp->string()] = new std::map<std::string, void*>();
+                        mapPtr = new std::map<std::string, ModelTreeNode*>();
+                        child->setData(mapPtr);
+                        (*node)[itp->string()] = child;
+                        node = mapPtr;
+                    } else {
+                        node = (*node)[itp->string()]->getFolder();
                     }
-                    node = reinterpret_cast<std::map<std::string, void*> *>((*node)[itp->string()]);
                 }
                 Base::Console().Log("'%s' ", itp->string().c_str());
             }

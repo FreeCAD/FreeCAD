@@ -101,8 +101,8 @@ ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std
             base = "AppearanceModel";
         }
 
-        const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
-        const std::string name = yamlroot[base]["Name"].as<std::string>();
+        uuid = yamlroot[base]["UUID"].as<std::string>();
+        name = yamlroot[base]["Name"].as<std::string>();
     } catch (YAML::Exception const &) {
         throw InvalidModel();
     }
