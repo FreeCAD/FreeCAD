@@ -141,8 +141,8 @@ std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLib
             std::map<std::string, ModelTreeNode*> *node = modelTree;
             for (auto itp = path.begin(); itp != path.end(); itp++)
             {
-                ModelTreeNode *child = new ModelTreeNode();
                 if (isModel(itp->string())) {
+                    ModelTreeNode *child = new ModelTreeNode();
                     child->setData(model);
                     (*node)[itp->string()] = child;
                 } else {
@@ -152,6 +152,7 @@ std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLib
                     if (node->count(itp->string()) == 0)
                     {
                         mapPtr = new std::map<std::string, ModelTreeNode*>();
+                        ModelTreeNode *child = new ModelTreeNode();
                         child->setData(mapPtr);
                         (*node)[itp->string()] = child;
                         node = mapPtr;

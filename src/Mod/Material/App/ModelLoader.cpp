@@ -96,7 +96,7 @@ ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std
     std::string uuid;
     std::string name;
     try {
-        YAML::Node yamlroot = YAML::LoadFile(path);
+        yamlroot = YAML::LoadFile(path);
         if (yamlroot["AppearanceModel"]) {
             base = "AppearanceModel";
         }
