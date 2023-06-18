@@ -15,6 +15,7 @@ SET(MaterialScripts_Files
     MaterialEditor.py
     Materials.py
     ModelSelect.py
+    TestMaterialsApp.py
     ValueEditor.py
     Resources/ui/materials.ui
     Resources/ui/materials-editor.ui

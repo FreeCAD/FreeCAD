@@ -80,6 +80,7 @@ ModelManager::ModelManager()
  */
 ModelManager::~ModelManager()
 {
+    manager = nullptr;
 }
 
 bool ModelManager::isModel(const fs::path &p)
@@ -94,9 +95,10 @@ bool ModelManager::isModel(const fs::path &p)
 
 ModelManager *ModelManager::getManager()
 {
-    if (manager == nullptr)
-        manager = new ModelManager();
-    return manager;
+    // if (manager == nullptr)
+    //     manager = new ModelManager();
+    // return manager;
+    return new ModelManager();
 }
 
 void ModelManager::refresh()
