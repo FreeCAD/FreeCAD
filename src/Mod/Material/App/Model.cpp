@@ -224,6 +224,8 @@ void ModelValueProperty::setQuantity(const Base::Quantity& value)
 
 void ModelValueProperty::setQuantity(double value, const std::string& units)
 {
+    Q_UNUSED(units);
+
     // _valueType = ValueType::Quantity;
     // _valueQuantity = Base::Quantity(value, QString::fromStdString(units));
     _valueString = value;
@@ -231,6 +233,8 @@ void ModelValueProperty::setQuantity(double value, const std::string& units)
 
 void ModelValueProperty::setQuantity(const std::string& value)
 {
+    Q_UNUSED(value);
+
     _valueType = ValueType::Quantity;
     // _valueQuantity = value;
 }
@@ -261,7 +265,7 @@ ModelProperty& Model::operator[] (const std::string& key)
 {
     try {
         return _properties.at(key);
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range const&) {
         throw PropertyNotFound();
     }
 }

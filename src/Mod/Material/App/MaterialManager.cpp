@@ -81,7 +81,7 @@ const Material &MaterialManager::getMaterial(const std::string &uuid) const
 {
     try {
         return *(_materialMap->at(uuid));
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range &e) {
         throw MaterialNotFound();
     }
 }
@@ -115,7 +115,7 @@ const std::string MaterialManager::getUUIDFromPath(const std::string &path) cons
     try {
         Material* material = _materialPathMap->at(normalized);
         return material->getUUID();
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range &e) {
         throw MaterialNotFound();
     }
 }

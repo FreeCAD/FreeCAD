@@ -80,7 +80,7 @@ const Model &ModelManager::getModel(const std::string &uuid) const
 {
     try {
         return *(_modelMap->at(uuid));
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range const &) {
         throw ModelNotFound();
     }
 }

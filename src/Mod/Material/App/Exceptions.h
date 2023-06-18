@@ -53,6 +53,14 @@ public:
     ~PropertyNotFound() throw() override {}
 };
 
+class InvalidModel : public Base::Exception
+{
+public:
+    InvalidModel(){}
+    explicit InvalidModel(char* msg){this->setMessage(msg);}
+    ~InvalidModel() throw() override {}
+};
+
 } // namespace Materials
 
 #endif // MATERIAL_EXCEPTIONS_H

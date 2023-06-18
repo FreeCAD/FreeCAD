@@ -327,7 +327,7 @@ void MaterialsEditor::updateCardAppearance(const Materials::Material &card)
                     modelRoot->appendRow(items);
                     tree->setExpanded(modelRoot->index(), true);
                 }
-            } catch (Materials::ModelNotFound) {
+            } catch (Materials::ModelNotFound const &) {
             }
         }
     }
@@ -382,7 +382,7 @@ void MaterialsEditor::updateCardProperties(const Materials::Material &card)
                     modelRoot->appendRow(items);
                     tree->setExpanded(modelRoot->index(), true);
                 }
-            } catch (Materials::ModelNotFound) {
+            } catch (Materials::ModelNotFound const &) {
             }
         }
     }

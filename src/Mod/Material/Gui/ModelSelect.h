@@ -28,6 +28,8 @@
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
+#include <QTableView>
+#include <QTreeView>
 
 #include <Mod/Material/App/Materials.h>
 

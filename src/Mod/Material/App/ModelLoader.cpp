@@ -80,31 +80,37 @@ const std::string ModelLoader::getUUIDFromPath(const std::string &path)
 
         const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
         return uuid;
-    } catch (YAML::Exception ex) {
+    } catch (YAML::Exception &ex) {
         throw ModelNotFound();
     }
 }
 
 ModelEntry *ModelLoader::getModelFromPath(const ModelLibrary &library, const std::string &path) const
 {
+    QFile file(QString::fromStdString(path));
+    if (!file.exists())
+        throw ModelNotFound();
+
+    YAML::Node yamlroot;
+    std::string base = "Model";
+    std::string uuid;
+    std::string name;
     try {
         YAML::Node yamlroot = YAML::LoadFile(path);
-        std::string base = "Model";
         if (yamlroot["AppearanceModel"]) {
             base = "AppearanceModel";
         }
+
         const std::string uuid = yamlroot[base]["UUID"].as<std::string>();
         const std::string name = yamlroot[base]["Name"].as<std::string>();
-
-        QDir modelDir(QString::fromStdString(path));
-        ModelEntry *model = new ModelEntry(library, base, name, modelDir, uuid, yamlroot);
-
-        return model;
-    } catch (std::exception e) {
-        // This should be more targeted at individual exceptions
+    } catch (YAML::Exception const &) {
+        throw InvalidModel();
     }
 
-    return nullptr;
+    QDir modelDir(QString::fromStdString(path));
+    ModelEntry *model = new ModelEntry(library, base, name, modelDir, uuid, yamlroot);
+
+    return model;
 }
 
 void ModelLoader::showYaml(const YAML::Node &yaml) const
@@ -173,6 +179,13 @@ void ModelLoader::dereference(ModelEntry *model)
     model->markDereferenced();
 }
 
+std::string ModelLoader::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
+{
+    if (node[key])
+        return node[key].as<std::string>();
+    return defaultValue;
+}
+
 void ModelLoader::addToTree(ModelEntry *model)
 {
     std::set<std::string> exclude;
@@ -190,9 +203,11 @@ void ModelLoader::addToTree(ModelEntry *model)
     auto directory = model->getDirectory();
     auto uuid = model->getUUID();
 
-    std::string description = yamlModel[base]["Description"].as<std::string>();
-    std::string url = yamlModel[base]["URL"].as<std::string>();
-    std::string doi = yamlModel[base]["DOI"].as<std::string>();
+    std::string version = yamlValue(yamlModel["General"], "Version", "");
+
+    std::string description = yamlValue(yamlModel[base], "Description", "");
+    std::string url = yamlValue(yamlModel[base], "URL", "");
+    std::string doi = yamlValue(yamlModel[base], "DOI", "");
 
     Model::ModelType type = (base == "Model") ? Model::MODEL : Model::APPEARANCE_MODEL;
 
@@ -244,9 +259,13 @@ void ModelLoader::loadLibrary(const ModelLibrary &library)
             if (file.suffix().toStdString() == "yml") {
                 std::string libraryName = file.baseName().toStdString();
 
-                auto model = getModelFromPath(library, file.canonicalFilePath().toStdString());
-                (*_modelEntryMap)[model->getUUID()] = model;
-                showYaml(model->getModel());
+                try {
+                    auto model = getModelFromPath(library, file.canonicalFilePath().toStdString());
+                    (*_modelEntryMap)[model->getUUID()] = model;
+                    // showYaml(model->getModel());
+                } catch (InvalidModel const&) {
+                    Base::Console().Log("Invalid model '%s'\n", pathname.toStdString().c_str());
+                }
             }
         }
     }

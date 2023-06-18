@@ -73,6 +73,8 @@ public:
 private:
     explicit ModelLoader();
 
+    std::string yamlValue(const YAML::Node& node, const std::string& key,
+                                          const std::string& defaultValue);
     void addToTree(ModelEntry* model);
     void showYaml(const YAML::Node& yaml) const;
     void dereference(ModelEntry* parent, const ModelEntry* child);

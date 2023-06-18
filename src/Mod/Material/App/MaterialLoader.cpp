@@ -195,7 +195,7 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
 
         model = new MaterialYamlEntry(library, name, modelDir, uuid, yamlroot);
         showYaml(yamlroot);
-    } catch (YAML::Exception) {
+    } catch (YAML::Exception const &) {
         Base::Console().Log("YAML parsing error: '%s'\n", path.c_str());
 
         // Perhaps try parsing the older format?

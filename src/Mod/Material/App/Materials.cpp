@@ -109,7 +109,7 @@ void Material::addModel(const std::string &uuid)
 
             _properties[propertyName] = ModelValueProperty(property);
         }
-    } catch (ModelNotFound) {
+    } catch (ModelNotFound const &) {
     }
 }
 
@@ -129,7 +129,7 @@ void Material::addAppearanceModel(const std::string &uuid)
 
             _appearanceProperties[propertyName] = ModelValueProperty(property);
         }
-    } catch (ModelNotFound) {
+    } catch (ModelNotFound const &) {
     }
 }
 
@@ -163,7 +163,7 @@ const std::string Material::getPropertyValue(const std::string &name) const
 {
     try {
         return _properties.at(name).getValue();
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
 }
@@ -172,7 +172,7 @@ const std::string Material::getAppearancePropertyValue(const std::string &name) 
 {
     try {
         return _appearanceProperties.at(name).getValue();
-    } catch (std::out_of_range e) {
+    } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
 }
