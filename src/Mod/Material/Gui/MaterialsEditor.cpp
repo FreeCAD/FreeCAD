@@ -215,7 +215,7 @@ void MaterialsEditor::createAppearanceTree()
 
 void MaterialsEditor::createMaterialTree()
 {
-    Materials::ModelManager modelManager;
+    Materials::ModelManager &modelManager = getModelManager();
     // Materials::MaterialManager materialManager;
 
     auto param =

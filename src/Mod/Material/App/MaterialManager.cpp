@@ -46,7 +46,8 @@ MaterialManager::MaterialManager()
 {
     // TODO: Add a mutex or similar
     if (_materialMap == nullptr) {
-        ModelManager modelManager; // Load the models first
+        // Load the models first
+        ModelManager *manager = ModelManager::getManager();
 
         _materialMap = new std::map<std::string, Material*>();
 

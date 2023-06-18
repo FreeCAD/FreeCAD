@@ -64,14 +64,15 @@ class MaterialsExport ModelManager : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    explicit ModelManager();
     virtual ~ModelManager();
 
     static ModelManager *getManager();
 
-    static std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    static std::map<std::string, Model*> *getModels() { return _modelMap; }
-    static std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library);
+    void refresh();
+    
+    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
+    std::map<std::string, Model*> *getModels() { return _modelMap; }
+    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library);
     const Model &getModel(const std::string& uuid) const;
     const Model &getModelByPath(const std::string &path) const;
     const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
@@ -79,6 +80,7 @@ public:
     static bool isModel(const fs::path& p);
 
 private:
+    explicit ModelManager();
 
     static ModelManager *manager;
     static std::list<ModelLibrary*> *_libraryList;

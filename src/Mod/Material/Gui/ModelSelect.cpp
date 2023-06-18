@@ -130,7 +130,7 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
 
 void ModelSelect::createModelTree()
 {
-    Materials::ModelManager modelManager;
+    // Materials::ModelManager modelManager;
 
     auto tree = ui->treeModels;
     auto model = new QStandardItemModel();
@@ -146,7 +146,7 @@ void ModelSelect::createModelTree()
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
 
-    std::list<Materials::ModelLibrary*> *libraries = Materials::ModelManager::getModelLibraries();
+    std::list<Materials::ModelLibrary*> *libraries = getModelManager().getModelLibraries();
     for (Materials::ModelLibrary *library : *libraries)
     {
         lib = new QStandardItem(QString::fromStdString(library->getName()));
@@ -154,7 +154,7 @@ void ModelSelect::createModelTree()
         addExpanded(tree, model, lib);
 
         // auto path = library->getDirectoryPath();
-        std::map<std::string, Materials::ModelTreeNode*>* modelTree= Materials::ModelManager::getModelTree(*library);
+        std::map<std::string, Materials::ModelTreeNode*>* modelTree= getModelManager().getModelTree(*library);
         // delete modelTree;
         addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
     }

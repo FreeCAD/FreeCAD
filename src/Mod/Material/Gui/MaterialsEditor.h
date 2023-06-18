@@ -65,7 +65,7 @@ public:
     void reject() override;
 
     Materials::MaterialManager &getMaterialManager() { return _materialManager; }
-    Materials::ModelManager &getModelManager() { return _modelManager; }
+    Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
     void clearCardAppearance(void);
     void clearCardProperties(void);
@@ -78,7 +78,6 @@ public:
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
     Materials::MaterialManager _materialManager;
-    Materials::ModelManager _modelManager;
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);

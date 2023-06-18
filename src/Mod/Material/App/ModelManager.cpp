@@ -98,6 +98,18 @@ ModelManager *ModelManager::getManager()
         manager = new ModelManager();
     return manager;
 }
+
+void ModelManager::refresh()
+{
+    delete _modelMap;
+    delete _libraryList;
+
+    _modelMap = new std::map<std::string, Model*>();
+    _libraryList = new std::list<ModelLibrary*>();
+
+    // Load the libraries
+    ModelLoader loader(_modelMap, _libraryList);
+}
     
 const Model &ModelManager::getModel(const std::string &uuid) const
 {

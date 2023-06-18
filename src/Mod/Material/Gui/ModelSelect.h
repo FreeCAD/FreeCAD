@@ -63,10 +63,9 @@ private:
     void setColumnWidths(QTableView *table);
     void updateModelProperties(const Materials::Model& model);
     void createModelProperties();
-    Materials::ModelManager &getModelManager() { return _modelManager; }
+    Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
     std::unique_ptr<Ui_ModelSelect> ui;
-    Materials::ModelManager _modelManager;
 };
 
 } // namespace MatGui

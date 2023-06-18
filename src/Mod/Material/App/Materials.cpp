@@ -95,10 +95,10 @@ Material::~Material()
 
 void Material::addModel(const std::string &uuid)
 {
-    ModelManager manager;
+    ModelManager *manager = ModelManager::getManager();
 
     try {
-        const Model &model = manager.getModel(uuid);
+        const Model &model = manager->getModel(uuid);
 
         _modelUuids.push_back(uuid);
 
@@ -115,10 +115,10 @@ void Material::addModel(const std::string &uuid)
 
 void Material::addAppearanceModel(const std::string &uuid)
 {
-    ModelManager manager;
+    ModelManager *manager = ModelManager::getManager();
 
     try {
-        const Model &model = manager.getModel(uuid);
+        const Model &model = manager->getModel(uuid);
 
         _appearanceModelUuids.push_back(uuid);
 

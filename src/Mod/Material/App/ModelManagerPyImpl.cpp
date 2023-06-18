@@ -46,17 +46,29 @@ std::string ModelManagerPy::representation() const
 PyObject *ModelManagerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new ModelManagerPy(new ModelManager());
+    // return new ModelManagerPy(new ModelManager());
 
-    // PyErr_SetString(PyExc_RuntimeError,
-    //     "Please use ModelManager.getManager() to get an instance of the ModelManager");
-    // return nullptr;
+    PyErr_SetString(PyExc_RuntimeError,
+        "Please use ModelManager.getManager() to get an instance of the ModelManager");
+    return nullptr;
 }
 
 // constructor method
 int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
+}
+
+PyObject* ModelManagerPy::getManager(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        return new ModelManagerPy(ModelManager::getManager());
+    } catch (ModelNotFound const &) {
+        return nullptr;
+    }
 }
 
 PyObject* ModelManagerPy::getModel(PyObject *args)
