@@ -100,6 +100,8 @@ public Q_SLOTS:
 
 private:
     gp_Dir getFaceNormal(TopoDS_Face& face);
+    bool validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const;
+    std::pair<Base::Vector3d, Base::Vector3d> getSegmentEnds(TopoDS_Edge segment) const;
 
     TopoDS_Shape m_toolFaceShape;
     TopoDS_Shape m_alignResult;
