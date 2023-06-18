@@ -64,6 +64,13 @@ class MaterialsExport ModelManager : public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
+    enum ModelFilter
+    {
+        ModelFilter_None,
+        ModelFilter_Physical,
+        ModelFilter_Appearance
+    };
+
     virtual ~ModelManager();
 
     static ModelManager *getManager();
@@ -72,7 +79,7 @@ public:
     
     std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
     std::map<std::string, Model*> *getModels() { return _modelMap; }
-    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library);
+    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
     const Model &getModel(const std::string& uuid) const;
     const Model &getModelByPath(const std::string &path) const;
     const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
@@ -81,6 +88,8 @@ public:
 
 private:
     explicit ModelManager();
+
+    bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
     static ModelManager *manager;
     static std::list<ModelLibrary*> *_libraryList;

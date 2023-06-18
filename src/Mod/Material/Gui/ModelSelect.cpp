@@ -25,6 +25,7 @@
 #endif
 
 #include <QString>
+#include <QPushButton>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -43,8 +44,8 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::ModelSelect */
 
-ModelSelect::ModelSelect(QWidget* parent)
-  : QDialog(parent), ui(new Ui_ModelSelect)
+ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter filter)
+  : QDialog(parent), _filter(filter), ui(new Ui_ModelSelect)
 {
     ui->setupUi(this);
 
@@ -156,7 +157,7 @@ void ModelSelect::createModelTree()
         addExpanded(tree, model, lib);
 
         // auto path = library->getDirectoryPath();
-        std::map<std::string, Materials::ModelTreeNode*>* modelTree= getModelManager().getModelTree(*library);
+        std::map<std::string, Materials::ModelTreeNode*>* modelTree= getModelManager().getModelTree(*library, _filter);
         // delete modelTree;
         addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
     }
@@ -188,6 +189,7 @@ void ModelSelect::createModelProperties()
     auto table = ui->tableProperties;
     auto model = new QStandardItemModel();
     table->setModel(model);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     setHeaders(model);
     setColumnWidths(table);
@@ -244,7 +246,7 @@ void ModelSelect::updateMaterialModel(const std::string &uuid)
     ui->editDOI->setText(QString::fromStdString(model.getDOI()));
     ui->editDescription->setText(QString::fromStdString(model.getDescription()));
 
-    if (model.getType() == Materials::Model::MODEL) {
+    if (model.getType() == Materials::Model::ModelType_Physical) {
         ui->tabWidget->setTabText(1, QString::fromStdString("Properties"));
     } else {
         ui->tabWidget->setTabText(1, QString::fromStdString("Appearance"));

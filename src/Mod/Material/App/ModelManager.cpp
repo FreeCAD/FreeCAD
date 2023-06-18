@@ -137,7 +137,24 @@ const Model &ModelManager::getModelByPath(const std::string &path, const std::st
     return getModelByPath(absPath);
 }
 
-std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary &library)
+bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
+{
+    switch (filter)
+    {
+        case ModelFilter_None:
+            return true;
+
+        case ModelFilter_Physical:
+            return (modelType == Model::ModelType_Physical);
+
+        case ModelFilter_Appearance:
+            return (modelType == Model::ModelType_Appearance);
+    }
+
+    return false;
+}
+
+std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLibrary &library, ModelFilter filter)
 {
     std::map<std::string, ModelTreeNode*> *modelTree = new std::map<std::string, ModelTreeNode*>();
 
@@ -146,7 +163,7 @@ std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLib
         auto filename = it->first;
         auto model = it->second;
 
-        if (model->getLibrary() == library)
+        if (model->getLibrary() == library && passFilter(filter, model->getType()))
         {
             fs::path path = model->getRelativePath();
             Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());

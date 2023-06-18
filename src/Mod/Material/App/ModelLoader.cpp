@@ -213,7 +213,7 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<std::string, s
     std::string url = yamlValue(yamlModel[base], "URL", "");
     std::string doi = yamlValue(yamlModel[base], "DOI", "");
 
-    Model::ModelType type = (base == "Model") ? Model::MODEL : Model::APPEARANCE_MODEL;
+    Model::ModelType type = (base == "Model") ? Model::ModelType_Physical : Model::ModelType_Appearance;
 
     Model *finalModel = new Model(library, type, name, directory, uuid, description, url, doi);
 

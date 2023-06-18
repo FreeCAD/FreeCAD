@@ -44,7 +44,7 @@ class ModelSelect : public QDialog
     Q_OBJECT
 
 public:
-    explicit ModelSelect(QWidget* parent = nullptr);
+    explicit ModelSelect(QWidget* parent = nullptr, Materials::ModelManager::ModelFilter filter=Materials::ModelManager::ModelFilter_None);
     ~ModelSelect() override;
 
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
@@ -66,6 +66,7 @@ private:
     void createModelProperties();
     Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
+    Materials::ModelManager::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
     std::string _selected;
 };

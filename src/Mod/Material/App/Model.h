@@ -163,8 +163,8 @@ class MaterialsExport Model : public Base::BaseClass
 
 public:
     enum ModelType {
-        MODEL,
-        APPEARANCE_MODEL
+        ModelType_Physical,
+        ModelType_Appearance
     };
 
     explicit Model();
@@ -174,7 +174,7 @@ public:
     virtual ~Model();
 
     const ModelLibrary &getLibrary() const { return _library; }
-    const std::string getBase() const { return (_type == MODEL) ? "Model" : "AppearanceModel"; }
+    const std::string getBase() const { return (_type == ModelType_Physical) ? "Model" : "AppearanceModel"; }
     const std::string &getName() const { return _name; }
     ModelType getType() const { return _type; }
     const QDir &getDirectory() const { return _directory; }
