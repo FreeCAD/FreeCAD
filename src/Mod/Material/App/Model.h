@@ -43,6 +43,11 @@ public:
     const QDir &getDirectory() const { return _directory; }
     const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
     const std::string &getIconPath() const { return _iconPath; }
+    bool operator==(const ModelLibrary& library) const
+    {
+        return (_name == library._name) && (_directory == library._directory);
+    }
+    bool operator!=(const ModelLibrary& library) const { return !operator==(library); }
 
 private:
     std::string _name;
@@ -192,10 +197,7 @@ public:
     {
         return _uuid == m._uuid;
     }
-    bool operator!=(const Model& m) const
-    {
-        return !operator==(m);
-    }
+    bool operator!=(const Model& m) const { return !operator==(m); }
 
     ModelProperty& operator[](const std::string& key);
     void addProperty(ModelProperty &property) { _properties[property.getName()] = property; }

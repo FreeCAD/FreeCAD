@@ -81,31 +81,52 @@ void ModelSelect::addExpanded(QTreeView *tree, QStandardItemModel *parent, QStan
     tree->setExpanded(child->index(), true);
 }
 
-void ModelSelect::addModels(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
+void ModelSelect::addModels(QStandardItem &parent, std::map<std::string, void*>* modelTree, const QIcon &icon)
 {
     auto tree = ui->treeModels;
-    for (const auto& mod : fs::directory_iterator(folder)) {
-        if (fs::is_directory(mod)) {
-            auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
-            addExpanded(tree, &parent, node);
-            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    for (auto& mod : *modelTree) {
+        try {
+            Materials::Model *model = reinterpret_cast<Materials::Model *>(mod.second);
+            std::string uuid = model->getUUID();
 
-            addModels(*node, top, mod.path().string(), icon);
-        }
-        else if (Materials::ModelManager::isModel(mod)) {
-            auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
+            auto card = new QStandardItem(icon, QString::fromStdString(mod.first));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
-            try {
-                auto model = getModelManager().getModelByPath(mod.path().string());
-                card->setData(QVariant(QString::fromStdString(model.getUUID())), Qt::UserRole);
-            } catch (Materials::ModelNotFound &e) {
-                Base::Console().Log("Model not found error\n");
-            } catch (std::exception &e) {
-                Base::Console().Log("Exception '%s'\n", e.what());
-            }
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
             addExpanded(tree, &parent, card);
+        } catch (std::exception &e) {
+            Base::Console().Log("Exception '%s'\n", e.what());
+
+            // Assume is not a file, so a folder
+            auto node = new QStandardItem(QString::fromStdString(mod.first));
+            addExpanded(tree, &parent, node);
+            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            std::map<std::string, void*>* treeMap =
+                reinterpret_cast<std::map<std::string, void*> *>(mod.second);
+            addModels(*node, treeMap, icon);
         }
+        // if (fs::is_directory(mod)) {
+        //     auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
+        //     addExpanded(tree, &parent, node);
+        //     node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+
+        //     addModels(*node, top, mod.path().string(), icon);
+        // }
+        // else if (Materials::ModelManager::isModel(mod)) {
+        //     auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
+        //     card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+        //                 | Qt::ItemIsDropEnabled);
+        //     try {
+        //         auto model = getModelManager().getModelByPath(mod.path().string());
+        //         card->setData(QVariant(QString::fromStdString(model.getUUID())), Qt::UserRole);
+        //     } catch (Materials::ModelNotFound &e) {
+        //         Base::Console().Log("Model not found error\n");
+        //     } catch (std::exception &e) {
+        //         Base::Console().Log("Exception '%s'\n", e.what());
+        //     }
+        //     addExpanded(tree, &parent, card);
+        // }
     }
 }
 
@@ -127,15 +148,17 @@ void ModelSelect::createModelTree()
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
 
-    auto libraries = Materials::ModelManager::getModelLibraries();
-    for (const auto &value : *libraries)
+    std::list<Materials::ModelLibrary*> *libraries = Materials::ModelManager::getModelLibraries();
+    for (Materials::ModelLibrary *library : *libraries)
     {
-        lib = new QStandardItem(QString::fromStdString(value->getName()));
+        lib = new QStandardItem(QString::fromStdString(library->getName()));
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto path = value->getDirectoryPath();
-        addModels(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
+        // auto path = library->getDirectoryPath();
+        std::map<std::string, void*>* modelTree= Materials::ModelManager::getModelTree(*library);
+        // delete modelTree;
+        addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
     }
 }
 

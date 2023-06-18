@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/Console.h>
+
 #include "Model.h"
 #include "ModelManager.h"
 #include "ModelLoader.h"
@@ -59,8 +61,8 @@ ModelManager::~ModelManager()
 
 bool ModelManager::isModel(const fs::path &p)
 {
-    if (!fs::is_regular_file(p))
-        return false;
+    // if (!fs::is_regular_file(p))
+    //     return false;
     // check file extension
     if (p.extension() == ".yml")
         return true;
@@ -96,6 +98,75 @@ const Model &ModelManager::getModelByPath(const std::string &path, const std::st
     QDir modelDir(QDir::cleanPath(QString::fromStdString(libraryPath + "/" + path)));
     std::string absPath = modelDir.absolutePath().toStdString();
     return getModelByPath(absPath);
+}
+
+std::map<std::string, void*>* ModelManager::getModelTree()
+{
+    std::map<std::string, void*> *modelTree = new std::map<std::string, void*>();
+
+    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++)
+    {
+        auto filename = it->first;
+        auto model = it->second;
+
+        fs::path path = model->getRelativePath();
+        Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
+
+        // Start at the root
+        std::map<std::string, void*> *node = modelTree;
+        for (auto itp = path.begin(); itp != path.end(); itp++)
+        {
+            if (isModel(itp->string()))
+                (*node)[itp->string()] = model;
+            else
+            {
+                std::map<std::string, void*> *mapPtr = new std::map<std::string, void*>();
+                (*node)[itp->string()] = mapPtr;
+                node = mapPtr;
+            }
+            Base::Console().Log("'%s' ", itp->string().c_str());
+        }
+        Base::Console().Log("\n");
+    }
+
+    return modelTree;
+}
+
+std::map<std::string, void*>* ModelManager::getModelTree(const ModelLibrary &library)
+{
+    std::map<std::string, void*> *modelTree = new std::map<std::string, void*>();
+
+    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++)
+    {
+        auto filename = it->first;
+        auto model = it->second;
+
+        if (model->getLibrary() == library)
+        {
+            fs::path path = model->getRelativePath();
+            Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
+
+            // Start at the root
+            std::map<std::string, void*> *node = modelTree;
+            for (auto itp = path.begin(); itp != path.end(); itp++)
+            {
+                if (isModel(itp->string()))
+                    (*node)[itp->string()] = model;
+                else
+                {  
+                    if (node->count(itp->string()) == 0)
+                    {
+                        (*node)[itp->string()] = new std::map<std::string, void*>();
+                    }
+                    node = reinterpret_cast<std::map<std::string, void*> *>((*node)[itp->string()]);
+                }
+                Base::Console().Log("'%s' ", itp->string().c_str());
+            }
+            Base::Console().Log("\n");
+        }
+    }
+
+    return modelTree;
 }
 
 

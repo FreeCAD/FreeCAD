@@ -44,6 +44,8 @@ public:
 
     static std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
     static std::map<std::string, Model*> *getModels() { return _modelMap; }
+    static std::map<std::string, void*>* getModelTree();
+    static std::map<std::string, void*>* getModelTree(const ModelLibrary &library);
     const Model &getModel(const std::string& uuid) const;
     const Model &getModelByPath(const std::string &path) const;
     const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
