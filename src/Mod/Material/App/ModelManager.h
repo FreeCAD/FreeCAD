@@ -85,11 +85,10 @@ public:
     const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
 
     static bool isModel(const fs::path& p);
+    bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
 
 private:
     explicit ModelManager();
-
-    bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
     static ModelManager *manager;
     static std::list<ModelLibrary*> *_libraryList;

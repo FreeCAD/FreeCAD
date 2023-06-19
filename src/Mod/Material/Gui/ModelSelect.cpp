@@ -50,7 +50,7 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter f
     ui->setupUi(this);
 
     getFavorites();
-    getRecent();
+    getRecents();
 
     createModelTree();
     createModelProperties();
@@ -113,20 +113,20 @@ void ModelSelect::saveFavorites()
 
 void ModelSelect::addFavorite(const std::string &uuid)
 {
-    // if (!isFavorite(uuid)) {
+    if (!isFavorite(uuid)) {
         _favorites.push_back(uuid);
         saveFavorites();
         refreshModelTree();
-    // }
+    }
 }
 
 void ModelSelect::removeFavorite(const std::string& uuid)
 {
-    // if (isFavorite(uuid)) {
+    if (isFavorite(uuid)) {
         _favorites.remove(uuid);
         saveFavorites();
         refreshModelTree();
-    // }
+    }
 }
 
 bool ModelSelect::isFavorite(const std::string& uuid) const
@@ -140,12 +140,13 @@ bool ModelSelect::isFavorite(const std::string& uuid) const
 }
 
 
-void ModelSelect::getRecent()
+void ModelSelect::getRecents()
 {
     _recents.clear();
 
     auto param =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Models/Recent");
+    _recentMax = param->GetInt("RecentMax", 5);
     int count = param->GetInt("Recent", 0);
     for (int i = 0; i < count; i++)
     {
@@ -153,6 +154,59 @@ void ModelSelect::getRecent()
         std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
         _recents.push_back(uuid);
     }
+}
+
+void ModelSelect::saveRecents()
+{
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Models/Recent");
+
+    // Clear out the existing favorites
+    int count = param->GetInt("Recent", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(i);
+        param->RemoveASCII(key.toStdString().c_str());
+    }
+
+    // Add the current values
+    int size = _recents.size();
+    if (size > _recentMax)
+        size = _recentMax;
+    param->SetInt("Recent", size);
+    int j = 0;
+    for (auto recent: _recents)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(j);
+        param->SetASCII(key.toStdString().c_str(), recent);
+
+        j++;
+        if (j >= size)
+            break;
+    }
+}
+
+void ModelSelect::addRecent(const std::string& uuid)
+{
+    // Ensure no duplicates
+    if (isRecent(uuid))
+        _recents.remove(uuid);
+
+    _recents.push_front(uuid);
+    while (_recents.size() > _recentMax)
+        _recents.pop_back();
+
+    saveRecents();
+}
+
+bool ModelSelect::isRecent(const std::string& uuid) const
+{
+    for (auto it: _recents)
+    {
+        if (it == uuid)
+            return true;
+    }
+    return false;
 }
 
 /*
@@ -201,19 +255,41 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
     }
 }
 
+void ModelSelect::addRecents(QStandardItem *parent)
+{
+    auto tree = ui->treeModels;
+    for (auto& uuid : _recents) {
+        const Materials::Model& model = getModelManager().getModel(uuid);
+
+        if (getModelManager().passFilter(_filter, model.getType()))
+        {
+            QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
+            auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                        | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+            addExpanded(tree, parent, card);
+        }
+    }
+}
+
 void ModelSelect::addFavorites(QStandardItem *parent)
 {
     auto tree = ui->treeModels;
     for (auto& uuid : _favorites) {
         const Materials::Model& model = getModelManager().getModel(uuid);
 
-        QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
-        auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
-        card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                    | Qt::ItemIsDropEnabled);
-        card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+        if (getModelManager().passFilter(_filter, model.getType()))
+        {
+            QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
+            auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                        | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
 
-        addExpanded(tree, parent, card);
+            addExpanded(tree, parent, card);
+        }
     }
 }
 
@@ -253,6 +329,7 @@ void ModelSelect::fillTree()
     lib = new QStandardItem(QString::fromStdString("Recent"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
+    addRecents(lib);
 
     std::list<Materials::ModelLibrary*> *libraries = getModelManager().getModelLibraries();
     for (Materials::ModelLibrary *library : *libraries)
@@ -421,6 +498,7 @@ void ModelSelect::onFavourite(bool checked)
 
 void ModelSelect::accept()
 {
+    addRecent(_selected);
     QDialog::accept();
 }
 

@@ -60,10 +60,14 @@ private:
     void removeFavorite(const std::string& uuid);
     bool isFavorite(const std::string& uuid) const;
     
-    void getRecent();
+    void getRecents();
+    void saveRecents();
+    void addRecent(const std::string& uuid);
+    bool isRecent(const std::string& uuid) const;
 
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
+    void addRecents(QStandardItem* parent);
     void addFavorites(QStandardItem *parent);
     void addModels(QStandardItem& parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree,
                    const QIcon& icon);
@@ -84,6 +88,7 @@ private:
     std::string _selected;
     std::list<std::string> _favorites;
     std::list<std::string> _recents;
+    int _recentMax;
 };
 
 } // namespace MatGui

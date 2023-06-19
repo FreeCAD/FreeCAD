@@ -137,7 +137,7 @@ const Model &ModelManager::getModelByPath(const std::string &path, const std::st
     return getModelByPath(absPath);
 }
 
-bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
+bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) const
 {
     switch (filter)
     {
