@@ -103,44 +103,50 @@ void TaskLineDecor::getDefaults()
     m_visible = 1;
 
     //set defaults to format of 1st edge
-    if (!m_edges.empty()) {
-        int num = DrawUtil::getIndexFromName(m_edges.front());
-        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
-        if (bg) {
-            if (bg->getCosmetic()) {
-                if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
-                    m_style = ce->m_format.m_style;
-                    m_color = ce->m_format.m_color;
-                    m_weight = ce->m_format.m_weight;
-                    m_visible = ce->m_format.m_visible;
-                } else if (bg->source() == 2) {
+    if (m_edges.empty()) {
+        return;
+    }
+
+    int num = DrawUtil::getIndexFromName(m_edges.front());
+    BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
+    if (!bg) {
+        return;
+    }
+
+    if (bg->getCosmetic()) {
+        if (bg->source() == 1) {
+            TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
+            m_style = ce->m_format.m_style;
+            m_color = ce->m_format.m_color;
+            m_weight = ce->m_format.m_weight;
+            m_visible = ce->m_format.m_visible;
+        } else if (bg->source() == 2) {
 //                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
-                    m_style = cl->m_format.m_style;
-                    m_color = cl->m_format.m_color;
-                    m_weight = cl->m_format.m_weight;
-                    m_visible = cl->m_format.m_visible;
-                }
-            } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
-                if (gf) {
-                    m_style = gf->m_format.m_style;
-                    m_color = gf->m_format.m_color;
-                    m_weight = gf->m_format.m_weight;
-                    m_visible = gf->m_format.m_visible;
-                } else {
-                    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-                    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-                    if (partVP) {
-                        m_weight = partVP->LineWidth.getValue();
-                        m_style = Qt::SolidLine;                  // = 1
-                        m_color = LineFormat::getDefEdgeColor();
-                        m_visible = 1;
-                    }
-                }
-            }
+            TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
+            m_style = cl->m_format.m_style;
+            m_color = cl->m_format.m_color;
+            m_weight = cl->m_format.m_weight;
+            m_visible = cl->m_format.m_visible;
         }
+        return;
+    }
+
+    TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
+    if (gf) {
+        m_style = gf->m_format.m_style;
+        m_color = gf->m_format.m_color;
+        m_weight = gf->m_format.m_weight;
+        m_visible = gf->m_format.m_visible;
+        return;
+    }
+
+    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
+    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    if (partVP) {
+        m_weight = partVP->LineWidth.getValue();
+        m_style = Qt::SolidLine;                  // = 1
+        m_color = LineFormat::getDefEdgeColor();
+        m_visible = 1;
     }
 }
 
@@ -178,41 +184,39 @@ void TaskLineDecor::applyDecorations()
     for (auto& e: m_edges) {
         int num = DrawUtil::getIndexFromName(e);
         BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
-        if (bg) {
-            if (bg->getCosmetic()) {
-                if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
-                    ce->m_format.m_style = m_style;
-                    ce->m_format.m_color = m_color;
-                    ce->m_format.m_weight = m_weight;
-                    ce->m_format.m_visible = m_visible;
-                } else if (bg->source() == 2) {
-//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
-                    cl->m_format.m_style = m_style;
-                    cl->m_format.m_color = m_color;
-                    cl->m_format.m_weight = m_weight;
-                    cl->m_format.m_visible = m_visible;
-                }
-            } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
-                if (gf) {
-                    gf->m_format.m_style = m_style;
-                    gf->m_format.m_color = m_color;
-                    gf->m_format.m_weight = m_weight;
-                    gf->m_format.m_visible = m_visible;
-                } else {
-                    TechDraw::LineFormat fmt(m_style,
-                                             m_weight,
-                                             m_color,
-                                             m_visible);
-                    TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num,
-                                                                           fmt);
-//                    int idx =
-                    m_partFeat->addGeomFormat(newGF);
-               }
-            }
+        if (!bg) {
+            continue;
         }
+        if (bg->getCosmetic()) {
+            if (bg->source() == 1) {
+                TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
+                ce->m_format.m_style = m_style;
+                ce->m_format.m_color = m_color;
+                ce->m_format.m_weight = m_weight;
+                ce->m_format.m_visible = m_visible;
+            } else if (bg->source() == 2) {
+//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
+                TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
+                cl->m_format.m_style = m_style;
+                cl->m_format.m_color = m_color;
+                cl->m_format.m_weight = m_weight;
+                cl->m_format.m_visible = m_visible;
+            }
+            continue;
+        }
+    
+        TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
+        if (gf) {
+            gf->m_format.m_style = m_style;
+            gf->m_format.m_color = m_color;
+            gf->m_format.m_weight = m_weight;
+            gf->m_format.m_visible = m_visible;
+            return;
+        }
+        TechDraw::LineFormat fmt(m_style, m_weight, m_color, m_visible);
+        TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num, fmt);
+        //                    int idx =
+        m_partFeat->addGeomFormat(newGF);
     }
 }
 
