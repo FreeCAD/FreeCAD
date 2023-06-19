@@ -63,6 +63,7 @@ public:
     ~MaterialsEditor() override;
 
     void onPhysicalAdd(bool checked);
+    void onAppearanceAdd(bool checked);
     void accept() override;
     void reject() override;
 

@@ -65,6 +65,8 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
 
     connect(ui->buttonPhysicalAdd, &QPushButton::clicked,
             this, &MaterialsEditor::onPhysicalAdd);
+    connect(ui->buttonAppearanceAdd, &QPushButton::clicked,
+            this, &MaterialsEditor::onAppearanceAdd);
 
     QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
@@ -122,6 +124,21 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
     Q_UNUSED(checked)
     
     ModelSelect dialog(this, Materials::ModelManager::ModelFilter_Physical);
+    dialog.setModal(true);
+    if(dialog.exec() == QDialog::Accepted)
+    {
+        std::string selected = dialog.selectedModel();
+        Base::Console().Log("Selected model '%s'\n", selected.c_str());
+    } else {
+        Base::Console().Log("No model selected\n");
+    }
+}
+
+void MaterialsEditor::onAppearanceAdd(bool checked)
+{
+    Q_UNUSED(checked)
+    
+    ModelSelect dialog(this, Materials::ModelManager::ModelFilter_Appearance);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
     {
