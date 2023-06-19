@@ -366,7 +366,8 @@ def export(objectslist, filename, argstring):
             commands = PathUtils.getPathWithPlacement(obj).Commands
 
             # If used compensated path, store, recompute and diff when asked
-            if hasattr(obj, "UseComp") and SOLVE_COMPENSATION_ACTIVE:
+            if not hasattr(obj, "UseComp") or not SOLVE_COMPENSATION_ACTIVE:
+                continue
                 if not obj.UseComp:
                     continue
                     if hasattr(obj.Path, "Commands") and Object_Kind == "PROFILE":
