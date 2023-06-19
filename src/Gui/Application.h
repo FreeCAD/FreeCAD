@@ -126,10 +126,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
     boost::signals2::signal<void (const char*)> signalActivateWorkbench;
-    /// signal on added workbench
-    boost::signals2::signal<void (const char*)> signalAddWorkbench;
-    /// signal on removed workbench
-    boost::signals2::signal<void (const char*)> signalRemoveWorkbench;
+    /// signal on added/removed workbench
+    boost::signals2::signal<void ()> signalRefreshWorkbenches;
     /// signal on show hidden items
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
