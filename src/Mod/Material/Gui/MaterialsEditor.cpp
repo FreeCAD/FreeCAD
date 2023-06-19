@@ -132,6 +132,8 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
     {
         std::string selected = dialog.selectedModel();
         Base::Console().Log("Selected model '%s'\n", selected.c_str());
+        _material.addPhysical(selected);
+        updateCard();
     } else {
         Base::Console().Log("No model selected\n");
     }
@@ -147,6 +149,8 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
     {
         std::string selected = dialog.selectedModel();
         Base::Console().Log("Selected model '%s'\n", selected.c_str());
+        _material.addAppearance(selected);
+        updateCard();
     } else {
         Base::Console().Log("No model selected\n");
     }

@@ -95,6 +95,9 @@ Material::~Material()
 
 void Material::addPhysical(const std::string &uuid)
 {
+    if (hasPhysicalModel(uuid))
+        return;
+
     ModelManager *manager = ModelManager::getManager();
 
     try {
@@ -115,6 +118,9 @@ void Material::addPhysical(const std::string &uuid)
 
 void Material::addAppearance(const std::string &uuid)
 {
+    if (hasAppearanceModel(uuid))
+        return;
+
     ModelManager *manager = ModelManager::getManager();
 
     try {
@@ -195,6 +201,24 @@ bool Material::hasAppearanceProperty(const std::string& name) const
         return false;
     }
     return true;
+}
+
+bool Material::hasPhysicalModel(const std::string& uuid) const
+{
+    for (std::string modelUUID: _physicalUuids)
+        if (modelUUID == uuid)
+            return true;
+
+    return false;
+}
+
+bool Material::hasAppearanceModel(const std::string& uuid) const
+{
+    for (std::string modelUUID: _appearanceUuids)
+        if (modelUUID == uuid)
+            return true;
+
+    return false;
 }
 
 #include "moc_Materials.cpp"
