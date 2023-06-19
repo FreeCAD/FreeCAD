@@ -47,15 +47,15 @@ private:
         return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue)).toString().toStdString();
     }
 
-    static void setProperty(Material *finalModel, const std::string &name, const std::string &value)
+    static void setPhysicalValue(Material *finalModel, const std::string &name, const std::string &value)
     {
         if (value.length() > 0)
-            finalModel->setProperty(name, value);
+            finalModel->setPhysicalValue(name, value);
     }
-    static void setAppearanceProperty(Material *finalModel, const std::string &name, const std::string &value)
+    static void setAppearanceValue(Material *finalModel, const std::string &name, const std::string &value)
     {
         if (value.length() > 0)
-            finalModel->setAppearanceProperty(name, value);
+            finalModel->setAppearanceValue(name, value);
     }
 
     static std::string getAuthorAndLicense(const std::string& path);

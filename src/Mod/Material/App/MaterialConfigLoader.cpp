@@ -102,15 +102,15 @@ void MaterialConfigLoader::addVectorRendering(const QSettings &fcmat, Material *
 
     if (sectionFillPattern.length() + sectionLinewidth.length() + sectionColor.length() +
             viewColor.length() + viewFillPattern.length() + viewLinewidth.length() > 0)
-        finalModel->addAppearanceModel(ModelUUID_Rendering_Vector);
+        finalModel->addAppearance(ModelUUID_Rendering_Vector);
 
     // Now add the data
-    setAppearanceProperty(finalModel, "SectionFillPattern", sectionFillPattern);
-    setAppearanceProperty(finalModel, "SectionLinewidth", sectionLinewidth);
-    setAppearanceProperty(finalModel, "SectionColor", sectionColor);
-    setAppearanceProperty(finalModel, "ViewColor", viewColor);
-    setAppearanceProperty(finalModel, "ViewFillPattern", viewFillPattern);
-    setAppearanceProperty(finalModel, "ViewLinewidth", viewLinewidth);
+    setAppearanceValue(finalModel, "SectionFillPattern", sectionFillPattern);
+    setAppearanceValue(finalModel, "SectionLinewidth", sectionLinewidth);
+    setAppearanceValue(finalModel, "SectionColor", sectionColor);
+    setAppearanceValue(finalModel, "ViewColor", viewColor);
+    setAppearanceValue(finalModel, "ViewFillPattern", viewFillPattern);
+    setAppearanceValue(finalModel, "ViewLinewidth", viewLinewidth);
 }
 
 void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalModel)
@@ -140,28 +140,28 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
 
     if (useAdvanced)
     {
-        finalModel->addAppearanceModel(ModelUUID_Rendering_Advanced);
+        finalModel->addAppearance(ModelUUID_Rendering_Advanced);
     }
     else if (useTexture)
     {
-        finalModel->addAppearanceModel(ModelUUID_Rendering_Texture);
+        finalModel->addAppearance(ModelUUID_Rendering_Texture);
     }
     else if (useBasic)
     {
-        finalModel->addAppearanceModel(ModelUUID_Rendering_Basic);
+        finalModel->addAppearance(ModelUUID_Rendering_Basic);
     }   
 
     // Now add the data
-    setAppearanceProperty(finalModel, "AmbientColor", ambientColor);
-    setAppearanceProperty(finalModel, "DiffuseColor", diffuseColor);
-    setAppearanceProperty(finalModel, "EmissiveColor", emissiveColor);
-    setAppearanceProperty(finalModel, "Shininess", shininess);
-    setAppearanceProperty(finalModel, "SpecularColor", specularColor);
-    setAppearanceProperty(finalModel, "Transparency", transparency);
-    setAppearanceProperty(finalModel, "TexturePath", texturePath);
-    setAppearanceProperty(finalModel, "TextureScaling", textureScaling);
-    setAppearanceProperty(finalModel, "FragmentShader", fragmentShader);
-    setAppearanceProperty(finalModel, "VertexShader", vertexShader);
+    setAppearanceValue(finalModel, "AmbientColor", ambientColor);
+    setAppearanceValue(finalModel, "DiffuseColor", diffuseColor);
+    setAppearanceValue(finalModel, "EmissiveColor", emissiveColor);
+    setAppearanceValue(finalModel, "Shininess", shininess);
+    setAppearanceValue(finalModel, "SpecularColor", specularColor);
+    setAppearanceValue(finalModel, "Transparency", transparency);
+    setAppearanceValue(finalModel, "TexturePath", texturePath);
+    setAppearanceValue(finalModel, "TextureScaling", textureScaling);
+    setAppearanceValue(finalModel, "FragmentShader", fragmentShader);
+    setAppearanceValue(finalModel, "VertexShader", vertexShader);
 }
 
 void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel)
@@ -171,12 +171,12 @@ void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel
     std::string vendor = value(fcmat, "Cost/Vendor", "");
 
     if (productURL.length() + specificPrice.length() + vendor.length() > 0)
-        finalModel->addModel(ModelUUID_Costs_Default);
+        finalModel->addPhysical(ModelUUID_Costs_Default);
 
     // Now add the data
-    setProperty(finalModel, "ProductURL", productURL);
-    setProperty(finalModel, "SpecificPrice", specificPrice);
-    setProperty(finalModel, "Vendor", vendor);
+    setPhysicalValue(finalModel, "ProductURL", productURL);
+    setPhysicalValue(finalModel, "SpecificPrice", specificPrice);
+    setPhysicalValue(finalModel, "Vendor", vendor);
 }
 
 void MaterialConfigLoader::addArchitectural(const QSettings &fcmat, Material *finalModel)
@@ -193,17 +193,17 @@ void MaterialConfigLoader::addArchitectural(const QSettings &fcmat, Material *fi
     if (color.length() + environmentalEfficiencyClass.length() + executionInstructions.length() +
             finish.length() + fireResistanceClass.length() + model.length() +
             soundTransmissionClass.length() + unitsPerQuantity.length() > 0)
-        finalModel->addModel(ModelUUID_Architectural_Default);
+        finalModel->addPhysical(ModelUUID_Architectural_Default);
 
     // Now add the data
-    setProperty(finalModel, "Color", color);
-    setProperty(finalModel, "EnvironmentalEfficiencyClass", environmentalEfficiencyClass);
-    setProperty(finalModel, "ExecutionInstructions", executionInstructions);
-    setProperty(finalModel, "Finish", finish);
-    setProperty(finalModel, "FireResistanceClass", fireResistanceClass);
-    setProperty(finalModel, "Model", model);
-    setProperty(finalModel, "SoundTransmissionClass", soundTransmissionClass);
-    setProperty(finalModel, "UnitsPerQuantity", unitsPerQuantity);
+    setPhysicalValue(finalModel, "Color", color);
+    setPhysicalValue(finalModel, "EnvironmentalEfficiencyClass", environmentalEfficiencyClass);
+    setPhysicalValue(finalModel, "ExecutionInstructions", executionInstructions);
+    setPhysicalValue(finalModel, "Finish", finish);
+    setPhysicalValue(finalModel, "FireResistanceClass", fireResistanceClass);
+    setPhysicalValue(finalModel, "Model", model);
+    setPhysicalValue(finalModel, "SoundTransmissionClass", soundTransmissionClass);
+    setPhysicalValue(finalModel, "UnitsPerQuantity", unitsPerQuantity);
 }
 
 void MaterialConfigLoader::addElectromagnetic(const QSettings &fcmat, Material *finalModel)
@@ -213,12 +213,12 @@ void MaterialConfigLoader::addElectromagnetic(const QSettings &fcmat, Material *
     std::string relativePermeability = value(fcmat, "Electromagnetic/RelativePermeability", "");
 
     if (relativePermittivity.length() + electricalConductivity.length() + relativePermeability.length() > 0)
-        finalModel->addModel(ModelUUID_Electromagnetic_Default);
+        finalModel->addPhysical(ModelUUID_Electromagnetic_Default);
 
     // Now add the data
-    setProperty(finalModel, "RelativePermittivity", relativePermittivity);
-    setProperty(finalModel, "ElectricalConductivity", electricalConductivity);
-    setProperty(finalModel, "RelativePermeability", relativePermeability);
+    setPhysicalValue(finalModel, "RelativePermittivity", relativePermittivity);
+    setPhysicalValue(finalModel, "ElectricalConductivity", electricalConductivity);
+    setPhysicalValue(finalModel, "RelativePermeability", relativePermeability);
 }
 
 void MaterialConfigLoader::addThermal(const QSettings &fcmat, Material *finalModel)
@@ -228,12 +228,12 @@ void MaterialConfigLoader::addThermal(const QSettings &fcmat, Material *finalMod
     std::string thermalExpansionCoefficient = value(fcmat, "Thermal/ThermalExpansionCoefficient", "");
 
     if (specificHeat.length() + thermalConductivity.length() + thermalExpansionCoefficient.length() > 0)
-        finalModel->addModel(ModelUUID_Thermal_Default);
+        finalModel->addPhysical(ModelUUID_Thermal_Default);
 
     // Now add the data
-    setProperty(finalModel, "SpecificHeat", specificHeat);
-    setProperty(finalModel, "ThermalConductivity", thermalConductivity);
-    setProperty(finalModel, "ThermalExpansionCoefficient", thermalExpansionCoefficient);
+    setPhysicalValue(finalModel, "SpecificHeat", specificHeat);
+    setPhysicalValue(finalModel, "ThermalConductivity", thermalConductivity);
+    setPhysicalValue(finalModel, "ThermalExpansionCoefficient", thermalExpansionCoefficient);
 }
 
 void MaterialConfigLoader::addFluid(const QSettings &fcmat, Material *finalModel)
@@ -253,17 +253,17 @@ void MaterialConfigLoader::addFluid(const QSettings &fcmat, Material *finalModel
 
     if (useFluid)
     {
-        finalModel->addModel(ModelUUID_Fluid_Default);
+        finalModel->addPhysical(ModelUUID_Fluid_Default);
     } else if (useDensity)
     {
-        finalModel->addModel(ModelUUID_Mechanical_Density);
+        finalModel->addPhysical(ModelUUID_Mechanical_Density);
     }
 
     // Now add the data
-    setProperty(finalModel, "Density", density);
-    setProperty(finalModel, "DynamicViscosity", dynamicViscosity);
-    setProperty(finalModel, "KinematicViscosity", kinematicViscosity);
-    setProperty(finalModel, "PrandtlNumber", prandtlNumber);
+    setPhysicalValue(finalModel, "Density", density);
+    setPhysicalValue(finalModel, "DynamicViscosity", dynamicViscosity);
+    setPhysicalValue(finalModel, "KinematicViscosity", kinematicViscosity);
+    setPhysicalValue(finalModel, "PrandtlNumber", prandtlNumber);
 }
 
 void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *finalModel)
@@ -295,28 +295,28 @@ void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *final
 
     if (useLinearElastic)
     {
-        finalModel->addModel(ModelUUID_Mechanical_LinearElastic);
+        finalModel->addPhysical(ModelUUID_Mechanical_LinearElastic);
     } else 
     {
         if (useIso)
-            finalModel->addModel(ModelUUID_Mechanical_IsotropicLinearElastic);
+            finalModel->addPhysical(ModelUUID_Mechanical_IsotropicLinearElastic);
         if (useDensity)
-            finalModel->addModel(ModelUUID_Mechanical_Density);
+            finalModel->addPhysical(ModelUUID_Mechanical_Density);
     }
 
     // Now add the data
-    setProperty(finalModel, "Density", density);
-    setProperty(finalModel, "BulkModulus", bulkModulus);
-    setProperty(finalModel, "PoissonRatio", poissonRatio);
-    setProperty(finalModel, "ShearModulus", shearModulus);
-    setProperty(finalModel, "YoungsModulus", youngsModulus);
-    setProperty(finalModel, "AngleOfFriction", angleOfFriction);
-    setProperty(finalModel, "CompressiveStrength", compressiveStrength);
-    setProperty(finalModel, "FractureToughness", fractureToughness);
-    setProperty(finalModel, "UltimateStrain", ultimateStrain);
-    setProperty(finalModel, "UltimateTensileStrength", ultimateTensileStrength);
-    setProperty(finalModel, "YieldStrength", yieldStrength);
-    setProperty(finalModel, "Stiffness", stiffness);
+    setPhysicalValue(finalModel, "Density", density);
+    setPhysicalValue(finalModel, "BulkModulus", bulkModulus);
+    setPhysicalValue(finalModel, "PoissonRatio", poissonRatio);
+    setPhysicalValue(finalModel, "ShearModulus", shearModulus);
+    setPhysicalValue(finalModel, "YoungsModulus", youngsModulus);
+    setPhysicalValue(finalModel, "AngleOfFriction", angleOfFriction);
+    setPhysicalValue(finalModel, "CompressiveStrength", compressiveStrength);
+    setPhysicalValue(finalModel, "FractureToughness", fractureToughness);
+    setPhysicalValue(finalModel, "UltimateStrain", ultimateStrain);
+    setPhysicalValue(finalModel, "UltimateTensileStrength", ultimateTensileStrength);
+    setPhysicalValue(finalModel, "YieldStrength", yieldStrength);
+    setPhysicalValue(finalModel, "Stiffness", stiffness);
 
 }
 
@@ -346,10 +346,10 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
     std::string father = value(fcmat, "Father", "");
     if (father.length() > 0)
     {
-        finalModel->addModel(ModelUUID_Legacy_Father);
+        finalModel->addPhysical(ModelUUID_Legacy_Father);
 
         // Now add the data
-        setProperty(finalModel, "Father", father);
+        setPhysicalValue(finalModel, "Father", father);
     }
 
     std::string kindOfMaterial = value(fcmat, "KindOfMaterial", "");
@@ -358,13 +358,13 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
     std::string standardCode = value(fcmat, "StandardCode", "");
     if (kindOfMaterial.length() + materialNumber.length() + norm.length() + standardCode.length() > 0)
     {
-        finalModel->addModel(ModelUUID_Legacy_MaterialStandard);
+        finalModel->addPhysical(ModelUUID_Legacy_MaterialStandard);
 
         // Now add the data
-        setProperty(finalModel, "KindOfMaterial", kindOfMaterial);
-        setProperty(finalModel, "MaterialNumber", materialNumber);
-        setProperty(finalModel, "StandardCode", norm);              // Norm is the same as StandardCode
-        setProperty(finalModel, "StandardCode", standardCode);
+        setPhysicalValue(finalModel, "KindOfMaterial", kindOfMaterial);
+        setPhysicalValue(finalModel, "MaterialNumber", materialNumber);
+        setPhysicalValue(finalModel, "StandardCode", norm);              // Norm is the same as StandardCode
+        setPhysicalValue(finalModel, "StandardCode", standardCode);
     }
 
     // Add the remaining sections

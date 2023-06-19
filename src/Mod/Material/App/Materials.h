@@ -109,8 +109,8 @@ public:
     const std::string &getURL() const { return _url; }
     const std::string &getReference() const { return _reference; }
     const std::list<std::string> &getTags() const { return _tags; }
-    const std::vector<std::string> *getModels() const { return &_modelUuids; }
-    const std::vector<std::string> *getAppearanceModels() const { return &_appearanceModelUuids; }
+    const std::vector<std::string> *getPhysicalModels() const { return &_physicalUuids; }
+    const std::vector<std::string> *getAppearanceModels() const { return &_appearanceUuids; }
 
     void setLibrary(const MaterialLibrary &library) { _library = library; }
     void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
@@ -125,18 +125,18 @@ public:
     void setReference(const std::string& reference) { _reference = reference; }
     void addTag(const std::string& tag) { Q_UNUSED(tag); }
     void removeTag(const std::string& tag) { Q_UNUSED(tag); }
-    void addModel(const std::string& uuid);
-    void addAppearanceModel(const std::string& uuid);
+    void addPhysical(const std::string& uuid);
+    void addAppearance(const std::string& uuid);
+    
+    void setPhysicalValue(const std::string& name, const std::string &value);
+    void setPhysicalValue(const std::string& name, int value);
+    void setPhysicalValue(const std::string& name, double value);
+    void setPhysicalValue(const std::string& name, const Base::Quantity value);
 
-    void setProperty(const std::string& name, const std::string &value);
-    void setProperty(const std::string& name, int value);
-    void setProperty(const std::string& name, double value);
-    void setProperty(const std::string& name, const Base::Quantity value);
+    void setAppearanceValue(const std::string& name, const std::string &value);
 
-    void setAppearanceProperty(const std::string& name, const std::string &value);
-
-    const std::string getPropertyValue(const std::string &name) const;
-    const std::string getAppearancePropertyValue(const std::string &name) const;
+    const std::string getPhysicalValue(const std::string &name) const;
+    const std::string getAppearanceValue(const std::string &name) const;
     bool hasPhysicalProperty(const std::string& name) const;
     bool hasAppearanceProperty(const std::string& name) const;
 
@@ -152,10 +152,10 @@ private:
     std::string _url;
     std::string _reference;
     std::list<std::string> _tags;
-    std::vector<std::string> _modelUuids;
-    std::vector<std::string> _appearanceModelUuids;
-    std::map<std::string, ModelValueProperty> _properties;
-    std::map<std::string, ModelValueProperty> _appearanceProperties;
+    std::vector<std::string> _physicalUuids;
+    std::vector<std::string> _appearanceUuids;
+    std::map<std::string, ModelValueProperty> _physical;
+    std::map<std::string, ModelValueProperty> _appearance;
 
 };
 

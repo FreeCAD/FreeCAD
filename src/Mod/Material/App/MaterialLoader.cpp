@@ -106,7 +106,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
             // Add the model uuid
             auto modelNode = models[modelName];
             std::string modelUUID = modelNode["UUID"].as<std::string>();
-            finalModel->addModel(modelUUID);
+            finalModel->addPhysical(modelUUID);
 
             // Add the property values
             auto properties = yamlModel["Models"][modelName];
@@ -115,7 +115,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setProperty(propertyName, propertyValue);
+                finalModel->setPhysicalValue(propertyName, propertyValue);
             }
         }
     }
@@ -129,7 +129,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
             // Add the model uuid
             auto modelNode = models[modelName];
             std::string modelUUID = modelNode["UUID"].as<std::string>();
-            finalModel->addAppearanceModel(modelUUID);
+            finalModel->addAppearance(modelUUID);
 
             // Add the property values
             auto properties = yamlModel["AppearanceModels"][modelName];
@@ -138,7 +138,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setAppearanceProperty(propertyName, propertyValue);
+                finalModel->setAppearanceValue(propertyName, propertyValue);
             }
         }
     }

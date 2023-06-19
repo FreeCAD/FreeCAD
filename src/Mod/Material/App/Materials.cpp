@@ -93,85 +93,85 @@ Material::~Material()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void Material::addModel(const std::string &uuid)
+void Material::addPhysical(const std::string &uuid)
 {
     ModelManager *manager = ModelManager::getManager();
 
     try {
         const Model &model = manager->getModel(uuid);
 
-        _modelUuids.push_back(uuid);
+        _physicalUuids.push_back(uuid);
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
             std::string propertyName = it->first;
             ModelProperty property = it->second;
 
-            _properties[propertyName] = ModelValueProperty(property);
+            _physical[propertyName] = ModelValueProperty(property);
         }
     } catch (ModelNotFound const &) {
     }
 }
 
-void Material::addAppearanceModel(const std::string &uuid)
+void Material::addAppearance(const std::string &uuid)
 {
     ModelManager *manager = ModelManager::getManager();
 
     try {
         const Model &model = manager->getModel(uuid);
 
-        _appearanceModelUuids.push_back(uuid);
+        _appearanceUuids.push_back(uuid);
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
             std::string propertyName = it->first;
             ModelProperty property = it->second;
 
-            _appearanceProperties[propertyName] = ModelValueProperty(property);
+            _appearance[propertyName] = ModelValueProperty(property);
         }
     } catch (ModelNotFound const &) {
     }
 }
 
 
-void Material::setProperty(const std::string& name, const std::string &value)
+void Material::setPhysicalValue(const std::string& name, const std::string &value)
 {
-    _properties[name].setValue(value); // may not be a string type
+    _physical[name].setValue(value); // may not be a string type
 }
 
-void Material::setProperty(const std::string& name, int value)
+void Material::setPhysicalValue(const std::string& name, int value)
 {
-    _properties[name].setInt(value);
+    _physical[name].setInt(value);
 }
 
-void Material::setProperty(const std::string& name, double value)
+void Material::setPhysicalValue(const std::string& name, double value)
 {
-    _properties[name].setFloat(value);
+    _physical[name].setFloat(value);
 }
 
-void Material::setProperty(const std::string& name, const Base::Quantity value)
+void Material::setPhysicalValue(const std::string& name, const Base::Quantity value)
 {
-    _properties[name].setQuantity(value);
+    _physical[name].setQuantity(value);
 }
 
-void Material::setAppearanceProperty(const std::string& name, const std::string &value)
+void Material::setAppearanceValue(const std::string& name, const std::string &value)
 {
-    _appearanceProperties[name].setValue(value); // may not be a string type
+    _appearance[name].setValue(value); // may not be a string type
 }
 
-const std::string Material::getPropertyValue(const std::string &name) const
+const std::string Material::getPhysicalValue(const std::string &name) const
 {
     try {
-        return _properties.at(name).getValue();
+        return _physical.at(name).getValue();
     } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
 }
 
-const std::string Material::getAppearancePropertyValue(const std::string &name) const
+const std::string Material::getAppearanceValue(const std::string &name) const
 {
     try {
-        return _appearanceProperties.at(name).getValue();
+        return _appearance.at(name).getValue();
     } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
@@ -180,7 +180,7 @@ const std::string Material::getAppearancePropertyValue(const std::string &name) 
 bool Material::hasPhysicalProperty(const std::string& name) const
 {
     try {
-        static_cast<void>(_properties.at(name));
+        static_cast<void>(_physical.at(name));
     } catch (std::out_of_range const &) {
         return false;
     }
@@ -190,7 +190,7 @@ bool Material::hasPhysicalProperty(const std::string& name) const
 bool Material::hasAppearanceProperty(const std::string& name) const
 {
     try {
-        static_cast<void>(_appearanceProperties.at(name));
+        static_cast<void>(_appearance.at(name));
     } catch (std::out_of_range const &) {
         return false;
     }

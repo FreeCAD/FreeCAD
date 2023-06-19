@@ -313,17 +313,17 @@ void MaterialsEditor::updatePreview()
     std::string sectionColor;
 
     if (_material.hasAppearanceProperty("DiffuseColor"))
-        diffuseColor = _material.getAppearancePropertyValue("DiffuseColor");
+        diffuseColor = _material.getAppearanceValue("DiffuseColor");
     else if (_material.hasAppearanceProperty("ViewColor"))
-        diffuseColor = _material.getAppearancePropertyValue("ViewColor");
+        diffuseColor = _material.getAppearanceValue("ViewColor");
     else if (_material.hasAppearanceProperty("Color"))
-        diffuseColor = _material.getAppearancePropertyValue("Color");
+        diffuseColor = _material.getAppearanceValue("Color");
 
     if (_material.hasAppearanceProperty("SpecularColor"))
-        highlightColor = _material.getAppearancePropertyValue("SpecularColor");
+        highlightColor = _material.getAppearanceValue("SpecularColor");
 
     if (_material.hasAppearanceProperty("SectionColor"))
-        sectionColor = _material.getAppearancePropertyValue("SectionColor");
+        sectionColor = _material.getAppearanceValue("SectionColor");
 
     if ((diffuseColor.length() + highlightColor.length()) > 0)
     {
@@ -385,10 +385,10 @@ QString MaterialsEditor::getColorHash(const std::string &colorString, int colorR
     if (c == ',')
         stream >> alpha;
 
-    QColor color(int(red * colorRange),
-                 int(green * colorRange),
-                 int(blue * colorRange),
-                 int(alpha * colorRange));
+    QColor color(static_cast<int>(red * colorRange),
+                 static_cast<int>(green * colorRange),
+                 static_cast<int>(blue * colorRange),
+                 static_cast<int>(alpha * colorRange));
     return color.name();
 }
 
@@ -429,7 +429,7 @@ void MaterialsEditor::updateCardAppearance()
                     propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getAppearancePropertyValue(key)));
+                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getAppearanceValue(key)));
                     valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
                     items.append(valueItem);
 
@@ -461,7 +461,7 @@ void MaterialsEditor::updateCardProperties()
     tree->setColumnWidth(1, 250);
     tree->setColumnHidden(2, true);
 
-    const std::vector<std::string> *models = _material.getModels();
+    const std::vector<std::string> *models = _material.getPhysicalModels();
     if (models) {
         for (auto it = models->begin(); it != models->end(); it++)
         {
@@ -483,7 +483,7 @@ void MaterialsEditor::updateCardProperties()
                     propertyItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getPropertyValue(key)));
+                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getPhysicalValue(key)));
                     valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
                     items.append(valueItem);
 

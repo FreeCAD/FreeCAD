@@ -147,9 +147,9 @@ Py::String MaterialPy::getAuthorAndLicense() const
     return Py::String(getMaterialPtr()->getAuthorAndLicense());
 }
 
-Py::List MaterialPy::getModels() const
+Py::List MaterialPy::getPhysicalModels() const
 {
-    const std::vector<std::string> *models = getMaterialPtr()->getModels();
+    const std::vector<std::string> *models = getMaterialPtr()->getPhysicalModels();
     Py::List list;
 
     for (auto it = models->begin(); it != models->end(); it++)

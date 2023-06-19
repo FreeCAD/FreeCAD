@@ -87,11 +87,11 @@
       </Documentation>
       <Parameter Name="AuthorAndLicense" Type="String"/>
     </Attribute>
-    <Attribute Name="Models" ReadOnly="true">
+    <Attribute Name="PhysicalModels" ReadOnly="true">
       <Documentation>
         <UserDocu>List of implemented models.</UserDocu>
       </Documentation>
-      <Parameter Name="Models" Type="List"/>
+      <Parameter Name="PhysicalModels" Type="List"/>
     </Attribute>
     <Attribute Name="Tags" ReadOnly="true">
       <Documentation>
