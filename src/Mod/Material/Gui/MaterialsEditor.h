@@ -30,6 +30,7 @@
 #include <QStandardItem>
 #include <QTreeView>
 #include <QStyledItemDelegate>
+#include <QSvgWidget>
 
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/MaterialManager.h>
@@ -70,21 +71,25 @@ public:
     Materials::MaterialManager &getMaterialManager() { return _materialManager; }
     Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
-    void clearCardAppearance(void);
-    void clearCardProperties(void);
-    void clearCard(void);
-    void updateCardAppearance(const Materials::Material& card);
-    void updateCardProperties(const Materials::Material &card);
-    void updateCard(const std::string& uuid);
+    void updateCardAppearance();
+    void updateCardProperties();
+    void updateCard();
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
     Materials::MaterialManager _materialManager;
+    Materials::Material _material;
+    QSvgWidget* _rendered;
+    QSvgWidget* _vectored;
+
+    void updatePreview();
+    QString getColorHash(const std::string& colorString, int colorRange=255);
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    void createPreviews();
     void createAppearanceTree();
     void createPropertyTree();
     void createMaterialTree();

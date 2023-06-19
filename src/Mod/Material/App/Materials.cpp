@@ -177,4 +177,24 @@ const std::string Material::getAppearancePropertyValue(const std::string &name) 
     }
 }
 
+bool Material::hasPhysicalProperty(const std::string& name) const
+{
+    try {
+        static_cast<void>(_properties.at(name));
+    } catch (std::out_of_range const &) {
+        return false;
+    }
+    return true;
+}
+
+bool Material::hasAppearanceProperty(const std::string& name) const
+{
+    try {
+        static_cast<void>(_appearanceProperties.at(name));
+    } catch (std::out_of_range const &) {
+        return false;
+    }
+    return true;
+}
+
 #include "moc_Materials.cpp"

@@ -71,6 +71,8 @@ SET(MatGuiIcon_SVG
     Resources/icons/Materials_Edit.svg
     Resources/icons/MaterialWorkbench.svg
     Resources/icons/preferences-material.svg
+    Resources/icons/preview-rendered.svg
+    Resources/icons/preview-vector.svg
 )
 
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})

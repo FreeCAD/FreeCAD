@@ -137,6 +137,8 @@ public:
 
     const std::string getPropertyValue(const std::string &name) const;
     const std::string getAppearancePropertyValue(const std::string &name) const;
+    bool hasPhysicalProperty(const std::string& name) const;
+    bool hasAppearanceProperty(const std::string& name) const;
 
 private:
     MaterialLibrary _library;
