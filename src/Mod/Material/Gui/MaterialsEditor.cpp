@@ -119,6 +119,8 @@ void MaterialsEditor::tryPython()
 
 void MaterialsEditor::onPhysicalAdd(bool checked)
 {
+    Q_UNUSED(checked)
+    
     ModelSelect dialog(this, Materials::ModelManager::ModelFilter_Physical);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)

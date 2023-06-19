@@ -47,19 +47,32 @@ public:
     explicit ModelSelect(QWidget* parent = nullptr, Materials::ModelManager::ModelFilter filter=Materials::ModelManager::ModelFilter_None);
     ~ModelSelect() override;
 
+    void onFavourite(bool checked);
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
     const std::string &selectedModel() const { return _selected; }
     void accept() override;
     void reject() override;
 
 private:
+    void getFavorites();
+    void saveFavorites();
+    void addFavorite(const std::string& uuid);
+    void removeFavorite(const std::string& uuid);
+    bool isFavorite(const std::string& uuid) const;
+    
+    void getRecent();
+
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
+    void addFavorites(QStandardItem *parent);
     void addModels(QStandardItem& parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree,
                    const QIcon& icon);
     void updateMaterialModel(const std::string& uuid);
     void clearMaterialModel(void);
     void createModelTree();
+    void refreshModelTree();
+    void fillTree();
+
     void setHeaders(QStandardItemModel *model);
     void setColumnWidths(QTableView *table);
     void updateModelProperties(const Materials::Model& model);
@@ -69,6 +82,8 @@ private:
     Materials::ModelManager::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
     std::string _selected;
+    std::list<std::string> _favorites;
+    std::list<std::string> _recents;
 };
 
 } // namespace MatGui

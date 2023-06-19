@@ -49,6 +49,9 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter f
 {
     ui->setupUi(this);
 
+    getFavorites();
+    getRecent();
+
     createModelTree();
     createModelProperties();
 
@@ -61,7 +64,95 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter f
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &ModelSelect::onSelectModel);
 
+    connect(ui->buttonFavorite, &QPushButton::clicked,
+            this, &ModelSelect::onFavourite);
+
     ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->buttonFavorite->setEnabled(false);
+}
+
+void ModelSelect::getFavorites()
+{
+    _favorites.clear();
+
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Models/Favorites");
+    int count = param->GetInt("Favorites", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(i);
+        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        _favorites.push_back(uuid);
+    }
+}
+
+void ModelSelect::saveFavorites()
+{
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Models/Favorites");
+
+    // Clear out the existing favorites
+    int count = param->GetInt("Favorites", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(i);
+        param->RemoveASCII(key.toStdString().c_str());
+    }
+
+    // Add the current values
+    param->SetInt("Favorites", _favorites.size());
+    int j = 0;
+    for (auto favorite: _favorites)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(j);
+        param->SetASCII(key.toStdString().c_str(), favorite);
+
+        j++;
+    }
+}
+
+void ModelSelect::addFavorite(const std::string &uuid)
+{
+    // if (!isFavorite(uuid)) {
+        _favorites.push_back(uuid);
+        saveFavorites();
+        refreshModelTree();
+    // }
+}
+
+void ModelSelect::removeFavorite(const std::string& uuid)
+{
+    // if (isFavorite(uuid)) {
+        _favorites.remove(uuid);
+        saveFavorites();
+        refreshModelTree();
+    // }
+}
+
+bool ModelSelect::isFavorite(const std::string& uuid) const
+{
+    for (auto it: _favorites)
+    {
+        if (it == uuid)
+            return true;
+    }
+    return false;
+}
+
+
+void ModelSelect::getRecent()
+{
+    _recents.clear();
+
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Models/Recent");
+    int count = param->GetInt("Recent", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(i);
+        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        _recents.push_back(uuid);
+    }
 }
 
 /*
@@ -94,7 +185,7 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
             const Materials::Model *model = nodePtr->getModel();
             std::string uuid = model->getUUID();
 
-            auto card = new QStandardItem(icon, QString::fromStdString(mod.first));
+            auto card = new QStandardItem(icon, QString::fromStdString(model->getName()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
             card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
@@ -107,27 +198,22 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
             const std::map<std::string, Materials::ModelTreeNode*>* treeMap = nodePtr->getFolder();
             addModels(*node, treeMap, icon);
         }
-        // if (fs::is_directory(mod)) {
-        //     auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
-        //     addExpanded(tree, &parent, node);
-        //     node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    }
+}
 
-        //     addModels(*node, top, mod.path().string(), icon);
-        // }
-        // else if (Materials::ModelManager::isModel(mod)) {
-        //     auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
-        //     card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-        //                 | Qt::ItemIsDropEnabled);
-        //     try {
-        //         auto model = getModelManager().getModelByPath(mod.path().string());
-        //         card->setData(QVariant(QString::fromStdString(model.getUUID())), Qt::UserRole);
-        //     } catch (Materials::ModelNotFound &e) {
-        //         Base::Console().Log("Model not found error\n");
-        //     } catch (std::exception &e) {
-        //         Base::Console().Log("Exception '%s'\n", e.what());
-        //     }
-        //     addExpanded(tree, &parent, card);
-        // }
+void ModelSelect::addFavorites(QStandardItem *parent)
+{
+    auto tree = ui->treeModels;
+    for (auto& uuid : _favorites) {
+        const Materials::Model& model = getModelManager().getModel(uuid);
+
+        QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
+        auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+        card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                    | Qt::ItemIsDropEnabled);
+        card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+        addExpanded(tree, parent, card);
     }
 }
 
@@ -138,12 +224,31 @@ void ModelSelect::createModelTree()
     auto tree = ui->treeModels;
     auto model = new QStandardItemModel();
     tree->setModel(model);
-
     tree->setHeaderHidden(true);
+
+    fillTree();
+}
+
+void ModelSelect::refreshModelTree()
+{
+    auto tree = ui->treeModels;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
+    model->clear();
+
+    fillTree();
+}
+
+void ModelSelect::fillTree()
+{
+    // Materials::ModelManager modelManager;
+
+    auto tree = ui->treeModels;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
 
     auto lib = new QStandardItem(QString::fromStdString("Favorites"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
+    addFavorites(lib);
 
     lib = new QStandardItem(QString::fromStdString("Recent"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -157,7 +262,7 @@ void ModelSelect::createModelTree()
         addExpanded(tree, model, lib);
 
         // auto path = library->getDirectoryPath();
-        std::map<std::string, Materials::ModelTreeNode*>* modelTree= getModelManager().getModelTree(*library, _filter);
+        std::map<std::string, Materials::ModelTreeNode*>* modelTree = getModelManager().getModelTree(*library, _filter);
         // delete modelTree;
         addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
     }
@@ -289,6 +394,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
                 Base::Console().Log("\t%s\n", _selected.c_str());
                 updateMaterialModel(_selected);
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
+                ui->buttonFavorite->setEnabled(true);
             }
             catch(const std::exception& e)
             {
@@ -296,10 +402,21 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
                 Base::Console().Log("Error %s\n", e.what());
                 clearMaterialModel();
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
+                ui->buttonFavorite->setEnabled(false);
             }
 
         }
     }
+}
+void ModelSelect::onFavourite(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Base::Console().Log("Favorite\n");
+    if (isFavorite(_selected))
+        removeFavorite(_selected);
+    else
+        addFavorite(_selected);
 }
 
 void ModelSelect::accept()
