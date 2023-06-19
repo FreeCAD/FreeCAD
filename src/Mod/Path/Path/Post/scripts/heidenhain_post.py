@@ -367,7 +367,8 @@ def export(objectslist, filename, argstring):
 
             # If used compensated path, store, recompute and diff when asked
             if hasattr(obj, "UseComp") and SOLVE_COMPENSATION_ACTIVE:
-                if obj.UseComp:
+                if not obj.UseComp:
+                    continue
                     if hasattr(obj.Path, "Commands") and Object_Kind == "PROFILE":
                         # Take a copy of compensated path
                         STORED_COMPENSATED_OBJ = commands
