@@ -45,7 +45,7 @@ public:
     const Material &getMaterialByPath(const std::string &path) const;
     const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
 
-    static bool isCard(const fs::path &p);
+    static bool isMaterial(const fs::path &p);
 
 private:
     const std::string getUUIDFromPath(const std::string& path) const;

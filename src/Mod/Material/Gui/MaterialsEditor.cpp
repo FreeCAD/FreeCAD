@@ -29,6 +29,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QIODevice>
+#include <QDesktopServices>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -57,15 +58,19 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     ui->setupUi(this);
 
     createMaterialTree();
-    createPropertyTree();
+    createPhysicalTree();
     createAppearanceTree();
     createPreviews();
+
+    ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &MaterialsEditor::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
             this, &MaterialsEditor::reject);
 
+    connect(ui->buttonURL, &QPushButton::clicked,
+            this, &MaterialsEditor::onURL);
     connect(ui->buttonPhysicalAdd, &QPushButton::clicked,
             this, &MaterialsEditor::onPhysicalAdd);
     connect(ui->buttonAppearanceAdd, &QPushButton::clicked,
@@ -122,6 +127,16 @@ void MaterialsEditor::tryPython()
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
 }
 
+void MaterialsEditor::onURL(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Base::Console().Log("URL\n");
+    QString url = ui->editSourceURL->text();
+    if (url.length() > 0)
+        QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+}
+
 void MaterialsEditor::onPhysicalAdd(bool checked)
 {
     Q_UNUSED(checked)
@@ -133,7 +148,7 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
         std::string selected = dialog.selectedModel();
         Base::Console().Log("Selected model '%s'\n", selected.c_str());
         _material.addPhysical(selected);
-        updateCard();
+        updateMaterial();
     } else {
         Base::Console().Log("No model selected\n");
     }
@@ -150,7 +165,7 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
         std::string selected = dialog.selectedModel();
         Base::Console().Log("Selected model '%s'\n", selected.c_str());
         _material.addAppearance(selected);
-        updateCard();
+        updateMaterial();
     } else {
         Base::Console().Log("No model selected\n");
     }
@@ -174,7 +189,7 @@ void MaterialsEditor::reject()
 //     auto pixmap = icon.pixmap();
 // }
 
-void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
+void MaterialsEditor::addMaterials(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
     for (const auto& mod : fs::directory_iterator(folder)) {
@@ -183,9 +198,9 @@ void MaterialsEditor::addCards(QStandardItem &parent, const std::string &top, co
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
-            addCards(*node, top, mod.path().string(), icon);
+            addMaterials(*node, top, mod.path().string(), icon);
         }
-        else if (isCard(mod)) {
+        else if (isMaterial(mod)) {
             auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
@@ -214,7 +229,7 @@ void MaterialsEditor::addExpanded(QTreeView *tree, QStandardItemModel *parent, Q
     tree->setExpanded(child->index(), true);
 }
 
-void MaterialsEditor::createPropertyTree()
+void MaterialsEditor::createPhysicalTree()
 {
     auto tree = ui->treePhysicalProperties;
     auto model = new QStandardItemModel();
@@ -306,7 +321,7 @@ void MaterialsEditor::createMaterialTree()
         addExpanded(tree, model, lib);
 
         auto path = value->getDirectoryPath();
-        addCards(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
+        addMaterials(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
     }
 }
 
@@ -396,7 +411,7 @@ QString MaterialsEditor::getColorHash(const std::string &colorString, int colorR
     return color.name();
 }
 
-void MaterialsEditor::updateCardAppearance()
+void MaterialsEditor::updateMaterialAppearance()
 {
     QTreeView *tree = ui->treeAppearance;
     QStandardItemModel *treeModel = static_cast<QStandardItemModel *>(tree->model());
@@ -449,7 +464,7 @@ void MaterialsEditor::updateCardAppearance()
     }
 }
 
-void MaterialsEditor::updateCardProperties()
+void MaterialsEditor::updateMaterialProperties()
 {
     QTreeView *tree = ui->treePhysicalProperties;
     QStandardItemModel *treeModel = static_cast<QStandardItemModel *>(tree->model());
@@ -504,7 +519,7 @@ void MaterialsEditor::updateCardProperties()
     }
 }
 
-void MaterialsEditor::updateCard()
+void MaterialsEditor::updateMaterial()
 {
     // Update the general information
     ui->editName->setText(QString::fromStdString(_material.getName()));
@@ -515,8 +530,8 @@ void MaterialsEditor::updateCard()
     // ui->editTags->setText(QString::fromStdString(_material.getName()));
     ui->editDescription->setText(QString::fromStdString(_material.getDescription()));
 
-    updateCardProperties();
-    updateCardAppearance();
+    updateMaterialProperties();
+    updateMaterialAppearance();
     
     updatePreview();
 }
@@ -543,7 +558,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
                 _material = empty;
             }
 
-            updateCard();
+            updateMaterial();
         }
     }
 }

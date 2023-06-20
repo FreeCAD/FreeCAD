@@ -47,6 +47,8 @@ public:
     explicit ModelSelect(QWidget* parent = nullptr, Materials::ModelManager::ModelFilter filter=Materials::ModelManager::ModelFilter_None);
     ~ModelSelect() override;
 
+    void onURL(bool checked);
+    void onDOI(bool checked);
     void onFavourite(bool checked);
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
     const std::string &selectedModel() const { return _selected; }

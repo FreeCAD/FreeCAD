@@ -68,18 +68,8 @@
           <property name="bottomMargin">
            <number>7</number>
           </property>
-          <item row="5" column="2">
-           <widget class="QLineEdit" name="editTags"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="editAuthorLicense"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Tags</string>
-            </property>
-           </widget>
+          <item row="0" column="2">
+           <widget class="QLineEdit" name="editName"/>
           </item>
           <item row="7" column="0">
            <widget class="QLabel" name="labelDescription">
@@ -88,21 +78,8 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="labelSourceURL">
-            <property name="text">
-             <string>Source URL</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLineEdit" name="editSourceURL"/>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLineEdit" name="editParent"/>
-          </item>
-          <item row="7" column="2">
-           <widget class="QTextEdit" name="editDescription"/>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="editAuthorLicense"/>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="labelName">
@@ -110,16 +87,6 @@
              <string>Name</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelAuthorLicense">
-            <property name="text">
-             <string>Author and License</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QLineEdit" name="editSourceReference"/>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="labelSourceReference">
@@ -135,8 +102,58 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <widget class="QLineEdit" name="editName"/>
+          <item row="7" column="2">
+           <widget class="QTextEdit" name="editDescription"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelAuthorLicense">
+            <property name="text">
+             <string>Author and License</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLineEdit" name="editParent"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelSourceURL">
+            <property name="text">
+             <string>Source URL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLineEdit" name="editTags"/>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLineEdit" name="editSourceReference"/>
+          </item>
+          <item row="3" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLineEdit" name="editSourceURL"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonURL">
+              <property name="maximumSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>

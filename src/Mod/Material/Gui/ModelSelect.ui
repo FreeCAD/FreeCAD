@@ -50,18 +50,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QTextEdit" name="editDescription"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="editDOI"/>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="editName"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="editURL"/>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
@@ -76,12 +64,77 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="1">
+           <widget class="QTextEdit" name="editDescription">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="editName">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="labelName">
             <property name="text">
              <string>Name</string>
             </property>
            </widget>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLineEdit" name="editDOI">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonDOI">
+              <property name="maximumSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLineEdit" name="editURL">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonURL">
+              <property name="maximumSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>

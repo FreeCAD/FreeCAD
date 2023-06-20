@@ -68,7 +68,7 @@ MaterialManager::~MaterialManager()
 {
 }
 
-bool MaterialManager::isCard(const fs::path &p)
+bool MaterialManager::isMaterial(const fs::path &p)
 {
     if (!fs::is_regular_file(p))
         return false;

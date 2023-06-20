@@ -63,6 +63,7 @@ public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override;
 
+    void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);
     void accept() override;
@@ -71,9 +72,9 @@ public:
     Materials::MaterialManager &getMaterialManager() { return _materialManager; }
     Materials::ModelManager &getModelManager() { return *Materials::ModelManager::getManager(); }
 
-    void updateCardAppearance();
-    void updateCardProperties();
-    void updateCard();
+    void updateMaterialAppearance();
+    void updateMaterialProperties();
+    void updateMaterial();
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
@@ -91,10 +92,10 @@ private:
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void createPreviews();
     void createAppearanceTree();
-    void createPropertyTree();
+    void createPhysicalTree();
     void createMaterialTree();
-    void addCards(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
-    bool isCard(const fs::path &p) const { return Materials::MaterialManager::isCard(p); }
+    void addMaterials(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
+    bool isMaterial(const fs::path &p) const { return Materials::MaterialManager::isMaterial(p); }
 };
 
 } // namespace MatGui

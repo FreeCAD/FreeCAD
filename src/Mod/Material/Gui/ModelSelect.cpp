@@ -26,6 +26,7 @@
 
 #include <QString>
 #include <QPushButton>
+#include <QDesktopServices>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -55,6 +56,9 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter f
     createModelTree();
     createModelProperties();
 
+    ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
+    ui->buttonDOI->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
+
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &ModelSelect::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
@@ -64,6 +68,10 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelManager::ModelFilter f
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
             this, &ModelSelect::onSelectModel);
 
+    connect(ui->buttonURL, &QPushButton::clicked,
+            this, &ModelSelect::onURL);
+    connect(ui->buttonDOI, &QPushButton::clicked,
+            this, &ModelSelect::onDOI);
     connect(ui->buttonFavorite, &QPushButton::clicked,
             this, &ModelSelect::onFavourite);
 
@@ -485,6 +493,27 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
         }
     }
 }
+
+void ModelSelect::onURL(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Base::Console().Log("URL\n");
+    QString url = ui->editURL->text();
+    if (url.length() > 0)
+        QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+}
+
+void ModelSelect::onDOI(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Base::Console().Log("DOI\n");
+    QString url = QString::fromStdString("https://doi.org/") + ui->editDOI->text();
+    if (url.length() > 0)
+        QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+}
+
 void ModelSelect::onFavourite(bool checked)
 {
     Q_UNUSED(checked)
