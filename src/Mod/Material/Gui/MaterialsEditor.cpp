@@ -30,6 +30,7 @@
 #include <QTextStream>
 #include <QIODevice>
 #include <QDesktopServices>
+#include <QVariant>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -568,6 +569,46 @@ MaterialDelegate::MaterialDelegate(QObject* parent)
 {
 }
 
+void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+    QVariant propertyType = editor->property("Type");
+    const QStandardItemModel *model = static_cast<const QStandardItemModel *>(index.model());
+    QStandardItem *item = model->itemFromIndex(index);
+
+    std::string type = propertyType.toString().toStdString();
+    if (type == "Color")
+    {
+        QColor color = editor->property("color").value<QColor>();
+        QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
+                                .arg(color.red()/255.0)
+                                .arg(color.green()/255.0)
+                                .arg(color.blue()/255.0)
+                                .arg(color.alpha()/255.0);
+        item->setText(colorText);
+        // color = editor.property("color")
+        // color = tuple([v/255.0 for v in color.getRgb()])
+        // item.setText(str(color))
+    } else if (type == "File")
+    {
+
+    } else if (type == "Float")
+    {
+
+    } else if (type == "Quantity")
+    {
+
+    } else
+    {
+        QStyledItemDelegate::setEditorData(editor, index);
+    }
+}
+
+void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
+                      const QModelIndex& index) const
+{
+    QStyledItemDelegate::setModelData(editor, model, index);
+}
+
 QWidget* MaterialDelegate::createEditor(
     QWidget* parent, const QStyleOptionViewItem&, const QModelIndex& index) const
 {
@@ -645,12 +686,8 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
     } else if (type == "Color")
     {
         Gui::PrefColorButton *button = new Gui::PrefColorButton();
-        // if Value:
-        //     value = string2tuple(Value)
-        //     color = QtGui.QColor()
-        //     color.setRgb(value[0], value[1], value[2], value[3])
-        //     widget.setProperty("color", color)
         QColor color;
+        color.setRgba(parseColor(propertyValue));
         button->setProperty("color", color);
 
         widget = button;
@@ -665,4 +702,19 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
 
     return widget;
 }
+
+QRgb MaterialDelegate::parseColor(const QString &color) const
+{
+    QString trimmed = color;
+    trimmed.replace(QRegularExpression(QString::fromStdString("\\(([^<]*)\\)")),
+            QString::fromStdString("\\1"));
+    QStringList parts = trimmed.split(QString::fromStdString(","));
+    int red = parts.at(0).toDouble() * 255;
+    int green = parts.at(1).toDouble() * 255;
+    int blue = parts.at(2).toDouble() * 255;
+    int alpha = parts.at(3).toDouble() * 255;
+
+    return qRgba(red, green, blue, alpha);
+}
+
 #include "moc_MaterialsEditor.cpp"

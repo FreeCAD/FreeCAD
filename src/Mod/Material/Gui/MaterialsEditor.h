@@ -49,10 +49,14 @@ public:
     explicit MaterialDelegate(QObject* parent=nullptr);
     QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model,
+                      const QModelIndex& index) const override;
 
 private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
                           const QString& propertyValue) const;
+    QRgb parseColor(const QString& color) const;
 };
 
 class MaterialsEditor : public QDialog
