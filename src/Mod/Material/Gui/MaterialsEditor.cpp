@@ -597,14 +597,12 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
         item->setText(colorText);
     } else if (type == "File")
     {
-
-    } else if (type == "Float")
-    {
-
+        Gui::FileChooser* chooser = static_cast<Gui::FileChooser*>(editor);
+        item->setText(chooser->fileName());
     } else if (type == "Quantity")
     {
-        Base::Quantity quantity = editor->property("quantity").value<Base::Quantity>();
-        item->setText(quantity.getUserString());
+        Gui::InputField* input = static_cast<Gui::InputField*>(editor);
+        item->setText(input->getQuantityString());
     } else
     {
         QStyledItemDelegate::setEditorData(editor, index);
@@ -656,8 +654,6 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
 {
     Q_UNUSED(propertyName);
 
-                    // minimum=None, maximum=None, stepsize=None, precision=12)
-    // auto ui = Gui::WidgetFactory();
     QWidget* widget = nullptr;
 
     std::string type = propertyType.toStdString();
@@ -711,12 +707,17 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
         input->setUnitText(propertyUnits); // TODO: Ensure this exists
         input->setPrecision(6);
         input->setQuantityString(propertyValue);
-        Base::Quantity quantity = Base::Quantity::parse(propertyValue);
-        QVariant value;
-        value.setValue(quantity);
-        input->setProperty("quantity", value);
 
         widget = input;
+    } else if (type == "File")
+    {
+        Gui::FileChooser *chooser = new Gui::FileChooser();
+        if (propertyValue.length() > 0)
+        {
+            chooser->setFileName(propertyValue);
+        }
+
+        widget = chooser;
     } else
     {
         // Default editor
