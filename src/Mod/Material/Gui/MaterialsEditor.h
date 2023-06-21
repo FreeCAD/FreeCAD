@@ -55,7 +55,7 @@ public:
 
 private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
-                          const QString& propertyValue) const;
+                          const QString& propertyValue, const QString &propertyUnits) const;
     QRgb parseColor(const QString& color) const;
 };
 

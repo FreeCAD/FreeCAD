@@ -34,7 +34,9 @@
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
+#include <Base/Quantity.h>
 #include <Gui/Command.h>
+#include <Gui/InputField.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
@@ -456,6 +458,9 @@ void MaterialsEditor::updateMaterialAppearance()
                     auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
                     items.append(typeItem);
 
+                    auto unitsItem = new QStandardItem(QString::fromStdString(itp->second.getUnits()));
+                    items.append(unitsItem);
+
                     modelRoot->appendRow(items);
                     tree->setExpanded(modelRoot->index(), true);
                 }
@@ -475,11 +480,13 @@ void MaterialsEditor::updateMaterialProperties()
     headers.append(QString::fromStdString("Property"));
     headers.append(QString::fromStdString("Value"));
     headers.append(QString::fromStdString("Type"));
+    headers.append(QString::fromStdString("Units"));
     treeModel->setHorizontalHeaderLabels(headers);
 
     tree->setColumnWidth(0, 250);
     tree->setColumnWidth(1, 250);
     tree->setColumnHidden(2, true);
+    tree->setColumnHidden(3, true);
 
     const std::vector<std::string> *models = _material.getPhysicalModels();
     if (models) {
@@ -509,6 +516,9 @@ void MaterialsEditor::updateMaterialProperties()
 
                     auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
                     items.append(typeItem);
+
+                    auto unitsItem = new QStandardItem(QString::fromStdString(modelProperty.getUnits()));
+                    items.append(unitsItem);
 
                     // addExpanded(tree, modelRoot, propertyItem);
                     modelRoot->appendRow(items);
@@ -585,9 +595,6 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
                                 .arg(color.blue()/255.0)
                                 .arg(color.alpha()/255.0);
         item->setText(colorText);
-        // color = editor.property("color")
-        // color = tuple([v/255.0 for v in color.getRgb()])
-        // item.setText(str(color))
     } else if (type == "File")
     {
 
@@ -596,7 +603,8 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 
     } else if (type == "Quantity")
     {
-
+        Base::Quantity quantity = editor->property("quantity").value<Base::Quantity>();
+        item->setText(quantity.getUserString());
     } else
     {
         QStyledItemDelegate::setEditorData(editor, index);
@@ -634,13 +642,17 @@ QWidget* MaterialDelegate::createEditor(
     if (group->child(row, 1))
         propertyValue = group->child(row, 1)->text();
 
-    QWidget* editor = createWidget(parent, propertyName, propertyType, propertyValue);
+    QString propertyUnits = QString::fromStdString("");
+    if (group->child(row, 1))
+        propertyUnits = group->child(row, 3)->text();
+
+    QWidget* editor = createWidget(parent, propertyName, propertyType, propertyValue, propertyUnits);
 
     return editor;
 }
 
 QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &propertyName, const QString &propertyType,
-    const QString &propertyValue) const
+    const QString &propertyValue, const QString &propertyUnits) const
 {
     Q_UNUSED(propertyName);
 
@@ -691,6 +703,20 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
         button->setProperty("color", color);
 
         widget = button;
+    } else if (type == "Quantity")
+    {
+        Gui::InputField *input = new Gui::InputField();
+        input->setMinimum(std::numeric_limits<double>::min());
+        input->setMaximum(std::numeric_limits<double>::max());
+        input->setUnitText(propertyUnits); // TODO: Ensure this exists
+        input->setPrecision(6);
+        input->setQuantityString(propertyValue);
+        Base::Quantity quantity = Base::Quantity::parse(propertyValue);
+        QVariant value;
+        value.setValue(quantity);
+        input->setProperty("quantity", value);
+
+        widget = input;
     } else
     {
         // Default editor
