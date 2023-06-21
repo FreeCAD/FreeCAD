@@ -28,6 +28,6 @@ Model:
   DOI: ''
   Density:
     Type: 'Quantity'
-    Units: 'Density'
+    Units: 'kg/m^3'
     URL: 'https://en.wikipedia.org/wiki/Density'
     Description: "Density in [FreeCAD Density unit]"

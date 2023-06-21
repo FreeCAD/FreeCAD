@@ -33,12 +33,12 @@ Model:
       UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
   AngleOfFriction:
     Type: 'Quantity'
-    Units: ''
+    Units: 'deg'
     URL: 'https://en.wikipedia.org/wiki/Friction#Angle_of_friction'
     Description: "Further information can be found at https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory"
   CompressiveStrength:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
     Description: "Compressive strength in [FreeCAD Pressure unit]"
   FractureToughness:
@@ -48,21 +48,21 @@ Model:
     Description: "Unit MPa * m^0.5 is not possible ATM in FreeCAD thus String. Keep in mind the unit is fixed MPa * m^0.5. https://github.com/FreeCAD/FreeCAD/pull/2156"
   UltimateStrain:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
     Description: " "
   UltimateTensileStrength:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
     Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
   YieldStrength:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
     Description: "Yield strength in [FreeCAD Pressure unit]"
   Stiffness:
     Type: 'Quantity'
-    Units: 'Stiffness'
+    Units: 'N/m'
     URL: 'https://en.wikipedia.org/wiki/Stiffness'
     Description: "Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]"

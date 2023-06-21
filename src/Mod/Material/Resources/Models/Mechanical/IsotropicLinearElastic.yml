@@ -28,7 +28,7 @@ Model:
   DOI: "10.1016/j.ijplas.2004.06.004"
   BulkModulus:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Bulk_modulus'
     Description: "Bulk modulus in [FreeCAD Pressure unit]"
   PoissonRatio:
@@ -38,11 +38,11 @@ Model:
     Description: "Poisson's ratio [unitless]"
   ShearModulus:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   YoungsModulus:
     Type: 'Quantity'
-    Units: 'Pressure'
+    Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"

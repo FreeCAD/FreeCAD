@@ -33,7 +33,7 @@ Model:
     Description: "The ratio to the permittivity of the vacuum"
   ElectricalConductivity:
     Type: 'Quantity'
-    Units: 'ElectricalConductivity'
+    Units: 'S/m'
     URL: 'https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity'
     Description: "The electrical conductivity in [FreeCAD ElectricalConductivity unit]"
   RelativePermeability:
