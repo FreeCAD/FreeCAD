@@ -53,6 +53,10 @@ public:
     void setModelData(QWidget* editor, QAbstractItemModel* model,
                       const QModelIndex& index) const override;
 
+Q_SIGNALS:
+    /** Emits this signal when color has changed */
+    void colorChange() const;
+
 private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
                           const QString& propertyValue, const QString &propertyUnits) const;
@@ -67,6 +71,7 @@ public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override;
 
+    void colorChange() const;
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);
@@ -88,8 +93,8 @@ private:
     QSvgWidget* _rendered;
     QSvgWidget* _vectored;
 
-    void updatePreview();
-    QString getColorHash(const std::string& colorString, int colorRange=255);
+    void updatePreview() const;
+    QString getColorHash(const std::string& colorString, int colorRange=255) const;
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);

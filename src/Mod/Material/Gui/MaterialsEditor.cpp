@@ -130,6 +130,12 @@ void MaterialsEditor::tryPython()
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
 }
 
+void MaterialsEditor::colorChange() const
+{
+    Base::Console().Log("MaterialsEditor::colorChange()\n");
+    updatePreview();
+}
+
 void MaterialsEditor::onURL(bool checked)
 {
     Q_UNUSED(checked)
@@ -286,7 +292,11 @@ void MaterialsEditor::createAppearanceTree()
 
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
-    tree->setItemDelegate(new MaterialDelegate(this));
+    MaterialDelegate* delegate = new MaterialDelegate(this);
+    tree->setItemDelegate(delegate);
+
+    connect(delegate, &MaterialDelegate::colorChange,
+            this, &MaterialsEditor::colorChange);
 }
 
 void MaterialsEditor::createMaterialTree()
@@ -328,7 +338,7 @@ void MaterialsEditor::createMaterialTree()
     }
 }
 
-void MaterialsEditor::updatePreview()
+void MaterialsEditor::updatePreview() const
 {
     std::string diffuseColor;
     std::string highlightColor;
@@ -388,7 +398,7 @@ void MaterialsEditor::updatePreview()
     }
 }
 
-QString MaterialsEditor::getColorHash(const std::string &colorString, int colorRange)
+QString MaterialsEditor::getColorHash(const std::string &colorString, int colorRange) const
 {
     /*
         returns a '#000000' string from a '(0.1,0.2,0.3)' string. Optionally the string
@@ -595,6 +605,8 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
                                 .arg(color.blue()/255.0)
                                 .arg(color.alpha()/255.0);
         item->setText(colorText);
+
+        Q_EMIT colorChange();
     } else if (type == "File")
     {
         Gui::FileChooser* chooser = static_cast<Gui::FileChooser*>(editor);
