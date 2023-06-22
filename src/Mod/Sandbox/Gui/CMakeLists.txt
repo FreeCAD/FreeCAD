@@ -15,13 +15,13 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if(BUILD_QT5)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
         ${Qt5Core_INCLUDE_DIRS}
     )
-else()
+elseif(FREECAD_QT_MAJOR_VERSION EQUAL 6)
     include_directories(
-        ${QT_INCLUDE_DIR}
+        ${Qt6Core_INCLUDE_DIRS}
     )
 endif()
 
@@ -40,10 +40,10 @@ set(SandboxGui_MOC_HDRS
 fc_wrap_cpp(SandboxGui_MOC_SRCS ${SandboxGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SandboxGui_MOC_SRCS})
 
-if(BUILD_QT5)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     qt5_add_resources(Resource_SRCS Resources/Sandbox.qrc)
-else()
-    qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
+elseif(FREECAD_QT_MAJOR_VERSION EQUAL 6)//qt6
+    qt6_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 endif()
 SET(Resource_SRCS
     ${Resource_SRCS}
