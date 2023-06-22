@@ -104,6 +104,7 @@ private:
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
 
+    static inline void moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
 
     friend class DrawSketchHandler;
 };
@@ -229,6 +230,8 @@ protected:
     Sketcher::SketchObject* getSketchObject();
 
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
+
+    void moveConstraint(int constNum, const Base::Vector2d& toPos);
 
 private:
     void setSvgCursor(const QString& svgName, int x, int y,

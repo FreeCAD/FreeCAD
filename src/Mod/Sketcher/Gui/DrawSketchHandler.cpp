@@ -138,6 +138,13 @@ ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(ViewProviderSketch
     vp.setAngleSnapping(enable, referencePoint);
 }
 
+inline void
+ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProviderSketch& vp, int constNum,
+    const Base::Vector2d& toPos)
+{
+    vp.moveConstraint(constNum, toPos);
+}
+
 
 /**************************** CurveConverter **********************************************/
 
@@ -1085,4 +1092,10 @@ void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePo
 {
     ViewProviderSketchDrawSketchHandlerAttorney::setAngleSnapping(
         *sketchgui, enable, referencePoint);
+}
+
+void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(
+        *sketchgui, constNum, toPos);
 }

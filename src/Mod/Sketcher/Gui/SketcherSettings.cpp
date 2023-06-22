@@ -66,6 +66,42 @@ void SketcherSettings::saveSettings()
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
+
+    // Dimensioning constraints mode
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    bool singleTool = true;
+    bool SeparatedTools = false;
+    int index = ui->dimensioningMode->currentIndex();
+    switch (index) {
+    case 1:
+        singleTool = false;
+        SeparatedTools = true;
+        break;
+    case 2:
+        singleTool = true;
+        SeparatedTools = true;
+        break;
+    }
+    hGrp->SetBool("SingleDimensioningTool", singleTool);
+    hGrp->SetBool("SeparatedDimensioningTools", SeparatedTools);
+
+    ui->radiusDiameterMode->setEnabled(index != 1);
+
+    bool Diameter = true;
+    bool Radius = true;
+    index = ui->radiusDiameterMode->currentIndex();
+    switch (index) {
+    case 1:
+        Diameter = true;
+        Radius = false;
+        break;
+    case 2:
+        Diameter = false;
+        Radius = true;
+        break;
+    }
+    hGrp->SetBool("DimensioningDiameter", Diameter);
+    hGrp->SetBool("DimensioningRadius", Radius);
 }
 
 void SketcherSettings::loadSettings()
@@ -76,6 +112,38 @@ void SketcherSettings::loadSettings()
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
+
+    // Dimensioning constraints mode
+    ui->dimensioningMode->clear();
+    ui->dimensioningMode->addItem(tr("Single tool"));
+    ui->dimensioningMode->addItem(tr("Separated tools"));
+    ui->dimensioningMode->addItem(tr("Both"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    bool singleTool = hGrp->GetBool("SingleDimensioningTool", true);
+    bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
+    int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
+    ui->dimensioningMode->setCurrentIndex(index);
+    connect(ui->dimensioningMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SketcherSettings::dimensioningModeChanged);
+
+    ui->radiusDiameterMode->setEnabled(index != 1);
+
+    // Dimensioning constraints mode
+    ui->radiusDiameterMode->clear();
+    ui->radiusDiameterMode->addItem(tr("Auto"));
+    ui->radiusDiameterMode->addItem(tr("Diameter"));
+    ui->radiusDiameterMode->addItem(tr("Radius"));
+
+    bool Diameter = hGrp->GetBool("DimensioningDiameter", true);
+    bool Radius = hGrp->GetBool("DimensioningRadius", true);
+    index = Diameter ? (Radius ? 0 : 1) : 2;
+    ui->radiusDiameterMode->setCurrentIndex(index);
+}
+
+void SketcherSettings::dimensioningModeChanged(int index)
+{
+    ui->radiusDiameterMode->setEnabled(index != 1);
+    SketcherSettings::requireRestart();
 }
 
 /**
