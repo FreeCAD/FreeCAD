@@ -118,7 +118,7 @@ jobs:
           -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1.3
       - name: Compiling sources
         run: |
           cd $env:builddir
