@@ -56,7 +56,7 @@ using namespace MatGui;
 /* TRANSLATOR MatGui::MaterialsEditor */
 
 MaterialsEditor::MaterialsEditor(QWidget* parent)
-  : QDialog(parent), ui(new Ui_MaterialsEditor)
+  : QDialog(parent), ui(new Ui_MaterialsEditor), _edited(false)
 {
     ui->setupUi(this);
 
@@ -130,10 +130,17 @@ void MaterialsEditor::tryPython()
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
 }
 
-void MaterialsEditor::colorChange() const
+void MaterialsEditor::propertyChange(const std::string &property, const std::string value) const
 {
-    Base::Console().Log("MaterialsEditor::colorChange()\n");
-    updatePreview();
+    Base::Console().Log("MaterialsEditor::propertyChange()\n");
+    if (hasPhysicalProperty(property))
+    {
+        _material->setPhysicalValue(property, value);
+    } else if (hasAppearanceProperty(property)) {
+        _material->setAppearanceValue(property, value);
+        updatePreview();
+    }
+    _edited = true;
 }
 
 void MaterialsEditor::onURL(bool checked)
@@ -295,8 +302,8 @@ void MaterialsEditor::createAppearanceTree()
     MaterialDelegate* delegate = new MaterialDelegate(this);
     tree->setItemDelegate(delegate);
 
-    connect(delegate, &MaterialDelegate::colorChange,
-            this, &MaterialsEditor::colorChange);
+    connect(delegate, &MaterialDelegate::propertyChange,
+            this, &MaterialsEditor::propertyChange);
 }
 
 void MaterialsEditor::createMaterialTree()
@@ -561,6 +568,11 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
 {
     Q_UNUSED(deselected);
 
+    if (_edited)
+    {
+        // Prompt the user to save or discard changes
+    }
+
     QStandardItemModel *model = static_cast<QStandardItemModel *>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++)
@@ -580,6 +592,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
             }
 
             updateMaterial();
+            _edited = false;
         }
     }
 }
@@ -594,6 +607,12 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
     QVariant propertyType = editor->property("Type");
     const QStandardItemModel *model = static_cast<const QStandardItemModel *>(index.model());
     QStandardItem *item = model->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group)
+        return nullptr;
+
+    int row = index.row();
+    QString propertyName = group->child(row, 0)->text();
 
     std::string type = propertyType.toString().toStdString();
     if (type == "Color")
@@ -605,8 +624,6 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
                                 .arg(color.blue()/255.0)
                                 .arg(color.alpha()/255.0);
         item->setText(colorText);
-
-        Q_EMIT colorChange();
     } else if (type == "File")
     {
         Gui::FileChooser* chooser = static_cast<Gui::FileChooser*>(editor);
@@ -619,6 +636,8 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
     {
         QStyledItemDelegate::setEditorData(editor, index);
     }
+
+    Q_EMIT propertyChange(propertyName, item->text());
 }
 
 void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,

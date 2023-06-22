@@ -55,7 +55,7 @@ public:
 
 Q_SIGNALS:
     /** Emits this signal when color has changed */
-    void colorChange() const;
+    void propertyChange(const std::string &property, const std::string value) const;
 
 private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
@@ -71,7 +71,7 @@ public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override;
 
-    void colorChange() const;
+    void propertyChange(const std::string &property, const std::string value) const;
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);
@@ -92,6 +92,7 @@ private:
     Materials::Material _material;
     QSvgWidget* _rendered;
     QSvgWidget* _vectored;
+    bool _edited;
 
     void updatePreview() const;
     QString getColorHash(const std::string& colorString, int colorRange=255) const;
