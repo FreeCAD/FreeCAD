@@ -28,6 +28,7 @@
 #include <QString>
 
 #include "Model.h"
+#include "MaterialLibrary.h"
 
 namespace fs = boost::filesystem;
 
@@ -109,16 +110,26 @@ public:
     void addAppearance(const std::string& uuid);
     
     void setPhysicalValue(const std::string& name, const std::string &value);
+    void setPhysicalValue(const QString& name, const QString &value)
+    {
+        setPhysicalValue(name.toStdString(), value.toStdString());
+    }
     void setPhysicalValue(const std::string& name, int value);
     void setPhysicalValue(const std::string& name, double value);
     void setPhysicalValue(const std::string& name, const Base::Quantity value);
 
     void setAppearanceValue(const std::string& name, const std::string &value);
+    void setAppearanceValue(const QString& name, const QString &value)
+    {
+        setAppearanceValue(name.toStdString(), value.toStdString());
+    }
 
     const std::string getPhysicalValue(const std::string &name) const;
     const std::string getAppearanceValue(const std::string &name) const;
     bool hasPhysicalProperty(const std::string& name) const;
+    bool hasPhysicalProperty(const QString& name) const { return hasPhysicalProperty(name.toStdString()); }
     bool hasAppearanceProperty(const std::string& name) const;
+    bool hasAppearanceProperty(const QString& name) const { return hasAppearanceProperty(name.toStdString()); }
     bool hasPhysicalModel(const std::string& uuid) const;
     bool hasAppearanceModel(const std::string& uuid) const;
 

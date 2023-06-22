@@ -54,8 +54,8 @@ public:
                       const QModelIndex& index) const override;
 
 Q_SIGNALS:
-    /** Emits this signal when color has changed */
-    void propertyChange(const std::string &property, const std::string value) const;
+    /** Emits this signal when a property has changed */
+    void propertyChange(const QString &property, const QString value);
 
 private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
@@ -71,7 +71,7 @@ public:
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override;
 
-    void propertyChange(const std::string &property, const std::string value) const;
+    void propertyChange(const QString &property, const QString value);
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);

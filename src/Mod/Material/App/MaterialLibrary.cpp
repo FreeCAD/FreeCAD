@@ -40,11 +40,8 @@ MaterialLibrary::MaterialLibrary()
 {}
 
 MaterialLibrary::MaterialLibrary(const std::string& libraryName, const QDir& dir,
-                                 const std::string& icon, bool readOnly)
-    : _name(libraryName)
-    , _directory(dir)
-    , _iconPath(icon)
-    , _readOnly(readOnly);
+                                 const std::string& icon, bool readOnly) :
+    _name(libraryName), _directory(dir), _iconPath(icon), _readOnly(readOnly)
 {}
 
 MaterialLibrary::~MaterialLibrary()
@@ -60,6 +57,21 @@ void MaterialLibrary::createPath(const std::string& path)
 void MaterialLibrary::saveMaterial(const Material& material, const std::string& path)
 {
 
+}
+
+TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, MaterialLibrary::MaterialLibrary)
+
+MaterialExternalLibrary::MaterialExternalLibrary()
+{}
+
+MaterialExternalLibrary::MaterialExternalLibrary(const std::string& libraryName, const QDir& dir,
+                                 const std::string& icon, bool readOnly) :
+    MaterialLibrary(libraryName, dir, icon, readOnly)
+{}
+
+MaterialExternalLibrary::~MaterialExternalLibrary()
+{
+    // delete directory;
 }
 
 #include "moc_Materials.cpp"

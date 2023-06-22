@@ -33,6 +33,8 @@ namespace fs = boost::filesystem;
 
 namespace Materials {
 
+class Material;
+
 class MaterialsExport MaterialLibrary : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();

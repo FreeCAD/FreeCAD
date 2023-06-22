@@ -130,14 +130,14 @@ void MaterialsEditor::tryPython()
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
 }
 
-void MaterialsEditor::propertyChange(const std::string &property, const std::string value) const
+void MaterialsEditor::propertyChange(const QString &property, const QString value)
 {
     Base::Console().Log("MaterialsEditor::propertyChange()\n");
-    if (hasPhysicalProperty(property))
+    if (_material.hasPhysicalProperty(property))
     {
-        _material->setPhysicalValue(property, value);
-    } else if (hasAppearanceProperty(property)) {
-        _material->setAppearanceValue(property, value);
+        _material.setPhysicalValue(property, value);
+    } else if (_material.hasAppearanceProperty(property)) {
+        _material.setAppearanceValue(property, value);
         updatePreview();
     }
     _edited = true;
@@ -351,17 +351,17 @@ void MaterialsEditor::updatePreview() const
     std::string highlightColor;
     std::string sectionColor;
 
-    if (_material.hasAppearanceProperty("DiffuseColor"))
+    if (_material.hasAppearanceProperty(static_cast<std::string>("DiffuseColor")))
         diffuseColor = _material.getAppearanceValue("DiffuseColor");
-    else if (_material.hasAppearanceProperty("ViewColor"))
+    else if (_material.hasAppearanceProperty(static_cast<std::string>("ViewColor")))
         diffuseColor = _material.getAppearanceValue("ViewColor");
-    else if (_material.hasAppearanceProperty("Color"))
+    else if (_material.hasAppearanceProperty(static_cast<std::string>("Color")))
         diffuseColor = _material.getAppearanceValue("Color");
 
-    if (_material.hasAppearanceProperty("SpecularColor"))
+    if (_material.hasAppearanceProperty(static_cast<std::string>("SpecularColor")))
         highlightColor = _material.getAppearanceValue("SpecularColor");
 
-    if (_material.hasAppearanceProperty("SectionColor"))
+    if (_material.hasAppearanceProperty(static_cast<std::string>("SectionColor")))
         sectionColor = _material.getAppearanceValue("SectionColor");
 
     if ((diffuseColor.length() + highlightColor.length()) > 0)
@@ -609,7 +609,7 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
     QStandardItem *item = model->itemFromIndex(index);
     auto group = item->parent();
     if (!group)
-        return nullptr;
+        return;
 
     int row = index.row();
     QString propertyName = group->child(row, 0)->text();
@@ -637,7 +637,7 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
         QStyledItemDelegate::setEditorData(editor, index);
     }
 
-    Q_EMIT propertyChange(propertyName, item->text());
+    Q_EMIT const_cast<MaterialDelegate *>(this)->propertyChange(propertyName, item->text());
 }
 
 void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
