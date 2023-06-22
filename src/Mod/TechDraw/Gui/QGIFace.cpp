@@ -62,10 +62,12 @@ QGIFace::QGIFace(int index) :
     isHatched(false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 
-    //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
-    setStyle(Qt::DashLine);
+    setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
+    //setStyle(Qt::DashLine);
     m_geomColor = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
-    setLineWeight(0.5);                   //0 = cosmetic
+    m_styleCurrent = Qt::NoPen;
+    m_pen.setStyle(m_styleCurrent);
+    setLineWeight(0.0);                   //0 = cosmetic
 
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
@@ -82,19 +84,20 @@ QGIFace::QGIFace(int index) :
     getParameters();
 
     // set up style & colour defaults
-    m_styleDef = Qt::SolidPattern;
-    m_styleSelect = Qt::SolidPattern;
     App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
     setFillColor(temp.asValue<QColor>());
     m_colDefFill = temp.asValue<QColor>();
+    m_fillDef = Qt::SolidPattern;
+    m_fillSelect = Qt::SolidPattern;
 
     if (m_defClearFace) {
         setFillMode(NoFill);
         m_colDefFill = Qt::transparent;
-        setFill(Qt::transparent, m_styleDef);
+        setFill(Qt::transparent, m_fillDef);
     } else {
         setFillMode(PlainFill);
-        setFill(m_colDefFill, m_styleDef);
+        m_colDefFill = Qt::white;
+        setFill(m_colDefFill, m_fillDef);
     }
 
     m_sharedRender = new QSvgRenderer();
@@ -108,6 +111,7 @@ QGIFace::~QGIFace()
 /// redraw this face
 void QGIFace::draw()
 {
+//    Base::Console().Message("QGIF::draw - pen style: %d\n", m_pen.style());
     setPath(m_outline);                         //Face boundary
 
     if (isHatched()) {
@@ -116,8 +120,8 @@ void QGIFace::draw()
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyleCurrent = m_styleDef;
-                m_styleNormal = m_fillStyleCurrent;
+                m_fillStyleCurrent = m_fillDef;
+                m_fillNormal = m_fillStyleCurrent;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
@@ -126,8 +130,8 @@ void QGIFace::draw()
             m_svgHatchArea->hide();
         } else if (m_mode == SvgFill) {
             m_brush.setTexture(QPixmap());
-            m_styleNormal = m_styleDef;
-            m_fillStyleCurrent = m_styleNormal;
+            m_fillNormal = m_fillDef;
+            m_fillStyleCurrent = m_fillNormal;
             loadSvgHatch(m_fileSpec);
             if (m_hideSvgTiles) {
                 //bitmap hatch doesn't need clipping
@@ -147,7 +151,7 @@ void QGIFace::draw()
             m_texture = textureFromBitmap(m_fileSpec);
             m_brush.setTexture(m_texture);
         } else if (m_mode == PlainFill) {
-            setFill(m_colNormalFill, m_styleNormal);
+            setFill(m_colNormalFill, m_fillNormal);
             m_imageHatchArea->hide();
             m_svgHatchArea->hide();
         }
@@ -189,6 +193,7 @@ void QGIFace::setPrettySel() {
 
 /// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool b) {
+//    Base::Console().Message("QGIF::setDrawEdges(%d)\n", b);
     if (b) {
         setStyle(Qt::DashLine);
     } else {
