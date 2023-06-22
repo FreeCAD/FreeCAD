@@ -20,47 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGER_H
-#define MATERIAL_MATERIALMANAGER_H
+#ifndef MATERIAL_MATERIALLIBRARY_H
+#define MATERIAL_MATERIALLIBRARY_H
 
-#include <boost/filesystem.hpp>
+#include <Base/BaseClass.h>
+#include <QDir>
+#include <QString>
 
-#include "Materials.h"
+#include "Model.h"
 
 namespace fs = boost::filesystem;
 
 namespace Materials {
 
-class MaterialsExport MaterialManager : public Base::BaseClass
+class MaterialsExport MaterialLibrary : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 
 public:
-    explicit MaterialManager();
-    virtual ~MaterialManager();
+    explicit MaterialLibrary();
+    explicit MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon, bool readOnly = true);
+    virtual ~MaterialLibrary();
 
-    std::map<std::string, Material *> *getMaterials() { return _materialMap; }
-    const Material& getMaterial(const std::string& uuid) const;
-    const Material &getMaterialByPath(const std::string &path) const;
-    const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
+    const std::string &getName() const { return _name; }
+    const QDir &getDirectory() const { return _directory; }
+    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
+    const std::string &getIconPath() const { return _iconPath; }
+    void createPath(const std::string& path);
+    void saveMaterial(const Material& material, const std::string& path);
 
-    // Library management
-    static std::list<MaterialLibrary*>* getMaterialLibraries();
-    void createPath(MaterialLibrary* library, const std::string& path) { library->createPath(path); }
-    void saveMaterial(MaterialLibrary* library, const Material& material, const std::string& path) {
-        library->saveMaterial(material, path);
-    }
+protected:
+    std::string _name;
+    QDir _directory;
+    std::string _iconPath;
+    bool _readOnly;
+};
 
-    static bool isMaterial(const fs::path &p);
+class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
+{
+    TYPESYSTEM_HEADER();
 
-private:
-    const std::string getUUIDFromPath(const std::string& path) const;
-
-    static std::list<MaterialLibrary *> *_libraryList;
-    static std::map<std::string, Material *> *_materialMap;
-    static std::map<std::string, Material *> *_materialPathMap;
+public:
+    explicit MaterialExternalLibrary();
+    explicit MaterialExternalLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon, bool readOnly = true);
+    virtual ~MaterialExternalLibrary();
 };
 
 } // namespace Materials
 
-#endif // MATERIAL_MATERIALMANAGER_H
+#endif // MATERIAL_MATERIALLIBRARY_H

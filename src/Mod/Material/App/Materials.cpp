@@ -34,20 +34,6 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
-
-MaterialLibrary::MaterialLibrary()
-{}
-
-MaterialLibrary::MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
-    _name(libraryName), _directory(dir), _iconPath(icon)
-{}
-
-MaterialLibrary::~MaterialLibrary()
-{
-    // delete directory;
-}
-
 TYPESYSTEM_SOURCE(Materials::ModelData, Base::BaseClass)
 
 ModelData::ModelData()

@@ -20,47 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGER_H
-#define MATERIAL_MATERIALMANAGER_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <boost/filesystem.hpp>
+#include <App/Application.h>
 
-#include "Materials.h"
+#include "MaterialLibrary.h"
+#include "ModelManager.h"
 
-namespace fs = boost::filesystem;
 
-namespace Materials {
+using namespace Materials;
 
-class MaterialsExport MaterialManager : public Base::BaseClass
+/* TRANSLATOR Material::Materials */
+
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
+
+MaterialLibrary::MaterialLibrary()
+{}
+
+MaterialLibrary::MaterialLibrary(const std::string& libraryName, const QDir& dir,
+                                 const std::string& icon, bool readOnly)
+    : _name(libraryName)
+    , _directory(dir)
+    , _iconPath(icon)
+    , _readOnly(readOnly);
+{}
+
+MaterialLibrary::~MaterialLibrary()
 {
-    TYPESYSTEM_HEADER();
+    // delete directory;
+}
 
-public:
-    explicit MaterialManager();
-    virtual ~MaterialManager();
+void MaterialLibrary::createPath(const std::string& path)
+{
 
-    std::map<std::string, Material *> *getMaterials() { return _materialMap; }
-    const Material& getMaterial(const std::string& uuid) const;
-    const Material &getMaterialByPath(const std::string &path) const;
-    const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
+}
 
-    // Library management
-    static std::list<MaterialLibrary*>* getMaterialLibraries();
-    void createPath(MaterialLibrary* library, const std::string& path) { library->createPath(path); }
-    void saveMaterial(MaterialLibrary* library, const Material& material, const std::string& path) {
-        library->saveMaterial(material, path);
-    }
+void MaterialLibrary::saveMaterial(const Material& material, const std::string& path)
+{
 
-    static bool isMaterial(const fs::path &p);
+}
 
-private:
-    const std::string getUUIDFromPath(const std::string& path) const;
-
-    static std::list<MaterialLibrary *> *_libraryList;
-    static std::map<std::string, Material *> *_materialMap;
-    static std::map<std::string, Material *> *_materialPathMap;
-};
-
-} // namespace Materials
-
-#endif // MATERIAL_MATERIALMANAGER_H
+#include "moc_Materials.cpp"

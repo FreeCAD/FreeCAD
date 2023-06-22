@@ -33,26 +33,6 @@ namespace fs = boost::filesystem;
 
 namespace Materials {
 
-class MaterialsExport MaterialLibrary : public Base::BaseClass
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    explicit MaterialLibrary();
-    explicit MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
-    virtual ~MaterialLibrary();
-
-    const std::string &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
-    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
-    const std::string &getIconPath() const { return _iconPath; }
-
-private:
-    std::string _name;
-    QDir _directory;
-    std::string _iconPath;
-};
-
 class MaterialsExport ModelData : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();

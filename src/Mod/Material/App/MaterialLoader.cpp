@@ -329,7 +329,7 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir() + "/Mod/Material/Resources/Materials");
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("System", materialDir, ":/icons/freecad.svg");
+        auto libData = new MaterialLibrary("System", materialDir, ":/icons/freecad.svg", true);
         _libraryList->push_back(libData);
     }
 
@@ -342,10 +342,11 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
             auto moduleName = group->GetGroupName();
             auto materialDir = group->GetASCII("ModuleDir", "");
             auto materialIcon = group->GetASCII("ModuleIcon", "");
+            auto materialReadOnly = group->GetBool("ModuleReadOnly", true);
 
             if (materialDir.length() > 0) {
                 QDir dir(QString::fromStdString(materialDir));
-                auto libData = new MaterialLibrary(moduleName, dir, materialIcon);
+                auto libData = new MaterialLibrary(moduleName, dir, materialIcon, materialReadOnly);
                 if (dir.exists()) {
                     _libraryList->push_back(libData);
                 }
@@ -357,7 +358,7 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("User", materialDir, ":/icons/preferences-general.svg");
+        auto libData = new MaterialLibrary("User", materialDir, ":/icons/preferences-general.svg", false);
         if (materialDir.exists()) {
             _libraryList->push_back(libData);
         }
@@ -367,7 +368,7 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("Custom", materialDir, ":/icons/user.svg");
+        auto libData = new MaterialLibrary("Custom", materialDir, ":/icons/user.svg", false);
         if (materialDir.exists()) {
             _libraryList->push_back(libData);
         }
