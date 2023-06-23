@@ -144,11 +144,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 Path.Log.debug(
                     f"This jobshape has {len(shape.Wires)} wires and {len(shape.Edges)} edges"
                 )
-                self.commandlist.append(
-                    Path.Command(
-                        "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-                    )
-                )
 
                 if len(shape.Wires) == 0:
                     if len(shape.Edges) == 1:
