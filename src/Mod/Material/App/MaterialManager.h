@@ -26,10 +26,13 @@
 #include <boost/filesystem.hpp>
 
 #include "Materials.h"
+#include "FolderTree.h"
 
 namespace fs = boost::filesystem;
 
 namespace Materials {
+
+typedef FolderTreeNode<Material> MaterialTreeNode;
 
 class MaterialsExport MaterialManager : public Base::BaseClass
 {
@@ -46,6 +49,7 @@ public:
 
     // Library management
     static std::list<MaterialLibrary*>* getMaterialLibraries();
+    std::map<std::string, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
     void createPath(MaterialLibrary* library, const std::string& path) { library->createPath(path); }
     void saveMaterial(MaterialLibrary* library, const Material& material, const std::string& path) {
         library->saveMaterial(material, path);

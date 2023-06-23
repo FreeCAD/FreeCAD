@@ -49,6 +49,7 @@
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
 #include "ModelSelect.h"
+#include "MaterialSave.h"
 
 
 using namespace MatGui;
@@ -71,6 +72,8 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
             this, &MaterialsEditor::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
             this, &MaterialsEditor::reject);
+    connect(ui->standardButtons->button(QDialogButtonBox::Save), &QPushButton::clicked,
+            this, &MaterialsEditor::onSave);
 
     connect(ui->buttonURL, &QPushButton::clicked,
             this, &MaterialsEditor::onURL);
@@ -184,6 +187,23 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
         updateMaterial();
     } else {
         Base::Console().Log("No model selected\n");
+    }
+}
+
+void MaterialsEditor::onSave(bool checked)
+{
+    Q_UNUSED(checked)
+    
+    MaterialSave dialog(this);
+    dialog.setModal(true);
+    if(dialog.exec() == QDialog::Accepted)
+    {
+    //     std::string selected = dialog.selectedModel();
+    //     Base::Console().Log("Selected model '%s'\n", selected.c_str());
+    //     _material.addAppearance(selected);
+    //     updateMaterial();
+    // } else {
+    //     Base::Console().Log("No model selected\n");
     }
 }
 

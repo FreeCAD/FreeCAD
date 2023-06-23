@@ -20,57 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGER_H
-#define MATERIAL_MODELMANAGER_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <boost/filesystem.hpp>
+#include "MaterialSave.h"
+#include "ui_MaterialSave.h"
 
-#include "Exceptions.h"
-#include "Model.h"
-#include "FolderTree.h"
 
-namespace fs = boost::filesystem;
+using namespace MatGui;
 
-namespace Materials {
+/* TRANSLATOR MatGui::MaterialsEditor */
 
-typedef FolderTreeNode<Model> ModelTreeNode;
-
-class MaterialsExport ModelManager : public Base::BaseClass
+MaterialSave::MaterialSave(QWidget* parent)
+  : QDialog(parent), ui(new Ui_MaterialSave)
 {
-    TYPESYSTEM_HEADER();
+    ui->setupUi(this);
 
-public:
-    enum ModelFilter
-    {
-        ModelFilter_None,
-        ModelFilter_Physical,
-        ModelFilter_Appearance
-    };
+    connect(ui->standardButtons, &QDialogButtonBox::accepted,
+            this, &MaterialSave::accept);
+    connect(ui->standardButtons, &QDialogButtonBox::rejected,
+            this, &MaterialSave::reject);
+}
 
-    virtual ~ModelManager();
+/*
+ *  Destroys the object and frees any allocated resources
+ */
+MaterialSave::~MaterialSave()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
 
-    static ModelManager *getManager();
+void MaterialSave::accept()
+{
+    QDialog::accept();
+}
 
-    void refresh();
-    
-    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    std::map<std::string, Model*> *getModels() { return _modelMap; }
-    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
-    const Model &getModel(const std::string& uuid) const;
-    const Model &getModelByPath(const std::string &path) const;
-    const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
+void MaterialSave::reject()
+{
+    QDialog::reject();
+}
 
-    static bool isModel(const fs::path& p);
-    bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
-
-private:
-    explicit ModelManager();
-
-    static ModelManager *manager;
-    static std::list<ModelLibrary*> *_libraryList;
-    static std::map<std::string, Model*> *_modelMap;
-};
-
-} // namespace Materials
-
-#endif // MATERIAL_MODELMANAGER_H
+#include "moc_MaterialSave.cpp"

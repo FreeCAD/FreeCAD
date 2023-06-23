@@ -242,9 +242,9 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
     auto tree = ui->treeModels;
     for (auto& mod : *modelTree) {
         Materials::ModelTreeNode *nodePtr = mod.second;
-        if (nodePtr->getType() == Materials::ModelTreeNode::ModelNode)
+        if (nodePtr->getType() == Materials::ModelTreeNode::DataNode)
         {
-            const Materials::Model *model = nodePtr->getModel();
+            const Materials::Model *model = nodePtr->getData();
             std::string uuid = model->getUUID();
 
             auto card = new QStandardItem(icon, QString::fromStdString(model->getName()));

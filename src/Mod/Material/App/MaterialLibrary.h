@@ -48,6 +48,12 @@ public:
     const QDir &getDirectory() const { return _directory; }
     const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
     const std::string &getIconPath() const { return _iconPath; }
+    bool operator==(const MaterialLibrary& library) const
+    {
+        return (_name == library._name) && (_directory == library._directory);
+    }
+    bool operator!=(const MaterialLibrary& library) const { return !operator==(library); }
+
     void createPath(const std::string& path);
     void saveMaterial(const Material& material, const std::string& path);
 

@@ -20,57 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGER_H
-#define MATERIAL_MODELMANAGER_H
+#ifndef MATGUI_MATERIALSAVE_H
+#define MATGUI_MATERIALSAVE_H
 
-#include <boost/filesystem.hpp>
+// #include <boost/filesystem.hpp>
 
-#include "Exceptions.h"
-#include "Model.h"
-#include "FolderTree.h"
+#include <QDialog>
+// #include <QDir>
+// #include <QStandardItem>
+// #include <QTreeView>
+// #include <QStyledItemDelegate>
+// #include <QSvgWidget>
 
-namespace fs = boost::filesystem;
+// #include <Mod/Material/App/Materials.h>
+// #include <Mod/Material/App/MaterialManager.h>
+// #include <Mod/Material/App/ModelManager.h>
 
-namespace Materials {
+// namespace fs = boost::filesystem;
 
-typedef FolderTreeNode<Model> ModelTreeNode;
+namespace MatGui {
 
-class MaterialsExport ModelManager : public Base::BaseClass
+class Ui_MaterialSave;
+
+class MaterialSave : public QDialog
 {
-    TYPESYSTEM_HEADER();
+    Q_OBJECT
 
 public:
-    enum ModelFilter
-    {
-        ModelFilter_None,
-        ModelFilter_Physical,
-        ModelFilter_Appearance
-    };
+    explicit MaterialSave(QWidget* parent = nullptr);
+    ~MaterialSave() override;
 
-    virtual ~ModelManager();
-
-    static ModelManager *getManager();
-
-    void refresh();
-    
-    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    std::map<std::string, Model*> *getModels() { return _modelMap; }
-    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
-    const Model &getModel(const std::string& uuid) const;
-    const Model &getModelByPath(const std::string &path) const;
-    const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
-
-    static bool isModel(const fs::path& p);
-    bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
+    void accept() override;
+    void reject() override;
 
 private:
-    explicit ModelManager();
-
-    static ModelManager *manager;
-    static std::list<ModelLibrary*> *_libraryList;
-    static std::map<std::string, Model*> *_modelMap;
+    std::unique_ptr<Ui_MaterialSave> ui;
 };
 
-} // namespace Materials
+} // namespace MatGui
 
-#endif // MATERIAL_MODELMANAGER_H
+#endif // MATGUI_MATERIALSAVE_H

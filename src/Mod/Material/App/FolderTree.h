@@ -20,57 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGER_H
-#define MATERIAL_MODELMANAGER_H
-
-#include <boost/filesystem.hpp>
-
-#include "Exceptions.h"
-#include "Model.h"
-#include "FolderTree.h"
-
-namespace fs = boost::filesystem;
+#ifndef MATERIAL_FOLDERTREE_H
+#define MATERIAL_FOLDERTREE_H
 
 namespace Materials {
 
-typedef FolderTreeNode<Model> ModelTreeNode;
-
-class MaterialsExport ModelManager : public Base::BaseClass
+template <class T>
+class FolderTreeNode
 {
-    TYPESYSTEM_HEADER();
-
 public:
-    enum ModelFilter
-    {
-        ModelFilter_None,
-        ModelFilter_Physical,
-        ModelFilter_Appearance
+    enum NodeType {
+        DataNode,
+        FolderNode
     };
 
-    virtual ~ModelManager();
+    explicit FolderTreeNode() : _folder(nullptr) {}
+    virtual ~FolderTreeNode() {}
 
-    static ModelManager *getManager();
+    NodeType getType(void) const { return _type; }
+    void setType(NodeType type) { _type = type; }
 
-    void refresh();
-    
-    std::list<ModelLibrary*> *getModelLibraries() { return _libraryList; }
-    std::map<std::string, Model*> *getModels() { return _modelMap; }
-    std::map<std::string, ModelTreeNode*>* getModelTree(const ModelLibrary &library, ModelFilter filter=ModelFilter_None);
-    const Model &getModel(const std::string& uuid) const;
-    const Model &getModelByPath(const std::string &path) const;
-    const Model &getModelByPath(const std::string &path, const std::string &libraryPath) const;
+    const std::map<std::string, FolderTreeNode<T>*> *getFolder(void) const { return _folder; }
+    std::map<std::string, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
+    const Model *getData(void) const { return _data; }
 
-    static bool isModel(const fs::path& p);
-    bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
+    void setData(std::map<std::string, FolderTreeNode<T>*> *folder)
+    {
+        setType(FolderNode);
+        _folder = folder;
+    }
+    void setData(const T *data)
+    {
+        setType(DataNode);
+        _data = data;
+    }
 
 private:
-    explicit ModelManager();
-
-    static ModelManager *manager;
-    static std::list<ModelLibrary*> *_libraryList;
-    static std::map<std::string, Model*> *_modelMap;
+    NodeType    _type;
+    std::map<std::string, FolderTreeNode<T> *> *_folder;
+    const T *_data;
 };
 
 } // namespace Materials
 
-#endif // MATERIAL_MODELMANAGER_H
+#endif // MATERIAL_FOLDERTREE_H

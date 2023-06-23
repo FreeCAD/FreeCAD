@@ -37,29 +37,6 @@ ModelManager *ModelManager::manager = nullptr;
 std::list<ModelLibrary*> *ModelManager::_libraryList = nullptr;
 std::map<std::string, Model*> *ModelManager::_modelMap = nullptr;
 
-ModelTreeNode::ModelTreeNode() :
-    _folder(nullptr)
-{}
-
-ModelTreeNode::~ModelTreeNode()
-{
-    if (_folder)
-        delete _folder;
-}
-
-void ModelTreeNode::setData(std::map<std::string, ModelTreeNode*> *folder)
-{
-    setType(FolderNode);
-    _folder = folder;
-}
-
-void ModelTreeNode::setData(const Model *model)
-{
-    setType(ModelNode);
-    _model = model;
-}
-
-
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
 ModelManager::ModelManager()

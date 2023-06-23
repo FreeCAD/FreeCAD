@@ -75,6 +75,7 @@ public:
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);
+    void onSave(bool checked);
     void accept() override;
     void reject() override;
 

@@ -128,6 +128,51 @@ const Material &MaterialManager::getMaterialByPath(const std::string &path, cons
     return getMaterialByPath(absPath);
 }
 
+std::map<std::string, MaterialTreeNode*>* MaterialManager::getMaterialTree(const MaterialLibrary &library)
+{
+    std::map<std::string, MaterialTreeNode*> *materialTree = new std::map<std::string, MaterialTreeNode*>();
+
+    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++)
+    {
+        auto filename = it->first;
+        auto material = it->second;
+
+        if (material->getLibrary() == library)
+        {
+            fs::path path = material->getRelativePath();
+            Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
+
+            // Start at the root
+            std::map<std::string, MaterialTreeNode*> *node = materialTree;
+            for (auto itp = path.begin(); itp != path.end(); itp++)
+            {
+                if (isMaterial(itp->string())) {
+                    MaterialTreeNode *child = new MaterialTreeNode();
+                    child->setData(material);
+                    (*node)[itp->string()] = child;
+                } else {
+                    // Add the folder only if it's not already there
+                    std::string folderName = itp->string();
+                    std::map<std::string, MaterialTreeNode*> *mapPtr;
+                    if (node->count(itp->string()) == 0)
+                    {
+                        mapPtr = new std::map<std::string, MaterialTreeNode*>();
+                        MaterialTreeNode *child = new MaterialTreeNode();
+                        child->setData(mapPtr);
+                        (*node)[itp->string()] = child;
+                        node = mapPtr;
+                    } else {
+                        node = (*node)[itp->string()]->getFolder();
+                    }
+                }
+                Base::Console().Log("'%s' ", itp->string().c_str());
+            }
+            Base::Console().Log("\n");
+        }
+    }
+
+    return materialTree;
+}
 
 
 #include "moc_MaterialManager.cpp"
