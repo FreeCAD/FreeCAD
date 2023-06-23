@@ -281,6 +281,7 @@ SET(PathTests_SRCS
     PathTests/test_adaptive.fcstd
     PathTests/test_profile.fcstd
     PathTests/test_centroid_00.ngc
+    PathTests/test_engrave.fcstd
     PathTests/test_filenaming.fcstd
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
@@ -296,6 +297,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
     PathTests/TestPathDrillable.py
+    PathTests/TestPathEngrave.py
     PathTests/TestPathGeneratorDogboneII.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py

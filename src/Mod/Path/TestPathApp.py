@@ -32,6 +32,7 @@ from PathTests.TestPathDressupDogboneII import TestDressupDogboneII
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
+from PathTests.TestPathEngrave import TestPathEngrave
 from PathTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from PathTests.TestPathGeom import TestPathGeom
 from PathTests.TestPathLanguage import TestPathLanguage
@@ -84,6 +85,7 @@ False if TestHoldingTags.__name__ else True
 False if TestPathLanguage.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
+False if TestPathEngrave.__name__ else True
 False if TestPathCore.__name__ else True
 False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
