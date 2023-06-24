@@ -45,6 +45,10 @@ DlgSettingsSelection::~DlgSettingsSelection()
 
 void DlgSettingsSelection::saveSettings()
 {
+    ui->checkBoxPreselection->onSave();
+    ui->checkBoxSelection->onSave();
+    ui->HighlightColor->onSave();
+    ui->SelectionColor->onSave();
     ui->spinPickRadius->onSave();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->SetBool("SyncView", ui->checkBoxAutoSwitch->isChecked());
@@ -56,6 +60,10 @@ void DlgSettingsSelection::saveSettings()
 
 void DlgSettingsSelection::loadSettings()
 {
+    ui->checkBoxPreselection->onRestore();
+    ui->checkBoxSelection->onRestore();
+    ui->HighlightColor->onRestore();
+    ui->SelectionColor->onRestore();
     ui->spinPickRadius->onRestore();
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView", true));
