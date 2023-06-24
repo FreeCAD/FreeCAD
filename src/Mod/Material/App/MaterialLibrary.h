@@ -26,10 +26,9 @@
 #include <Base/BaseClass.h>
 #include <QDir>
 #include <QString>
+#include <QVariant>
 
 #include "Model.h"
-
-namespace fs = boost::filesystem;
 
 namespace Materials {
 
@@ -57,12 +56,16 @@ public:
     void createPath(const std::string& path);
     void saveMaterial(const Material& material, const std::string& path);
 
+    bool isReadOnly() const { return _readOnly; }
+
 protected:
     std::string _name;
     QDir _directory;
     std::string _iconPath;
     bool _readOnly;
 };
+
+Q_DECLARE_METATYPE(MaterialLibrary)
 
 class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
 {
@@ -73,6 +76,8 @@ public:
     explicit MaterialExternalLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon, bool readOnly = true);
     virtual ~MaterialExternalLibrary();
 };
+
+Q_DECLARE_METATYPE(MaterialExternalLibrary)
 
 } // namespace Materials
 

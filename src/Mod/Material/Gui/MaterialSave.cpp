@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <Mod/Material/App/MaterialLibrary.h>
 #include "MaterialSave.h"
 #include "ui_MaterialSave.h"
 
@@ -36,6 +37,8 @@ MaterialSave::MaterialSave(QWidget* parent)
   : QDialog(parent), ui(new Ui_MaterialSave)
 {
     ui->setupUi(this);
+
+    setLibraries();
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &MaterialSave::accept);
@@ -59,6 +62,20 @@ void MaterialSave::accept()
 void MaterialSave::reject()
 {
     QDialog::reject();
+}
+
+void MaterialSave::setLibraries()
+{
+    std::list<Materials::MaterialLibrary*> *libraries = _manager.getMaterialLibraries();
+    for (Materials::MaterialLibrary *library: *libraries)
+    {
+        if (!library->isReadOnly())
+        {
+            QVariant libraryVariant;
+            libraryVariant.setValue(*library);
+            ui->comboLibrary->addItem(QString::fromStdString(library->getName()), libraryVariant);
+        }
+    }
 }
 
 #include "moc_MaterialSave.cpp"

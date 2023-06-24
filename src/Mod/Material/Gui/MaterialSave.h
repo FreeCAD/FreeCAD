@@ -33,7 +33,7 @@
 // #include <QSvgWidget>
 
 // #include <Mod/Material/App/Materials.h>
-// #include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/MaterialManager.h>
 // #include <Mod/Material/App/ModelManager.h>
 
 // namespace fs = boost::filesystem;
@@ -50,11 +50,14 @@ public:
     explicit MaterialSave(QWidget* parent = nullptr);
     ~MaterialSave() override;
 
+    void setLibraries();
+
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_MaterialSave> ui;
+    Materials::MaterialManager _manager;
 };
 
 } // namespace MatGui
