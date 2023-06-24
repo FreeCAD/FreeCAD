@@ -174,37 +174,67 @@ Larger value eases to pick things, but can make small features impossible to sel
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxAutoSwitch">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoSwitch">
      <property name="text">
       <string>Auto switch to the 3D view containing the selected item</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SyncView</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
      </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxAutoExpand">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoExpand">
      <property name="text">
       <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SyncSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
      </property>
     </widget>
    </item>
    <item row="5" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxPreselect">
+    <widget class="Gui::PrefCheckBox" name="checkBoxPreselect">
      <property name="text">
       <string>Preselect the object in 3D view when mouse over the tree item</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>PreSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
      </property>
     </widget>
    </item>
    <item row="6" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxRecord">
+    <widget class="Gui::PrefCheckBox" name="checkBoxRecord">
      <property name="text">
       <string>Record selection in tree view in order to go back/forward using navigation button</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>RecordSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
      </property>
     </widget>
    </item>
    <item row="7" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
+    <widget class="Gui::PrefCheckBox" name="checkBoxSelectionCheckBoxes">
      <property name="text">
       <string>Add checkboxes for selection in document tree</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>CheckBoxesSelection</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>TreeView</cstring>
      </property>
     </widget>
    </item>
