@@ -42,8 +42,6 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     , ui(new Ui_DlgSettingsViewColor)
 {
     ui->setupUi(this);
-    ui->HighlightColor->setEnabled(ui->checkBoxPreselection->isChecked());
-    ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
     connect(ui->SwitchGradientColors, &QPushButton::pressed, this,
         &DlgSettingsViewColor::onSwitchGradientColorsPressed);
 
@@ -78,10 +76,6 @@ void DlgSettingsViewColor::saveSettings()
     ui->radioButtonGradient->onSave();
     ui->rbRadialGradient->onSave();
     ui->checkMidColor->onSave();
-    ui->checkBoxPreselection->onSave();
-    ui->checkBoxSelection->onSave();
-    ui->HighlightColor->onSave();
-    ui->SelectionColor->onSave();
     ui->TreeEditColor->onSave();
     ui->TreeActiveColor->onSave();
 }
@@ -96,10 +90,6 @@ void DlgSettingsViewColor::loadSettings()
     ui->radioButtonGradient->onRestore();
     ui->rbRadialGradient->onRestore();
     ui->checkMidColor->onRestore();
-    ui->checkBoxPreselection->onRestore();
-    ui->checkBoxSelection->onRestore();
-    ui->HighlightColor->onRestore();
-    ui->SelectionColor->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
 
