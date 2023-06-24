@@ -60,6 +60,7 @@
 #include "QGVPage.h"
 #include "ViewProviderPageExtension.h"
 #include "ViewProviderTemplate.h"
+#include "ViewProviderViewPart.h"
 
 
 using namespace TechDrawGui;
@@ -557,3 +558,23 @@ ViewProviderPageExtension* ViewProviderPage::getVPPExtension() const
 }
 
 const char* ViewProviderPage::whoAmI() const { return m_pageName.c_str(); }
+
+
+void ViewProviderPage::fixSceneDependencies()
+{
+    App::Document* doc = getDrawPage()->getDocument();
+    std::vector<App::DocumentObject*> docObjs =
+        doc->getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    for (auto& obj : docObjs) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;// can't fix this one
+        }
+        TechDrawGui::ViewProviderViewPart* vpvp = dynamic_cast<TechDrawGui::ViewProviderViewPart*>(vp);
+        if (!vpvp) {
+            continue;// can't fix this one
+        }
+        vpvp->fixSceneDependencies();
+    }
+
+}
