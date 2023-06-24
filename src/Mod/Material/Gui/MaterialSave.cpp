@@ -39,6 +39,8 @@ MaterialSave::MaterialSave(QWidget* parent)
     ui->setupUi(this);
 
     setLibraries();
+    createModelTree();
+    showSelectedTree();
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &MaterialSave::accept);
@@ -76,6 +78,73 @@ void MaterialSave::setLibraries()
             ui->comboLibrary->addItem(QString::fromStdString(library->getName()), libraryVariant);
         }
     }
+}
+
+void MaterialSave::createModelTree()
+{
+    auto tree = ui->treeMaterials;
+    auto model = new QStandardItemModel();
+    tree->setModel(model);
+    tree->setHeaderHidden(true);
+}
+
+void MaterialSave::addExpanded(QTreeView *tree, QStandardItem *parent, QStandardItem *child)
+{
+    parent->appendRow(child);
+    tree->setExpanded(child->index(), true);
+}
+
+void MaterialSave::addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child)
+{
+    parent->appendRow(child);
+    tree->setExpanded(child->index(), true);
+}
+
+void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree)
+{
+    auto tree = ui->treeMaterials;
+    for (auto& mat : *modelTree) {
+        Materials::MaterialTreeNode *nodePtr = mat.second;
+        if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode)
+        {
+            const Materials::Material *material = nodePtr->getData();
+            std::string uuid = material->getUUID();
+
+            auto card = new QStandardItem(QString::fromStdString(material->getName()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                        | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+            addExpanded(tree, &parent, card);
+        } else {
+            auto node = new QStandardItem(QString::fromStdString(mat.first));
+            addExpanded(tree, &parent, node);
+            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            const std::map<std::string, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
+            addMaterials(*node, treeMap);
+        }
+    }
+}
+
+void MaterialSave::showSelectedTree()
+{
+    auto tree = ui->treeMaterials;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
+    model->clear();
+
+    if (ui->comboLibrary->count() > 0)
+    {
+        auto variant = ui->comboLibrary->currentData();
+        auto library = variant.value<Materials::MaterialLibrary>();
+
+        auto lib = new QStandardItem(QString::fromStdString(library.getName()));
+        lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+        addExpanded(tree, model, lib);
+
+        std::map<std::string, Materials::MaterialTreeNode*>* modelTree = _manager.getMaterialTree(library);
+        addMaterials(*lib, modelTree);
+    }
+
 }
 
 #include "moc_MaterialSave.cpp"

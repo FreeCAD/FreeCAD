@@ -42,7 +42,7 @@ public:
 
     const std::map<std::string, FolderTreeNode<T>*> *getFolder(void) const { return _folder; }
     std::map<std::string, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
-    const Model *getData(void) const { return _data; }
+    const T *getData(void) const { return _data; }
 
     void setData(std::map<std::string, FolderTreeNode<T>*> *folder)
     {

@@ -51,6 +51,11 @@ public:
     ~MaterialSave() override;
 
     void setLibraries();
+    void createModelTree();
+    void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
+    void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    void addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree);
+    void showSelectedTree();
 
     void accept() override;
     void reject() override;
