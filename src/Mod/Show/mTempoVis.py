@@ -455,7 +455,7 @@ class TempoVis(object):
         if enable: # clip plane shall be disabled so new placement can be applied
             self.modify(ClipPlane(doc, 0))
 
-        self.modify(ClipPlane(doc, toggle, pla, 0.02))
+        self.modify(ClipPlane(doc, toggle, pla, 0.001))
         sketch.ViewObject.SectionView = enable if enable is not None else not sketch.ViewObject.SectionView
 
     def activateWorkbench(self, wb_name):
