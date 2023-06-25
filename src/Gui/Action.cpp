@@ -1051,14 +1051,13 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     if (!existingCommands.isEmpty()) {
         auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
         for (int index = 0; index < accel_col.count(); index++) {
-            msgMain = msgMain + QStringLiteral(" %1").arg(accel_col[index]);
+            msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }
-        msgMain = msgMain + QStringLiteral(" disabled because of conflicts with");
+        msgMain += QStringLiteral(" disabled because of conflicts with");
         for (int index = 0; index < existingCommands.count(); index++) {
-            msgMain = msgMain + QStringLiteral(" %1").arg(existingCommands[index]);
+            msgMain += QStringLiteral(" %1").arg(existingCommands[index]);
         }
-        msgMain = msgMain
-            + QStringLiteral(" respectively.\nHint: In Preferences -> Python -> Macro ->"
+        msgMain += QStringLiteral(" respectively.\nHint: In Preferences -> Python -> Macro ->"
                              " Recent Macros menu -> Keyboard Modifiers this should be Ctrl+Shift+"
                              " by default, if this is now blank then you should revert it back to"
                              " Ctrl+Shift+ by pressing both keys at the same time.");
