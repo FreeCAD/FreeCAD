@@ -19,7 +19,7 @@ namespace MbD {
     public:
         EndFramec();
         EndFramec(const char* str);
-        void initialize();
+        void initialize() override;
         void setMarkerFrame(MarkerFrame* markerFrm);
         MarkerFrame* getMarkerFrame();
         void initializeLocally() override;

@@ -24,7 +24,7 @@ namespace MbD {
 	public:
 		PartFrame();
 		PartFrame(const char* str);
-		void initialize();
+		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void asFixed();
@@ -57,6 +57,8 @@ namespace MbD {
 		void prePosKine() override;
 		FColDsptr rOpO();
 		FMatDsptr aAOp();
+		FMatDsptr aC();
+		FMatDsptr aCdot();
 		FColFMatDsptr pAOppE();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
@@ -69,6 +71,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
+		void setqsudotlam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
@@ -78,6 +81,13 @@ namespace MbD {
 		void storeDynState() override;
 		void fillPosKineError(FColDsptr col) override;
 		void preVelIC() override;
+		void postVelIC() override;
+		void fillVelICError(FColDsptr col) override;
+		void fillVelICJacob(SpMatDsptr mat) override;
+		void preAccIC() override;
+		void fillAccICIterError(FColDsptr col) override;
+		void fillAccICIterJacob(SpMatDsptr mat) override;
+		void setqsuddotlam(FColDsptr qsudotlam) override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
 		int iqX = -1;
@@ -85,7 +95,7 @@ namespace MbD {
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
 		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
 		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<EulerParametersDot<double>> qEdot = std::make_shared<EulerParametersDot<double>>(4);
+		std::shared_ptr<EulerParametersDot<double>> qEdot = CREATE<EulerParametersDot<double>>::With(4);
 		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
 		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<Constraint> aGeu;

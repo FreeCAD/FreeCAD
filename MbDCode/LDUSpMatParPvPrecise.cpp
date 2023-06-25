@@ -17,7 +17,7 @@ void MbD::LDUSpMatParPvPrecise::doPivoting(int p)
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
-			if (i <= p) throw SingularMatrixError("");
+			if (i <= p) throwSingularMatrixError("");
 		}
 		else {
 			markowitzPivotColCount = 0;
@@ -59,5 +59,5 @@ void MbD::LDUSpMatParPvPrecise::doPivoting(int p)
 		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
 	}
 	pivotValues->at(p) = max;
-	if (max < singularPivotTolerance) throw SingularMatrixError("");
+	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }

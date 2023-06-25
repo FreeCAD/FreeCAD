@@ -9,7 +9,7 @@ namespace MbD {
         //frmI frmJ aConstant 
     public:
         ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
-        void initialize();
+        void initialize() override;
 
         EndFrmcptr frmI, frmJ;
         double aConstant;

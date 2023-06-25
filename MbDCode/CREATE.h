@@ -1,6 +1,7 @@
+//This header file causes wierd problems in Visual Studio when included in subclasses of std::vector or std::map.
+
 #pragma once
 #include <memory>
-//#include "EndFramec.h"
 #include "EndFrameqct.h"
 #include "AtPointConstraintIqctJqc.h"
 #include "DirectionCosineConstraintIqctJqc.h"
@@ -25,6 +26,11 @@ namespace MbD {
 		}
 		static std::shared_ptr<T> With(int n) {
 			auto inst = std::make_shared<T>(n);
+			inst->initialize();
+			return inst;
+		}
+		static std::shared_ptr<T> With(int m, int n) {
+			auto inst = std::make_shared<T>(m, n);
 			inst->initialize();
 			return inst;
 		}

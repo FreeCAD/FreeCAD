@@ -99,6 +99,11 @@ void MbD::Constraint::setqsulam(FColDsptr col)
 	lam = col->at(iG);
 }
 
+void MbD::Constraint::setqsudotlam(FColDsptr col)
+{
+	lam = col->at(iG);
+}
+
 void MbD::Constraint::fillPosICError(FColDsptr col)
 {
 	col->at(iG) += aG;
@@ -140,4 +145,21 @@ void MbD::Constraint::preDyn()
 void MbD::Constraint::fillPosKineError(FColDsptr col)
 {
 	col->atiplusNumber(iG, aG);
+}
+
+void MbD::Constraint::preAccIC()
+{
+	lam = 0.0;
+	Item::preAccIC();
+}
+
+void MbD::Constraint::fillAccICIterJacob(SpMatDsptr mat)
+{
+	//"Same as velIC."
+	this->fillVelICJacob(mat);
+}
+
+void MbD::Constraint::setqsuddotlam(FColDsptr qsudotlam)
+{
+	lam = qsudotlam->at(iG);
 }

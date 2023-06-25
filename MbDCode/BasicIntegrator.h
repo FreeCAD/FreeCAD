@@ -19,7 +19,7 @@ namespace MbD {
         void initializeLocally() override;
         virtual void iStep(int i);
         virtual void postFirstStep();
-        virtual void postRun() override;
+        void postRun() override;
         virtual void postStep();
         virtual void preFirstStep();
         virtual void preRun() override;

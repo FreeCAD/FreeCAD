@@ -13,12 +13,14 @@ namespace MbD {
         FullVector(std::vector<T>::iterator begin, std::vector<T>::iterator end) : Array<T>(begin, end) {}
         FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
         double dot(std::shared_ptr<FullVector<T>> vec);
+        void atiput(int i, T value);
         void atiplusNumber(int i, T value);
         void atiminusNumber(int i, T value);
         double sumOfSquares() override;
         int numberOfElements() override;
         void zeroSelf() override;
         void atitimes(int i, double factor);
+        void atiplusFullVector(int i, std::shared_ptr<FullVector> fullVec);
         void atiplusFullVectortimes(int i, std::shared_ptr<FullVector> fullVec, double factor);
         double maxMagnitude();
 
@@ -32,6 +34,11 @@ namespace MbD {
             answer += this->at(i) * vec->at(i);
         }
         return answer;
+    }
+    template<typename T>
+    inline void FullVector<T>::atiput(int i, T value)
+    {
+        this->at(i) = value;
     }
     template<typename T>
     inline void FullVector<T>::atiplusNumber(int i, T value)
@@ -81,6 +88,15 @@ namespace MbD {
     inline void FullVector<T>::atitimes(int i, double factor)
     {
         this->at(i) *= factor;
+    }
+    template<typename T>
+    inline void FullVector<T>::atiplusFullVector(int i1, std::shared_ptr<FullVector> fullVec)
+    {
+        for (int ii = 0; ii < fullVec->size(); ii++)
+        {
+            auto i = i1 + ii;
+            this->at(i) += fullVec->at(ii);
+        }
     }
     template<typename T>
     inline void FullVector<T>::atiplusFullVectortimes(int i1, std::shared_ptr<FullVector> fullVec, double factor)

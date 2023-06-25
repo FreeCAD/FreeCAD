@@ -101,3 +101,23 @@ FRowDsptr MbD::EndFrameqc::priOeOpE(int i)
 {
 	return prOeOpE->at(i);
 }
+
+FColDsptr MbD::EndFrameqc::qXdot()
+{
+	return markerFrame->qXdot();
+}
+
+std::shared_ptr<EulerParametersDot<double>> MbD::EndFrameqc::qEdot()
+{
+	return markerFrame->qEdot();
+}
+
+FColDsptr MbD::EndFrameqc::qXddot()
+{
+	return markerFrame->qXddot();
+}
+
+FColDsptr MbD::EndFrameqc::qEddot()
+{
+	return markerFrame->qEddot();
+}

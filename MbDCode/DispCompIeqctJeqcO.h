@@ -13,6 +13,7 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         void preVelIC() override;
         double pvaluept();
+        void preAccIC() override;
 
         double priIeJeOpt;
         FRowDsptr ppriIeJeOpEIpt;

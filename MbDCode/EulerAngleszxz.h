@@ -13,7 +13,7 @@ namespace MbD {
 	public:
 		EulerAngleszxz() : EulerArray<T>(3) {}
 		void initialize() override;
-		void calc();
+		void calc() override;
 
 		FMatDsptr phiA, theA, psiA, aA;
 	};

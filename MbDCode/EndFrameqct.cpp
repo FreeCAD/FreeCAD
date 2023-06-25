@@ -7,6 +7,7 @@
 #include "CREATE.h"
 #include "EulerAngleszxz.h"
 #include "EulerAngleszxzDot.h"
+#include "EulerAngleszxzDDot.h"
 
 using namespace MbD;
 
@@ -71,6 +72,14 @@ void EndFrameqct::initprmemptBlks()
 
 void EndFrameqct::initpprmemptptBlks()
 {
+	auto& mbdTime = System::getInstance().time;
+	pprmemptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
+	for (int i = 0; i < 3; i++) {
+		auto& vel = prmemptBlks->at(i);
+		auto var = vel->differentiateWRT(vel, mbdTime);
+		auto acc = var->simplified(var);
+		pprmemptptBlks->at(i) = acc;
+	}
 }
 
 void EndFrameqct::initpPhiThePsiptBlks()
@@ -89,6 +98,14 @@ void EndFrameqct::initpPhiThePsiptBlks()
 
 void MbD::EndFrameqct::initppPhiThePsiptptBlks()
 {
+	auto& mbdTime = System::getInstance().time;
+	ppPhiThePsiptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
+	for (int i = 0; i < 3; i++) {
+		auto& angleVel = pPhiThePsiptBlks->at(i);
+		auto var = angleVel->differentiateWRT(angleVel, mbdTime);
+		auto angleAcc = var->simplified(var);
+		ppPhiThePsiptptBlks->at(i) = angleAcc;
+	}
 }
 
 void MbD::EndFrameqct::postInput()
@@ -169,9 +186,27 @@ void MbD::EndFrameqct::preVelIC()
 	Item::preVelIC();
 	this->evalprmempt();
 	this->evalpAmept();
-	auto aAOm = markerFrame->aAOm;
+	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
 	pAOept = aAOm->timesFullMatrix(pAmept);
+}
+
+void MbD::EndFrameqct::postVelIC()
+{
+	auto& pAOmpE = markerFrame->pAOmpE;
+	for (int i = 0; i < 3; i++)
+	{
+		auto& pprOeOpEpti = pprOeOpEpt->at(i);
+			for (int j = 0; j < 4; j++)
+		{
+				auto pprOeOpEptij = pAOmpE->at(j)->at(i)->dot(prmempt);
+				pprOeOpEpti->atiput(j, pprOeOpEptij);
+		}
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		ppAOepEpt->atiput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
+	}
 }
 
 FColDsptr MbD::EndFrameqct::pAjOept(int j)
@@ -179,9 +214,40 @@ FColDsptr MbD::EndFrameqct::pAjOept(int j)
 	return pAOept->column(j);
 }
 
+FMatDsptr MbD::EndFrameqct::ppAjOepETpt(int jj)
+{
+	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
+	for (int i = 0; i < 4; i++)
+	{
+		auto& answeri = answer->at(i);
+		auto& ppAOepEipt = ppAOepEpt->at(i);
+		for (int j = 0; j < 3; j++)
+		{
+			auto& answerij = ppAOepEipt->at(j)->at(jj);
+			answeri->atiput(j, answerij);
+		}
+	}
+	return answer;
+}
+
+FColDsptr MbD::EndFrameqct::ppAjOeptpt(int j)
+{
+	return ppAOeptpt->column(j);
+}
+
 double MbD::EndFrameqct::priOeOpt(int i)
 {
 	return prOeOpt->at(i);
+}
+
+FRowDsptr MbD::EndFrameqct::ppriOeOpEpt(int i)
+{
+	return pprOeOpEpt->at(i);
+}
+
+double MbD::EndFrameqct::ppriOeOptpt(int i)
+{
+	return pprOeOptpt->at(i);
 }
 
 void MbD::EndFrameqct::evalprmempt()
@@ -215,4 +281,62 @@ void MbD::EndFrameqct::evalpAmept()
 		phiThePsiDot->calc();
 		pAmept = phiThePsiDot->aAdot;
 	}
+}
+
+void MbD::EndFrameqct::evalpprmemptpt()
+{
+	if (rmemBlks) {
+		for (int i = 0; i < 3; i++)
+		{
+			auto& secondDerivative = pprmemptptBlks->at(i);
+			auto value = secondDerivative->getValue();
+			pprmemptpt->atiput(i, value);
+		}
+	}
+}
+
+void MbD::EndFrameqct::evalppAmeptpt()
+{
+	if (phiThePsiBlks) {
+		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
+		auto phiThePsiDot = CREATE<EulerAngleszxzDot<double>>::With();
+		phiThePsiDot->phiThePsi = phiThePsi;
+		auto phiThePsiDDot = CREATE<EulerAngleszxzDDot<double>>::With();
+		phiThePsiDDot->phiThePsiDot = phiThePsiDot;
+		for (int i = 0; i < 3; i++)
+		{
+			auto& expression = phiThePsiBlks->at(i);
+			auto& derivative = pPhiThePsiptBlks->at(i);
+			auto& secondDerivative = ppPhiThePsiptptBlks->at(i);
+			auto value = expression->getValue();
+			auto valueDot = derivative->getValue();
+			auto valueDDot = secondDerivative->getValue();
+			phiThePsi->atiput(i, value);
+			phiThePsiDot->atiput(i, valueDot);
+			phiThePsiDDot->atiput(i, valueDDot);
+		}
+		phiThePsi->calc();
+		phiThePsiDot->calc();
+		phiThePsiDDot->calc();
+		ppAmeptpt = phiThePsiDDot->aAddot;
+	}
+}
+
+void MbD::EndFrameqct::preAccIC()
+{
+	time = System::getInstance().mbdTimeValue();
+	this->evalrmem();
+	this->evalAme();
+	Item::preVelIC();
+	this->evalprmempt();
+	this->evalpAmept();
+	auto& aAOm = markerFrame->aAOm;
+	prOeOpt = aAOm->timesFullColumn(prmempt);
+	pAOept = aAOm->timesFullMatrix(pAmept);
+	Item::preAccIC();
+	this->evalpprmemptpt();
+	this->evalppAmeptpt();
+	aAOm = markerFrame->aAOm;
+	pprOeOptpt = aAOm->timesFullColumn(pprmemptpt);
+	ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
 }

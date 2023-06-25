@@ -42,7 +42,7 @@ void MbD::GEFullMatFullPv::doPivoting(int p)
 		colOrder->swapElems(p, pivotCol);
 	}
 	pivotValues->at(p) = max;
-	if (max < singularPivotTolerance) throw SingularMatrixError("");
+	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
 void MbD::GEFullMatFullPv::postSolve()

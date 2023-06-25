@@ -128,6 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbsConstraint.cpp" />
+    <ClCompile Include="AccICKineNewtonRaphson.cpp" />
+    <ClCompile Include="AccICNewtonRaphson.cpp" />
+    <ClCompile Include="AccKineNewtonRaphson.cpp" />
+    <ClCompile Include="AccNewtonRaphson.cpp" />
     <ClCompile Include="AnyPosICNewtonRaphson.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="AtPointConstraintIJ.cpp" />
@@ -173,6 +177,7 @@
     <ClCompile Include="EulerArray.cpp" />
     <ClCompile Include="EulerConstraint.cpp" />
     <ClCompile Include="EulerParameters.cpp" />
+    <ClCompile Include="EulerParametersDDot.cpp" />
     <ClCompile Include="EulerParametersDot.cpp" />
     <ClCompile Include="ExpressionX.cpp" />
     <ClCompile Include="ForceTorqueItem.cpp" />
@@ -262,6 +267,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbsConstraint.h" />
+    <ClInclude Include="AccICKineNewtonRaphson.h" />
+    <ClInclude Include="AccICNewtonRaphson.h" />
+    <ClInclude Include="AccKineNewtonRaphson.h" />
+    <ClInclude Include="AccNewtonRaphson.h" />
     <ClInclude Include="AnyPosICNewtonRaphson.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="AtPointConstraintIJ.h" />
@@ -308,6 +317,7 @@
     <ClInclude Include="EulerArray.h" />
     <ClInclude Include="EulerConstraint.h" />
     <ClInclude Include="EulerParameters.h" />
+    <ClInclude Include="EulerParametersDDot.h" />
     <ClInclude Include="EulerParametersDot.h" />
     <ClInclude Include="ExpressionX.h" />
     <ClInclude Include="ForceTorqueItem.h" />

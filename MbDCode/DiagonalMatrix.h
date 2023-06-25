@@ -2,6 +2,7 @@
 
 #include "Array.h"
 #include "FullColumn.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	template<typename T>
@@ -10,9 +11,12 @@ namespace MbD {
 		//
 	public:
 		DiagonalMatrix(int count) : Array<T>(count) {}
+		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void atiputDiagonalMatrix(int i, std::shared_ptr < DiagonalMatrix<T>> diagMat);
+		std::shared_ptr<DiagonalMatrix<T>> times(T factor);
 		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+		std::shared_ptr<FullMatrix<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		int nrow() {
 			return (int) this->size();
 		}
@@ -32,6 +36,17 @@ namespace MbD {
 		}
 	}
 	template<typename T>
+	inline std::shared_ptr<DiagonalMatrix<T>> DiagonalMatrix<T>::times(T factor)
+	{
+		auto nrow = (int)this->size();
+		auto answer = std::make_shared<DiagonalMatrix<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->at(i) = this->at(i) * factor;
+		}
+		return answer;
+	}
+	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> DiagonalMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
 	{
 		//"a*b = a(i,j)b(j) sum j."
@@ -41,6 +56,17 @@ namespace MbD {
 		for (int i = 0; i < nrow; i++)
 		{
 			answer->at(i) = this->at(i) * fullCol->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> DiagonalMatrix<T>::timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		auto nrow = (int)this->size();
+		auto answer = std::make_shared<FullMatrix<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->at(i) = fullMat->at(i)->times(this->at(i));
 		}
 		return answer;
 	}

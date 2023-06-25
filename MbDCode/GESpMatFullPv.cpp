@@ -45,7 +45,7 @@ void MbD::GESpMatFullPv::doPivoting(int p)
 		positionsOfOriginalCols->at(colOrder->at(pivotCol)) = pivotCol;
 	}
 	pivotValues->at(p) = max;
-	if (max < singularPivotTolerance) throw SingularMatrixError("");
+	if (max < singularPivotTolerance) throwSingularMatrixError("");
 	auto jp = colOrder->at(p);
 	rowPositionsOfNonZerosInPivotColumn = rowPositionsOfNonZerosInColumns->at(jp);
 	if (rowPositionsOfNonZerosInPivotColumn->front() == p) {
@@ -120,7 +120,7 @@ void MbD::GESpMatFullPv::backSubstituteIntoDU()
 			}
 		}
 		auto ji = colOrder->at(i);
-		answerX->at(ji) = rightHandSideB->at(i) - (sum / duii);
+		answerX->at(ji) = (rightHandSideB->at(i) - sum) / duii;
 	}
 }
 
@@ -157,7 +157,7 @@ void MbD::GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fu
 		auto& spRowi = spMat->at(i);
 		auto maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) {
-			throw SingularMatrixError("");
+			throwSingularMatrixError("");
 		}
 		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude);
 		rowOrder->at(i) = i;

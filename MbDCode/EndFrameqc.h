@@ -2,6 +2,8 @@
 
 #include "EndFramec.h"
 #include "Symbolic.h"
+#include "EulerParametersDot.h"
+#include "EulerParametersDDot.h"
 
 namespace MbD {
     class EndFrameqct;
@@ -12,7 +14,7 @@ namespace MbD {
     public:
         EndFrameqc();
         EndFrameqc(const char* str);
-        void initialize();
+        void initialize() override;
         void initializeGlobally() override;
         void initEndFrameqct() override;
         FMatFColDsptr ppAjOepEpE(int j);
@@ -22,6 +24,10 @@ namespace MbD {
         int iqX();
         int iqE();
         FRowDsptr priOeOpE(int i);
+        FColDsptr qXdot();
+        std::shared_ptr<EulerParametersDot<double>> qEdot();
+        FColDsptr qXddot();
+        FColDsptr qEddot();
 
         FMatDsptr prOeOpE;
         std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;

@@ -28,6 +28,7 @@ namespace MbD {
 		double rootMeanSquare();
 		int numberOfElements();
 		double sumOfSquares();
+		void atiput(int i, T value);
 		void atiplusNumber(int i, double value);
 		void atiminusNumber(int i, double value);
 		void zeroSelf();
@@ -58,6 +59,11 @@ namespace MbD {
 			sum += keyValue.second * keyValue.second;
 		}
 		return sum;
+	}
+	template<typename T>
+	inline void SparseVector<T>::atiput(int i, T value)
+	{
+		(*this)[i] = value;
 	}
 	template<>
 	inline void SparseVector<double>::atiplusNumber(int i, double value)

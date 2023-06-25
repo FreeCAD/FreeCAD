@@ -55,12 +55,11 @@ FColDsptr PartFrame::getqE() {
 	return qE;
 }
 void PartFrame::setqXdot(FColDsptr x) {
-	//qXdot->copy(x);
+	qXdot = x;
 }
 
 FColDsptr PartFrame::getqXdot() {
-	//return qXdot;
-	return std::make_shared<FullColumn<double>>(3);
+	return qXdot;
 }
 
 void PartFrame::setomeOpO(FColDsptr omeOpO) {
@@ -200,6 +199,16 @@ FMatDsptr MbD::PartFrame::aAOp()
 	return qE->aA;
 }
 
+FMatDsptr MbD::PartFrame::aC()
+{
+	return qE->aC;
+}
+
+FMatDsptr MbD::PartFrame::aCdot()
+{
+	return qEdot->aCdot;
+}
+
 FColFMatDsptr MbD::PartFrame::pAOppE()
 {
 	return qE->pApE;
@@ -279,6 +288,15 @@ void MbD::PartFrame::setqsulam(FColDsptr col)
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
 }
 
+void MbD::PartFrame::setqsudotlam(FColDsptr col)
+{
+	qXdot->equalFullColumnAt(col, iqX);
+	qEdot->equalFullColumnAt(col, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsudotlam(col); });
+	aGeu->setqsudotlam(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsudotlam(col); });
+}
+
 void MbD::PartFrame::postPosICIteration()
 {
 	Item::postPosICIteration();
@@ -351,6 +369,62 @@ void MbD::PartFrame::preVelIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preVelIC(); });
 }
 
+void MbD::PartFrame::postVelIC()
+{
+	qEdot->calcAdotBdotCdot();
+	qEdot->calcpAdotpE();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postVelIC(); });
+	aGeu->postVelIC();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->postVelIC(); });
+}
+
+void MbD::PartFrame::fillVelICError(FColDsptr col)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillVelICError(col); });
+	aGeu->fillVelICError(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICError(col); });
+}
+
+void MbD::PartFrame::fillVelICJacob(SpMatDsptr mat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillVelICJacob(mat); });
+	aGeu->fillVelICJacob(mat);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICJacob(mat); });
+}
+
+void MbD::PartFrame::preAccIC()
+{
+	qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
+	qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
+	Item::preAccIC();
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->preAccIC(); });
+	aGeu->preAccIC();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preAccIC(); });
+}
+
+void MbD::PartFrame::fillAccICIterError(FColDsptr col)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillAccICIterError(col); });
+	aGeu->fillAccICIterError(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterError(col); });
+}
+
+void MbD::PartFrame::fillAccICIterJacob(SpMatDsptr mat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillAccICIterJacob(mat); });
+	aGeu->fillAccICIterJacob(mat);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterJacob(mat); });
+}
+
+void MbD::PartFrame::setqsuddotlam(FColDsptr qsudotlam)
+{
+	qXddot->equalFullColumnAt(qsudotlam, iqX);
+	qEddot->equalFullColumnAt(qsudotlam, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsuddotlam(qsudotlam); });
+	aGeu->setqsuddotlam(qsudotlam);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(qsudotlam); });
+}
+
 void PartFrame::asFixed()
 {
 	for (int i = 0; i < 6; i++) {
@@ -362,8 +436,8 @@ void PartFrame::asFixed()
 
 void MbD::PartFrame::postInput()
 {
-	//qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
-	//qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
+	qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
+	qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
 	Item::postInput();
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postInput(); });
 	aGeu->postInput();
@@ -374,6 +448,6 @@ void MbD::PartFrame::calcPostDynCorrectorIteration()
 {
 	qE->calcABC();
 	qE->calcpApE();
-	//qEdot->calcAdotBdotCdot();
-	//qEdot->calcpAdotpE();
+	qEdot->calcAdotBdotCdot();
+	qEdot->calcpAdotpE();
 }

@@ -59,6 +59,10 @@ void MbD::RedundantConstraint::setqsulam(FColDsptr col)
 {
 }
 
+void MbD::RedundantConstraint::setqsudotlam(FColDsptr col)
+{
+}
+
 void MbD::RedundantConstraint::fillPosICError(FColDsptr col)
 {
 }
@@ -72,5 +76,17 @@ void MbD::RedundantConstraint::fillPosKineJacob(SpMatDsptr mat)
 }
 
 void MbD::RedundantConstraint::preVelIC()
+{
+}
+
+void MbD::RedundantConstraint::preAccIC()
+{
+}
+
+void MbD::RedundantConstraint::fillAccICIterError(FColDsptr col)
+{
+}
+
+void MbD::RedundantConstraint::setqsuddotlam(FColDsptr qsudotlam)
 {
 }

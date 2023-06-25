@@ -27,6 +27,7 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
+		void atiput(int i, std::shared_ptr<SparseRow<T>> spRow);
 		void atijplusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		void atijminusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat);
 		double sumOfSquares() override;
@@ -34,18 +35,28 @@ namespace MbD {
 		void atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow);
 		void atijplusFullColumn(int i, int j, std::shared_ptr<FullColumn<T>> fullCol);
 		void atijplusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
+		void atijminusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
 		void atijplusTransposeFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat);
 		void atijplusFullMatrixtimes(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat, T factor);
 		void atijplusNumber(int i, int j, double value);
 		void atijminusNumber(int i, int j, double value);
+		void atijput(int i, int j, T value);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const SparseMatrix& spMat)
 		{
 			return spMat.printOn(s);
 		}
+		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+
 	};
 	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
+
+	template<typename T>
+	inline void SparseMatrix<T>::atiput(int i, std::shared_ptr<SparseRow<T>> spRow)
+	{
+		this->at(i) = spRow;
+	}
 
 	template<typename T>
 	inline void SparseMatrix<T>::atijplusDiagonalMatrix(int i, int j, std::shared_ptr<DiagonalMatrix<double>> diagMat)
@@ -105,6 +116,14 @@ namespace MbD {
 		}
 	}
 	template<typename T>
+	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		for (int ii = 0; ii < fullMat->nrow(); ii++)
+		{
+			this->at(i + ii)->atiminusFullRow(j, fullMat->at(ii));
+		}
+	}
+	template<typename T>
 	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, std::shared_ptr<FullMatrix<T>> fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
@@ -131,6 +150,11 @@ namespace MbD {
 		this->at(i)->atiminusNumber(j, value);
 	}
 	template<typename T>
+	inline void SparseMatrix<T>::atijput(int i, int j, T value)
+	{
+		this->at(i)->atiput(j, value);
+	}
+	template<typename T>
 	inline std::ostream& SparseMatrix<T>::printOn(std::ostream& s) const
 	{
 		s << "SpMat[" << std::endl;
@@ -140,5 +164,17 @@ namespace MbD {
 		}
 		s << "]" << std::endl;
 		return s;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> SparseMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		//"a*b = a(i,j)b(j) sum j."
+		auto nrow = this->nrow();
+		auto answer = std::make_shared<FullColumn<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->at(i) = this->at(i)->timesFullColumn(fullCol);
+		}
+		return answer;
 	}
 }

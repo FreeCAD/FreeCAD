@@ -41,3 +41,55 @@ double MbD::DispCompIeqcJeqcKeqct::pvaluept()
 {
 	return priIeJeKept;
 }
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepXIpt()
+{
+	return ppriIeJeKepXIpt;
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEIpt()
+{
+	return ppriIeJeKepEIpt;
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEKpt()
+{
+	return ppriIeJeKepEKpt;
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepXJpt()
+{
+	return ppriIeJeKepXJpt;
+}
+
+FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEJpt()
+{
+	return ppriIeJeKepEJpt;
+}
+
+double MbD::DispCompIeqcJeqcKeqct::ppvalueptpt()
+{
+	return ppriIeJeKeptpt;
+}
+
+void MbD::DispCompIeqcJeqcKeqct::preAccIC()
+{
+	Item::preAccIC();
+	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);
+	auto ppAjOKepEKTpt = std::static_pointer_cast<EndFrameqct>(efrmK)->ppAjOepETpt(axisK);
+	auto ppAjOKeptpt = std::static_pointer_cast<EndFrameqct>(efrmK)->ppAjOeptpt(axisK);
+	auto prIeJeOpEIT = std::static_pointer_cast<EndFrameqc>(frmI)->prOeOpE->transpose()->negated();
+	auto prIeJeOpEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->prOeOpE->transpose();
+	for (int i = 0; i < 3; i++)
+	{
+		ppriIeJeKepXIpt->atiput(i, -(pAjOKept->at(i)));
+		ppriIeJeKepXJpt->atiput(i, pAjOKept->at(i));
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		ppriIeJeKepEIpt->atiput(i, pAjOKept->dot(prIeJeOpEIT->at(i)));
+		ppriIeJeKepEJpt->atiput(i, pAjOKept->dot(prIeJeOpEJT->at(i)));
+		ppriIeJeKepEKpt->atiput(i, ppAjOKepEKTpt->at(i)->dot(rIeJeO));
+	}
+	ppriIeJeKeptpt = ppAjOKeptpt->dot(rIeJeO);
+}

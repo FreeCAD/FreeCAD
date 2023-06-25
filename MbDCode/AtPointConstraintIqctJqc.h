@@ -13,10 +13,15 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         MbD::ConstraintType type() override;
         void preVelIC() override;
+        void fillVelICError(FColDsptr col) override;
+        void fillAccICIterError(FColDsptr col) override;
 
         double pGpt;
         FRowDsptr ppGpEIpt;
         double ppGptpt;
+        void preAccIC() override;
+
+
     };
 }
 

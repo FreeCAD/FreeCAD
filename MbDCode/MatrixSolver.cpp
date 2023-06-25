@@ -57,7 +57,17 @@ void MbD::MatrixSolver::findScalingsForRowRange(int begin, int end)
 	for (int i = begin; i < end; i++)
 	{
 		auto maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
-		if (maxRowMagnitude == 0.0) throw SingularMatrixError("");
+		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 	}
+}
+
+void MbD::MatrixSolver::throwSingularMatrixError(const char* chars)
+{
+	throw SingularMatrixError(chars);
+}
+
+void MbD::MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos)
+{
+	throw SingularMatrixError(chars, redunEqnNos);
 }

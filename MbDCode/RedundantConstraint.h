@@ -20,10 +20,14 @@ namespace MbD {
 		void fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
 		void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints);
 		void setqsulam(FColDsptr col) override;
+		void setqsudotlam(FColDsptr col) override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosKineError(FColDsptr col) override;
 		void fillPosKineJacob(SpMatDsptr mat) override;
 		void preVelIC() override;
+		void preAccIC() override;
+		void fillAccICIterError(FColDsptr col) override;
+		void setqsuddotlam(FColDsptr qsudotlam) override;
 
 		std::shared_ptr<Constraint> constraint;
 	};

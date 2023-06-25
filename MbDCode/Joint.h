@@ -15,7 +15,7 @@ namespace MbD {
     public:
         Joint();
         Joint(const char* str);
-        void initialize();
+        void initialize() override;
         virtual void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ);
         void initializeLocally() override;
         void initializeGlobally() override;
@@ -34,6 +34,7 @@ namespace MbD {
         void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
         void useEquationNumbers() override;
         void setqsulam(FColDsptr col) override;
+        void setqsudotlam(FColDsptr col) override;
         void postPosICIteration() override;
         void fillPosICError(FColDsptr col) override;
         void fillPosICJacob(SpMatDsptr mat) override;
@@ -46,6 +47,12 @@ namespace MbD {
         void fillPosKineError(FColDsptr col) override;
         void fillPosKineJacob(SpMatDsptr mat) override;
         void preVelIC() override;
+        void fillVelICError(FColDsptr col) override;
+        void fillVelICJacob(SpMatDsptr mat) override;
+        void preAccIC() override;
+        void fillAccICIterError(FColDsptr col) override;
+        void fillAccICIterJacob(SpMatDsptr mat) override;
+        void setqsuddotlam(FColDsptr qsudotlam) override;
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

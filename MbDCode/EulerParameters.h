@@ -16,10 +16,13 @@ namespace MbD {
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
 
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<T>>>> ppApEpEtimesColumn(FColDsptr col);
+		static std::shared_ptr<FullMatrix<double>> pCpEtimesColumn(FColDsptr col);
+		static std::shared_ptr<FullMatrix<double>> pCTpEtimesColumn(FColDsptr col);
 		static std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<T>>>> ppApEpEtimesMatrix(FMatDsptr mat);
 
-		void initialize();
-		void calc();
+
+		void initialize() override;
+		void calc() override;
 		void calcABC();
 		void calcpApE();
 
@@ -69,6 +72,70 @@ namespace MbD {
 		row4->at(1) = col24;
 		row4->at(2) = col34;
 		row4->at(3) = col44;
+		return answer;
+	}
+
+	template<>
+	inline std::shared_ptr<FullMatrix<double>> EulerParameters<double>::pCpEtimesColumn(FColDsptr col)
+	{
+		//"col size = 4."
+		auto c0 = col->at(0);
+		auto c1 = col->at(1);
+		auto c2 = col->at(2);
+		auto mc0 = -c0;
+		auto mc1 = -c1;
+		auto mc2 = -c2;
+		auto mc3 = -col->at(3);
+		auto answer = std::make_shared<FullMatrix<double>>(3, 4);
+		auto& row0 = answer->at(0);
+		auto& row1 = answer->at(1);
+		auto& row2 = answer->at(2);
+		row0->atiput(0, mc3);
+		row0->atiput(1, mc2);
+		row0->atiput(2, c1);
+		row0->atiput(3, c0);
+		row1->atiput(0, c2);
+		row1->atiput(1, mc3);
+		row1->atiput(2, mc0);
+		row1->atiput(3, c1);
+		row2->atiput(0, mc1);
+		row2->atiput(1, c0);
+		row2->atiput(2, mc3);
+		row2->atiput(3, c2);
+		return answer;
+	}
+
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<double>> EulerParameters<T>::pCTpEtimesColumn(FColDsptr col)
+	{
+		//"col size = 3."
+		auto c0 = col->at(0);
+		auto c1 = col->at(1);
+		auto c2 = col->at(2);
+		auto mc0 = -c0;
+		auto mc1 = -c1;
+		auto mc2 = -c2;
+		auto answer = std::make_shared<FullMatrix<double>>(4, 4);
+		auto& row0 = answer->at(0);
+		auto& row1 = answer->at(1);
+		auto& row2 = answer->at(2);
+		auto& row3 = answer->at(3);
+		row0->atiput(0, 0.0);
+		row0->atiput(1, c2);
+		row0->atiput(2, mc1);
+		row0->atiput(3, c0);
+		row1->atiput(0, mc2);
+		row1->atiput(1, 0.0);
+		row1->atiput(2, c0);
+		row1->atiput(3, c1);
+		row2->atiput(0, c1);
+		row2->atiput(1, mc0);
+		row2->atiput(2, 0.0);
+		row2->atiput(3, c2);
+		row3->atiput(0, mc0);
+		row3->atiput(1, mc1);
+		row3->atiput(2, mc2);
+		row3->atiput(3, 0.0);
 		return answer;
 	}
 
@@ -182,10 +249,10 @@ namespace MbD {
 	template<>
 	inline void EulerParameters<double>::calcpApE()
 	{
-		double a2E0 = 2.0*(this->at(0));
-		double a2E1  = 2.0*(this->at(1));
-		double a2E2  = 2.0*(this->at(2));
-		double a2E3  = 2.0*(this->at(3));
+		double a2E0 = 2.0 * (this->at(0));
+		double a2E1 = 2.0 * (this->at(1));
+		double a2E2 = 2.0 * (this->at(2));
+		double a2E3 = 2.0 * (this->at(3));
 		double m2E0 = -a2E0;
 		double m2E1 = -a2E1;
 		double m2E2 = -a2E2;

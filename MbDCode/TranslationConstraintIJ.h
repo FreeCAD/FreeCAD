@@ -9,7 +9,7 @@ namespace MbD {
         //riIeJeIe
     public:
         TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
-        void initialize();
+        void initialize() override;
         void initializeLocally() override;
         void initializeGlobally() override;
         virtual void initriIeJeIe();
@@ -19,6 +19,7 @@ namespace MbD {
         MbD::ConstraintType type() override;
         void postPosICIteration() override;
         void preVelIC() override;
+        void preAccIC() override;
 
         int axisI;
         std::shared_ptr<DispCompIecJecKec> riIeJeIe;

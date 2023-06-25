@@ -14,6 +14,8 @@ namespace MbD {
         void fillPosICError(FColDsptr col) override;
         void fillPosICJacob(SpMatDsptr mat) override;
         void fillPosKineJacob(SpMatDsptr mat) override;
+        void fillVelICJacob(SpMatDsptr mat) override;
+        void fillAccICIterError(FColDsptr col) override;
 
         FRowDsptr pGpXI;
         FRowDsptr pGpEI;

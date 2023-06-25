@@ -60,7 +60,7 @@ void MbD::GESpMatParPv::backSubstituteIntoDU()
 				duii = keyValue.second;
 			}
 		}
-		answerX->at(i) = rightHandSideB->at(i) - (sum / duii);
+		answerX->at(i) = (rightHandSideB->at(i) - sum) / duii;
 	}
 }
 

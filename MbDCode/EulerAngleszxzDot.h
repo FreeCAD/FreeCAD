@@ -12,7 +12,7 @@ namespace MbD {
 	public:
 		EulerAngleszxzDot() : EulerArray<T>(3) {}
 		void initialize() override;
-		void calc();
+		void calc() override;
 
 		std::shared_ptr<EulerAngleszxz<T>> phiThePsi;
 		FMatDsptr phiAdot, theAdot, psiAdot, aAdot;
@@ -30,7 +30,6 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngleszxzDot<T>::calc()
 	{
-		//| zero phi sphi cphi phidot minussphiTimesphidot cphiTimesphidot the sthe cthe thedot minusstheTimesthedot ctheTimesthedot psi spsi cpsi psidot minusspsiTimespsidot cpsiTimespsidot phiA theA psiA |
 		auto phi = phiThePsi->at(0);
 		auto sphi = std::sin(phi);
 		auto cphi = std::cos(phi);

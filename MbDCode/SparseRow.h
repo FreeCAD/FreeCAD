@@ -17,7 +17,10 @@ namespace MbD {
 		std::shared_ptr<SparseRow<double>> timesconditionedWithTol(double scaling, double tol);
 		std::shared_ptr<SparseRow<double>> conditionedWithTol(double tol);
 		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
+		void atiminusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
 		void atiplusFullRowtimes(int j, std::shared_ptr<FullRow<T>> fullRow, double factor);
+		T timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+
 	};
 	using SpRowDsptr = std::shared_ptr<SparseRow<double>>;
 	template<>
@@ -51,12 +54,29 @@ namespace MbD {
 		}
 	}
 	template<typename T>
+	inline void SparseRow<T>::atiminusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow)
+	{
+		for (int jj = 0; jj < fullRow->size(); jj++)
+		{
+			(*this)[j + jj] -= fullRow->at(jj);
+		}
+	}
+	template<typename T>
 	inline void SparseRow<T>::atiplusFullRowtimes(int j, std::shared_ptr<FullRow<T>> fullRow, double factor)
 	{
 		for (int jj = 0; jj < fullRow->size(); jj++)
 		{
 			(*this)[j + jj] += fullRow->at(jj) * factor;
 		}
+	}
+	template<typename T>
+	inline T SparseRow<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		T sum = 0.0;
+		for (auto const& keyValue : *this) {
+			sum += fullCol->at(keyValue.first) * keyValue.second;
+		}
+		return sum;
 	}
 }
 

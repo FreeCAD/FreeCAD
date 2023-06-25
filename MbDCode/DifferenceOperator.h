@@ -10,7 +10,7 @@ namespace MbD {
 		//iStep order taylorMatrix operatorMatrix time timeNodes 
 	public:
 		void calcOperatorMatrix();
-		void initialize();
+		virtual void initialize();
 		virtual void setiStep(int i);
 		virtual void setorder(int o);
 		virtual void formTaylorMatrix() = 0;

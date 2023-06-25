@@ -7,6 +7,8 @@
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "EndFramec.h"
+#include "EulerParametersDot.h"
+#include "EulerParametersDDot.h"
 
 namespace MbD {
 	class PartFrame;
@@ -19,7 +21,7 @@ namespace MbD {
 	public:
 		MarkerFrame();
         MarkerFrame(const char* str);
-        void initialize();
+        void initialize() override;
 		void setPartFrame(PartFrame* partFrm);
 		PartFrame* getPartFrame();
 		void setrpmp(FColDsptr x);
@@ -40,11 +42,19 @@ namespace MbD {
 		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
+		void setqsudotlam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void postPosIC() override;
 		void preDyn() override;
 		void storeDynState() override;
 		void preVelIC() override;
+		void postVelIC() override;
+		void preAccIC() override;
+		FColDsptr qXdot();
+		std::shared_ptr<EulerParametersDot<double>> qEdot();
+		FColDsptr qXddot();
+		FColDsptr qEddot();
+		void setqsuddotlam(FColDsptr qsudotlam) override;
 
 		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);

@@ -10,6 +10,7 @@ namespace MbD {
         DispCompIeqctJeqcKeqct();
         DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
         void preVelIC() override;
+        void preAccIC() override;
 
     };
 }

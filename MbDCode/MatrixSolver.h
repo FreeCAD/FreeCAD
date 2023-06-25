@@ -29,6 +29,8 @@ namespace MbD {
         virtual void postSolve() = 0;
         virtual void findScalingsForRowRange(int begin, int end);
         virtual double getmatrixArowimaxMagnitude(int i) = 0;
+        void throwSingularMatrixError(const char* chars);
+        void throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos);
 
         int m = 0, n = 0;
         FColDsptr answerX, rightHandSideB, rowScalings, pivotValues;

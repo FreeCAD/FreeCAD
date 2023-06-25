@@ -9,7 +9,6 @@ namespace MbD {
 	class SingularMatrixError : virtual public std::runtime_error
 	{
 	protected:
-
 		std::shared_ptr<std::vector<int>> redundantEqnNos;
 
 	public:

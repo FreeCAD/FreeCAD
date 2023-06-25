@@ -12,7 +12,7 @@ namespace MbD {
 	public:
 		EndFrameqct();
 		EndFrameqct(const char* str);
-		void initialize();
+		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void initprmemptBlks();
@@ -25,11 +25,20 @@ namespace MbD {
 		void evalrmem();
 		void evalAme();
 		void preVelIC() override;
+		void postVelIC() override;
 		FColDsptr pAjOept(int j);
+		FMatDsptr ppAjOepETpt(int j);
+		FColDsptr ppAjOeptpt(int j);
 		double time = 0.0;
 		double priOeOpt(int i);
+		FRowDsptr ppriOeOpEpt(int i);
+		double ppriOeOptpt(int i);
 		void evalprmempt();
 		void evalpAmept();
+		void evalpprmemptpt();
+		void evalppAmeptpt();
+		
+		void preAccIC() override;
 
 		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;
 		std::shared_ptr<FullColumn<Symsptr>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;

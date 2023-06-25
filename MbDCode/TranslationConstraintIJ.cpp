@@ -62,3 +62,9 @@ void MbD::TranslationConstraintIJ::preVelIC()
     riIeJeIe->preVelIC();
     Item::preVelIC();
 }
+
+void MbD::TranslationConstraintIJ::preAccIC()
+{
+    riIeJeIe->preAccIC();
+    Constraint::preAccIC();
+}

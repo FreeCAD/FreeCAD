@@ -56,3 +56,25 @@ void MbD::TranslationConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 	mat->atijplusFullRow(iG, iqXI, pGpXI);
 	mat->atijplusFullRow(iG, iqEI, pGpEI);
 }
+
+void MbD::TranslationConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqXI, pGpXI);
+	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+}
+
+void MbD::TranslationConstraintIqcJc::fillAccICIterError(FColDsptr col)
+{
+	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto qXdotI = efrmIqc->qXdot();
+	auto qEdotI = efrmIqc->qEdot();
+	auto sum = pGpXI->timesFullColumn(efrmIqc->qXddot());
+	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
+	sum += 2.0 * (qXdotI->transposeTimesFullColumn(ppGpXIpEI->timesFullColumn(qEdotI)));
+	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
+	col->atiplusNumber(iG, sum);
+}

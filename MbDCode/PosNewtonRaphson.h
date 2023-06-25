@@ -10,7 +10,7 @@ namespace MbD {
         void preRun() override;
         void incrementIterNo() override;
         void askSystemToUpdate() override;
-        virtual void postRun() override;
+        void postRun() override;
     };
 }
 

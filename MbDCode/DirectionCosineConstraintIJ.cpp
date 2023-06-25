@@ -64,3 +64,9 @@ void MbD::DirectionCosineConstraintIJ::preVelIC()
 	aAijIeJe->preVelIC();
 	Item::preVelIC();
 }
+
+void MbD::DirectionCosineConstraintIJ::preAccIC()
+{
+	aAijIeJe->preAccIC();
+	Constraint::preAccIC();
+}

@@ -48,3 +48,22 @@ void MbD::AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
     mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
 }
+
+void MbD::AbsConstraint::fillVelICJacob(SpMatDsptr mat)
+{
+    this->fillPosICJacob(mat);
+}
+
+void MbD::AbsConstraint::fillAccICIterError(FColDsptr col)
+{
+    col->atiplusNumber(iqXminusOnePlusAxis, lam);
+    auto partFrame = static_cast<PartFrame*>(owner);
+        double sum;
+        if (axis < 3) {
+            sum = partFrame->qXddot->at(axis);
+        }
+        else {
+            sum = partFrame->qEddot->at(axis - 3);
+        }
+        col->atiplusNumber(iG, sum);
+}

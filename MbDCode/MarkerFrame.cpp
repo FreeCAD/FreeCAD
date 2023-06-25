@@ -123,8 +123,14 @@ void MbD::MarkerFrame::setqsulam(FColDsptr col)
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsulam(col); });
 }
 
+void MbD::MarkerFrame::setqsudotlam(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsudotlam(col); });
+}
+
 void MbD::MarkerFrame::postPosICIteration()
 {
+	Item::postPosICIteration();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosICIteration(); });
 }
 
@@ -147,6 +153,42 @@ void MbD::MarkerFrame::preVelIC()
 {
 	Item::preVelIC();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preVelIC(); });
+}
+
+void MbD::MarkerFrame::postVelIC()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postVelIC(); });
+}
+
+void MbD::MarkerFrame::preAccIC()
+{
+	Item::preAccIC();
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preAccIC(); });
+}
+
+FColDsptr MbD::MarkerFrame::qXdot()
+{
+	return partFrame->qXdot;
+}
+
+std::shared_ptr<EulerParametersDot<double>> MbD::MarkerFrame::qEdot()
+{
+	return partFrame->qEdot;
+}
+
+FColDsptr MbD::MarkerFrame::qXddot()
+{
+	return partFrame->qXddot;
+}
+
+FColDsptr MbD::MarkerFrame::qEddot()
+{
+	return partFrame->qEddot;
+}
+
+void MbD::MarkerFrame::setqsuddotlam(FColDsptr qsudotlam)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsuddotlam(qsudotlam); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)

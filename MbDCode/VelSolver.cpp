@@ -4,6 +4,8 @@
 #include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
 #include "SingularMatrixError.h"
+#include "GESpMatParPvMarko.h"
+#include "GESpMatParPvMarkoFast.h"
 
 using namespace MbD;
 

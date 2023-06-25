@@ -57,3 +57,21 @@ void MbD::EulerConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
 	mat->atijplusFullRow(iG, iqE, pGpE);
 }
+
+void MbD::EulerConstraint::fillVelICJacob(SpMatDsptr mat)
+{
+	mat->atijplusFullRow(iG, iqE, pGpE);
+	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
+}
+
+void MbD::EulerConstraint::fillAccICIterError(FColDsptr col)
+{
+	//"qdotT[ppGpqpq]*qdot."
+	//"qdotT[2 2 2 2 diag]*qdot."
+
+	col->atiplusFullVectortimes(iqE, pGpE, lam);
+	auto partFrame = static_cast<PartFrame*>(owner);
+	double sum = pGpE->timesFullColumn(partFrame->qEddot);
+	sum += 2.0 * partFrame->qEdot->sumOfSquares();
+	col->atiplusNumber(iG, sum);
+}

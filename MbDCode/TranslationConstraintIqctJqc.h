@@ -11,6 +11,9 @@ namespace MbD {
         void initriIeJeIe() override;
         MbD::ConstraintType type() override;
         void preVelIC() override;
+        void fillVelICError(FColDsptr col) override;
+        void preAccIC() override;
+        void fillAccICIterError(FColDsptr col) override;
 
         double pGpt;
         FRowDsptr ppGpXIpt;

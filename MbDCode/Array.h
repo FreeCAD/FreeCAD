@@ -17,6 +17,7 @@ namespace MbD {
 		Array(int count, const T& value) : std::vector<T>(count, value) {}
 		Array(std::vector<T>::iterator begin, std::vector<T>::iterator end) : std::vector<T>(begin, end) {}
 		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
+		virtual void initialize();
 		void copyFrom(std::shared_ptr<Array<T>> x);
 		virtual void zeroSelf();
 		virtual double sumOfSquares() = 0;
@@ -28,6 +29,10 @@ namespace MbD {
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
 
 	};
+	template<typename T>
+	inline void Array<T>::initialize()
+	{
+	}
 	template<typename T>
 	inline void Array<T>::copyFrom(std::shared_ptr<Array<T>> x)
 	{

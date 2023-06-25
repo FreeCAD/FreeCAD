@@ -71,7 +71,7 @@ void MbD::GESpMatFullPvPosIC::doPivoting(int p)
 			auto begin = rowOrder->begin() + p;
 			auto end = rowOrder->begin() + pivotRowLimit;
 			auto redundantEqnNos = std::make_shared<FullColumn<int>>(begin, end);
-			throw SingularMatrixError("", redundantEqnNos);
+			throwSingularMatrixError("", redundantEqnNos);
 		}
 		else {
 			pivotRowLimit = *itr;

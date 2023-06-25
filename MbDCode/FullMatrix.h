@@ -42,10 +42,13 @@ namespace MbD {
 		std::shared_ptr<FullMatrix<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> times(double a);
+		std::shared_ptr<FullMatrix<T>> transposeTimesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> plusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> transpose();
 		std::shared_ptr<FullMatrix<T>> negated();
 		void symLowerWithUpper();
+		void atiput(int i, std::shared_ptr<FullRow<T>> fullRow);
+		void atijput(int i, int j, T value);
 		void atijputFullColumn(int i, int j, std::shared_ptr<FullColumn<T>> fullCol);
 		void atijplusFullRow(int i, int j, std::shared_ptr<FullRow<T>> fullRow);
 		void atijplusNumber(int i, int j, double value);
@@ -53,7 +56,7 @@ namespace MbD {
 		double sumOfSquares() override;
 		void zeroSelf() override;
 		std::shared_ptr<FullMatrix<T>> copy();
-		std::shared_ptr<FullMatrix<T>> operator+(const std::shared_ptr<FullMatrix<T>> fullMat);
+		FullMatrix<T> operator+(const FullMatrix<T> fullMat);
 		std::shared_ptr<FullColumn<T>> transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
 
 	};
@@ -70,18 +73,6 @@ namespace MbD {
 		auto answer = std::make_shared<FullColumn<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i)->at(j);
-		}
-		return answer;
-	}
-	template<typename T>
-	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
-	{
-		//"a*b = a(i,j)b(j) sum j."
-		int n = (int)this->size();
-		auto answer = std::make_shared<FullColumn<T>>(n);
-		for (int i = 0; i < n; i++)
-		{
-			answer->at(i) = this->at(i)->timesFullColumn(fullCol);
 		}
 		return answer;
 	}
@@ -114,6 +105,11 @@ namespace MbD {
 			answer->at(i) = this->at(i)->times(a);
 		}
 		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::transposeTimesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		return this->transpose()->timesFullMatrix(fullMat);
 	}
 	template<typename T>
 	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::plusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
@@ -153,6 +149,16 @@ namespace MbD {
 				this->at(j)->at(i) = this->at(i)->at(j);
 			}
 		}
+	}
+	template<typename T>
+	inline void FullMatrix<T>::atiput(int i, std::shared_ptr<FullRow<T>> fullRow)
+	{
+		this->at(i) = fullRow;
+	}
+	template<typename T>
+	inline void FullMatrix<T>::atijput(int i, int j, T value)
+	{
+		this->at(i)->atiput(j, value);
 	}
 	template<typename T>
 	inline void FullMatrix<T>::atijputFullColumn(int i1, int j1, std::shared_ptr<FullColumn<T>> fullCol)
@@ -219,18 +225,32 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::operator+(const std::shared_ptr<FullMatrix<T>> fullMat)
+	inline FullMatrix<T> FullMatrix<T>::operator+(const FullMatrix<T> fullMat)
 	{
-		return this->plusFullMatrix(fullMat);
+		int n = (int)this->size();
+		auto answer = FullMatrix<T>(n);
+		for (int i = 0; i < n; i++) {
+			answer.at(i) = this->at(i)->plusFullRow(fullMat.at(i));
+		}
+		return answer;
 	}
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::transposeTimesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
 	{
 		auto sptr = std::make_shared<FullMatrix<T>>(*this);
-		//auto aaa = fullCol->transpose();
-		//auto bbb = aaa->timesFullMatrix(sptr);
-		//auto ccc = bbb->transpose();
 		return fullCol->transpose()->timesFullMatrix(sptr)->transpose();
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		//"a*b = a(i,j)b(j) sum j."
+		auto nrow = this->nrow();
+		auto answer = std::make_shared<FullColumn<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->at(i) = this->at(i)->timesFullColumn(fullCol);
+		}
+		return answer;
 	}
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
 	using FMatDsptr = std::shared_ptr<FullMatrix<double>>;

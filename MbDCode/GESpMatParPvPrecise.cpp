@@ -21,7 +21,7 @@ void MbD::GESpMatParPvPrecise::doPivoting(int p)
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
-			if (i <= p) throw SingularMatrixError("");
+			if (i <= p) throwSingularMatrixError("");
 		}
 		else {
 			markowitzPivotColCount = 0;
@@ -63,7 +63,7 @@ void MbD::GESpMatParPvPrecise::doPivoting(int p)
 		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
 	}
 	pivotValues->at(p) = max;
-	if (max < singularPivotTolerance) throw SingularMatrixError("");
+	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
 void MbD::GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
@@ -89,7 +89,7 @@ void MbD::GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDs
 	{
 		auto& spRowi = spMat->at(i);
 		auto maxRowMagnitude = spRowi->maxMagnitude();
-		if (maxRowMagnitude == 0) throw SingularMatrixError("");
+		if (maxRowMagnitude == 0) throwSingularMatrixError("");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude);
 		rowOrder->at(i) = i;

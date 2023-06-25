@@ -44,3 +44,22 @@ double MbD::DirectionCosineIeqctJeqc::pvaluept()
 {
 	return pAijIeJept;
 }
+
+void MbD::DirectionCosineIeqctJeqc::preAccIC()
+{
+	//| ppAjOIepEITpt ppAjOIeptpt ppAjOIepEITpti pAjOIept |
+	Item::preAccIC();
+	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
+	auto ppAjOIepEITpt = std::static_pointer_cast<EndFrameqct>(frmI)->ppAjOepETpt(axisI);
+	auto ppAjOIeptpt = std::static_pointer_cast<EndFrameqct>(frmI)->ppAjOeptpt(axisI);
+	for (int i = 0; i < 4; i++)
+	{
+		auto& ppAjOIepEITpti = ppAjOIepEITpt->at(i);
+		ppAijIeJepEIpt->atiput(i, ppAjOIepEITpti->dot(aAjOJe));
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		ppAijIeJepEJpt->atiput(i, pAjOIept->dot(pAjOJepEJT->at(i)));
+	}
+	ppAijIeJeptpt = ppAjOIeptpt->dot(aAjOJe);
+}

@@ -3,6 +3,8 @@
 #include "System.h"
 #include "CREATE.h"
 #include "DiagonalMatrix.h"
+#include "EulerParameters.h"
+
 
 using namespace MbD;
 
@@ -24,9 +26,12 @@ void Part::initialize()
 void Part::initializeLocally()
 {
 	partFrame->initializeLocally();
-	//mX: = m > 0
-	//ifTrue: [StMDiagonalMatrix new:3 withAll : m]
-	//ifFalse : [StMDiagonalMatrix new:3 withAll : 0.0d]
+	if (m > 0) {
+		mX = std::make_shared<DiagonalMatrix<double>>(3, m);
+	}
+	else {
+		mX = std::make_shared<DiagonalMatrix<double>>(3, 0.0);
+	}
 }
 
 void Part::initializeGlobally()
@@ -86,6 +91,69 @@ FColDsptr MbD::Part::getqEddot()
 	return partFrame->getqEddot();
 }
 
+void MbD::Part::qX(FColDsptr x)
+{
+	partFrame->qX = x;
+}
+
+FColDsptr MbD::Part::qX()
+{
+	return partFrame->qX;
+}
+
+void MbD::Part::qE(std::shared_ptr<EulerParameters<double>> x)
+{
+	partFrame->qE = x;
+}
+
+std::shared_ptr<EulerParameters<double>> MbD::Part::qE()
+{
+	return partFrame->qE;
+}
+
+void MbD::Part::qXdot(FColDsptr x)
+{
+	partFrame->qXdot = x;
+}
+
+FColDsptr MbD::Part::qXdot()
+{
+	return partFrame->qXdot;
+}
+
+void MbD::Part::omeOpO(FColDsptr x)
+{
+	partFrame->setomeOpO(x);
+}
+
+FColDsptr MbD::Part::omeOpO()
+{
+	assert(false);
+	return FColDsptr();
+}
+
+void MbD::Part::qXddot(FColDsptr x)
+{
+	partFrame->qXddot = x;
+}
+
+FColDsptr MbD::Part::qXddot()
+{
+	return partFrame->qXddot;
+}
+
+void MbD::Part::qEddot(FColDsptr x)
+{
+	//ToDo: Should store EulerParametersDDot
+	//ToDo: Need alpOpO too
+	partFrame->qXddot = x;
+}
+
+FColDsptr MbD::Part::qEddot()
+{
+	return partFrame->qEddot;
+}
+
 void Part::setSystem(System& sys)
 {
 	//May be needed in the future
@@ -104,6 +172,11 @@ void MbD::Part::postInput()
 
 void MbD::Part::calcPostDynCorrectorIteration()
 {
+	this->calcmE();
+	this->calcmEdot();
+	this->calcpTpE();
+	this->calcppTpEpE();
+	this->calcppTpEpEdot();
 }
 
 void MbD::Part::prePosIC()
@@ -171,7 +244,7 @@ void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	{
 		auto aJi = aJ->at(i);
 		wqE->at(i) = (maxw * aJi / aJiMax) + minw;
-	}		
+	}
 	wqE->at(3) = minw;
 	diagMat->atiputDiagonalMatrix(partFrame->iqX, wqX);
 	diagMat->atiputDiagonalMatrix(partFrame->iqE, wqE);
@@ -231,6 +304,11 @@ void MbD::Part::setqsulam(FColDsptr col)
 	partFrame->setqsulam(col);
 }
 
+void MbD::Part::setqsudotlam(FColDsptr col)
+{
+	partFrame->setqsudotlam(col);
+}
+
 void MbD::Part::postPosICIteration()
 {
 	partFrame->postPosICIteration();
@@ -264,7 +342,7 @@ void MbD::Part::constraintsReport()
 void MbD::Part::postPosIC()
 {
 	partFrame->postPosIC();
-	//this->calcmE();
+	this->calcmE();
 }
 
 void MbD::Part::outputStates()
@@ -296,4 +374,117 @@ void MbD::Part::fillPosKineJacob(SpMatDsptr mat)
 void MbD::Part::preVelIC()
 {
 	partFrame->preVelIC();
+}
+
+void MbD::Part::postVelIC()
+{
+	partFrame->postVelIC();
+	this->calcp();
+	this->calcmEdot();
+	this->calcpTpE();
+	this->calcppTpEpE();
+	this->calcppTpEpEdot();
+}
+
+void MbD::Part::fillVelICError(FColDsptr col)
+{
+	partFrame->fillVelICError(col);
+}
+
+void MbD::Part::fillVelICJacob(SpMatDsptr mat)
+{
+	partFrame->fillVelICJacob(mat);
+}
+
+void MbD::Part::preAccIC()
+{
+	partFrame->preAccIC();
+	Item::preAccIC();
+}
+
+void MbD::Part::calcp()
+{
+	pX = mX->timesFullColumn(partFrame->qXdot);
+	pE = mE->timesFullColumn(partFrame->qEdot);
+}
+
+void MbD::Part::calcpdot()
+{
+	pXdot = mX->timesFullColumn(partFrame->qXddot);
+	pEdot = mEdot->timesFullColumn(partFrame->qEdot)->plusFullColumn(mE->timesFullColumn(partFrame->qEddot));
+}
+
+void MbD::Part::calcmEdot()
+{
+	auto aC = partFrame->aC();
+	auto aCdot = partFrame->aCdot();
+	auto a4J = aJ->times(4.0);
+	auto term1 = aC->transposeTimesFullMatrix(a4J->timesFullMatrix(aCdot));
+	auto term2 = term1->transpose();
+	mEdot = term1->plusFullMatrix(term2);
+}
+
+void MbD::Part::calcpTpE()
+{
+	//"pTpE is a column vector."
+	auto& qEdot = partFrame->qEdot;
+	auto aC = partFrame->aC();
+	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
+	pTpE = (pCpEtimesqEdot->transposeTimesFullColumn(aJ->timesFullColumn(aC->timesFullColumn(qEdot))))->times(4.0);
+}
+
+void MbD::Part::calcppTpEpE()
+{
+	auto& qEdot = partFrame->qEdot;
+	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
+	auto a4J = aJ->times(4.0);
+	ppTpEpE = pCpEtimesqEdot->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
+}
+
+void MbD::Part::calcppTpEpEdot()
+{
+	//| qEdot aC a4J term1 pCpEtimesqEdot term2 |
+	auto& qEdot = partFrame->qEdot;
+	auto aC = partFrame->aC();
+	auto a4J = aJ->times(4.0);
+	auto term1 = EulerParameters<double>::pCTpEtimesColumn(a4J->timesFullColumn(aC->timesFullColumn(qEdot)));
+	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
+	auto term2 = aC->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
+	ppTpEpEdot = term1->plusFullMatrix(term2)->transpose();
+}
+
+void MbD::Part::calcmE()
+{
+	auto aC = partFrame->aC();
+	mE = aC->transposeTimesFullMatrix(aJ->timesFullMatrix(aC))->times(4.0);
+}
+
+void MbD::Part::fillAccICIterError(FColDsptr col)
+{
+	auto iqX = partFrame->iqX;
+	auto iqE = partFrame->iqE;
+	col->atiminusFullColumn(iqX, mX->timesFullColumn(partFrame->qXddot));
+	col->atiminusFullColumn(iqE, mEdot->timesFullColumn(partFrame->qEdot));
+	col->atiminusFullColumn(iqE, mE->timesFullColumn(partFrame->qEddot));
+	col->atiplusFullColumn(iqE, pTpE);
+	partFrame->fillAccICIterError(col);
+}
+
+void MbD::Part::fillAccICIterJacob(SpMatDsptr mat)
+{
+	auto iqX = partFrame->iqX;
+	auto iqE = partFrame->iqE;
+	mat->atijminusDiagonalMatrix(iqX, iqX, mX);
+	mat->atijminusFullMatrix(iqE, iqE, mE);
+	partFrame->fillAccICIterJacob(mat);
+}
+
+std::shared_ptr<EulerParametersDot<double>> MbD::Part::qEdot()
+{
+	return partFrame->qEdot;
+}
+
+void MbD::Part::setqsuddotlam(FColDsptr qsudotlam)
+{
+	partFrame->setqsuddotlam(qsudotlam);
 }

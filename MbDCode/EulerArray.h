@@ -11,9 +11,10 @@ namespace MbD {
         EulerArray(int count) : FullColumn<T>(count) {}
         EulerArray(int count, const T& value) : FullColumn<T>(count, value) {}
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
-        virtual void initialize();
+        void initialize() override;
         void equalFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
         void equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i);
+        virtual void calc() = 0;
 
     };
     template<typename T>

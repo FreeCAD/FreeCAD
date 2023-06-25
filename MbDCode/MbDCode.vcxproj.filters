@@ -411,6 +411,21 @@
     <ClCompile Include="EulerAngleszxzDDot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AccNewtonRaphson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccICNewtonRaphson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccKineNewtonRaphson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccICKineNewtonRaphson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerParametersDDot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -816,6 +831,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EulerAngleszxzDDot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccNewtonRaphson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccICNewtonRaphson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccKineNewtonRaphson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccICKineNewtonRaphson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerParametersDDot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

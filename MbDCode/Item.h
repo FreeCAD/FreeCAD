@@ -58,9 +58,17 @@ namespace MbD {
 		virtual void postVelIC();
 		virtual void fillqsudot(FColDsptr col);
 		virtual void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
-		virtual void fillVelICError(FColDsptr error);
-		virtual void fillVelICJacob(SpMatDsptr jacob);
+		virtual void fillVelICError(FColDsptr col);
+		virtual void fillVelICJacob(SpMatDsptr mat);
 		virtual void setqsudotlam(FColDsptr qsudotlam);
+
+		virtual void preAccIC();
+		virtual void postAccIC();
+		virtual void postAccICIteration();
+		virtual void fillqsuddotlam(FColDsptr col);
+		virtual void fillAccICIterError(FColDsptr col);
+		virtual void fillAccICIterJacob(SpMatDsptr mat);
+		virtual void setqsuddotlam(FColDsptr qsudotlam);
 
 		void setName(std::string& str);
 		const std::string& getName() const;

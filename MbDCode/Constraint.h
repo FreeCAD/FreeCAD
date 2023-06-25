@@ -11,7 +11,7 @@ namespace MbD {
 	public:
 		Constraint();
 		Constraint(const char* str);
-		void initialize();
+		void initialize() override;
 		void postInput() override;
 		void setOwner(Item* x);
 		Item* getOwner();
@@ -25,6 +25,7 @@ namespace MbD {
 		virtual MbD::ConstraintType type();
 		void fillqsulam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
+		void setqsudotlam(FColDsptr col) override;
 		void fillPosICError(FColDsptr col) override;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
 		void reactivateRedundantConstraints() override;
@@ -32,6 +33,9 @@ namespace MbD {
 		void outputStates() override;
 		void preDyn() override;
 		void fillPosKineError(FColDsptr col) override;
+		void preAccIC() override;
+		void fillAccICIterJacob(SpMatDsptr mat) override;
+		void setqsuddotlam(FColDsptr qsudotlam) override;
 
 		int iG = -1;
 		double aG = 0.0;		//Constraint function

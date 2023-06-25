@@ -10,7 +10,7 @@ namespace MbD {
     public:
         PrescribedMotion();
         PrescribedMotion(const char* str);
-        void initialize();
+        void initialize() override;
         void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
 
         Symsptr xBlk;

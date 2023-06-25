@@ -14,6 +14,7 @@
 #include "PosICKineNewtonRaphson.h"
 #include "PosKineNewtonRaphson.h"
 #include "VelICSolver.h"
+#include "AccICNewtonRaphson.h"
 
 using namespace MbD;
 
@@ -81,7 +82,9 @@ void MbD::SystemSolver::runVelIC()
 
 void MbD::SystemSolver::runAccIC()
 {
-	assert(false);
+	icTypeSolver = CREATE<AccICNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
 bool MbD::SystemSolver::needToRedoPosIC()

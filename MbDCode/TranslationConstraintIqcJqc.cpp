@@ -34,7 +34,7 @@ void MbD::TranslationConstraintIqcJqc::useEquationNumbers()
 
 void MbD::TranslationConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
-	Constraint::fillPosICError(col);
+	TranslationConstraintIqcJc::fillPosICError(col);
 	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
@@ -60,4 +60,31 @@ void MbD::TranslationConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 	TranslationConstraintIqcJc::fillPosKineJacob(mat);
 	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
 	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+}
+
+void MbD::TranslationConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
+{
+	TranslationConstraintIqcJc::fillVelICJacob(mat);
+	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
+	mat->atijplusFullColumn(iqXJ, iG, pGpXJ->transpose());
+	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+}
+
+void MbD::TranslationConstraintIqcJqc::fillAccICIterError(FColDsptr col)
+{
+	TranslationConstraintIqcJc::fillAccICIterError(col);
+	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);
+	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto qEdotI = efrmIqc->qEdot();
+	auto qXdotJ = efrmJqc->qXdot();
+	auto qEdotJ = efrmJqc->qEdot();
+	double sum = pGpXJ->timesFullColumn(efrmJqc->qXddot());
+	sum += pGpEJ->timesFullColumn(efrmJqc->qEddot());
+	sum += 2.0 * (qEdotI->transposeTimesFullColumn(ppGpEIpXJ->timesFullColumn(qXdotJ)));
+	sum += 2.0 * (qEdotI->transposeTimesFullColumn(ppGpEIpEJ->timesFullColumn(qEdotJ)));
+	sum += qEdotJ->transposeTimesFullColumn(ppGpEJpEJ->timesFullColumn(qEdotJ));
+	col->atiplusNumber(iG, sum);
 }

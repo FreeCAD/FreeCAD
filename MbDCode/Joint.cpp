@@ -123,6 +123,11 @@ void MbD::Joint::setqsulam(FColDsptr col)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
 }
 
+void MbD::Joint::setqsudotlam(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsudotlam(col); });
+}
+
 void MbD::Joint::postPosICIteration()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
@@ -215,4 +220,34 @@ void MbD::Joint::fillPosKineJacob(SpMatDsptr mat)
 void MbD::Joint::preVelIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preVelIC(); });
+}
+
+void MbD::Joint::fillVelICError(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICError(col); });
+}
+
+void MbD::Joint::fillVelICJacob(SpMatDsptr mat)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillVelICJacob(mat); });
+}
+
+void MbD::Joint::preAccIC()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preAccIC(); });
+}
+
+void MbD::Joint::fillAccICIterError(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterError(col); });
+}
+
+void MbD::Joint::fillAccICIterJacob(SpMatDsptr mat)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterJacob(mat); });
+}
+
+void MbD::Joint::setqsuddotlam(FColDsptr qsudotlam)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(qsudotlam); });
 }

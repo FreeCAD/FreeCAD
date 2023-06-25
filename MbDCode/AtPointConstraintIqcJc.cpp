@@ -54,3 +54,23 @@ void MbD::AtPointConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
 	mat->atijplusFullRow(iG, iqEI, pGpEI);
 }
+
+void MbD::AtPointConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
+{
+	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
+	mat->atijplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
+	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+}
+
+void MbD::AtPointConstraintIqcJc::fillAccICIterError(FColDsptr col)
+{
+	col->atiminusNumber(iqXIminusOnePlusAxis, lam);
+	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto qEdotI = efrmIqc->qEdot();
+	auto sum = -efrmIqc->qXddot()->at(axis);
+	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
+	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
+	col->atiplusNumber(iG, sum);
+}

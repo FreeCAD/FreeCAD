@@ -38,3 +38,25 @@ void MbD::AtPointConstraintIqctJqc::preVelIC()
 	AtPointConstraintIJ::preVelIC();
 	pGpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->priIeJeOpt;
 }
+
+void MbD::AtPointConstraintIqctJqc::fillVelICError(FColDsptr col)
+{
+	col->atiminusNumber(iG, pGpt);
+}
+
+void MbD::AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
+{
+	AtPointConstraintIqcJqc::fillAccICIterError(col);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto qEdotI = efrmIqc->qEdot();
+	double sum = (ppGpEIpt->timesFullColumn(qEdotI)) * 2.0;
+	sum += ppGptpt;
+	col->atiplusNumber(iG, sum);
+}
+
+void MbD::AtPointConstraintIqctJqc::preAccIC()
+{
+	AtPointConstraintIJ::preAccIC();
+	ppGpEIpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEIpt;
+	ppGptpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOptpt;
+}

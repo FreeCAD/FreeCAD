@@ -80,7 +80,7 @@ void System::initializeGlobally()
 
 std::shared_ptr<std::vector<std::string>> MbD::System::discontinuitiesAtIC()
 {
-	return std::shared_ptr<std::vector<std::string>>();
+	return std::make_shared<std::vector<std::string>>();
 }
 
 void MbD::System::jointsMotionsDo(const std::function<void(std::shared_ptr<Joint>)>& f)

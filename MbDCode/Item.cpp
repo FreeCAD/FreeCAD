@@ -155,15 +155,44 @@ void MbD::Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMa
 {
 }
 
-void MbD::Item::fillVelICError(FColDsptr error)
+void MbD::Item::fillVelICError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillVelICJacob(SpMatDsptr jacob)
+void MbD::Item::fillVelICJacob(SpMatDsptr mat)
 {
 }
 
 void MbD::Item::setqsudotlam(FColDsptr qsudotlam)
+{
+}
+
+void MbD::Item::preAccIC()
+{
+	this->calcPostDynCorrectorIteration();
+}
+
+void MbD::Item::postAccIC()
+{
+}
+
+void MbD::Item::postAccICIteration()
+{
+}
+
+void MbD::Item::fillqsuddotlam(FColDsptr col)
+{
+}
+
+void MbD::Item::fillAccICIterError(FColDsptr col)
+{
+}
+
+void MbD::Item::fillAccICIterJacob(SpMatDsptr mat)
+{
+}
+
+void MbD::Item::setqsuddotlam(FColDsptr qsudotlam)
 {
 }
 

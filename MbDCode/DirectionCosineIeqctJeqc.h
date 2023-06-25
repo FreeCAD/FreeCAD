@@ -9,11 +9,12 @@ namespace MbD {
     public:
         DirectionCosineIeqctJeqc();
         DirectionCosineIeqctJeqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
-        void initialize();
+        void initialize() override;
         void initializeGlobally();
         void calcPostDynCorrectorIteration() override;
         void preVelIC() override;
         double pvaluept();
+        void preAccIC() override;
 
         double pAijIeJept;
         FRowDsptr ppAijIeJepEIpt;

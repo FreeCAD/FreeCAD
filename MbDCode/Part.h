@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
+#include "EulerParametersDot.h"
 
 namespace MbD {
 	class System;
@@ -17,7 +18,7 @@ namespace MbD {
 	public:
 		Part();
 		Part(const char* str);
-		void initialize();
+		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void setqX(FColDsptr x);
@@ -32,6 +33,18 @@ namespace MbD {
 		FColDsptr getqXddot();
 		void setqEddot(FColDsptr x);
 		FColDsptr getqEddot();
+		void qX(FColDsptr x);
+		FColDsptr qX();
+		void qE(std::shared_ptr<EulerParameters<double>> x);
+		std::shared_ptr<EulerParameters<double>> qE();
+		void qXdot(FColDsptr x);
+		FColDsptr qXdot();
+		void omeOpO(FColDsptr x);
+		FColDsptr omeOpO();
+		void qXddot(FColDsptr x);
+		FColDsptr qXddot();
+		void qEddot(FColDsptr x);
+		FColDsptr qEddot();
 		void setSystem(System& sys);
 		void asFixed();
 		void postInput() override;
@@ -52,6 +65,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
+		void setqsudotlam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
@@ -65,6 +79,21 @@ namespace MbD {
 		void fillPosKineError(FColDsptr col) override;
 		void fillPosKineJacob(SpMatDsptr mat) override;
 		void preVelIC() override;
+		void postVelIC() override;
+		void fillVelICError(FColDsptr col) override;
+		void fillVelICJacob(SpMatDsptr mat) override;
+		void preAccIC() override;
+		void calcp();
+		void calcpdot();
+		void calcmEdot();
+		void calcpTpE();
+		void calcppTpEpE();
+		void calcppTpEpEdot();
+		void calcmE();
+		void fillAccICIterError(FColDsptr col) override;
+		void fillAccICIterJacob(SpMatDsptr mat) override;
+		std::shared_ptr<EulerParametersDot<double>> qEdot();
+		void setqsuddotlam(FColDsptr qsudotlam) override;
 
 		int ipX = -1; 
 		int ipE = -1; 
@@ -76,7 +105,7 @@ namespace MbD {
 		FColDsptr pE;
 		FColDsptr pEdot;
 		std::shared_ptr<DiagonalMatrix<double>> mX;
-		std::shared_ptr<DiagonalMatrix<double>> mE;
+		FMatDsptr mE;
 		FMatDsptr mEdot;
 		FColDsptr pTpE;
 		FMatDsptr ppTpEpE;

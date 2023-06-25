@@ -16,7 +16,7 @@ namespace MbD {
     {
         //system xold x dx dxNorm dxNorms dxTol y yNorm yNormOld yNorms yNormTol pypx iterNo iterMax nDivergence nBackTracking twoAlp lam 
     public:
-        void initialize();
+        void initialize() override;
         void initializeLocally() override;
         void run() override;
         void setSystem(Solver* sys) override;
@@ -35,7 +35,7 @@ namespace MbD {
         virtual void passRootToSystem() = 0;
         bool isConvergedToNumericalLimit();
         void calcDXNormImproveRootCalcYNorm();
-        virtual void postRun();
+        void postRun() override;
         
         SystemSolver* system; //Use raw pointer when pointing backwards.
         std::shared_ptr<std::vector<double>> dxNorms, yNorms;

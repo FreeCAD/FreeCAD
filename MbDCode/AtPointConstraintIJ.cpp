@@ -63,3 +63,9 @@ void MbD::AtPointConstraintIJ::preVelIC()
 	riIeJeO->preVelIC();
 	Item::preVelIC();
 }
+
+void MbD::AtPointConstraintIJ::preAccIC()
+{
+	riIeJeO->preAccIC();
+	Constraint::preAccIC();
+}

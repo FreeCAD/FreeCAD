@@ -29,6 +29,8 @@ namespace MbD {
 		void equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i);
 		std::shared_ptr<FullColumn<T>> copy();
 		std::shared_ptr<FullRow<T>> transpose();
+		void atiplusFullColumntimes(int i, std::shared_ptr<FullColumn<T>> fullCol, T factor);
+		T transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const FullColumn& fullCol)
@@ -130,6 +132,20 @@ namespace MbD {
 	inline std::shared_ptr<FullRow<T>> FullColumn<T>::transpose()
 	{
 		return std::make_shared<FullRow<T>>(*this);
+	}
+	template<typename T>
+	inline void FullColumn<T>::atiplusFullColumntimes(int i1, std::shared_ptr<FullColumn<T>> fullCol, T factor)
+	{
+		for (int ii = 0; ii < fullCol->size(); ii++)
+		{
+			int i = i1 + ii;
+			this->at(i) += fullCol->at(ii) * factor;
+		}
+	}
+	template<typename T>
+	inline T FullColumn<T>::transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		return this->dot(fullCol);
 	}
 	template<typename T>
 	inline std::ostream& FullColumn<T>::printOn(std::ostream& s) const

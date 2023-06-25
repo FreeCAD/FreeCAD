@@ -34,3 +34,10 @@ double MbD::DispCompIeqctJeqcO::pvaluept()
 {
 	return priIeJeOpt;
 }
+
+void MbD::DispCompIeqctJeqcO::preAccIC()
+{
+	Item::preAccIC();
+	ppriIeJeOpEIpt = (std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpt(axis))->negated();
+	ppriIeJeOptpt = -(std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOptpt(axis));
+}
