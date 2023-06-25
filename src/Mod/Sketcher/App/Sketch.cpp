@@ -68,17 +68,17 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-    : SolveTime(0),
-      RecalculateInitialSolutionWhileMovingPoint(false),
-      resolveAfterGeometryUpdated(false),
-      GCSsys(),
-      ConstraintsCounter(0),
-      isInitMove(false),
-      isFine(true),
-      moveStep(0),
-      defaultSolver(GCS::DogLeg),
-      defaultSolverRedundant(GCS::DogLeg),
-      debugMode(GCS::Minimal)
+    : SolveTime(0)
+    , RecalculateInitialSolutionWhileMovingPoint(false)
+    , resolveAfterGeometryUpdated(false)
+    , GCSsys()
+    , ConstraintsCounter(0)
+    , isInitMove(false)
+    , isFine(true)
+    , moveStep(0)
+    , defaultSolver(GCS::DogLeg)
+    , defaultSolverRedundant(GCS::DogLeg)
+    , debugMode(GCS::Minimal)
 {}
 
 Sketch::~Sketch()
@@ -3102,6 +3102,9 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
 // circle-(circle or line) distance constraint
 int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving)
 {
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
     if (Geoms[geoId1].type == Circle) {
         if (Geoms[geoId2].type == Circle) {
             GCS::Circle& c1 = Circles[Geoms[geoId1].index];
