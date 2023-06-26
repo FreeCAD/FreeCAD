@@ -22,7 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
+
+#include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 #include "MaterialSave.h"
@@ -143,6 +146,9 @@ void MaterialSave::showSelectedTree()
 
         std::map<std::string, Materials::MaterialTreeNode*>* modelTree = _manager.getMaterialTree(library);
         addMaterials(*lib, modelTree);
+    } else {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No writeable library"),
+            QObject::tr("No writeable library"));
     }
 
 }
