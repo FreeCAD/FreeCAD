@@ -184,10 +184,10 @@ Requires to re-enter edit mode to take effect.</string>
 	  <item row="0" column="1">
        <widget class="QComboBox" name="dimensioningMode">
         <property name="toolTip">
-         <string>Selection the type of dimensioning constraints for your toolbar:
-'Single tool': You will have a single tool for all dimensioning constraints : Distance, Distance X / Y, Angle, Radius.
-'Separated tools': You will have separated tools for each dimensioning constraint.
-'Both': You will have both the 'Constrain Contextual' tool and the individual tool.
+         <string>Select the type of dimensioning constraints for your toolbar:
+'Single tool': 'Constrain Contextual': A single tool for all dimensioning constraints : Distance, Distance X / Y, Angle, Radius.
+'Separated tools': Separated tools for each dimensioning constraint.
+'Both': You will have both the 'Constrain Contextual' tool and the separated tools.
 This setting is only for the toolbar. Whichever you chose, all tools are always available in the menu and through shortcuts.</string>
         </property>
        </widget>
