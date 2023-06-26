@@ -50,7 +50,7 @@ def open(filename):
     "called when freecad wants to open a file"
     if not check3DS():
         return
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     FreeCAD.ActiveDocument = doc
