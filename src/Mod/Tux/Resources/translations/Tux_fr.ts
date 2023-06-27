@@ -81,7 +81,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>Table tournante</translation>
+      <translation>Vue en rotation</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>

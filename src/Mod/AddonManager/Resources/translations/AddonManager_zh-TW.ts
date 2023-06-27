@@ -54,7 +54,7 @@
     <message>
       <location filename="../../compact_view.py" line="88"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>有可用更新</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
@@ -150,7 +150,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>說明此附加元件提供什麼。在附加元件管理器中顯示。沒有必要指明這是 FreeCAD 附加元件。</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -170,7 +170,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>錯誤追蹤系統的URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
@@ -180,7 +180,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>設置為今天（CalVer格式）</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -199,7 +199,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>README 網址</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -272,7 +272,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>停止更新快取</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -465,7 +465,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>有可用更新</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -494,17 +494,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation>版權聲明文件</translation>
+      <translation>授權檔案</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>人</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>類別</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -522,7 +522,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>進階版本對映</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
@@ -537,7 +537,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>最佳可用的分支、標籤或提交</translation>
     </message>
   </context>
   <context>
@@ -566,7 +566,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>進階版本對映...</translation>
     </message>
   </context>
   <context>
@@ -588,7 +588,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>啟動時自動檢查更新(需要 git 工具)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -633,12 +633,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
+      <translation>自訂存儲庫</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
       <source>Proxy</source>
-      <translation type="unfinished">Proxy</translation>
+      <translation>代理伺服器</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="210"/>
@@ -698,7 +698,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>附加元件開發者模式</translation>
     </message>
   </context>
   <context>
@@ -736,7 +736,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
-      <translation type="unfinished">Change branch</translation>
+      <translation>變更分支</translation>
     </message>
   </context>
   <context>
@@ -805,7 +805,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../update_all.ui" line="23"/>
       <source>Updating out-of-date addons...</source>
-      <translation type="unfinished">Updating out-of-date addons...</translation>
+      <translation>正在更新過時的附加元件...</translation>
     </message>
   </context>
   <context>
@@ -813,12 +813,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="14"/>
       <source>Content Item</source>
-      <translation type="unfinished">Content Item</translation>
+      <translation>內容項目</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="25"/>
       <source>Content type:</source>
-      <translation type="unfinished">Content type:</translation>
+      <translation>內容類型：</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
@@ -940,7 +940,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>設置為今天（CalVer格式）</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -1017,7 +1017,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>添加人員</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
@@ -1032,12 +1032,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>電子郵件：</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>維護者需要提供電子郵件，而作者可以選擇性提供。</translation>
     </message>
   </context>
   <context>
@@ -1103,12 +1103,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation>版權聲明檔案路徑:</translation>
+      <translation>授權檔案路徑：</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>（如果根據許可證要求）</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
@@ -1118,7 +1118,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>建立...</translation>
     </message>
   </context>
   <context>
@@ -1269,25 +1269,25 @@ installed addons will be checked for available updates
       <translation>Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>維護者</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>作者</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="166"/>
       <source>New Python Version Detected</source>
-      <translation type="unfinished">New Python Version Detected</translation>
+      <translation>偵測到新的 Python 版本</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="170"/>
@@ -1308,7 +1308,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>正在更新...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
@@ -1350,31 +1350,31 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="87"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>您確定要解除安裝 {} 嗎？</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="91"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="108"/>
       <source>Removing Addon</source>
-      <translation type="unfinished">Removing Addon</translation>
+      <translation>移除附加元件</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="96"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>正在刪除 {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="131"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>解除安裝完成</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="135"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="144"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>解除安裝失敗</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="63"/>
@@ -1496,8 +1496,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>成功</translation>
@@ -1591,17 +1591,17 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>其他...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="208"/>
       <source>Select the corresponding license file in your Addon</source>
-      <translation type="unfinished">Select the corresponding license file in your Addon</translation>
+      <translation>選擇附加元件中相對應的授權檔案</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="241"/>
       <source>Location for new license file</source>
-      <translation type="unfinished">Location for new license file</translation>
+      <translation>新授權檔案的位置</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="348"/>
@@ -1621,7 +1621,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="202"/>
       <source>Unable to locate icon at {}</source>
-      <translation type="unfinished">Unable to locate icon at {}</translation>
+      <translation>無法在 {} 位置找到圖示</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="279"/>
@@ -1629,9 +1629,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1658,7 +1658,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="455"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="465"/>
@@ -1668,23 +1668,23 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="521"/>
       <source>Internal Workbench</source>
-      <translation type="unfinished">Internal Workbench</translation>
+      <translation>內部工作台</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="524"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>外部附加元件</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="527"/>
       <source>Python Package</source>
-      <translation type="unfinished">Python Package</translation>
+      <translation>Python 套件</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="597"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="610"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>其他...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
@@ -1725,7 +1725,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="243"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="231"/>
       <source>Incompatible Python version</source>
-      <translation type="unfinished">Incompatible Python version</translation>
+      <translation>不相容的 Python 版本</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="247"/>
@@ -1790,12 +1790,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>安裝附加元件</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Installing FreeCAD Addon &apos;{}&apos;</translation>
+      <translation>安裝 FreeCAD 附加元件 &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
@@ -1890,7 +1890,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="464"/>
       <source>Select the folder containing your Addon</source>
-      <translation type="unfinished">Select the folder containing your Addon</translation>
+      <translation>選擇內含你的附加元件之資料夾</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="593"/>
@@ -2124,7 +2124,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="262"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">Kind</translation>
+      <translation>類別</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="266"/>
@@ -2168,7 +2168,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="201"/>
       <source>Installation of Addon {} failed</source>
-      <translation type="unfinished">Installation of Addon {} failed</translation>
+      <translation>安裝附加元件 {} 失敗</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="174"/>
@@ -2259,7 +2259,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="127"/>
       <source>Could not find addon {} to remove it.</source>
-      <translation type="unfinished">Could not find addon {} to remove it.</translation>
+      <translation>找不到要移除的附加元件 {}。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="151"/>
@@ -2289,7 +2289,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="183"/>
       <source>WARNING: Duplicate addon {} ignored</source>
-      <translation type="unfinished">WARNING: Duplicate addon {} ignored</translation>
+      <translation>警告：重複的附加元件 {} 被忽略</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="256"/>
@@ -2455,7 +2455,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="204"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>某些附加元件可能已經被更新了</translation>
     </message>
   </context>
   <context>

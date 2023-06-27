@@ -176,7 +176,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="450"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Utwórz łuk na szkicu</translation>
+      <translation>Tworzy łuk na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="527"/>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1048"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Utwórz krzywą złożoną na szkicu</translation>
+      <translation>Tworzy krzywą złożoną na szkicu</translation>
     </message>
   </context>
   <context>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1233"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Utwórz okrąg na szkicu</translation>
+      <translation>Tworzy okrąg na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1310"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
       <source>Create a conic in the sketch</source>
-      <translation>Utwórz krzywą stożkową na szkicu</translation>
+      <translation>Tworzy krzywą stożkową na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="857"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="237"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation>Utwórz prostokąt na szkicu</translation>
+      <translation>Tworzy prostokąt na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="323"/>
@@ -324,7 +324,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1932"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Utwórz wielokąt foremny na szkicu</translation>
+      <translation>Tworzy wielokąt foremny na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2054"/>
@@ -713,7 +713,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>Utwórz łuk elipsy na szkicu</translation>
+      <translation>Tworzy łuk elipsy na szkicu</translation>
     </message>
   </context>
   <context>
@@ -726,7 +726,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>Utwórz łuk hiperboli na szkicu</translation>
+      <translation>Tworzy łuk hiperboli na szkicu</translation>
     </message>
   </context>
   <context>
@@ -739,7 +739,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation>Utwórz łuk paraboli na szkicu</translation>
+      <translation>Tworzy łuk paraboli na szkicu</translation>
     </message>
   </context>
   <context>
@@ -765,7 +765,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Create a circle in the sketch</source>
-      <translation>Utwórz okrąg na szkicu</translation>
+      <translation>Tworzy okrąg na szkicu</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="624"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Utwórz elipsę przez trzy punkty na szkicu</translation>
+      <translation>Tworzy elipsę przez trzy punkty na szkicu</translation>
     </message>
   </context>
   <context>
@@ -791,7 +791,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="591"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Utwórz elipsę przez środek na szkicu</translation>
+      <translation>Tworzy elipsę przez środek na szkicu</translation>
     </message>
   </context>
   <context>
@@ -817,7 +817,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1841"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>Utwórz siedmiokąt na szkicu</translation>
+      <translation>Tworzy siedmiokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -830,7 +830,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1812"/>
       <source>Create a hexagon in the sketch</source>
-      <translation>Utwórz sześciokąt na szkicu</translation>
+      <translation>Tworzy sześciokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -843,7 +843,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="111"/>
       <source>Create a line in the sketch</source>
-      <translation>Utwórz linię na szkicu</translation>
+      <translation>Tworzy linię na szkicu</translation>
     </message>
   </context>
   <context>
@@ -856,7 +856,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="206"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation>Utwórz zaokrąglony prostokąt na szkicu</translation>
+      <translation>Tworzy zaokrąglony prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -869,7 +869,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1870"/>
       <source>Create an octagon in the sketch</source>
-      <translation>Utwórz ośmiokąt na szkicu</translation>
+      <translation>Tworzy ośmiokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -882,7 +882,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1782"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>Utwórz pięciokąt na szkicu</translation>
+      <translation>Tworzy pięciokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -947,7 +947,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="143"/>
       <source>Create a rectangle in the sketch</source>
-      <translation>Utwórz prostokąt na szkicu</translation>
+      <translation>Tworzy prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -960,7 +960,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="173"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation>Utwórz wyśrodkowany prostokąt na szkicu</translation>
+      <translation>Tworzy wyśrodkowany prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1899"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Utwórz wielokąt foremny na szkicu</translation>
+      <translation>Tworzy wielokąt foremny na szkicu</translation>
     </message>
   </context>
   <context>
@@ -999,7 +999,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1753"/>
       <source>Create a square in the sketch</source>
-      <translation>Utwórz kwadrat na szkicu</translation>
+      <translation>Tworzy kwadrat na szkicu</translation>
     </message>
   </context>
   <context>
@@ -1012,7 +1012,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1724"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>Utwórz trójkąt równoboczny na szkicu</translation>
+      <translation>Tworzy trójkąt równoboczny na szkicu</translation>
     </message>
   </context>
   <context>
@@ -2287,20 +2287,8 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Nie dołączaj</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2426,6 +2414,15 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2441,6 +2438,9 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
@@ -2621,9 +2621,9 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Liczba wybranych obiektów nie jest równa 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
@@ -2788,7 +2788,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane. 
+      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -2833,7 +2833,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końco
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania. 
+      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -2924,7 +2924,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandConstraints.cpp" line="7155"/>
       <location filename="../../CommandConstraints.cpp" line="7352"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
-      <translation>Wiązania kąta nie można ustawić dla dwóch równoległych linii.</translation>
+      <translation>Nie można zdefiniować wiązania kąta dla dwóch linii równoległych.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7199"/>
@@ -3032,9 +3032,9 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <translation>Zdefiniuj stopień krzywej złożonej między 1 a %1:</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>Błąd jądra CAD</translation>
     </message>
@@ -3235,7 +3235,8 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="89"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Osie XY wybranego rysunku nie mają tego samego kierunku jak ten rysunek. Przytrzymaj Ctrl + Alt, aby to zignorować.</translation>
+      <translation>Osie XY wybranego rysunku nie mają tego samego kierunku jak ten rysunek.
+Przytrzymaj Ctrl + Alt, aby to zignorować.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="94"/>
@@ -3892,7 +3893,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
       <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-      <translation>Kliknięcie powoduje, że odstępy między wierszami i między kolumnami są takie same</translation>
+      <translation>Po kliknięciu odstępy między wierszami i między kolumnami będą jednakowe</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="80"/>
@@ -4537,9 +4538,9 @@ Kliknij na przycisk "Zamień punkty końcowe na wiązania" aby ponownie przyporz
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 znaleziono odwrócone łuki geometrii zewnętrznej. Ich punkty końcowe są otoczone widokiem 3D.
+      <translation>Znaleziono %1 łuki o odwróconej geometrii zewnętrznej. Ich punkty końcowe są zaznaczone w oknie Widoku 3D.
 
-Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
+Nie znaleziono jednak żadnych powiązań z punktami końcowymi.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="311"/>
@@ -4549,13 +4550,13 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="327"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-      <translation>Dokonano zmian %1 w wiązaniach łączących z punktami końcowymi odwróconych łuków.</translation>
+      <translation>Dokonano %1 zmian w wiązaniach łączących z punktami końcowymi odwróconych łuków.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="346"/>
       <location filename="../../TaskSketcherValidation.cpp" line="366"/>
       <source>Constraint orientation locking</source>
-      <translation>Zamykanie orientacji wiązania</translation>
+      <translation>Blokada orientacji wiązania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="347"/>
@@ -4722,7 +4723,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1647"/>
       <location filename="../../TaskSketcherElements.cpp" line="1653"/>
       <source>Construction</source>
-      <translation>Konstrukcja</translation>
+      <translation>Konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="998"/>
@@ -4932,7 +4933,7 @@ Jest to oparte wyłącznie na topologicznym kształcie szkicu, a nie na jego geo
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
       <source>Ignore construction geometry</source>
-      <translation>Ignoruj geometrię konstrukcji</translation>
+      <translation>Ignoruj geometrię konstrukcyjną</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
@@ -5019,7 +5020,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="206"/>
       <source>Constraint orientation locking</source>
-      <translation>Zamykanie orientacji wiązania</translation>
+      <translation>Blokada orientacji wiązania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
@@ -5672,7 +5673,7 @@ Solver BFGS wykorzystuje algorytm Broyden-Fletcher-Goldfarb-Shanno.</translation
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="52"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="398"/>
       <source>LevenbergMarquardt</source>
-      <translation>LevenbergMarquardt</translation>
+      <translation>Levenberg Marquardt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="57"/>
@@ -5894,7 +5895,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration Level</source>
-      <translation>Poziom iteracji</translation>
+      <translation>Stopień iteracji</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="634"/>
@@ -6144,39 +6145,39 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerArc.h" line="198"/>
       <location filename="../../DrawSketchHandlerArc.h" line="470"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
@@ -6196,9 +6197,6 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Ograniczenie ma nieprawidłowe informacje o indeksie i jest zniekształcone.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6206,6 +6204,9 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6249,8 +6250,8 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Błąd podczas tworzenia bieguna krzywej złożonej</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
       <source>Error creating B-spline</source>
       <translation>Błąd podczas tworzenia krzywej złożonej</translation>
     </message>
@@ -6347,9 +6348,9 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Nie udało się przyciąć krawędzi</translation>
     </message>
     <message>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation>Błąd wartości</translation>
     </message>

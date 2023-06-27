@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="254"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="253"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="258"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>Cutting</source>
       <translation>Skär</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="263"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>Color</source>
       <translation>Färg</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="268"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
     </message>
@@ -1241,7 +1241,7 @@ Om detta inte väljs måste egenskapen vara unikt namngiven och den nås som 'ob
     <message>
       <location filename="../DlgActionsImp.cpp" line="301"/>
       <source>Please select a macro item first.</source>
-      <translation>Välj ett makro först.</translation>
+      <translation>Vänligen välj ett makroföremål först.</translation>
     </message>
   </context>
   <context>
@@ -1449,7 +1449,7 @@ samma gång. Den med högsta prioritet kommer att utlösas.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="110"/>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Flytta den valda saken en nivå ned.&lt;/b&gt;&lt;p&gt;Detta kommer även att ändra nivån på sakens förälder.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Flytta det markerade föremålet en nivå ned.&lt;/b&gt;&lt;p&gt;Detta kommer även att ändra nivån på det överordnade föremålet.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="133"/>
@@ -1459,7 +1459,7 @@ samma gång. Den med högsta prioritet kommer att utlösas.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="136"/>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Flytta den valda saken en nivå upp.&lt;/b&gt;&lt;p&gt;Detta kommer även att ändra nivån på sakens förälder.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Flytta det markerade föremålet en nivå upp.&lt;/b&gt;&lt;p&gt;Detta kommer också att ändra nivån på det överordnade föremålet.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="165"/>
@@ -1469,7 +1469,7 @@ samma gång. Den med högsta prioritet kommer att utlösas.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="168"/>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Flytta upp den valda saken.&lt;/b&gt;&lt;p&gt;Saken kommer att flyttas inom hierarki nivån.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Flytta det markerade föremålet uppåt.&lt;/b&gt;&lt;p&gt;Föremålet kommer att flyttas inom hierarkinivån.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="191"/>
@@ -1479,7 +1479,7 @@ samma gång. Den med högsta prioritet kommer att utlösas.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="194"/>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Flytta ned den valda saken.&lt;/b&gt;&lt;p&gt;Saken kommer att flyttas inom hierarki nivån.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Flytta det markerade föremålet nedåt.&lt;/b&gt;&lt;p&gt;Föremålet kommer att flyttas inom hierarkinivån.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="334"/>
@@ -6820,7 +6820,7 @@ Vill du spara ändringarna?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2061"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
@@ -6864,18 +6864,18 @@ Vill du spara ändringarna?</translation>
       <translation>Växlar detta dockningsbara fönster</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1852"/>
+      <location filename="../MainWindow.cpp" line="1944"/>
       <source>Unsaved document</source>
       <translation>Osparat dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Det exporterade objektet innehåller extern länk. Spara dokumentet minst en gång innan du exporterar.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>För att länka till externa objekt måste dokumentet sparas minst en gång.
@@ -7378,17 +7378,17 @@ Vill du avsluta utan att spara din data?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Öppna fil %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>Fil ej funnen</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Filen '%1' kan inte öppnas.</translation>
     </message>
@@ -7396,22 +7396,22 @@ Vill du avsluta utan att spara din data?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>inget</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>Fil ej funnen</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Filen '%1' kan inte öppnas.</translation>
     </message>
@@ -8242,8 +8242,7 @@ Vill du ange en annan katalog?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>Välj arbetsbänken '%1'</translation>
     </message>
@@ -8566,8 +8565,8 @@ Vill du ange en annan katalog?</translation>
       <translation>Exporterar PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="692"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
+      <location filename="../MainWindow.cpp" line="692"/>
       <source>Unsaved document</source>
       <translation>Osparat dokument</translation>
     </message>
@@ -9587,7 +9586,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="143"/>
       <source>Close Al&amp;l</source>
-      <translation>Stäng a&amp;llt</translation>
+      <translation>Stäng a&amp;lla</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
@@ -9968,7 +9967,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="554"/>
       <source>The FreeCAD website</source>
-      <translation>FreeCAD's webbplats</translation>
+      <translation>FreeCADs webbplats</translation>
     </message>
   </context>
   <context>
@@ -10360,8 +10359,8 @@ the current copy will be lost.
       <translation>Skapa ett nytt tomt dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
+      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -10590,13 +10589,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
       <source>Recent files</source>
-      <translation>Nyligen öppnade filer</translation>
+      <translation>Senaste filer</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Recent file list</source>
-      <translation>Lista över nyligen öppnade filer</translation>
+      <translation>Lista över senaste filer</translation>
     </message>
   </context>
   <context>
@@ -11822,7 +11821,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1550"/>
       <location filename="../CommandView.cpp" line="1552"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Visa den aktiva vyn i fullskärm, i odockat eller i dockat läge</translation>
+      <translation>Visa den aktiva vyn antingen i helskärm, i odockat eller dockat läge</translation>
     </message>
   </context>
   <context>
@@ -11836,7 +11835,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1670"/>
       <location filename="../CommandView.cpp" line="1672"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Visa den aktiva vyn i fullskärm, i odockat eller i dockat läge</translation>
+      <translation>Visa den aktiva vyn antingen i helskärm, i odockat eller dockat läge</translation>
     </message>
   </context>
   <context>
@@ -11850,7 +11849,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1640"/>
       <location filename="../CommandView.cpp" line="1642"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Visa den aktiva vyn i fullskärm, i odockat eller i dockat läge</translation>
+      <translation>Visa den aktiva vyn antingen i helskärm, i odockat eller dockat läge</translation>
     </message>
   </context>
   <context>
@@ -11878,7 +11877,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1579"/>
       <location filename="../CommandView.cpp" line="1581"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Visa den aktiva vyn i fullskärm, i odockat eller i dockat läge</translation>
+      <translation>Visa den aktiva vyn antingen i helskärm, i odockat eller dockat läge</translation>
     </message>
   </context>
   <context>
@@ -12633,17 +12632,17 @@ vid start av FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Verktygsfält</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation type="unfinished">Left corner</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation type="unfinished">Right corner</translation>
     </message>
