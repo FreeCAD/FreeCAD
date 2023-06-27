@@ -48,7 +48,7 @@
 #endif
 
 #include <boost/range.hpp>
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
@@ -635,7 +635,7 @@ public:
                 break;
             }
             // new style mapped sub-element
-            if(Data::ComplexGeoData::isMappedElement(dot+1))
+            if(Data::isMappedElement(dot+1))
                 break;
             auto next = strchr(dot+1,'.');
             if(!next) {
@@ -1031,7 +1031,7 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
     subInfo.clear();
     for(const auto &sub : subs) {
         if(sub.empty()) continue;
-        const char *subelement = Data::ComplexGeoData::findElementName(sub.c_str());
+        const char *subelement = Data::findElementName(sub.c_str());
         std::string subname = sub.substr(0,subelement-sub.c_str());
         auto it = subInfo.find(subname);
         if(it == subInfo.end()) {

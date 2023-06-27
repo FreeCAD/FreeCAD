@@ -214,15 +214,27 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
         return BRepPrimAPI_MakePrism(toolFace, extrudeDir).Shape();
     }
 
-    //if the wire is open we need to make a "face" from the wire by extruding it
-    //in the direction of gClosestBasis , then extrude the face in the direction of the section normal
+    // if the wire is open (the normal case of a more or less linear profile),
+    // we need to make a "face" from the wire by extruding it
+    // in the direction of gClosestBasis , then extrude the face in the direction of the section normal
+
+    if (ProjectionStrategy.getValue() == 0) {
+        // Offset. Warn if profile is not quite aligned with section normal. if
+        // the profile and normal are misaligned, the check below for empty "solids"
+        // will not be correct.
+        double angleThresholdDeg = 5.0;
+        // bool isOK =
+        validateOffsetProfile(profileWire, SectionNormal.getValue(), angleThresholdDeg);
+    }
+
     m_toolFaceShape = extrudeWireToFace(profileWire, gClosestBasis, 2.0 * dMax);
     if (debugSection()) {
         BRepTools::Write(m_toolFaceShape, "DCSToolFaceShape.brep");//debug
     }
     extrudeDir = dMax * sectionCS.Direction();
     TopoDS_Shape roughTool = BRepPrimAPI_MakePrism(m_toolFaceShape, extrudeDir).Shape();
-    if (roughTool.ShapeType() == TopAbs_COMPSOLID) {
+    if (roughTool.ShapeType() == TopAbs_COMPSOLID ||
+        roughTool.ShapeType() == TopAbs_COMPOUND) {
         //Composite Solids do not cut well if they contain "solids" with no volume. This
         //happens if the profile has segments parallel to the extrude direction.
         //We need to disassemble it and only keep the real solids.
@@ -905,6 +917,41 @@ gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
     return gp_Vec(prjPnt.X(), prjPnt.Y(), 0.0);
+}
+
+// check for profile segments that are almost, but not quite in the same direction
+// as the section normal direction.  this often indicates a problem with the direction
+// being slightly wrong.  see https://forum.freecad.org/viewtopic.php?t=79017&sid=612a62a60f5db955ee071a7aaa362dbb
+bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const
+{
+    double angleThresholdRad = angleThresholdDeg * M_PI / 180.0;  // 5 degrees
+    TopExp_Explorer explEdges(profile, TopAbs_EDGE);
+    for (; explEdges.More(); explEdges.Next()) {
+        std::pair<Base::Vector3d, Base::Vector3d> segmentEnds = getSegmentEnds(TopoDS::Edge(explEdges.Current()));
+        Base::Vector3d segmentDir = segmentEnds.second - segmentEnds.first;
+        double angleRad = segmentDir.GetAngle(direction);
+        if (angleRad < angleThresholdRad &&
+            angleRad > 0.0) {
+            // profile segment is slightly skewed. possible bad SectionNormal?
+            Base::Console().Warning("%s profile is slightly skewed. Check SectionNormal low decimal places\n",
+                                    getNameInDocument());
+            return false;
+        }
+    }
+    return true;
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(TopoDS_Edge segment) const
+{
+    //    Base::Console().Message("DCS::getSegmentEnds()\n");
+    TopoDS_Vertex tvFirst, tvLast;
+    TopExp::Vertices(segment, tvFirst, tvLast);
+    gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
+    gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    result.first = DU::toVector3d(gpFirst);
+    result.second = DU::toVector3d(gpLast);
+    return result;
 }
 
 //static

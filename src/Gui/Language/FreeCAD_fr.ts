@@ -4738,7 +4738,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Couleur de base pour tous les éléments</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>

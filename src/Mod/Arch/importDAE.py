@@ -90,7 +90,7 @@ def open(filename):
 
     if not checkCollada():
         return
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     FreeCAD.ActiveDocument = doc

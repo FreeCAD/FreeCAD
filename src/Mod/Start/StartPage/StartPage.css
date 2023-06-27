@@ -1,8 +1,15 @@
+html{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     background: BACKGROUND;
     color: BGTCOLOR;
     font-family: FONTFAMILY;
     font-size: FONTSIZE;
+    height: 100%;
 }
 OVERFLOW
 a, a:link, a:visited {
@@ -37,7 +44,8 @@ hr {
     vertical-align:middle;
 }
 .container {
-    margin: 2%
+    margin: 2%;
+    height: 95%;
 }
 ul.tabs {
     margin: 9px 0;
@@ -197,4 +205,17 @@ ul.workbenches li, ul.addonslist li {
     padding: 5px;
     border-radius: 3px;
     min-height: 300px;
+}
+
+
+.iframe {
+    display:block;
+    margin: auto;
+    text-align: center;
+    width:50%;
+    height:100%;
+}
+
+.iframecontainer {
+    height:90%;
 }

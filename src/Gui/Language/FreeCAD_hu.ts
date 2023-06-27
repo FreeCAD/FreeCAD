@@ -4744,7 +4744,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Alapszín minden elemnek</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>

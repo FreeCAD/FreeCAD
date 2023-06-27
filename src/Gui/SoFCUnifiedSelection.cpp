@@ -71,7 +71,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
 
 #include "SoFCUnifiedSelection.h"
@@ -624,7 +624,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             objectName << ", " << subName);
     std::string newElement;
     if(subSelected) {
-        newElement = Data::ComplexGeoData::newElementName(subSelected);
+        newElement = Data::newElementName(subSelected);
         subSelected = newElement.c_str();
         std::string nextsub;
         const char *next = strrchr(subSelected,'.');

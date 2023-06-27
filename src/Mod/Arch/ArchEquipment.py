@@ -285,7 +285,7 @@ class _Equipment(ArchComponent.Component):
             # IFC2x3 does know a IfcFurnishingElement
             obj.IfcType = "Furnishing Element"
         else:
-            obj.IfcType = "Undefined"
+            obj.IfcType = "Building Element Proxy"
         # Add features in the SketchArch External Add-on, if present
         self.addSketchArchFeatures(obj)
 

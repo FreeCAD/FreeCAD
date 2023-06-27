@@ -293,6 +293,9 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     hGrp->SetASCII("Ordered", orderedStr.str().c_str());
     hGrp->SetASCII("Disabled", disabledStr.str().c_str());
 
+    //Update the list of workbenches in the WorkbenchGroup and in the WorkbenchComboBox & workbench QMenu
+    Application::Instance->signalRefreshWorkbenches();
+
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
 
@@ -477,8 +480,6 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
 {
-    requireRestart();
-
     setStartWorkbenchComboItems();
 
     //reorder the list of items.
@@ -551,7 +552,6 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
-    requireRestart();
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {

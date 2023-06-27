@@ -51,7 +51,7 @@ TEST(MappedName, namedConstructionWithMaxSize)
 TEST(MappedName, namedConstructionDiscardPrefix)
 {
     // Arrange
-    std::string name = Data::ComplexGeoData::elementMapPrefix() + "TEST";
+    std::string name = std::string(Data::ELEMENT_MAP_PREFIX) + "TEST";
 
     // Act
     Data::MappedName mappedName(name.c_str());
@@ -80,7 +80,7 @@ TEST(MappedName, stringNamedConstruction)
 TEST(MappedName, stringNamedConstructionDiscardPrefix)
 {
     // Arrange
-    std::string name = Data::ComplexGeoData::elementMapPrefix() + "TEST";
+    std::string name = std::string(Data::ELEMENT_MAP_PREFIX) + "TEST";
 
     // Act
     Data::MappedName mappedName(name);
@@ -560,7 +560,7 @@ TEST(MappedName, appendToBufferWithPrefix)
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
     std::string buffer("STUFF");
-    std::string elemMapPrefix = Data::ComplexGeoData::elementMapPrefix();
+    std::string elemMapPrefix = Data::ELEMENT_MAP_PREFIX;
 
     // Act
     mappedName.appendToBufferWithPrefix(buffer);
@@ -586,7 +586,7 @@ TEST(MappedName, toPrefixedString)
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
     std::string buffer("STUFF");
-    std::string elemMapPrefix = Data::ComplexGeoData::elementMapPrefix();
+    std::string elemMapPrefix = Data::ELEMENT_MAP_PREFIX;
 
     // Act
     buffer += mappedName.toPrefixedString();
