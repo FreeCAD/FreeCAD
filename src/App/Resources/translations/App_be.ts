@@ -18,4 +18,45 @@ that reference the same configurable object</source>
       <translation>Без назвы</translation>
     </message>
   </context>
+  <context>
+    <name>App::Origin</name>
+    <message>
+      <location filename="../../Origin.cpp" line="140"/>
+      <source>X-axis</source>
+      <translation>Вось X</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="141"/>
+      <source>Y-axis</source>
+      <translation>Вось Y</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="142"/>
+      <source>Z-axis</source>
+      <translation>Вось Z</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="143"/>
+      <source>XY-plane</source>
+      <translation>Плоскасць XY</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="144"/>
+      <source>XZ-plane</source>
+      <translation>Плоскасць XZ</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="145"/>
+      <source>YZ-plane</source>
+      <translation>Плоскасць YZ</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::OriginGroupExtension</name>
+    <message>
+      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <source>Origin</source>
+      <translation>Пачатак каардынат</translation>
+    </message>
+  </context>
 </TS>

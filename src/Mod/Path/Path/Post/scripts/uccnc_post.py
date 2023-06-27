@@ -25,8 +25,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-# See: https://wiki.freecadweb.org/Path_Post
-#      https://wiki.freecadweb.org/Path_Postprocessor_Customization
+# See: https://wiki.freecad.org/Path_Post
+#      https://wiki.freecad.org/Path_Postprocessor_Customization
 #      for details on post processors like this one.
 
 
@@ -45,8 +45,8 @@ VERSION = "0.0.4"
 TOOLTIP = """ Post processor for UC-CNC.
 
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode. This postprocessor, once placed in the appropriate
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code. This postprocessor, once placed in the appropriate
 Path/Tool folder, can be used directly from inside FreeCAD,
 via the GUI importer or via python scripts with:
 

@@ -29,7 +29,7 @@ import datetime
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to take
-a pseudo-gcode fragment output by a Path object and output real GCode
+a pseudo-G-code fragment output by a Path object and output real G-code
 suitable for the Max Computer GmbH nccad9 Computer Numeric Control.
 
 Supported features:

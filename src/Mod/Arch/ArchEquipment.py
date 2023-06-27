@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchComponent
@@ -49,20 +49,20 @@ else:
 #  or hydraulic appliances in a building
 
 
-def makeEquipment(baseobj=None,placement=None,name="Equipment"):
+def makeEquipment(baseobj=None,placement=None,name=None):
 
-    "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    "makeEquipment([baseobj],[placement],[name]): creates an equipment object from the given base object."
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Equipment")
+    obj.Label = name if name else translate("Arch","Equipment")
     _Equipment(obj)
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Mesh = baseobj
         else:
             obj.Base = baseobj
-    obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
@@ -172,7 +172,7 @@ class _CommandEquipment:
         return {'Pixmap'  : 'Arch_Equipment',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
                 'Accel': "E, Q",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment from a selected object (Part or Mesh)")}
 
     def IsActive(self):
 
@@ -365,7 +365,7 @@ class _Equipment(ArchComponent.Component):
         try:
             import ArchSketchObject
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
-            # see https://forum.freecadweb.org/viewtopic.php?f=23&t=50802
+            # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
@@ -373,7 +373,7 @@ class _Equipment(ArchComponent.Component):
     def appLinkExecute(self, obj, linkObj, index, linkElement):
         '''
             Default Link Execute method() -
-            See https://forum.freecadweb.org/viewtopic.php?f=22&t=42184&start=10#p361124
+            See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 

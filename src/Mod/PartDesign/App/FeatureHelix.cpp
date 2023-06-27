@@ -124,35 +124,35 @@ App::DocumentObjectExecReturn* Helix::execute()
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: Pitch too small");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Pitch too small"));
         if (Height.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: height too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: height too small!"));
         Turns.setValue(Height.getValue() / Pitch.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::pitch_turns_angle) {
         if (Pitch.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: pitch too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: pitch too small!"));
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         Height.setValue(Turns.getValue() * Pitch.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_angle) {
         if (Height.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: height too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: height too small!"));
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         Pitch.setValue(Height.getValue() / Turns.getValue());
         Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_growth) {
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error: turns too small!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: turns too small!"));
         if ((Height.getValue() < Precision::Confusion())
             && (abs(Growth.getValue()) < Precision::Confusion())
             && Turns.getValue() > 1.0)
-            return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: either height or growth must not be zero!"));
         Pitch.setValue(Height.getValue() / Turns.getValue());
         if (Height.getValue() > 0) {
             Angle.setValue(Base::toDegrees(atan(
@@ -166,7 +166,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
     }
     else {
-        return new App::DocumentObjectExecReturn("Error: unsupported mode");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: unsupported mode"));
     }
 
     TopoDS_Shape sketchshape;
@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     }
 
     if (sketchshape.IsNull())
-        return new App::DocumentObjectExecReturn("Error: No valid sketch or face");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: No valid sketch or face"));
     else {
         //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
         //not use the current simulate approach and build the start and end face from the wires. As the shell
@@ -187,7 +187,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         TopoDS_Face face = TopoDS::Face(sketchshape);
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() != GeomAbs_Plane)
-            return new App::DocumentObjectExecReturn("Error: Face must be planar");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Face must be planar"));
     }
 
     // if the Base property has a valid shape, fuse the AddShape into it
@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             }
 
             if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("Error: Could not build");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
 
             shells.push_back(mkPS.Shape());
 
@@ -293,7 +293,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
 
         if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn("Error: Result is not a solid");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
         TopoDS_Shape result = mkSolid.Shape();
 
@@ -307,11 +307,11 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (base.IsNull()) {
 
             if (getAddSubType() == FeatureAddSub::Subtractive)
-                return new App::DocumentObjectExecReturn("Error: There is nothing to subtract\n");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
@@ -321,17 +321,17 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Adding the helix failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
 
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -344,24 +344,24 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
                 BRepAlgoAPI_Common mkCom(result, base);
                 if (!mkCom.IsDone())
-                    return new App::DocumentObjectExecReturn("Error: Intersecting the helix failed");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
                 BRepAlgoAPI_Cut mkCut(base, result);
                 if (!mkCut.IsDone())
-                    return new App::DocumentObjectExecReturn("Error: Subtracting the helix failed");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());
             }
 
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Error: Result has multiple solids");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -373,7 +373,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     catch (Standard_Failure& e) {
 
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
-            return new App::DocumentObjectExecReturn("Error: Could not create face from sketch");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not create face from sketch"));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
@@ -434,7 +434,7 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     Base::Vector3d profileCenter = getProfileCenterPoint();
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
-    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
+    // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
     double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;

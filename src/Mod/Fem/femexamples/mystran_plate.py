@@ -54,7 +54,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=60320&start=10#p517884
+https://forum.freecad.org/viewtopic.php?f=18&t=60320&start=10#p517884
 This version here uses some real value for the Young's Modulus
 The CalculiX steel is used
 plate 10 mm x 10 mm * 0.3 mm

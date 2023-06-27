@@ -37,7 +37,7 @@ if cfolders:
     f = unquote(filename).replace("+", " ")
     ext = os.path.splitext(filename)[1].lower().strip(".")
     mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("DefaultImport"+ext,"")
-    FreeCAD.loadFile(os.path.join(cfolder, f),mod)
+    FreeCADGui.loadFile(os.path.join(cfolder, f),mod)
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage

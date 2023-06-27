@@ -42,19 +42,19 @@ public:
     ~GeometryMatcher() = default;
 
     bool compareGeometry(Part::TopoShape geom1,  Part::TopoShape geom2);
-    bool comparePoints(TopoDS_Shape shape1,  TopoDS_Shape shape2);
-    bool compareEdges(TopoDS_Shape shape1,  TopoDS_Shape shape2);
+    bool comparePoints(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
+    bool compareEdges(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
 
-    bool compareLines(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareCircles(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareEllipses(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareBSplines(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareDifferent(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareCircleArcs(TopoDS_Edge edge1, TopoDS_Edge edge2);
-    bool compareEllipseArcs(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareLines(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareCircles(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareEllipses(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareBSplines(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareDifferent(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareCircleArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    bool compareEllipseArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
 
 private:
-    bool compareEndPoints(TopoDS_Edge edge1, TopoDS_Edge edge2);
+    bool compareEndPoints(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
 
     DrawViewDimension* m_dimension;
 };

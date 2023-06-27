@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{

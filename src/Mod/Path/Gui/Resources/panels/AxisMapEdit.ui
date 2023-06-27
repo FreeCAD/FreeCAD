@@ -24,7 +24,7 @@
    <item row="0" column="2" colspan="2">
     <widget class="Gui::QuantitySpinBox" name="radius">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The radius of the wrapped axis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The radius of the wrapped axis</string>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
@@ -41,7 +41,7 @@
    <item row="1" column="2" colspan="2">
     <widget class="QComboBox" name="axisMapInput">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The input mapping axis.  Coordinates of the first axis will be mapped to the second.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>The input mapping axis. Coordinates of the first axis will be mapped to the second.</string>
      </property>
      <property name="currentIndex">
       <number>1</number>

@@ -30,7 +30,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Base for Circular Hole based operations' UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Implementation of circular hole specific base geometry page controller."
 
 LOGLEVEL = False

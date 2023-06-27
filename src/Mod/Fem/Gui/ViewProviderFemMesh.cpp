@@ -756,7 +756,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     else
         numTries = numTetr*4+numHexa*6+numPyrd*5+numPris*5;
     // It is not 100% sure that a prism in smesh is a pentahedron in any case, but it will be in most cases!
-    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=13583#p109707
+    // See http://forum.freecad.org/viewtopic.php?f=18&t=13583#p109707
 
     // corner case only edges (Beams) in the mesh. This need some special cases in building up visual
     onlyEdges = false;

@@ -52,7 +52,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
+https://forum.freecad.org/viewtopic.php?f=18&t=48513
 
 cantilever under self weight made from steel grad 235
 l = 32 m, yields just from self weight, means max sigma around 235 n/mm2

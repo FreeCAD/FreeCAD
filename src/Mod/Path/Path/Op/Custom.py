@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Custom Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Path Custom object and FreeCAD command"
 
 
@@ -67,7 +67,7 @@ class ObjectCustom(PathOp.ObjectOp):
             "App::PropertyStringList",
             "Gcode",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"),
+            QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
 
         obj.Source = [ "Text", "File" ]

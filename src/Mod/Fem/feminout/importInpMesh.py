@@ -24,7 +24,7 @@
 
 __title__ = "Mesh import for Abacus/CalculiX inp file format"
 __author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __date__ = "04/08/2016"
 
 ## @package importInpMesh

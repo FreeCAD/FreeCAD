@@ -339,7 +339,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="201"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="202"/>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選取</translation>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

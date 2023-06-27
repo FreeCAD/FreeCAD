@@ -56,9 +56,15 @@ public:
 private:
     void resizePlane(float xsize, float ysize);
     void loadImage();
+    void setPlaneSize(const QSizeF& size, const QImage& img);
     void reloadIfSvg();
-    bool loadSvg(const char*, double x, double y, QImage& img);
-    QSizeF loadRaster(const char*, QImage& img);
+    bool isSvgFile(const char*) const;
+    QSizeF getSizeInMM(const QImage&) const;
+    QSizeF defaultSizeOfSvg(const char*) const;
+    QSizeF pixelSize(const char*, const QSizeF&) const;
+    QImage loadSvg(const char*) const;
+    QImage loadSvgOfSize(const char*, const QSizeF&) const;
+    QImage loadRaster(const char*) const;
     void convertToSFImage(const QImage& img);
     void manipulateImage();
 

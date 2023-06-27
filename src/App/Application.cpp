@@ -2286,7 +2286,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     if (vm.count("help")) {
         std::stringstream str;
         str << exe << endl << endl;
-        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
+        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << endl<<endl;
         str << "Usage: " << exe << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2948,7 +2948,7 @@ void Application::LoadParameters()
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;

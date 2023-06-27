@@ -1797,7 +1797,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-        <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+        <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3580,19 +3580,19 @@ Note: for 2D only setting for x is possible,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppFemGui.cpp" line="172"/>
         <location filename="../../AppFemGui.cpp" line="173"/>
         <location filename="../../AppFemGui.cpp" line="174"/>
         <location filename="../../AppFemGui.cpp" line="175"/>
         <location filename="../../AppFemGui.cpp" line="176"/>
         <location filename="../../AppFemGui.cpp" line="177"/>
         <location filename="../../AppFemGui.cpp" line="178"/>
+        <location filename="../../AppFemGui.cpp" line="179"/>
         <source>FEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppFemGui.cpp" line="181"/>
         <location filename="../../AppFemGui.cpp" line="182"/>
+        <location filename="../../AppFemGui.cpp" line="183"/>
         <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3647,7 +3647,7 @@ Note: for 2D only setting for x is possible,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+        <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
         <source>Constraint temperature</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4334,7 +4334,7 @@ For possible variables, see the description box below.</source>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
         <source>Formulas are only valid
-for the Emer solver</source>
+for the Elmer solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5314,96 +5314,106 @@ used for the Elmer solver</source>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="53"/>
-        <source>Geometrical Constraints</source>
+        <source>Electromagnetic Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="54"/>
-        <source>&amp;Geometrical Constraints</source>
+        <source>&amp;Electromagnetic Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="55"/>
-        <source>Mechanical Constraints</source>
+        <source>Geometrical Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="56"/>
-        <source>&amp;Mechanical Constraints</source>
+        <source>&amp;Geometrical Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="57"/>
-        <source>Thermal Constraints</source>
+        <source>Mechanical Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="58"/>
-        <source>&amp;Thermal Constraints</source>
+        <source>&amp;Mechanical Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="59"/>
-        <source>Constraints without solver</source>
+        <source>Thermal Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="60"/>
-        <source>&amp;Constraints without solver</source>
+        <source>&amp;Thermal Constraints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="61"/>
-        <source>Overwrite Constants</source>
+        <source>Constraints without solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="62"/>
-        <source>&amp;Overwrite Constants</source>
+        <source>&amp;Constraints without solver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="63"/>
+        <source>Overwrite Constants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="64"/>
+        <source>&amp;Overwrite Constants</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="66"/>
         <source>Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="65"/>
+        <location filename="../../Workbench.cpp" line="67"/>
         <source>M&amp;esh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="67"/>
+        <location filename="../../Workbench.cpp" line="69"/>
         <source>Solve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="68"/>
+        <location filename="../../Workbench.cpp" line="70"/>
         <source>&amp;Solve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="70"/>
+        <location filename="../../Workbench.cpp" line="72"/>
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="71"/>
+        <location filename="../../Workbench.cpp" line="73"/>
         <source>&amp;Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="72"/>
+        <location filename="../../Workbench.cpp" line="74"/>
         <source>Filter functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="73"/>
+        <location filename="../../Workbench.cpp" line="75"/>
         <source>&amp;Filter functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="75"/>
+        <location filename="../../Workbench.cpp" line="77"/>
         <source>Utilities</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5939,19 +5949,6 @@ used for the Elmer solver</source>
     </message>
 </context>
 <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="1104"/>
-        <source>Solver CalculiX (new framework)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="1109"/>
-        <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>FEM_SolverControl</name>
     <message>
         <location filename="../../../femcommands/commands.py" line="1123"/>
@@ -6112,8 +6109,8 @@ used for the Elmer solver</source>
 <context>
     <name>GeometryElementsSelection</name>
     <message>
-        <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
-        <source>Geometry reference selector for a</source>
+        <location filename="../../../femguiutils/selection_widgets.py" line="269"/>
+        <source>Geometry reference selector for a {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6122,22 +6119,22 @@ used for the Elmer solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femguiutils/selection_widgets.py" line="277"/>
+        <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
         <source>Click on &quot;Add&quot; and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femguiutils/selection_widgets.py" line="279"/>
+        <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
         <source>{}If no geometry is added to the list, all remaining ones are used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femguiutils/selection_widgets.py" line="293"/>
+        <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
         <source>Selection mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+        <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
         <source>Solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6487,6 +6484,19 @@ Please select a result type first.</source>
     <message>
         <location filename="../../Command.cpp" line="1402"/>
         <source>Mechanical equations for the Elmer solver</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1104"/>
+        <source>Solver CalculiX (new framework)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1109"/>
+        <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

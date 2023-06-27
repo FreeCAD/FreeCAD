@@ -90,6 +90,8 @@ generate_from_xml(GeoFeatureGroupExtensionPy)
 generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
+generate_from_xml(StringHasherPy)
+generate_from_xml(StringIDPy)
 
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
@@ -115,6 +117,8 @@ SET(FreeCADApp_XML_SRCS
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
     MaterialPy.xml
+    StringHasherPy.xml
+    StringIDPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -270,6 +274,9 @@ SET(FreeCADApp_CPP_SRCS
     MaterialPyImp.cpp
     Metadata.cpp
     MetadataPyImp.cpp
+    StringHasher.cpp
+    StringHasherPyImp.cpp
+    StringIDPyImp.cpp
 )
 
 SET(FreeCADApp_HPP_SRCS
@@ -288,6 +295,7 @@ SET(FreeCADApp_HPP_SRCS
     MappedElement.h
     Material.h
     Metadata.h
+    StringHasher.h
 )
 
 SET(FreeCADApp_SRCS

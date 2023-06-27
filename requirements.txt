@@ -16,7 +16,7 @@ pyshp==2.3.1
 PySide2==5.15.2.1
 pysolar==0.10
 PyYAML==6.0
-requests==2.28.2
+requests==2.31.0
 rpdb2==2.0.0.1.2
 sets==0.3.2
 vermin==1.5.1

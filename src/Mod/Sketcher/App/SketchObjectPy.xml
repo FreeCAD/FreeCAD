@@ -419,7 +419,13 @@ If there is no such constraint an exception is raised.
             </UserDocu>
         </Documentation>
     </Methode>
-
+    <Methode Name="toPythonCommands">
+        <Documentation>
+            <UserDocu>
+                Prints the commands that should be executed to recreate the Geometry and Constraints of the present sketch (excluding any External Geometry).
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -487,6 +493,46 @@ If there is no such constraint an exception is raised.
         </UserDocu>
       </Documentation>
       <Parameter Name="GeometryFacadeList" Type="List"/>
+    </Attribute>
+    <Attribute Name="DoF" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return the DoFs of the current solved sketch
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="DoF" Type="Long"/>
+    </Attribute>
+    <Attribute Name="ConflictingConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as conflicting
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="ConflictingConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="RedundantConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as redundant
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="RedundantConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="PartiallyRedundantConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as partially redundant
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="PartiallyRedundantConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="MalformedConstraints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>
+          Return a list of integers indicating the constraints detected as malformed
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="MalformedConstraints" Type="List"/>
     </Attribute>
     <Methode Name="setGeometryId">
       <Documentation>

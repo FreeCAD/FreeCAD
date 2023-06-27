@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import math
 import os

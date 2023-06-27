@@ -788,12 +788,12 @@
     <message>
       <location filename="../../Command.cpp" line="2274"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation type="unfinished">Create a cylinder function, defined by its center, axis and radius</translation>
+      <translation>Hengerfüggvény létrehozása, amelyet a középpontja, tengelye és sugara határoz meg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2280"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation type="unfinished">Create a box function, defined by its center, length, width and height</translation>
+      <translation>Hozzon létre egy doboz funkciót, amelyet a középpontja, hossza, szélessége és magassága határoz meg</translation>
     </message>
   </context>
   <context>
@@ -1096,7 +1096,7 @@ will be merged to make the volume boundaries invisible.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hagyja üresen az alapértelmezett Elmer elmer bináris fájl&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Megjegyzés:&lt;/span&gt; A többszálú működés használatához itt&lt;br&gt; kell megadnia a végrehajtható változatot a &amp;quot;_mpi&amp;quot; utótaggal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hagyja üresen az alapértelmezett Elmer bináris fájl használatához&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Megjegyzés:&lt;/span&gt; A többszálú működés használatához itt&lt;br&gt; kell megadnia a végrehajtható változatot a &amp;quot;_mpi&amp;quot; utótaggal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
@@ -1296,8 +1296,8 @@ constraint or material is applied.</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
-      <translation type="unfinished">Existing result objects will be kept
-otherwise overwritten by new solver run</translation>
+      <translation>Meglévő tárgy eredmények megmaradnak,
+egyébként felülírja az új megoldó futtatásával</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="315"/>
@@ -1308,8 +1308,8 @@ otherwise overwritten by new solver run</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation type="unfinished">The results dialog will be opened
-with the last used dialog settings</translation>
+      <translation>Megnyílik az eredmények párbeszédpanel
+az utoljára használt párbeszédpanel beállításaival</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="335"/>
@@ -1320,8 +1320,8 @@ with the last used dialog settings</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All constraints are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All constraints are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Összes kényszerítés elrejtett a modell nézetben
+az eredmények párbeszédpanel megnyitásakor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -1336,14 +1336,14 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Alapértelmezett megoldó</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation type="unfinished">Default solver to be added when
-adding an analysis container</translation>
+      <translation>Alapértelmezett megoldó, amelyet hozzá kell adni, az
+elemzési konténer hozzáadásakor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1836,7 +1836,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -3324,7 +3324,7 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>képlet</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
@@ -3362,7 +3362,7 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation>Növekedési ütem</translation>
+      <translation>Emelkedési ütem</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3484,7 +3484,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
       <source>Normal to boundary</source>
-      <translation type="unfinished">Normal to boundary</translation>
+      <translation>Aktuális a határra</translation>
     </message>
   </context>
   <context>
@@ -3636,19 +3636,19 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>Kényszerítés erőltetése</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>VEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
       <translation>Importálás-Exportálás</translation>
     </message>
@@ -3703,7 +3703,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>Rugó kötés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Rögzített hőmérséklet</translation>
     </message>
@@ -4393,16 +4393,15 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Formulas are only valid
-for the Emer solver</source>
-      <translation type="unfinished">Formulas are only valid
-for the Emer solver</translation>
+for the Elmer solver</source>
+      <translation>A képletek csak az Elmer megoldóra érvényesek</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Képlet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
@@ -4425,15 +4424,15 @@ for the Emer solver</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation type="unfinished">Flow solution is used to determine
-surface force (and thus displacement)
-generated by the flow
-(Option only applies for Elmer solver)</translation>
+      <translation>Az áramlási megoldást a következők meghatározására használják
+a felületi erő (és így az elmozdulás)
+az áramlás által generált
+(Az opció csak az Elmer megoldóra vonatkozik)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="233"/>
       <source>Surface force by flow</source>
-      <translation type="unfinished">Surface force by flow</translation>
+      <translation>Felületi erő az áramlás által</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="253"/>
@@ -4807,14 +4806,14 @@ vektorát használják irányként</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="109"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Merevség Elmer esetén</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation type="unfinished">What stiffness should be
-used for the Elmer solver</translation>
+      <translation>Milyen merevségnek kell lennie
+az Elmer megoldóhoz</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="81"/>
@@ -5283,7 +5282,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Growth Rate:</source>
-      <translation>Növekedési ráta:</translation>
+      <translation>Emelkedési ráta:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
@@ -5380,96 +5379,106 @@ used for the Elmer solver</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
+      <source>Electromagnetic Constraints</source>
+      <translation type="unfinished">Electromagnetic Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Electromagnetic Constraints</source>
+      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Geometrical Constraints</source>
       <translation>Geometriai kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>&amp;Geometriai kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Mechanical Constraints</source>
       <translation>Mechanikai kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>&amp;Mechanikai kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Thermal Constraints</source>
       <translation>Hőmérséklet kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Thermal Constraints</source>
       <translation>&amp;Hőmérséklet kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Constraints without solver</source>
       <translation>Kényszerítések megoldó nélkül</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Constraints without solver</source>
       <translation>&amp;Kényszerítések megoldó nélkül</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Overwrite Constants</source>
       <translation>Fellülíró kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Overwrite Constants</source>
       <translation>&amp;Fellülíró kényszerítések</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="65"/>
+      <location filename="../../Workbench.cpp" line="67"/>
       <source>M&amp;esh</source>
       <translation>&amp;Háló</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>Solve</source>
       <translation>Megoldás</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="68"/>
+      <location filename="../../Workbench.cpp" line="70"/>
       <source>&amp;Solve</source>
       <translation>&amp;Megoldás</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>Results</source>
       <translation>Eredmények</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="71"/>
+      <location filename="../../Workbench.cpp" line="73"/>
       <source>&amp;Results</source>
       <translation>&amp;Eredmény</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Filter functions</source>
       <translation>Szűrési funkciók</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Filter functions</source>
       <translation>Szűrési &amp;funkció</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>Utilities</source>
       <translation>Kiegészítők</translation>
     </message>
@@ -5505,7 +5514,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="63"/>
       <source>Creates an analysis container with default solver</source>
-      <translation type="unfinished">Creates an analysis container with default solver</translation>
+      <translation>Létrehoz egy elemzési konténert alapértelmezett megoldóval</translation>
     </message>
   </context>
   <context>
@@ -5736,8 +5745,8 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for
- elasticity (stress)</translation>
+      <translation>VEM egyenletet hoz létre a
+ rugalmasságra (feszültség)</translation>
     </message>
   </context>
   <context>
@@ -6006,19 +6015,6 @@ used for the Elmer solver</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1104"/>
-      <source>Solver CalculiX (new framework)</source>
-      <translation>CalculiX megoldó (új keretrendszer)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1109"/>
-      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>Hozzáadja a CalculiX új keretrendszer VEM megoldót (kevesebb eredményhiba kezelése)</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1123"/>
@@ -6179,9 +6175,9 @@ used for the Elmer solver</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
-      <source>Geometry reference selector for a</source>
-      <translation>Geometria hivatkozás választó ehhez</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="269"/>
+      <source>Geometry reference selector for a {}</source>
+      <translation>Geometria hivatkozás kiválasztó ehhez {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="271"/>
@@ -6189,22 +6185,22 @@ used for the Elmer solver</translation>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="277"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <translation>Kattintson a "Hozzáadás" gombra, és válassza ki a geometriai elemeket a listához.{}A következő geometriai elemek választhatók ki: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="279"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Ha a listához nem adnak hozzá geometriát, az összes többit használja.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="293"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
       <source>Selection mode</source>
       <translation>Kiválasztás mód</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
       <source>Solid</source>
       <translation>Szilárd test</translation>
     </message>
@@ -6451,14 +6447,14 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="454"/>
       <source>Deformation equation</source>
-      <translation type="unfinished">Deformation equation</translation>
+      <translation>Deformációs egyenlet</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for
- deformation (nonlinear elasticity)</translation>
+      <translation>VEM egyenletet hoz létre a
+ deformációra (nemlineáris rugalmasság)</translation>
     </message>
   </context>
   <context>
@@ -6552,12 +6548,25 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Mechanical equations</source>
-      <translation type="unfinished">Mechanical equations</translation>
+      <translation>Mechanikai egyenletek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mechanical equations for the Elmer solver</source>
-      <translation type="unfinished">Mechanical equations for the Elmer solver</translation>
+      <translation>Mechanikai egyenletek az Elmer megoldóhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1104"/>
+      <source>Solver CalculiX (new framework)</source>
+      <translation>CalculiX megoldó (új keretrendszer)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1109"/>
+      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
+      <translation>Hozzáadja a CalculiX új keretrendszer VEM megoldót (kevesebb eredményhiba kezelése)</translation>
     </message>
   </context>
 </TS>

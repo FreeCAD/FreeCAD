@@ -33,7 +33,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Util - Utility functions for Path operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
 
@@ -188,7 +188,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
         curve = edge.Curve
         if Part.Circle == type(curve) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
-            # https://www.freecadweb.org/wiki/Part%20Offset2D
+            # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
             new_edge = Part.makeCircle(

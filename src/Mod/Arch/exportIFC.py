@@ -51,7 +51,7 @@ if FreeCAD.GuiUp:
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 # Save the Python open function because it will be redefined
 if open.__module__ in ['__builtin__', 'io']:
@@ -201,7 +201,7 @@ def export(exportList, filename, colors=None, preferences=None):
     except ModuleNotFoundError:
         _err("IfcOpenShell was not found on this system. "
              "IFC support is disabled.\n"
-             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
     if filename.lower().endswith("json"):
@@ -372,7 +372,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # if ifctype == "IfcArray":
         # FIXME: the first array element is not placed correct if the array is not on coordinate origin
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085&p=431476#p431476
+        # https://forum.freecad.org/viewtopic.php?f=39&t=50085&p=431476#p431476
         # workaround: do not use the assembly in ifc but a normal compound instead
         if False:
             clonedeltas = []
@@ -1919,6 +1919,9 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
+        if h == b:
+            # are these edges unordered? To be on the safe side, check the next one
+            h = p.Edges[2].Length
         profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
@@ -2410,7 +2413,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
     # in some cases object have wrong ifctypes, thus set it
-    # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085
+    # https://forum.freecad.org/viewtopic.php?f=39&t=50085
     if ifctype not in ArchIFCSchema.IfcProducts.keys():
         # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
         ifctype = "IfcBuildingElementProxy"

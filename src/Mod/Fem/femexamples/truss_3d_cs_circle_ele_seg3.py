@@ -59,8 +59,8 @@ example.setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=23318&start=20#p521050
-https://forum.freecadweb.org/viewtopic.php?f=13&t=59239&start=100#p521220
+https://forum.freecad.org/viewtopic.php?f=18&t=23318&start=20#p521050
+https://forum.freecad.org/viewtopic.php?f=13&t=59239&start=100#p521220
 
 Z88 official example 2, crane beam
 - nonsway (on x deformation on both support)

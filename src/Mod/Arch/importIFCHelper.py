@@ -278,7 +278,7 @@ def buildRelMattable(ifcfile):
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         # the related object might not exist
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        # https://forum.freecad.org/viewtopic.php?f=39&t=58607
         if r.RelatedObjects:
             for o in r.RelatedObjects:
                 if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -326,7 +326,7 @@ def buildRelColors(ifcfile, prodrepr):
 
         # Nova
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37940&start=10#p329491
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=37940&start=10#p329491
         # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
         '''
         if r.Item:
@@ -512,7 +512,7 @@ def getColorFromStyledItem(styled_item):
     else:
         # never seen an ifc with more than one Styles in IfcStyledItem
         # the above seams to only apply for IFC2x3, IFC4 can have them
-        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
+        # see https://forum.freecad.org/viewtopic.php?f=39&t=33560&p=437056#p437056
 
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
@@ -626,7 +626,7 @@ def getIfcPropertySets(ifcfile, pid):
     psets = {}
     for rel in ifcfile[pid].IsDefinedBy:
         # the following if condition is needed in IFC2x3 only
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=37892#p322884
+        # https://forum.freecad.org/viewtopic.php?f=39&t=37892#p322884
         if rel.is_a('IfcRelDefinesByProperties'):
             props = []
             if rel.RelatingPropertyDefinition.is_a("IfcPropertySet"):
@@ -1108,7 +1108,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             if annotation.Name:
                 name = annotation.Name
             if annotation.ObjectPlacement:
-                # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                # https://forum.freecad.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
             if preferences['PREFIX_NUMBERS']:
                 name = "ID" + str(aid) + " " + name

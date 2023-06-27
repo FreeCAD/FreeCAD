@@ -28,20 +28,22 @@
 
 class Ui_TaskSketcherSolverAdvanced;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace SketcherGui { 
+namespace SketcherGui
+{
 
 class ViewProviderSketch;
 
-class TaskSketcherSolverAdvanced : public Gui::TaskView::TaskBox
+class TaskSketcherSolverAdvanced: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
+    explicit TaskSketcherSolverAdvanced(ViewProviderSketch* sketchView);
     ~TaskSketcherSolverAdvanced() override;
 
 private:
@@ -71,14 +73,15 @@ protected:
     void updateDefaultMethodParameters();
     void updateRedundantMethodParameters();
     void updateSketchObject();
+
 protected:
-    ViewProviderSketch *sketchView;
+    ViewProviderSketch* sketchView;
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskSketcherSolverAdvanced> ui;
 };
 
-} //namespace SketcherGui
+}// namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+#endif// GUI_TASKVIEW_TaskSketcherSolverAdvanced_H

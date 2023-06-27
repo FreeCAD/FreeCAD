@@ -21,7 +21,7 @@
 
 __title__ = "CompoundTools._CommandExplodeCompound"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "ExplodeCompound: create a bunch of CompoundFilter objects to split a compound into pieces."
 
 from .Explode import explodeCompound

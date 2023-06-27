@@ -107,8 +107,10 @@ public:
 	float GetToolProfileAt(float pos);
 	bool isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res);
 
-	std::vector< toolShapePoint > m_toolShape;
-	float radius;
+/* m_toolShape has to be populated with linearly increased
+   radiusPos to get the tool profile at given position */
+    std::vector <toolShapePoint> m_toolShape;
+    float radius;
 	float length;
 };
 

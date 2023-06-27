@@ -43,6 +43,7 @@
 #include "CenterLinePy.h"
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 TYPESYSTEM_SOURCE(TechDraw::CenterLine, Base::Persistence)
 
@@ -108,8 +109,22 @@ CenterLine::CenterLine(Base::Vector3d pt1,
                        double h,
                        double v,
                        double r,
-                       double x) : CenterLine(BaseGeomPtrFromVectors(pt1, pt2), m, h, v, r, x)
+                       double x)
 {
+    m_start = pt1;
+    m_end = pt2;
+    m_mode = m;
+    m_hShift = h;
+    m_vShift = v;
+    m_rotate = r;
+    m_extendBy = x;
+    m_type = CLTYPE::FACE;
+    m_flip2Line = false;
+
+    m_geometry = BaseGeomPtrFromVectors(pt1, pt2);
+
+    initialize();
+
 }
 
 CenterLine::~CenterLine()
@@ -495,9 +510,9 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
 
     // The centerline is drawn using the midpoints of the two lines that connect l1p1-l2p1 and l1p2-l2p2.
     // However, we don't know which point should be l1p1 to get a geometrically correct result, see
-    // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
+    // https://wiki.freecad.org/File:TD-CenterLineFlip.png for an illustration of the problem.
     // Thus we test this by a circulation test, see this post for a brief explanation:
-    // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
+    // https://forum.freecad.org/viewtopic.php?p=505733#p505615
     if (DrawUtil::circulation(l1p1, l1p2, l2p1) != DrawUtil::circulation(l1p2, l2p2, l2p1)) {
         Base::Vector3d temp; // reverse line 1
         temp = l1p1;
@@ -509,13 +524,28 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
+    // if the proposed end points prevent the creation of a vertical or horizontal centerline, we need
+    // to prevent the "orientation" code below from creating identical endpoints.  This would create a
+    // zero length edge and cause problems later.
+    // this should probably be prevented in the creation task?
+    bool inhibitVertical = false;
+    bool inhibitHorizontal = false;
+    if (DU::fpCompare(p1.y, p2.y, EWTOLERANCE)) {
+        // proposed end points are aligned vertically, so we can't draw a vertical line to connect them
+        inhibitVertical = true;
+    }
+    if (DU::fpCompare(p1.x, p2.x, EWTOLERANCE)) {
+        // proposed end points are aligned horizontally, so we can't draw a horizontal line to connect them
+        inhibitHorizontal = true;
+    }
+
     //orientation
-    if (mode == 0) {           //Vertical
-            p1.x = mid.x;
-            p2.x = mid.x;
-    } else if (mode == 1) {    //Horizontal
-            p1.y = mid.y;
-            p2.y = mid.y;
+    if (mode == 0 && !inhibitVertical) {           //Vertical
+        p1.x = mid.x;
+        p2.x = mid.x;
+    } else if (mode == 1 && !inhibitHorizontal) {    //Horizontal
+        p1.y = mid.y;
+        p2.y = mid.y;
     } else if (mode == 2) {    //Aligned
         // no op
     }

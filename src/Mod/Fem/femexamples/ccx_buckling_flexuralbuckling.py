@@ -53,7 +53,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=80#p488666
+https://forum.freecad.org/viewtopic.php?f=18&t=20217&start=80#p488666
 
 This example is based on a CalculiX verification example.
 http://www.feacluster.com/CalculiX/ccx_2.13/doc/ccx/input_deck_viewer.php?input_deck=beam8b.inp

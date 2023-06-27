@@ -277,7 +277,7 @@ bool DlgRevolution::validate()
         axisLinkHasAngle = angle_edge != 1e100;
     } catch(Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Revolution axis link is invalid.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         ui->txtAxisLink->setFocus();
         return false;
     } catch(Standard_Failure &err) {
@@ -287,7 +287,7 @@ bool DlgRevolution::validate()
         return false;
     } catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Revolution axis link is invalid.\n\n%1").arg(tr("Unknown error")));
         ui->txtAxisLink->setFocus();
         return false;
     }
@@ -440,7 +440,7 @@ void DlgRevolution::accept()
         activeDoc->recompute();
     } catch (Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Revolve failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Creating Revolve failed.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         return;
     } catch (...){
         QMessageBox::critical(this, windowTitle(),

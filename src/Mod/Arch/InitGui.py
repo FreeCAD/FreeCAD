@@ -203,14 +203,14 @@ class ArchWorkbench(FreeCADGui.Workbench):
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedArchPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", QT_TRANSLATE_NOOP("Arch", "Arch"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", QT_TRANSLATE_NOOP("Arch", "Arch"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", QT_TRANSLATE_NOOP("QObject", "Arch"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", QT_TRANSLATE_NOOP("QObject", "Arch"))
                 FreeCADGui.draftToolBar.loadedArchPreferences = True
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
 
         FreeCAD.Console.PrintLog('Loading Arch workbench, done.\n')
@@ -246,8 +246,8 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 # are independent of the loading of the workbench and can be loaded at startup
 import Arch_rc
 from PySide.QtCore import QT_TRANSLATE_NOOP
-FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
-FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
-FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("QObject", "Import-Export"))
 
 FreeCAD.__unit_test__ += ["TestArch"]

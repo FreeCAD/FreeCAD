@@ -88,7 +88,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i = 0; i < num; i++) {
-        QString item = qApp->translate("Gui::Dialog::DlgGeneralImp", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBox_UnitSystem->addItem(item, i);
     }
 
@@ -290,6 +290,12 @@ void DlgGeneralImp::loadSettings()
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
+
+        if (it->second == "sr-CS") {
+            // Qt does not treat sr-CS (Serbian, Latin) as a Latin-script variant by default: this
+            // forces it to do so.
+            it->second = "sr_Latn";
+        }
 
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();

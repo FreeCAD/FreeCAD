@@ -29,7 +29,7 @@ TODO put examples here.
 
 __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchCommands
@@ -168,7 +168,7 @@ class Component(ArchIFC.IfcProduct):
     structures. Its properties and behaviours are common to all Arch objects.
 
     You can learn more about Arch Components, and the purpose of Arch
-    Components here: https://wiki.freecadweb.org/Arch_Component
+    Components here: https://wiki.freecad.org/Arch_Component
 
     Parameters
     ----------
@@ -185,7 +185,7 @@ class Component(ArchIFC.IfcProduct):
         """Give the component its component specific properties, such as material.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
@@ -333,7 +333,7 @@ class Component(ArchIFC.IfcProduct):
                                                    # comp=True)
 
                             # Workaround solution for V0.20.3 backport:
-                            # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
+                            # See: https://forum.freecad.org/viewtopic.php?p=613196#p613196
                             offset_rotation = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0),
                                                                 FreeCAD.Rotation(deltar.Axis, math.degrees(deltar.Angle)),
                                                                 self.oldPlacement.Base)
@@ -543,7 +543,7 @@ class Component(ArchIFC.IfcProduct):
 
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
-                if obj.Base.Base:
+                if obj.Base.Base and len(obj.Base.Base.Shape.Wires) == 1:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir).normalize()
                     if extrusion.Length == 0:
@@ -744,7 +744,7 @@ class Component(ArchIFC.IfcProduct):
                     if js:
                         add = js.cut(base)
                         if placement:
-                            # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                             add.Placement = placement.multiply(add.Placement)
                         base = base.fuse(add)
                     elif hasattr(o,'Shape'):
@@ -752,7 +752,7 @@ class Component(ArchIFC.IfcProduct):
                             ## TODO use Part.Shape() instead?
                             s = o.Shape.copy()
                             if placement:
-                                # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                                # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                                 s.Placement = placement.multiply(s.Placement)
                             if base:
                                 if base.Solids:
@@ -792,13 +792,13 @@ class Component(ArchIFC.IfcProduct):
                     ## TODO - Part.Shape() instead?
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
-                        # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                         subvolume.Placement = o.Placement.multiply(subvolume.Placement)
 
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
-                            # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                            # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                             subvolume.Placement = placement.multiply(subvolume.Placement)
                         if len(base.Solids) > 1:
                             base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
@@ -812,7 +812,7 @@ class Component(ArchIFC.IfcProduct):
                                 ## TODO use Part.Shape() instead?
                                 s = o.Shape.copy()
                                 if placement:
-                                    # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                                    # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
                                     s.Placement = placement.multiply(s.Placement)
                                 try:
                                     if len(base.Solids) > 1:
@@ -1169,7 +1169,7 @@ class ViewProviderComponent:
         """Give the component view provider its component view provider specific properties.
 
         You can learn more about properties here:
-        https://wiki.freecadweb.org/property
+        https://wiki.freecad.org/property
         """
 
         if not "UseMaterialColor" in vobj.PropertiesList:

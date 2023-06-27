@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
 __created__ = "2014"
 

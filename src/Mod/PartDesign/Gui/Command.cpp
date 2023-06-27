@@ -145,7 +145,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QApplication::translate("Exception", e.what()));
     } catch (Standard_Failure &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.GetMessageString()));
     }
@@ -406,7 +406,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     } catch (Base::Exception &e) {
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(),
-                QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
+                QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
     }
 }
@@ -439,30 +439,46 @@ void CmdPartDesignClone::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
             (Part::Feature::getClassTypeId());
     if (objs.size() == 1) {
-        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547#p207336
+        // As suggested in https://forum.freecad.org/viewtopic.php?f=3&t=25265&p=198547#p207336
         // put the clone into its own new body.
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
+
         auto obj = objs[0];
-        std::string FeatName = getUniqueObjectName("Clone",obj);
-        std::string BodyName = getUniqueObjectName("Body",obj);
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::Body','" << BodyName << "')");
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::FeatureBase','" << FeatName << "')");
-        auto Feat = obj->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(obj);
-        FCMD_OBJ_CMD(Feat,"BaseFeature = " << objCmd);
-        FCMD_OBJ_CMD(Feat,"Placement = " << objCmd << ".Placement");
-        FCMD_OBJ_CMD(Feat,"setEditorMode('Placement',0)");
+        std::string cloneName = getUniqueObjectName("Clone", obj);
+        std::string bodyName = getUniqueObjectName("Body", obj);
 
-        auto Body = obj->getDocument()->getObject(BodyName.c_str());
-        FCMD_OBJ_CMD(Body,"Group = [" << getObjectCmd(Feat) << "]");
+        // Create body and clone
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::Body','" << bodyName << "')");
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::FeatureBase','" << cloneName << "')");
 
-        // Set the tip of the body
-        FCMD_OBJ_CMD(Body,"Tip = " << getObjectCmd(Feat));
+        auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
+        auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
+
+        // In the first step set the group link and tip of the body
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Group = [" << getObjectCmd(cloneObj) << "]");
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Tip = " << getObjectCmd(cloneObj));
+
+        // In the second step set the link of the base feature
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "BaseFeature = " << objCmd);
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "Placement = " << objCmd << ".Placement");
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "setEditorMode('Placement', 0)");
+
         updateActive();
-        copyVisual(Feat, "Transparency", obj);
-        copyVisual(Feat, "DisplayMode", obj);
+        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "LineColor", obj);
+        copyVisual(cloneObj, "PointColor", obj);
+        copyVisual(cloneObj, "Transparency", obj);
+        copyVisual(cloneObj, "DisplayMode", obj);
         commitCommand();
     }
 }
@@ -857,7 +873,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         // was quite confusing (and thus the user may have done the wrong thing since
         // they may have assumed the that the sketch was meant) and
         // Second, there is no need that the body must be inside a Part container.
-        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=19&t=32164
+        // For more details see: https://forum.freecad.org/viewtopic.php?f=19&t=32164
         // The function has been modified not to expect the body to be in the Part
         // and it now directly invokes the 'makeCopy' dialog.
         auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);

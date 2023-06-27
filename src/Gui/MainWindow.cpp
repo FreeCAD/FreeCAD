@@ -230,8 +230,7 @@ private:
         assert(actions.size() <= maxSchema);
         for(int i = 0; i < maxSchema ; i++)
         {
-            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
-                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
         }
     }
 };
@@ -446,16 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
-
-    // setup font substitutions for NaviCube
-    // Helvetica usually gives good enough results on mac & linux
-    // in rare cases Helvetica matches a bad font on linux
-    // Nimbus Sans Narrow and Open Sans Condensed added as fallback
-    // Bahnschrift is a condensed font available on windows versions since 2017
-    // Arial added as fallback for older version
-    auto substitutions = QStringLiteral("Bahnschrift,Helvetica,Nimbus Sans Narrow,Open Sans Condensed,Arial,Sans");
-    auto family = QStringLiteral("FreeCAD NaviCube");
-    QFont::insertSubstitutions(family, substitutions.split(QLatin1Char(',')));
 
     statusBar()->showMessage(tr("Ready"), 2001);
 }
@@ -1353,7 +1342,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         Q_EMIT  mainWindowClosed();
         d->activityTimer->stop();
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748
+        // https://forum.freecad.org/viewtopic.php?f=8&t=67748
         // When the session manager jumps in it can happen that the closeEvent()
         // function is triggered twice and for the second call the main window might be
         // invisible. In this case the window settings shouldn't be saved.
@@ -1604,13 +1593,15 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-// make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
-    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
-#endif
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    // make menus and tooltips usable in fullscreen under Windows, see issue #7563
+#if defined(Q_OS_WIN)
+    if (QWindow* win = this->windowHandle()) {
+        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+    }
+#endif
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
@@ -2251,9 +2242,16 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
 
     int messageType = -1;
     switch(level){

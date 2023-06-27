@@ -255,8 +255,7 @@ void CmdTechDrawImage::activated(int iMsg)
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
         QString(),
-        QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
-
+        QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
         return;
     }

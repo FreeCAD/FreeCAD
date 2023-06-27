@@ -443,12 +443,12 @@
     <message>
       <location filename="../../Command.cpp" line="2267"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2273"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2279"/>
@@ -1341,7 +1341,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Подразумевани алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -1847,7 +1847,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -3422,7 +3422,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Реални део x-компоненте потенцијала
-Напомена: ако је изабрана страница, ово ц́е бити вредност
+Напомена: ако је изабрана страница, ово ће бити вредност
           у правцу нормалном на страницу
           подешавања за y и з ће бити занемарена</translation>
     </message>
@@ -3433,7 +3433,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Имагинарни део x-компоненте потенцијала
-Напомена: ако је изабрана страница, ово ц́е бити вредност
+Напомена: ако је изабрана страница, ово ће бити вредност
           у правцу нормалном на страницу
           подешавања за y и з ће бити занемарена</translation>
     </message>
@@ -3647,19 +3647,19 @@ Note: for 2D only setting for x is possible,
       <translation>Ограничење cиле</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="172"/>
       <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
+      <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
+      <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
       <translation>Увоз/извоз</translation>
     </message>
@@ -3714,7 +3714,7 @@ Note: for 2D only setting for x is possible,
       <translation>Ограничење опруге</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
       <translation>Ограничење температуре</translation>
     </message>
@@ -4236,7 +4236,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="149"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
@@ -4304,7 +4304,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="189"/>
       <source>Reversed direction</source>
-      <translation>Обрнути правац</translation>
+      <translation>Обрнути смер</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="196"/>
@@ -4404,9 +4404,9 @@ For possible variables, see the description box below.</source>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Formulas are only valid
-for the Emer solver</source>
+for the Elmer solver</source>
       <translation type="unfinished">Formulas are only valid
-for the Emer solver</translation>
+for the Elmer solver</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
@@ -4557,7 +4557,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
@@ -4652,7 +4652,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="131"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Обрни смер</translation>
     </message>
   </context>
   <context>
@@ -4785,7 +4785,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="87"/>
       <source>Reverse Direction</source>
-      <translation>Обрнути правац</translation>
+      <translation>Обрнути смер</translation>
     </message>
   </context>
   <context>
@@ -5391,96 +5391,106 @@ used for the Elmer solver</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
+      <source>Electromagnetic Constraints</source>
+      <translation type="unfinished">Electromagnetic Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Electromagnetic Constraints</source>
+      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Geometrical Constraints</source>
       <translation>Геометријска ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>&amp;Геометријска ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Mechanical Constraints</source>
       <translation>Механичка ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>&amp;Механичка ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Thermal Constraints</source>
       <translation>Топлотна ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Thermal Constraints</source>
       <translation>&amp;Топлотна ограничења</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Constraints without solver</source>
       <translation type="unfinished">Constraints without solver</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Constraints without solver</source>
       <translation type="unfinished">&amp;Constraints without solver</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Overwrite Constants</source>
       <translation type="unfinished">Overwrite Constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Overwrite Constants</source>
       <translation type="unfinished">&amp;Overwrite Constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="65"/>
+      <location filename="../../Workbench.cpp" line="67"/>
       <source>M&amp;esh</source>
       <translation type="unfinished">M&amp;esh</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>Solve</source>
       <translation>Реши</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="68"/>
+      <location filename="../../Workbench.cpp" line="70"/>
       <source>&amp;Solve</source>
       <translation type="unfinished">&amp;Solve</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>Results</source>
       <translation>Резултати</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="71"/>
+      <location filename="../../Workbench.cpp" line="73"/>
       <source>&amp;Results</source>
       <translation type="unfinished">&amp;Results</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Filter functions</source>
       <translation type="unfinished">Filter functions</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Filter functions</source>
       <translation type="unfinished">&amp;Filter functions</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>Utilities</source>
       <translation>Корисни алати</translation>
     </message>
@@ -6017,19 +6027,6 @@ used for the Elmer solver</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1104"/>
-      <source>Solver CalculiX (new framework)</source>
-      <translation>CalculiX алгоритам за решавање (нове генерације)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1109"/>
-      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>Направи МКЕ алгоритам за решавање CalculiX нове генерације (побољшана обрада грешака)</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1123"/>
@@ -6190,9 +6187,9 @@ used for the Elmer solver</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
-      <source>Geometry reference selector for a</source>
-      <translation>Избор референтне геометрије</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="269"/>
+      <source>Geometry reference selector for a {}</source>
+      <translation>Избор референтне геометрије за {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="271"/>
@@ -6200,22 +6197,22 @@ used for the Elmer solver</translation>
       <translation>Додај</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="277"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
       <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="279"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Ако ниједан елемент није додат на листу, користиће се сви преостали геометријски елементи.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="293"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
       <source>Selection mode</source>
       <translation>Режим избора</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
       <source>Solid</source>
       <translation>Пуно тело</translation>
     </message>
@@ -6570,6 +6567,19 @@ Please select a result type first.</translation>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation type="unfinished">Mechanical equations for the Elmer solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1104"/>
+      <source>Solver CalculiX (new framework)</source>
+      <translation>CalculiX алгоритам за решавање (нове генерације)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1109"/>
+      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
+      <translation>Направи МКЕ алгоритам за решавање CalculiX нове генерације (побољшана обрада грешака)</translation>
     </message>
   </context>
 </TS>

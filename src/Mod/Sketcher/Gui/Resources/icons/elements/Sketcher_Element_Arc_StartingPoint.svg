@@ -3,10 +3,6 @@
 
 <svg width="64px" height="64px" id="svg2869" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs id="defs2871">
-    <linearGradient id="linearGradient3026">
-      <stop id="stop3028" offset="0" style="stop-color:#4e9a06;stop-opacity:1" />
-      <stop id="stop3030" offset="1" style="stop-color:#8ae234;stop-opacity:1" />
-    </linearGradient>
     <radialGradient xlink:href="#linearGradient3144" id="radialGradient2378" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" cx="225.26402" cy="672.79736" fx="225.26402" fy="672.79736" r="34.345188" />
     <radialGradient xlink:href="#linearGradient3144" id="radialGradient2368" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" cx="225.26402" cy="672.79736" fx="225.26402" fy="672.79736" r="34.345188" />
     <linearGradient id="linearGradient3144">
@@ -21,8 +17,8 @@
     </linearGradient>
     <linearGradient xlink:href="#linearGradient3836-9" id="linearGradient3801-7" gradientUnits="userSpaceOnUse" x1="-18" y1="18" x2="-22" y2="5" />
     <linearGradient id="linearGradient3836-9">
-      <stop style="stop-color:#a40000;stop-opacity:1" offset="0" id="stop3838-8" />
-      <stop style="stop-color:#ef2929;stop-opacity:1" offset="1" id="stop3840-1" />
+      <stop style="stop-color:#4e9a06;stop-opacity:1" offset="0" id="stop3838-8" />
+      <stop style="stop-color:#8ae234;stop-opacity:1" offset="1" id="stop3840-1" />
     </linearGradient>
     <linearGradient xlink:href="#linearGradient3836-0" id="linearGradient3801-1" gradientUnits="userSpaceOnUse" x1="-18" y1="18" x2="-22" y2="5" />
     <linearGradient id="linearGradient3836-0">
@@ -40,7 +36,7 @@
       <stop style="stop-color:#a40000;stop-opacity:1" offset="0" id="stop3838-8-0" />
       <stop style="stop-color:#ef2929;stop-opacity:1" offset="1" id="stop3840-1-9" />
     </linearGradient>
-    <linearGradient y2="5" x2="-22" y1="18" x1="-18" gradientUnits="userSpaceOnUse" id="linearGradient3082-3" xlink:href="#linearGradient3026" />
+    <linearGradient y2="5" x2="-22" y1="18" x1="-18" gradientUnits="userSpaceOnUse" id="linearGradient3082-3" xlink:href="#linearGradient3836-9-7" />
   </defs>
   <metadata id="metadata2874">
     <rdf:RDF>
@@ -53,7 +49,7 @@
           </cc:Agent>
         </dc:creator>
         <dc:date>2014-08-04</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
@@ -83,8 +79,8 @@
     </g>
     <g transform="translate(38,0)" id="g3827-0">
       <g transform="translate(31.322131,40.570289)" id="g3797-7">
-        <path style="fill:none;stroke:#280000;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-6" d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
-        <path style="fill:url(#linearGradient3801-7);fill-opacity:1;stroke:#ef2929;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-7-0" d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
+        <path style="fill:none;stroke:#172a04;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-6" d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
+        <path style="fill:url(#linearGradient3801-7);fill-opacity:1;stroke:#8ae234;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-7-0" d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
       </g>
     </g>
     <g transform="translate(31.322131,40.570289)" id="g3797-7-2">
@@ -92,8 +88,8 @@
       <path style="fill:url(#linearGradient3082);fill-opacity:1;stroke:#ef2929;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-7-0-1" d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
     </g>
     <g transform="translate(31.322131,2.570289)" id="g3797-7-6">
-      <path style="fill:none;stroke:#172a04;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-6-0" d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
-      <path style="fill:url(#linearGradient3082-3);fill-opacity:1;stroke:#8ae234;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-7-0-6" d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
+      <path style="fill:none;stroke:#280000;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-6-0" d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
+      <path style="fill:url(#linearGradient3082-3);fill-opacity:1;stroke:#ef2929;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-7-0-6" d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
     </g>
   </g>
 </svg>

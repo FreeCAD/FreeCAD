@@ -47,12 +47,12 @@ else:
 
 __title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
-def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
+def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=None):
 
-    """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
+    """makeRebar([baseobj],[sketch],[diameter],[amount],[offset],[name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
 
     if not FreeCAD.ActiveDocument:
@@ -60,7 +60,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Rebar")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Rebar")
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)

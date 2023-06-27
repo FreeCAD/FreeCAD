@@ -22,7 +22,7 @@
 
 __title__ = "TechDrawTools.CommandAxoLengthDimension"
 __author__ = "edi"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __version__ = "00.01"
 __date__ = "2023/02/01"
 

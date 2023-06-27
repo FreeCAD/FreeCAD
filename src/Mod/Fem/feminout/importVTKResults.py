@@ -24,7 +24,7 @@
 
 __title__ = "Result import and export for VTK file format"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importVTKResults
 #  \ingroup FEM

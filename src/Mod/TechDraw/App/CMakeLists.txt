@@ -136,8 +136,6 @@ SET(Draw_SRCS
     DrawLeaderLine.h
     DrawRichAnno.cpp
     DrawRichAnno.h
-    QDomNodeModel.cpp
-    QDomNodeModel.h
     DrawTile.cpp
     DrawTile.h
     DrawTileWeld.cpp

@@ -101,7 +101,7 @@ int main( int argc, char ** argv )
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();
-    // See https://forum.freecadweb.org/viewtopic.php?f=18&t=20600
+    // See https://forum.freecad.org/viewtopic.php?f=18&t=20600
     // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
@@ -115,8 +115,8 @@ int main( int argc, char ** argv )
         _putenv_s("PYTHONHOME", mingw_prefix);
 #else
     _putenv("PYTHONPATH=");
-    // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
+    // https://forum.freecad.org/viewtopic.php?f=4&t=18288
+    // https://forum.freecad.org/viewtopic.php?f=3&t=20515
     const char* fc_py_home = getenv("FC_PYTHONHOME");
     if (fc_py_home)
         _putenv_s("PYTHONHOME", fc_py_home);
@@ -126,7 +126,7 @@ int main( int argc, char ** argv )
 
 #if defined (FC_OS_WIN32)
     // we need to force Coin not to use Freetype in order to find installed fonts on Windows
-    // see https://forum.freecadweb.org/viewtopic.php?p=485142#p485016
+    // see https://forum.freecad.org/viewtopic.php?p=485142#p485016
     _putenv("COIN_FORCE_FREETYPE_OFF=1");
 
     int argc_ = argc;
@@ -163,7 +163,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
     App::Application::Config()["SplashInfoPosition" ] = "15.210";
 
-    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecadweb.FreeCAD.desktop"));
+    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD.desktop"));
 
     try {
         // Init phase ===========================================================

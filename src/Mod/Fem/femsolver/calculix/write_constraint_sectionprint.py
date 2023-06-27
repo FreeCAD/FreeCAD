@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix constraint sectionprint"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def get_analysis_types():

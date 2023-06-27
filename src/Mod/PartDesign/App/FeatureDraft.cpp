@@ -298,7 +298,7 @@ App::DocumentObjectExecReturn *Draft::execute()
                 if (!mkDraft.AddDone()) {
                     // Note: the function ProblematicShape returns the face on which the error occurred
                     // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       therefore unusable. See http://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
                     Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());
@@ -312,15 +312,15 @@ App::DocumentObjectExecReturn *Draft::execute()
 
         mkDraft.Build();
         if (!mkDraft.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create draft");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create draft"));
 
         TopoDS_Shape shape = mkDraft.Shape();
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
         int solidCount = countSolids(shape);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Fuse: Result has multiple solids. This is not supported at this time.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         this->Shape.setValue(getSolid(shape));

@@ -55,7 +55,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
+    : TaskBox(Gui::BitmapFactory().pixmap(DressUpView->featureIcon().c_str()),
               DressUpView->menuName,
               true,
               parent)
@@ -81,13 +81,13 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 const QString TaskDressUpParameters::btnPreviewStr()
 {
-    static const QString text{ tr("Preview") };
+    const QString text{ tr("Preview") };
     return text;
 }
 
 const QString TaskDressUpParameters::btnSelectStr()
 {
-    static const QString text{ tr("Select") };
+    const QString text{ tr("Select") };
     return text;
 }
 

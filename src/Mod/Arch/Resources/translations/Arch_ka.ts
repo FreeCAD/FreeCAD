@@ -221,32 +221,22 @@
       <translation>თვისება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="71"/>
-      <source>The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</source>
-      <translation>თითოეული ობიექტიდან ასაღები თვისება.
-შეიძლება იყოს "Count" ობიექტების დასათვლელად, ან ისეთი თვისების 
-სახელები, როგორიცაა "Length" ან "Shape.Volume".</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="79"/>
+      <location filename="../ui/ArchSchedule.ui" line="76"/>
       <source>Unit</source>
       <translation>საზომი ერთეული</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="82"/>
+      <location filename="../ui/ArchSchedule.ui" line="79"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
       <translation>შედეგის მნიშვნელობის არასავალდებულო საზომი ერთეული მაგ: მ^3 (ასევე შეგიძლიათ გამოიყენოთ მ³ და მ3)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="87"/>
+      <location filename="../ui/ArchSchedule.ui" line="84"/>
       <source>Objects</source>
       <translation>ობიექტები</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="90"/>
+      <location filename="../ui/ArchSchedule.ui" line="87"/>
       <source>An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
@@ -256,102 +246,107 @@ Leave blank to use all objects from the document</source>
 დატოვეთ ცარიელი დოკუმენტიდან ყველა ობიექტის გამოსაყენებლად</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="98"/>
+      <location filename="../ui/ArchSchedule.ui" line="95"/>
       <source>Filter</source>
       <translation>ფილტრი</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="101"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;არასავალდებულო წერტილმძიმით (;) გამოყოფილი თვისებების მნიშვნელობის ფილტრების სია. საკუთრების სახელზე შემავსებლის ეფექტის ინვერსიისთვის (გამორიცხეთ ობიექტები, რომლებიც ემთხვევა ფილტრს). ობიექტები, რომელთა თვისება შეიცავს მნიშვნელობას, დაემთხვევა. მოქმედი ფილტრების მაგალითები (დიდი და პატარა ასოები სხვადასხვაა): &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;სახელი: კედელი&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც აქვთ &amp;quot;კედელი&amp;quot; სახელში (შიდა სახელი) &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!სახელი:კედელი&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც არ აქვთ &amp;quot;კედელი&amp;quot; სახელში (შიდა სახელი)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; აღწერა: Win&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც აქვთ &amp;quot;გამარჯვება&amp;quot; აღწერილობაში&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; !ჭდე:Win&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებიც არ განიხილება. აქვთ &amp;quot;win&amp;quot; ჭდეში&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; IfcType: Wall&lt;/span&gt; - განიხილავს მხოლოდ იმ ობიექტებს, რომელთა Ifc ტიპი არის &amp;quot;კედელი&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; !Tag: Wall&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებიც არ არის &amp;quot;კედელი&amp;quot;&lt;/p&gt;&lt;p&gt;. თუ ამ ველს ცარიელი დატოვებთ, ფილტრაცია არ იქნება გამოყენებული.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <location filename="../ui/ArchSchedule.ui" line="71"/>
+      <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
+      <translation>თითოეული ობიექტიდან ასაღები თვისება.შეიძლება იყოს 'Count' ობიექტების დასათვლელად, ან ისეთი თვისების სახელები, როგორიცაა 'Length' ან 'Shape.Volume'.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="111"/>
+      <location filename="../ui/ArchSchedule.ui" line="108"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
       <translation>თუ ეს ჩართულია, ასოცირებული ცხრილი, რომელიც შეიცავს შედეგებს, შენარჩუნდება განრიგის ობიექტთან ერთად</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="114"/>
+      <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>Associate spreadsheet</source>
       <translation>ელექტრონული ცხრილის მიბმა</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="121"/>
+      <location filename="../ui/ArchSchedule.ui" line="118"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>თუ ჩართულია, დამატებითი ხაზები შეივსება თითოეული განხილული ობიექტით. თუ არა, მხოლოდ ჯამები.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="124"/>
+      <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>Detailed results</source>
       <translation>დეტალური შედეგები</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <location filename="../ui/ArchSchedule.ui" line="128"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>თუ ჩართულია, დამგეგმავი და ასოცირებული ცხრილი განახლდება იმდენჯერ, რამდენჯერაც დოკუმენტი გადაითვლება.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="134"/>
+      <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
       <translation>ავტო–განახლება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="145"/>
+      <location filename="../ui/ArchSchedule.ui" line="142"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>ამატებს ხაზს არჩეული ხაზის/უჯრედის ქვემოთ</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="148"/>
+      <location filename="../ui/ArchSchedule.ui" line="145"/>
       <source>Add row</source>
       <translation>რიგის დამატება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="160"/>
+      <location filename="../ui/ArchSchedule.ui" line="156"/>
       <source>Deletes the selected line</source>
       <translation>მონიშნული ხაზის წაშლა</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="163"/>
+      <location filename="../ui/ArchSchedule.ui" line="159"/>
       <source>Del row</source>
       <translation>რიგის მოცილება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="175"/>
+      <location filename="../ui/ArchSchedule.ui" line="170"/>
       <source>Clears the whole list</source>
       <translation>მთელი სიის გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="178"/>
+      <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="190"/>
-      <source>Put selected objects into the "Objects" column of the selected row</source>
+      <location filename="../ui/ArchSchedule.ui" line="184"/>
+      <source>Put selected objects into the 'Objects' column of the selected row</source>
       <translation>მონიშნული ობიექტების არჩეული მწკრივის 'ობიექტები'-ის სვეტში ჩალაგება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="193"/>
+      <location filename="../ui/ArchSchedule.ui" line="208"/>
+      <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
+      <translation>ეს ახდენს შედეგების ექსპორტს CSV ან Markdown ფაილში. CSVგატანის შენიშვნა:Libreoffice-ში ეს CSV შეგიძლიათ შეინახოთ ფაილი მარჯვენა ღილაკით Sheets ჩანართების ზოლზე - ახალი ფურცელი - ფაილიდან - ბმული (შენიშვნა: LibreOffice v6.x-ს შემდეგ სწორი გზაა: Sheet - ჩასმა ფურცელი... - ფაილიდან - დათვალიერება...)</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="187"/>
       <source>Add selection</source>
       <translation>მონიშნულის დამატება</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="200"/>
+      <location filename="../ui/ArchSchedule.ui" line="98"/>
+      <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
+      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="194"/>
       <source>Imports the contents of a CSV file</source>
       <translation>CSV ფაილის შემცველობის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="203"/>
+      <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
       <translation>შემოტანა</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="215"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ეს ახდენს შედეგების ექსპორტს CSV ან Markdown ფაილში. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;CSVგატანის შენიშვნა:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Libreoffice-ში ეს CSV შეგიძლიათ შეინახოთ ფაილი მარჯვენა ღილაკით Sheets ჩანართების ზოლზე -&amp;gt; ახალი ფურცელი -&amp;gt; ფაილიდან -&amp;gt; ბმული (შენიშვნა: LibreOffice v6.x-ს შემდეგ სწორი გზაა: Sheet -&amp;gt; ჩასმა ფურცელი... -&amp;gt; ფაილიდან -&amp;gt; დათვალიერება...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="218"/>
+      <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
       <translation type="unfinished">Export</translation>
     </message>
@@ -1728,7 +1723,7 @@ unit to work with when opening the file.</source>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchStructure.py" line="77"/>
+      <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
       <translation>სტრუქტურა</translation>
     </message>
@@ -1743,6 +1738,11 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="434"/>
       <source>Column</source>
       <translation>სვეტი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="150"/>
+      <source>StructuralSystem</source>
+      <translation>სტრუქუტურული სისტემა</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
@@ -1799,7 +1799,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
       <location filename="../../ArchProfile.py" line="152"/>
-      <location filename="../../ArchCommands.py" line="1635"/>
+      <location filename="../../ArchCommands.py" line="1634"/>
       <source>Category</source>
       <translation>კატეგორია</translation>
     </message>
@@ -1807,23 +1807,23 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="451"/>
       <location filename="../../ArchProfile.py" line="159"/>
       <location filename="../../ArchWindow.py" line="408"/>
-      <location filename="../../ArchPanel.py" line="212"/>
+      <location filename="../../ArchPanel.py" line="213"/>
       <source>Preset</source>
       <translation>პრესეტი</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchPrecast.py" line="1411"/>
-      <location filename="../../ArchPanel.py" line="222"/>
+      <location filename="../../ArchPanel.py" line="223"/>
       <location filename="../../ArchWall.py" line="508"/>
-      <location filename="../../ArchCommands.py" line="1017"/>
+      <location filename="../../ArchCommands.py" line="1016"/>
       <source>Length</source>
       <translation>სიგრძე</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchPanel.py" line="229"/>
+      <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
       <translation>სიგანე</translation>
@@ -1847,7 +1847,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="493"/>
-      <location filename="../../ArchPanel.py" line="247"/>
+      <location filename="../../ArchPanel.py" line="248"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
       <translation>გაგრძ&amp;ელება</translation>
@@ -1865,7 +1865,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="865"/>
-      <location filename="../../ArchPanel.py" line="524"/>
+      <location filename="../../ArchPanel.py" line="525"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker-მა დააბრუნა შეცდომა</translation>
     </message>
@@ -1979,9 +1979,14 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1441"/>
-      <location filename="../../ArchPanel.py" line="756"/>
+      <location filename="../../ArchPanel.py" line="757"/>
       <source>Couldn't compute a shape</source>
       <translation>ფიგურის გამოთვლის შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchEquipment.py" line="60"/>
+      <source>Equipment</source>
+      <translation>აღჭურვილობა</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2026,7 +2031,13 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation>სამშენებლო ნაწილი</translation>
+      <translation>შენობის ნაწილი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="221"/>
+      <location filename="../../ArchFloor.py" line="89"/>
+      <source>Floor</source>
+      <translation>სართული</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="302"/>
@@ -2071,8 +2082,6 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>არქ</translation>
     </message>
@@ -2095,6 +2104,11 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
       <translation>პროფილი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="74"/>
+      <source>Site</source>
+      <translation>ადგილი</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2142,11 +2156,12 @@ Site creation aborted.</source>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
       <location filename="../../ArchComponent.py" line="1659"/>
-      <location filename="../../ArchSpace.py" line="254"/>
+      <location filename="../../ArchSpace.py" line="255"/>
       <source>Please select a base object</source>
       <translation>გთხოვთ, აირჩიოთ საბაზისო ობიექტი</translation>
     </message>
     <message>
+      <location filename="../../ArchRoof.py" line="166"/>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
       <translation>სახურავი</translation>
@@ -2247,6 +2262,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>წინ</translation>
     </message>
     <message>
+      <location filename="../../ArchReference.py" line="64"/>
+      <source>External Reference</source>
+      <translation>გარე მიმართვა</translation>
+    </message>
+    <message>
       <location filename="../../ArchReference.py" line="498"/>
       <source>Reload reference</source>
       <translation>მიმართვის გადატვირთვა</translation>
@@ -2262,15 +2282,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ობიექტის ფაილიდან ჩასმა მასზე ბმის გამოყენებით</translation>
     </message>
     <message>
-      <location filename="../../importSH3D.py" line="79"/>
-      <location filename="../../importIFClegacy.py" line="821"/>
-      <location filename="../../importDAE.py" line="126"/>
-      <location filename="../../import3DS.py" line="82"/>
-      <source>Error: Couldn't determine character encoding</source>
-      <translation>შეცდომა: სიმბოლოების კოდირების დადგენა ვერ მოხერხდა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFrame.py" line="51"/>
+      <location filename="../../ArchFrame.py" line="61"/>
       <source>Frame</source>
       <translation>ჩარჩო</translation>
     </message>
@@ -2423,8 +2435,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxisSystem.py" line="372"/>
       <location filename="../../ArchAxis.py" line="805"/>
       <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSectionPlane.py" line="1368"/>
-      <location filename="../../ArchSpace.py" line="798"/>
+      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
       <translation>მოცილება</translation>
     </message>
@@ -2433,7 +2445,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxisSystem.py" line="373"/>
       <location filename="../../ArchAxis.py" line="806"/>
       <location filename="../../ArchComponent.py" line="1946"/>
-      <location filename="../../ArchSpace.py" line="792"/>
+      <location filename="../../ArchSpace.py" line="793"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
@@ -2449,7 +2461,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="451"/>
       <location filename="../../ArchAxis.py" line="634"/>
       <location filename="../../ArchComponent.py" line="1501"/>
-      <location filename="../../ArchSectionPlane.py" line="1182"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
     </message>
@@ -2490,7 +2502,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1798"/>
       <location filename="../../ArchComponent.py" line="2008"/>
-      <location filename="../../ArchCommands.py" line="1637"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Type</source>
       <translation>ტიპი</translation>
     </message>
@@ -2498,7 +2510,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1800"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
-      <location filename="../../ArchPanel.py" line="236"/>
+      <location filename="../../ArchPanel.py" line="237"/>
       <source>Thickness</source>
       <translation>სისქე</translation>
     </message>
@@ -2552,6 +2564,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ანჯამის მდებარეობის ამოყირავება</translation>
     </message>
     <message>
+      <location filename="../../ArchAxisSystem.py" line="59"/>
+      <source>Axis System</source>
+      <translation>კოორდინატების სისტემა</translation>
+    </message>
+    <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
       <source>Only axes must be selected</source>
       <translation>მხოლოდ ღერძები უნდა იყოს მონიშნული</translation>
@@ -2568,6 +2585,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="371"/>
+      <location filename="../../ArchAxis.py" line="68"/>
       <location filename="../../ArchAxis.py" line="804"/>
       <location filename="../../ArchComponent.py" line="1952"/>
       <source>Axes</source>
@@ -2580,9 +2598,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../importJSON.py" line="61"/>
-      <location filename="../../importWebGL.py" line="875"/>
-      <location filename="../../importOBJ.py" line="256"/>
-      <location filename="../../importOBJ.py" line="280"/>
+      <location filename="../../importWebGL.py" line="874"/>
+      <location filename="../../importOBJ.py" line="253"/>
+      <location filename="../../importOBJ.py" line="277"/>
       <source>Successfully written</source>
       <translation>წარმატებით ჩაიწერა</translation>
     </message>
@@ -2619,14 +2637,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>IFC სქემა ვერ მოიძებნა, IFC-ის შემოტანა გამორთულია.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="943"/>
+      <location filename="../../importIFClegacy.py" line="931"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>შეცდომა: IfcOpenShell არ არის დაყენებული</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="950"/>
+      <location filename="../../importIFClegacy.py" line="938"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>შეცდომა: თქვენი IfcOpenShell ვერსია ძალიან ძველია</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProject.py" line="76"/>
+      <source>Project</source>
+      <translation>პროექტი</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -2634,17 +2657,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>პროექტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="218"/>
+      <location filename="../../ArchStairs.py" line="67"/>
+      <source>Stairs</source>
+      <translation>კიბე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="171"/>
+      <source>Railing</source>
+      <translation>მოაჯირი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="219"/>
       <source>Create Stairs</source>
       <translation>კიბის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="427"/>
+      <location filename="../../ArchStairs.py" line="428"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
       <translation>წაიშალა თვისებები 'OutlineWireLeft' და 'OutlineWireRight'. დაემატა 'RailingLeft' და 'RailingRight'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="441"/>
+      <location filename="../../ArchStairs.py" line="442"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
       <translation>შეიცვალა 'RailingLeft'-ის და 'RailingRight'-ის ტიპი</translation>
     </message>
@@ -2664,10 +2697,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>დუბლიკატების შერწყმა</translation>
     </message>
     <message>
+      <location filename="../../ArchMaterial.py" line="56"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
       <translation>მასალა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="88"/>
+      <source>MultiMaterial</source>
+      <translation>მულტიმასალა</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
@@ -2701,7 +2740,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მოდული pycollada აღმოჩენილი არაა. collada-ს მხარდაჭერა გათიშულია.</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="328"/>
+      <location filename="../../importDAE.py" line="313"/>
       <source>file %s successfully created.</source>
       <translation>ფაილი "%s" წარმატებით შეიქმნა.</translation>
     </message>
@@ -2731,6 +2770,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>სვეტის ჯამური ზომა სიგანეზე მეტია</translation>
     </message>
     <message>
+      <location filename="../../ArchGrid.py" line="56"/>
       <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
       <translation>ბადე</translation>
@@ -2916,53 +2956,63 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მობრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="107"/>
+      <location filename="../../ArchPanel.py" line="83"/>
+      <source>Panel</source>
+      <translation>პანელი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="105"/>
       <source>View of</source>
       <translation>ხედი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="156"/>
-      <location filename="../../ArchPanel.py" line="185"/>
+      <location filename="../../ArchPanel.py" line="120"/>
+      <source>PanelSheet</source>
+      <translation>პანელის ფურცელი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="157"/>
+      <location filename="../../ArchPanel.py" line="186"/>
       <source>Create Panel</source>
       <translation>პანელის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="208"/>
+      <location filename="../../ArchPanel.py" line="209"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>პანელის მორგება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="243"/>
+      <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
       <translation>შებრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="332"/>
+      <location filename="../../ArchPanel.py" line="333"/>
       <source>Create Panel Cut</source>
       <translation>პანელის ჭრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="358"/>
+      <location filename="../../ArchPanel.py" line="359"/>
       <source>Create Panel Sheet</source>
       <translation>პანელების ფურცლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="728"/>
+      <location filename="../../ArchPanel.py" line="729"/>
       <source>Error computing shape of</source>
       <translation>ფორმის გამოთვლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1380"/>
+      <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
       <translation>ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1390"/>
       <source>Edit views positions</source>
       <translation>ხედების პოზიციის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1474"/>
+      <location filename="../../ArchPanel.py" line="1480"/>
       <source>This object has no face</source>
       <translation>ამ ობიექტს ზედაპირი არ გააჩნია</translation>
     </message>
@@ -2976,6 +3026,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
       <translation>გამჭვირვალე ფასადის შექმნა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="59"/>
+      <source>Pipe</source>
+      <translation>მილი</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="90"/>
+      <source>Connector</source>
+      <translation>შემაერთებელი</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="123"/>
@@ -3062,12 +3122,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>წაიშალა თვისება 'შედეგი' და დაემატა თვისება 'ავტომატური განახლება'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>დამატებულია თვისება 'Schedule'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="360"/>
@@ -3077,7 +3137,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="460"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>ცხრილის წაშლა</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="462"/>
@@ -3091,7 +3151,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="621"/>
-      <location filename="../../ArchCommands.py" line="1105"/>
+      <location filename="../../ArchCommands.py" line="1104"/>
       <source>Export CSV File</source>
       <translation>CSV ფაილის გატანა</translation>
     </message>
@@ -3103,7 +3163,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
-      <location filename="../../ArchCommands.py" line="1016"/>
+      <location filename="../../ArchCommands.py" line="1015"/>
       <source>Description</source>
       <translation>აღწერა</translation>
     </message>
@@ -3111,14 +3171,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchCommands.py" line="1638"/>
+      <location filename="../../ArchCommands.py" line="1637"/>
       <source>Value</source>
       <translation>მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
-      <location filename="../../ArchCommands.py" line="1639"/>
+      <location filename="../../ArchCommands.py" line="1638"/>
       <source>Unit</source>
       <translation>საზომი ერთეული</translation>
     </message>
@@ -3189,13 +3249,13 @@ Floor creation aborted.</source>
       <translation>ჭდე</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="90"/>
-      <location filename="../../importOBJ.py" line="101"/>
+      <location filename="../../importOBJ.py" line="87"/>
+      <location filename="../../importOBJ.py" line="98"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>ვიპოვე ფორმა, რომელიც შეიცავს მოსახვევებს, სამკუთხედს</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="374"/>
+      <location filename="../../importOBJ.py" line="359"/>
       <source>Successfully imported</source>
       <translation>შემოტანა წარმატებით დასრულდა</translation>
     </message>
@@ -3238,6 +3298,7 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchCommands.py" line="216"/>
       <source>Component</source>
       <translation>კომპონენტი</translation>
     </message>
@@ -3322,6 +3383,11 @@ Floor creation aborted.</source>
       <translation>ახალი თვისებების ჯგუფი</translation>
     </message>
     <message>
+      <location filename="../../ArchRebar.py" line="64"/>
+      <source>Rebar</source>
+      <translation>არმატურა</translation>
+    </message>
+    <message>
       <location filename="../../ArchRebar.py" line="130"/>
       <location filename="../../ArchRebar.py" line="151"/>
       <source>Create Rebar</source>
@@ -3333,98 +3399,109 @@ Floor creation aborted.</source>
       <translation>გთხოვთ, აირჩიეთ ბაზისური ზედაპირი ან სტრუქტურული ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="68"/>
+      <source>Section</source>
+      <translation>სექცია</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="839"/>
       <source>Create Section Plane</source>
       <translation>ჭრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <source>Toggle Cutview</source>
       <translation>ჭრილის ხედის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1367"/>
+      <location filename="../../ArchSectionPlane.py" line="1369"/>
       <source>Section plane settings</source>
       <translation>ჭრილის მორგება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1369"/>
+      <location filename="../../ArchSectionPlane.py" line="1371"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>ამოიღეთ მონიშნული ობიექტები ზემოთ მოცემული სიიდან</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
       <translation>მონიშნულის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1371"/>
+      <location filename="../../ArchSectionPlane.py" line="1373"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>მონიშნული ობიექტ(ებ)-ის ამ სექციის სიბრტყის კვეთის საზღვრებში ჩამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1372"/>
+      <location filename="../../ArchSectionPlane.py" line="1374"/>
       <source>Objects seen by this section plane:</source>
       <translation>ობიექტების სია, რომლებიც ამ ჭრილიდან მოჩანს:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1373"/>
+      <location filename="../../ArchSectionPlane.py" line="1375"/>
       <source>Section plane placement:</source>
       <translation>ჭრილის მდებარეობა:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1374"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
       <translation>შებრუნება X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1375"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Rotates the plane along the X axis</source>
       <translation>სიბრტყის X ღერძის გარშემო შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1376"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
       <translation>შებრუნება Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1377"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>სიბრტყის Y ღერძის გარშემო შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1378"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
       <translation>შებრუნება Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1379"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>სიბრტყის Z ღერძის გარშემო შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1380"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
       <translation>ზომის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1381"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>სიბრტყის ზომის შეცვლა ზემოთ ჩამოთვლილ ობიექტებში ჩასატევად</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1382"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1383"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>სიბრტყის ზემოთ მოცემულ სიაში არსებულ ობიექტებზე დაცენტრება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="245"/>
+      <location filename="../../ArchBuildingPart.py" line="231"/>
+      <location filename="../../ArchBuilding.py" line="204"/>
+      <source>Building</source>
+      <translation>შენობები</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuilding.py" line="246"/>
       <source>You can put anything but Site and Building objects in a Building object.
 
 Building object is not allowed to accept Site and Building objects.
@@ -3441,7 +3518,7 @@ You can change that in the preferences.</source>
 ეს ყველაფერი პარამეტრებიდან შეგიძლიათ შეცვალოთ.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="249"/>
+      <location filename="../../ArchBuilding.py" line="250"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
@@ -3450,22 +3527,27 @@ Building creation aborted.</source>
 შენობის შექმნა შეჩერებულია.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="256"/>
+      <location filename="../../ArchBuilding.py" line="257"/>
       <source>Create Building</source>
       <translation>შენობის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="240"/>
+      <location filename="../../ArchSpace.py" line="186"/>
+      <source>Space</source>
+      <translation>სივრცე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="241"/>
       <source>Create Space</source>
       <translation>სივრცის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="781"/>
+      <location filename="../../ArchSpace.py" line="782"/>
       <source>Set text position</source>
       <translation>ტექსტის პოზიციის დაყენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="785"/>
+      <location filename="../../ArchSpace.py" line="786"/>
       <source>Space boundaries</source>
       <translation>სივრცის საზღვრები</translation>
     </message>
@@ -3553,154 +3635,154 @@ Building creation aborted.</source>
       <translation>კედლისთვის ბლოკების გამოთვლა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1061"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>შეცდომა: ამ კედლის ძირითადი ობიექტის შეცვლა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1738"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>საპირისპირო მიმართულება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="411"/>
+      <location filename="../../ArchCommands.py" line="410"/>
       <source>Invalid cutplane</source>
       <translation>ჭრილის დაუშვებელი სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="697"/>
+      <location filename="../../ArchCommands.py" line="696"/>
       <source>is not closed</source>
       <translation>დახურული არაა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="699"/>
+      <location filename="../../ArchCommands.py" line="698"/>
       <source>is not valid</source>
       <translation>არასწორია</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="701"/>
+      <location filename="../../ArchCommands.py" line="700"/>
       <source>doesn't contain any solid</source>
       <translation>არ შეიცავს რამენაირ მყარ სხეულს</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="707"/>
+      <location filename="../../ArchCommands.py" line="706"/>
       <source>contains a non-closed solid</source>
       <translation>შეიცავს დაუხურავ მყარ სხეულს</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="709"/>
+      <location filename="../../ArchCommands.py" line="708"/>
       <source>contains faces that are not part of any solid</source>
       <translation>შეიცავს ზედაპირებს, რომელიც არცერთი მყარი სხეულის ნაწილი არაა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
       <translation>ანალიზი</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Set description</source>
       <translation>აღწერის დაყენება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Copy Length</source>
       <translation>სიგრძის კოპირება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1014"/>
+      <location filename="../../ArchCommands.py" line="1013"/>
       <source>Copy Area</source>
       <translation>უბნის კოპირება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1014"/>
       <source>Export CSV</source>
       <translation>CVS-ში გატანა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1018"/>
+      <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
       <translation>ფართობი</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1063"/>
+      <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
       <translation>სულ</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Object doesn't have settable IFCData</source>
       <translation>ობიექტს დაყენებადი IFC მონაცემები არ აქვს</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Disabling Brep force flag of object</source>
       <translation>ობიექტის Brep ალმის ძალით გამორთვა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1152"/>
-      <location filename="../../ArchCommands.py" line="1155"/>
+      <location filename="../../ArchCommands.py" line="1151"/>
+      <location filename="../../ArchCommands.py" line="1154"/>
       <source>Enabling Brep force flag of object</source>
       <translation>ობიექტის Brep ალმის ძალით ჩართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1350"/>
+      <location filename="../../ArchCommands.py" line="1349"/>
       <source>Add space boundary</source>
       <translation>სივრცის საზღვრის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1354"/>
+      <location filename="../../ArchCommands.py" line="1353"/>
       <source>Grouping</source>
       <translation>დაჯგუფება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1382"/>
+      <location filename="../../ArchCommands.py" line="1381"/>
       <source>Remove space boundary</source>
       <translation>სივრცის საზღვრის მოცილება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1386"/>
+      <location filename="../../ArchCommands.py" line="1385"/>
       <source>Ungrouping</source>
       <translation>განჯგუფება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1417"/>
+      <location filename="../../ArchCommands.py" line="1416"/>
       <source>Split Mesh</source>
       <translation>მრავალკუთხა ბადის გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1457"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Mesh to Shape</source>
       <translation>ბადიდან ფიგურამდე</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1538"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>All good! No problems found</source>
       <translation>ყველაფერი კარგადაა! პრობლემები ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1590"/>
-      <location filename="../../ArchCommands.py" line="1615"/>
+      <location filename="../../ArchCommands.py" line="1589"/>
+      <location filename="../../ArchCommands.py" line="1614"/>
       <source>Create Component</source>
       <translation>კომპონენტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1636"/>
+      <location filename="../../ArchCommands.py" line="1635"/>
       <source>Key</source>
       <translation>გასაღები</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1646"/>
+      <location filename="../../ArchCommands.py" line="1645"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>ობიექტს არ აქვს IfcProperties ატრიბუტი. ობიექტისთვის ელცხრილის შექმნის გაუქმება:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1664"/>
+      <location filename="../../ArchCommands.py" line="1663"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC თვისებების ცხრილის შექმნა</translation>
     </message>
@@ -3714,8 +3796,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
-      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation>შექმენით მრავალი Arch სტრუქტურული ობიექტი არჩეული ბაზიდან, თითოეული არჩეული წიბოს, როგორც გამოწნეხვის ტრაექტორიის, გამოყენებით</translation>
+      <source>Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path</source>
+      <translation>შექმენით მრავალი Arch სტრუქტურა არჩეული ბაზიდან, თითოეული არჩეული წიბოს, როგორც გამოწნეხვის ტრაექტორიის, გამოყენებით</translation>
     </message>
   </context>
   <context>
@@ -3727,8 +3809,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
-      <source>Create a structural system object from a selected structure and axis</source>
-      <translation>მონიშნული სტრუქტურისა და ღერძისაგან სტრუქტურული სისტემური ობიექტის შექმნა</translation>
+      <source>Create a structural system from a selected structure and axis</source>
+      <translation>მონიშნული სტრუქტურისა და ღერძისაგან სტრუქტურული სისტემის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -3740,8 +3822,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
-      <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>ქმნის სტრუქტურის ობიექტს ნულიდან ან არჩეული ობიექტიდან (ესკიზი, პოლიხაზი, სიბრტყე ან მყარი სხეული)</translation>
+      <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
+      <translation>ქმნის სტრუქტურას ნულიდან ან არჩეული ობიექტიდან (ესკიზი, პოლიხაზი, სიბრტყე ან მყარი სხეული)</translation>
     </message>
   </context>
   <context>
@@ -3794,13 +3876,13 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="694"/>
-      <location filename="../../ArchPanel.py" line="390"/>
+      <location filename="../../ArchPanel.py" line="391"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>ამ ელემენტის სიგრძე, თუ არ არის დაფუძნებული პროფილზე</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="696"/>
-      <location filename="../../ArchPanel.py" line="392"/>
+      <location filename="../../ArchPanel.py" line="393"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>ამ ელემენტის სიგანე, თუ არ არის დაფუძნებული პროფილზე</translation>
     </message>
@@ -3811,7 +3893,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="700"/>
-      <location filename="../../ArchPanel.py" line="419"/>
+      <location filename="../../ArchPanel.py" line="420"/>
       <location filename="../../ArchWall.py" line="754"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>ამ ობიექტის ნორმალის გამოწნეხვის მიმართულება (ავტომატური ნორმალისთვის დატოვეთ (0,0,0))</translation>
@@ -3834,7 +3916,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="708"/>
-      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchPanel.py" line="417"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>ობიექტის პროფილის შესაქმნელად გამოსაყენებელი facemaker-ის ტიპი</translation>
     </message>
@@ -3842,7 +3924,7 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>ArchSketch-ს ბაზის მონიშნული წიბოები (ან წიბოების ჯგუფები) ამ არქიტექტურული სტრუქტურის მონახაზის შექმნისას გამოსაყენებლად (ნაგულისხმებად ყველა საბაზისო მონახაზის წიბოს მაგიერ). საჭიროებს წიბოების ან ჯგუფების ინდექსის ნომრებს.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -3913,7 +3995,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="232"/>
       <location filename="../../ArchBuildingPart.py" line="256"/>
-      <location filename="../../ArchBuilding.py" line="279"/>
+      <location filename="../../ArchBuilding.py" line="280"/>
       <source>The type of this building</source>
       <translation>შენობის ტიპი</translation>
     </message>
@@ -3953,7 +4035,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="343"/>
-      <location filename="../../ArchSectionPlane.py" line="858"/>
+      <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The shape of this object</source>
       <translation>ამ ობიექტის ფორმა</translation>
     </message>
@@ -3974,7 +4056,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="550"/>
-      <location filename="../../ArchSectionPlane.py" line="947"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The line width of this object</source>
       <translation>ამ ობიექტის ხაზის სიგანე</translation>
     </message>
@@ -4647,159 +4729,159 @@ Building creation aborted.</source>
       <translation>როგორ დავხატო ღეროები</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="264"/>
+      <location filename="../../ArchStairs.py" line="265"/>
       <source>The length of these stairs, if no baseline is defined</source>
       <translation>კიბეების სიგრძე, როცა მისი ძირი განსაზღვრული არაა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="266"/>
+      <location filename="../../ArchStairs.py" line="267"/>
       <source>The width of these stairs</source>
       <translation>ამ საფეხურების სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="268"/>
+      <location filename="../../ArchStairs.py" line="269"/>
       <source>The total height of these stairs</source>
       <translation>საფეხურების ჯამური სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="270"/>
+      <location filename="../../ArchStairs.py" line="271"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
       <translation>ამ კიბეების ძირთან სწორება, თუ შესაძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="275"/>
+      <location filename="../../ArchStairs.py" line="276"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
       <translation>ბაქანის სიგანზე (მეორე წიბო და შემდეგ - პირველი წიბოს შემდეგ არის სიგანის თვისება)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="280"/>
+      <location filename="../../ArchStairs.py" line="281"/>
       <source>The number of risers in these stairs</source>
       <translation>ამ კიბის საფეხურების ფენილების რიცხვი</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="282"/>
+      <location filename="../../ArchStairs.py" line="283"/>
       <source>The depth of the treads of these stairs</source>
       <translation>ამ კიბის საფეხურების სიღრმე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="285"/>
+      <location filename="../../ArchStairs.py" line="286"/>
       <source>The height of the risers of these stairs</source>
       <translation>ამ კიბის ფენილების სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="288"/>
+      <location filename="../../ArchStairs.py" line="289"/>
       <source>The size of the nosing</source>
       <translation>საფეხურის მომრგვალებული ნაწილის ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="290"/>
+      <location filename="../../ArchStairs.py" line="291"/>
       <source>The thickness of the treads</source>
       <translation>საფეხურების სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="292"/>
+      <location filename="../../ArchStairs.py" line="293"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
       <translation>ბლონელის ფარდობა ნიშნავს კომფორტულ კიბეებზე და უნდა იყოს 62-დან 64 სმ-მდე ან 24,5-დან 25,5 დიუმამდე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="296"/>
+      <location filename="../../ArchStairs.py" line="297"/>
       <source>The thickness of the risers</source>
       <translation>საფეხურის ფენილის სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="299"/>
+      <location filename="../../ArchStairs.py" line="300"/>
       <source>The depth of the landing of these stairs</source>
       <translation>ამ კიბის ბაქნის სიღრმე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="302"/>
+      <location filename="../../ArchStairs.py" line="303"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
       <translation>ამ კიბის საფეხურების სიღრმე - დააყენეთ ხელით მიუხედავად მისი ან მისი წიბოს სიგრძისა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="304"/>
+      <location filename="../../ArchStairs.py" line="305"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
       <translation>ამ კივის საფეხურების ფენილის სიმაღლე - მითითება სიმაღლის ან წიბოს სიმაღლის მიუხედავად</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="307"/>
+      <location filename="../../ArchStairs.py" line="308"/>
       <source>The direction of flight after landing</source>
       <translation>მარშის მიმართულება ბაქნის შემდეგ</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="314"/>
+      <location filename="../../ArchStairs.py" line="315"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
       <translation>სართულის "აბსტოლუტურად" ზედა დონე, სადამდეც კიბის მარში მიდის</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="317"/>
-      <location filename="../../ArchStairs.py" line="320"/>
+      <location filename="../../ArchStairs.py" line="318"/>
+      <location filename="../../ArchStairs.py" line="321"/>
       <source>The 'left outline' of stairs</source>
       <translation>კიბის მარცხენა კიდე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="341"/>
+      <location filename="../../ArchStairs.py" line="342"/>
       <source>The 'left outline' of all segments of stairs</source>
       <translation>კიბის ყველა სეგმენტის მარცხენა კიდე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="344"/>
+      <location filename="../../ArchStairs.py" line="345"/>
       <source>The 'right outline' of all segments of stairs</source>
       <translation>კიბის ყველა სეგმენტის მარჯვენა კიდე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="370"/>
+      <location filename="../../ArchStairs.py" line="371"/>
       <source>The type of landings of these stairs</source>
       <translation>ამ კიბის ბაქნების ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="373"/>
+      <location filename="../../ArchStairs.py" line="374"/>
       <source>The type of winders in these stairs</source>
       <translation>ამ კიბეში მომრგვალებული ნაწილის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="376"/>
+      <location filename="../../ArchStairs.py" line="377"/>
       <source>The type of structure of these stairs</source>
       <translation>ამ კიბის სტრუქტურის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="379"/>
+      <location filename="../../ArchStairs.py" line="380"/>
       <source>The thickness of the massive structure or of the stringers</source>
       <translation>ერთიანი სტრუქტურის ან კასაურის სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="381"/>
+      <location filename="../../ArchStairs.py" line="382"/>
       <source>The width of the stringers</source>
       <translation>კასაურების სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="383"/>
+      <location filename="../../ArchStairs.py" line="384"/>
       <source>The offset between the border of the stairs and the structure</source>
       <translation>სტრუქტურასა და კიბეს შორის ზღვრის წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="385"/>
-      <location filename="../../ArchStairs.py" line="1123"/>
+      <location filename="../../ArchStairs.py" line="386"/>
+      <location filename="../../ArchStairs.py" line="1124"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>კიბეების ქვედა ნაწილის კასაურებთან კვეთა</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="387"/>
+      <location filename="../../ArchStairs.py" line="388"/>
       <source>The thickness of the lower floor slab</source>
       <translation>ქვედა სართულის ფილის სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="389"/>
+      <location filename="../../ArchStairs.py" line="390"/>
       <source>The thickness of the upper floor slab</source>
       <translation>ზედა სართულის ფილის სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="391"/>
+      <location filename="../../ArchStairs.py" line="392"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
       <translation>ქვედა სართულის ფილისა და კიბის დასაწყისს შორის კავშირის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="394"/>
+      <location filename="../../ArchStairs.py" line="395"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
       <translation>ზედა ფილისა და კიბის დასასრულს შორის კავშირის ტიპი</translation>
     </message>
@@ -5015,164 +5097,164 @@ Building creation aborted.</source>
       <translation>ამ ელემენტის საფეხურის სიღრმე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="394"/>
+      <location filename="../../ArchPanel.py" line="395"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>ამ ელემენტის სისქე ან ექსტრუზიის სიღრმე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="396"/>
+      <location filename="../../ArchPanel.py" line="397"/>
       <source>The number of sheets to use</source>
       <translation>გამოსაყენებელი ფურცლების რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="399"/>
+      <location filename="../../ArchPanel.py" line="400"/>
       <source>The offset between this panel and its baseline</source>
       <translation>ამ პანელსა და მის საბაზისო ხაზს შორის წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="401"/>
+      <location filename="../../ArchPanel.py" line="402"/>
       <source>The length of waves for corrugated elements</source>
       <translation>ტალღების სიგრძე გოფრირებული ელემენტებისთვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="403"/>
+      <location filename="../../ArchPanel.py" line="404"/>
       <source>The height of waves for corrugated elements</source>
       <translation>ტალღების სიმაღლე გოფრირებული ელემენტებისთვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="405"/>
+      <location filename="../../ArchPanel.py" line="406"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>ტალღების ჰორიზონტალური წანაცვლება გოფრირებული ელემენტებისთვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="407"/>
+      <location filename="../../ArchPanel.py" line="408"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>ტალღების მიმართულება გოფრირებული ელემენტებისთვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="409"/>
+      <location filename="../../ArchPanel.py" line="410"/>
       <source>The type of waves for corrugated elements</source>
       <translation>ტალღების ტიპი გოფრირებული ელემენტებისთვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="412"/>
+      <location filename="../../ArchPanel.py" line="413"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>ახდენს თუ არა ტალღა გავლენას ქვედა მხარეზე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="414"/>
+      <location filename="../../ArchPanel.py" line="415"/>
       <source>The area of this panel</source>
       <translation>პანელის ფართობი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="823"/>
+      <location filename="../../ArchPanel.py" line="824"/>
       <source>The linked object</source>
       <translation>მიბმული ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="829"/>
+      <location filename="../../ArchPanel.py" line="1110"/>
       <source>The size of the tag text</source>
       <translation>ჭდის ტექსტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="836"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font of the tag text</source>
       <translation>ჭდის ტექსტის ფონტი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="825"/>
+      <location filename="../../ArchPanel.py" line="826"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>საჩვენებელი ტექსტი. შეიძლება შეიცავდეს %tag%-ს, %label%-ს ან %description%-ს შესაბამისი მნიშვნელობების გამოსაყენებლად</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1107"/>
+      <location filename="../../ArchPanel.py" line="832"/>
+      <location filename="../../ArchPanel.py" line="1113"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>ჭდის ტექსტის პოზიცია. ცენტრში დასატოვებლად დატოვეთ (0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1109"/>
+      <location filename="../../ArchPanel.py" line="834"/>
+      <location filename="../../ArchPanel.py" line="1115"/>
       <source>The rotation of the tag text</source>
       <translation>ჭდის ტექსტის შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1123"/>
+      <location filename="../../ArchPanel.py" line="839"/>
+      <location filename="../../ArchPanel.py" line="1129"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>თუ ჩართულია, შესაძლებლობის შემთხვევაში ობიექტი დარენდერდება, როგორც ზედაპირი.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="840"/>
+      <location filename="../../ArchPanel.py" line="841"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>დაშვებული კუთხეები, რომლითაც ეს ობიექტი შეიძლება შებრუნდეს, როცა ფურცლებზე დევს</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="843"/>
+      <location filename="../../ArchPanel.py" line="844"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>ცენტრალური წერტილიდან სიბრტყის კვეთის წანაცვლების მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1275"/>
+      <location filename="../../ArchPanel.py" line="1017"/>
+      <location filename="../../ArchPanel.py" line="1281"/>
       <source>A margin inside the boundary</source>
       <translation>მანძილი ფურცლის კიდესა და მის შემცველობას შორის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1277"/>
+      <location filename="../../ArchPanel.py" line="1019"/>
+      <location filename="../../ArchPanel.py" line="1283"/>
       <source>Turns the display of the margin on/off</source>
       <translation>ზღვრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1100"/>
+      <location filename="../../ArchPanel.py" line="1106"/>
       <source>The linked Panel cuts</source>
       <translation>პანელების გადაბმული ჭრილები</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1102"/>
+      <location filename="../../ArchPanel.py" line="1108"/>
       <source>The tag text to display</source>
       <translation>ჭდის საჩვენებელი ტექსტი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1112"/>
+      <location filename="../../ArchPanel.py" line="1118"/>
       <source>The font file</source>
       <translation>ფონტის ფაილი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1114"/>
+      <location filename="../../ArchPanel.py" line="1120"/>
       <source>The width of the sheet</source>
       <translation>ფურცლის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1117"/>
+      <location filename="../../ArchPanel.py" line="1123"/>
       <source>The height of the sheet</source>
       <translation>ფურცის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1120"/>
+      <location filename="../../ArchPanel.py" line="1126"/>
       <source>The fill ratio of this sheet</source>
       <translation>ამ ფურცლის შევსების თანაფარდობა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1125"/>
+      <location filename="../../ArchPanel.py" line="1131"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>ხის ტექსტურის კუთხის მითითება (საათის ისრის მიმართულებით, 0 ჩრდილოეთია)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="1133"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>განსაზღვრავს მასშტაბს, რომელიც გამოიყენება პანელის თითოეულ ხედზე.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1130"/>
+      <location filename="../../ArchPanel.py" line="1136"/>
       <source>A list of possible rotations for the nester</source>
       <translation>შესაძლო ბრუნვათა სია ნესტინგისათვის</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1285"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>ხის ტექსტურის ჩვენების ჩართ/გამორთ</translation>
     </message>
@@ -5369,12 +5451,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>თუ ჩართულია, დამგეგმავი და ასოცირებული ცხრილი განახლდება იმდენჯერ, რამდენჯერაც დოკუმენტი გადაითვლება</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The Arch Schedule that uses this spreadsheet</translation>
+      <translation>Arch დამგეგმავი, რომელიც ამ ცხრილს იყენებს</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="136"/>
@@ -5383,7 +5465,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="213"/>
-      <location filename="../../ArchSectionPlane.py" line="856"/>
+      <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The placement of this object</source>
       <translation>ობიექტის განლაგება</translation>
     </message>
@@ -5603,190 +5685,190 @@ Building creation aborted.</source>
       <translation>არმატურის ფორმა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="860"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>ობიექტები, რომლებიც უნდა ჩანდეს ამ სიბრტყით კვეთაში. ცარიელი ნიშნავს მთელ დოკუმენტს.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="862"/>
+      <location filename="../../ArchSectionPlane.py" line="864"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>თუ გამორთულია, არა-მყარი სხეულებიც გაიკვეთება, შესაძლო არასწორი შედეგებით.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="865"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>თუ ჩართულია, ნაჩვენები ხედები სექციის სიბრტყეში ამოიჭრება.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="869"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>თუ ჩართულია, ობიექტის მასალის ფერი გამოყენებული იქნება კვეთების შესავსებად.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="870"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>ამ წერტილის შემდეგ არსებული გეომეტრია მოიჭრება. ულიმიტო ჭრისთვის დატოვეთ ნულოვანი.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="929"/>
+      <location filename="../../ArchSectionPlane.py" line="931"/>
       <source>The display length of this section plane</source>
       <translation>ამ სიბრტყის კვეთის სიგრძის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="935"/>
+      <location filename="../../ArchSectionPlane.py" line="937"/>
       <source>The display height of this section plane</source>
       <translation>ამ სიბრტყის კვეთის სიმაღლის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="941"/>
+      <location filename="../../ArchSectionPlane.py" line="943"/>
       <source>The size of the arrows of this section plane</source>
       <translation>ამ ჭრილში ისრების ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="944"/>
+      <location filename="../../ArchSectionPlane.py" line="946"/>
       <source>The transparency of this object</source>
       <translation>ამ ობიექტის გამჭვირვალობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="950"/>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>Show the cut in the 3D view</source>
       <translation>კვეთის 3D ხედში ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The color of this object</source>
       <translation>ამ ობიექტის ფერი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
+      <location filename="../../ArchSectionPlane.py" line="959"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>მანძილი სიბრტყის კვეთასა და ნამდვილ სიბრტყის კვეთას შორის (გქონდეთ ძალიან მცირე მნიშვნელობა, მაგრამ არა ნული)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>Show the label in the 3D view</source>
       <translation>ჭდის 3D ხედში ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="962"/>
-      <location filename="../../ArchSpace.py" line="514"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSpace.py" line="515"/>
       <source>The name of the font</source>
       <translation>ფონტის სახელი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
-      <location filename="../../ArchSpace.py" line="520"/>
+      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSpace.py" line="521"/>
       <source>The size of the text font</source>
       <translation>ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="274"/>
+      <location filename="../../ArchSpace.py" line="275"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>ობიექტები, რომლებიც ქმნიან ამ სივრცული ობიექტის საზღვრებს</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="276"/>
+      <location filename="../../ArchSpace.py" line="277"/>
       <source>The computed floor area of this space</source>
       <translation>სივრცის გამოთვლილი ფართობი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="278"/>
+      <location filename="../../ArchSpace.py" line="279"/>
       <source>The finishing of the floor of this space</source>
       <translation>ამ ფართის იატაკის გაწყობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="280"/>
+      <location filename="../../ArchSpace.py" line="281"/>
       <source>The finishing of the walls of this space</source>
       <translation>ამ ფართის კედლების გაწყობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="282"/>
+      <location filename="../../ArchSpace.py" line="283"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>ამ ფართის ჭერის გაწყობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="284"/>
+      <location filename="../../ArchSpace.py" line="285"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>ობიექტები, რომლებიც შედის ამ სივრცეში, მაგ. ავეჯი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="286"/>
+      <location filename="../../ArchSpace.py" line="287"/>
       <source>The type of this space</source>
       <translation>ზონის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="289"/>
+      <location filename="../../ArchSpace.py" line="290"/>
       <source>The thickness of the floor finish</source>
       <translation>იატაკის დაფარვის სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="291"/>
+      <location filename="../../ArchSpace.py" line="292"/>
       <source>The number of people who typically occupy this space</source>
       <translation>ამ სივრცის დამკავებელი ხალხის ტიპიური რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="293"/>
+      <location filename="../../ArchSpace.py" line="294"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>ამ სივრცის გასანათებლად საჭირო ელექტროენერგია ვატებში</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="295"/>
+      <location filename="../../ArchSpace.py" line="296"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>ამ ადგილზე არსებული აღჭურვილობისთვის საჭირო ელექტროენერგია ვატებში</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="297"/>
+      <location filename="../../ArchSpace.py" line="298"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>თუ ჩართულია, აპარატურის სიმძლავრე ავტომატურად შეივსება ამ სივრცეში შემავალი აღჭურვილობის მიერ</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="299"/>
+      <location filename="../../ArchSpace.py" line="300"/>
       <source>The type of air conditioning of this space</source>
       <translation>ამ სივრცის კონდიცირების ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="302"/>
+      <location filename="../../ArchSpace.py" line="303"/>
       <source>Specifies if this space is internal or external</source>
       <translation>განსაზღვრა, ეს სივრცე შიდაა თუ გარე</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="511"/>
+      <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>საჩვენებელი ტექსტი. გამოიყენეთ ცვლადები $area, $label, $tag, $floor, $walls და $ceiling შესაბამისი მონაცემების ჩასასმელად</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="517"/>
+      <location filename="../../ArchSpace.py" line="518"/>
       <source>The color of the area text</source>
       <translation>მონიშნული ტექსტის ფერი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="523"/>
+      <location filename="../../ArchSpace.py" line="524"/>
       <source>The size of the first line of text</source>
       <translation>ტექსტის პირველი ხაზის ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="526"/>
+      <location filename="../../ArchSpace.py" line="527"/>
       <source>The space between the lines of text</source>
       <translation>ტექსტის ხაზებს შორის ადგილი</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="529"/>
+      <location filename="../../ArchSpace.py" line="530"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>ტექსტის პოზიცია. ავტომატური მდებარეობისთვის დატოვეთ (0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="531"/>
+      <location filename="../../ArchSpace.py" line="532"/>
       <source>The justification of the text</source>
       <translation>ტექსტის სწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="535"/>
+      <location filename="../../ArchSpace.py" line="536"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>გენერირებულ ტექსტებში წილადი რიცხვების სიზუსტე</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="538"/>
+      <location filename="../../ArchSpace.py" line="539"/>
       <source>Show the unit suffix</source>
       <translation>საზომი ერთეულის ჩვენება</translation>
     </message>
@@ -5894,8 +5976,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
-      <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation>მონიშნული ობიექტისგან (ნაწილი ან ბადე) აპარატურის ობიექტის შექმნა</translation>
+      <source>Creates an equipment from a selected object (Part or Mesh)</source>
+      <translation>მონიშნული ობიექტისგან (ნაწილი ან ბადე) აპარატურის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -5916,12 +5998,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation>სამშენებლო ნაწილი</translation>
+      <translation>შენობის ნაწილი</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
-      <source>Creates a BuildingPart object including selected objects</source>
-      <translation>მონიშნული ობიექტებისგან სამშენებლო დეტალის შექმნა</translation>
+      <source>Creates a BuildingPart including selected objects</source>
+      <translation>მონიშნული ობიექტებისგან შენობის ნაწილის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -5930,21 +6012,6 @@ Building creation aborted.</source>
       <location filename="../../ArchBuildingPart.py" line="996"/>
       <source>Writing camera position</source>
       <translation>კამერის პოზიციის ჩაწერა</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>წყალშიგი</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>შეტანა-გატანა</translation>
     </message>
   </context>
   <context>
@@ -6062,8 +6129,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
-      <source>Creates a profile object</source>
-      <translation>პროფილის ობიექტის შექმნა</translation>
+      <source>Creates a profile</source>
+      <translation>პროფილის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -6075,8 +6142,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
-      <source>Creates a site object including selected objects.</source>
-      <translation>ქმნის ადგილის ობიექტს მონიშნული ობიექტების ჩათვლით.</translation>
+      <source>Creates a site including selected objects.</source>
+      <translation>ქმნის საიტს მონიშნული ობიექტების ჩათვლით.</translation>
     </message>
   </context>
   <context>
@@ -6199,25 +6266,25 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../ArchStairs.py" line="207"/>
+      <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
       <translation>კიბე</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="212"/>
+      <source>Creates a flight of stairs</source>
+      <translation>კიბის მარშის შექმნა</translation>
     </message>
   </context>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchStairs.py" line="211"/>
-      <source>Creates a stairs object</source>
-      <translation>კიბის ობიექტის შექმნა</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="230"/>
+      <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
       <translation>სივრცე</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="234"/>
+      <location filename="../../ArchSpace.py" line="235"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>ქმნის სივრცულ ობიექტს შერჩეული სასაზღვრო ობიექტებიდან</translation>
     </message>
@@ -6346,12 +6413,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="134"/>
+      <location filename="../../ArchPanel.py" line="135"/>
       <source>Panel</source>
       <translation>პანელი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="138"/>
+      <location filename="../../ArchPanel.py" line="139"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>ქმნის პანელის ობიექტს ნულიდან ან არჩეული ობიექტიდან (ესკიზი, პოლიხაზი, სიბრტყე ან მყარი სხეული)</translation>
     </message>
@@ -6359,12 +6426,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="321"/>
+      <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
       <translation>პანელის დაჭრა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="325"/>
+      <location filename="../../ArchPanel.py" line="326"/>
       <source>Creates 2D views of selected panels</source>
       <translation>მონიშნული პანელების 2D ხედების შექმნა</translation>
     </message>
@@ -6372,12 +6439,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="348"/>
+      <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
       <translation>პანელების ფურცელი</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="352"/>
+      <location filename="../../ArchPanel.py" line="353"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>ქმნის 2D ფურცელს, რომელიც შეიძლება პანელის ჭრილებს შეიცავდეს</translation>
     </message>
@@ -6385,12 +6452,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1403"/>
+      <location filename="../../ArchPanel.py" line="1409"/>
       <source>Nest</source>
       <translation>ერთმანეთში ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1413"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>აკეთებს მონიშნულ ფორმათა მწკრივის ნესტინგს კონტეინერში</translation>
     </message>
@@ -6398,8 +6465,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1571"/>
-      <location filename="../../ArchPanel.py" line="1574"/>
+      <location filename="../../ArchPanel.py" line="1577"/>
+      <location filename="../../ArchPanel.py" line="1580"/>
       <source>Panel tools</source>
       <translation>პანელის ხელსაწყოები</translation>
     </message>
@@ -6516,12 +6583,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="821"/>
+      <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>Section Plane</source>
       <translation>ჭრილი</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="824"/>
+      <location filename="../../ArchSectionPlane.py" line="826"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>ქმნის სიბრტყით კვეთის ობიექტს მონიშნული ობიექტების ჩათვლით</translation>
     </message>
@@ -6529,12 +6596,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Building</name>
     <message>
-      <location filename="../../ArchBuilding.py" line="218"/>
+      <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
       <translation>შენობები</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="222"/>
+      <location filename="../../ArchBuilding.py" line="223"/>
       <source>Creates a building object including selected objects.</source>
       <translation>ქმნის შენობის ობიექტს მონიშნული ობიექტების ჩათვლით.</translation>
     </message>
@@ -6568,12 +6635,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1341"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Add component</source>
       <translation>კომპონენტის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1344"/>
+      <location filename="../../ArchCommands.py" line="1343"/>
       <source>Adds the selected components to the active object</source>
       <translation>ამატებს არჩეულ კომპონენტებს აქტიურ ობიექტს</translation>
     </message>
@@ -6581,12 +6648,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1373"/>
+      <location filename="../../ArchCommands.py" line="1372"/>
       <source>Remove component</source>
       <translation>კომპონენტის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1376"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>მონიშნული კომპონენტების მშობლებისგან მოცილება, ან კომპონენტში ნახვრეტის გაკეთება</translation>
     </message>
@@ -6594,12 +6661,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1408"/>
+      <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
       <translation>მრავალკუთხა ბადის გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1411"/>
+      <location filename="../../ArchCommands.py" line="1410"/>
       <source>Splits selected meshes into independent components</source>
       <translation>მონიშნული მრავალკუთხა ბადის კომპონენტებად დაყოფა</translation>
     </message>
@@ -6607,12 +6674,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1433"/>
+      <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
       <translation>ბადიდან ფიგურამდე</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1436"/>
+      <location filename="../../ArchCommands.py" line="1435"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>მონიშნული ბადეების ნაწილის მონახაზის ობიექტებად გადაქცევა</translation>
     </message>
@@ -6620,12 +6687,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1468"/>
+      <location filename="../../ArchCommands.py" line="1467"/>
       <source>Select non-manifold meshes</source>
       <translation>შეუკრავი ბადეების მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1471"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>დოკუმენტზე ან მონიშნულ ჯგუფებზე არაერთგვაროვანი ბადეების მონიშვნა</translation>
     </message>
@@ -6633,12 +6700,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1497"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>Remove Shape from Arch</source>
       <translation>ფიგურის არქიტექტურიდან მოცილება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1500"/>
+      <location filename="../../ArchCommands.py" line="1499"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>არქ. კომპონენტებიდან კუბის ფორმის ფიგურების წაშლა</translation>
     </message>
@@ -6646,12 +6713,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1512"/>
+      <location filename="../../ArchCommands.py" line="1511"/>
       <source>Close holes</source>
       <translation>ხვრელების დახურვა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1515"/>
+      <location filename="../../ArchCommands.py" line="1514"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>ხურავს ღია ხვრელებს მათი მყარ ობიექტებად გადაქცევით</translation>
     </message>
@@ -6659,12 +6726,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1529"/>
+      <location filename="../../ArchCommands.py" line="1528"/>
       <source>Check</source>
       <translation>შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1532"/>
+      <location filename="../../ArchCommands.py" line="1531"/>
       <source>Checks the selected objects for problems</source>
       <translation>მონიშნული ობიექტების პრობლემების ქონაზე შემოწმება</translation>
     </message>
@@ -6672,12 +6739,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1550"/>
+      <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
       <translation>ანალიზი</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1553"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Starts survey</source>
       <translation>ანალიზის დაწყება</translation>
     </message>
@@ -6685,12 +6752,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1565"/>
+      <location filename="../../ArchCommands.py" line="1564"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep-ის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1568"/>
+      <location filename="../../ArchCommands.py" line="1567"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>მოხდება თუ არა ობიექტის Brep-ად გატანა</translation>
     </message>
@@ -6698,12 +6765,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1580"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Component</source>
       <translation>კომპონენტი</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1584"/>
+      <location filename="../../ArchCommands.py" line="1583"/>
       <source>Creates an undefined architectural component</source>
       <translation>განუსაზღვრელი არქიტექტურულ კომპონენტის შექმნა</translation>
     </message>
@@ -6711,12 +6778,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1605"/>
+      <location filename="../../ArchCommands.py" line="1604"/>
       <source>Clone component</source>
       <translation>კომპონენტის ასლი</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1609"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>ობიექტის, როგორც განუსაზღვრელი არქიტექტურული კომპონენტის დაკლონვა</translation>
     </message>
@@ -6724,12 +6791,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1655"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFC ცხრილის შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1659"/>
+      <location filename="../../ArchCommands.py" line="1658"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>ქმნის ელცხრილს ობიექტის IFC თვისებების შესანახად.</translation>
     </message>
@@ -6737,12 +6804,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1681"/>
+      <location filename="../../ArchCommands.py" line="1680"/>
       <source>Toggle subcomponents</source>
       <translation>ქვეკომპონენტების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1684"/>
+      <location filename="../../ArchCommands.py" line="1683"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>ამ ობიექტის ქვეკომპონენტების ჩვენების ჩართ/გამორთ</translation>
     </message>
@@ -6755,6 +6822,30 @@ Building creation aborted.</source>
       <location filename="../../ArchAxis.py" line="646"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="206"/>
+      <location filename="../../InitGui.py" line="207"/>
+      <source>Arch</source>
+      <translation>არქ</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="210"/>
+      <location filename="../../InitGui.py" line="211"/>
+      <location filename="../../InitGui.py" line="212"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <source>Draft</source>
+      <translation>წყალშიგი</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="249"/>
+      <location filename="../../InitGui.py" line="250"/>
+      <location filename="../../InitGui.py" line="251"/>
+      <source>Import-Export</source>
+      <translation>შეტანა-გატანა</translation>
     </message>
   </context>
 </TS>

@@ -25,7 +25,7 @@ import Path
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 
-TOOLTIP = """Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output."""
+TOOLTIP = """Example Post, using Path.Commands instead of Path.toGCode strings for Path G-code output."""
 
 SHOW_EDITOR = True
 

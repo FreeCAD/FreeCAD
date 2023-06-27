@@ -37,7 +37,7 @@ and on their subelements, that is, vertices, edges, and faces.
 
 __title__ = "FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 # Doesn't need requisites
 from draftgeoutils.linear_algebra import (linearFromPoints,

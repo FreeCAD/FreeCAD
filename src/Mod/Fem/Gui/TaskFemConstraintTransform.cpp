@@ -479,7 +479,7 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
 }
 
 std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showConstr = "")
-// https://forum.freecadweb.org/viewtopic.php?f=18&t=43650
+// https://forum.freecad.org/viewtopic.php?f=18&t=43650
 {
     return "\n\
 doc = FreeCAD.ActiveDocument\n\

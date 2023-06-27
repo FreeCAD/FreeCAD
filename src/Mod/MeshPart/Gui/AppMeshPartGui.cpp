@@ -39,6 +39,7 @@ void loadMeshPartResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(MeshPart);
+    Q_INIT_RESOURCE(MeshPart_translation);
     Gui::Translator::instance()->refresh();
 }
 

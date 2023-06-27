@@ -1901,7 +1901,7 @@ bool Document::saveToFile(const char* filename) const
 
         writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
                         << "<!--" << endl
-                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
+                        << " FreeCAD Document, see https://www.freecad.org for more information..." << endl
                         << "-->" << endl;
         Document::Save(writer);
 
@@ -2828,7 +2828,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     if (!d->_RecomputeLog.empty()) {
         d->pendingRemove.clear();
         if (!testStatus(Status::IgnoreErrorOnRecompute))
-            Base::Console().Error("Recompute failed! Please check report view.\n");
+            Base::Console().Error("Recompute failed!\n");
     }
     else {
         for(auto &o : d->pendingRemove) {

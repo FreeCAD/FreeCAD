@@ -69,7 +69,7 @@ Params = [
         doc = "Tree view item background. Only effecitve in overlay."),
     ParamInt('ItemBackgroundPadding', 10, on_change=True, title="Item background padding", proxy=ParamSpinBox(0, 100, 1),
         doc = "Tree view item background padding."),
-    ParamBool('HideColumn', False, on_change=True, title="Hide extra column",
+    ParamBool('HideColumn', True, on_change=True, title="Hide extra column",
         doc = "Hide extra tree view column for item description."),
     ParamBool('HideScrollBar', True, title="Hide scroll bar",
         doc = "Hide tree view scroll bar in dock overlay."),

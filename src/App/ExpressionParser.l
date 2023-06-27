@@ -231,9 +231,9 @@ EXPO     [eE][-+]?[0-9]+
 "cd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return UNIT; // Candela        (internal standard luminous intensity)
 
 "in"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
-"\""                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
+"\""                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return USUNIT; // inch
 "ft"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
-"'"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
+"'"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return USUNIT; // foot
 "thou"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // thou (in/1000)
 "mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard

@@ -948,7 +948,7 @@ void TopoShape::exportStep(const char *filename) const
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
         // Don't set name because STEP doesn't support UTF-8
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+        // https://forum.freecad.org/viewtopic.php?f=8&t=52967
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
@@ -2175,8 +2175,8 @@ TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
                                   Standard_Real angle1, Standard_Real angle2,
                                   Standard_Real angle3, Standard_Boolean isSolid) const
 {
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+    // https://forum.freecad.org/viewtopic.php?f=3&t=1445
+    // https://forum.freecad.org/viewtopic.php?f=3&t=52719
     // Build a torus
     gp_Circ circle;
     circle.SetRadius(radius2);
@@ -2847,7 +2847,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            // http://www.freecadweb.org/tracker/view.php?id=2699
+            // http://www.freecad.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         }
         else {

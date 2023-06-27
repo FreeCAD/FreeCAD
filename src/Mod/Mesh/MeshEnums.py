@@ -22,7 +22,7 @@
 
 __title__ = "MeshEnums module"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "Enum types"
 
 from enum import IntEnum

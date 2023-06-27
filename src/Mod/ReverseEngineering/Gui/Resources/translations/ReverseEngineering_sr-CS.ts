@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Approximate a cylinder</source>
-      <translation>Aproksimiraj cilindar</translation>
+      <translation>Aproksimiraj valjak</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Approximate a sphere</source>
-      <translation>Aproksimiraj sferu</translation>
+      <translation>Aproksimiraj loptu</translation>
     </message>
   </context>
   <context>
@@ -210,12 +210,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
-      <translation>Uklopi cilindar</translation>
+      <translation>Uklopi valjak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
-      <translation>Uklopi sferu</translation>
+      <translation>Uklopi loptu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
@@ -526,12 +526,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Cilindar</translation>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>

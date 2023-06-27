@@ -124,23 +124,23 @@ False = унутраная шасцярня</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Адлегласць, на якую апорны профіль зрушаны вонкі, нармалізуецца модулем.</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Additive helix</source>
       <translation>Выцяжка па спіралі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation>Выцягнуць абраны эскіз па спіралі</translation>
     </message>
@@ -148,17 +148,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1313"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1314"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Additive loft</source>
       <translation>Выцяжка па профілю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1315"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>Правесці абраны профіль праз іншыя перасекі профілю</translation>
     </message>
@@ -166,17 +166,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1211"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Additive pipe</source>
       <translation>Выцяжка па траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>Выцягнуць абраны эскіз па траекторыі ці да іншых профілях</translation>
     </message>
@@ -202,17 +202,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
       <translation>Лагічная аперацыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>Лагічная аперацыя з дзвюма і болей целамі</translation>
     </message>
@@ -238,17 +238,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Chamfer</source>
       <translation>Фаска</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Фаска на абраных рэбрах фігуры</translation>
     </message>
@@ -274,17 +274,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
       <translation>Асадка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1755"/>
       <source>Make a draft on a face</source>
       <translation>Зрабіць ухіл на грані</translation>
     </message>
@@ -310,17 +310,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1680"/>
+      <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1681"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Fillet</source>
       <translation>Акругленне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1682"/>
+      <location filename="../../Command.cpp" line="1698"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Зрабіць акругленне на рабры, грань ці целе</translation>
     </message>
@@ -328,17 +328,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../Command.cpp" line="1161"/>
       <source>Groove</source>
       <translation>Паз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1146"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Groove a selected sketch</source>
       <translation>Паз на абраным эскізе</translation>
     </message>
@@ -346,17 +346,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1038"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1039"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Hole</source>
       <translation>Адтуліна</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1040"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Create a hole with the selected sketch</source>
       <translation>Стварыць адтуліну з абранага эскізу</translation>
     </message>
@@ -382,19 +382,19 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2042"/>
       <source>LinearPattern</source>
-      <translation>ЛінейныМасіў</translation>
+      <translation>Лінейны шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Create a linear pattern feature</source>
-      <translation>Стварыць элемент лінейнага масіву</translation>
+      <translation>Стварыць элемент лінейнага шаблону</translation>
     </message>
   </context>
   <context>
@@ -418,17 +418,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="1963"/>
+      <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1964"/>
+      <location filename="../../Command.cpp" line="1980"/>
       <source>Mirrored</source>
       <translation>Сiметрыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1965"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Create a mirrored feature</source>
       <translation>Стварыць сіметрычны элемент</translation>
     </message>
@@ -490,17 +490,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2203"/>
+      <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2220"/>
       <source>Create MultiTransform</source>
       <translation>Стварыць Множнае пераўтварэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2205"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>Create a multitransform feature</source>
       <translation>Стварыць элемент множнага пераўтварэння</translation>
     </message>
@@ -508,17 +508,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
       <translation>Стварыць эскіз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="504"/>
       <source>Create a new sketch</source>
       <translation>Стварыць новы эскіз</translation>
     </message>
@@ -526,17 +526,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>Pad</source>
       <translation>Выцягванне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Pad a selected sketch</source>
       <translation>Выцягнуць абраны эскіз</translation>
     </message>
@@ -562,17 +562,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Pocket</source>
       <translation>Кішэнь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1024"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>Стварыць кішэнь з абранага эскізу</translation>
     </message>
@@ -598,35 +598,35 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2090"/>
+      <location filename="../../Command.cpp" line="2106"/>
       <source>PolarPattern</source>
-      <translation>ПалярныМасіў</translation>
+      <translation>Палярны шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2091"/>
+      <location filename="../../Command.cpp" line="2107"/>
       <source>Create a polar pattern feature</source>
-      <translation>Стварыць элемент палярнага масіву</translation>
+      <translation>Стварыць элемент палярнага шаблону</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1086"/>
+      <location filename="../../Command.cpp" line="1102"/>
       <source>Revolution</source>
       <translation>Выцягванне кручэннем</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
+      <location filename="../../Command.cpp" line="1103"/>
       <source>Revolve a selected sketch</source>
       <translation>Вярчэнне на абраным эскізе</translation>
     </message>
@@ -634,17 +634,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2154"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2155"/>
+      <location filename="../../Command.cpp" line="2171"/>
       <source>Scaled</source>
       <translation>Маштабны</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2156"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Create a scaled feature</source>
       <translation>Стварыць элемент маштаба</translation>
     </message>
@@ -684,17 +684,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Subtractive helix</source>
       <translation>Адыманне па спіралі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation>Выцягнуць абраны эскіз па спіралі, і выдаліць яго з цела</translation>
     </message>
@@ -702,17 +702,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1365"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Subtractive loft</source>
       <translation>Адыманне па профілю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>Правесці абраны профіль праз іншыя перасекі профілю, і выдаліць яго з цела</translation>
     </message>
@@ -720,35 +720,35 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1262"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Subtractive pipe</source>
       <translation>Адыманне па траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Выцягнуць абраны эскіз па шляху ці іншаму профілю, і выдаліць яго з цела</translation>
+      <translation>Выцягнуць абраны эскіз па траекторыі ці іншаму профілю, і выдаліць яго з цела</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1806"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Make a thick solid</source>
       <translation>Зрабіць полае цела з суцэльнага</translation>
     </message>
@@ -885,7 +885,7 @@ False = унутраная шасцярня</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Make copy</source>
       <translation>Зрабіць копію</translation>
     </message>
@@ -900,12 +900,12 @@ False = унутраная шасцярня</translation>
       <translation>Стварыць новы эскіз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2269"/>
       <source>Convert to MultiTransform feature</source>
       <translation>Пераўтварыць элемент множнага пераўтварэння</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Create Boolean</source>
       <translation>Стварыць лагічную аперацыю</translation>
     </message>
@@ -948,12 +948,12 @@ False = унутраная шасцярня</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
-      <translation>Зрабіць ЛінейныМасіў</translation>
+      <translation>Зрабіць Лінейны шаблон</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
-      <translation>ПалярныМасіў</translation>
+      <translation>Палярны шаблон</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
@@ -1079,46 +1079,7 @@ False = унутраная шасцярня</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign::Groove</name>
-    <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
-- абраны эскіз не належыць да бягучага Цела.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign::Hole</name>
-    <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
-- абраны эскіз не належыць да бягучага Цела.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign::Pocket</name>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="101"/>
-      <source>The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</source>
-      <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
-- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
-- абраны эскіз не належыць да бягучага Цела.</translation>
+      <translation>Каэфіцыент зруху профілю</translation>
     </message>
   </context>
   <context>
@@ -1613,8 +1574,7 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
       <source>Empty chamfer created !
 </source>
-      <translation type="unfinished">Empty chamfer created !
-</translation>
+      <translation>Створана пустая фаска!</translation>
     </message>
   </context>
   <context>
@@ -1714,8 +1674,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="282"/>
       <source>Empty draft created !
 </source>
-      <translation type="unfinished">Empty draft created !
-</translation>
+      <translation>Створаны пусты чарнавік!</translation>
     </message>
   </context>
   <context>
@@ -1919,8 +1878,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created !
 </source>
-      <translation type="unfinished">Empty fillet created !
-</translation>
+      <translation>Створана пустое акругленне!</translation>
     </message>
   </context>
   <context>
@@ -2068,7 +2026,17 @@ click again to end selection</source>
       <translation>Будаўнічая лінія %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="333"/>
+      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <source>Warning: helix might be self intersecting</source>
+      <translation>Папярэджанне: спіраль можа быць самапересякальная</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <source>Error: helix touches itself</source>
+      <translation>Памылка: спіраль тычыцца да самой сябе</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.cpp" line="334"/>
       <source>Error: unsupported mode</source>
       <translation>Памылка: непадтрымліваемы рэжым</translation>
     </message>
@@ -2156,7 +2124,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Развярнуць напрамак</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2350,12 +2318,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
-      <translation>Дадаць лінейны масіў</translation>
+      <translation>Дадаць лінейны шаблон</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
-      <translation>Дадаць палярны масіў</translation>
+      <translation>Дадаць палярны шаблон</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
@@ -2403,7 +2371,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>Да апошняга</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="74"/>
@@ -2553,12 +2521,12 @@ measured along the specified direction</source>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation>Вугал звужэння выдушвання</translation>
+      <translation>Вугал конусу зянкоўкі выдушвання</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation>Вугал звужэння</translation>
+      <translation>Вугал конусу зянкоўкі</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2568,7 +2536,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation>Другі вугал звужэння</translation>
+      <translation>Другі вугал конусу зянкоўкі</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
@@ -2715,7 +2683,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Шлях да выцягвання</translation>
+      <translation>Траекторыя да выцягвання</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2870,7 +2838,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Развярнуць напрамак</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -3143,8 +3111,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.cpp" line="248"/>
       <source>Empty thickness created !
 </source>
-      <translation type="unfinished">Empty thickness created !
-</translation>
+      <translation>Створана пустая таўшчыня!</translation>
     </message>
   </context>
   <context>
@@ -3273,15 +3240,15 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::ViewProviderLinearPattern</name>
     <message>
-      <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+      <location filename="../../ViewProviderLinearPattern.h" line="37"/>
       <source>LinearPattern parameters</source>
-      <translation>Налады ЛінейнагаМасіву</translation>
+      <translation>Налады Лінейнага шаблону</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ViewProviderMultiTransform</name>
     <message>
-      <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+      <location filename="../../ViewProviderMultiTransform.h" line="37"/>
       <source>MultiTransform parameters</source>
       <translation>Налады МножнагаПераўтварэння</translation>
     </message>
@@ -3289,15 +3256,15 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::ViewProviderPolarPattern</name>
     <message>
-      <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+      <location filename="../../ViewProviderPolarPattern.h" line="37"/>
       <source>PolarPattern parameters</source>
-      <translation>Налады ПалярнагаМасіву</translation>
+      <translation>Налады Палярнага шаблону</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::ViewProviderScaled</name>
     <message>
-      <location filename="../../ViewProviderScaled.h" line="38"/>
+      <location filename="../../ViewProviderScaled.h" line="37"/>
       <source>Scaled parameters</source>
       <translation>Налады маштабавання</translation>
     </message>
@@ -3313,7 +3280,7 @@ click again to end selection</source>
   <context>
     <name>PartDesignGuii::ViewProviderMirrored</name>
     <message>
-      <location filename="../../ViewProviderMirrored.h" line="38"/>
+      <location filename="../../ViewProviderMirrored.h" line="37"/>
       <source>Mirrored parameters</source>
       <translation>Налады сіметрычнага адлюстравання</translation>
     </message>
@@ -3522,8 +3489,8 @@ click again to end selection</source>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1914"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
@@ -3535,90 +3502,90 @@ click again to end selection</source>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1915"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="775"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Не атрымалася ўжыць каманду, так як адсутнічае суцэльнае цела для адымання.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Пераканайцеся ў тым, што цела змяшчае элемент, перад спробай каманды адымання.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="813"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Не атрымалася ўжыць абраны аб'ект. Абраны аб'ект павінен належыць да бягучага цела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
       <translation>Разглядзіце магчымасць ужыць ЗлучокФормы ці АсноўныЭлемент для спасылкі на вонкавую геаметрыю ў целе.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>No sketch to work on</source>
       <translation>Без эскізу для працы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>No sketch is available in the document</source>
       <translation>Эскіз у дакуменце адсутнічае</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1563"/>
-      <location filename="../../Command.cpp" line="1589"/>
+      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Абраць рабро, грань ці цела з аднаго цела.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
-      <location filename="../../Command.cpp" line="1941"/>
+      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1957"/>
       <source>Selection is not in Active Body</source>
       <translation>Выбар не знаходзіцца ў бягучы целе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1585"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Абраць рабро, грань ці цела з бягучага цела.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1595"/>
       <source>Wrong object type</source>
       <translation>Няправільны тып аб'екта</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>%1 works only on parts.</source>
       <translation>%1 працуе толькі з дэталямі.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Shape of the selected Part is empty</source>
       <translation>Фігура абранай дэталі пустая</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>No valid features in this document</source>
       <translation>Недапушчальны элемент у дакуменце</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1933"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Please create a feature first.</source>
       <translation>Калі ласка, спачатку стварыце элемент.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1942"/>
+      <location filename="../../Command.cpp" line="1958"/>
       <source>Please select only one feature in an active body.</source>
       <translation>Калі ласка, абярыце толькі адзін элемент у бягучым целе.</translation>
     </message>
@@ -3826,7 +3793,7 @@ This may lead to unexpected results.</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3835,40 +3802,39 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Калі ў вас ёсць дакумент з аб'ектамі Дызайну Дэталі без цела, ужывайце функцыю міграцыі ў Дызайн Дэталі, каб змясціць іх у Цела.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>Неабходна бягучае Цела</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Каб стварыць новы аб'ект Праектавання дэталі, у дакуменце павінен быць бягучы аб'ект Цела. Калі ласка, зрабіце адзін бягучым (падвоеная пстрычка), альбо стварыце новае Цела.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>Элемент не знаходзіцца ў целе</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Каб ужыць гэты элемент, ён павінен належаць да аб'екту цела ў дакуменце.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>Элемент не знаходзіцца ў дэталі</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Каб ужыць гэты элемент, ён павінен належаць да аб'екту дэталі ў дакуменце.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <source>Edit %1</source>
       <translation>Змяніць %1</translation>
@@ -3912,12 +3878,12 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Змяніць апору</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="74"/>
       <source>Feature error</source>
       <translation>Памылка элемента</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="72"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="75"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
       <translation>%1 не мае асноўнага элементу.
@@ -3979,17 +3945,17 @@ This feature is broken and can't be edited.</source>
       <translation>Абраць звязаны аб'ект</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="169"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect support</source>
       <translation>Адна пераўтвораная фігура не перасякае падтрымку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="171"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect support</source>
       <translation>%1 пераўтвораных фігур не перасякае падтрымку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="181"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="191"/>
       <source>Transformation succeeded</source>
       <translation>Паспяховае пераўтварэнне</translation>
     </message>
@@ -4031,6 +3997,51 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../ViewProviderHelix.cpp" line="55"/>
       <source>Edit helix</source>
       <translation>Змяніць спіраль</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderChamfer.cpp" line="41"/>
+      <source>Edit chamfer</source>
+      <translation>Змяніць фаску</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDraft.cpp" line="42"/>
+      <source>Edit draft</source>
+      <translation>Змяніць чарнавік</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderFillet.cpp" line="41"/>
+      <source>Edit fillet</source>
+      <translation>Змяніць акругленне</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
+      <source>Edit linear pattern</source>
+      <translation>Змяніць лінейны шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirrored.cpp" line="39"/>
+      <source>Edit mirrored</source>
+      <translation>Змяніць функцыю сіметрыі</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
+      <source>Edit multi-transform</source>
+      <translation>Змяніць множнае пераўтварэнне</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
+      <source>Edit polar pattern</source>
+      <translation>Змяніць палярны шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderScaled.cpp" line="39"/>
+      <source>Edit scaled</source>
+      <translation>Змяніць маштаб</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderThickness.cpp" line="41"/>
+      <source>Edit thickness</source>
+      <translation>Змяніць таўшчыню</translation>
     </message>
   </context>
   <context>
@@ -4413,12 +4424,12 @@ Note that the calculation can take some time</source>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
       <location filename="../../TaskHoleParameters.ui" line="233"/>
       <source>Clearance</source>
-      <translation>Адхіленне</translation>
+      <translation>Зазор</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="137"/>
       <source>Custom Thread clearance value</source>
-      <translation>Карыстальніцкае значэнне адхілення разьбы</translation>
+      <translation>Карыстальніцкае значэнне зазору разьбы</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="159"/>
@@ -4444,7 +4455,7 @@ Note that the calculation can take some time</source>
       <location filename="../../TaskHoleParameters.ui" line="246"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation>Адхіленне адтуліны
+      <translation>Зазор адтуліны
 Даступнае толькі да адтуліны без разьбы</translation>
     </message>
     <message>
@@ -4549,8 +4560,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Для зянкоўкі глыбіня размяшчэння верхняй часткі шрубы пад паверхняй</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="565"/>
@@ -4592,7 +4602,7 @@ account for the depth of blind holes</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="704"/>
       <source>Tapered</source>
-      <translation>Конусны</translation>
+      <translation>Конусная зянкоўка</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="717"/>
@@ -4600,7 +4610,7 @@ account for the depth of blind holes</source>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation>Вугал конуснай адтуліны
+      <translation>Вугал конусу зянкоўкі адтуліны
 90 градусаў: прамая адтуліна
 меней чым 90: радыус адтуліны памяншацца ўнізе
 болей чым 90: радыус адтуліны павялічвацца ўнізе</translation>
@@ -4746,59 +4756,925 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>WizardShaftTable</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Length [mm]</source>
       <translation>Даўжыня [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Diameter [mm]</source>
       <translation>Дыяметр [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Inner diameter [mm]</source>
       <translation>Унутраны дыяметр [mm]</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Constraint type</source>
       <translation>Тып абмежавання</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge type</source>
       <translation>Тып пачатковага рабра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>Start edge size</source>
       <translation>Памер пачатковага рабра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
       <source>End edge type</source>
       <translation>Тып канчатковага рабра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
       <source>End edge size</source>
       <translation>Памер канчатковага рабра</translation>
     </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
+      <source>Shaft wizard</source>
+      <translation>Майстар валоў</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <source>Section 1</source>
+      <translation>Перасек 1</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
+      <source>Section 2</source>
+      <translation>Перасек 2</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
+      <source>Add column</source>
+      <translation>Дадаць слупок</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
+      <source>Section %s</source>
+      <translation>Перасек %s</translation>
+    </message>
   </context>
   <context>
-    <name>WizardShaft</name>
+    <name>TaskWizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
+      <source>All</source>
+      <translation>Усе</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
+      <source>Missing module</source>
+      <translation>Адсутныя модулі</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
+      <source>You may have to install the Plot add-on</source>
+      <translation>Магчыма, вам прыйдзецца ўсталяваць дадатак Графік</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Shaft design wizard...</source>
       <translation>Майстар праектавання валу...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
       <source>Start the shaft design wizard</source>
       <translation>Запусціць майстар праектавання валу</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_WizardShaftCallBack</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
+      <source>Shaft design wizard...</source>
+      <translation>Майстар праектавання валу...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Запусціць майстар праектавання валу</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exception</name>
+    <message>
+      <location filename="../../../App/Body.cpp" line="401"/>
+      <source>Linked object is not a PartDesign feature</source>
+      <translation>Звязаны аб'ект не з'яўляецца элементам Праектавання дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Body.cpp" line="408"/>
+      <source>Tip shape is empty</source>
+      <translation>Фігура кончыка пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="62"/>
+      <source>BaseFeature link is not set</source>
+      <translation>Не зададзены спасылак на асноўны элемент</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="65"/>
+      <source>BaseFeature must be a Part::Feature</source>
+      <translation>Асноўны элемент павінен быць Дэталь::Элемент (Part::Feature)</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBase.cpp" line="69"/>
+      <source>BaseFeature has an empty shape</source>
+      <translation>Асноўны элемент мае пустую фігуру</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
+      <source>Cannot do boolean cut without BaseFeature</source>
+      <translation>Немагчыма выканаць лагічнае выразанне без асноўнага элементу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
+      <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
+      <translation>Немагчыма зрабіць лагічную аперацыю ні з чым, акрамя Дэталі::Элементу (Part::Feature) і яе вытворнай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="99"/>
+      <source>Cannot do boolean operation with invalid base shape</source>
+      <translation>Немагчыма зрабіць лагічную аперацыю з хібнай асноўнай фігурай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="105"/>
+      <source>Cannot do boolean on feature which is not in a body</source>
+      <translation>Немагчыма зрабіць лагічную аперацыю для элемента, якога няма ў целе</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="119"/>
+      <source>Base shape is null</source>
+      <translation>Асноўнай фігура пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="122"/>
+      <source>Tool shape is null</source>
+      <translation>Фігура інструмента пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
+      <source>Fusion of tools failed</source>
+      <translation>Зліццё інструментаў не атрымалася</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="222"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="228"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <source>Resulting shape is not a solid</source>
+      <translation>Выніковая фігура атрымалася не суцэльным целам</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="136"/>
+      <source>Cut out failed</source>
+      <translation>Выразаць не атрымалася</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
+      <source>Common operation failed</source>
+      <translation>Агульная аперацыя завяршылася няўдачай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeaturePad.cpp" line="226"/>
+      <location filename="../../../App/FeaturePad.cpp" line="235"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="197"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="232"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <source>Result has multiple solids: that is not currently supported.</source>
+      <translation>Вынік змяшчае некалькі суцэльных цел: у бягучы час гэтае не падтрымліваецца.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+      <source>Failed to create chamfer</source>
+      <translation>Не атрымалася стварыць фаску</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="319"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+      <source>Resulting shape is null</source>
+      <translation>Выніковая фігура пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <source>Resulting shape is invalid</source>
+      <translation>Хібная выніковая фігура</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+      <source>Size must be greater than zero</source>
+      <translation>Памер павінен быць больш за нуль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+      <source>Size2 must be greater than zero</source>
+      <translation>Памер2 павінен быць больш за нуль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+      <source>Angle must be greater than 0 and less than 180</source>
+      <translation>Вугал павінен быць больш за 0 і менш чым 180</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureDraft.cpp" line="315"/>
+      <source>Failed to create draft</source>
+      <translation>Не атрымалася стварыць чарнавік</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="93"/>
+      <source>Fillet radius must be greater than zero</source>
+      <translation>Радыус акруглення павінен быць больш за нуль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <source>Failed to create fillet</source>
+      <translation>Не атрымалася стварыць акругленне</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="78"/>
+      <source>Angle of groove too large</source>
+      <translation>Вугал пазу занадта вялікі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="82"/>
+      <source>Angle of groove too small</source>
+      <translation>Вугал пазу занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+      <source>The requested feature cannot be created. The reason may be that:
+  - the active Body does not contain a base shape, so there is no
+  material to be removed;
+  - the selected sketch does not belong to the active Body.</source>
+      <translation>Запытаны элемент не можа быць створаны. Прычынаю можа быць:
+- бягучае Цела не ўтрымлівае асноўнай фігуры, таму няма матэрыялу для выдалення;
+- абраны эскіз не належыць да бягучага Цела.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+      <source>Creating a face from sketch failed</source>
+      <translation>Не атрымалася стварыць грань з эскізу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+      <source>Revolve axis intersects the sketch</source>
+      <translation>Вось вярчэння перасякае эскіз</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureGroove.cpp" line="156"/>
+      <source>Cut out of base feature failed</source>
+      <translation>Не атрымалася выразаць асноўны элемент</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+      <source>Could not revolve the sketch!</source>
+      <translation>Не атрымалася павярнуць эскіз!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities in a sketch are not allowed.</source>
+      <translation>Не атрымалася стварыць грань з эскізу.
+Перакрыжаваныя сутнасці эскізу ў эскізе не дазваляюцца.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
+      <source>Error: Pitch too small</source>
+      <translation>Памылка: падача занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="129"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <source>Error: height too small!</source>
+      <translation>Памылка: вышыня занадта малая!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <source>Error: pitch too small!</source>
+      <translation>Памылка: падача занадта малая!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="151"/>
+      <source>Error: turns too small!</source>
+      <translation>Памылка: віткоў занадта мала!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="155"/>
+      <source>Error: either height or growth must not be zero!</source>
+      <translation>Памылка: ні вышыня, ні ўзрастанне не павінны быць зададзеныя ў нуль!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
+      <source>Error: unsupported mode</source>
+      <translation>Памылка: непадтрымліваемы рэжым</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="181"/>
+      <source>Error: No valid sketch or face</source>
+      <translation>Памылка: без дапушчальнага эскізу ці грані</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
+      <source>Error: Face must be planar</source>
+      <translation>Памылка: грань павінна быць плоскай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <source>Error: Could not build</source>
+      <translation>Памылка: не атрымалася пабудаваць</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="330"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+      <source>Error: Result is not a solid</source>
+      <translation>Памылка: вынік не суцэльнае цела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="310"/>
+      <source>Error: There is nothing to subtract</source>
+      <translation>Памылка: адымаць няма чаго</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
+      <source>Error: Result has multiple solids</source>
+      <translation>Памылка: вынік змяшчае некалькі суцэльных цел</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="324"/>
+      <source>Error: Adding the helix failed</source>
+      <translation>Памылка: не атрымалася дадаць спіраль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="347"/>
+      <source>Error: Intersecting the helix failed</source>
+      <translation>Памылка: не атрымалася перакрыжаваць спіраль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="354"/>
+      <source>Error: Subtracting the helix failed</source>
+      <translation>Памылка: не атрымалася адняць спіраль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHelix.cpp" line="376"/>
+      <source>Error: Could not create face from sketch</source>
+      <translation>Памылка: не атрымалася стварыць грань з эскізу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1687"/>
+      <source>Hole error: Creating a face from sketch failed</source>
+      <translation>Памылка адтуліны: не атрымалася стварыць грань з эскізу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1712"/>
+      <source>Hole error: Unsupported length specification</source>
+      <translation>Памылка адтуліны: спецыфікацыя даўжыні не падтрымліваецца</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1715"/>
+      <source>Hole error: Invalid hole depth</source>
+      <translation>Памылка адтуліны: хібная глыбіня адтуліны</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1738"/>
+      <source>Hole error: Invalid taper angle</source>
+      <translation>Памылка адтуліны: хібны вугал конусу зянкоўкі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1759"/>
+      <source>Hole error: Hole cut diameter too small</source>
+      <translation>Памылка адтуліны: дыяметр абрэзкі адтуліны занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1763"/>
+      <source>Hole error: Hole cut depth must be less than hole depth</source>
+      <translation>Памылка адтуліны: глыбіня абрэзкі адтуліны павінна быць менш глыбіні адтуліны</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1767"/>
+      <source>Hole error: Hole cut depth must be greater or equal to zero</source>
+      <translation>Памылка адтуліны: глыбіня абрэзкі адтуліны павінна быць больш ці роўная нулю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+      <source>Hole error: Invalid countersink</source>
+      <translation>Памылка адтуліны: хібная зянкоўка</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1822"/>
+      <source>Hole error: Invalid drill point angle</source>
+      <translation>Памылка адтуліны: хібны вугал кропкі дрылі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1832"/>
+      <source>Hole error: Invalid drill point</source>
+      <translation>Памылка адтуліны: хібная кропка дрылі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1866"/>
+      <source>Hole error: Could not revolve sketch</source>
+      <translation>Памылка адтуліны: не атрымалася павярнуць эскіз</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1870"/>
+      <source>Hole error: Resulting shape is empty</source>
+      <translation>Памылка адтуліны: выніковая фігура пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1880"/>
+      <source>Error: Adding the thread failed</source>
+      <translation>Памылка: не атрымалася дадаць разьбу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
+      <source>Boolean operation failed</source>
+      <translation>Лагічная аперацыя завяршылася няўдачай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="248"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
+      <translation>Не атрымалася стварыць грань з эскізу.
+Перакрыжаваныя сутнасці эскізу ці некалькі граняў у эскізе не дапускаюцца для стварэння кішэні да грані.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2025"/>
+      <source>Thread type out of range</source>
+      <translation>Тып разьбы па-за межамі дыяпазону</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2028"/>
+      <source>Thread size out of range</source>
+      <translation>Памер разьбы па-за межамі дыяпазону</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2120"/>
+      <source>Error: Thread could not be built</source>
+      <translation>Памылка: не атрымалася пабудаваць разьбу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="135"/>
+      <source>Loft: At least one section is needed</source>
+      <translation>Профіль: неабходны прынамсі адзін перасек</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="140"/>
+      <source>Loft: Could not obtain profile shape</source>
+      <translation>Профіль: не атрымалася атрымаць фігуру профілю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="153"/>
+      <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
+      <translation>Профіль: калі ўжываецца кропкі для профілю/перасекаў, эскіз павінен утрымліваць адну кропку</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="161"/>
+      <source>Loft: All sections need to be part features</source>
+      <translation>Профіль: усе перасекі павінны быць элементамі дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="166"/>
+      <source>Loft: Could not obtain section shape</source>
+      <translation>Профіль: не атрымалася атрымаць фігуру перасеку</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="182"/>
+      <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
+      <translation>Профіль: перасек не змяшчае аніякіх ломаных ліній, і не з'яўляецца адзінкавай вяршыняй</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
+      <source>Loft: Only the profile and the last section can be vertices</source>
+      <translation>Профіль: толькі профіль і апошні перасек могуць быць вяршынямі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="186"/>
+      <source>Loft: For closed lofts only the profile can be a vertex</source>
+      <translation>Профіль: для замкнутых профіляў толькі профіль можа быць вяршыняй</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="193"/>
+      <source>Loft: all loft sections need to have the same amount of inner wires</source>
+      <translation>Профіль: усе профілі перасеку павінны мець аднолькавую колькасць унутраных ломаных ліній</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="232"/>
+      <source>Loft could not be built</source>
+      <translation>Не атрымалася пабудаваць профіль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <source>Loft: Result is not a solid</source>
+      <translation>Профіль: вынік не суцэльнае цела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="278"/>
+      <source>Loft: There is nothing to subtract from</source>
+      <translation>Профіль: няма з чаго адымаць</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="288"/>
+      <source>Loft: Adding the loft failed</source>
+      <translation>Профіль: не атрымалася дадаць профіль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="306"/>
+      <source>Loft: Subtracting the loft failed</source>
+      <translation>Профіль: не атрымалася адняць профіль</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="330"/>
+      <source>Loft: A fatal error occurred when making the loft</source>
+      <translation>Профіль: пры стварэнні профілю адбылася фатальная памылка</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="75"/>
+      <source>Length of pad too small</source>
+      <translation>Даўжыня выцягвання занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="78"/>
+      <source>Second length of pad too small</source>
+      <translation>Другая даўжыня выцягвання занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="130"/>
+      <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
+      <translation>Выцягванне: стварэнне не атрымалася, паколькі напрамак артаганальнага вектару нармалі эскіза</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="141"/>
+      <source>Pad: Creating a face from sketch failed</source>
+      <translation>Выцягванне: не атрымалася стварыць грань з эскізу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="205"/>
+      <source>Pad: Resulting shape is empty</source>
+      <translation>Выцягванне: выніковая фігура пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="216"/>
+      <source>Pad: Fusion with base feature failed</source>
+      <translation>Выцягванне: не атрымалася выканаць зліццё з асноўнай функцыяй</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePad.cpp" line="248"/>
+      <source>Could not create face from sketch.
+Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
+      <translation>Не атрымалася стварыць грань з эскізу.
+Перакрыжаваныя сутнасці эскізу ці некалькі граняў у эскізе не дазваляюцца.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="172"/>
+      <source>Pipe: Could not obtain profile shape</source>
+      <translation>Траекторыя: не атрымалася атрымаць фігуру профілю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="177"/>
+      <source>No spine linked</source>
+      <translation>Без злучанага каркасу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="190"/>
+      <source>No auxiliary spine linked.</source>
+      <translation>Без злучанага дапаможнага каркасу.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
+      <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
+      <translation>Траекторыя: пры ўжыванні ізаляваных кропак эскізу, для перасеку патрабуецца толькі адна ізаляваная кропка</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="217"/>
+      <source>Pipe: At least one section is needed when using a single point for profile</source>
+      <translation>Траекторыя: пры ўжыванні адной кропкі для профілю патрабуецца па меншай меры адзін перасек</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <source>Pipe: All sections need to be part features</source>
+      <translation>Траекторыя: усе перасекі павінны быць элементамі дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="237"/>
+      <source>Pipe: Could not obtain section shape</source>
+      <translation>Траекторыя: не атрымалася атрымаць фігуру перасеку</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="246"/>
+      <source>Pipe: Only the profile and last section can be vertices</source>
+      <translation>Траекторыя: толькі профіль і апошні перасек могуць быць вяршынямі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
+      <source>Multisections need to have the same amount of inner wires as the base section</source>
+      <translation>Шмат перасекаў павінны мець такую ж колькасць унутраных ломаных ліній, як і асноўны перасек</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
+      <source>Path must not be a null shape</source>
+      <translation>Траекторыя не павінна быць пустой фігурай</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="317"/>
+      <source>Pipe could not be built</source>
+      <translation>Не атрымалася пабудаваць траекторыю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="363"/>
+      <source>Result is not a solid</source>
+      <translation>Вынік не суцэльнае цела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="378"/>
+      <source>Pipe: There is nothing to subtract from</source>
+      <translation>Траекторыя: няма з чаго адымаць</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="389"/>
+      <source>Adding the pipe failed</source>
+      <translation>Не атрымалася дадаць траекторыю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="409"/>
+      <source>Subtracting the pipe failed</source>
+      <translation>Не атрымалася адняць траекторыю</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="433"/>
+      <source>A fatal error occurred when making the pipe</source>
+      <translation>Пры стварэнні траекторыі адбылася фатальная памылка</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="558"/>
+      <source>Invalid element in spine.</source>
+      <translation>Хібны элемент у каркасе.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="561"/>
+      <source>Element in spine is neither an edge nor a wire.</source>
+      <translation>Элемент у каркасе не з'яўляецца ні рабром, ні ломанай лініяй.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="574"/>
+      <source>Spine is not connected.</source>
+      <translation>Каркас не падключаны.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="578"/>
+      <source>Spine is neither an edge nor a wire.</source>
+      <translation>Каркас не з'яўляецца ні рабром, ні ломанай лініяй.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="582"/>
+      <source>Invalid spine.</source>
+      <translation>Хібны каркас.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="82"/>
+      <source>Pocket: Length of pocket too small</source>
+      <translation>Кішэнь: даўжыня кішэні занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="86"/>
+      <source>Pocket: Second length of pocket too small</source>
+      <translation>Кішэнь: другая даўжыня кішэні занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="138"/>
+      <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
+      <translation>Кішэнь: стварэнне не атрымалася, паколькі напрамак артаганальнага вектару нармалі эскіза</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <source>Pocket: Creating a face from sketch failed</source>
+      <translation>Кішэнь: не атрымалася стварыць грань з эскізу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="155"/>
+      <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
+      <translation>Кішэнь: выдушванне да грані магчыма толькі ў тым выпадку, калі эскіз размешчаны на грані</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="190"/>
+      <source>Pocket: Up to face: Could not get SubShape!</source>
+      <translation>Кішэнь: да грані: не атрымалася змяніць укладзеную фігуру!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="214"/>
+      <source>Pocket: Resulting shape is empty</source>
+      <translation>Кішэнь: выніковая фігура пустая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="223"/>
+      <source>Pocket: Cut out of base feature failed</source>
+      <translation>Кішэнь: не атрымалася выразаць асноўны элемент</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="90"/>
+      <source>Cannot subtract primitive feature without base feature</source>
+      <translation>Немагчыма адняць элемент першаснага цела без асноўнага элементу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="99"/>
+      <source>Adding the primitive failed</source>
+      <translation>Не атрымалася дадаць першаснае цела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="119"/>
+      <source>Subtracting the primitive failed</source>
+      <translation>Не атрымалася адняць першаснае цела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
+      <source>Length of box too small</source>
+      <translation>Даўжыня габарытаў занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
+      <source>Width of box too small</source>
+      <translation>Шырыня габарытаў занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="203"/>
+      <source>Height of box too small</source>
+      <translation>Вышыня габарытаў занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
+      <source>Radius of cylinder too small</source>
+      <translation>Радыус цыліндру занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
+      <source>Height of cylinder too small</source>
+      <translation>Вышыня цыліндру занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="253"/>
+      <source>Rotation angle of cylinder too small</source>
+      <translation>Вугал вярчэння цыліндру занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="306"/>
+      <source>Radius of sphere too small</source>
+      <translation>Радыус сферы занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
+      <source>Radius of cone cannot be negative</source>
+      <translation>Радыус конусу не можа быць адмоўным</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="359"/>
+      <source>The radii for cones must not be equal</source>
+      <translation>Радыусы конусаў не павінны быць аднолькавымі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="361"/>
+      <source>Height of cone too small</source>
+      <translation>Вышыня конусу занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+      <source>Radius of ellipsoid too small</source>
+      <translation>Радыус эліпсоіду занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+      <source>Radius of torus too small</source>
+      <translation>Радыус тору занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
+      <source>Polygon of prism is invalid, must have 3 or more sides</source>
+      <translation>Хібны шматкутнік прызмы, павінен мець тры ці больш бакоў</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
+      <source>Circumradius of the polygon, of the prism, is too small</source>
+      <translation>Радыус акружнасці шматкутніку прызмы занадта малы</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
+      <source>Height of prism is too small</source>
+      <translation>Вышыня прызмы занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="652"/>
+      <source>delta x of wedge too small</source>
+      <translation>дэльта X кліну занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
+      <source>delta y of wedge too small</source>
+      <translation>дэльта Y кліну занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
+      <source>delta z of wedge too small</source>
+      <translation>дэльта Z кліну занадта малая</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
+      <source>delta z2 of wedge is negative</source>
+      <translation>дэльта Z2 кліну адмоўная</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
+      <source>delta x2 of wedge is negative</source>
+      <translation>дэльта X2 кліну адмоўная</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
+      <source>Angle of revolution too large</source>
+      <translation>Занадта вялікі вугал павароту</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
+      <source>Angle of revolution too small</source>
+      <translation>Занадта малы вугал павароту</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <source>Fusion with base feature failed</source>
+      <translation>Не атрымалася выканаць зліццё з асноўнай функцыяй</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
+      <source>Transformation feature Linked object is not a Part object</source>
+      <translation>Аб'ект, які звязаны з элементам пераўтварэння, не з'яўляецца аб'ектам дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
+      <source>No originals linked to the transformed feature.</source>
+      <translation>Без арыгіналаў, якія звязаныя з пераўтвораным аб'ектам.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <source>Cannot transform invalid support shape</source>
+      <translation>Не атрымалася пераўтварыць хібную фігуру падтрымкі</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <source>Transformation failed</source>
+      <translation>Не атрымалася пераўтварыць</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <source>Shape of additive/subtractive feature is empty</source>
+      <translation>Пустая фігура выцяжкі/адымання элементаў</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <source>Only additive and subtractive features can be transformed</source>
+      <translation>Могуць быць пераўтвораныя толькі элементы, якія дадаюцца ці адымаюцца</translation>
     </message>
   </context>
 </TS>

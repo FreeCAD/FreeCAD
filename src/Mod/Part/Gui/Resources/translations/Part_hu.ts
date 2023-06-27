@@ -85,7 +85,7 @@
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Forgatás</translation>
+      <translation>Körmetszés</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -1912,12 +1912,12 @@ X, Y és Z komponenseire.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Pont-tárgy létrehozása geometriából</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Választható pont-tárgy létrehozása kijelölt geometriai tárgyból</translation>
     </message>
   </context>
   <context>
@@ -2182,7 +2182,7 @@ irányát.</translation>
     <message>
       <location filename="../../Command.cpp" line="1919"/>
       <source>Selected shape is not a solid</source>
-      <translation>A kijelölt alakzet nem szilárd test</translation>
+      <translation>A kijelölt alakzat nem szilárd test</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@ irányát.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Pontok a geometriából</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2327,7 +2327,7 @@ irányát.</translation>
       <translation>Csatolmány szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="423"/>
+      <location filename="../../TaskFaceColors.cpp" line="419"/>
       <source>Change face colors</source>
       <translation>Felületi színek megváltoztatása</translation>
     </message>
@@ -2931,28 +2931,33 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     <message>
       <location filename="../../DlgExtrusion.cpp" line="452"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>A '%1' dokumentum nem létezik.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="499"/>
-      <location filename="../../DlgExtrusion.cpp" line="504"/>
+      <location filename="../../DlgExtrusion.cpp" line="500"/>
+      <location filename="../../DlgExtrusion.cpp" line="506"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Kihúzás létrehozás sikertelen.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="571"/>
+      <location filename="../../DlgExtrusion.cpp" line="573"/>
       <source>Object not found: %1</source>
       <translation>Objektum nem található: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="633"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Kihúzáshoz nem jelölt ki alakzatot. Először válasszon néhányat.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="654"/>
+      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <source>Unknown error</source>
+      <translation>Ismeretlen hiba</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="656"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2961,12 +2966,12 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Irányba mód egy él használatához, de az él nem kapcsolódik.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="679"/>
+      <location filename="../../DlgExtrusion.cpp" line="681"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2975,12 +2980,12 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="689"/>
+      <location filename="../../DlgExtrusion.cpp" line="691"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Kihúzás irány vektora nulla hosszúságú. Nem lehet nulla.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="700"/>
+      <location filename="../../DlgExtrusion.cpp" line="702"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Teljes kihúzás hossza nulla (length1 == - length2). Nem lehet nulla.</translation>
     </message>
@@ -3807,7 +3812,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
       <source>Growth:</source>
-      <translation>Növekedés:</translation>
+      <translation>Emelkedés:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
@@ -3991,7 +3996,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Forgatás</translation>
+      <translation>Körmetszés</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -4078,7 +4083,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="264"/>
       <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <translation>Először válasszon ki egy alakzatot a forgatáshoz.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="280"/>
@@ -4090,6 +4095,11 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <translation>Kihúzás tengely kapcsolat érvénytelen.
 
 %1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <source>Unknown error</source>
+      <translation>Ismeretlen hiba</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4107,7 +4117,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Esztergálás létrehozása sikertelen.
+      <translation>Körmetszés létrehozása sikertelen.
 
 %1</translation>
     </message>
@@ -4157,7 +4167,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="71"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+      <translation>Ha túl kicsi eltérést állít be, akkor a hálózófaktorálás tovább tart, és így lefagy vagy lelassul a grafikus felület.</translation>
     </message>
   </context>
   <context>
@@ -5108,190 +5118,193 @@ rendszerében fejezzük ki.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
       <source>Shape Content</source>
       <translation>Alakzat tartalma</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
       <source>Settings</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip settings page</source>
       <translation>Beállítások lap kihagyása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
-      <source>Skip this settings page and run the geometry check automatically.
-Default: false</source>
-      <translation>Hagyja ki ezt a beállítási oldalt, és futtassa automatikusan a geometriai ellenőrzést.
-Alapértelmezett: hamis</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <source>Skip this settings page and run the geometry check automatically.</source>
+      <translation>Hagyja ki ezt a beállítási oldalt, és futtassa automatikusan a geometriai ellenőrzést.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
-      <source>Run BOP check</source>
-      <translation>BOP ellenőrzés futtatása</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <source>Default: false</source>
+      <translation>Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <source>Run boolean operation check</source>
+      <translation>Logikai művelet ellenőrzés futtatása</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
       <source>Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
+the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>Extra logikai műveletek ellenőrzése, amely néha hibákat talál, amelyeket a szabványos BRep geometria-ellenőrzés elmulaszt. Ezek a hibák nem mindig jelentik azt, hogy a vizsgált objektum használhatatlan.  Alapértelmezett: hamis</translation>
+      <translation>Extra logikai műveletek ellenőrzése, amely néha hibákat talál, melyeket a szabványos BRep geometria-ellenőrzés elmulaszt. Ezek a hibák nem mindig jelentik azt, hogy a vizsgált tárgy használhatatlan.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
       <source>Single-threaded</source>
       <translation>Egyszálas</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Futtassa a geometria-ellenőrzést egyetlen szálban.  Ez lassabb, 
 de stabilabb.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
       <source>Log errors</source>
       <translation>Hibák naplózása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Hibák naplózása a jelentés nézethez.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
       <source>Expand shape content</source>
       <translation>Alakzat tartalom kibontása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Advanced shape content</source>
       <translation>Speciális alakzat tartalom kibontása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Speciális alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
-      <source>
-Individual BOP Checks:</source>
-      <translation>
-Egyedi BOP ellenőrzések:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
-      <source>  Bad type</source>
-      <translation>  Rossz típus</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <source>
+Individual boolean operation checks:</source>
+      <translation>
+Egyedi logikai művelet ellenőrzés:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <source>Bad type</source>
+      <translation>Rossz típus</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <source>Self-intersect</source>
+      <translation>Ön-metszés</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <source>Too small edge</source>
+      <translation>Túl kicsi él</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <source>Nonrecoverable face</source>
+      <translation>Nem visszavehető felület</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <source>Continuity</source>
+      <translation>Folytonosság</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <source>Incompatibility of face</source>
+      <translation>A felület inkompatibilitása</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <source>Incompatibility of vertex</source>
+      <translation>A végpont inkompatibilitása</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <source>Incompatibility of edge</source>
+      <translation>Az él inkompatibilitása</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <source>Invalid curve on surface</source>
+      <translation>Érvénytelen görbe a felületen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Ellenőrizze a rossz argumentumtípusokat.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
-      <source>  Self-intersect</source>
-      <translation>  Ön-metszés</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Ellenőrizze az ön-metszéseket.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
-      <source>  Too small edge</source>
-      <translation>  Túl kicsi él</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Ellenőrizze, hogy vannak-e túl kicsi élek.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
-      <source>  Nonrecoverable face</source>
-      <translation>  Nem visszavehető felület</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Ellenőrizze a nem visszavehető felületeket.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
-      <source>  Continuity</source>
-      <translation>  Folytonosság</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Ellenőrizze a folytonosságot.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
-      <source>  Incompatibility of face</source>
-      <translation>  A felület inkompatibilitása</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Ellenőrizze a felületek inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
-      <source>  Incompatibility of vertex</source>
-      <translation>  A végpont inkompatibilitása</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Ellenőrizze a végpontok inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
-      <source>  Incompatibility of edge</source>
-      <translation>  Az él inkompatibilitása</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Ellenőrizze az élek inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
-      <source>  Invalid curve on surface</source>
-      <translation>  Érvénytelen görbe a felületen</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Érvénytelen görbék ellenőrzése a felületen.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
       <source>Run check</source>
       <translation>Ellenőrzés futtatás</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Results</source>
       <translation>Eredmények</translation>
     </message>
@@ -5309,15 +5322,43 @@ Egyedi BOP ellenőrzések:</translation>
       <translation>Ellenőrzés fut...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="417"/>
+      <source>Boolean operation check...</source>
+      <translation>Logikai művelet ellenőrzés...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="419"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
       <source>Check geometry</source>
       <translation>Geometria ellenőrzése</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="587"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <source>Invalid</source>
+      <translation>Érvénytelen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <source>Checking</source>
+      <translation>Ellenőriz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <source>%1 processed out of %2 selected</source>
+      <translation>%1 feldolgozott a %2 kiválasztottból</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <source>%n invalid shapes.</source>
+      <translation>
+        <numerusform>%n érvénytelen alakzat.</numerusform>
+        <numerusform>%n érvénytelen alakzatok.</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Ellenőrzött tárgy</translation>
     </message>
   </context>
   <context>
@@ -5594,8 +5635,8 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="95"/>
-      <location filename="../../TaskThickness.cpp" line="293"/>
-      <location filename="../../TaskThickness.cpp" line="303"/>
+      <location filename="../../TaskThickness.cpp" line="294"/>
+      <location filename="../../TaskThickness.cpp" line="304"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
@@ -5610,7 +5651,7 @@ in the 3D view for the sweep path.</source>
       <translation>Kész</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="258"/>
+      <location filename="../../TaskThickness.cpp" line="259"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -5669,21 +5710,21 @@ in the 3D view for the sweep path.</source>
       <translation>%1 szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Alkatrész és Alkatrész tervezési munkafelület</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Alaktrész/Alkatrész tervezés</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Importálás-Exportálás</translation>
     </message>
@@ -5984,67 +6025,66 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo IsmeretlenFelülvizsgálat</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Logikai művelet: Ismeretlen ellenőrzés</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo RosszTípus</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>A logikai művelet: Rossz típus</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo Sajátmetszéspont</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Logikai művelet: Önmetszés található</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo TúlKicsiÉl</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Logikai művelet: Él túl kicsi</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo NemVisszaállíthatóFelület</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Logikai művelet: Nem visszanyerhető felület</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo VégpontInkompatibilitás</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Logikai művelet: Csúcspont összeférhetetlenség</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo ÉlInkompatibilitás</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Logikai művelet: Él összeférhetetlenség</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo FelületInkompatibilitás</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Logikai művelet: Felület összeférhetetlenség</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo MűveletMegszakítva</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Logikai művelet: Megszakított</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Logikai művelet: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Logikai művelet: Érvénytelen görbe a felületen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo NotValid</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Logikai művelet: Érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
       <source>Invalid</source>
       <translation>Érvénytelen</translation>
     </message>
@@ -6133,12 +6173,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Távolság a paramétertérben</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Távolság megadása:</translation>
     </message>
   </context>
   <context>
@@ -6333,75 +6373,16 @@ Do you want to continue?</source>
       <translation>Tovább</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
-      <source>Boolean fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>'Logikai töredékek' tárgy létrehozása két vagy több kijelölt tárgyból,
-vagy az összetevőkön belüli alakzatokból.
-Ez egy logikai egyesülés, amit aztán az eredeti formák metszéspontjai szelnek.
-Az 'összetett szűrő' használható az egyes szeletek kibontásához.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt. Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
-      <source>Slice to compound</source>
-      <translation>Szeletelje összetevőkre</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>A kijelölt tárgyat más tárgyakkal mint vágóeszközzel szeletelje.
-A kapott darabokat egy összetevőként tárolja.
-Az 'Összetevő szűrő' használható az egyes szeletek kibontásához.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation>Jelöljön ki legalább két tárgyat. Az első a szeletelendő tárgy; a többi olyan tárgy, amivel szeletelni kell.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
-      <source>Slice apart</source>
-      <translation>Részekre szeletel</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>A kijelölt tárgyat más tárgyakkal szeletelje fel, és ossza részekre.
-Ez létrehoz egy 'Összetevő szűrő'-t minden szeletre.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
-      <source>Boolean XOR</source>
-      <translation>Logikai XOR</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>'Kizárólagos VAGY' logikai művelet végrehajtása két vagy több kijelölt tárggyal,
-vagy az összetevőn belüli alakzatokkal.
-Ez azt jelenti, hogy az alakzatok egymást átfedő formái törlődnek.
-A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</translation>
     </message>
   </context>
   <context>
@@ -6591,7 +6572,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Alakzat típus</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6626,7 +6607,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Kompozit szilárd anyag</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6666,7 +6647,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Görbe közepe</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6681,7 +6662,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Lezárt</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6691,17 +6672,88 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Globális tömegközéppont</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Globális elhelyezés</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
       <source>Placement</source>
       <translation>Elhelyezés</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_BooleanFragments</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>'Logikai töredékek' tárgy létrehozása két vagy több kijelölt tárgyból,
+vagy az összetevőkön belüli alakzatokból.
+Ez egy logikai egyesülés, amit aztán az eredeti formák metszéspontjai szelnek.
+Az 'összetett szűrő' használható az egyes szeletek kibontásához.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Slice</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation>Szeletelje összetevőkre</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>A kijelölt tárgyat más tárgyakkal mint vágóeszközzel szeletelje.
+A kapott darabokat egy összetevőként tárolja.
+Az 'Összetevő szűrő' használható az egyes szeletek kibontásához.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SliceApart</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation>Részekre szeletel</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>A kijelölt tárgyat más tárgyakkal szeletelje fel, és ossza részekre.
+Ez létrehoz egy 'Összetevő szűrő'-t minden szeletre.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_XOR</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation>Logikai XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>'Kizárólagos VAGY' logikai művelet végrehajtása két vagy több kijelölt tárggyal,
+vagy az összetevőn belüli alakzatokkal.
+Ez azt jelenti, hogy az alakzatok egymást átfedő formái törlődnek.
+A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</translation>
     </message>
   </context>
 </TS>

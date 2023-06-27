@@ -378,7 +378,7 @@ bool SweepWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

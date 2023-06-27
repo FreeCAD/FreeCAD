@@ -11,47 +11,5 @@
         <file>icons/actions/web-sketchfab.svg</file>
         <file>icons/actions/web-set-url.svg</file>
         <file>icons/WebWorkbench.svg</file>
-        <file>translations/Web_de.qm</file>
-        <file>translations/Web_af.qm</file>
-        <file>translations/Web_zh-CN.qm</file>
-        <file>translations/Web_zh-TW.qm</file>
-        <file>translations/Web_hr.qm</file>
-        <file>translations/Web_cs.qm</file>
-        <file>translations/Web_nl.qm</file>
-        <file>translations/Web_fi.qm</file>
-        <file>translations/Web_fr.qm</file>
-        <file>translations/Web_hu.qm</file>
-        <file>translations/Web_ja.qm</file>
-        <file>translations/Web_no.qm</file>
-        <file>translations/Web_pl.qm</file>
-        <file>translations/Web_pt-PT.qm</file>
-        <file>translations/Web_ro.qm</file>
-        <file>translations/Web_ru.qm</file>
-        <file>translations/Web_sr.qm</file>
-        <file>translations/Web_es-ES.qm</file>
-        <file>translations/Web_sv-SE.qm</file>
-        <file>translations/Web_uk.qm</file>
-        <file>translations/Web_it.qm</file>
-        <file>translations/Web_pt-BR.qm</file>
-        <file>translations/Web_el.qm</file>
-        <file>translations/Web_sk.qm</file>
-        <file>translations/Web_tr.qm</file>
-        <file>translations/Web_sl.qm</file>
-        <file>translations/Web_eu.qm</file>
-        <file>translations/Web_ca.qm</file>
-        <file>translations/Web_gl.qm</file>
-        <file>translations/Web_kab.qm</file>
-        <file>translations/Web_ko.qm</file>
-        <file>translations/Web_fil.qm</file>
-        <file>translations/Web_id.qm</file>
-        <file>translations/Web_lt.qm</file>
-        <file>translations/Web_val-ES.qm</file>
-        <file>translations/Web_ar.qm</file>
-        <file>translations/Web_vi.qm</file>
-        <file>translations/Web_es-AR.qm</file>
-        <file>translations/Web_bg.qm</file>
-        <file>translations/Web_ka.qm</file>
-        <file>translations/Web_sr-CS.qm</file>
-        <file>translations/Web_be.qm</file>
     </qresource>
 </RCC>

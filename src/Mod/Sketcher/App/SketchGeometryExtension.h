@@ -34,31 +34,35 @@
 namespace Sketcher
 {
 
-    namespace InternalType {
-        enum InternalType {
-            None                    = 0,
-            EllipseMajorDiameter    = 1,
-            EllipseMinorDiameter    = 2,
-            EllipseFocus1           = 3,
-            EllipseFocus2           = 4,
-            HyperbolaMajor          = 5,
-            HyperbolaMinor          = 6,
-            HyperbolaFocus          = 7,
-            ParabolaFocus           = 8,
-            BSplineControlPoint     = 9,
-            BSplineKnotPoint        = 10,
-            ParabolaFocalAxis       = 11,
-            NumInternalGeometryType        // Must be the last
-        };
-    }
+namespace InternalType
+{
+enum InternalType
+{
+    None = 0,
+    EllipseMajorDiameter = 1,
+    EllipseMinorDiameter = 2,
+    EllipseFocus1 = 3,
+    EllipseFocus2 = 4,
+    HyperbolaMajor = 5,
+    HyperbolaMinor = 6,
+    HyperbolaFocus = 7,
+    ParabolaFocus = 8,
+    BSplineControlPoint = 9,
+    BSplineKnotPoint = 10,
+    ParabolaFocalAxis = 11,
+    NumInternalGeometryType// Must be the last
+};
+}
 
-    namespace GeometryMode {
-        enum GeometryMode {
-            Blocked                 = 0,
-            Construction            = 1,
-            NumGeometryMode        // Must be the last
-        };
-    }
+namespace GeometryMode
+{
+enum GeometryMode
+{
+    Blocked = 0,
+    Construction = 1,
+    NumGeometryMode// Must be the last
+};
+}
 
 class ISketchGeometryExtension
 {
@@ -74,65 +78,103 @@ public:
 
     // Geometry functional mode
     virtual bool testGeometryMode(int flag) const = 0;
-    virtual void setGeometryMode(int flag, bool v=true) = 0;
+    virtual void setGeometryMode(int flag, bool v = true) = 0;
 
     virtual int getGeometryLayerId() const = 0;
     virtual void setGeometryLayerId(int geolayer) = 0;
 };
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchGeometryExtension
+class SketcherExport SketchGeometryExtension: public Part::GeometryPersistenceExtension,
+                                              private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-public:
 
+public:
     SketchGeometryExtension();
     explicit SketchGeometryExtension(long cid);
     ~SketchGeometryExtension() override = default;
 
     std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
-    long getId() const override {return Id;}
-    void setId(long id) override {Id = id;}
+    long getId() const override
+    {
+        return Id;
+    }
+    void setId(long id) override
+    {
+        Id = id;
+    }
 
-    InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
-    void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
+    InternalType::InternalType getInternalType() const override
+    {
+        return InternalGeometryType;
+    }
+    void setInternalType(InternalType::InternalType type) override
+    {
+        InternalGeometryType = type;
+    }
 
-    bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
-    void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
+    bool testGeometryMode(int flag) const override
+    {
+        return GeometryModeFlags.test((size_t)(flag));
+    };
+    void setGeometryMode(int flag, bool v = true) override
+    {
+        GeometryModeFlags.set((size_t)(flag), v);
+    };
 
-    int getGeometryLayerId() const override { return GeometryLayer;}
-    void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
+    int getGeometryLayerId() const override
+    {
+        return GeometryLayer;
+    }
+    void setGeometryLayerId(int geolayer) override
+    {
+        GeometryLayer = geolayer;
+    }
 
-    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint", "ParabolaFocalAxis" }};
+    constexpr static std::array<const char*, InternalType::NumInternalGeometryType>
+        internaltype2str {{"None",
+                           "EllipseMajorDiameter",
+                           "EllipseMinorDiameter",
+                           "EllipseFocus1",
+                           "EllipseFocus2",
+                           "HyperbolaMajor",
+                           "HyperbolaMinor",
+                           "HyperbolaFocus",
+                           "ParabolaFocus",
+                           "BSplineControlPoint",
+                           "BSplineKnotPoint",
+                           "ParabolaFocalAxis"}};
 
-    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
+    constexpr static std::array<const char*, GeometryMode::NumGeometryMode> geometrymode2str {
+        {"Blocked", "Construction"}};
 
-    static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
+    static bool getInternalTypeFromName(std::string str, InternalType::InternalType& type);
 
-    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
+    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode& type);
 
 protected:
-    void copyAttributes(Part::GeometryExtension * cpy) const override;
-    void restoreAttributes(Base::XMLReader &reader) override;
-    void saveAttributes(Base::Writer &writer) const override;
+    void copyAttributes(Part::GeometryExtension* cpy) const override;
+    void restoreAttributes(Base::XMLReader& reader) override;
+    void saveAttributes(Base::Writer& writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
 private:
     using GeometryModeFlagType = std::bitset<32>;
-    long                          Id;
-    InternalType::InternalType    InternalGeometryType;
-    GeometryModeFlagType          GeometryModeFlags;
-    int                           GeometryLayer;
+    long Id;
+    InternalType::InternalType InternalGeometryType;
+    GeometryModeFlagType GeometryModeFlags;
+    int GeometryLayer;
 
 private:
     static std::atomic<long> _GeometryID;
 };
 
-} //namespace Sketcher
+}// namespace Sketcher
 
 
-#endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#endif// SKETCHER_SKETCHGEOMETRYEXTENSION_H

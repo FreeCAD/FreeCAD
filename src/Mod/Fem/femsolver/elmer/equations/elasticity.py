@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Elasticity"
 __author__ = "Markus Hovorka, Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

@@ -28,7 +28,7 @@ See `draftobjects/twistedarray.py`.
 
 This array was developed in order to build a `twisted bridge` object.
 
-See https://forum.freecadweb.org/viewtopic.php?f=23&t=49617
+See https://forum.freecad.org/viewtopic.php?f=23&t=49617
 """
 ## @package geo_arrays
 # \ingroup draftgeoutils

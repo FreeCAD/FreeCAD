@@ -47,7 +47,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:identifier />
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:contributor>
           <cc:Agent>
             <dc:title />

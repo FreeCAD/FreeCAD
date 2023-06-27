@@ -486,7 +486,7 @@ Uporabno pri izogibanju krožne odvisnosti, vendar je potrebna previdnost!</tran
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Nastavi nastavitveno preglednico</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -736,6 +736,11 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Na polje se sklicuj z vzdevkom, npr.
 Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
+    </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
     </message>
   </context>
   <context>
@@ -989,12 +994,12 @@ Privzeto: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Nastavi nastavitveno preglednico</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Razveljavi nastavitveno preglednico</translation>
     </message>
   </context>
   <context>
@@ -1179,7 +1184,7 @@ Privzeto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>

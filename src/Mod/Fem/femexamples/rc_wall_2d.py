@@ -57,7 +57,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
+https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=80#p296469
 
 example from Harry's epic topic: Concrete branch ready for testing
 

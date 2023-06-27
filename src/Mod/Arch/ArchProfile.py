@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -123,7 +123,7 @@ class Arch_Profile:
         return {'Pixmap'  : 'Arch_Profile',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
                 'Accel': "P, F",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile")}
 
     def IsActive(self):
 

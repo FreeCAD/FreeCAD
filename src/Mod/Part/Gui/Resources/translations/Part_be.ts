@@ -1910,12 +1910,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Стварыць аб'ект кропак з геаметрыі</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Стварыць аб'ект абраных кропак з абранага геаметрычнага аб'екту</translation>
     </message>
   </context>
   <context>
@@ -2302,7 +2302,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Кропкі з геаметрыі</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2325,7 +2325,7 @@ of projection.</source>
       <translation>Змяніць мацаванне</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="423"/>
+      <location filename="../../TaskFaceColors.cpp" line="419"/>
       <source>Change face colors</source>
       <translation>Змяніць колер грані</translation>
     </message>
@@ -2790,7 +2790,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Задаць напрамак, які адпавядае напрамку прамога рабра. Падказка: каб улічыць і даўжыню рабра, задайце абедзве даўжыні роўнымі нулю.</translation>
+      <translation>Задаць напрамак, які адпавядае напрамку прамога рабра. Падказка: каб улічыць і даўжыню рабра, задайце абедзве даўжыні ў нуль.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
@@ -2858,7 +2858,7 @@ the size of the resulting STEP file.</source>
       <source>Length to extrude along direction (can be negative).
 If both lengths are zero, magnitude of direction is used.</source>
       <translation>Даўжыня для выдушвання наўздоўж напрамку (можа быць адмоўным).
-Калі абедзве даўжыні роўныя нулю, ужываецца велічыня напрамку.</translation>
+Калі абедзве даўжыні - нулі, ужываецца велічыня напрамку.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
@@ -2873,7 +2873,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Размеркаваць даўжыню выдушвання пароўну з абодвух бакоў.</translation>
+      <translation>Размеркаваць даўжыню выдушвання аднолькава з абодвух бакоў.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -2883,22 +2883,22 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation>Вугал звужэння наўздоўж</translation>
+      <translation>Вугал конуса зянкоўкі наўздоўж</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
       <source>Taper (draft) angle along extrusion direction</source>
-      <translation>Вугал звужэння (контуру) наўздоўж напрамку выдушвання</translation>
+      <translation>Вугал конусу зянкоўкі (контуру) наўздоўж напрамку выдушвання</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation>Вугал звужэння супраць</translation>
+      <translation>Вугал конусу зянкоўкі супраць</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation>Вугал звужэння (контуру) супраць напрамку выдушвання</translation>
+      <translation>Вугал конусу зянкоўкі (контуру) супраць напрамку выдушвання</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -2931,25 +2931,30 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="499"/>
-      <location filename="../../DlgExtrusion.cpp" line="504"/>
+      <location filename="../../DlgExtrusion.cpp" line="500"/>
+      <location filename="../../DlgExtrusion.cpp" line="506"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Не атрымалася стварыць выдушванне.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="571"/>
+      <location filename="../../DlgExtrusion.cpp" line="573"/>
       <source>Object not found: %1</source>
       <translation>Аб'ект не знойдзены: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="633"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Не абраны фігуры для выдушвання. Спачатку абярыце некалькі.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="654"/>
+      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <source>Unknown error</source>
+      <translation>Невядомая памылка</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="656"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2958,12 +2963,12 @@ If both lengths are zero, magnitude of direction is used.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Рэжым напрамку прызначаны для ўжывання рабра, але рабро не звязана.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="679"/>
+      <location filename="../../DlgExtrusion.cpp" line="681"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2972,14 +2977,14 @@ If both lengths are zero, magnitude of direction is used.</source>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="689"/>
+      <location filename="../../DlgExtrusion.cpp" line="691"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Вектар напрамку выдушвання мае нулявую даўжыню. Ён павінен быць ненулявы.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="700"/>
+      <location filename="../../DlgExtrusion.cpp" line="702"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Агульная даўжыня выдушванне роўная нулю (length1 == -length2). Яна павінна быць ненулявы.</translation>
+      <translation>Агульная даўжыня выдушванне роўная нулю (length1 == -length2). Яна павінна быць ненулявой.</translation>
     </message>
   </context>
   <context>
@@ -4089,6 +4094,11 @@ during file reading (slower but higher details).</source>
 %1</translation>
     </message>
     <message>
+      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <source>Unknown error</source>
+      <translation>Невядомая памылка</translation>
+    </message>
+    <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Напрамак восі вярчэння мае нулявую даўжыню. Ён павінен быць ненулявы.</translation>
@@ -4096,7 +4106,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="309"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Прамежак вугла вярчэння роўны нулю. Ён павінен быць ненулявы.</translation>
+      <translation>Прамежак вугла вярчэння - нуль. Ён павінен быць ненулявым.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="443"/>
@@ -4863,7 +4873,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' не атрымалася ўжываць у якасці профілю і шляху.</translation>
+      <translation>'%1' не атрымалася ўжываць у якасці профілю і траекторыі.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="381"/>
@@ -4884,13 +4894,13 @@ only created cuts will be visible</source>
       <location filename="../../TaskSweep.cpp" line="438"/>
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Sweep path</source>
-      <translation>Шлях выцягвання</translation>
+      <translation>Траекторыя выцягвання</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="438"/>
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Хібны абраны шлях выцягвання.</translation>
+      <translation>Хібная абраная траекторыя выцягвання.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="458"/>
@@ -5101,83 +5111,86 @@ of object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
       <source>Shape Content</source>
       <translation>Змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
       <source>Settings</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip settings page</source>
       <translation>Прапусціць налады старонкі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
-      <source>Skip this settings page and run the geometry check automatically.
-Default: false</source>
-      <translation>Прапусціць налады старонкі і выканаць праверку геаметрыі аўтаматычна.
-Першапачаткова: false</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <source>Skip this settings page and run the geometry check automatically.</source>
+      <translation>Прапусціць налады старонкі і выканаць праверку геаметрыі аўтаматычна.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
-      <source>Run BOP check</source>
-      <translation>Запусціць праверку BOP (аперацыі лагічнага значэння)</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <source>Default: false</source>
+      <translation>Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <source>Run boolean operation check</source>
+      <translation>Запусціць праверку лагічнай аперацыі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
       <source>Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
+the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Дадатковая праверка лагічнай аперацыі, якая часам можа выяўляць памылкі,
 якія прапускае стандартная праверка геаметрыі B-Rep. Памылкі не заўсёды
 азначаюць, што правераны аб'ект непрыдатны для ўжывання. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
       <source>Single-threaded</source>
       <translation>Аднапатокавы</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Запусціць праверку геаметрыі ў адным патоку. Праца павольная,
 але больш стабільная. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
       <source>Log errors</source>
       <translation>Часопіс памылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Часопіс памылак у праглядзе справаздачы. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
       <source>Expand shape content</source>
       <translation>Разгарнуць змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Разгарнуць змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
 інструмента праверкі геаметрыі. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Advanced shape content</source>
       <translation>Пашыраны змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Паказаць пашыраны змест фігуры.
@@ -5185,109 +5198,109 @@ the check geometry tool.  Default: false</source>
 Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
-      <source>
-Individual BOP Checks:</source>
-      <translation>
-Асобныя праверкі BOP:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
-      <source>  Bad type</source>
-      <translation>  Няправільны тып</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <source>
+Individual boolean operation checks:</source>
+      <translation>
+Праверкі асобнай лагічнай аперацыі:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <source>Bad type</source>
+      <translation>Няправільны тып</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <source>Self-intersect</source>
+      <translation>Самаперакрыжаванне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <source>Too small edge</source>
+      <translation>Занадта малое рабро</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <source>Nonrecoverable face</source>
+      <translation>Неадноўленая грань</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <source>Continuity</source>
+      <translation>Бесперапыннасць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <source>Incompatibility of face</source>
+      <translation>Несумяшчальнасць грані</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <source>Incompatibility of vertex</source>
+      <translation>Несумяшчальная вяршыня</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <source>Incompatibility of edge</source>
+      <translation>Несумяшчальнасць рабра</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <source>Invalid curve on surface</source>
+      <translation>Хібная крывая на паверхні</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Праверыць на няправільныя тыпы аргументаў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
-      <source>  Self-intersect</source>
-      <translation>  Самаперакрыжаванні</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Праверыць на самаперакрыжаванні. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
-      <source>  Too small edge</source>
-      <translation>  Занадта малое рабро</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Праверыць на занадта малыя рэбры. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
-      <source>  Nonrecoverable face</source>
-      <translation>  Неадноўленая грань</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Праверыць на неадноўленыя грані. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
-      <source>  Continuity</source>
-      <translation>  Бесперапыннасць</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Праверыць на бесперапыннасць. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
-      <source>  Incompatibility of face</source>
-      <translation>  Несумяшчальнасць грані</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць граняў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
-      <source>  Incompatibility of vertex</source>
-      <translation>  Несумяшчальнасць вяршыні</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць вяршынь. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
-      <source>  Incompatibility of edge</source>
-      <translation>  Несумяшчальнасць рабра</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць рэбраў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
-      <source>  Invalid curve on surface</source>
-      <translation>  Хібная крывая на паверхні</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Праверыць на хібныя крывая на паверхні. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
       <source>Run check</source>
       <translation>Запусціць праверку</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Results</source>
       <translation>Вынікі</translation>
     </message>
@@ -5305,15 +5318,45 @@ Individual BOP Checks:</source>
       <translation>Праверка запушчана...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="417"/>
+      <source>Boolean operation check...</source>
+      <translation>Праверка лагічнай аперацыі...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="419"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
       <source>Check geometry</source>
       <translation>Праверка геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="587"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <source>Invalid</source>
+      <translation>Хібны</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <source>Checking</source>
+      <translation>Праверка</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <source>%1 processed out of %2 selected</source>
+      <translation>Апрацавана %1 з абраных %2</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <source>%n invalid shapes.</source>
+      <translation>
+        <numerusform>%n хібная фігура.</numerusform>
+        <numerusform>%n хібныя фігуры.</numerusform>
+        <numerusform>%n хібных фігур.</numerusform>
+        <numerusform>%n хібных фігур.</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Правяраемы аб'ект</translation>
     </message>
   </context>
   <context>
@@ -5539,7 +5582,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Шлях выцягвання</translation>
+      <translation>Траекторыя выцягвання</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5555,7 +5598,7 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../TaskSweep.cpp" line="488"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Абярыце адзін ці некалькі профіляў, і абярыце рабро ці ломаную лінію ў трохмерным прадстаўленні для шляху выцягвання.</translation>
+      <translation>Абярыце адзін ці некалькі профіляў, і абярыце рабро ці ломаную лінію ў трохмерным прадстаўленні для траекторыі выцягвання.</translation>
     </message>
   </context>
   <context>
@@ -5590,8 +5633,8 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="95"/>
-      <location filename="../../TaskThickness.cpp" line="293"/>
-      <location filename="../../TaskThickness.cpp" line="303"/>
+      <location filename="../../TaskThickness.cpp" line="294"/>
+      <location filename="../../TaskThickness.cpp" line="304"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
@@ -5606,7 +5649,7 @@ in the 3D view for the sweep path.</source>
       <translation>Гатова</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="258"/>
+      <location filename="../../TaskThickness.cpp" line="259"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -5665,21 +5708,21 @@ in the 3D view for the sweep path.</source>
       <translation>Змяніць %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Варштаты Дэталь і Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Дэталь/Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Імпарт-Экспарт</translation>
     </message>
@@ -5892,7 +5935,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self Intersecting Wire</source>
-      <translation>Самаперакрыжаваная ломаная лінія</translation>
+      <translation>Самаперасякальная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -5912,7 +5955,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting Wires</source>
-      <translation>Перакрыжаваная ломаная лінія</translation>
+      <translation>Перасякальная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
@@ -5981,67 +6024,66 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo Праверыць невядомую</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Лагічная аперацыя: невядомая праверка</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo Няправільны тып</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Лагічная аперацыя: няправільны тып</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo Самаперакрыжаванне</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Лагічная аперацыя: знойдзена самаперакрыжаванне</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo Занадта малое рабро</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Лагічная аперацыя: рабро занадта малое</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo Неадноўленая грань</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Лагічная аперацыя: неадноўленая грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo Несумяшчальнасць вяршыні</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Лагічная аперацыя: несумяшчальная вяршыня</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo Несумяшчальнасць рабра</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Лагічная аперацыя: несумяшчальнае рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo Несумяшчальнасць грані</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Лагічная аперацыя: несумяшчальная грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo Аперацыя перапынена</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Лагічная аперацыя: перапыненая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo Модуль геаметрыі C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Лагічная аперацыя: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo Хібная крывая на паверхні</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Лагічная аперацыя: хібная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo Несапраўдны</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Лагічная аперацыя: недапушчальная</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
       <source>Invalid</source>
       <translation>Хібны</translation>
     </message>
@@ -6130,12 +6172,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Адлегласць у прасторы налад</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Увядзіце адлегласць:</translation>
     </message>
   </context>
   <context>
@@ -6330,76 +6372,16 @@ Do you want to continue?</source>
       <translation>Працягнуць</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
-      <source>Boolean fragments</source>
-      <translation>Фрагменты лагічнай аперацыі</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Стварыце аб'ект 'Фрагменты лагічнай аперацыі' з двух ці болей абраных аб'ектаў,
-альбо з фігур унутры злучэння.
-Гэта лагічнае аб'яднанне, якое потым разразаецца на скрыжаваннях
-зыходных фігур.
-Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў. Калі абрана толькі адное злучэнне, складовыя фігуры будуць перасякацца адзін з адным (у адваротным выпадку злучэнні з самаперакрыжаванямі хібныя).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
-      <source>Slice to compound</source>
-      <translation>Разрэзаць на злучэнне</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Нарэзаць абраны аб'ект, калі ўжыць іншыя аб'екты ў якасці інструментаў абрэзкі.
-Атрыманыя кавалачкі будуць захоўвацца ў злучэнні.
-Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation>Абярыце па меншай меры два аб'екты. Першы з іх - аб'ект, які наразаецца; астатнія - аб'екты, з дапамогай якіх можна нарэзаць.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
-      <source>Slice apart</source>
-      <translation>Разрэзаць на часткі</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Нарэзаць абраны аб'ект іншымі аб'ектамі, і падзяліце яго на часткі.
-Створыць 'Фільтр злучаных фігур' для кожнага разрэзу.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
-      <source>Boolean XOR</source>
-      <translation>Лагічная аперацыя XOR</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Выканаць лагічную аперацыю "Экслюзіўны OR', з двума ці болей абранымі аб'ектамі,
-альбо з фігурамі ўнутры злучэння.
-Азначае, што аб'ёмы фігур, якія перакрываюцца, будуць выдаленыя.
-Каб здабыць пакінутыя кавалачкі, можна ўжыць 'Фільтр злучаных фігур'.</translation>
     </message>
   </context>
   <context>
@@ -6454,7 +6436,7 @@ for collision or distance filtering.</source>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
       <translation>Падзяляе злучэнне фігур на асобныя аб'екты.
-Створыць 'Фільтр злучаных фігур' для кожнай фігуры.</translation>
+Стварае 'Фільтр злучаных фігур' для кожнай фігуры.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6590,7 +6572,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Тып фігуры</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6625,7 +6607,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Злучаныя суцэльныя целы</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6665,7 +6647,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Цэнтр крывой</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6680,7 +6662,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Замкнуты</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6690,17 +6672,89 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Глабальны цэнтр масы</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Глабальнае размяшчэнне</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
       <source>Placement</source>
       <translation>Размясціць</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_BooleanFragments</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Фрагменты лагічнай аперацыі</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Стварыце аб'ект 'Фрагменты лагічнай аперацыі' з двух ці болей абраных аб'ектаў,
+альбо з фігур унутры злучэння.
+Гэта лагічнае аб'яднанне, якое потым разразаецца на скрыжаваннях
+зыходных фігур.
+Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Slice</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation>Разрэзаць на злучэнне</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Нарэзаць абраны аб'ект, калі ўжыць іншыя аб'екты ў якасці інструментаў абрэзкі.
+Атрыманыя кавалачкі будуць захоўвацца ў злучэнні.
+Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SliceApart</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation>Разрэзаць на часткі</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Нарэзаць абраны аб'ект іншымі аб'ектамі, і падзяліце яго на часткі.
+Стварае 'Фільтр злучаных фігур' для кожнага разрэзу.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_XOR</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation>Лагічная аперацыя XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Выканаць лагічную аперацыю "Экслюзіўны OR', з двума ці болей абранымі аб'ектамі,
+альбо з фігурамі ўнутры злучэння.
+Азначае, што аб'ёмы фігур, якія перакрываюцца, будуць выдаленыя.
+Каб здабыць пакінутыя кавалачкі, можна ўжыць 'Фільтр злучаных фігур'.</translation>
     </message>
   </context>
 </TS>

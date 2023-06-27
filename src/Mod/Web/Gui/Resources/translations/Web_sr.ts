@@ -129,7 +129,7 @@
     <name>QObject</name>
     <message>
       <location filename="../../BrowserView.cpp" line="815"/>
-      <location filename="../../AppWebGui.cpp" line="86"/>
+      <location filename="../../AppWebGui.cpp" line="93"/>
       <source>Browser</source>
       <translation>Прегледач</translation>
     </message>

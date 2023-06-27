@@ -37,11 +37,14 @@ class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
 public:
     /// constructor
     ViewProviderTransformed()
-        : featureName("undefined"), pcRejectedRoot(nullptr) {}
+        : pcRejectedRoot(nullptr) {}
     /// destructor
     ~ViewProviderTransformed() override
         {}
 
+    // The feature name of the subclass
+    virtual const std::string & featureName() const;
+    std::string featureIcon() const;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     bool onDelete(const std::vector<std::string> &) override;
@@ -49,8 +52,6 @@ public:
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
 
-    // The feature name of the subclass
-    std::string featureName;
     // Name of menu dialog
     QString menuName;
 

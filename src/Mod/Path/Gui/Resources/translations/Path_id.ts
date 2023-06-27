@@ -1126,13 +1126,13 @@
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
@@ -2913,7 +2913,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation type="unfinished">Dogbone</translation>
+      <translation>Tulang anjing</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>

@@ -263,7 +263,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
     // Some further information is still not copied:
-    // http://forum.freecadweb.org/viewtopic.php?f=18&t=18982#p148114
+    // http://forum.freecad.org/viewtopic.php?f=18&t=18982#p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -926,7 +926,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     BRepBndLib::Add(
         face,
         box,
-        Standard_False);// https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
+        Standard_False);// https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -1822,7 +1822,7 @@ void FemMesh::readAbaqus(const std::string &FileName)
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
             *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
-                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+                          // see https://forum.freecad.org/viewtopic.php?f=10&t=31999&start=10#p274241
         }
         else {
             throw Base::FileException("Problems reading file");
@@ -1858,7 +1858,7 @@ void FemMesh::readZ88(const std::string &FileName)
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
             *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
-                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+                          // see https://forum.freecad.org/viewtopic.php?f=10&t=31999&start=10#p274241
         }
         else {
             throw Base::FileException("Problems reading file");
@@ -1999,7 +1999,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
         // since master 0.15
         // added by werner (wmayer) March 2015,
-        // http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // http://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
         // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
         // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
         // tetra4 FreeCAD --> C3D4 CalculiX
@@ -2163,10 +2163,10 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
     // write all data to file
     // take also care of special characters in path
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    // https://forum.freecad.org/viewtopic.php?f=10&t=37436
     Base::FileInfo fi(Filename);
     Base::ofstream anABAQUS_Output(fi);
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+    // https://forum.freecad.org/viewtopic.php?f=18&t=22759#p176669
     anABAQUS_Output.precision(13);
 
     // add some text and make sure one of the known elemParam values is used
@@ -2196,7 +2196,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
     // This way we get sorted output.
-    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=12646&start=40#p103004
+    // See http://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (VertexMap::iterator it = vertexMap.begin(); it != vertexMap.end(); ++it) {
         anABAQUS_Output << it->first << ", "
             << it->second.x << ", "
