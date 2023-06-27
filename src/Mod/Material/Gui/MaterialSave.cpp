@@ -49,6 +49,15 @@ MaterialSave::MaterialSave(QWidget* parent)
             this, &MaterialSave::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
             this, &MaterialSave::reject);
+
+    connect(ui->comboLibrary, &QComboBox::currentTextChanged,
+            this, &MaterialSave::currentTextChanged);
+    connect(ui->buttonNewFolder, &QPushButton::clicked,
+            this, &MaterialSave::onNewFolder);
+
+    QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
+    connect(selectionModel, &QItemSelectionModel::selectionChanged,
+            this, &MaterialSave::onSelectModel);
 }
 
 /*
@@ -151,6 +160,64 @@ void MaterialSave::showSelectedTree()
             QObject::tr("No writeable library"));
     }
 
+}
+
+void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    Q_UNUSED(selected);
+    Q_UNUSED(deselected);
+
+    // QStandardItemModel *model = static_cast<QStandardItemModel *>(ui->treeModels->model());
+    // QModelIndexList indexes = selected.indexes();
+    // for (auto it = indexes.begin(); it != indexes.end(); it++)
+    // {
+    //     QStandardItem* item = model->itemFromIndex(*it);
+    //     Base::Console().Log("%s\n", item->text().toStdString().c_str());
+    //     if (item) {
+    //         try
+    //         {
+    //             _selected = item->data(Qt::UserRole).toString().toStdString();
+    //             Base::Console().Log("\t%s\n", _selected.c_str());
+    //             updateMaterialModel(_selected);
+    //             ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
+    //             ui->buttonFavorite->setEnabled(true);
+    //         }
+    //         catch(const std::exception& e)
+    //         {
+    //             _selected = "";
+    //             Base::Console().Log("Error %s\n", e.what());
+    //             clearMaterialModel();
+    //             ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
+    //             ui->buttonFavorite->setEnabled(false);
+    //         }
+
+    //     }
+    // }
+}
+
+void MaterialSave::currentTextChanged(const QString &value)
+{
+    Q_UNUSED(value)
+
+    showSelectedTree();
+}
+
+void MaterialSave::onNewFolder(bool checked)
+{
+    Q_UNUSED(checked)
+
+    auto tree = ui->treeMaterials;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
+    auto current = tree->currentIndex();
+    if (!current.isValid())
+    {
+        current = model->index(0, 0);
+    }
+    auto item = model->itemFromIndex(current);
+    if (item->hasChildren())
+    {
+        Base::Console().Log("Add new folder to '%s'\n", item->text().toStdString().c_str());
+    }
 }
 
 #include "moc_MaterialSave.cpp"

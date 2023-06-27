@@ -27,7 +27,7 @@
 
 #include <QDialog>
 // #include <QDir>
-// #include <QStandardItem>
+#include <QStandardItem>
 // #include <QTreeView>
 // #include <QStyledItemDelegate>
 // #include <QSvgWidget>
@@ -57,6 +57,9 @@ public:
     void addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree);
     void showSelectedTree();
 
+    void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
+    void currentTextChanged(const QString &value);
+    void onNewFolder(bool checked);
     void accept() override;
     void reject() override;
 
