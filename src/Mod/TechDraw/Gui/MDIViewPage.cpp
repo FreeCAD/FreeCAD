@@ -303,6 +303,8 @@ void MDIViewPage::printPdf(std::string file)
 
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
 
@@ -513,6 +515,8 @@ void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 //static routine to print all pages in a document to pdf
 void MDIViewPage::printAllPdf(QPrinter* printer, App::Document* doc)
 {
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     //    Base::Console().Message("MDIVP::printAllPdf()\n");
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());
