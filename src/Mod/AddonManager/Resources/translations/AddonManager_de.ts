@@ -522,7 +522,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>Erweiterte Versionszuordnung</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
@@ -566,7 +566,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Erweiterte Versionszuordnung...</translation>
     </message>
   </context>
   <context>
@@ -646,7 +646,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="226"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Benutzer-System-Proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="239"/>
@@ -1267,18 +1267,18 @@ installed addons will be checked for available updates
       <translation>Ausführen des Makros schlug fehl. Siehe Konsole für Fehlerdetails.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Maintainer</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1331,7 +1331,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../NetworkManager.py" line="406"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
+      <translation>Addon-Manager: Unerwartete {} Antwort vom Server</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="506"/>
@@ -1476,7 +1476,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="627"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>Laden der README-Datei von URL {} ist fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="653"/>
@@ -1494,8 +1494,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Erfolgreich</translation>
@@ -1513,7 +1513,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="757"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>JavaScript-Seite gemeldet</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="912"/>
@@ -1568,7 +1568,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="69"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Verbindung zu GitHub wird überprüft...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="95"/>
@@ -1619,24 +1619,24 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="202"/>
       <source>Unable to locate icon at {}</source>
-      <translation type="unfinished">Unable to locate icon at {}</translation>
+      <translation>Symbol kann nicht gefunden werden bei {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="279"/>
       <source>Select an icon file for this content item</source>
-      <translation type="unfinished">Select an icon file for this content item</translation>
+      <translation>Wählen Sie eine Symboldatei für dieses Inhaltselement</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} ist kein Unterverzeichnis von {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="311"/>
       <source>Select the subdirectory for this content item</source>
-      <translation type="unfinished">Select the subdirectory for this content item</translation>
+      <translation>Wählen Sie das Unterverzeichnis für dieses Inhaltselement</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="452"/>
@@ -1798,7 +1798,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>Abbrechen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
@@ -1843,7 +1843,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>Daten von GitHub konnten nicht gelesen werden: Überprüfe deine Internetverbindung und die Proxy-Einstellungen und versuche es erneut.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="197"/>
@@ -1858,7 +1858,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="246"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
+      <translation>WARNUNG: Der in der package.xml Metadaten angegebene Pfad stimmt nicht mit der aktuell ausgecheckten Version überein.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="268"/>
@@ -1888,7 +1888,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="464"/>
       <source>Select the folder containing your Addon</source>
-      <translation type="unfinished">Select the folder containing your Addon</translation>
+      <translation>Wählen Sie den Ordner, der Ihre Erweiterung enthält</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="593"/>
@@ -1899,7 +1899,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="600"/>
       <source>Scanning Addon for Python version compatibility</source>
-      <translation type="unfinished">Scanning Addon for Python version compatibility</translation>
+      <translation>Scannen der Python-Versionenkompatibilität-Erweiterung</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="631"/>
@@ -1909,7 +1909,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="635"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
-      <translation type="unfinished">Vermin auto-detected a required version of Python 3.{}</translation>
+      <translation>Vermin hat automatisch eine erforderliche Version von Python 3.{} erkannt</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="647"/>
@@ -1924,7 +1924,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="658"/>
       <source>Attempting to install Vermin from PyPi</source>
-      <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
+      <translation>Installationsversuch Vermin von PyPi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="685"/>
@@ -2181,7 +2181,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="216"/>
       <source>Any dependency information in this file will be ignored</source>
-      <translation type="unfinished">Any dependency information in this file will be ignored</translation>
+      <translation>Alle Abhängigkeitsinformationen in dieser Datei werden ignoriert</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="223"/>
@@ -2201,12 +2201,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="150"/>
       <source>Unable to open macro wiki page at {}</source>
-      <translation type="unfinished">Unable to open macro wiki page at {}</translation>
+      <translation>Makro-Wiki-Seite unter {} kann nicht geöffnet werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="164"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation type="unfinished">Unable to fetch the code of this macro.</translation>
+      <translation>Der Code dieses Makros konnte nicht abgerufen werden.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="179"/>
@@ -2221,7 +2221,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="371"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
-      <translation type="unfinished">Unable to fetch macro-specified file {} from {}</translation>
+      <translation>Makrospezifizierte Datei {} von {} konnte nicht abgerufen werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
@@ -2247,7 +2247,7 @@ installed addons will be checked for available updates
       <location filename="../../Addon.py" line="767"/>
       <location filename="../../Addon.py" line="783"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Fehler beim Importieren von {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
@@ -2262,7 +2262,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="151"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Ausführung des Addon&apos;s Uninstall.py Skripts fehlgeschlagen. Fortfahren mit der Deinstallation...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="176"/>
@@ -2282,7 +2282,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
-      <translation type="unfinished">Failed to connect to GitHub. Check your connection and proxy settings.</translation>
+      <translation>Verbindung zu GitHub fehlgeschlagen. Überprüfen Sie Ihre Verbindungs- und Proxy-Einstellungen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="183"/>
@@ -2303,28 +2303,28 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_workers_startup.py" line="320"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation type="unfinished">Attempting to change non-git Macro setup to use git
+      <translation>Änderungsversuch des Nicht-Git-Makro-Einstellung, um git zu verwenden
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Fehler beim Aktualisieren von Makros von GitHub, sauberer Checkout-Versuch wird ausgeführt...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="342"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Sauberer Checkout-Versuch...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="354"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Sauberer Checkout war erfolgreich</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="364"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Aktualisierung der GitHub Makros fehlgeschlagen -- Versuchen Sie, den Cache des Erweiterungsmanagers zu löschen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="387"/>
@@ -2359,7 +2359,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="765"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
+      <translation>Erweiterungsmanager: Ein Arbeitsprozess konnte während des Abrufs von {name} nicht abgeschlossen werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="780"/>
@@ -2369,12 +2369,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Erweiterungsmanager: Ein Arbeitsprozess ({name}) konnte nicht angehalten werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="843"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Herauslesen von Metadaten aus Makro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="857"/>

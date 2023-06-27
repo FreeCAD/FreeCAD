@@ -1373,7 +1373,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Create a cube solid</source>
-      <translation>Utwórz prostopadłościan</translation>
+      <translation>Tworzy sześcian</translation>
     </message>
   </context>
   <context>
@@ -1573,7 +1573,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>Utwórz stożek</translation>
+      <translation>Tworzy stożek</translation>
     </message>
   </context>
   <context>
@@ -1629,7 +1629,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="66"/>
       <source>Create a Cylinder</source>
-      <translation>Utwórz walec</translation>
+      <translation>Tworzy walec</translation>
     </message>
   </context>
   <context>
@@ -1804,7 +1804,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>Make face from wires</source>
-      <translation>Stwórz ścianę z polilinii</translation>
+      <translation>Utwórz ścianę z polilinii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
@@ -2115,7 +2115,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
-      <translation>Utwórz walec</translation>
+      <translation>Tworzy walec</translation>
     </message>
   </context>
   <context>
@@ -2135,7 +2135,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
       <source>Create a sphere solid</source>
-      <translation>Utwórz sferę</translation>
+      <translation>Tworzy sferę</translation>
     </message>
   </context>
   <context>
@@ -2201,7 +2201,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="234"/>
       <source>Create a torus solid</source>
-      <translation>Utwórz torus</translation>
+      <translation>Tworzy torus</translation>
     </message>
   </context>
   <context>
@@ -2228,7 +2228,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
       <location filename="../../Command.cpp" line="141"/>
       <location filename="../../Command.cpp" line="182"/>
       <source>Part Box Create</source>
-      <translation>Utwórz sześcian środowiska Część</translation>
+      <translation>Utwórz prostopadłościan środowiska Część</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
@@ -2253,7 +2253,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="989"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -2561,7 +2561,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Przekrój</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2896,7 +2896,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation>Kąt nacięcia w kierunku</translation>
+      <translation>Kąt ścięcia przeciwnie</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
@@ -3557,7 +3557,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <location filename="../../DlgPrimitives.ui" line="42"/>
       <location filename="../../DlgPrimitives.cpp" line="349"/>
       <source>Box</source>
-      <translation>Sześcian</translation>
+      <translation>Prostopadłościan</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
@@ -5707,8 +5707,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -5723,7 +5723,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="231"/>
       <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
-      <translation>Część /           
+      <translation>Część / 
 Projekt Części</translation>
     </message>
     <message>
@@ -5800,20 +5800,20 @@ Do you want to continue?</source>
       <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
@@ -6172,7 +6172,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Utwórz rurę</translation>
+      <translation>Rura</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -6253,7 +6253,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Utwórz rurę</translation>
+      <translation>Rura</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>

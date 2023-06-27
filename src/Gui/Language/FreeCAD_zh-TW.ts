@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="254"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>預設</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="253"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>此物件將被使用內部定義模式來編輯，這會是最適合的物件類型。</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="258"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>此物件的位置將可透過 Std TransformManip 指令進行編輯</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>Cutting</source>
       <translation>切割</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="263"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>此編輯模式已實作為可用，但目前似乎沒有被任何物件使用</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>Color</source>
       <translation>色彩</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="268"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>該物件的個別面的顏色將可透過 Part FaceColors 指令進行編輯</translation>
     </message>
@@ -3616,7 +3616,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../DlgSettings3DView.ui" line="535"/>
       <source>Perspective renderin&amp;g</source>
-      <translation>以透視算繪(&amp;g)</translation>
+      <translation>透視圖(&amp;g)</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="548"/>
@@ -6804,7 +6804,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2061"/>
       <source>Dimension</source>
       <translation>標註</translation>
     </message>
@@ -6848,18 +6848,18 @@ Do you want to save your changes?</source>
       <translation>切換此可停靠的視窗</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1852"/>
+      <location filename="../MainWindow.cpp" line="1944"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>匯出的物件包含外部連結。請在匯出前至少儲存一次文件。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>要連結到外部物體，文件必須至少儲存一次.
@@ -7359,17 +7359,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>打開檔案 %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>無法打開檔案'%1'.</translation>
     </message>
@@ -7377,22 +7377,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>無</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>執行巨集  %1 (Shift+click 來編輯) 快捷鍵： %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>無法打開檔案'%1'.</translation>
     </message>
@@ -8219,8 +8219,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>選擇 '%1' 工作台</translation>
     </message>
@@ -8461,7 +8460,7 @@ Do you want to specify another directory?</source>
       <location filename="../resource.cpp" line="78"/>
       <location filename="../resource.cpp" line="79"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="628"/>
@@ -8543,8 +8542,8 @@ Do you want to specify another directory?</source>
       <translation>匯出 PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="692"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
+      <location filename="../MainWindow.cpp" line="692"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
@@ -8572,7 +8571,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1735"/>
       <source>Copy active document</source>
-      <translation>複製啟用文件</translation>
+      <translation>複製作業中文件</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1736"/>
@@ -9003,7 +9002,7 @@ Would you like to save the file with a different name?</source>
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
       <translation>選擇「是」以回滾所有前置交易。
-選擇「否」僅回滾活動文件中的交易。
+選擇「否」僅回滾作業中文件中的交易。
 選擇「中止」以中止操作。</translation>
     </message>
     <message>
@@ -9641,7 +9640,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="574"/>
       <location filename="../CommandDoc.cpp" line="575"/>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>顯示目前文件中物體相依圖</translation>
+      <translation>顯示作業中文件的物件相依圖</translation>
     </message>
   </context>
   <context>
@@ -9767,7 +9766,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1156"/>
       <location filename="../CommandDoc.cpp" line="1158"/>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>於目前文件中貼上所複製之物體</translation>
+      <translation>將所選物件的副本放置到作業中文件</translation>
     </message>
   </context>
   <context>
@@ -9799,7 +9798,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="274"/>
       <location filename="../CommandDoc.cpp" line="276"/>
       <source>Export an object in the active document</source>
-      <translation>從目前檔案中匯出物體</translation>
+      <translation>從作業中文件匯出一個物件</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="414"/>
@@ -10001,7 +10000,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="188"/>
       <location filename="../CommandDoc.cpp" line="190"/>
       <source>Import a file in the active document</source>
-      <translation>於作業中檔案匯入檔案</translation>
+      <translation>匯入檔案至作業中文件</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="201"/>
@@ -10051,7 +10050,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="605"/>
       <source>Import all links of the active document</source>
-      <translation>匯入啟用文件的所有連結</translation>
+      <translation>匯入作業中文件的所有連結</translation>
     </message>
   </context>
   <context>
@@ -10324,8 +10323,8 @@ the current copy will be lost.
       <translation>建立一個新的空白檔案</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
+      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
@@ -10602,7 +10601,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1418"/>
       <location filename="../CommandDoc.cpp" line="1420"/>
       <source>Recomputes the current active document</source>
-      <translation>重新計算目前作業中檔案</translation>
+      <translation>重新計算目前作業中文件</translation>
     </message>
   </context>
   <context>
@@ -10644,7 +10643,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="636"/>
       <location filename="../CommandDoc.cpp" line="638"/>
       <source>Save the active document</source>
-      <translation>儲存作業中檔案</translation>
+      <translation>儲存作業中文件</translation>
     </message>
   </context>
   <context>
@@ -10672,7 +10671,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="665"/>
       <location filename="../CommandDoc.cpp" line="667"/>
       <source>Save the active document under a new file name</source>
-      <translation>將作用中檔案以新的檔名儲存</translation>
+      <translation>將作業中文件以新的檔名儲存</translation>
     </message>
   </context>
   <context>
@@ -10686,7 +10685,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="694"/>
       <location filename="../CommandDoc.cpp" line="696"/>
       <source>Save a copy of the active document under a new file name</source>
-      <translation>以新的檔案名稱儲存目前檔案的備份</translation>
+      <translation>以新的檔案名稱儲存作業中文件的副本</translation>
     </message>
   </context>
   <context>
@@ -10770,7 +10769,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1011"/>
       <location filename="../CommandView.cpp" line="1012"/>
       <source>Select visible objects in the active document</source>
-      <translation>於編輯中檔案選取顯示中之物件</translation>
+      <translation>於作業中文件選取可視物件</translation>
     </message>
   </context>
   <context>
@@ -10854,7 +10853,7 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="804"/>
       <location filename="../CommandStd.cpp" line="806"/>
       <source>Add text document to active document</source>
-      <translation>增加文字文件至啟用文件</translation>
+      <translation>增加文字文件至作業中文件</translation>
     </message>
   </context>
   <context>
@@ -10938,7 +10937,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1053"/>
       <location filename="../CommandView.cpp" line="1054"/>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>切換顯示活動文件中的所有物件的可見性</translation>
+      <translation>切換顯示作業中文件之所有物件的可見性</translation>
     </message>
   </context>
   <context>
@@ -11148,7 +11147,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2029"/>
       <location filename="../CommandView.cpp" line="2031"/>
       <source>Creates a new view window for the active document</source>
-      <translation>透過啟用文件建立一個新視圖視窗</translation>
+      <translation>為作業中文件建立新的視窗</translation>
     </message>
   </context>
   <context>
@@ -11638,7 +11637,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3476"/>
       <location filename="../CommandView.cpp" line="3478"/>
       <source>Expand active document and collapse all others</source>
-      <translation>展開啟用文件並折疊所有其他文件</translation>
+      <translation>展開作業中文件並折疊所有其他文件</translation>
     </message>
   </context>
   <context>
@@ -11719,7 +11718,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3442"/>
       <location filename="../CommandView.cpp" line="3444"/>
       <source>Only display the active document in the tree view</source>
-      <translation>在樹狀圖中僅顯示已開啟檔案</translation>
+      <translation>在樹狀圖中僅顯示作業中文件</translation>
     </message>
   </context>
   <context>
@@ -12435,7 +12434,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>反轉方向</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -12473,7 +12472,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>反轉方向</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
@@ -12597,17 +12596,17 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>工具列</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>左邊角落</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>右邊角落</translation>
     </message>

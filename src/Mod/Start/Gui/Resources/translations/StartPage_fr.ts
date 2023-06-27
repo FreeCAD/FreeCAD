@@ -323,7 +323,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Définissez le nombre de fichiers récents à montrer ici dans le menu Édition -&gt; Préférences -&gt; Général -&gt; Taille de la liste des fichiers récents</translation>
+      <translation>Définissez le nombre de fichiers récents à montrer ici à partir du menu Édition → Préférences → Général → Taille de la liste des fichiers récents.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>

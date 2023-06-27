@@ -612,7 +612,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="88"/>
       <source>No active document</source>
-      <translation>未選擇文件</translation>
+      <translation>無可用文件</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="89"/>

@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Leave info mode</source>
-      <translation>Ix del mode info</translation>
+      <translation>Surt del mode d'informació</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="632"/>

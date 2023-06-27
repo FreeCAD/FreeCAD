@@ -127,7 +127,7 @@
       <location filename="../../ViewProviderInspection.cpp" line="654"/>
       <location filename="../../ViewProviderInspection.cpp" line="670"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>Afstand: %1</translation>
     </message>
   </context>
 </TS>
