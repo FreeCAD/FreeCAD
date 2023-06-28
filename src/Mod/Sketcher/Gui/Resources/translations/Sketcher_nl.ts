@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Kopie maken</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Maak kegel</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -706,7 +706,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Maak een ellips boog</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -719,7 +719,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Maak een hyperbool</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -732,7 +732,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Maak een parabool</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -750,7 +750,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Maak een B-spline door middel van controlepunten in de schets.</translation>
     </message>
   </context>
   <context>
@@ -893,7 +893,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Maak een periodieke B-spline door middel van controlepunten in de schets.</translation>
     </message>
   </context>
   <context>
@@ -1096,7 +1096,7 @@ met betrekking tot een lijn of een derde punt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Maak externe geometrie</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -5938,7 +5938,7 @@ Eigen Sparse-QR-algoritme is geoptimaliseerd voor spaarzame matrices; meestal sn
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Bewerk schetser-stand</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5968,7 +5968,7 @@ Eigen Sparse-QR-algoritme is geoptimaliseerd voor spaarzame matrices; meestal sn
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Bewerk schetser-gereedschappen</translation>
     </message>
   </context>
   <context>
@@ -6105,7 +6105,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Automatische raster-verdeling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6120,7 +6120,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Afstand tussen twee opeenvolgende rasterlijnen.</translation>
     </message>
   </context>
   <context>

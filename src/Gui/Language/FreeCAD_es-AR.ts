@@ -4740,7 +4740,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Color base para todos los elementos</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
@@ -8042,7 +8042,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="911"/>
       <source>Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation>Mostrar una columna extra de vista de árbol para la descripción del elemento. La descripción del elemento se puede establecer pulsando F2 (o el botón de edición de tu sistema operativo) o editando la propiedad 'label2'.</translation>
+      <translation>Muestra una columna extra de vista de árbol para la descripción del artículo. La descripción del elemento se puede establecer pulsando F2 (o el botón de edición de tu sistema operativo) o editando la propiedad 'label2'.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="952"/>

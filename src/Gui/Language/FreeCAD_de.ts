@@ -4732,7 +4732,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Grundfarbe für alle Elemente</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>

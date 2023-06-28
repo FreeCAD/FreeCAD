@@ -3244,12 +3244,12 @@ Opomba: nima učinka, če je izbrano telo</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
       <source>Whether the constraint defines a farfield potential</source>
-      <translation type="unfinished">Whether the constraint defines a farfield potential</translation>
+      <translation>Ali omejilo določa daljnopoljni potencial</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
       <source>Farfield / Electric infinity</source>
-      <translation type="unfinished">Farfield / Electric infinity</translation>
+      <translation>Daljno polje / Električna neskončnost</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
@@ -5394,12 +5394,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Electromagnetic Constraints</source>
-      <translation type="unfinished">Electromagnetic Constraints</translation>
+      <translation>Elektromagnetna omejila</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Electromagnetic Constraints</source>
-      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+      <translation>&amp;Elektromagnetna omejila</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

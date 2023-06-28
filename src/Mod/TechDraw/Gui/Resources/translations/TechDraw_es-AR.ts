@@ -3481,7 +3481,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="363"/>
       <source>TechDraw Increase/Decrease Decimal</source>
-      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+      <translation>Incrementar/disminuir decimales</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="558"/>
@@ -3540,17 +3540,17 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1199"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Chain Dimension</translation>
+      <translation>Crear acotación horizontal en cadena</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1265"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chain Dimension</translation>
+      <translation>Crear acotación vertical en cadena</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1331"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Oblique Chain Dimension</translation>
+      <translation>Crear acotación oblicua en cadena</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1539"/>
@@ -3580,12 +3580,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2163"/>
       <source>TechDraw Create Arc Length Dimension</source>
-      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+      <translation>Crear cota de longitud del arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2240"/>
       <source>TechDraw Customize Format</source>
-      <translation type="unfinished">TechDraw Customize Format</translation>
+      <translation>Formato personalizado</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
@@ -4241,7 +4241,7 @@ Only change unless you know what you are doing!</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="574"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
-      <translation>El número de veces que FreeCAD debe intentar eliminar las aristas superpuestas devueltos por el algoritmo de eliminación de línea oculto. Un valor de 0 indica que no se puede limpiar, 1 indica una sola pasada y 2 indica que se debe realizar una segunda pasada. Los valores superiores a 2 generalmente no son productivos. Cada pasada añade el tiempo necesario para producir el dibujo.</translation>
+      <translation>El número de veces que FreeCAD debe tratar de eliminar los bordes superpuestos devueltos por el algoritmo de eliminación de línea oculta. Un valor de 0 indica que no se puede limpiar, 1 indica un solo pase y 2 indica que se debe realizar un segundo paso. Los valores superiores a 2 generalmente no son productivos. Cada paso añade el tiempo necesario para producir el dibujo.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="213"/>
@@ -4735,7 +4735,7 @@ al rayar una cara con un patrón PAT</translation>
       <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
 
 </source>
-      <translation>Si está marcado, FreeCAD utilizará un solo color para todo el texto y las líneas. Si está desmarcada FreeCAD intentará usar versiones más claras de los colores preferidos.
+      <translation>Si está marcado, FreeCAD utilizará un solo color para todos los textos y líneas. Si no está marcada FreeCAD intentará usar versiones más ligeras de los colores preferidos.
 
 </translation>
     </message>
@@ -4762,7 +4762,7 @@ al rayar una cara con un patrón PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
       <source>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</source>
-      <translation>Compruebe esto para usar texto claro y líneas en fondos oscuros. Establecer color de página a un color oscuro. Las caras transparentes o de color claro se recomiendan con esta opción.</translation>
+      <translation>Marque esto para usar textos y líneas claras sobre fondos oscuros. Establezca el color de la página a un color oscuro. Caras transparentes o de color claro se recomienda con esta opción.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
@@ -4938,7 +4938,7 @@ Multiplicador de &apos;tamaño de fuente&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
-      <translation>Dejar en blanco para formato de cota automática. Utilice los especificadores %f, %g o %w para sobrescribir.</translation>
+      <translation>Dejar en blanco para formato de acotación automática. Utilice los especificadores %f, %g o %w para sobrescribir.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
@@ -4955,23 +4955,23 @@ Multiplicador de &apos;tamaño de fuente&apos;</translation>
       <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
 Value * linewidth is the gap. 
 Normally, no gap is used. If using a gap, the recommended value 8.</source>
-      <translation>Controla el tamaño del hueco entre el punto de dimensión y el inicio de la línea de extensión para las dimensiones ISO. 
-El ancho de línea del valor * es la brecha. 
-Normalmente, no se utiliza ninguna laguna. Si se utiliza una brecha, valor recomendado 8.</translation>
+      <translation>Controla el tamaño del espacio entre el punto de cota y el inicio de la línea de extensión para las acotaciones ISO. 
+El espaciado es el valor * el ancho de línea. 
+Normalmente, no se utiliza ningún espaciado. Si se utiliza un espaciado, 8 es el valor recomendado.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
       <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
 Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
-      <translation>Controla el tamaño del hueco entre el punto de dimensión y el inicio de la línea de extensión para las dimensiones ASME. El ancho de línea del valor * es la brecha. 
-Normalmente, no se utiliza ninguna laguna. Si se utiliza un hueco, el valor recomendado es 6.</translation>
+      <translation>Controla el tamaño del espacio entre el punto de cota y el inicio de la línea de extensión para las acotaciones ASME. El espaciado es el valor * el ancho de línea. 
+Normalmente, no se utiliza ningún espaciado. Si se utiliza un espaciado, 6 es el valor recomendado.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
       <source>Controls the size of spacing between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
       <translation>Controla el tamaño del espacio entre la línea de cota y el texto de cota.
- Valor * ancho de línea es el espacio entre líneas.</translation>
+ El espacio es el valor * ancho de línea.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
@@ -7930,7 +7930,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
       <source>Any method allowed</source>
-      <translation type="unfinished">Any method allowed</translation>
+      <translation>Cualquier método permitido</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
@@ -7940,12 +7940,12 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
       <source>Use ISO standard</source>
-      <translation>Usar estándar ISO</translation>
+      <translation>Usar norma ISO</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
       <source>Use ASME standard</source>
-      <translation>Usar estándar ASME</translation>
+      <translation>Usar norma ASME</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
@@ -8240,7 +8240,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Stacking</source>
-      <translation type="unfinished">Stacking</translation>
+      <translation>Apilado</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

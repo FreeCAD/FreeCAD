@@ -8027,7 +8027,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="452"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Matriz</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="455"/>

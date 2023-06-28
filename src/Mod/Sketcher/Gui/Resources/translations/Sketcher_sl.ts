@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Ustvari dvojnika</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Ustvari stožnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -708,7 +708,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Ustvari eliptični lok</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -721,7 +721,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Ustvari hiperbolični lok</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -734,7 +734,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Ustvari metnični (paraboličen) lok</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -752,7 +752,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Ustvari B-zlepek z nadzornimi točkami v očrtu.</translation>
     </message>
   </context>
   <context>
@@ -895,7 +895,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Ustvari sklenjeni B-zlepek z nadzornimi točkami v očrtu.</translation>
     </message>
   </context>
   <context>
@@ -1098,7 +1098,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Ustvari zunanjo geometrijo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -5939,7 +5939,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Urejevalni način očrtovalnika</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5969,7 +5969,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Urejevalna orodja očrtovalnika</translation>
     </message>
   </context>
   <context>
@@ -6106,7 +6106,7 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Samodejna gostota mreže</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6121,7 +6121,7 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Razdalja med zaporednima mrežnima črtama.</translation>
     </message>
   </context>
   <context>
@@ -6414,7 +6414,7 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Kotni korak pri orodjih ki uporabljajo "Pripenjanje na kót" (npr. črte). Za omogočenje "Pripenjanja na kót" držite CTRL. Kót začne na pozitivni osi x očrta.</translation>
     </message>
   </context>
   <context>
@@ -6464,7 +6464,7 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Preklopi mrežo v očrtu. V meniju lahko spremenite nastavitve mreže.</translation>
     </message>
   </context>
   <context>
@@ -6477,7 +6477,7 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Preklopi celotno pripenjanje. V meniju lahko posamično preklapljate "Pripenjanje na mrežo" in "Pripenjanje na predmete" in spreminjate še druge nastavitve pripenjanja.</translation>
     </message>
   </context>
   <context>
@@ -6485,12 +6485,12 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>Ustvari B-zlepek z vozli</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Ustvari B-zlepek z vozli, tj. z interpolacijo, na očrtu.</translation>
     </message>
   </context>
   <context>
@@ -6498,12 +6498,12 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Ustvari sklenjeni B-zlepek z vozli</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Ustvari sklenjeni B-zlepek z vozli, tj. z interpolacijo, na očrtu.</translation>
     </message>
   </context>
 </TS>
