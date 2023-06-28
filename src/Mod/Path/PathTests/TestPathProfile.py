@@ -66,7 +66,7 @@ class TestPathProfile(PathTestBase):
 
         # Instantiate an Profile operation for querying available properties
         cls.prototype = PathProfile.Create("Profile")
-        cls.prototype.Base = [(cls.doc.Body, ["Face4"])]
+        cls.prototype.Base = [(cls.doc.Body, ["Face18"])]
         cls.prototype.Label = "Prototype"
         _addViewProvider(cls.prototype)
 
@@ -108,13 +108,13 @@ class TestPathProfile(PathTestBase):
         return
 
     def test01(self):
-        """test01() Verify path generated on Face4."""
+        """test01() Verify path generated on Face18, outside, with tool compensation."""
 
         # Instantiate a Profile operation and set Base Geometry
-        profile = PathProfile.Create("Profile")
-        profile.Base = [(self.doc.Body, ["Face4"])]  # (base, subs_list)
+        profile = PathProfile.Create("Profile1")
+        profile.Base = [(self.doc.Body, ["Face18"])]  # (base, subs_list)
         profile.Label = "test01+"
-        profile.Comment = "test01() Verify path generated on Face4."
+        profile.Comment = "test01() Verify path generated on Face18, outside, with tool compensation."
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -127,21 +127,31 @@ class TestPathProfile(PathTestBase):
 
         moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
         operationMoves = ";  ".join(moves)
-        FreeCAD.Console.PrintMessage("test01_moves: " + operationMoves + "\n")
+        #FreeCAD.Console.PrintMessage("test01_moves: " + operationMoves + "\n")
 
-        expected_moves = "G1 X7.07 Y7.07 Z10.0;  G3 I-7.07 J-7.07 K0.0 X-1.56 Y9.87 Z10.0;  G3 I1.56 J-9.87 K0.0 X1.56 Y-9.87 Z10.0;  G3 I-1.56 J9.87 K0.0 X7.07 Y7.07 Z10.0;  G1 X19.44 Y19.44 Z10.0;  G2 I-19.44 J-19.44 K0.0 X3.15 Y-27.32 Z10.0;  G2 I-3.15 J27.32 K0.0 X-3.15 Y27.32 Z10.0;  G2 I3.15 J-27.32 K0.0 X19.44 Y19.44 Z10.0"
 
+        expected_moves = \
+          "G1 X16.47 Y16.47 Z10.0;  G3 I-2.48 J-2.48 K0.0 X13.93 Y17.5 Z10.0;  " \
+          "G1 X-13.93 Y17.5 Z10.0;  G3 I-0.06 J-3.51 K0.0 X-17.5 Y13.93 Z10.0;  " \
+          "G1 X-17.5 Y-13.93 Z10.0;  G3 I3.51 J-0.06 K0.0 X-13.93 Y-17.5 Z10.0;  " \
+          "G1 X13.93 Y-17.5 Z10.0;  G3 I0.06 J3.51 K0.0 X17.5 Y-13.93 Z10.0;  " \
+          "G1 X17.5 Y13.93 Z10.0;  G3 I-3.51 J0.06 K0.0 X16.47 Y16.47 Z10.0;  " \
+          "G1 X23.55 Y23.54 Z10.0;  G2 I-9.55 J-9.54 K0.0 X27.5 Y14.1 Z10.0;  " \
+          "G1 X27.5 Y-14.0 Z10.0;  G2 I-13.5 J0.0 K0.0 X14.1 Y-27.5 Z10.0;  " \
+          "G1 X-14.0 Y-27.5 Z10.0;  G2 I0.0 J13.5 K0.0 X-27.5 Y-14.1 Z10.0;  " \
+          "G1 X-27.5 Y14.0 Z10.0;  G2 I13.5 J-0.0 K0.0 X-14.1 Y27.5 Z10.0;  " \
+          "G1 X14.0 Y27.5 Z10.0;  G2 I-0.0 J-13.5 K0.0 X23.55 Y23.54 Z10.0"
         self.assertTrue(expected_moves == operationMoves,
                        "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves))
 
     def test02(self):
-        """test02() Verify path generated on Face4."""
+        """test02() Verify path generated on Face18, outside, without compensation."""
 
         # Instantiate a Profile operation and set Base Geometry
         profile = PathProfile.Create("Profile2")
-        profile.Base = [(self.doc.Body, ["Face4"])]  # (base, subs_list)
+        profile.Base = [(self.doc.Body, ["Face18"])]  # (base, subs_list)
         profile.Label = "test02+"
-        profile.Comment = "test02() Verify path generated on Face4."
+        profile.Comment = "test02() Verify path generated on Face18, outside, without compensation."
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -154,21 +164,32 @@ class TestPathProfile(PathTestBase):
 
         moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
         operationMoves = ";  ".join(moves)
-        FreeCAD.Console.PrintMessage("test02_moves: " + operationMoves + "\n")
+        #FreeCAD.Console.PrintMessage("test02_moves: " + operationMoves + "\n")
 
-        expected_moves = "G1 X8.84 Y8.84 Z10.0;  G3 I-8.84 J-8.84 K0.0 X-0.0 Y12.5 Z10.0;  G3 I0.0 J-12.5 K0.0 X0.0 Y-12.5 Z10.0;  G3 I-0.0 J12.5 K0.0 X8.84 Y8.84 Z10.0;  G1 X17.68 Y17.68 Z10.0;  G2 I-17.68 J-17.68 K0.0 X0.0 Y-25.0 Z10.0;  G2 I-0.0 J25.0 K0.0 X-0.0 Y25.0 Z10.0;  G2 I0.0 J-25.0 K0.0 X17.68 Y17.68 Z10.0"
+        expected_moves = "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  " \
+          "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  " \
+          "G1 X-20.0 Y-14.0 Z10.0;  G3 I6.0 J0.0 K0.0 X-14.0 Y-20.0 Z10.0;  " \
+          "G1 X14.0 Y-20.0 Z10.0;  G3 I-0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  " \
+          "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J-0.0 K0.0 X18.24 Y18.24 Z10.0;  " \
+          "G1 X21.78 Y21.78 Z10.0;  G2 I-7.78 J-7.78 K0.0 X25.0 Y14.0 Z10.0;  " \
+          "G1 X25.0 Y-14.0 Z10.0;  G2 I-11.0 J0.0 K0.0 X14.0 Y-25.0 Z10.0;  " \
+          "G1 X-14.0 Y-25.0 Z10.0;  G2 I0.0 J11.0 K0.0 X-25.0 Y-14.0 Z10.0;  " \
+          "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  " \
+          "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
 
         self.assertTrue(expected_moves == operationMoves,
                        "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves))
         
     def test03(self):
-        """test03() Verify path generated on Face4."""
+        """test03() Verify path generated on Face18, outside, 
+        with compensation and extra offset -radius."""
 
         # Instantiate a Profile operation and set Base Geometry
         profile = PathProfile.Create("Profile3")
-        profile.Base = [(self.doc.Body, ["Face4"])]  # (base, subs_list)
+        profile.Base = [(self.doc.Body, ["Face18"])]  # (base, subs_list)
         profile.Label = "test03+"
-        profile.Comment = "test03() Verify path generated on Face4."
+        profile.Comment = "test03() Verify path generated on Face4, " \
+          "with compensation and extra offset -radius"
 
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
@@ -182,9 +203,18 @@ class TestPathProfile(PathTestBase):
 
         moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
         operationMoves = ";  ".join(moves)
-        FreeCAD.Console.PrintMessage("test03_moves: " + operationMoves + "\n")
+        #FreeCAD.Console.PrintMessage("test03_moves: " + operationMoves + "\n")
 
-        expected_moves = "G1 X8.84 Y8.84 Z10.0;  G3 I-8.84 J-8.84 K0.0 X-0.0 Y12.5 Z10.0;  G3 I0.0 J-12.5 K0.0 X0.0 Y-12.5 Z10.0;  G3 I-0.0 J12.5 K0.0 X8.84 Y8.84 Z10.0;  G1 X17.68 Y17.68 Z10.0;  G2 I-17.68 J-17.68 K0.0 X0.0 Y-25.0 Z10.0;  G2 I-0.0 J25.0 K0.0 X-0.0 Y25.0 Z10.0;  G2 I0.0 J-25.0 K0.0 X17.68 Y17.68 Z10.0"
+        expected_moves = "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  " \
+          "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  " \
+          "G1 X-20.0 Y-14.0 Z10.0;  G3 I6.0 J0.0 K0.0 X-14.0 Y-20.0 Z10.0;  " \
+          "G1 X14.0 Y-20.0 Z10.0;  G3 I-0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  " \
+          "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J-0.0 K0.0 X18.24 Y18.24 Z10.0;  " \
+          "G1 X21.78 Y21.78 Z10.0;  G2 I-7.78 J-7.78 K0.0 X25.0 Y14.0 Z10.0;  " \
+          "G1 X25.0 Y-14.0 Z10.0;  G2 I-11.0 J0.0 K0.0 X14.0 Y-25.0 Z10.0;  " \
+          "G1 X-14.0 Y-25.0 Z10.0;  G2 I0.0 J11.0 K0.0 X-25.0 Y-14.0 Z10.0;  " \
+          "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  " \
+          "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
 
         self.assertTrue(expected_moves == operationMoves,
                        "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves))
