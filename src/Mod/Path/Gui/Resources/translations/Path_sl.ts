@@ -4330,7 +4330,7 @@ For example:
     <message>
       <location filename="../../../InitGui.py" line="284"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Opozorilo</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="286"/>
@@ -6433,7 +6433,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1598"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Opozorilo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1599"/>

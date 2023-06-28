@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Créer une copie carbone</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Créer une conique</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -705,7 +705,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Créer un arc d'ellipse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -718,7 +718,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Créer un arc d'hyperbole</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -731,7 +731,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Créer un arc de parabole</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -749,7 +749,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Créer une B-spline par points de contrôle dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -892,7 +892,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Créer une B-spline périodique par points de contrôle dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -1095,7 +1095,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Créer une géométrie externe</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -5932,7 +5932,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Mode Edition d'esquisse</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5962,7 +5962,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Outils d'édition d'esquisse</translation>
     </message>
   </context>
   <context>
@@ -6099,7 +6099,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Espacement automatique de la grille</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6114,7 +6114,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Distance entre 2 lignes consécutives de la grille.</translation>
     </message>
   </context>
   <context>
@@ -6407,7 +6407,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Pas angulaire pour les outils qui utilisent la fonction "Aimanter à l'angle" (ligne par exemple). Maintenez la touche CTRL enfoncée pour activer la fonction "Aimanter à l'angle". L'angle commence à partir de l'axe X positif de l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -6457,7 +6457,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Activer/désactiver la grille dans l'esquisse. Dans le menu vous pouvez modifier les paramètres de la grille.</translation>
     </message>
   </context>
   <context>
@@ -6470,7 +6470,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Activer/désactiver toutes les fonctionnalités d'aimantation. Dans le menu, vous pouvez activer/désactiver individuellement "Aimanter à la grille" et "Aimanter aux objets" et modifier les paramètres d'aimantation ultérieurs.</translation>
     </message>
   </context>
   <context>
@@ -6478,12 +6478,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>Créer une B-spline par noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Créer une B-spline par noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -6491,12 +6491,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Créer une B-spline périodique par noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Créer une B-spline périodique par noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
     </message>
   </context>
 </TS>

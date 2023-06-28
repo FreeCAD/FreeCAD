@@ -3746,77 +3746,77 @@ Per habilitar FreeCAD a descarregar aquestes llibreries, respongui Si.</translat
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="536"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>No s`ha trobat cap punt d'edició per l'objecte seleccionat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="789"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>S'han seleccionat massa objectes, el màxim està establert en:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="797"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: aquest objete no es editable</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Editor d'estils d'anotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="294"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Obre el fitxer d'estils</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>Fitxer JSON (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Desa el fitxer d'estils</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Seleccioneu un objecte a projectar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="134"/>
       <location filename="../../draftguitools/gui_points.py" line="147"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Crear Punt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Seleccioneu un objecte per girar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Trieu el centre de rotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
       <location filename="../../draftguitools/gui_rotate.py" line="403"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Angle de base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="194"/>
       <location filename="../../draftguitools/gui_rotate.py" line="404"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>L'angle de base d'on voleu iniciar la rotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="199"/>
       <location filename="../../draftguitools/gui_rotate.py" line="407"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Trieu angle de base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
@@ -3829,29 +3829,29 @@ Per habilitar FreeCAD a descarregar aquestes llibreries, respongui Si.</translat
       <location filename="../../draftguitools/gui_rotate.py" line="417"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>La quantitat de rotació que voleu realitzar.
+L'angle final serà l'angle de base més aquesta quantitat.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="213"/>
       <location filename="../../draftguitools/gui_rotate.py" line="425"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Trieu angle de rotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="65"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Afegir a el grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="68"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Desagrupa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Afegir un nou grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
@@ -3861,7 +3861,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>
       <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+      <translation>Cap selecció nova. Heu de seleccionar grups no buits o objectes dins dels grups.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="203"/>
@@ -3871,27 +3871,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Afegir una nova capa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Afegir al grup de construcció</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="355"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Afegiu un grup nou amb un nom donat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Afegir grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Nom del grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="392"/>
@@ -3906,52 +3906,52 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
+      <translation>L'esbós és massa complex per editar-lo: es suggereix usar l'editor d'esbossos per defecte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="76"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Radi d'arrodoniment</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="79"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Radi de l'arrodoniment</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="107"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Entreu un radi.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="126"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Esborra els objectes originals:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="131"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Mode de xamfrà:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="148"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
+      <translation>Calen dos elements.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="155"/>
       <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>Objecte de prova</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="156"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>S'ha esborrat l'objecte de prova</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="158"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>No es pot crear l'arrodoniment</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="188"/>
@@ -3961,70 +3961,70 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="231"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>Crea Polígon (Peça)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="250"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>Crea Polígon</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Cliqueu a aqualsevol punt d'una línia per a dividir-la.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Dividir línia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Seleccioneu objecte(s) per a retallar o allargar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="146"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>Tria la distància</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="222"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Angle de Ofset</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>No es poden retallar aquests objectes, només es permeten polilínies i arcs.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>No es poden retallar aquests objectes, massa polilínies</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Aquests objectes no s'intersequen.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Massa punts d'intersecció.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>S'ha tancat la Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <location filename="../../draftguitools/gui_beziers.py" line="142"/>
       <location filename="../../draftguitools/gui_beziers.py" line="381"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>S'ha esborrat l'últim punt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="182"/>
@@ -4034,19 +4034,19 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Canvia l'estil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="601"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>Aquest objecte no suporta punts coincidents possibles, si us plau, torneu a provar-ho.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="109"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="618"/>
       <source>Delete point</source>
-      <translation type="unfinished">Delete point</translation>
+      <translation>Suprimir punt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="114"/>
@@ -4057,7 +4057,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="124"/>
       <source>Open wire</source>
-      <translation type="unfinished">Open wire</translation>
+      <translation>Obrir polilínia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="127"/>
@@ -4067,111 +4067,111 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="132"/>
       <source>Reverse wire</source>
-      <translation type="unfinished">Reverse wire</translation>
+      <translation>Invertir polilínia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="840"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>L'objecte actiu ha de tenir més de dos punts/nodes</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
       <source>Open spline</source>
-      <translation type="unfinished">Open spline</translation>
+      <translation>Obrir spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close spline</source>
-      <translation type="unfinished">Close spline</translation>
+      <translation>Tancar spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
       <source>Reverse spline</source>
-      <translation type="unfinished">Reverse spline</translation>
+      <translation>Invertir spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="371"/>
       <source>Move arc</source>
-      <translation type="unfinished">Move arc</translation>
+      <translation>Moure arc</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="375"/>
       <source>Set first angle</source>
-      <translation type="unfinished">Set first angle</translation>
+      <translation>Estableix el primer angle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="379"/>
       <source>Set last angle</source>
-      <translation type="unfinished">Set last angle</translation>
+      <translation>Estableix l'últim angle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
       <source>Set radius</source>
-      <translation type="unfinished">Set radius</translation>
+      <translation>Establir radi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="408"/>
       <source>Invert arc</source>
-      <translation type="unfinished">Invert arc</translation>
+      <translation>Invertir arc</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="619"/>
       <source>Make sharp</source>
-      <translation type="unfinished">Make sharp</translation>
+      <translation>Fer afilat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="620"/>
       <source>Make tangent</source>
-      <translation type="unfinished">Make tangent</translation>
+      <translation>Fer tangent</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="621"/>
       <source>Make symmetric</source>
-      <translation type="unfinished">Make symmetric</translation>
+      <translation>Fer simètric</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="628"/>
       <source>Reverse curve</source>
-      <translation type="unfinished">Reverse curve</translation>
+      <translation>Invertir corba</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="634"/>
       <source>Open curve</source>
-      <translation type="unfinished">Open curve</translation>
+      <translation>Obrir corba</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="637"/>
       <source>Close curve</source>
-      <translation type="unfinished">Close curve</translation>
+      <translation>Tancar corba</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="751"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>La selecció no és un Nus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>El punt final d'una corba Bézier no es pot suavitzar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="134"/>
       <location filename="../../draftguitools/gui_beziers.py" line="345"/>
       <source>Bézier curve has been closed</source>
-      <translation type="unfinished">Bézier curve has been closed</translation>
+      <translation>S’ha tancat la corba Bézier</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="212"/>
       <location filename="../../draftguitools/gui_beziers.py" line="466"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>Crear corba Bézier</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="389"/>
       <location filename="../../draftguitools/gui_beziers.py" line="393"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Feu clic i arrossegueu per definir el següent nus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="128"/>

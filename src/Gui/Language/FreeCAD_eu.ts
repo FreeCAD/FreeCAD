@@ -4748,7 +4748,7 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Elementu guztietarako oinarri-kolorea</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>

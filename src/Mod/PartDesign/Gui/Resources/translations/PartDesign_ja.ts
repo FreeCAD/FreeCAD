@@ -4565,7 +4565,7 @@ the screw's top below the surface</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="597"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;ドリルポイント&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;錐先&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="629"/>
@@ -4920,11 +4920,11 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
       <source>Fusion of tools failed</source>
-      <translation type="unfinished">Fusion of tools failed</translation>
+      <translation>結合ツールが失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="222"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="228"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
@@ -4949,10 +4949,10 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="226"/>
-      <location filename="../../../App/FeaturePad.cpp" line="235"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="197"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="232"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePipe.cpp" line="398"/>
       <location filename="../../../App/FeaturePipe.cpp" line="418"/>
       <location filename="../../../App/FeatureDraft.cpp" line="323"/>
@@ -4965,7 +4965,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureGroove.cpp" line="168"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>結果に複数のソリッドが含まれています。これは現在サポートされていません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5158,57 +5158,57 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1687"/>
       <source>Hole error: Creating a face from sketch failed</source>
-      <translation type="unfinished">Hole error: Creating a face from sketch failed</translation>
+      <translation>ホールエラー: スケッチから面を作成できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation type="unfinished">Hole error: Unsupported length specification</translation>
+      <translation>ホールエラー: サポートされていない長さ指定です。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
       <source>Hole error: Invalid hole depth</source>
-      <translation type="unfinished">Hole error: Invalid hole depth</translation>
+      <translation>ホールエラー: 穴の深さが正しくありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation type="unfinished">Hole error: Invalid taper angle</translation>
+      <translation>ホールエラー: テーパー角度が正しくありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
       <source>Hole error: Hole cut diameter too small</source>
-      <translation type="unfinished">Hole error: Hole cut diameter too small</translation>
+      <translation>ホールエラー: ホールカット直径が小さすぎます。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be less than hole depth</translation>
+      <translation>ホールエラー: ホールカット深さは穴の深さより小さくなければなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be greater or equal to zero</translation>
+      <translation>ホールエラー: ホールカットの深さはゼロ以上でなければなりません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
       <source>Hole error: Invalid countersink</source>
-      <translation type="unfinished">Hole error: Invalid countersink</translation>
+      <translation>ホールエラー: 皿穴が正しくありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1822"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation type="unfinished">Hole error: Invalid drill point angle</translation>
+      <translation>ホールエラー: 錐先角度が正しくありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1832"/>
       <source>Hole error: Invalid drill point</source>
-      <translation type="unfinished">Hole error: Invalid drill point</translation>
+      <translation>ホールエラー: 錐先が正しくありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1866"/>
       <source>Hole error: Could not revolve sketch</source>
-      <translation type="unfinished">Hole error: Could not revolve sketch</translation>
+      <translation>ホールエラー: スケッチを回転できませんでした。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
@@ -5228,12 +5228,12 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ブーリアン演算が失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="248"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>スケッチから面を作成できませんでした。
+スケッチ内の交差するスケッチ図形や複数面では、面までのポケットは作れません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
@@ -5326,41 +5326,31 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>ロフト: ロフト作成中に重大なエラーが発生しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="75"/>
-      <source>Length of pad too small</source>
-      <translation>パッドの長さが小さすぎます。</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="78"/>
-      <source>Second length of pad too small</source>
-      <translation>パッドの2番目の長さが小さすぎます</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="130"/>
+      <location filename="../../../App/FeaturePad.cpp" line="125"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>パッド: 方向とスケッチの法線ベクトルが直交しているため作成に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="141"/>
+      <location filename="../../../App/FeaturePad.cpp" line="136"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>パッド: スケッチから面を作成できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="205"/>
+      <location filename="../../../App/FeaturePad.cpp" line="200"/>
       <source>Pad: Resulting shape is empty</source>
       <translation>パッド: 結果シェイプが空です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="216"/>
+      <location filename="../../../App/FeaturePad.cpp" line="211"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>パッド: ベースフィーチャーとの結合に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="248"/>
+      <location filename="../../../App/FeaturePad.cpp" line="243"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>スケッチから面を作成できませんでした。
+スケッチ内のスケッチ図形や複数面を交差させることはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
@@ -5405,7 +5395,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>複数セクションは、基本セクションと同じ量の内部ワイヤーを持つ必要があります。</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
@@ -5468,42 +5458,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation>スパインが正しくありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="82"/>
-      <source>Pocket: Length of pocket too small</source>
-      <translation>ポケット: ポケットの長さが小さすぎます。</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="86"/>
-      <source>Pocket: Second length of pocket too small</source>
-      <translation>ポケット: ポケットの2番目の長さが小さすぎます。</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="138"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>ポケット: 方向とスケッチの法線ベクトルが直交しているため作成に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
       <source>Pocket: Creating a face from sketch failed</source>
       <translation>ポケット: スケッチから面を作成できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="155"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
       <translation>ポケット: スケッチが面上に配置されている場合にのみ、面まで押し出すことができます。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="190"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
       <translation>ポケット: 面まで: サブシェイプが得られませんでした!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="214"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
       <source>Pocket: Resulting shape is empty</source>
       <translation>ポケット: 結果シェイプが空です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="223"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
       <source>Pocket: Cut out of base feature failed</source>
       <translation>ポケット: ベースフィーチャーの切り抜きに失敗しました。</translation>
     </message>
@@ -5643,22 +5623,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation type="unfinished">Transformation feature Linked object is not a Part object</translation>
+      <translation>変換フィーチャーのリンク・オブジェクトはパートオブジェクトではありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>変換されたフィーチャーにリンク元がありません。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>無効な支持体積を変換できません</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
       <source>Transformation failed</source>
-      <translation type="unfinished">Transformation failed</translation>
+      <translation>変換が失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>

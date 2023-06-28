@@ -119,13 +119,13 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>Show line</source>
-      <translation type="unfinished">Show line</translation>
+      <translation>Mostrar liña</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="288"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>The width of the lines</source>
-      <translation type="unfinished">The width of the lines</translation>
+      <translation>A largura das liñas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
