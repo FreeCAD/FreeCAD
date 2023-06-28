@@ -79,6 +79,7 @@ SET(Material_SRCS
     PreCompiled.h
     PropertyModel.cpp
     PropertyModel.h
+    trim.h
 )
 
 if(FREECAD_USE_PCH)
