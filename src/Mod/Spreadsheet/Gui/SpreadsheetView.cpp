@@ -94,8 +94,8 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
             this, &SheetView::rowResized);
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
-    connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
-    connect(ui->cellAlias, &ExpressionLineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellContent, &ExpressionLineEdit::editingFinished, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellAlias, &ExpressionLineEdit::editingFinished, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
