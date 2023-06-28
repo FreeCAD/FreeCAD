@@ -50,6 +50,7 @@ public:
     // Library management
     static std::list<MaterialLibrary*>* getMaterialLibraries();
     std::map<std::string, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
+    std::list<QString>* getMaterialFolders(const MaterialLibrary &library);
     void createPath(MaterialLibrary* library, const std::string& path) { library->createPath(path); }
     void saveMaterial(MaterialLibrary* library, const Material& material, const std::string& path) {
         library->saveMaterial(material, path);

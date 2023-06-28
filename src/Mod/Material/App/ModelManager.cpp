@@ -161,7 +161,7 @@ std::map<std::string, ModelTreeNode*>* ModelManager::getModelTree(const ModelLib
                     {
                         mapPtr = new std::map<std::string, ModelTreeNode*>();
                         ModelTreeNode *child = new ModelTreeNode();
-                        child->setData(mapPtr);
+                        child->setFolder(mapPtr);
                         (*node)[itp->string()] = child;
                         node = mapPtr;
                     } else {

@@ -44,7 +44,7 @@ public:
     std::map<std::string, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
     const T *getData(void) const { return _data; }
 
-    void setData(std::map<std::string, FolderTreeNode<T>*> *folder)
+    void setFolder(std::map<std::string, FolderTreeNode<T>*> *folder)
     {
         setType(FolderNode);
         _folder = folder;

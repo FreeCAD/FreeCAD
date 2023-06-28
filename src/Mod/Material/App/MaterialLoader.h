@@ -86,6 +86,7 @@ public:
     virtual ~MaterialLoader();
 
     std::list<MaterialLibrary*>* getMaterialLibraries();
+    static std::list<QString>* getMaterialFolders(const MaterialLibrary &library);
     static void showYaml(const YAML::Node& yaml);
 
 private:

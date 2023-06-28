@@ -377,5 +377,24 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     return _libraryList;
 }
 
+std::list<QString>* MaterialLoader::getMaterialFolders(const MaterialLibrary &library)
+{
+    std::list<QString>* pathList = new std::list<QString>();
+    QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        auto pathname = it.next();
+        QFileInfo file(pathname);
+        if (file.isDir())
+        {
+            QString path = library.getDirectory().relativeFilePath(file.absoluteFilePath());
+            if (!path.startsWith(QString::fromStdString(".")))
+                pathList->push_back(path);
+        }
+    }
+
+    return pathList;
+}
+
 
 #include "moc_MaterialLoader.cpp"

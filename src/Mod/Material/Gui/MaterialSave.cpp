@@ -112,7 +112,8 @@ void MaterialSave::addExpanded(QTreeView *tree, QStandardItemModel *parent, QSta
     tree->setExpanded(child->index(), true);
 }
 
-void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree)
+void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree, 
+        const QIcon &folderIcon, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
     for (auto& mat : *modelTree) {
@@ -122,18 +123,18 @@ void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::strin
             const Materials::Material *material = nodePtr->getData();
             std::string uuid = material->getUUID();
 
-            auto card = new QStandardItem(QString::fromStdString(material->getName()));
+            auto card = new QStandardItem(icon, QString::fromStdString(material->getName()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
             card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
 
             addExpanded(tree, &parent, card);
         } else {
-            auto node = new QStandardItem(QString::fromStdString(mat.first));
+            auto node = new QStandardItem(folderIcon, QString::fromStdString(mat.first));
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             const std::map<std::string, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
-            addMaterials(*node, treeMap);
+            addMaterials(*node, treeMap, folderIcon, icon);
         }
     }
 }
@@ -148,13 +149,15 @@ void MaterialSave::showSelectedTree()
     {
         auto variant = ui->comboLibrary->currentData();
         auto library = variant.value<Materials::MaterialLibrary>();
+        QIcon icon(QString::fromStdString(library.getIconPath()));
+        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
         auto lib = new QStandardItem(QString::fromStdString(library.getName()));
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
         std::map<std::string, Materials::MaterialTreeNode*>* modelTree = _manager.getMaterialTree(library);
-        addMaterials(*lib, modelTree);
+        addMaterials(*lib, modelTree, folderIcon, icon);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No writeable library"),
             QObject::tr("No writeable library"));
