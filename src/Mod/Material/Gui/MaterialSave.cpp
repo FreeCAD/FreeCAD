@@ -124,15 +124,15 @@ void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::strin
             std::string uuid = material->getUUID();
 
             auto card = new QStandardItem(icon, QString::fromStdString(material->getName()));
-            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                        | Qt::ItemIsDropEnabled);
+            // card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+            //             | Qt::ItemIsDropEnabled);
             card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
 
             addExpanded(tree, &parent, card);
         } else {
             auto node = new QStandardItem(folderIcon, QString::fromStdString(mat.first));
             addExpanded(tree, &parent, node);
-            node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            // node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             const std::map<std::string, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
             addMaterials(*node, treeMap, folderIcon, icon);
         }
@@ -220,6 +220,11 @@ void MaterialSave::onNewFolder(bool checked)
     if (item->hasChildren())
     {
         Base::Console().Log("Add new folder to '%s'\n", item->text().toStdString().c_str());
+        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+
+        auto node = new QStandardItem(folderIcon, QString::fromStdString("New Folder"));
+        addExpanded(tree, item, node);
+        // node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     }
 }
 
