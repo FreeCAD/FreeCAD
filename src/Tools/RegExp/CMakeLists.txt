@@ -2,8 +2,17 @@ project(RegExp)
 set(APP_VERSION "1.0")
 
 cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
+        ${Qt5Core_INCLUDE_DIRS}
+	QT5_WRAP_CPP(RegExp_MOC_SRCS   regexpdialog.h )
+	QT5_WRAP_UI(RegExp_UIC_HDRS    regexpdialog.ui)
+	
+elseif(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        ${Qt6Core_INCLUDE_DIRS}
+	QT6_WRAP_CPP(RegExp_MOC_SRCS   regexpdialog.h )
+	QT6_WRAP_UI(RegExp_UIC_HDRS    regexpdialog.ui)
+endif()
 
-find_package(Qt5)
 
 include_directories(
     ${QT_INCLUDE_DIR}
@@ -16,13 +25,6 @@ link_directories(${QT_LIBRARY_DIR})
 
 add_definitions(-D_UNICODE)
 
-QT5_WRAP_CPP(RegExp_MOC_SRCS
-    regexpdialog.h
-)
-
-QT5_WRAP_UI(RegExp_UIC_HDRS
-    regexpdialog.ui
-)
 
 SET(RegExp_SRCS
     ${RegExp_UIC_HDRS}

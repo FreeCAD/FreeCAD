@@ -11,13 +11,13 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
 )
 
-if (BUILD_QT5)
+if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
         ${Qt5Core_INCLUDE_DIRS}
     )
-else()
+else(FREECAD_QT_MAJOR_VERSION EQUAL 6)
     include_directories(
-        ${QT_INCLUDE_DIR}
+        ${Qt6Core_INCLUDE_DIRS}
     )
 endif()
 
