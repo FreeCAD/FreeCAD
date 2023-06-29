@@ -3,7 +3,9 @@ macro(SetupLibFmt)
        # This internet check idea is borrowed from:
        # https://stackoverflow.com/questions/62214621/how-to-check-for-internet-connection-with-cmake-automatically-prevent-fails-if
 
-       find_package(fmt QUIET)
+       if(FREECAD_USE_EXTERNAL_FMT)
+              find_package(fmt QUIET)
+       endif()
 
        if(fmt_FOUND)
               message(STATUS "find_package() was used to locate fmt version ${fmt_VERSION}")
