@@ -45,6 +45,40 @@ translate = FreeCAD.Qt.translate
 
 
 class ObjectCustom(PathOp.ObjectOp):
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """customOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        # Enumeration lists for App::PropertyEnumeration properties
+
+        enums = {
+            "Source": [
+                (translate("PathCustom", "Text"), "Text"),
+                (translate("PathCustom", "File"), "File"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        Path.Log.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        Path.Log.debug(data)
+
+        return data
+
     def opFeatures(self, obj):
         return PathOp.FeatureTool | PathOp.FeatureCoolant
 
@@ -53,7 +87,7 @@ class ObjectCustom(PathOp.ObjectOp):
             "App::PropertyEnumeration",
             "Source",
             "Path",
-            "Source of gcode (text, file, ...)"
+            "Source of gcode (text, file, ...)",
         )
 
         obj.addProperty(
@@ -70,28 +104,37 @@ class ObjectCustom(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
 
+        # populate the property enumerations
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
         obj.Proxy = self
         self.setEditorModes(obj)
-
-    def opPropertyEnumerations(self, dateType="data"):
-        enum = super().opPropertyEnumerations(dateType)
-
-        props = [
-            (translate("PathCustom", "Text"), "Text"),
-            (translate("PathCustom", "File"), "File")
-        ]
-
-        if dateType == "raw":
-            enum["Source"] = props
-            return enum
-
-        enum.append(("Source", [ p[1][1] for p in enumerate(props) ]))
-
-        return enum
 
     def onChanged(self, obj, prop):
         if prop == "Source":
             self.setEditorModes(obj)
+
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, "Source"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Source",
+                "Path",
+                "Source of gcode (text, file, ...)",
+            )
+
+        if not hasattr(obj, "GcodeFile"):
+            obj.addProperty(
+                "App::PropertyFile",
+                "GcodeFile",
+                "Path",
+                "File containing gcode to be inserted",
+            )
+
+        # populate the property enumerations
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def onDocumentRestore(self, obj):
         self.setEditorModes(self, obj)
@@ -101,11 +144,11 @@ class ObjectCustom(PathOp.ObjectOp):
             return
 
         if obj.Source == "Text":
-          obj.setEditorMode("GcodeFile", 2)
-          obj.setEditorMode("Gcode", 0)
+            obj.setEditorMode("GcodeFile", 2)
+            obj.setEditorMode("Gcode", 0)
         elif obj.Source == "File":
-          obj.setEditorMode("GcodeFile", 0)
-          obj.setEditorMode("Gcode", 2)
+            obj.setEditorMode("GcodeFile", 0)
+            obj.setEditorMode("Gcode", 2)
 
     def findGcodeFile(self, filename):
         if os.path.exists(filename):
@@ -130,12 +173,21 @@ class ObjectCustom(PathOp.ObjectOp):
 
             # could not determine the path
             if not gcode_file:
-                Path.Log.error(translate("PathCustom", "Custom file %s could not be found.") % obj.GcodeFile)
+                Path.Log.error(
+                    translate("PathCustom", "Custom file %s could not be found.")
+                    % obj.GcodeFile
+                )
 
             with open(gcode_file) as fd:
                 for l in fd.readlines():
-                  newcommand = Path.Command(str(l))
-                  self.commandlist.append(newcommand)
+                    try:
+                        newcommand = Path.Command(str(l))
+                        self.commandlist.append(newcommand)
+                    except ValueError:
+                        Path.Log.warning(
+                            translate("PathCustom", "Invalid Gcode line: %s") % l
+                        )
+                        continue
 
         self.commandlist.append(Path.Command("(End Custom)"))
 
