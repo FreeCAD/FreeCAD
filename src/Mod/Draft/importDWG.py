@@ -135,8 +135,8 @@ def export(objectslist, filename):
 def get_libredwg_converter(typ):
     """Find the LibreDWG converter.
 
-    It searches the FreeCAD parameters database, then searches the OS search path
-    on Linux and Windows systems. There are no standard installation paths.
+    It searches the FreeCAD parameters database, then searches the OS search path.
+    There are no standard installation paths.
 
     `typ` is required because LibreDWG uses two converters and we store only one.
 
@@ -161,14 +161,14 @@ def get_libredwg_converter(typ):
             path = os.path.dirname(path) + "/" + typ + os.path.splitext(path)[1]
         if os.path.exists(path) and os.path.isfile(path):
             return path
-    elif platform.system() == "Linux":
-        for sub in os.getenv("PATH").split(":"):
-            path = sub + "/" + typ
+    elif platform.system() == "Windows":
+        for sub in os.getenv("PATH").split(os.pathsep):
+            path = sub.replace("\\", "/") + "/" + typ + ".exe"
             if os.path.exists(path) and os.path.isfile(path):
                 return path
-    elif platform.system() == "Windows":
-        for sub in os.getenv("PATH").split(";"):
-            path = sub.replace("\\", "/") + "/" + typ + ".exe"
+    else: # for Linux and macOS
+        for sub in os.getenv("PATH").split(os.pathsep):
+            path = sub + "/" + typ
             if os.path.exists(path) and os.path.isfile(path):
                 return path
 
@@ -178,8 +178,7 @@ def get_libredwg_converter(typ):
 def get_oda_converter():
     """Find the ODA converter.
 
-    It searches the FreeCAD parameters database, then searches for common
-    paths on Linux and Windows systems.
+    It searches the FreeCAD parameters database, then searches for common paths.
 
     Parameters
     ----------
@@ -199,10 +198,6 @@ def get_oda_converter():
     if "ODAFileConverter" in path: # path set manually
         if os.path.exists(path) and os.path.isfile(path):
             return path
-    elif platform.system() == "Linux":
-        path = "/usr/bin/ODAFileConverter"
-        if os.path.exists(path) and os.path.isfile(path):
-            return path
     elif platform.system() == "Windows":
         odadir = os.path.expandvars("%ProgramFiles%\\ODA").replace("\\", "/")
         if os.path.exists(odadir):
@@ -210,6 +205,14 @@ def get_oda_converter():
                 path = odadir + "/" + sub + "/" + "ODAFileConverter.exe"
                 if os.path.exists(path) and os.path.isfile(path):
                     return path
+    elif platform.system() == "Linux":
+        path = "/usr/bin/ODAFileConverter"
+        if os.path.exists(path) and os.path.isfile(path):
+            return path
+    else: # for macOS
+        path = "/Applications/ODAFileConverter.app/Contents/MacOS/ODAFileConverter"
+        if os.path.exists(path) and os.path.isfile(path):
+            return path
 
     return None
 
@@ -217,8 +220,7 @@ def get_oda_converter():
 def get_qcad_converter():
     """Find the QCAD converter.
 
-    It searches the FreeCAD parameters database, then searches for common
-    paths on Linux and Windows systems.
+    It searches the FreeCAD parameters database, then searches for common paths.
 
     Parameters
     ----------
@@ -237,6 +239,8 @@ def get_qcad_converter():
 
     if "dwg2dwg" in path: # path set manually
         pass
+    elif platform.system() == "Windows":
+        path = os.path.expandvars("%ProgramFiles%\\QCAD\\dwg2dwg.bat").replace("\\", "/")
     elif platform.system() == "Linux":
         # /home/$USER/opt/qcad-3.28.1-trial-linux-qt5.14-x86_64/dwg2dwg
         path = os.path.expandvars("/home/$USER/opt")
@@ -244,8 +248,8 @@ def get_qcad_converter():
             if "qcad" in sub:
                 path = path + "/" + sub + "/" + "dwg2dwg"
                 break
-    elif platform.system() == "Windows":
-        path = os.path.expandvars("%ProgramFiles%\\QCAD\\dwg2dwg.bat").replace("\\", "/")
+    else: # for macOS
+        path = "/Applications/QCAD.app/Contents/Resources/dwg2dwg"
 
     if os.path.exists(path) and os.path.isfile(path):
         return path

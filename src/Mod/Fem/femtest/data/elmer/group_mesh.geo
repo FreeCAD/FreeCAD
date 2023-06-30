@@ -41,7 +41,6 @@ Mesh  3;
 Coherence Mesh; // Remove duplicate vertices
 
 // save
-Mesh.Format = 2;
 // Ignore Physical definitions and save all elements;
 Mesh.SaveAll = 1;
 Save "/tmp/tmpjVhNNb.unv";

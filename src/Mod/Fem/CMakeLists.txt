@@ -96,8 +96,6 @@ SET(FemExamples_SRCS
     femexamples/square_pipe_end_twisted_edgeforces.py
     femexamples/square_pipe_end_twisted_nodeforces.py
     femexamples/thermomech_bimetall.py
-    femexamples/thermomech_flow1d.py
-    femexamples/thermomech_spine.py
     femexamples/truss_3d_cs_circle_ele_seg2.py
     femexamples/truss_3d_cs_circle_ele_seg3.py
 )
@@ -135,8 +133,6 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_selfweight_cantilever_tetra10.py
     femexamples/meshes/mesh_square_pipe_end_twisted_tria6.py
     femexamples/meshes/mesh_thermomech_bimetall_tetra10.py
-    femexamples/meshes/mesh_thermomech_flow1d_seg3.py
-    femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
     femexamples/meshes/mesh_transform_torque_tetra10.py
     femexamples/meshes/mesh_truss_crane_seg2.py
@@ -381,17 +377,6 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/square_pipe_end_twisted_edgeforces.inp
     femtest/data/calculix/square_pipe_end_twisted_nodeforces.inp
     femtest/data/calculix/thermomech_bimetall.inp
-    femtest/data/calculix/thermomech_flow1D.inp
-    femtest/data/calculix/thermomech_flow1D.dat
-    femtest/data/calculix/thermomech_flow1D.frd
-    femtest/data/calculix/thermomech_flow1D_expected_values
-    femtest/data/calculix/thermomech_flow1D_inout_nodes.txt
-    femtest/data/calculix/thermomech_flow1D.FCStd
-    femtest/data/calculix/thermomech_spine.inp
-    femtest/data/calculix/thermomech_spine.dat
-    femtest/data/calculix/thermomech_spine.frd
-    femtest/data/calculix/thermomech_spine_expected_values
-    femtest/data/calculix/thermomech_spine.FCStd
 )
 
 SET(FemTestsElmer_SRCS
