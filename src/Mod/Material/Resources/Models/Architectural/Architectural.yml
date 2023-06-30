@@ -1,3 +1,4 @@
+---
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
@@ -27,7 +28,7 @@ Model:
   Description: "default architectural model"
   DOI: ""
   Color:
-    Type:  'String'
+    Type: 'String'
     Units: ''
     URL: ''
     Description: " "
@@ -57,8 +58,6 @@ Model:
     URL: ''
     Description: " "
   SoundTransmissionClass:
-    URL: ''
-    Description: " "
     Type: 'String'
     Units: ''
     URL: ''

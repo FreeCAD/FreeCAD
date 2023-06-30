@@ -1,3 +1,4 @@
+---
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
@@ -24,7 +25,9 @@ Model:
   Name: 'Hypothetical Example'
   UUID: 'a401af74-e4a2-4bad-8dd5-0f3d1748c462'
   URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
-  Description: "This is not a real physical model. It is intended as an example of a new physical model"
+  Description: >
+    This is not a real physical model. It is intended as an example of a new
+    physical model
   DOI: ""
   GigaWatts:
     Type: 'Quantity'

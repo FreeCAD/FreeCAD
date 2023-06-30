@@ -1,3 +1,4 @@
+---
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
@@ -24,7 +25,9 @@ Model:
   Name: 'OgdenYld2004p18'
   UUID: '3ef9e427-cc25-43f7-817f-79ff0d49625f'
   URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
-  Description: "Materials that are linearly elastic obey Hooke's law i.e. the stress and strain relationship is linear"
+  Description: >
+    Materials that are linearly elastic obey Hooke's law i.e. the stress and
+    strain relationship is linear
   DOI: "10.1016/j.ijplas.2004.06.004"
   OgdenModuli:
     Type: 'List'
@@ -40,12 +43,14 @@ Model:
     Type: 'Quantity'
     Units: 'kPa'
     URL: ''
-    Description: "Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]"
+    Description: >
+      Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]
   VoceSaturationStress:
     Type: 'Quantity'
     Units: 'kPa'
     URL: ''
-    Description: "Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]"
+    Description: >
+      Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]
   VoceStrainScale:
     Type: 'Float'
     Units: ''
@@ -55,4 +60,6 @@ Model:
     Type: 'List'
     Units: ''
     URL: ''
-    Description: "Coefficients (c_12, c_13, c_21, c_23, c_31, c_32, c_44, c_55, c_66) in Yld2004-18p yield surface [unitless]"
+    Description: >
+      Coefficients (c_12, c_13, c_21, c_23, c_31, c_32, c_44, c_55, c_66)
+      in Yld2004-18p yield surface [unitless]

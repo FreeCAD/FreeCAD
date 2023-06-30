@@ -1,3 +1,4 @@
+---
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
@@ -39,5 +40,8 @@ Model:
   ThermalExpansionCoefficient:
     Type: 'Quantity'
     Units: 'm/m/K'
-    URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
-    Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
+    URL:
+      'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
+    Description: >
+      Thermal expansion coefficient (linear) in [FreeCAD
+      ThermalExpansionCoefficient unit]
