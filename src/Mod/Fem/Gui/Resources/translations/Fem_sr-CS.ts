@@ -5392,12 +5392,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Electromagnetic Constraints</source>
-      <translation type="unfinished">Electromagnetic Constraints</translation>
+      <translation>Elektromagnetna ograničenja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Electromagnetic Constraints</source>
-      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+      <translation>&amp;Elektromagnetna ograničenja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

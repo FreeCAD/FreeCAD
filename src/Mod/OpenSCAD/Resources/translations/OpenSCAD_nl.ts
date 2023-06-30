@@ -82,7 +82,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>Gebruiker gespecificeerde map</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="240"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>Het pad naar de map voor het overzetten van bestanden van en naar OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="258"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Het lijkt erop dat u een Snap versie van OpenSCAD gebruikt.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>Gelieve eerst 3 objecten te selecteren</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="334"/>
@@ -248,7 +248,7 @@
       <location filename="../../OpenSCADCommands.py" line="352"/>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD element toevoegen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="428"/>
@@ -259,7 +259,7 @@
       <location filename="../../OpenSCADCommands.py" line="430"/>
       <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCAD bestand</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="442"/>
@@ -270,7 +270,7 @@
       <location filename="../../OpenSCADCommands.py" line="456"/>
       <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Uitvoeren</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="482"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Vervang object</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
@@ -449,12 +449,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="530"/>
       <source>Add OpenSCAD Element...</source>
-      <translation type="unfinished">Add OpenSCAD Element...</translation>
+      <translation>OpenSCAD element toevoegen...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="534"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <translation>Voeg een OpenSCAD-element toe door de OpenSCAD-code in te voeren en het OpenSCAD-binaire uit te voeren</translation>
     </message>
   </context>
   <context>
@@ -488,7 +488,7 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD gereedschap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>

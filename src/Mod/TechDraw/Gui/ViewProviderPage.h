@@ -126,6 +126,9 @@ public:
 
     const char* whoAmI() const;
 
+    void fixSceneDependencies();
+
+
 protected:
     bool setEdit(int ModNum) override;
     void createMDIViewPage();

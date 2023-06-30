@@ -49,7 +49,7 @@ if open.__module__ in ['__builtin__','io']:
 
 def open(filename):
     "called when freecad wants to open a file"
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     FreeCAD.ActiveDocument = doc

@@ -1243,7 +1243,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="714"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
-      <translation type="unfinished">Select Line Attributes, Cascade Spacing and Delta Distance</translation>
+      <translation>აირჩიეთ ხაზის ატრიბუტები, კასკადის დაშორება და მანძილის დელტა</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="715"/>
@@ -2869,7 +2869,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="235"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
-      <translation type="unfinished">Selected edge is a BSpline and a radius can not be calculated.</translation>
+      <translation>მონიშნული წიბო B-სპლაინია და მისი რადიუსის გამოთვლა შეუძლებელია.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="314"/>
@@ -3827,7 +3827,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
       <source>If Crop Image is checked, crop captured image to this width.</source>
-      <translation type="unfinished">If Crop Image is checked, crop captured image to this width.</translation>
+      <translation>თუ გამოსახულების ამოჭრა ჩართულია, გადაღებული გამოსახულების ამ სიგანემდე ამოჭრა.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="72"/>
@@ -3847,7 +3847,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
       <source>If Crop Image is checked, crop captured image to this height.</source>
-      <translation type="unfinished">If Crop Image is checked, crop captured image to this height.</translation>
+      <translation>თუ გამოსახულების ამოჭრა ჩართულია, გადაღებული გამოსახულების ამ სიმაღლეზე ამოჭრა.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="137"/>
@@ -3941,8 +3941,8 @@ Angle, surface finish, root</source>
       <location filename="../../TaskWeldingSymbol.ui" line="50"/>
       <source>Text before arrow side symbol
 Preparation depth, (weld size)</source>
-      <translation type="unfinished">Text before arrow side symbol
-Preparation depth, (weld size)</translation>
+      <translation>ტექსტი ისრის გვერდის სიმბოლომდე
+მომზადების სიღრმე, (შედუღების ზომა)</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="76"/>
@@ -3959,15 +3959,15 @@ Preparation depth, (weld size)</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="92"/>
       <source>Text after arrow side symbol
 Number of welds × length, (gap)</source>
-      <translation type="unfinished">Text after arrow side symbol
-Number of welds × length, (gap)</translation>
+      <translation>ტექსტი ისრის გვერდის სიმბოლოს შემდეგ
+შედუღებების რაოდენობა × სიგრძეზე, (გამოტოვება)</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="121"/>
       <source>Text before other side symbol
 Preparation depth, (weld size)</source>
-      <translation type="unfinished">Text before other side symbol
-Preparation depth, (weld size)</translation>
+      <translation>ტექსტი მეორე გვერდის სიმბოლომდე
+მომზადების სიღრმე, (შედუღების ზომა)</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="129"/>
@@ -3978,8 +3978,8 @@ Preparation depth, (weld size)</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="139"/>
       <source>Text after other side symbol
 Number of welds × length, (gap)</source>
-      <translation type="unfinished">Text after other side symbol
-Number of welds × length, (gap)</translation>
+      <translation>ტექსტი ისრის მეორე ბოლოს სიმბოლოს შემდეგ
+შედუღებების რაოდენობა × სიგრძეზე, (გამოტოვება)</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="171"/>
@@ -6703,7 +6703,7 @@ be used instead of the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="278"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation type="unfinished">Standard and style according to which dimension is drawn</translation>
+      <translation>სტანდარტი და სტილი იმაზე დაყრდნობით, რომელი ზომა იხატება</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="282"/>
@@ -8680,8 +8680,8 @@ using the given X/Y Spacing</source>
       <location filename="../../ViewProviderBalloon.cpp" line="181"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this balloon now because
-there is an open task dialog.</translation>
+      <translation>ამ ბუშტის ახლა წაშლა არ შეგიძლიათ,
+რადგან არსებობს ღია ამოცანის ფანჯარა.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="184"/>

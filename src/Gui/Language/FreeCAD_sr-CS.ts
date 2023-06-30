@@ -4744,7 +4744,7 @@ Takođe možete koristiti obrazac: Pera Perić &lt;pera@peric.com&gt;</translati
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Osnovna boja za sve elemente</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
