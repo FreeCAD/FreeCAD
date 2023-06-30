@@ -34,10 +34,6 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Persistence.h"
 
-#ifndef _PreComp_
-# include <xercesc/dom/DOM.hpp>
-#endif
-
 
 using namespace Base;
 
@@ -63,14 +59,6 @@ void Persistence::Save (Writer &/*writer*/) const
 {
     // you have to implement this method in all descending classes!
     assert(0);
-}
-
-void Persistence::Restore(DocumentReader &/*reader*/)
-{
-}
-
-void Persistence::Restore(DocumentReader &/*reader*/,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement */*containerEl*/)
-{
 }
 
 void Persistence::Restore(DocumentReader &/*reader*/)

@@ -25,16 +25,18 @@
 
 #include <bitset>
 #include <map>
-#include <memory>
+//#include <memory>
+//#include <sstream>
 #include <string>
 #include <vector>
-#include <xercesc/util/XercesDefs.hpp>
-//#include "FileInfo.h"//remplaced:
-#include <FCGlobal.h>
 
-namespace zipios {
-class ZipInputStream;
-}
+//#include <xercesc/framework/XMLPScanToken.hpp>
+//#include <xercesc/sax2/Attributes.hpp>
+//#include <xercesc/sax2/DefaultHandler.hpp>
+#include <xercesc/util/XercesDefs.hpp>
+//#include "FileInfo.h"//reemplazado por:
+#include <FCGlobal.h>
+//#include <Base/Parameter.h>
 
 XERCES_CPP_NAMESPACE_BEGIN
 	class DOMNode;
@@ -47,7 +49,7 @@ namespace Base
 class Reader;
 class Persistence;
 
-class BaseExport DocumentReader
+class BaseExport DocumentReader //: public ParameterManager
 {
 public:
 	enum ReaderStatus {
@@ -64,12 +66,12 @@ public:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(const char* Type) const;
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
     
-    static long ContentToASCII(const char* Content);
+    long ContentToASCII(const char* Content) const;
     
-    static long ContentToInt(const char* Content);
-    static unsigned long ContentToUnsigned(const char* Content);
-    static double ContentToFloat(const char* Content);
-    static bool ContentToBool(const char* Content);
+    long ContentToInt(const char* Content) const;
+    unsigned long ContentToUnsigned(const char* Content) const;
+    double ContentToFloat(const char* Content) const;
+    bool ContentToBool(const char* Content) const;
     
     const char* GetAttribute(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* DOMEl, const char* Attr) const;
     const char* GetAttribute(const char* Attr) const;
@@ -78,28 +80,8 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
-    /// sets simultaneously the global and local PartialRestore bits
-    void setPartialRestore(bool on);
     
     void clearPartialRestoreProperty();
-    
-    /// add a read request of a persistent object
-    const char *addFile(const char* Name, Base::Persistence *Object);
-    
-    void readFiles(zipios::ZipInputStream &zipstream) const;
-    
-    std::shared_ptr<Base::DocumentReader> getLocalReader() const;
-    
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
-    
-    /// Version of the file format
-    int FileVersion;
-    
-    
     
 protected:
 	XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *_pGroupNode;
@@ -107,9 +89,6 @@ protected:
     bool          gDoSchema             ;
     bool          gSchemaFullChecking   ;
     bool          gDoCreate             ;
-    
-    std::vector<std::string> FileNames;
-    
     std::bitset<32> StatusBits;
     
 };

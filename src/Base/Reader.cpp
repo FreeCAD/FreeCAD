@@ -31,7 +31,6 @@
 #include <locale>
 
 #include "Reader.h"
-#include "DocumentReader.h"
 #include "Base64.h"
 #include "Console.h"
 #include "InputSource.h"
@@ -334,11 +333,9 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
             try {
         		Base::Reader reader(zipstream, jt->FileName, FileVersion);
 	            jt->Object->RestoreDocFile(reader);
-	            if (reader.getLocalReader())
-                    reader.getLocalReader()->readFiles(zipstream);
-                if (reader.getLocalDocReader())
-                	reader.getLocalDocReader()->readFiles(zipstream);
-                    
+	            
+	        	if (reader.getLocalReader())
+	            reader.getLocalReader()->readFiles(zipstream);
             }catch(...) {
                 // For any exception we just continue with the next file.
                 // It doesn't matter if the last reader has read more or
@@ -579,14 +576,4 @@ void Base::Reader::initLocalReader(std::shared_ptr<Base::XMLReader> reader)
 std::shared_ptr<Base::XMLReader> Base::Reader::getLocalReader() const
 {
     return(this->localreader);
-}
-
-void Base::Reader::initLocalDocReader(std::shared_ptr<Base::DocumentReader> reader)
-{
-    this->localdocreader = reader;
-}
-
-std::shared_ptr<Base::DocumentReader> Base::Reader::getLocalDocReader() const
-{
-    return(this->localdocreader);
 }

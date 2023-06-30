@@ -354,29 +354,17 @@ public:
     }
     
     void restore(Base::DocumentReader& reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *expandEl) {
+	    Base::Console().Error("ExpandInfo restore\n");
     	const char* count_cstr = reader.GetAttribute(expandEl,"count");
     	if(count_cstr){
     		long count = reader.ContentToInt( count_cstr );
-    		auto prev_ExpandDOM = reader.FindElement(expandEl,"Expand");
-    		const char* name_cstr = reader.GetAttribute(prev_ExpandDOM,"name");
-    		const char* _count_cstr = reader.GetAttribute(prev_ExpandDOM,"count");
+			Base::Console().Error("ExpandInfo count: %d\n",count);
+    		auto _expandEl = reader.FindElement(expandEl,"Expand");
+    		const char* name_cstr = reader.GetAttribute(_expandEl,"name");
+    		Base::Console().Error("ExpandInfo name_cstr: %s\n",name_cstr);
     		auto& entry = (*this)[name_cstr];
-    		if(_count_cstr){
-				entry.reset(new ExpandInfo);
-		        entry->restore(reader,prev_ExpandDOM);
-            }
-            
-            for (int i = 1; i < count; ++i) {
-            	auto ExpandDOM_i = reader.FindNextElement(prev_ExpandDOM,"Expand");
-            	const char* name_cstr = reader.GetAttribute(ExpandDOM_i,"name");
-            	const char* _count_cstr = reader.GetAttribute(ExpandDOM_i,"count");
-		        auto& entry = (*this)[name_cstr];
-		        if(_count_cstr){
-				    entry.reset(new ExpandInfo);
-				    entry->restore(reader,ExpandDOM_i);
-		        }
-		        prev_ExpandDOM = ExpandDOM_i;
-        	}
+    		entry.reset(new ExpandInfo);
+            entry->restore(reader,_expandEl);
     	}
     }
 };
@@ -3959,16 +3947,19 @@ void DocumentItem::Restore(Base::XMLReader& reader) {
 }
 
 void DocumentItem::Restore(Base::DocumentReader& reader) {
+    Base::Console().Error("DocumentItem::Restore() DocumentReader\n");
     auto expandEl = reader.FindElement("Expand");
     if( !reader.GetAttribute(expandEl,"count") )
     	return;
     _ExpandInfo.reset(new ExpandInfo);
     _ExpandInfo->restore(reader,expandEl);
+    //TODO NOW
     for (auto inst : TreeWidget::Instances) {
         if (inst != getTree()) {
             auto docItem = inst->getDocumentItem(document());
             if (docItem)
                 docItem->_ExpandInfo = _ExpandInfo;
+
         }
     }
 }
