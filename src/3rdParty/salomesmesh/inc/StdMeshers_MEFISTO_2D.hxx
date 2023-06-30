@@ -64,7 +64,7 @@ public:
   typedef std::vector< StdMeshers_FaceSidePtr > TWireVector;
 
   bool LoadPoints(TWireVector &                       wires,
-                  R2*                                 uvslf, 
+                  R_2*                                 uvslf,
                   std::vector< const SMDS_MeshNode*>& mefistoToDS,
                   double scalex, double               scaley);
 
@@ -73,7 +73,7 @@ public:
                           double& scalex,
                           double& scaley);
 
-  void StoreResult (Z nbst, R2* uvst, Z nbt, Z* nust, 
+  void StoreResult (Z nbst, R_2* uvst, Z nbt, Z* nust,
                     std::vector< const SMDS_MeshNode*>& mefistoToDS,
                     double scalex, double scaley);
                                           

@@ -60,9 +60,9 @@
 
 MEFISTO2D_EXPORT
   void  aptrte( Z nutysu, R aretmx,
-              Z nblf,   Z *nudslf, R2 *uvslf,
-              Z nbpti,  R2 *uvpti,
-              Z & nbst, R2 * & uvst, Z & nbt, Z * & nust,
+              Z nblf,   Z *nudslf, R_2 *uvslf,
+              Z nbpti,  R_2 *uvpti,
+              Z & nbst, R_2 * & uvst, Z & nbt, Z * & nust,
               Z & ierr );
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // but : appel de la triangulation par un arbre-4 recouvrant
@@ -123,7 +123,7 @@ MEFISTO2D_EXPORT
   #define tesuex   TESUEX
   #define teamqt   TEAMQT
   #define nusotr   NUSOTR
-  #define qutr2d   QUTR2D
+  #define qutr2d   QUTR_2D
   #define surtd2   SURTD2
   #define qualitetrte   QUALITETRTE
   
@@ -160,7 +160,7 @@ extern "C" { void
               __stdcall
 #endif
 #endif
-   qualitetrte( R3 *mnpxyd,
+   qualitetrte( R_3 *mnpxyd,
                    Z & mosoar, Z & mxsoar, Z *mnsoar,
                    Z & moartr, Z & mxartr, Z *mnartr,
                    Z & nbtria, R & quamoy, R & quamin ); }
@@ -301,7 +301,7 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  teajte( Z & mxsomm, Z &  nbsomm, R3 * mnpxyd,  R3 * comxmi,
+  teajte( Z & mxsomm, Z &  nbsomm, R_3 * mnpxyd,  R_3 * comxmi,
                             R & aretmx,  Z & mxtree, Z * letree,
                             Z & ierr );
 }
@@ -313,8 +313,8 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  tehote( Z & nutysu, Z & nbarpi, Z &  mxsomm, Z &  nbsomm, R3 * mnpxyd,
-                            R3 * comxmi, R & aretmx,
+  tehote( Z & nutysu, Z & nbarpi, Z &  mxsomm, Z &  nbsomm, R_3 * mnpxyd,
+                            R_3 * comxmi, R & aretmx,
                             Z * letree, Z & mxqueu, Z * mnqueu,
                             Z & ierr );
 }
@@ -328,7 +328,7 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  tetrte( R3 * comxmi, R & aretmx, Z & nbarpi, Z & mxsomm, R3 * mnpxyd,
+  tetrte( R_3 * comxmi, R & aretmx, Z & nbarpi, Z & mxsomm, R_3 * mnpxyd,
                             Z & mxqueu,  Z * mnqueu,  Z * mntree,
                             Z & mosoar,  Z & mxsoar,  Z & n1soar, Z * mnsoar,
                             Z & moartr, Z &  mxartr,  Z & n1artr,  Z * mnartr,  Z * mnarst,
@@ -355,7 +355,7 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  tedela( R3 * mnpxyd, Z * mnarst,
+  tedela( R_3 * mnpxyd, Z * mnarst,
                             Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar, Z & na,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z & n );
 }
@@ -369,7 +369,7 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  terefr( Z & nbarpi, R3 * mnpxyd,
+  terefr( Z & nbarpi, R_3 * mnpxyd,
                             Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
                             Z & mxarcf, Z * mnarc1, Z * mnarc2,
@@ -387,7 +387,7 @@ extern "C" {void
 #endif
 #endif
   tesuex( Z & nblf, Z * nulftr,
-                            Z & ndtri0, Z & nbsomm, R3 * mnpxyd, Z * mnslig,
+                            Z & ndtri0, Z & nbsomm, R_3 * mnpxyd, Z * mnslig,
                             Z & mosoar, Z & mxsoar, Z * mnsoar,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
                             Z & nbtria, Z * mntrsu, Z & ierr );
@@ -407,7 +407,7 @@ extern "C" {void
                             Z & mxarcf, Z * mntrcf, Z * mnstbo,
                             Z * n1arcf, Z * mnarcf, Z * mnarc1,
                             Z & nbarpi, Z & nbsomm, Z & mxsomm,
-                            R3 * mnpxyd, Z * mnslig,
+                            R_3 * mnpxyd, Z * mnslig,
                             Z & ierr );
 }
 // amelioration de la qualite de la triangulation par
@@ -434,7 +434,7 @@ extern "C" {void
               __stdcall
 #endif
 #endif
-  qutr2d( R3 & p1, R3 & p2, R3 & p3, R & qualite );
+  qutr2d( R_3 & p1, R_3 & p2, R_3 & p3, R & qualite );
 }
 //calculer la qualite d'un triangle de R2 de sommets p1, p2, p3
 
@@ -445,7 +445,7 @@ extern "C" { R
               __stdcall
 #endif
 #endif
-  surtd2( R3 & p1, R3 & p2, R3 & p3 );
+  surtd2( R_3 & p1, R_3 & p2, R_3 & p3 );
 }
 //calcul de la surface d'un triangle defini par 3 points de r**2
 
