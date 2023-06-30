@@ -70,9 +70,24 @@ class ObjectCustom(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
 
-        obj.Source = [ "Text", "File" ]
         obj.Proxy = self
         self.setEditorModes(obj)
+
+    def opPropertyEnumerations(self, dateType="data"):
+        enum = super().opPropertyEnumerations(dateType)
+
+        props = [
+            (translate("PathCustom", "Text"), "Text"),
+            (translate("PathCustom", "File"), "File")
+        ]
+
+        if dateType == "raw":
+            enum["Source"] = props
+            return enum
+
+        enum.append(("Source", [ p[1][1] for p in enumerate(props) ]))
+
+        return enum
 
     def onChanged(self, obj, prop):
         if prop == "Source":
