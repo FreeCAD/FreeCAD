@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <xercesc/dom/DOM.hpp>
+#endif
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
 
@@ -30,6 +34,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
+#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
 #include <Base/Quantity.h>
 #include <Base/Stream.h>
@@ -115,6 +120,20 @@ void PropertyInteger::Restore(Base::XMLReader &reader)
     reader.readElement("Integer");
     // get the value of my Attribute
     setValue(reader.getAttributeAsInteger("value"));
+}
+
+void PropertyInteger::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	// read my Element
+	auto IntegerDOM = reader.FindElement(ContainerDOM,"Integer");
+	if(IntegerDOM){
+		// get the value of my Attribute
+		const char* value_cstr = reader.GetAttribute(IntegerDOM,"value");
+		if(value_cstr){
+			long value = reader.ContentToInt( value_cstr );
+			setValue(value);
+		}
+	}
 }
 
 Property *PropertyInteger::Copy() const
@@ -240,6 +259,18 @@ void PropertyPath::Restore(Base::XMLReader &reader)
     reader.readElement("Path");
     // get the value of my Attribute
     setValue(reader.getAttribute("value"));
+}
+
+void PropertyPath::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto PathDOM = reader.FindElement(ContainerDOM,"Path");
+	if(PathDOM){
+		// get the value of my Attribute
+		const char* value_cstr = reader.GetAttribute(PathDOM,"value");
+		if(value_cstr){
+			setValue(value_cstr);
+		}
+	}
 }
 
 Property *PropertyPath::Copy() const
@@ -430,6 +461,54 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 
     _enum.setValue(val);
     hasSetValue();
+}
+
+void PropertyEnumeration::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{	
+	auto IntegerDOM = reader.FindElement(ContainerDOM,"Integer");
+	if(IntegerDOM){
+		// get the value of my Attribute
+		const char* value_cstr = reader.GetAttribute(IntegerDOM,"value");
+		if(value_cstr){
+			long val = reader.ContentToInt( value_cstr );
+			aboutToSetValue();
+			
+			const char* CustomEnum_cstr = reader.GetAttribute(IntegerDOM,"CustomEnum");
+			if(CustomEnum_cstr){
+				auto CustomEnumListDOM = reader.FindElement(IntegerDOM,"CustomEnumList");
+				if(CustomEnumListDOM){
+					const char* count_cstr = reader.GetAttribute(IntegerDOM,"count");
+					if(count_cstr){
+						long count = reader.ContentToInt( count_cstr );
+						std::vector<std::string> values(count);
+						
+						if(count >= 1){
+							auto prev_EnumDOM = reader.FindElement(CustomEnumListDOM,"Enum");
+							const char* enum_value_cstr = reader.GetAttribute(prev_EnumDOM,"value");
+							values[0] = enum_value_cstr;
+							for(int i = 1; i < count; i++) {
+								auto EnumDOM_i = reader.FindNextElement(prev_EnumDOM,"Enum");
+								const char* _enum_value_cstr = reader.GetAttribute(EnumDOM_i,"value");
+								values[i] = _enum_value_cstr;
+								
+								prev_EnumDOM = EnumDOM_i;
+							}
+						}
+						_enum.setEnums(values);
+					}
+				}
+			}
+			if (val < 0) {
+				// If the enum is empty at this stage do not print a warning
+				if (_enum.hasEnums())
+				    Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+				val = getValue();
+			}
+			
+			_enum.setValue(val);
+    		hasSetValue();
+		}
+	}
 }
 
 PyObject * PropertyEnumeration::getPyObject()
@@ -782,6 +861,35 @@ void PropertyIntegerList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
+void PropertyIntegerList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto IntegerListDOM = reader.FindElement(ContainerDOM,"IntegerList");
+	if(IntegerListDOM){
+		// get the value of my Attribute
+		const char* count_cstr = reader.GetAttribute(IntegerListDOM,"count");
+		long count = reader.ContentToInt( count_cstr );	
+		std::vector<long> values(count);
+		if(count >= 1){
+			auto prev_I_DOM = reader.FindElement(IntegerListDOM,"I");
+			const char* v_cstr = reader.GetAttribute(prev_I_DOM,"v");
+			long v = reader.ContentToInt( v_cstr );
+			values[0] = v;
+			
+			for(int i = 1; i < count; i++) {
+				auto I_DOM_i = reader.FindNextElement(prev_I_DOM,"I");
+				const char* _v_cstr = reader.GetAttribute(I_DOM_i,"v");
+				long v = reader.ContentToInt( _v_cstr );
+				values[i] = v;
+				
+				prev_I_DOM = I_DOM_i;
+			}
+		}
+		//assignment
+		setValues(values);
+	}
+}
+
+
 Property *PropertyIntegerList::Copy() const
 {
     PropertyIntegerList *p= new PropertyIntegerList();
@@ -902,6 +1010,35 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
+void PropertyIntegerSet::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto IntegerSetDOM = reader.FindElement(ContainerDOM,"IntegerSet");
+	if(IntegerSetDOM){
+		// get the value of my Attribute
+		const char* count_cstr = reader.GetAttribute(IntegerSetDOM,"count");
+		long count = reader.ContentToInt( count_cstr );	
+		std::set<long> values;
+		
+		if(count >= 1){
+			auto prev_I_DOM = reader.FindElement(IntegerSetDOM,"I");
+			const char* v_cstr = reader.GetAttribute(prev_I_DOM,"v");
+			long v = reader.ContentToInt( v_cstr );
+			values.insert( v );
+			
+			for(int i = 1; i < count; i++) {
+				auto I_DOM_i = reader.FindNextElement(prev_I_DOM,"I");
+				const char* _v_cstr = reader.GetAttribute(I_DOM_i,"v");
+				long v = reader.ContentToInt( _v_cstr );
+				values.insert( v );
+				
+				prev_I_DOM = I_DOM_i;
+			}
+		}
+		//assignment
+		setValues(values);
+	}
+}
+
 Property *PropertyIntegerSet::Copy() const
 {
     PropertyIntegerSet *p= new PropertyIntegerSet();
@@ -992,6 +1129,21 @@ void PropertyFloat::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     setValue(reader.getAttributeAsFloat("value"));
 }
+
+void PropertyFloat::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto FloatDOM = reader.FindElement(ContainerDOM,"Float");
+	if(FloatDOM){
+		// get the value of my Attribute
+		const char* value_cstr = reader.GetAttribute(FloatDOM,"value");
+		if(value_cstr){
+			double value = reader.ContentToFloat( value_cstr );
+			setValue(value);
+		}
+	}
+}
+
+
 
 Property *PropertyFloat::Copy() const
 {
@@ -1240,6 +1392,24 @@ void PropertyFloatList::Restore(Base::XMLReader &reader)
         // initiate a file read
         reader.addFile(file.c_str(),this);
     }
+}
+
+void PropertyFloatList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	//TODO for this its needed to implement addFile() into Reader.cpp, and ReadFiles() since its not possible to have an XMLReader object at this point, because it gives error to use both methods(XMLReader progressive reading and DocumentReader reading) probably because there is something wrong with the zipios implementation, it looks like its locking file or in some way makes the file structure invalid to be readed by xerces by both methods.
+	//worked around reimplementing ReadFiles in DocumentReader.cpp:
+	auto FloatListDOM = reader.FindElement(ContainerDOM,"FloatList");
+	if(FloatListDOM){
+		// get the value of my Attribute
+		const char* file_cstr = reader.GetAttribute(FloatListDOM,"file");
+		if(file_cstr){
+			string file ( file_cstr );
+			if (!file.empty()) {
+				// initiate a file read
+				reader.addFile(file.c_str(),this);
+			}
+		}
+	}
 }
 
 void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
@@ -1502,6 +1672,31 @@ void PropertyString::Restore(Base::XMLReader &reader)
         setValue(reader.getAttribute("value"));
 }
 
+void PropertyString::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto StringDOM = reader.FindElement(ContainerDOM,"String");
+	const char* value_cstr = reader.GetAttribute(StringDOM,"value");
+	
+	auto obj = dynamic_cast<DocumentObject*>(getContainer());
+    if(obj && &obj->Label==this) {
+		const char* restore_cstr = reader.GetAttribute(StringDOM,"restore");
+		
+        if(restore_cstr) {
+        	int restore = reader.ContentToInt( restore_cstr );
+            if(restore == 1) {
+                aboutToSetValue();
+                _cValue = value_cstr;
+                hasSetValue();
+                return;
+            }
+        	return;
+        }
+    }
+    setValue(value_cstr);
+        
+	
+}
+
 Property *PropertyString::Copy() const
 {
     PropertyString *p= new PropertyString();
@@ -1634,6 +1829,18 @@ void PropertyUUID::Restore(Base::XMLReader &reader)
     setValue(reader.getAttribute("value"));
 }
 
+void PropertyUUID::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto UuidDOM = reader.FindElement(ContainerDOM,"Uuid");
+	if(UuidDOM){
+		// get the value of my Attribute
+		const char* value_cstr = reader.GetAttribute(UuidDOM,"value");
+		if(value_cstr){
+			setValue(value_cstr);
+		}
+	}
+}
+
 Property *PropertyUUID::Copy() const
 {
     PropertyUUID *p= new PropertyUUID();
@@ -1753,6 +1960,32 @@ void PropertyStringList::Restore(Base::XMLReader &reader)
 
     // assignment
     setValues(values);
+}
+
+void PropertyStringList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto StringListDOM = reader.FindElement(ContainerDOM,"StringList");
+	if(StringListDOM){
+		// get the value of my Attribute
+		const char* count_cstr = reader.GetAttribute(StringListDOM,"count");
+		long count = reader.ContentToInt( count_cstr );
+		std::vector<std::string> values(count);
+		if(count >= 1){
+			auto prev_StringDOM = reader.FindElement(StringListDOM,"String");
+			const char* value_cstr = reader.GetAttribute(prev_StringDOM,"value");
+			values[0] = value_cstr;
+			for(int i = 1; i < count; i++) {
+				auto StringDOM_i = reader.FindNextElement(prev_StringDOM,"String");
+				const char* _value_cstr = reader.GetAttribute(StringDOM_i,"value");
+				values[i] = _value_cstr;
+				
+				prev_StringDOM = StringDOM_i;
+			}
+		
+		}
+		// assignment
+    	setValues(values);
+	}
 }
 
 Property *PropertyStringList::Copy() const
@@ -1919,6 +2152,32 @@ void PropertyMap::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
+void PropertyMap::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto MapDOM = reader.FindElement(ContainerDOM,"Map");
+	if(MapDOM){
+		// get the value of my Attribute
+		const char* count_cstr = reader.GetAttribute(MapDOM,"count");
+		int count = reader.ContentToInt( count_cstr );
+		std::map<std::string,std::string> values;
+		auto prev_ItemDOM = reader.FindElement(MapDOM,"Item");
+		const char* key_cstr = reader.GetAttribute(prev_ItemDOM,"key");
+		const char* value_cstr = reader.GetAttribute(prev_ItemDOM,"value");
+		values[key_cstr] = value_cstr;
+		
+		for(int i = 1; i < count; i++) {
+			auto ItemDOM_i = reader.FindNextElement(prev_ItemDOM,"Item");
+			const char* key_cstr = reader.GetAttribute(ItemDOM_i,"key");
+			const char* value_cstr = reader.GetAttribute(ItemDOM_i,"value");
+			values[key_cstr] = value_cstr;
+			
+			prev_ItemDOM = ItemDOM_i;
+		}
+		// assignment
+		setValues(values);
+	}
+}
+
 Property *PropertyMap::Copy() const
 {
     PropertyMap *p= new PropertyMap();
@@ -2004,6 +2263,15 @@ void PropertyBool::Restore(Base::XMLReader &reader)
     (b == "true") ? setValue(true) : setValue(false);
 }
 
+void PropertyBool::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto BoolDOM = reader.FindElement(ContainerDOM,"Bool");
+	if(BoolDOM){
+		// get the value of my Attribute
+		string b = reader.GetAttribute(BoolDOM,"value");
+		(b == "true") ? setValue(true) : setValue(false);
+	}
+}
 
 Property *PropertyBool::Copy() const
 {
@@ -2120,6 +2388,18 @@ void PropertyBoolList::Restore(Base::XMLReader &reader)
     string str = reader.getAttribute("value");
     boost::dynamic_bitset<> bitset(str);
     setValues(bitset);
+}
+
+void PropertyBoolList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	// read my Element
+	auto BoolListDOM = reader.FindElement(ContainerDOM,"BoolList");
+	if(BoolListDOM){
+		// get the value of my Attribute
+		string str = reader.GetAttribute(BoolListDOM,"value");
+		boost::dynamic_bitset<> bitset(str);
+    	setValues(bitset);
+	}
 }
 
 Property *PropertyBoolList::Copy() const
@@ -2275,6 +2555,17 @@ void PropertyColor::Restore(Base::XMLReader &reader)
     setValue(rgba);
 }
 
+void PropertyColor::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	// read my Element
+	auto PropertyColorDOM = reader.FindElement(ContainerDOM,"PropertyColor");
+	if(PropertyColorDOM){
+		const char* val_cstr = reader.GetAttribute(PropertyColorDOM,"value");
+		unsigned long rgba = reader.ContentToUnsigned(val_cstr);
+    	setValue(rgba);
+	}
+}
+
 Property *PropertyColor::Copy() const
 {
     PropertyColor *p= new PropertyColor();
@@ -2352,6 +2643,22 @@ void PropertyColorList::Restore(Base::XMLReader &reader)
             reader.addFile(file.c_str(),this);
         }
     }
+}
+
+void PropertyColorList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto ColorListDOM = reader.FindElement(ContainerDOM,"ColorList");
+	if(ColorListDOM){
+		// get the value of my Attribute
+		const char* file_cstr = reader.GetAttribute(ColorListDOM,"file");
+		if(file_cstr){
+			std::string file (file_cstr);
+			if (!file.empty()) {
+		        // initiate a file read
+		        reader.addFile(file.c_str(),this);
+		    }
+		}
+	}
 }
 
 void PropertyColorList::SaveDocFile (Base::Writer &writer) const
@@ -2504,6 +2811,32 @@ void PropertyMaterial::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
+void PropertyMaterial::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	// read my Element
+	auto PropertyMaterialDOM = reader.FindElement(ContainerDOM,"PropertyMaterial");
+	if(PropertyMaterialDOM){
+		// get the value of my Attribute
+		aboutToSetValue();
+		
+		const char* ambientColor_cstr = reader.GetAttribute(PropertyMaterialDOM,"ambientColor");
+		const char* diffuseColor_cstr = reader.GetAttribute(PropertyMaterialDOM,"diffuseColor");
+		const char* specularColor_cstr = reader.GetAttribute(PropertyMaterialDOM,"specularColor");
+		const char* emissiveColor_cstr = reader.GetAttribute(PropertyMaterialDOM,"emissiveColor");
+		const char* shininess_cstr = reader.GetAttribute(PropertyMaterialDOM,"shininess");
+		const char* transparency_cstr = reader.GetAttribute(PropertyMaterialDOM,"transparency");
+		
+		_cMat.ambientColor.setPackedValue(reader.ContentToUnsigned(ambientColor_cstr));
+		_cMat.diffuseColor.setPackedValue(reader.ContentToUnsigned(diffuseColor_cstr));
+		_cMat.specularColor.setPackedValue(reader.ContentToUnsigned(specularColor_cstr));
+		_cMat.emissiveColor.setPackedValue(reader.ContentToUnsigned(emissiveColor_cstr));
+		_cMat.shininess = (float)reader.ContentToFloat(shininess_cstr);
+		_cMat.transparency = (float)reader.ContentToFloat(transparency_cstr);
+		hasSetValue();
+	}
+}
+
+
 const char* PropertyMaterial::getEditorName() const
 {
     if(testStatus(MaterialEdit))
@@ -2581,6 +2914,22 @@ void PropertyMaterialList::Restore(Base::XMLReader &reader)
             reader.addFile(file.c_str(), this);
         }
     }
+}
+
+void PropertyMaterialList::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	auto MaterialListDOM = reader.FindElement(ContainerDOM,"MaterialList");
+	if(MaterialListDOM){
+		// get the value of my Attribute
+		const char* file_cstr = reader.GetAttribute(MaterialListDOM,"file");
+		if(file_cstr){
+			std::string file (file_cstr);
+			if (!file.empty()) {
+		        // initiate a file read
+		        reader.addFile(file.c_str(),this);
+		    }
+		}
+	}
 }
 
 void PropertyMaterialList::SaveDocFile(Base::Writer &writer) const
@@ -2677,6 +3026,14 @@ void PropertyPersistentObject::Restore(Base::XMLReader &reader){
     if(_pObject)
         _pObject->Restore(reader);
     reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
+}
+
+void PropertyPersistentObject::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+{
+	inherited::Restore(reader,ContainerDOM);
+	auto element_persistent_obj_DOM = reader.FindElement(ELEMENT_PERSISTENT_OBJ);
+	if(_pObject)
+        _pObject->Restore(reader,element_persistent_obj_DOM);
 }
 
 Property *PropertyPersistentObject::Copy() const{

@@ -34,7 +34,6 @@
 #include "ExtensionPython.h"
 #include <ExtensionPy.h>
 
-
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data.
  */
@@ -79,7 +78,6 @@ void Extension::initExtensionType(Base::Type type) {
 }
 
 void Extension::initExtension(ExtensionContainer* obj) {
-
     if (m_extensionType.isBad())
         throw Base::RuntimeError("Extension: Extension type not set");
 
@@ -197,6 +195,24 @@ bool Extension::extensionHandleChangedPropertyName(Base::XMLReader &reader, cons
 };
 
 bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) prop;
+
+    return false;
+};
+
+bool Extension::extensionHandleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName)
+{
+    (void) reader;
+    (void) TypeName;
+    (void) PropName;
+
+    return false;
+};
+
+bool Extension::extensionHandleChangedPropertyType(Base::DocumentReader &reader, const char * TypeName, Property * prop)
 {
     (void) reader;
     (void) TypeName;

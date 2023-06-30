@@ -87,6 +87,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
+#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
@@ -1227,7 +1228,6 @@ Document::readObjects(Base::XMLReader& reader)
     // read the object types
     reader.readElement("Objects");
     int Cnt = reader.getAttributeAsInteger("Count");
-
     if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
         d->partialLoadObjects.clear();
     else if(!d->partialLoadObjects.empty()) {
@@ -2023,12 +2023,12 @@ void Document::restore (const char *filename,
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
-
+	
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
         Base::Console().Error("There were errors while loading the file. Some data might have been modified or not recovered at all. Look above for more specific information about the objects involved.\n");
     }
-
+	
     if(!delaySignal)
         afterRestore(true);
 }
