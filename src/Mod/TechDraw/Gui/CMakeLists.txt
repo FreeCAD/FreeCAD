@@ -333,6 +333,8 @@ SET(TechDrawGuiView_SRCS
     ZVALUE.h
     QGIGhostHighlight.cpp
     QGIGhostHighlight.h
+    PathBuilder.cpp
+    PathBuilder.h
 )
 
 SET(TechDrawGuiNav_SRCS
