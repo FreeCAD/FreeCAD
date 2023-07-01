@@ -102,7 +102,7 @@ namespace TechDrawGui {
 void execInsertPrefixChar(Gui::Command* cmd, std::string prefixChar) {
     // insert a prefix character into the format specifier
     std::vector<Gui::SelectionObject> selection;
-    if (!_checkSelection(cmd, selection, "TechDraw Insert Prefix")) {
+    if (!_checkSelection(cmd, selection, QT_TRANSLATE_NOOP("Command","TechDraw Insert Prefix"))) {
         return;
     }
 
@@ -188,7 +188,7 @@ bool CmdTechDrawExtensionInsertSquare::isActive()
 void execRemovePrefixChar(Gui::Command* cmd) {
     // remove a prefix character from the format specifier
     std::vector<Gui::SelectionObject> selection;
-    if (!_checkSelection(cmd, selection, "TechDraw Remove Prefix")) {
+    if (!_checkSelection(cmd, selection, QT_TRANSLATE_NOOP("Command","TechDraw Remove Prefix"))) {
         return;
     }
 
