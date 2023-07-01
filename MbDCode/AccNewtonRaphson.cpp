@@ -5,12 +5,14 @@
 #include "SimulationStoppingError.h"
 #include <iostream>
 
-void MbD::AccNewtonRaphson::askSystemToUpdate()
+using namespace MbD;
+
+void AccNewtonRaphson::askSystemToUpdate()
 {
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postAccICIteration(); });
 }
 
-void MbD::AccNewtonRaphson::assignEquationNumbers()
+void AccNewtonRaphson::assignEquationNumbers()
 {
 	auto parts = system->parts();
 	//auto contactEndFrames = system->contactEndFrames();
@@ -41,7 +43,7 @@ void MbD::AccNewtonRaphson::assignEquationNumbers()
 	n = nEqns;
 }
 
-void MbD::AccNewtonRaphson::fillPyPx()
+void AccNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) {
@@ -49,17 +51,17 @@ void MbD::AccNewtonRaphson::fillPyPx()
 		});
 }
 
-void MbD::AccNewtonRaphson::fillY()
+void AccNewtonRaphson::fillY()
 {
 	y->zeroSelf();
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) {
 		item->fillAccICIterError(y);
 		//std::cout << item->getName() << *y << std::endl;
 		});
-	//std::cout << *y << std::endl;
+	std::cout << *y << std::endl;
 }
 
-void MbD::AccNewtonRaphson::incrementIterNo()
+void AccNewtonRaphson::incrementIterNo()
 {
 	if (iterNo >= iterMax)
 	{
@@ -82,13 +84,13 @@ void MbD::AccNewtonRaphson::incrementIterNo()
 	iterNo++;
 }
 
-void MbD::AccNewtonRaphson::initializeGlobally()
+void AccNewtonRaphson::initializeGlobally()
 {
 	SystemNewtonRaphson::initializeGlobally();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsuddotlam(x); });
 }
 
-void MbD::AccNewtonRaphson::logSingularMatrixMessage()
+void AccNewtonRaphson::logSingularMatrixMessage()
 {
 	std::string str = "MbD: Some parts with zero masses or moment of inertias have infinite accelerations.";
 	system->logString(str);
@@ -96,17 +98,17 @@ void MbD::AccNewtonRaphson::logSingularMatrixMessage()
 	system->logString(str);
 }
 
-void MbD::AccNewtonRaphson::passRootToSystem()
+void AccNewtonRaphson::passRootToSystem()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsuddotlam(x); });
 }
 
-void MbD::AccNewtonRaphson::postRun()
+void AccNewtonRaphson::postRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postAccIC(); });
 }
 
-void MbD::AccNewtonRaphson::preRun()
+void AccNewtonRaphson::preRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->preAccIC(); });
 }

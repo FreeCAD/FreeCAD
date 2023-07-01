@@ -12,7 +12,7 @@ CylindricalJoint::CylindricalJoint() {
 CylindricalJoint::CylindricalJoint(const char* str) : Joint(str) {
 }
 
-void MbD::CylindricalJoint::initializeGlobally()
+void CylindricalJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
@@ -20,7 +20,7 @@ void MbD::CylindricalJoint::initializeGlobally()
 		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 1));
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
-		System::getInstance().hasChanged = true;
+		this->root()->hasChanged = true;
 	}
 	else {
 		Joint::initializeGlobally();

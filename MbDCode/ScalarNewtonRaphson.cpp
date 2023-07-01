@@ -3,33 +3,33 @@
 
 using namespace MbD;
 
-void MbD::ScalarNewtonRaphson::initializeGlobally()
+void ScalarNewtonRaphson::initializeGlobally()
 {
 	assert(false);
 	//x = system->x;
 }
 
-void MbD::ScalarNewtonRaphson::calcyNorm()
+void ScalarNewtonRaphson::calcyNorm()
 {
 	yNorm = 0.5 * y * y;
 }
 
-void MbD::ScalarNewtonRaphson::solveEquations()
+void ScalarNewtonRaphson::solveEquations()
 {
 	dx = -y / pypx;
 }
 
-void MbD::ScalarNewtonRaphson::updatexold()
+void ScalarNewtonRaphson::updatexold()
 {
 	xold = x;
 }
 
-void MbD::ScalarNewtonRaphson::calcdxNorm()
+void ScalarNewtonRaphson::calcdxNorm()
 {
 	dxNorm = std::abs(dx);
 }
 
-void MbD::ScalarNewtonRaphson::xEqualxoldPlusdx()
+void ScalarNewtonRaphson::xEqualxoldPlusdx()
 {
 	x = xold + dx;
 }

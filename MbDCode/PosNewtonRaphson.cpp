@@ -6,12 +6,12 @@
 
 using namespace MbD;
 
-void MbD::PosNewtonRaphson::preRun()
+void PosNewtonRaphson::preRun()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->prePosIC(); });
 }
 
-void MbD::PosNewtonRaphson::incrementIterNo()
+void PosNewtonRaphson::incrementIterNo()
 {
 	if (iterNo >= iterMax)
 	{
@@ -34,12 +34,12 @@ void MbD::PosNewtonRaphson::incrementIterNo()
 	iterNo++;
 }
 
-void MbD::PosNewtonRaphson::askSystemToUpdate()
+void PosNewtonRaphson::askSystemToUpdate()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosICIteration(); });
 }
 
-void MbD::PosNewtonRaphson::postRun()
+void PosNewtonRaphson::postRun()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosIC(); });
 }

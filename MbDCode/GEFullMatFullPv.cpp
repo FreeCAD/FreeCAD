@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::GEFullMatFullPv::doPivoting(int p)
+void GEFullMatFullPv::doPivoting(int p)
 {
 	//"Do full pivoting."
 
@@ -45,7 +45,7 @@ void MbD::GEFullMatFullPv::doPivoting(int p)
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
-void MbD::GEFullMatFullPv::postSolve()
+void GEFullMatFullPv::postSolve()
 {
 	assert(false);
 }

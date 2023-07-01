@@ -19,7 +19,7 @@ void EulerConstraint::initialize()
 	pGpE = std::make_shared<FullRow<double>>(4);
 }
 
-void MbD::EulerConstraint::calcPostDynCorrectorIteration()
+void EulerConstraint::calcPostDynCorrectorIteration()
 {
 	auto& qE = static_cast<PartFrame*>(owner)->qE;
 	aG = qE->sumOfSquares() - 1.0;
@@ -29,18 +29,18 @@ void MbD::EulerConstraint::calcPostDynCorrectorIteration()
 	}
 }
 
-void MbD::EulerConstraint::useEquationNumbers()
+void EulerConstraint::useEquationNumbers()
 {
 	iqE = static_cast<PartFrame*>(owner)->iqE;
 }
 
-void MbD::EulerConstraint::fillPosICError(FColDsptr col)
+void EulerConstraint::fillPosICError(FColDsptr col)
 {
 	Constraint::fillPosICError(col);
 	col->atiplusFullVectortimes(iqE, pGpE, lam);
 }
 
-void MbD::EulerConstraint::fillPosICJacob(SpMatDsptr mat)
+void EulerConstraint::fillPosICJacob(SpMatDsptr mat)
 {
 	//"ppGpEpE is a diag(2,2,2,2)."
 	mat->atijplusFullRow(iG, iqE, pGpE);
@@ -53,18 +53,18 @@ void MbD::EulerConstraint::fillPosICJacob(SpMatDsptr mat)
 	}
 }
 
-void MbD::EulerConstraint::fillPosKineJacob(SpMatDsptr mat)
+void EulerConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
 	mat->atijplusFullRow(iG, iqE, pGpE);
 }
 
-void MbD::EulerConstraint::fillVelICJacob(SpMatDsptr mat)
+void EulerConstraint::fillVelICJacob(SpMatDsptr mat)
 {
 	mat->atijplusFullRow(iG, iqE, pGpE);
 	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
 }
 
-void MbD::EulerConstraint::fillAccICIterError(FColDsptr col)
+void EulerConstraint::fillAccICIterError(FColDsptr col)
 {
 	//"qdotT[ppGpqpq]*qdot."
 	//"qdotT[2 2 2 2 diag]*qdot."

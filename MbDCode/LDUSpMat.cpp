@@ -3,35 +3,35 @@
 
 using namespace MbD;
 
-FColDsptr MbD::LDUSpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr LDUSpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->decomposesaveOriginal(spMat, saveOriginal);
 	FColDsptr answer = this->forAndBackSubsaveOriginal(fullCol, saveOriginal);
 	return answer;
 }
 
-void MbD::LDUSpMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
+void LDUSpMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	assert(false);
 }
 
-void MbD::LDUSpMat::decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal)
+void LDUSpMat::decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal)
 {
 	assert(false);
 }
 
-FColDsptr MbD::LDUSpMat::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
+FColDsptr LDUSpMat::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 	return FColDsptr();
 }
 
-double MbD::LDUSpMat::getmatrixArowimaxMagnitude(int i)
+double LDUSpMat::getmatrixArowimaxMagnitude(int i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }
 
-void MbD::LDUSpMat::forwardSubstituteIntoL()
+void LDUSpMat::forwardSubstituteIntoL()
 {
 	//"L is lower triangular with nonzero and ones in diagonal."
 	auto vectorc = std::make_shared<FullColumn<double>>(n);
@@ -50,7 +50,7 @@ void MbD::LDUSpMat::forwardSubstituteIntoL()
 	rightHandSideB = vectorc;
 }
 
-void MbD::LDUSpMat::backSubstituteIntoDU()
+void LDUSpMat::backSubstituteIntoDU()
 {
 	//"DU is upper triangular with nonzero diagonals."
 

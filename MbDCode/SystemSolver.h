@@ -46,7 +46,7 @@ namespace MbD {
 		void runVelICKine();
 		void runAccICKine();
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
-		void logString(std::string& str);
+		void logString(std::string& str) override;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
 		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();
 		//std::shared_ptr<std::vector<UHolder>> uHolders();
@@ -70,7 +70,10 @@ namespace MbD {
 		System* system; //Use raw pointer when pointing backwards.
 		std::shared_ptr<Solver> icTypeSolver;
 		std::shared_ptr<std::vector<std::shared_ptr<std::set<std::string>>>> setsOfRedundantConstraints;
-		
+		void tstartPastsAddFirst(double t);
+		void output();
+		void time(double t);
+
 		double errorTolPosKine = 1.0e-6;
 		double errorTolAccKine = 1.0e-6;
 		int iterMaxPosKine = 25;

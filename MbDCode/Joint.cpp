@@ -9,6 +9,7 @@
 #include "CREATE.h"
 #include "RedundantConstraint.h"
 #include "MarkerFrame.h"
+#include "ForceTorqueData.h"
 
 using namespace MbD;
 
@@ -47,103 +48,103 @@ void Joint::initializeGlobally()
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeGlobally(); });
 }
 
-void MbD::Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
+void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
 {
 	std::for_each(constraints->begin(), constraints->end(), f);
 }
 
-void MbD::Joint::postInput()
+void Joint::postInput()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postInput(); });
 
 }
 
-void MbD::Joint::addConstraint(std::shared_ptr<Constraint> con)
+void Joint::addConstraint(std::shared_ptr<Constraint> con)
 {
 	con->setOwner(this);
 	constraints->push_back(con);
 }
 
-void MbD::Joint::prePosIC()
+void Joint::prePosIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosIC(); });
 }
 
-void MbD::Joint::prePosKine()
+void Joint::prePosKine()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosKine(); });
 }
 
-void MbD::Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
 }
 
-void MbD::Joint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+void Joint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillDispConstraints(con, dispConstraints); });
 }
 
-void MbD::Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+void Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPerpenConstraints(con, perpenConstraints); });
 }
 
-void MbD::Joint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void Joint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillRedundantConstraints(con, redunConstraints); });
 }
 
-void MbD::Joint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+void Joint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillConstraints(con, allConstraints); });
 }
 
-void MbD::Joint::fillqsulam(FColDsptr col)
+void Joint::fillqsulam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
 }
 
-void MbD::Joint::fillqsudot(FColDsptr col)
+void Joint::fillqsudot(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
 }
 
-void MbD::Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 }
 
-void MbD::Joint::useEquationNumbers()
+void Joint::useEquationNumbers()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
 }
 
-void MbD::Joint::setqsulam(FColDsptr col)
+void Joint::setqsulam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
 }
 
-void MbD::Joint::setqsudotlam(FColDsptr col)
+void Joint::setqsudotlam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsudotlam(col); });
 }
 
-void MbD::Joint::postPosICIteration()
+void Joint::postPosICIteration()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
 }
 
-void MbD::Joint::fillPosICError(FColDsptr col)
+void Joint::fillPosICError(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICError(col); });
 }
 
-void MbD::Joint::fillPosICJacob(SpMatDsptr mat)
+void Joint::fillPosICJacob(SpMatDsptr mat)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
 }
 
-void MbD::Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
 {
 	for (size_t i = 0; i < constraints->size(); i++)
 	{
@@ -156,7 +157,7 @@ void MbD::Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> re
 	}
 }
 
-void MbD::Joint::reactivateRedundantConstraints()
+void Joint::reactivateRedundantConstraints()
 {
 	for (size_t i = 0; i < constraints->size(); i++)
 	{
@@ -167,7 +168,7 @@ void MbD::Joint::reactivateRedundantConstraints()
 	}
 }
 
-void MbD::Joint::constraintsReport()
+void Joint::constraintsReport()
 {
 	auto redunCons = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	constraintsDo([&](std::shared_ptr<Constraint> con) {
@@ -185,12 +186,12 @@ void MbD::Joint::constraintsReport()
 	}
 }
 
-void MbD::Joint::postPosIC()
+void Joint::postPosIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosIC(); });
 }
 
-void MbD::Joint::outputStates()
+void Joint::outputStates()
 {
 	Item::outputStates();
 	std::stringstream ss;
@@ -202,52 +203,102 @@ void MbD::Joint::outputStates()
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->outputStates(); });
 }
 
-void MbD::Joint::preDyn()
+void Joint::preDyn()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preDyn(); });
 }
 
-void MbD::Joint::fillPosKineError(FColDsptr col)
+void Joint::fillPosKineError(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineError(col); });
 }
 
-void MbD::Joint::fillPosKineJacob(SpMatDsptr mat)
+void Joint::fillPosKineJacob(SpMatDsptr mat)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillPosKineJacob(mat); });
 }
 
-void MbD::Joint::preVelIC()
+void Joint::preVelIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preVelIC(); });
 }
 
-void MbD::Joint::fillVelICError(FColDsptr col)
+void Joint::fillVelICError(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICError(col); });
 }
 
-void MbD::Joint::fillVelICJacob(SpMatDsptr mat)
+void Joint::fillVelICJacob(SpMatDsptr mat)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillVelICJacob(mat); });
 }
 
-void MbD::Joint::preAccIC()
+void Joint::preAccIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preAccIC(); });
 }
 
-void MbD::Joint::fillAccICIterError(FColDsptr col)
+void Joint::fillAccICIterError(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterError(col); });
 }
 
-void MbD::Joint::fillAccICIterJacob(SpMatDsptr mat)
+void Joint::fillAccICIterJacob(SpMatDsptr mat)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterJacob(mat); });
 }
 
-void MbD::Joint::setqsuddotlam(FColDsptr qsudotlam)
+void Joint::setqsuddotlam(FColDsptr col)
 {
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(qsudotlam); });
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(col); });
+}
+
+std::shared_ptr<StateData> Joint::stateData()
+{
+	//"
+	//MbD returns aFIeO and aTIeO.
+	//GEO needs aFImO and aTImO.
+	//For Motion rImIeO is not zero and is changing.
+	//aFImO : = aFIeO.
+	//aTImO : = aTIeO + (rImIeO cross : aFIeO).
+	//"
+
+	auto answer = std::make_shared<ForceTorqueData>();
+	auto aFIeO = this->aFX();
+	auto aTIeO = this->aTX();
+	auto rImIeO = this->frmI->rmeO();
+	answer->aFIO = aFIeO;
+	answer->aTIO = aTIeO->plusFullColumn(rImIeO->cross(aFIeO));
+	return answer;
+}
+
+FColDsptr Joint::aFX()
+{
+	return this->jointForceI();
+}
+
+FColDsptr Joint::jointForceI()
+{
+	//"jointForceI is force on MbD marker I."
+	auto jointForce = std::make_shared <FullColumn<double>>(3);
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->addToJointForceI(jointForce); });
+	return jointForce;
+}
+
+FColDsptr Joint::aTX()
+{
+	return this->jointTorqueI();
+}
+
+FColDsptr Joint::jointTorqueI()
+{
+	//"jointTorqueI is torque on MbD marker I."
+	auto jointTorque = std::make_shared <FullColumn<double>>(3);
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->addToJointTorqueI(jointTorque); });
+	return jointTorque;
+}
+
+void Joint::postDynStep()
+{
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postDynStep(); });
 }

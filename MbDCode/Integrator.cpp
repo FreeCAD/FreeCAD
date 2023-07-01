@@ -2,6 +2,6 @@
 
 using namespace MbD;
 
-void MbD::Integrator::setSystem(Solver* sys)
+void Integrator::setSystem(Solver* sys)
 {
 }

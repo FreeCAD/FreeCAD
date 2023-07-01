@@ -12,7 +12,9 @@
 #include <functional>
 
 #include "Item.h"
-//#include "Time.h"
+#include "PrescribedMotion.h"
+
+//using namespace CAD;
 
 namespace MbD {
 	class Part;
@@ -21,23 +23,22 @@ namespace MbD {
 	class Time;
 	class Constraint;
 	class ForceTorqueItem;
+	//class CAD::CADSystem;
+	class CADSystem;
 
 	class System : public Item
 	{
 		//ToDo: Needed members admSystem namedItems mbdTime parts jointsMotions forcesTorques sensors variables hasChanged mbdSystemSolver
 	public:
-		static System& getInstance() {
-			//https://medium.com/@caglayandokme/further-enhancing-the-singleton-pattern-in-c-8278b02b1ac7
-			static System singleInstance; // Block-scoped static Singleton instance
-			return singleInstance;
-		};
-
+		System();
+		System(const char* str);
+		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
-		void runKINEMATICS();
+		void clear();
+		void runKINEMATIC();
 		void outputInput();
-		void outputInitialConditions();
 		void outputTimeSeries();
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
 		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f);
@@ -51,24 +52,24 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints();
+		void addPart(std::shared_ptr<Part> part);
+		void addJoint(std::shared_ptr<Joint> joint);
+		void addMotion(std::shared_ptr<PrescribedMotion> motion);
 
 		double maximumMass();
 		double maximumMomentOfInertia();
+		double translationLimit();
+		double rotationLimit();
+		void outputFor(AnalysisType type);
 
+		//CAD::CADSystem* externalSystem;	//Use raw pointer to point backwards
+		CADSystem* externalSystem;	//Use raw pointer to point backwards
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
-		void addPart(std::shared_ptr<Part> part);
 
 		std::shared_ptr<Time> time;
-	private:
-		System();
-		System(const char* str);
-		//System() = default; // Private constructor
-		System(const System&) = delete;
-		System& operator=(const System&) = delete; // Deleted copy assignment
-		~System() = default; // Private destructor
 	};
 }

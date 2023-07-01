@@ -20,13 +20,13 @@ void DirectionCosineIeqcJeqc::initialize()
 	ppAijIeJepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
-void MbD::DirectionCosineIeqcJeqc::initializeGlobally()
+void DirectionCosineIeqcJeqc::initializeGlobally()
 {
 	DirectionCosineIeqcJec::initializeGlobally();
 	ppAjOJepEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppAjOepEpE(axisJ);
 }
 
-void MbD::DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
+void DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	DirectionCosineIeqcJec::calcPostDynCorrectorIteration();
 	pAjOJepEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->pAjOepET(axisJ);
@@ -54,12 +54,12 @@ void MbD::DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
 	ppAijIeJepEJpEJ->symLowerWithUpper();
 }
 
-FRowDsptr MbD::DirectionCosineIeqcJeqc::pvaluepEJ()
+FRowDsptr DirectionCosineIeqcJeqc::pvaluepEJ()
 {
 	return pAijIeJepEJ;
 }
 
-FMatDsptr MbD::DirectionCosineIeqcJeqc::ppvaluepEJpEJ()
+FMatDsptr DirectionCosineIeqcJeqc::ppvaluepEJpEJ()
 {
 	return ppAijIeJepEJpEJ;
 }

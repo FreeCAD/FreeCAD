@@ -38,7 +38,7 @@ void EndFrameqc::initEndFrameqct()
 	endFrameqct->setMarkerFrame(markerFrame);
 }
 
-FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
+FMatFColDsptr EndFrameqc::ppAjOepEpE(int jj)
 {
 	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
 	for (int i = 0; i < 4; i++) {
@@ -52,14 +52,14 @@ FMatFColDsptr MbD::EndFrameqc::ppAjOepEpE(int jj)
 	return answer;
 }
 
-void MbD::EndFrameqc::calcPostDynCorrectorIteration()
+void EndFrameqc::calcPostDynCorrectorIteration()
 {
 	EndFramec::calcPostDynCorrectorIteration();
 	prOeOpE = markerFrame->prOmOpE;
 	pAOepE = markerFrame->pAOmpE;
 }
 
-FMatDsptr MbD::EndFrameqc::pAjOepET(int axis)
+FMatDsptr EndFrameqc::pAjOepET(int axis)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
 	for (int i = 0; i < 4; i++) {
@@ -73,7 +73,7 @@ FMatDsptr MbD::EndFrameqc::pAjOepET(int axis)
 	return answer;
 }
 
-FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(int ii)
+FMatDsptr EndFrameqc::ppriOeOpEpE(int ii)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
 	for (int i = 0; i < 4; i++) {
@@ -87,37 +87,52 @@ FMatDsptr MbD::EndFrameqc::ppriOeOpEpE(int ii)
 	return answer;
 }
 
-int MbD::EndFrameqc::iqX()
+int EndFrameqc::iqX()
 {
 	return markerFrame->iqX();
 }
 
-int MbD::EndFrameqc::iqE()
+int EndFrameqc::iqE()
 {
 	return markerFrame->iqE();
 }
 
-FRowDsptr MbD::EndFrameqc::priOeOpE(int i)
+FRowDsptr EndFrameqc::priOeOpE(int i)
 {
 	return prOeOpE->at(i);
 }
 
-FColDsptr MbD::EndFrameqc::qXdot()
+FColDsptr EndFrameqc::qXdot()
 {
 	return markerFrame->qXdot();
 }
 
-std::shared_ptr<EulerParametersDot<double>> MbD::EndFrameqc::qEdot()
+std::shared_ptr<EulerParametersDot<double>> EndFrameqc::qEdot()
 {
 	return markerFrame->qEdot();
 }
 
-FColDsptr MbD::EndFrameqc::qXddot()
+FColDsptr EndFrameqc::qXddot()
 {
 	return markerFrame->qXddot();
 }
 
-FColDsptr MbD::EndFrameqc::qEddot()
+FColDsptr EndFrameqc::qEddot()
 {
 	return markerFrame->qEddot();
+}
+
+FColDsptr EndFrameqc::rpep()
+{
+	return markerFrame->rpmp;
+}
+
+FColFMatDsptr EndFrameqc::pAOppE()
+{
+	return markerFrame->pAOppE();
+}
+
+FMatDsptr EndFrameqc::aBOp()
+{
+	return markerFrame->aBOp();
 }

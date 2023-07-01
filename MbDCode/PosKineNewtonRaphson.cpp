@@ -6,7 +6,7 @@
 
 using namespace MbD;
 
-void MbD::PosKineNewtonRaphson::initializeGlobally()
+void PosKineNewtonRaphson::initializeGlobally()
 {
 	SystemNewtonRaphson::initializeGlobally();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsu(x); });
@@ -14,7 +14,7 @@ void MbD::PosKineNewtonRaphson::initializeGlobally()
 	dxTol = system->errorTolPosKine;
 }
 
-void MbD::PosKineNewtonRaphson::fillPyPx()
+void PosKineNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
@@ -22,12 +22,12 @@ void MbD::PosKineNewtonRaphson::fillPyPx()
 		});
 }
 
-void MbD::PosKineNewtonRaphson::passRootToSystem()
+void PosKineNewtonRaphson::passRootToSystem()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsu(x); });
 }
 
-void MbD::PosKineNewtonRaphson::assignEquationNumbers()
+void PosKineNewtonRaphson::assignEquationNumbers()
 {
 	//"Equation order is q,s,u."
 	auto parts = system->parts();
@@ -62,14 +62,14 @@ void MbD::PosKineNewtonRaphson::assignEquationNumbers()
 	}
 }
 
-void MbD::PosKineNewtonRaphson::preRun()
+void PosKineNewtonRaphson::preRun()
 {
 	std::string str = "MbD: Solving for kinematic position.";
 	system->logString(str);
 	system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->prePosKine(); });
 }
 
-void MbD::PosKineNewtonRaphson::fillY()
+void PosKineNewtonRaphson::fillY()
 {
 	y->zeroSelf();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillPosKineError(y); });

@@ -8,7 +8,7 @@
 
 using namespace MbD;
 
-void MbD::SystemNewtonRaphson::initializeGlobally()
+void SystemNewtonRaphson::initializeGlobally()
 {
 	this->assignEquationNumbers();
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
@@ -16,19 +16,19 @@ void MbD::SystemNewtonRaphson::initializeGlobally()
 	matrixSolver = this->matrixSolverClassNew();
 }
 
-void MbD::SystemNewtonRaphson::createVectorsAndMatrices()
+void SystemNewtonRaphson::createVectorsAndMatrices()
 {
 	x = std::make_shared<FullColumn<double>>(n);
 	y = std::make_shared<FullColumn<double>>(n);
 	pypx = std::make_shared <SparseMatrix<double>>(n, n);
 }
 
-std::shared_ptr<MatrixSolver> MbD::SystemNewtonRaphson::matrixSolverClassNew()
+std::shared_ptr<MatrixSolver> SystemNewtonRaphson::matrixSolverClassNew()
 {
 	return CREATE<GESpMatParPvMarkoFast>::With();
 }
 
-void MbD::SystemNewtonRaphson::calcdxNorm()
+void SystemNewtonRaphson::calcdxNorm()
 {
 	VectorNewtonRaphson::calcdxNorm();
 	std::string str("MbD: Convergence = ");
@@ -36,21 +36,21 @@ void MbD::SystemNewtonRaphson::calcdxNorm()
 	system->logString(str);
 }
 
-void MbD::SystemNewtonRaphson::basicSolveEquations()
+void SystemNewtonRaphson::basicSolveEquations()
 {
 	dx = matrixSolver->solvewithsaveOriginal(pypx, y->negated(), false);
 }
 
-void MbD::SystemNewtonRaphson::handleSingularMatrix()
+void SystemNewtonRaphson::handleSingularMatrix()
 {
 	std::string str = typeid(*matrixSolver).name();
-	if (str == "class MbD::GESpMatParPvMarkoFast") {
+	if (str == "class GESpMatParPvMarkoFast") {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
-		if (str == "class MbD::GESpMatParPvPrecise") {
+		if (str == "class GESpMatParPvPrecise") {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);
 			matrixSolver = this->matrixSolverClassNew();

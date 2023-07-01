@@ -26,7 +26,7 @@ void NewtonRaphson::initializeLocally()
 	yNormOld = std::numeric_limits<double>::max();
 }
 
-void MbD::NewtonRaphson::run()
+void NewtonRaphson::run()
 {
 	assert(false);
 	//self preRun.
@@ -38,12 +38,12 @@ void MbD::NewtonRaphson::run()
 	//self postRun.
 }
 
-void MbD::NewtonRaphson::setSystem(Solver* sys)
+void NewtonRaphson::setSystem(Solver* sys)
 {
 	system = static_cast<SystemSolver*>(sys);
 }
 
-void MbD::NewtonRaphson::iterate()
+void NewtonRaphson::iterate()
 {
 	//"
 	//	Do not skip matrix solution even when yNorm is very small.
@@ -68,7 +68,7 @@ void MbD::NewtonRaphson::iterate()
 	}
 }
 
-void MbD::NewtonRaphson::incrementIterNo()
+void NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
 	if (iterNo >= iterMax) {
@@ -77,16 +77,16 @@ void MbD::NewtonRaphson::incrementIterNo()
 	}
 }
 
-bool MbD::NewtonRaphson::isConverged()
+bool NewtonRaphson::isConverged()
 {
 	return this->isConvergedToNumericalLimit();
 }
 
-void MbD::NewtonRaphson::askSystemToUpdate()
+void NewtonRaphson::askSystemToUpdate()
 {
 }
 
-bool MbD::NewtonRaphson::isConvergedToNumericalLimit()
+bool NewtonRaphson::isConvergedToNumericalLimit()
 {
 	//"worthIterating is less stringent with IterNo."
 	//"nDivergenceMax is the number of small divergences allowed."
@@ -116,7 +116,7 @@ bool MbD::NewtonRaphson::isConvergedToNumericalLimit()
 	}
 }
 
-void MbD::NewtonRaphson::calcDXNormImproveRootCalcYNorm()
+void NewtonRaphson::calcDXNormImproveRootCalcYNorm()
 {
 	this->calcdxNorm();
 	dxNorms->push_back(dxNorm);
@@ -130,7 +130,7 @@ void MbD::NewtonRaphson::calcDXNormImproveRootCalcYNorm()
 	yNormOld = yNorm;
 }
 
-void MbD::NewtonRaphson::postRun()
+void NewtonRaphson::postRun()
 {
 	system->postNewtonRaphson();
 }

@@ -6,7 +6,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	//assert(false);
 	//"Optimized for speed."
@@ -33,7 +33,7 @@ void MbD::GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FCol
 	}
 }
 
-void MbD::GESpMatParPvMarkoFast::doPivoting(int p)
+void GESpMatParPvMarkoFast::doPivoting(int p)
 {
 	//"Search from bottom to top."
 	//"Optimized for speed. No check for singular pivot."

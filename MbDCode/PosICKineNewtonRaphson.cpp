@@ -5,14 +5,14 @@
 
 using namespace MbD;
 
-void MbD::PosICKineNewtonRaphson::initializeGlobally()
+void PosICKineNewtonRaphson::initializeGlobally()
 {
 	AnyPosICNewtonRaphson::initializeGlobally();
 	iterMax = system->iterMaxPosKine;
 	dxTol = system->errorTolPosKine;
 }
 
-void MbD::PosICKineNewtonRaphson::assignEquationNumbers()
+void PosICKineNewtonRaphson::assignEquationNumbers()
 {
 	auto parts = system->parts();
 	//auto contactEndFrames = system->contactEndFrames();

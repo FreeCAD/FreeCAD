@@ -1,7 +1,9 @@
 #include "LDUSpMatParPvMarko.h"
 #include "SingularMatrixError.h"
 
-void MbD::LDUSpMatParPvMarko::doPivoting(int p)
+using namespace MbD;
+
+void LDUSpMatParPvMarko::doPivoting(int p)
 {
 	//"Search from bottom to top."
 	//"Check for singular pivot."

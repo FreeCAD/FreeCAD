@@ -22,7 +22,7 @@ void ZRotation::initializeGlobally()
 		initMotions();
 		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);
 		addConstraint(dirCosCon);
-		System::getInstance().hasChanged = true;
+		this->root()->hasChanged = true;
 	}
 	else {
 		Joint::initializeGlobally();

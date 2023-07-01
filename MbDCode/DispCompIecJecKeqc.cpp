@@ -3,26 +3,26 @@
 
 using namespace MbD;
 
-MbD::DispCompIecJecKeqc::DispCompIecJecKeqc()
+DispCompIecJecKeqc::DispCompIecJecKeqc()
 {
 }
 
-MbD::DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
+DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
 {
 }
 
-void MbD::DispCompIecJecKeqc::initialize()
+void DispCompIecJecKeqc::initialize()
 {
     priIeJeKepEK = std::make_shared<FullRow<double>>(4);
     ppriIeJeKepEKpEK = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
-void MbD::DispCompIecJecKeqc::initializeGlobally()
+void DispCompIecJecKeqc::initializeGlobally()
 {
     ppAjOKepEKpEK = std::static_pointer_cast<EndFrameqc>(efrmK)->ppAjOepEpE(axisK);
 }
 
-void MbD::DispCompIecJecKeqc::calcPostDynCorrectorIteration()
+void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 {
 	auto frmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto frmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
@@ -47,7 +47,7 @@ void MbD::DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 	}
 }
 
-FMatDsptr MbD::DispCompIecJecKeqc::ppvaluepEKpEK()
+FMatDsptr DispCompIecJecKeqc::ppvaluepEKpEK()
 {
     return ppriIeJeKepEKpEK;
 }

@@ -9,6 +9,7 @@
 #include "EulerParametersDot.h"
 #include "CREATE.h"
 #include "RedundantConstraint.h"
+#include "System.h"
 
 using namespace MbD;
 
@@ -17,6 +18,10 @@ PartFrame::PartFrame()
 }
 PartFrame::PartFrame(const char* str) : CartesianFrame(str)
 {
+}
+System* PartFrame::root()
+{
+	return part->root();
 }
 void PartFrame::initialize()
 {
@@ -67,27 +72,32 @@ void PartFrame::setomeOpO(FColDsptr omeOpO) {
 }
 
 FColDsptr PartFrame::getomeOpO() {
-	return qE;
+	return qEdot->omeOpO();
 }
 
-void MbD::PartFrame::setqXddot(FColDsptr x)
+void PartFrame::setqXddot(FColDsptr x)
 {
 	qXddot = x;
 }
 
-FColDsptr MbD::PartFrame::getqXddot()
+FColDsptr PartFrame::getqXddot()
 {
 	return qXddot;
 }
 
-void MbD::PartFrame::setqEddot(FColDsptr x)
+void PartFrame::setqEddot(FColDsptr x)
 {
 	qEddot = x;
 }
 
-FColDsptr MbD::PartFrame::getqEddot()
+FColDsptr PartFrame::getqEddot()
 {
 	return qEddot;
+}
+
+FColDsptr PartFrame::omeOpO()
+{
+	return qEdot->omeOpO();
 }
 
 void PartFrame::setPart(Part* x) {
@@ -110,17 +120,17 @@ EndFrmcptr PartFrame::endFrame(std::string name)
 	return (*match)->endFrames->at(0);
 }
 
-void MbD::PartFrame::aGabsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
+void PartFrame::aGabsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
 {
 	std::for_each(aGabs->begin(), aGabs->end(), f);
 }
 
-void MbD::PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f)
+void PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f)
 {
 	std::for_each(markerFrames->begin(), markerFrames->end(), f);
 }
 
-void MbD::PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
 {
 	if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), aGeu->iG) != redundantEqnNos->end()) {
 		auto redunCon = CREATE<RedundantConstraint>::With();
@@ -138,7 +148,7 @@ void MbD::PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>
 	}
 }
 
-void MbD::PartFrame::reactivateRedundantConstraints()
+void PartFrame::reactivateRedundantConstraints()
 {
 	if (aGeu->isRedundant()) aGeu = std::dynamic_pointer_cast<RedundantConstraint>(aGeu)->constraint;
 	for (size_t i = 0; i < aGabs->size(); i++)
@@ -150,7 +160,7 @@ void MbD::PartFrame::reactivateRedundantConstraints()
 	}
 }
 
-void MbD::PartFrame::constraintsReport()
+void PartFrame::constraintsReport()
 {
 	auto redunCons = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	aGabsDo([&](std::shared_ptr<Constraint> con) {
@@ -169,7 +179,7 @@ void MbD::PartFrame::constraintsReport()
 	}
 }
 
-void MbD::PartFrame::prePosIC()
+void PartFrame::prePosIC()
 {
 	iqX = -1;
 	iqE = -1;
@@ -179,7 +189,7 @@ void MbD::PartFrame::prePosIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosIC(); });
 }
 
-void MbD::PartFrame::prePosKine()
+void PartFrame::prePosKine()
 {
 	iqX = -1;
 	iqE = -1;
@@ -189,60 +199,67 @@ void MbD::PartFrame::prePosKine()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosKine(); });
 }
 
-FColDsptr MbD::PartFrame::rOpO()
+FColDsptr PartFrame::rOpO()
 {
 	return qX;
 }
 
-FMatDsptr MbD::PartFrame::aAOp()
+FMatDsptr PartFrame::aAOp()
 {
 	return qE->aA;
 }
 
-FMatDsptr MbD::PartFrame::aC()
+FMatDsptr PartFrame::aC()
 {
 	return qE->aC;
 }
 
-FMatDsptr MbD::PartFrame::aCdot()
+FMatDsptr PartFrame::aCdot()
 {
 	return qEdot->aCdot;
 }
 
-FColFMatDsptr MbD::PartFrame::pAOppE()
+FColDsptr PartFrame::alpOpO()
+{
+	auto& aB = qE->aB;
+	auto& aBdot = qEdot->aBdot;
+	return aBdot->timesFullColumn(qEdot)->plusFullColumn(aB->timesFullColumn(qEddot))->times(2.0);
+}
+
+FColFMatDsptr PartFrame::pAOppE()
 {
 	return qE->pApE;
 }
 
-void MbD::PartFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void PartFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	aGeu->fillEssenConstraints(aGeu, essenConstraints);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
 }
 
-void MbD::PartFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void PartFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 }
 
-void MbD::PartFrame::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+void PartFrame::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
 {
 	aGeu->fillConstraints(aGeu, allConstraints);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillConstraints(con, allConstraints); });
 }
 
-void MbD::PartFrame::fillqsu(FColDsptr col)
+void PartFrame::fillqsu(FColDsptr col)
 {
 	col->atiputFullColumn(iqX, qX);
 	col->atiputFullColumn(iqE, qE);
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsu(col); });
 }
 
-void MbD::PartFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void PartFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsuWeights(diagMat); });
 }
 
-void MbD::PartFrame::fillqsulam(FColDsptr col)
+void PartFrame::fillqsulam(FColDsptr col)
 {
 	col->atiputFullColumn(iqX, qX);
 	col->atiputFullColumn(iqE, qE);
@@ -251,26 +268,26 @@ void MbD::PartFrame::fillqsulam(FColDsptr col)
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
 }
 
-void MbD::PartFrame::fillqsudot(FColDsptr col)
+void PartFrame::fillqsudot(FColDsptr col)
 {
 	col->atiputFullColumn(iqX, qXdot);
 	col->atiputFullColumn(iqE, qEdot);
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudot(col); });
 }
 
-void MbD::PartFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void PartFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudotWeights(diagMat); });
 }
 
-void MbD::PartFrame::useEquationNumbers()
+void PartFrame::useEquationNumbers()
 {
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->useEquationNumbers(); });
 	aGeu->useEquationNumbers();
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->useEquationNumbers(); });
 }
 
-void MbD::PartFrame::setqsu(FColDsptr col)
+void PartFrame::setqsu(FColDsptr col)
 {
 	qX->equalFullColumnAt(col, iqX);
 	qE->equalFullColumnAt(col, iqE);
@@ -279,7 +296,7 @@ void MbD::PartFrame::setqsu(FColDsptr col)
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsu(col); });
 }
 
-void MbD::PartFrame::setqsulam(FColDsptr col)
+void PartFrame::setqsulam(FColDsptr col)
 {
 	qX->equalFullColumnAt(col, iqX);
 	qE->equalFullColumnAt(col, iqE);
@@ -288,7 +305,7 @@ void MbD::PartFrame::setqsulam(FColDsptr col)
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
 }
 
-void MbD::PartFrame::setqsudotlam(FColDsptr col)
+void PartFrame::setqsudotlam(FColDsptr col)
 {
 	qXdot->equalFullColumnAt(col, iqX);
 	qEdot->equalFullColumnAt(col, iqE);
@@ -297,7 +314,14 @@ void MbD::PartFrame::setqsudotlam(FColDsptr col)
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsudotlam(col); });
 }
 
-void MbD::PartFrame::postPosICIteration()
+void PartFrame::setqsudot(FColDsptr col)
+{
+	qXdot->equalFullColumnAt(col, iqX);
+	qEdot->equalFullColumnAt(col, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsudot(col); });
+}
+
+void PartFrame::postPosICIteration()
 {
 	Item::postPosICIteration();
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postPosICIteration(); });
@@ -305,28 +329,28 @@ void MbD::PartFrame::postPosICIteration()
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosICIteration(); });
 }
 
-void MbD::PartFrame::fillPosICError(FColDsptr col)
+void PartFrame::fillPosICError(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosICError(col); });
 	aGeu->fillPosICError(col);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICError(col); });
 }
 
-void MbD::PartFrame::fillPosICJacob(SpMatDsptr mat)
+void PartFrame::fillPosICJacob(SpMatDsptr mat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosICJacob(mat); });
 	aGeu->fillPosICJacob(mat);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
 }
 
-void MbD::PartFrame::postPosIC()
+void PartFrame::postPosIC()
 {
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postPosIC(); });
 	aGeu->postPosIC();
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosIC(); });
 }
 
-void MbD::PartFrame::outputStates()
+void PartFrame::outputStates()
 {
 	std::stringstream ss;
 	ss << "qX = ";
@@ -340,28 +364,28 @@ void MbD::PartFrame::outputStates()
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->outputStates(); });
 }
 
-void MbD::PartFrame::preDyn()
+void PartFrame::preDyn()
 {
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->preDyn(); });
 	aGeu->preDyn();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preDyn(); });
 }
 
-void MbD::PartFrame::storeDynState()
+void PartFrame::storeDynState()
 {
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->storeDynState(); });
 	aGeu->storeDynState();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->storeDynState(); });
 }
 
-void MbD::PartFrame::fillPosKineError(FColDsptr col)
+void PartFrame::fillPosKineError(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosKineError(col); });
 	aGeu->fillPosKineError(col);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineError(col); });
 }
 
-void MbD::PartFrame::preVelIC()
+void PartFrame::preVelIC()
 {
 	Item::preVelIC();
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->preVelIC(); });
@@ -369,7 +393,7 @@ void MbD::PartFrame::preVelIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preVelIC(); });
 }
 
-void MbD::PartFrame::postVelIC()
+void PartFrame::postVelIC()
 {
 	qEdot->calcAdotBdotCdot();
 	qEdot->calcpAdotpE();
@@ -378,21 +402,21 @@ void MbD::PartFrame::postVelIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->postVelIC(); });
 }
 
-void MbD::PartFrame::fillVelICError(FColDsptr col)
+void PartFrame::fillVelICError(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillVelICError(col); });
 	aGeu->fillVelICError(col);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICError(col); });
 }
 
-void MbD::PartFrame::fillVelICJacob(SpMatDsptr mat)
+void PartFrame::fillVelICJacob(SpMatDsptr mat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillVelICJacob(mat); });
 	aGeu->fillVelICJacob(mat);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICJacob(mat); });
 }
 
-void MbD::PartFrame::preAccIC()
+void PartFrame::preAccIC()
 {
 	qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
 	qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
@@ -402,27 +426,79 @@ void MbD::PartFrame::preAccIC()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->preAccIC(); });
 }
 
-void MbD::PartFrame::fillAccICIterError(FColDsptr col)
+void PartFrame::fillAccICIterError(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillAccICIterError(col); });
 	aGeu->fillAccICIterError(col);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterError(col); });
 }
 
-void MbD::PartFrame::fillAccICIterJacob(SpMatDsptr mat)
+void PartFrame::fillAccICIterJacob(SpMatDsptr mat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillAccICIterJacob(mat); });
 	aGeu->fillAccICIterJacob(mat);
 	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterJacob(mat); });
 }
 
-void MbD::PartFrame::setqsuddotlam(FColDsptr qsudotlam)
+void PartFrame::setqsuddotlam(FColDsptr col)
 {
-	qXddot->equalFullColumnAt(qsudotlam, iqX);
-	qEddot->equalFullColumnAt(qsudotlam, iqE);
-	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsuddotlam(qsudotlam); });
-	aGeu->setqsuddotlam(qsudotlam);
-	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(qsudotlam); });
+	qXddot->equalFullColumnAt(col, iqX);
+	qEddot->equalFullColumnAt(col, iqE);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsuddotlam(col); });
+	aGeu->setqsuddotlam(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(col); });
+}
+
+FMatDsptr PartFrame::aBOp()
+{
+	return qE->aB;
+}
+
+void PartFrame::fillPosKineJacob(SpMatDsptr mat)
+{
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillPosKineJacob(mat); });
+	aGeu->fillPosKineJacob(mat);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineJacob(mat); });
+}
+
+double PartFrame::suggestSmallerOrAcceptDynStepSize(double hnew)
+{
+	auto hnew2 = hnew;
+	auto speed = qXdot->length();
+	double htran;
+	if (speed < 1.0e-15) {
+		htran = 1.0e99;
+	}
+	else {
+		htran = this->root()->translationLimit() / speed;
+	}
+	if (hnew2 > htran) {
+		this->logString("MbD: Time step limited by translation limit per step.");
+		hnew2 = htran;
+	}
+	auto omegaMagnitude = qEdot->omeOpO()->length();
+	double hrot;
+	if (omegaMagnitude < 1.0e-15) {
+		hrot = 1.0e99;
+	}
+	else {
+		hrot = this->root()->rotationLimit() / omegaMagnitude;
+	}
+	if (hnew2 > hrot) {
+		this->logString("MbD: Time step limited by rotation limit per step.");
+		hnew2 = hrot;
+	}
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { hnew2 = markerFrame->suggestSmallerOrAcceptDynStepSize(hnew2); });
+	hnew2 = aGeu->suggestSmallerOrAcceptDynStepSize(hnew2);
+	aGabsDo([&](std::shared_ptr<Constraint> aGab) { hnew2 = aGab->suggestSmallerOrAcceptDynStepSize(hnew2); });
+	return hnew2;
+}
+
+void PartFrame::postDynStep()
+{
+	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postDynStep(); });
+	aGeu->postDynStep();
+	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->postDynStep(); });
 }
 
 void PartFrame::asFixed()
@@ -434,7 +510,7 @@ void PartFrame::asFixed()
 	}
 }
 
-void MbD::PartFrame::postInput()
+void PartFrame::postInput()
 {
 	qXddot = std::make_shared<FullColumn<double>>(3, 0.0);
 	qEddot = std::make_shared<FullColumn<double>>(4, 0.0);
@@ -444,7 +520,7 @@ void MbD::PartFrame::postInput()
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->postInput(); });
 }
 
-void MbD::PartFrame::calcPostDynCorrectorIteration()
+void PartFrame::calcPostDynCorrectorIteration()
 {
 	qE->calcABC();
 	qE->calcpApE();

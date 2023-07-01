@@ -45,13 +45,13 @@ Symsptr Symbolic::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set
 	return sptr;
 }
 
-Symsptr MbD::Symbolic::timesSum(Symsptr sptr, Symsptr sum)
+Symsptr Symbolic::timesSum(Symsptr sptr, Symsptr sum)
 {
 	auto product = std::make_shared<Product>(sptr);
 	return product->timesSum(product, sum);
 }
 
-Symsptr MbD::Symbolic::timesProduct(Symsptr sptr, Symsptr product)
+Symsptr Symbolic::timesProduct(Symsptr sptr, Symsptr product)
 {
 	auto answer = std::make_shared<Product>(product->getTerms());
 	auto& answerTerms = answer->terms;
@@ -59,44 +59,39 @@ Symsptr MbD::Symbolic::timesProduct(Symsptr sptr, Symsptr product)
 	return answer;
 }
 
-Symsptr MbD::Symbolic::timesFunction(Symsptr sptr, Symsptr function)
+Symsptr Symbolic::timesFunction(Symsptr sptr, Symsptr function)
 {
 	auto answer = std::make_shared<Product>(sptr, function);
 	return answer;
 }
 
-bool MbD::Symbolic::isSum()
+bool Symbolic::isSum()
 {
 	return false;
 }
 
-bool MbD::Symbolic::isProduct()
+bool Symbolic::isProduct()
 {
 	return false;
 }
 
-bool MbD::Symbolic::isConstant()
+bool Symbolic::isConstant()
 {
 	return false;
 }
 
-std::ostream& MbD::Symbolic::printOn(std::ostream& s) const
+std::ostream& Symbolic::printOn(std::ostream& s) const
 {
 	return s << "(" << typeid(*this).name() << ")";
 }
 
-std::shared_ptr<std::vector<Symsptr>> MbD::Symbolic::getTerms()
+std::shared_ptr<std::vector<Symsptr>> Symbolic::getTerms()
 {
 	return std::make_shared<std::vector<Symsptr>>();
 }
 
-double MbD::Symbolic::getValue()
+double Symbolic::getValue()
 {
 	assert(false);
 	return 0.0;
-}
-
-std::ostream& MbD::operator<<(std::ostream& s, const Symbolic& sym)
-{
-	return sym.printOn(s);
 }

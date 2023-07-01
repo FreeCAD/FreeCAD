@@ -8,14 +8,13 @@ namespace MbD {
 		//
 	public:
         void firstStep();
-        //bool isRedoingFirstStep();
-        //bool isRedoingStep();
+        bool isRedoingFirstStep();
         void nextStep();
         //void reportStepStats();
         //void reportTrialStepStats();
         void runInitialConditionTypeSolution() override;
         void selectFirstStepSize();
-        //void selectStepSize();
+        void selectStepSize();
 	};
 }
 

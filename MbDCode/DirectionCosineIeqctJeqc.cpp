@@ -20,12 +20,12 @@ void DirectionCosineIeqctJeqc::initialize()
 	ppAijIeJepEJpt = std::make_shared<FullRow<double>>(4);
 }
 
-void MbD::DirectionCosineIeqctJeqc::initializeGlobally()
+void DirectionCosineIeqctJeqc::initializeGlobally()
 {
 	ppAjOJepEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppAjOepEpE(axisJ);
 }
 
-void MbD::DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
+void DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
 {
 	//"ppAjOIepEIpEI is not longer constant and must be set before any calculation."
 
@@ -33,19 +33,19 @@ void MbD::DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
 	DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration();
 }
 
-void MbD::DirectionCosineIeqctJeqc::preVelIC()
+void DirectionCosineIeqctJeqc::preVelIC()
 {
 	Item::preVelIC();
 	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
 	pAijIeJept = pAjOIept->dot(aAjOJe);
 }
 
-double MbD::DirectionCosineIeqctJeqc::pvaluept()
+double DirectionCosineIeqctJeqc::pvaluept()
 {
 	return pAijIeJept;
 }
 
-void MbD::DirectionCosineIeqctJeqc::preAccIC()
+void DirectionCosineIeqctJeqc::preAccIC()
 {
 	//| ppAjOIepEITpt ppAjOIeptpt ppAjOIepEITpti pAjOIept |
 	Item::preAccIC();

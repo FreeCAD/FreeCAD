@@ -37,7 +37,9 @@ namespace MbD {
 		void evalpAmept();
 		void evalpprmemptpt();
 		void evalppAmeptpt();
-		
+		FColDsptr rmeO() override;
+		FColDsptr rpep() override;
+
 		void preAccIC() override;
 
 		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;

@@ -52,7 +52,13 @@ namespace MbD {
         void preAccIC() override;
         void fillAccICIterError(FColDsptr col) override;
         void fillAccICIterJacob(SpMatDsptr mat) override;
-        void setqsuddotlam(FColDsptr qsudotlam) override;
+        void setqsuddotlam(FColDsptr col) override;
+        std::shared_ptr<StateData> stateData() override;
+        FColDsptr aFX();
+        FColDsptr jointForceI();
+        FColDsptr aTX();
+        FColDsptr jointTorqueI();
+        void postDynStep() override;
 
         EndFrmcptr frmI;
         EndFrmcptr frmJ;

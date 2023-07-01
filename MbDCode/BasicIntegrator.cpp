@@ -5,30 +5,34 @@
 
 using namespace MbD;
 
-void MbD::BasicIntegrator::initializeLocally()
+void BasicIntegrator::initializeLocally()
 {
 	_continue = true;
 }
 
-void MbD::BasicIntegrator::iStep(int integer)
+void BasicIntegrator::iStep(int integer)
 {
 	istep = integer;
 	opBDF->setiStep(integer);
 }
 
-void MbD::BasicIntegrator::postFirstStep()
+void BasicIntegrator::postFirstStep()
+{
+	t = tnew;
+	system->postFirstStep();
+}
+
+void BasicIntegrator::postRun()
 {
 }
 
-void MbD::BasicIntegrator::postRun()
+void BasicIntegrator::postStep()
 {
+	t = tnew;
+	system->postStep();
 }
 
-void MbD::BasicIntegrator::postStep()
-{
-}
-
-void MbD::BasicIntegrator::initializeGlobally()
+void BasicIntegrator::initializeGlobally()
 {
 	//"Get info from system and prepare for start of simulation."
 	//"Integrator asks system for info. Not system setting integrator."
@@ -38,17 +42,17 @@ void MbD::BasicIntegrator::initializeGlobally()
 	this->orderMax = system->orderMax();
 }
 
-void MbD::BasicIntegrator::setSystem(Solver* sys)
+void BasicIntegrator::setSystem(Solver* sys)
 {
 	system = static_cast<IntegratorInterface*>(sys);
 }
 
-void MbD::BasicIntegrator::calcOperatorMatrix()
+void BasicIntegrator::calcOperatorMatrix()
 {
 	opBDF->calcOperatorMatrix();
 }
 
-void MbD::BasicIntegrator::incrementTime()
+void BasicIntegrator::incrementTime()
 {
 	tpast->insert(tpast->begin(), t);
 
@@ -62,12 +66,12 @@ void MbD::BasicIntegrator::incrementTime()
 	system->incrementTime(tnew);
 }
 
-void MbD::BasicIntegrator::incrementTry()
+void BasicIntegrator::incrementTry()
 {
 	assert(false);
 }
 
-void MbD::BasicIntegrator::initialize()
+void BasicIntegrator::initialize()
 {
 	Solver::initialize();
 	//statistics = IdentityDictionary new.
@@ -76,12 +80,12 @@ void MbD::BasicIntegrator::initialize()
 	opBDF->timeNodes = tpast;
 }
 
-void MbD::BasicIntegrator::logString(std::string& str)
+void BasicIntegrator::logString(std::string& str)
 {
 	system->logString(str);
 }
 
-void MbD::BasicIntegrator::run()
+void BasicIntegrator::run()
 {
 	this->preRun();
 	this->initializeLocally();
@@ -93,59 +97,59 @@ void MbD::BasicIntegrator::run()
 	this->postRun();
 }
 
-void MbD::BasicIntegrator::selectOrder()
+void BasicIntegrator::selectOrder()
 {
-	assert(false);
+	//"Increase order consecutively with step."
+	if (iTry == 1) orderNew = std::min(istep + 1, orderMax);
 }
 
-void MbD::BasicIntegrator::preFirstStep()
+void BasicIntegrator::preFirstStep()
 {
 	system->preFirstStep();
 }
 
-void MbD::BasicIntegrator::preRun()
+void BasicIntegrator::preRun()
 {
 }
 
-void MbD::BasicIntegrator::preStep()
+void BasicIntegrator::preStep()
 {
 	system->preStep();
 }
 
-void MbD::BasicIntegrator::reportStats()
+void BasicIntegrator::reportStats()
 {
-	assert(false);
 }
 
-void MbD::BasicIntegrator::firstStep()
-{
-	assert(false);
-}
-
-void MbD::BasicIntegrator::setorder(int o)
+void BasicIntegrator::setorder(int o)
 {
 	order = o;
 	opBDF->setorder(o);
 }
 
-void MbD::BasicIntegrator::settnew(double t)
+void BasicIntegrator::settnew(double t)
 {
 	tnew = t;
 	this->settime(t);
 }
 
-void MbD::BasicIntegrator::sett(double tt)
+void BasicIntegrator::sett(double tt)
 {
 	t = tt;
 	opBDF->settime(tt);
 }
 
-void MbD::BasicIntegrator::settime(double tt)
+void BasicIntegrator::settime(double tt)
 {
 	opBDF->settime(tt);
 }
 
-void MbD::BasicIntegrator::subsequentSteps()
+double BasicIntegrator::tprevious()
+{
+	return tpast->at(0);
+}
+
+void BasicIntegrator::subsequentSteps()
 {
 	while (_continue) { this->nextStep(); }
 }

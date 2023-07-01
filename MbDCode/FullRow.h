@@ -22,19 +22,22 @@ namespace MbD {
 		std::shared_ptr<FullRow<T>> plusFullRow(std::shared_ptr<FullRow<T>> fullRow);
 		std::shared_ptr<FullRow<T>> minusFullRow(std::shared_ptr<FullRow<T>> fullRow);
 		T timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+		T timesFullColumn(FullColumn<T>* fullCol);
 		std::shared_ptr<FullRow<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullRow<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		void equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor);
 		std::shared_ptr<FullColumn<T>> transpose();
 		std::shared_ptr<FullRow<T>> copy();
 		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
+		std::ostream& printOn(std::ostream& s) const override;
+
 	};
 
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::times(double a)
 	{
 		int n = (int) this->size();
-		auto answer = std::make_shared<FullRow>(n);
+		auto answer = std::make_shared<FullRow<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) * a;
 		}
@@ -68,6 +71,11 @@ namespace MbD {
 	template<typename T>
 	inline T FullRow<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
 	{
+		return this->timesFullColumn(fullCol.get());
+	}
+	template<typename T>
+	inline T FullRow<T>::timesFullColumn(FullColumn<T>* fullCol)
+	{
 		auto answer = this->at(0) * fullCol->at(0);
 		for (int i = 1; i < this->size(); i++)
 		{
@@ -89,10 +97,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullRow<T>::equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor)
 	{
-		for (int i = 0; i < this->size(); i++)
-		{
-			this->at(i) += fullRow->at(i) * factor;
-		}
+		this->equalSelfPlusFullVectortimes(fullRow, factor);
 	}
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullRow<T>::transpose()
@@ -118,6 +123,18 @@ namespace MbD {
 			auto j = j1 + jj;
 			this->at(j) += fullRow->at(jj);
 		}
+	}
+	template<typename T>
+	inline std::ostream& FullRow<T>::printOn(std::ostream& s) const
+	{
+		s << "FullRow{";
+		s << this->at(0);
+		for (int i = 1; i < this->size(); i++)
+		{
+			s << ", " << this->at(i);
+		}
+		s << "}";
+		return s;
 	}
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)

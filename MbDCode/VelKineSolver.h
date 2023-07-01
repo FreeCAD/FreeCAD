@@ -7,6 +7,8 @@ namespace MbD {
     {
         //
     public:
+        void assignEquationNumbers() override;
+        void run() override;
 
     };
 }

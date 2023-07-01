@@ -14,7 +14,7 @@ RevoluteJoint::RevoluteJoint(const char* str) : Joint(str) {
 
 }
 
-void MbD::RevoluteJoint::initializeGlobally()
+void RevoluteJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
@@ -23,7 +23,7 @@ void MbD::RevoluteJoint::initializeGlobally()
 		addConstraint(CREATE<AtPointConstraintIJ>::ConstraintWith(frmI, frmJ, 2));
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
-		System::getInstance().hasChanged = true;
+		this->root()->hasChanged = true;
 	}
 	else {
 		Joint::initializeGlobally();

@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::GEFullMatParPv::doPivoting(int p)
+void GEFullMatParPv::doPivoting(int p)
 {
 	//"Use scalings. Do row pivoting."
 
@@ -36,12 +36,12 @@ void MbD::GEFullMatParPv::doPivoting(int p)
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
-void MbD::GEFullMatParPv::postSolve()
+void GEFullMatParPv::postSolve()
 {
 	assert(false);
 }
 
-void MbD::GEFullMatParPv::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void GEFullMatParPv::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 }

@@ -17,7 +17,7 @@ std::shared_ptr<FullRow<double>> DifferenceOperator::OneOverFactorials = []() {
 	return oneOverFactorials;
 }();
 
-void MbD::DifferenceOperator::calcOperatorMatrix()
+void DifferenceOperator::calcOperatorMatrix()
 {
 	//Compute operatorMatrix such that 
 	//value(time) : = (operatorMatrix at : 1) timesColumn : series.
@@ -32,28 +32,28 @@ void MbD::DifferenceOperator::calcOperatorMatrix()
 	}
 }
 
-void MbD::DifferenceOperator::initialize()
+void DifferenceOperator::initialize()
 {
 }
 
-void MbD::DifferenceOperator::setiStep(int i)
+void DifferenceOperator::setiStep(int i)
 {
 	iStep = i;
 }
 
-void MbD::DifferenceOperator::setorder(int o)
+void DifferenceOperator::setorder(int o)
 {
 	order = o;
 }
 
-void MbD::DifferenceOperator::instantiateTaylorMatrix()
+void DifferenceOperator::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order + 1))) {
 		taylorMatrix = std::make_shared<FullMatrix<double>>(order + 1, order + 1);
 	}
 }
 
-void MbD::DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
+void DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
 {
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);
@@ -73,7 +73,7 @@ void MbD::DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii,
 	}
 }
 
-void MbD::DifferenceOperator::settime(double t)
+void DifferenceOperator::settime(double t)
 {
 	time = t;
 }

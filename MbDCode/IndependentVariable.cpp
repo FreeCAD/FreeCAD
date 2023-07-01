@@ -3,11 +3,11 @@
 
 using namespace MbD;
 
-MbD::IndependentVariable::IndependentVariable()
+IndependentVariable::IndependentVariable()
 {
 }
 
-Symsptr MbD::IndependentVariable::differentiateWRT(Symsptr sptr, Symsptr var)
+Symsptr IndependentVariable::differentiateWRT(Symsptr sptr, Symsptr var)
 {
 	if (this == var.get()) {
 		return std::make_shared<Constant>(1.0);

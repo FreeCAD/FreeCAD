@@ -9,28 +9,28 @@ TranslationConstraintIqctJqc::TranslationConstraintIqctJqc(EndFrmcptr frmi, EndF
 {
 }
 
-void MbD::TranslationConstraintIqctJqc::initriIeJeIe()
+void TranslationConstraintIqctJqc::initriIeJeIe()
 {
 	riIeJeIe = CREATE<DispCompIeqctJeqcKeqct>::With(frmI, frmJ, frmI, axisI);
 }
 
-MbD::ConstraintType MbD::TranslationConstraintIqctJqc::type()
+ConstraintType TranslationConstraintIqctJqc::type()
 {
-	return MbD::essential;
+	return essential;
 }
 
-void MbD::TranslationConstraintIqctJqc::preVelIC()
+void TranslationConstraintIqctJqc::preVelIC()
 {
 	TranslationConstraintIJ::preVelIC();
 	pGpt = std::static_pointer_cast<DispCompIeqctJeqcKeqct>(riIeJeIe)->pvaluept();
 }
 
-void MbD::TranslationConstraintIqctJqc::fillVelICError(FColDsptr col)
+void TranslationConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
 	col->atiminusNumber(iG, pGpt);
 }
 
-void MbD::TranslationConstraintIqctJqc::preAccIC()
+void TranslationConstraintIqctJqc::preAccIC()
 {
 	TranslationConstraintIJ::preAccIC();
 	auto riIeJeIeqct = std::static_pointer_cast<DispCompIeqctJeqcKeqct>(riIeJeIe);
@@ -41,7 +41,7 @@ void MbD::TranslationConstraintIqctJqc::preAccIC()
 	ppGptpt = riIeJeIeqct->ppvalueptpt();
 }
 
-void MbD::TranslationConstraintIqctJqc::fillAccICIterError(FColDsptr col)
+void TranslationConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	TranslationConstraintIqcJqc::fillAccICIterError(col);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);

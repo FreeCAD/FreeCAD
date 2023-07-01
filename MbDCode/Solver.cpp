@@ -5,50 +5,54 @@
 
 using namespace MbD;
 
-void MbD::Solver::initialize()
+void Solver::initialize()
 {
 }
 
-void MbD::Solver::initializeLocally()
+void Solver::initializeLocally()
 {
 }
 
-void MbD::Solver::initializeGlobally()
+void Solver::initializeGlobally()
 {
 	assert(false);
 }
 
-void MbD::Solver::assignEquationNumbers()
+void Solver::assignEquationNumbers()
 {
 	assert(false);
 }
 
-void MbD::Solver::run()
+void Solver::run()
 {
 	assert(false);
 }
 
-void MbD::Solver::preRun()
+void Solver::preRun()
 {
 	assert(false);
 }
 
-void MbD::Solver::finalize()
+void Solver::finalize()
+{
+}
+
+void Solver::reportStats()
+{
+}
+
+void Solver::postRun()
 {
 	assert(false);
 }
 
-void MbD::Solver::reportStats()
+void Solver::logString(std::string& str)
 {
 	assert(false);
 }
 
-void MbD::Solver::postRun()
+void Solver::logString(const char* chars)
 {
-	assert(false);
-}
-
-void MbD::Solver::logString(std::string& str)
-{
-	assert(false);
+	std::string str = chars;
+	this->logString(str);
 }

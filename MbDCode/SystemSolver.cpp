@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "SystemSolver.h"
+#include "System.h"
 #include "NewtonRaphson.h"
 #include "PosICNewtonRaphson.h"
 #include "CREATE.h"
@@ -15,18 +16,20 @@
 #include "PosKineNewtonRaphson.h"
 #include "VelICSolver.h"
 #include "AccICNewtonRaphson.h"
+#include "VelKineSolver.h"
+#include "AccKineNewtonRaphson.h"
 
 using namespace MbD;
 
 //class PosICNewtonRaphson;
 
-void MbD::SystemSolver::setSystem(Solver* sys)
+void SystemSolver::setSystem(Solver* sys)
 {
 	//Do not use
 	assert(false);
 }
 
-void MbD::SystemSolver::initialize()
+void SystemSolver::initialize()
 {
 	tstartPasts = std::make_shared<std::vector<double>>();
 }
@@ -66,28 +69,28 @@ void SystemSolver::runAllIC()
 	}
 }
 
-void MbD::SystemSolver::runPosIC()
+void SystemSolver::runPosIC()
 {
 	icTypeSolver = CREATE<PosICNewtonRaphson>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runVelIC()
+void SystemSolver::runVelIC()
 {
 	icTypeSolver = CREATE<VelICSolver>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runAccIC()
+void SystemSolver::runAccIC()
 {
 	icTypeSolver = CREATE<AccICNewtonRaphson>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
-bool MbD::SystemSolver::needToRedoPosIC()
+bool SystemSolver::needToRedoPosIC()
 {
 	auto allRedunCons = this->allRedundantConstraints();
 	auto newSet = std::make_shared<std::set<std::string>>();
@@ -126,15 +129,15 @@ bool MbD::SystemSolver::needToRedoPosIC()
 	return true;
 }
 
-void MbD::SystemSolver::preCollision()
+void SystemSolver::preCollision()
 {
 }
 
-void MbD::SystemSolver::runCollisionDerivativeIC()
+void SystemSolver::runCollisionDerivativeIC()
 {
 }
 
-void MbD::SystemSolver::runBasicCollision()
+void SystemSolver::runBasicCollision()
 {
 }
 
@@ -150,7 +153,7 @@ void SystemSolver::runBasicKinematic()
 	}
 }
 
-void MbD::SystemSolver::runQuasiKinematic()
+void SystemSolver::runQuasiKinematic()
 {
 	try {
 		basicIntegrator = CREATE<ICKineIntegrator>::With();
@@ -162,37 +165,35 @@ void MbD::SystemSolver::runQuasiKinematic()
 	}
 }
 
-void MbD::SystemSolver::runPosKine()
+void SystemSolver::runPosKine()
 {
 	icTypeSolver = CREATE<PosKineNewtonRaphson>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runVelKine()
+void SystemSolver::runVelKine()
 {
-	assert(false);
-	//icTypeSolver = CREATE<VelKineSolver>::With();
-	//icTypeSolver->setSystem(this);
-	//icTypeSolver->run();
+	icTypeSolver = CREATE<VelKineSolver>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runAccKine()
+void SystemSolver::runAccKine()
 {
-	assert(false);
-	//icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
-	//icTypeSolver->setSystem(this);
-	//icTypeSolver->run();
+	icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runPosICKine()
+void SystemSolver::runPosICKine()
 {
 	icTypeSolver = CREATE<PosICKineNewtonRaphson>::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runVelICKine()
+void SystemSolver::runVelICKine()
 {
 	assert(false);
 	//icTypeSolver = CREATE<VelICKineSolver>::With();
@@ -200,7 +201,7 @@ void MbD::SystemSolver::runVelICKine()
 	//icTypeSolver->run();
 }
 
-void MbD::SystemSolver::runAccICKine()
+void SystemSolver::runAccICKine()
 {
 	assert(false);
 	//icTypeSolver = CREATE<AccICKineNewtonRaphson>::With();
@@ -208,92 +209,107 @@ void MbD::SystemSolver::runAccICKine()
 	//icTypeSolver->run();
 }
 
-void MbD::SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
+void SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	system->partsJointsMotionsDo(f);
 }
 
-void MbD::SystemSolver::logString(std::string& str)
+void SystemSolver::logString(std::string& str)
 {
 	system->logString(str);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Part>>> MbD::SystemSolver::parts()
+std::shared_ptr<std::vector<std::shared_ptr<Part>>> SystemSolver::parts()
 {
 	return system->parts;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::essentialConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::essentialConstraints2()
 {
 	return system->essentialConstraints2();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::displacementConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::displacementConstraints()
 {
 	return system->displacementConstraints();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::perpendicularConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::perpendicularConstraints()
 {
 	return system->perpendicularConstraints();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::allRedundantConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::allRedundantConstraints()
 {
 	return system->allRedundantConstraints();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::SystemSolver::allConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::allConstraints()
 {
 	return system->allConstraints();
 }
 
-void MbD::SystemSolver::postNewtonRaphson()
+void SystemSolver::postNewtonRaphson()
 {
 	assert(false);
 }
 
-void MbD::SystemSolver::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+void SystemSolver::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	system->partsJointsMotionsForcesTorquesDo(f);
 }
 
-void MbD::SystemSolver::discontinuityBlock()
+void SystemSolver::discontinuityBlock()
 {
 	assert(false);
 }
 
-double MbD::SystemSolver::startTime()
+double SystemSolver::startTime()
 {
 	return tstart;
 }
 
-double MbD::SystemSolver::outputStepSize()
+double SystemSolver::outputStepSize()
 {
 	return hout;
 }
 
-double MbD::SystemSolver::maxStepSize()
+double SystemSolver::maxStepSize()
 {
 	return hmax;
 }
 
-double MbD::SystemSolver::minStepSize()
+double SystemSolver::minStepSize()
 {
 	return hmin;
 }
 
-double MbD::SystemSolver::firstOutputTime()
+double SystemSolver::firstOutputTime()
 {
 	return toutFirst;
 }
 
-double MbD::SystemSolver::endTime()
+double SystemSolver::endTime()
 {
 	return tend;
 }
 
-void MbD::SystemSolver::settime(double tnew)
+void SystemSolver::settime(double tnew)
 {
 	system->mbdTimeValue(tnew);
+}
+
+void SystemSolver::tstartPastsAddFirst(double tstartPast)
+{
+	tstartPasts->insert(tstartPasts->begin(), tstartPast);
+}
+
+void SystemSolver::output()
+{
+	system->outputFor(DYNAMIC);
+}
+
+void SystemSolver::time(double t)
+{
+	system->mbdTimeValue(t);
 }

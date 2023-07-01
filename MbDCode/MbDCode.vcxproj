@@ -141,12 +141,14 @@
     <ClCompile Include="BasicIntegrator.cpp" />
     <ClCompile Include="BasicQuasiIntegrator.cpp" />
     <ClCompile Include="BasicUserFunction.cpp" />
+    <ClCompile Include="CADSystem.cpp" />
     <ClCompile Include="CartesianFrame.cpp" />
     <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Constraint.cpp" />
     <ClCompile Include="ConstraintIJ.cpp" />
     <ClCompile Include="CREATE.cpp" />
     <ClCompile Include="CylindricalJoint.cpp" />
+    <ClCompile Include="DataPosVelAcc.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
     <ClCompile Include="DirectionCosineConstraintIJ.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="EulerParametersDDot.cpp" />
     <ClCompile Include="EulerParametersDot.cpp" />
     <ClCompile Include="ExpressionX.cpp" />
+    <ClCompile Include="ForceTorqueData.cpp" />
     <ClCompile Include="ForceTorqueItem.cpp" />
     <ClCompile Include="FullColumn.cpp" />
     <ClCompile Include="FullMatrix.cpp" />
@@ -243,6 +246,7 @@
     <ClCompile Include="SparseVector.cpp" />
     <ClCompile Include="StableBackwardDifference.cpp" />
     <ClCompile Include="LDUFullMat.cpp" />
+    <ClCompile Include="StateData.cpp" />
     <ClCompile Include="Sum.cpp" />
     <ClCompile Include="Symbolic.cpp" />
     <ClCompile Include="System.cpp" />
@@ -280,12 +284,14 @@
     <ClInclude Include="BasicIntegrator.h" />
     <ClInclude Include="BasicQuasiIntegrator.h" />
     <ClInclude Include="BasicUserFunction.h" />
+    <ClInclude Include="CADSystem.h" />
     <ClInclude Include="CartesianFrame.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="ConstraintIJ.h" />
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
+    <ClInclude Include="DataPosVelAcc.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />
     <ClInclude Include="DirectionCosineConstraintIJ.h" />
@@ -320,6 +326,7 @@
     <ClInclude Include="EulerParametersDDot.h" />
     <ClInclude Include="EulerParametersDot.h" />
     <ClInclude Include="ExpressionX.h" />
+    <ClInclude Include="ForceTorqueData.h" />
     <ClInclude Include="ForceTorqueItem.h" />
     <ClInclude Include="FullColumn.h" />
     <ClInclude Include="FullMatrix.h" />
@@ -384,6 +391,7 @@
     <ClInclude Include="SparseVector.h" />
     <ClInclude Include="StableBackwardDifference.h" />
     <ClInclude Include="LDUFullMat.h" />
+    <ClInclude Include="StateData.h" />
     <ClInclude Include="Sum.h" />
     <ClInclude Include="Symbolic.h" />
     <ClInclude Include="System.h" />

@@ -39,6 +39,7 @@ namespace MbD {
 		void identity();
 		std::shared_ptr<FullColumn<T>> column(int j);
 		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+		std::shared_ptr<FullColumn<T>> timesFullColumn(FullColumn<T>* fullCol);
 		std::shared_ptr<FullMatrix<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> times(double a);
@@ -58,6 +59,7 @@ namespace MbD {
 		std::shared_ptr<FullMatrix<T>> copy();
 		FullMatrix<T> operator+(const FullMatrix<T> fullMat);
 		std::shared_ptr<FullColumn<T>> transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
+		std::ostream& printOn(std::ostream& s) const override;
 
 	};
 	template<>
@@ -241,7 +243,23 @@ namespace MbD {
 		return fullCol->transpose()->timesFullMatrix(sptr)->transpose();
 	}
 	template<typename T>
+	inline std::ostream& FullMatrix<T>::printOn(std::ostream& s) const
+	{
+		s << "FullMat[" << std::endl;
+		for (int i = 0; i < this->size(); i++)
+		{
+			s << *(this->at(i)) << std::endl;
+		}
+		s << "]";
+		return s;
+	}
+	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+		return this->timesFullColumn(fullCol.get());
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(FullColumn<T>* fullCol)
 	{
 		//"a*b = a(i,j)b(j) sum j."
 		auto nrow = this->nrow();

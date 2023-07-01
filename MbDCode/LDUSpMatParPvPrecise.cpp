@@ -1,7 +1,9 @@
 #include "LDUSpMatParPvPrecise.h"
 #include "SingularMatrixError.h"
 
-void MbD::LDUSpMatParPvPrecise::doPivoting(int p)
+using namespace MbD;
+
+void LDUSpMatParPvPrecise::doPivoting(int p)
 {
 	//"Search from bottom to top."
 	//"Use scaling vector and partial pivoting with actual swapping of rows."

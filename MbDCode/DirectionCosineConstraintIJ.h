@@ -18,7 +18,7 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         void prePosIC() override;
         void postPosICIteration() override;
-        MbD::ConstraintType type() override;
+        ConstraintType type() override;
         void preVelIC() override;
         void preAccIC() override;
 

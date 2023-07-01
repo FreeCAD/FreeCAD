@@ -30,13 +30,11 @@ namespace MbD {
 		std::shared_ptr<FullColumn<T>> copy();
 		std::shared_ptr<FullRow<T>> transpose();
 		void atiplusFullColumntimes(int i, std::shared_ptr<FullColumn<T>> fullCol, T factor);
-		T transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
+		T transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);		
+		void equalSelfPlusFullColumntimes(std::shared_ptr<FullColumn<T>> fullCol, T factor);
+		std::shared_ptr<FullColumn<T>> cross(std::shared_ptr<FullColumn<T>> fullCol);
 
-		virtual std::ostream& printOn(std::ostream& s) const;
-		friend std::ostream& operator<<(std::ostream& s, const FullColumn& fullCol)
-		{
-			return fullCol.printOn(s);
-		}
+		std::ostream& printOn(std::ostream& s) const override;
 	};
 	using FColDsptr = std::shared_ptr<FullColumn<double>>;
 	template<typename T>
@@ -63,7 +61,7 @@ namespace MbD {
 	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::times(double a)
 	{
 		int n = (int) this->size();
-		auto answer = std::make_shared<FullColumn>(n);
+		auto answer = std::make_shared<FullColumn<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) * a;
 		}
@@ -148,9 +146,29 @@ namespace MbD {
 		return this->dot(fullCol);
 	}
 	template<typename T>
+	inline void FullColumn<T>::equalSelfPlusFullColumntimes(std::shared_ptr<FullColumn<T>> fullCol, T factor)
+	{
+		this->equalSelfPlusFullVectortimes(fullCol, factor);
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::cross(std::shared_ptr<FullColumn<T>> fullCol)
+	{
+			auto a0 = this->at(0);
+			auto a1 = this->at(1);
+			auto a2 = this->at(2);
+			auto b0 = fullCol->at(0);
+			auto b1 = fullCol->at(1);
+			auto b2 = fullCol->at(2);
+			auto answer = std::make_shared<FullColumn<T>>(3);
+			answer->atiput(0, a1 * b2 - (a2 * b1));
+			answer->atiput(1, a2 * b0 - (a0 * b2));
+			answer->atiput(2, a0 * b1 - (a1 * b0));
+			return answer;
+	}
+	template<typename T>
 	inline std::ostream& FullColumn<T>::printOn(std::ostream& s) const
 	{
-		s << "{";
+		s << "FullCol{";
 		s << this->at(0);
 		for (int i = 1; i < this->size(); i++)
 		{

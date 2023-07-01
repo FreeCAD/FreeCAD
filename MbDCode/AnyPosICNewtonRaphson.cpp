@@ -5,13 +5,13 @@
 
 using namespace MbD;
 
-void MbD::AnyPosICNewtonRaphson::initialize()
+void AnyPosICNewtonRaphson::initialize()
 {
 	NewtonRaphson::initialize();
 	nSingularMatrixError = 0;
 }
 
-void MbD::AnyPosICNewtonRaphson::initializeGlobally()
+void AnyPosICNewtonRaphson::initializeGlobally()
 {
 	SystemNewtonRaphson::initializeGlobally();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
@@ -21,14 +21,14 @@ void MbD::AnyPosICNewtonRaphson::initializeGlobally()
 		});
 }
 
-void MbD::AnyPosICNewtonRaphson::createVectorsAndMatrices()
+void AnyPosICNewtonRaphson::createVectorsAndMatrices()
 {
 	qsuOld = std::make_shared<FullColumn<double>>(nqsu);
 	qsuWeights = std::make_shared<DiagonalMatrix<double>>(nqsu);
 	SystemNewtonRaphson::createVectorsAndMatrices();
 }
 
-void MbD::AnyPosICNewtonRaphson::fillY()
+void AnyPosICNewtonRaphson::fillY()
 {
 	auto newMinusOld = qsuOld->negated();
 	newMinusOld->equalSelfPlusFullColumnAt(x, 0);
@@ -41,7 +41,7 @@ void MbD::AnyPosICNewtonRaphson::fillY()
 	//std::cout << *y << std::endl;
 }
 
-void MbD::AnyPosICNewtonRaphson::fillPyPx()
+void AnyPosICNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
 	pypx->atijminusDiagonalMatrix(0, 0, qsuWeights);
@@ -52,7 +52,7 @@ void MbD::AnyPosICNewtonRaphson::fillPyPx()
 	//std::cout << *pypx << std::endl;
 }
 
-void MbD::AnyPosICNewtonRaphson::passRootToSystem()
+void AnyPosICNewtonRaphson::passRootToSystem()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsulam(x); });
 }

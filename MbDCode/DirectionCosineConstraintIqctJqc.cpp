@@ -14,23 +14,23 @@ void DirectionCosineConstraintIqctJqc::initaAijIeJe()
 	aAijIeJe = CREATE<DirectionCosineIeqctJeqc>::With(frmI, frmJ, axisI, axisJ);
 }
 
-MbD::ConstraintType MbD::DirectionCosineConstraintIqctJqc::type()
+ConstraintType DirectionCosineConstraintIqctJqc::type()
 {
-	return MbD::essential;
+	return essential;
 }
 
-void MbD::DirectionCosineConstraintIqctJqc::preVelIC()
+void DirectionCosineConstraintIqctJqc::preVelIC()
 {
 	DirectionCosineConstraintIJ::preVelIC();
 	pGpt = std::static_pointer_cast<DirectionCosineIeqctJeqc>(aAijIeJe)->pAijIeJept;
 }
 
-void MbD::DirectionCosineConstraintIqctJqc::fillVelICError(FColDsptr col)
+void DirectionCosineConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
 	col->atiminusNumber(iG, pGpt);
 }
 
-void MbD::DirectionCosineConstraintIqctJqc::preAccIC()
+void DirectionCosineConstraintIqctJqc::preAccIC()
 {
 	DirectionCosineConstraintIJ::preAccIC();
 	ppGpEIpt = std::static_pointer_cast<DirectionCosineIeqctJeqc>(aAijIeJe)->ppAijIeJepEIpt;
@@ -38,7 +38,7 @@ void MbD::DirectionCosineConstraintIqctJqc::preAccIC()
 	ppGptpt = std::static_pointer_cast<DirectionCosineIeqctJeqc>(aAijIeJe)->ppAijIeJeptpt;
 }
 
-void MbD::DirectionCosineConstraintIqctJqc::fillAccICIterError(FColDsptr col)
+void DirectionCosineConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	DirectionCosineConstraintIqcJqc::fillAccICIterError(col);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);

@@ -2,30 +2,30 @@
 
 using namespace MbD;
 
-FColDsptr MbD::LDUFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr LDUFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->decomposesaveOriginal(fullMat, saveOriginal);
 	FColDsptr answer = this->forAndBackSubsaveOriginal(fullCol, saveOriginal);
 	return answer;
 }
 
-FColDsptr MbD::LDUFullMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr LDUFullMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 	return FColDsptr();
 }
 
-void MbD::LDUFullMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void LDUFullMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 }
 
-void MbD::LDUFullMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void LDUFullMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 }
 
-void MbD::LDUFullMat::forwardEliminateWithPivot(int p)
+void LDUFullMat::forwardEliminateWithPivot(int p)
 {
 	//"Save factors in lower triangle for LU decomposition."
 
@@ -47,12 +47,12 @@ void MbD::LDUFullMat::forwardEliminateWithPivot(int p)
 	}
 }
 
-void MbD::LDUFullMat::postSolve()
+void LDUFullMat::postSolve()
 {
 	assert(false);
 }
 
-void MbD::LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
+void LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	if (saveOriginal) {
 		matrixA = fullMat->copy();
@@ -87,7 +87,7 @@ void MbD::LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 	this->findScalingsForRowRange(0, m);
 }
 
-void MbD::LDUFullMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
+void LDUFullMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	this->preSolvesaveOriginal(fullMat, saveOriginal);
 	for (int p = 0; p < m; p++)
@@ -97,12 +97,12 @@ void MbD::LDUFullMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal
 	}
 }
 
-void MbD::LDUFullMat::decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal)
+void LDUFullMat::decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal)
 {
 	assert(false);
 }
 
-FMatDsptr MbD::LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
+FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	//"ForAndBackSub be optimized for the identity matrix."
 
@@ -119,12 +119,12 @@ FMatDsptr MbD::LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOrigi
 	return matrixAinverse;
 }
 
-double MbD::LDUFullMat::getmatrixArowimaxMagnitude(int i)
+double LDUFullMat::getmatrixArowimaxMagnitude(int i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }
 
-void MbD::LDUFullMat::forwardSubstituteIntoL()
+void LDUFullMat::forwardSubstituteIntoL()
 {
 	//"L is lower triangular with nonzero and ones in diagonal."
 	auto vectorc = std::make_shared<FullColumn<double>>(n);
@@ -141,17 +141,17 @@ void MbD::LDUFullMat::forwardSubstituteIntoL()
 	rightHandSideB = vectorc;
 }
 
-void MbD::LDUFullMat::backSubstituteIntoDU()
+void LDUFullMat::backSubstituteIntoDU()
 {
 	//"DU is upper triangular with nonzero and arbitrary diagonals."
 
 		//| rowi sum |
 	answerX = std::make_shared<FullColumn<double>>(n);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
-	for (int i = n-2; i >= 0; i--)
+	for (int i = n - 2; i >= 0; i--)
 	{
 		auto rowi = matrixA->at(i);
-		double sum = answerX->at(n) * rowi->at(n);
+		double sum = answerX->at(n - 1) * rowi->at(n - 1);
 		for (int j = i + 1; j < n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);

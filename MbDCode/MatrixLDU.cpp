@@ -2,7 +2,7 @@
 
 using namespace MbD;
 
-FColDsptr MbD::MatrixLDU::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixLDU::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
 {
 	if (saveOriginal) {
 		rightHandSideB = fullCol->copy();

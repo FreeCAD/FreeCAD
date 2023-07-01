@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPvPrecise::doPivoting(int p)
+void GESpMatParPvPrecise::doPivoting(int p)
 {
 	//"Search from bottom to top."
 	//"Use scaling vector and partial pivoting with actual swapping of rows."
@@ -66,7 +66,7 @@ void MbD::GESpMatParPvPrecise::doPivoting(int p)
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
-void MbD::GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	//assert(false);
 	//"A conditioned copy of aMatrix is solved."

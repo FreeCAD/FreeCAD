@@ -10,13 +10,13 @@
 
 using namespace MbD;
 
-void MbD::VectorNewtonRaphson::initializeGlobally()
+void VectorNewtonRaphson::initializeGlobally()
 {
 	assert(false);
 	//system->fillVarVector(x);
 }
 
-void MbD::VectorNewtonRaphson::run()
+void VectorNewtonRaphson::run()
 {
 	this->preRun();
 	this->initializeLocally();
@@ -25,22 +25,22 @@ void MbD::VectorNewtonRaphson::run()
 	this->postRun();
 }
 
-std::shared_ptr<MatrixSolver> MbD::VectorNewtonRaphson::matrixSolverClassNew()
+std::shared_ptr<MatrixSolver> VectorNewtonRaphson::matrixSolverClassNew()
 {
 	return CREATE<GEFullMatParPv>::With();
 }
 
-void MbD::VectorNewtonRaphson::fillY()
+void VectorNewtonRaphson::fillY()
 {
 	assert(false);
 }
 
-void MbD::VectorNewtonRaphson::calcyNorm()
+void VectorNewtonRaphson::calcyNorm()
 {
 	yNorm = 0.5 * y->sumOfSquares();
 }
 
-void MbD::VectorNewtonRaphson::solveEquations()
+void VectorNewtonRaphson::solveEquations()
 {
 	try {
 		this->basicSolveEquations();
@@ -50,27 +50,27 @@ void MbD::VectorNewtonRaphson::solveEquations()
 	}
 }
 
-void MbD::VectorNewtonRaphson::updatexold()
+void VectorNewtonRaphson::updatexold()
 {
 	xold = x;
 }
 
-void MbD::VectorNewtonRaphson::calcdxNorm()
+void VectorNewtonRaphson::calcdxNorm()
 {
 	dxNorm = dx->rootMeanSquare();
 }
 
-bool MbD::VectorNewtonRaphson::isConverged()
+bool VectorNewtonRaphson::isConverged()
 {
 	return dxNorms->at(iterNo) < dxTol || this->isConvergedToNumericalLimit();
 }
 
-void MbD::VectorNewtonRaphson::xEqualxoldPlusdx()
+void VectorNewtonRaphson::xEqualxoldPlusdx()
 {
 	x = xold->plusFullColumn(dx);
 }
 
-void MbD::VectorNewtonRaphson::handleSingularMatrix()
+void VectorNewtonRaphson::handleSingularMatrix()
 {
 	assert(false);
 }

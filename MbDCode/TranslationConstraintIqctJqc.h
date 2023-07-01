@@ -9,7 +9,7 @@ namespace MbD {
     public:
         TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
         void initriIeJeIe() override;
-        MbD::ConstraintType type() override;
+        ConstraintType type() override;
         void preVelIC() override;
         void fillVelICError(FColDsptr col) override;
         void preAccIC() override;

@@ -10,7 +10,7 @@ namespace MbD {
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
 		bool isRedundant() override;
 		std::string classname() override;
-		MbD::ConstraintType type() override;
+		ConstraintType type() override;
 		void fillqsulam(FColDsptr col) override;
 		void postInput() override;
 		void prePosIC() override;
@@ -27,7 +27,8 @@ namespace MbD {
 		void preVelIC() override;
 		void preAccIC() override;
 		void fillAccICIterError(FColDsptr col) override;
-		void setqsuddotlam(FColDsptr qsudotlam) override;
+		void setqsuddotlam(FColDsptr col) override;
+		void discontinuityAtaddTypeTo(double t, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes) override;
 
 		std::shared_ptr<Constraint> constraint;
 	};

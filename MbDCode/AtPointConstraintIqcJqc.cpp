@@ -10,7 +10,7 @@ AtPointConstraintIqcJqc::AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frm
 {
 }
 
-void MbD::AtPointConstraintIqcJqc::initializeGlobally()
+void AtPointConstraintIqcJqc::initializeGlobally()
 {
 	AtPointConstraintIqcJc::initializeGlobally();
 	ppGpEJpEJ = (std::static_pointer_cast<DispCompIeqcJeqcO>(riIeJeO))->ppriIeJeOpEJpEJ;
@@ -21,27 +21,27 @@ void AtPointConstraintIqcJqc::initriIeJeO()
 	riIeJeO = CREATE<DispCompIeqcJeqcO>::With(frmI, frmJ, axis);
 }
 
-void MbD::AtPointConstraintIqcJqc::calcPostDynCorrectorIteration()
+void AtPointConstraintIqcJqc::calcPostDynCorrectorIteration()
 {
 	AtPointConstraintIqcJc::calcPostDynCorrectorIteration();
 	pGpEJ = std::static_pointer_cast<DispCompIeqcJeqcO>(riIeJeO)->priIeJeOpEJ;
 }
 
-void MbD::AtPointConstraintIqcJqc::useEquationNumbers()
+void AtPointConstraintIqcJqc::useEquationNumbers()
 {
 	AtPointConstraintIqcJc::useEquationNumbers();
 	iqXJminusOnePlusAxis = std::static_pointer_cast<EndFrameqc>(frmJ)->iqX() + axis;
 	iqEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->iqE();
 }
 
-void MbD::AtPointConstraintIqcJqc::fillPosICError(FColDsptr col)
+void AtPointConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	AtPointConstraintIqcJc::fillPosICError(col);
 	col->at(iqXJminusOnePlusAxis) += lam;
 	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 
-void MbD::AtPointConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
+void AtPointConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	AtPointConstraintIqcJc::fillPosICJacob(mat);
 	mat->atijplusNumber(iG, iqXJminusOnePlusAxis, 1.0);
@@ -51,14 +51,14 @@ void MbD::AtPointConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
-void MbD::AtPointConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
+void AtPointConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 {
 	AtPointConstraintIqcJc::fillPosKineJacob(mat);
 	mat->atijplusNumber(iG, iqXJminusOnePlusAxis, 1.0);
 	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
 }
 
-void MbD::AtPointConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
+void AtPointConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 {
 	AtPointConstraintIqcJc::fillVelICJacob(mat);
 	mat->atijplusNumber(iG, iqXJminusOnePlusAxis, 1.0);
@@ -67,7 +67,7 @@ void MbD::AtPointConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
-void MbD::AtPointConstraintIqcJqc::fillAccICIterError(FColDsptr col)
+void AtPointConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 {
 	AtPointConstraintIqcJc::fillAccICIterError(col);
 	col->atiplusNumber(iqXJminusOnePlusAxis, lam);

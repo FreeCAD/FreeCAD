@@ -10,29 +10,29 @@
 
 using namespace MbD;
 
-void MbD::MatrixSolver::initialize()
+void MatrixSolver::initialize()
 {
 	Solver::initialize();
 	singularPivotTolerance = 4 * std::numeric_limits<double>::epsilon();
 }
 
-void MbD::MatrixSolver::setSystem(Solver* sys)
+void MatrixSolver::setSystem(Solver* sys)
 {
 }
 
-FColDsptr MbD::MatrixSolver::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixSolver::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->timedSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	return answerX;
 }
 
-FColDsptr MbD::MatrixSolver::solvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixSolver::solvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->timedSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
 	return answerX;
 }
 
-FColDsptr MbD::MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	auto start = std::chrono::steady_clock::now();
 
@@ -45,12 +45,12 @@ FColDsptr MbD::MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDs
 	return answerX;
 }
 
-FColDsptr MbD::MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	return FColDsptr();
 }
 
-void MbD::MatrixSolver::findScalingsForRowRange(int begin, int end)
+void MatrixSolver::findScalingsForRowRange(int begin, int end)
 {
 	//"Row element * scaling <= 1.0."
 	rowScalings = std::make_shared<FullColumn<double>>(m);
@@ -62,12 +62,12 @@ void MbD::MatrixSolver::findScalingsForRowRange(int begin, int end)
 	}
 }
 
-void MbD::MatrixSolver::throwSingularMatrixError(const char* chars)
+void MatrixSolver::throwSingularMatrixError(const char* chars)
 {
 	throw SingularMatrixError(chars);
 }
 
-void MbD::MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos)
+void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos)
 {
 	throw SingularMatrixError(chars, redunEqnNos);
 }

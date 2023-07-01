@@ -3,7 +3,7 @@
 
 using namespace MbD;
 
-MbD::FunctionWithManyArgs::FunctionWithManyArgs()
+FunctionWithManyArgs::FunctionWithManyArgs()
 {
 	terms = std::make_shared<std::vector<Symsptr>>();
 }
@@ -29,7 +29,7 @@ FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>>
 		terms->push_back(_terms->at(i));
 }
 
-std::shared_ptr<std::vector<Symsptr>> MbD::FunctionWithManyArgs::getTerms()
+std::shared_ptr<std::vector<Symsptr>> FunctionWithManyArgs::getTerms()
 {
 	return terms;
 }

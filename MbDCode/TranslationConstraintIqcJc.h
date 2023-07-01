@@ -16,6 +16,8 @@ namespace MbD {
         void fillPosKineJacob(SpMatDsptr mat) override;
         void fillVelICJacob(SpMatDsptr mat) override;
         void fillAccICIterError(FColDsptr col) override;
+        void addToJointForceI(FColDsptr col) override;
+        void addToJointTorqueI(FColDsptr col) override;
 
         FRowDsptr pGpXI;
         FRowDsptr pGpEI;

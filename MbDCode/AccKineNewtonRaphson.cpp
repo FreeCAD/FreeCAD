@@ -1,14 +1,16 @@
 #include "AccKineNewtonRaphson.h"
 #include "SystemSolver.h"
 
-void MbD::AccKineNewtonRaphson::initializeGlobally()
+using namespace MbD;
+
+void AccKineNewtonRaphson::initializeGlobally()
 {
 	AccNewtonRaphson::initializeGlobally();
 	iterMax = system->iterMaxAccKine;
 	dxTol = system->errorTolAccKine;
 }
 
-void MbD::AccKineNewtonRaphson::preRun()
+void AccKineNewtonRaphson::preRun()
 {
 	std::string str("MbD: Solving for kinematic acceleration.");
 	system->logString(str);

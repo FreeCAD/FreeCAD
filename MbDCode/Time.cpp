@@ -6,7 +6,7 @@ Time::Time()
 {
 }
 
-void MbD::Time::initialize()
+void Time::initialize()
 {
 	std::string str = "t";
 	this->setName(str);

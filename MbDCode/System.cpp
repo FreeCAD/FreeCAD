@@ -7,6 +7,7 @@
 #include "SystemSolver.h"
 #include "Time.h"
 #include "CREATE.h"
+#include "CADSystem.h"
 
 using namespace MbD;
 
@@ -18,7 +19,12 @@ System::System(const char* str) : Item(str) {
 	initialize();
 }
 
-void MbD::System::initialize()
+System* MbD::System::root()
+{
+	return this;
+}
+
+void System::initialize()
 {
 	time = CREATE<Time>::With();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
@@ -29,11 +35,23 @@ void MbD::System::initialize()
 
 void System::addPart(std::shared_ptr<Part> part)
 {
-	part->setSystem(*this);
+	part->setSystem(this);
 	parts->push_back(part);
 }
 
-void System::runKINEMATICS()
+void MbD::System::addJoint(std::shared_ptr<Joint> joint)
+{
+	joint->owner = this;
+	jointsMotions->push_back(joint);
+}
+
+void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
+{
+	motion->owner = this;
+	jointsMotions->push_back(motion);
+}
+
+void System::runKINEMATIC()
 {
 	while (true)
 	{
@@ -44,23 +62,16 @@ void System::runKINEMATICS()
 	partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postInput(); });
 	outputInput();
 	systemSolver->runAllIC();
-	outputInitialConditions();
+	externalSystem->outputFor(INITIALCONDITION);
 	systemSolver->runBasicKinematic();
-	outputTimeSeries();
+	externalSystem->postMbDrun();
 }
 
-void MbD::System::outputInput()
+void System::outputInput()
 {
 }
 
-void MbD::System::outputInitialConditions()
-{
-	auto str = std::to_string(time->value);
-	this->logString(str);
-	partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->outputStates(); });
-}
-
-void MbD::System::outputTimeSeries()
+void System::outputTimeSeries()
 {
 }
 
@@ -78,86 +89,94 @@ void System::initializeGlobally()
 	systemSolver->initializeGlobally();
 }
 
-std::shared_ptr<std::vector<std::string>> MbD::System::discontinuitiesAtIC()
+void System::clear()
+{
+	name = std::string();
+	parts->clear();
+	jointsMotions->clear();
+	forcesTorques->clear();
+}
+
+std::shared_ptr<std::vector<std::string>> System::discontinuitiesAtIC()
 {
 	return std::make_shared<std::vector<std::string>>();
 }
 
-void MbD::System::jointsMotionsDo(const std::function<void(std::shared_ptr<Joint>)>& f)
+void System::jointsMotionsDo(const std::function<void(std::shared_ptr<Joint>)>& f)
 {
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 }
 
-void MbD::System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
+void System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 }
 
-void MbD::System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+void System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
 }
 
-void MbD::System::logString(std::string& str)
+void System::logString(std::string& str)
 {
-	std::cout << str << std::endl;
+	externalSystem->logString(str);
 }
 
-double MbD::System::mbdTimeValue()
+double System::mbdTimeValue()
 {
 	return time->getValue();
 }
 
-void MbD::System::mbdTimeValue(double t)
+void System::mbdTimeValue(double t)
 {
-	//time->value(t);
+	time->setValue(t);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::essentialConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints2()
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });
 	return essenConstraints;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::displacementConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::displacementConstraints()
 {
 	auto dispConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillDispConstraints(dispConstraints); });
 	return dispConstraints;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::perpendicularConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::perpendicularConstraints()
 {
 	auto perpenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillPerpenConstraints(perpenConstraints); });
 	return perpenConstraints;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::allRedundantConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allRedundantConstraints()
 {
 	auto redunConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillRedundantConstraints(redunConstraints); });
 	return redunConstraints;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> MbD::System::allConstraints()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allConstraints()
 {
 	auto constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
 	return constraints;
 }
 
-double MbD::System::maximumMass()
+double System::maximumMass()
 {
 	auto maxPart = std::max_element(parts->begin(), parts->end(), [](auto& a, auto& b) { return a->m < b->m; });
 	return maxPart->get()->m;
 }
 
-double MbD::System::maximumMomentOfInertia()
+double System::maximumMomentOfInertia()
 {
 	double max = 0.0;
 	for (int i = 0; i < parts->size(); i++)
@@ -171,4 +190,19 @@ double MbD::System::maximumMomentOfInertia()
 		}
 	}
 	return max;
+}
+
+double System::translationLimit()
+{
+	return systemSolver->translationLimit;
+}
+
+double System::rotationLimit()
+{
+	return systemSolver->rotationLimit;
+}
+
+void System::outputFor(AnalysisType type)
+{
+	externalSystem->outputFor(type);
 }

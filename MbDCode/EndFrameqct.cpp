@@ -60,7 +60,7 @@ void EndFrameqct::initializeGlobally()
 
 void EndFrameqct::initprmemptBlks()
 {
-	auto& mbdTime = System::getInstance().time;
+	auto& mbdTime = this->root()->time;
 	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& disp = rmemBlks->at(i);
@@ -72,7 +72,7 @@ void EndFrameqct::initprmemptBlks()
 
 void EndFrameqct::initpprmemptptBlks()
 {
-	auto& mbdTime = System::getInstance().time;
+	auto& mbdTime = this->root()->time;
 	pprmemptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& vel = prmemptBlks->at(i);
@@ -84,7 +84,7 @@ void EndFrameqct::initpprmemptptBlks()
 
 void EndFrameqct::initpPhiThePsiptBlks()
 {
-	auto& mbdTime = System::getInstance().time;
+	auto& mbdTime = this->root()->time;
 	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& angle = phiThePsiBlks->at(i);
@@ -96,9 +96,9 @@ void EndFrameqct::initpPhiThePsiptBlks()
 	}
 }
 
-void MbD::EndFrameqct::initppPhiThePsiptptBlks()
+void EndFrameqct::initppPhiThePsiptptBlks()
 {
-	auto& mbdTime = System::getInstance().time;
+	auto& mbdTime = this->root()->time;
 	ppPhiThePsiptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& angleVel = pPhiThePsiptBlks->at(i);
@@ -108,14 +108,14 @@ void MbD::EndFrameqct::initppPhiThePsiptptBlks()
 	}
 }
 
-void MbD::EndFrameqct::postInput()
+void EndFrameqct::postInput()
 {
 	this->evalrmem();
 	this->evalAme();
 	Item::postInput();
 }
 
-void MbD::EndFrameqct::calcPostDynCorrectorIteration()
+void EndFrameqct::calcPostDynCorrectorIteration()
 {
 	auto& rOmO = markerFrame->rOmO;
 	auto& aAOm = markerFrame->aAOm;
@@ -143,15 +143,15 @@ void MbD::EndFrameqct::calcPostDynCorrectorIteration()
 	ppAOepEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApe);
 }
 
-void MbD::EndFrameqct::prePosIC()
+void EndFrameqct::prePosIC()
 {
-	time = System::getInstance().mbdTimeValue();
+	time = this->root()->mbdTimeValue();
 	this->evalrmem();
 	this->evalAme();
 	EndFrameqc::prePosIC();
 }
 
-void MbD::EndFrameqct::evalrmem()
+void EndFrameqct::evalrmem()
 {
 	if (rmemBlks) {
 		for (int i = 0; i < 3; i++)
@@ -163,7 +163,7 @@ void MbD::EndFrameqct::evalrmem()
 	}
 }
 
-void MbD::EndFrameqct::evalAme()
+void EndFrameqct::evalAme()
 {
 	if (phiThePsiBlks) {
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
@@ -178,9 +178,9 @@ void MbD::EndFrameqct::evalAme()
 	}
 }
 
-void MbD::EndFrameqct::preVelIC()
+void EndFrameqct::preVelIC()
 {
-	time = System::getInstance().mbdTimeValue();
+	time = this->root()->mbdTimeValue();
 	this->evalrmem();
 	this->evalAme();
 	Item::preVelIC();
@@ -191,16 +191,16 @@ void MbD::EndFrameqct::preVelIC()
 	pAOept = aAOm->timesFullMatrix(pAmept);
 }
 
-void MbD::EndFrameqct::postVelIC()
+void EndFrameqct::postVelIC()
 {
 	auto& pAOmpE = markerFrame->pAOmpE;
 	for (int i = 0; i < 3; i++)
 	{
 		auto& pprOeOpEpti = pprOeOpEpt->at(i);
-			for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
-				auto pprOeOpEptij = pAOmpE->at(j)->at(i)->dot(prmempt);
-				pprOeOpEpti->atiput(j, pprOeOpEptij);
+			auto pprOeOpEptij = pAOmpE->at(j)->at(i)->dot(prmempt);
+			pprOeOpEpti->atiput(j, pprOeOpEptij);
 		}
 	}
 	for (int i = 0; i < 4; i++)
@@ -209,12 +209,12 @@ void MbD::EndFrameqct::postVelIC()
 	}
 }
 
-FColDsptr MbD::EndFrameqct::pAjOept(int j)
+FColDsptr EndFrameqct::pAjOept(int j)
 {
 	return pAOept->column(j);
 }
 
-FMatDsptr MbD::EndFrameqct::ppAjOepETpt(int jj)
+FMatDsptr EndFrameqct::ppAjOepETpt(int jj)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
 	for (int i = 0; i < 4; i++)
@@ -230,27 +230,27 @@ FMatDsptr MbD::EndFrameqct::ppAjOepETpt(int jj)
 	return answer;
 }
 
-FColDsptr MbD::EndFrameqct::ppAjOeptpt(int j)
+FColDsptr EndFrameqct::ppAjOeptpt(int j)
 {
 	return ppAOeptpt->column(j);
 }
 
-double MbD::EndFrameqct::priOeOpt(int i)
+double EndFrameqct::priOeOpt(int i)
 {
 	return prOeOpt->at(i);
 }
 
-FRowDsptr MbD::EndFrameqct::ppriOeOpEpt(int i)
+FRowDsptr EndFrameqct::ppriOeOpEpt(int i)
 {
 	return pprOeOpEpt->at(i);
 }
 
-double MbD::EndFrameqct::ppriOeOptpt(int i)
+double EndFrameqct::ppriOeOptpt(int i)
 {
 	return pprOeOptpt->at(i);
 }
 
-void MbD::EndFrameqct::evalprmempt()
+void EndFrameqct::evalprmempt()
 {
 	if (rmemBlks) {
 		for (int i = 0; i < 3; i++)
@@ -262,7 +262,7 @@ void MbD::EndFrameqct::evalprmempt()
 	}
 }
 
-void MbD::EndFrameqct::evalpAmept()
+void EndFrameqct::evalpAmept()
 {
 	if (phiThePsiBlks) {
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
@@ -283,7 +283,7 @@ void MbD::EndFrameqct::evalpAmept()
 	}
 }
 
-void MbD::EndFrameqct::evalpprmemptpt()
+void EndFrameqct::evalpprmemptpt()
 {
 	if (rmemBlks) {
 		for (int i = 0; i < 3; i++)
@@ -295,7 +295,7 @@ void MbD::EndFrameqct::evalpprmemptpt()
 	}
 }
 
-void MbD::EndFrameqct::evalppAmeptpt()
+void EndFrameqct::evalppAmeptpt()
 {
 	if (phiThePsiBlks) {
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
@@ -322,9 +322,22 @@ void MbD::EndFrameqct::evalppAmeptpt()
 	}
 }
 
-void MbD::EndFrameqct::preAccIC()
+FColDsptr EndFrameqct::rmeO()
 {
-	time = System::getInstance().mbdTimeValue();
+	return markerFrame->aAOm->timesFullColumn(rmem);
+}
+
+FColDsptr EndFrameqct::rpep()
+{
+	auto& rpmp = markerFrame->rpmp;
+	auto& aApm = markerFrame->aApm;
+	auto rpep = rpmp->plusFullColumn(aApm->timesFullColumn(rmem));
+	return rpep;
+}
+
+void EndFrameqct::preAccIC()
+{
+	time = this->root()->mbdTimeValue();
 	this->evalrmem();
 	this->evalAme();
 	Item::preVelIC();

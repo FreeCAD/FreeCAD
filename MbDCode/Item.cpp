@@ -11,8 +11,13 @@ using namespace MbD;
 Item::Item() {
 }
 
-Item::Item(const char* str) : name(str) 
+Item::Item(const char* str) : name(str)
 {
+}
+
+System* Item::root()
+{
+	return owner->root();
 }
 
 void Item::initialize()
@@ -29,6 +34,14 @@ const std::string& Item::getName() const
 	return name;
 }
 
+std::ostream& Item::printOn(std::ostream& s) const
+{
+	std::string str = typeid(*this).name();
+	auto classname = str.substr(11, str.size() - 11);
+	s << classname << std::endl;
+	return s;
+}
+
 void Item::initializeLocally()
 {
 }
@@ -37,62 +50,62 @@ void Item::initializeGlobally()
 {
 }
 
-void MbD::Item::postInput()
+void Item::postInput()
 {
 	//Called once after input
 	calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::calcPostDynCorrectorIteration()
+void Item::calcPostDynCorrectorIteration()
 {
 }
 
-void MbD::Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
+void Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
 {
 }
 
-void MbD::Item::reactivateRedundantConstraints()
+void Item::reactivateRedundantConstraints()
 {
 }
 
-void MbD::Item::fillPosKineError(FColDsptr col)
+void Item::fillPosKineError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillPosKineJacob(SpMatDsptr mat)
+void Item::fillPosKineJacob(SpMatDsptr mat)
 {
 }
 
-void MbD::Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 }
 
-void MbD::Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 }
 
-void MbD::Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+void Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
 {
 	assert(false);
 }
 
-void MbD::Item::fillqsu(FColDsptr col)
+void Item::fillqsu(FColDsptr col)
 {
 }
 
-void MbD::Item::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Item::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 }
 
-void MbD::Item::fillqsulam(FColDsptr col)
+void Item::fillqsulam(FColDsptr col)
 {
 }
 
-void MbD::Item::setqsulam(FColDsptr col)
+void Item::setqsulam(FColDsptr col)
 {
 }
 
-void MbD::Item::outputStates()
+void Item::outputStates()
 {
 	std::stringstream ss;
 	ss << classname() << " " << name;
@@ -100,39 +113,73 @@ void MbD::Item::outputStates()
 	this->logString(str);
 }
 
-void MbD::Item::preDyn()
+void Item::preDyn()
 {
+	//"Assume positions, velocities and accelerations are valid."
+	//"Called once before solving for dynamic solution."
+	//"Update all variable dependent instance variables needed for runDYNAMICS even if they 
+	//have been calculated in postPosIC, postVelIC and postAccIC."
+	//"Calculate p, pdot."
+	//"Default is do nothing."
 }
 
-std::string MbD::Item::classname()
+void Item::postDyn()
+{
+	//"Assume runDYNAMICS ended successfully."
+	//"Called once at the end of runDYNAMICS."
+	//"Update all instance variables dependent on p,q,s,u,mu,pdot,qdot,sdot,udot,mudot (lam) 
+	//regardless of whether they are needed."
+	//"This is a subset of update."
+	//"Default is do nothing."
+}
+
+std::string Item::classname()
 {
 	std::string str = typeid(*this).name();
 	auto answer = str.substr(11, str.size() - 11);
 	return answer;
 }
 
-void MbD::Item::preDynFirstStep()
+void Item::preDynFirstStep()
 {
 	//"Called before the start of the first step in the dynamic solution."
 	this->preDynStep();
 }
 
-void MbD::Item::preDynStep()
+void Item::postDynFirstStep()
+{
+	this->postDynStep();
+}
+
+void Item::preDynStep()
 {
 }
 
-void MbD::Item::storeDynState()
+void Item::postDynStep()
+{
+	//"Called after the end of a complete step in the dynamic solution."
+	//"Update info before checking for discontinuities."
+	//"Default is do nothing."
+}
+
+void Item::storeDynState()
 {
 }
 
-double MbD::Item::suggestSmallerOrAcceptDynFirstStepSize(double hnew)
+double Item::suggestSmallerOrAcceptDynFirstStepSize(double hnew)
 {
 	//"Default is return hnew."
 	//"Best to do nothing so as not to disrupt the starting algorithm."
 	return hnew;
 }
 
-void MbD::Item::preVelIC()
+double Item::suggestSmallerOrAcceptDynStepSize(double hnew)
+{
+	//"Default is return hnew."
+	return hnew;
+}
+
+void Item::preVelIC()
 {
 	//"Assume positions are valid."
 	//"Called once before solving for velocity initial conditions."
@@ -143,77 +190,105 @@ void MbD::Item::preVelIC()
 	this->calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::postVelIC()
+void Item::postVelIC()
 {
 }
 
-void MbD::Item::fillqsudot(FColDsptr col)
+void Item::fillqsudot(FColDsptr col)
 {
 }
 
-void MbD::Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 }
 
-void MbD::Item::fillVelICError(FColDsptr col)
+void Item::fillVelICError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillVelICJacob(SpMatDsptr mat)
+void Item::fillVelICJacob(SpMatDsptr mat)
 {
 }
 
-void MbD::Item::setqsudotlam(FColDsptr qsudotlam)
+void Item::setqsudotlam(FColDsptr col)
 {
 }
 
-void MbD::Item::preAccIC()
+void Item::preAccIC()
 {
 	this->calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::postAccIC()
+void Item::postAccIC()
 {
 }
 
-void MbD::Item::postAccICIteration()
+void Item::postAccICIteration()
 {
 }
 
-void MbD::Item::fillqsuddotlam(FColDsptr col)
+void Item::fillqsuddotlam(FColDsptr col)
 {
 }
 
-void MbD::Item::fillAccICIterError(FColDsptr col)
+void Item::fillAccICIterError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillAccICIterJacob(SpMatDsptr mat)
+void Item::fillAccICIterJacob(SpMatDsptr mat)
 {
 }
 
-void MbD::Item::setqsuddotlam(FColDsptr qsudotlam)
+void Item::setqsudot(FColDsptr col)
 {
 }
 
-void MbD::Item::constraintsReport()
+void Item::setqsuddotlam(FColDsptr col)
 {
 }
 
-void MbD::Item::setqsu(FColDsptr qsuOld)
+std::shared_ptr<StateData> Item::stateData()
+{
+	assert(false);
+	return std::shared_ptr<StateData>();
+}
+
+void Item::discontinuityAtaddTypeTo(double t, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
 {
 }
 
-void MbD::Item::useEquationNumbers()
+double Item::checkForDynDiscontinuityBetween(double tprev, double t)
+{
+	//"Check for discontinuity in the last step defined by the interval (tprevious,t]."
+	//"Default is assume no discontinuity and return t."
+
+	return t;
+}
+
+void Item::constraintsReport()
 {
 }
 
-void MbD::Item::logString(std::string& str)
+void Item::setqsu(FColDsptr qsuOld)
 {
-	System::getInstance().logString(str);
 }
 
-void MbD::Item::prePosIC()
+void Item::useEquationNumbers()
+{
+}
+
+void Item::logString(std::string& str)
+{
+	this->root()->logString(str);
+}
+
+void Item::logString(const char* chars)
+{
+	std::string str = chars;
+	this->logString(str);
+}
+
+void Item::prePosIC()
 {
 	//"Called once before solving for position initial conditions."
 	//"Update all variable dependent instance variables needed for posIC."
@@ -222,28 +297,28 @@ void MbD::Item::prePosIC()
 	calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::prePosKine()
+void Item::prePosKine()
 {
 	this->prePosIC();
 }
 
-void MbD::Item::postPosIC()
+void Item::postPosIC()
 {
 }
 
-void MbD::Item::postPosICIteration()
+void Item::postPosICIteration()
 {
 	this->calcPostDynCorrectorIteration();
 }
 
-void MbD::Item::fillPosICError(FColDsptr col)
+void Item::fillPosICError(FColDsptr col)
 {
 }
 
-void MbD::Item::fillPosICJacob(FMatDsptr mat)
+void Item::fillPosICJacob(FMatDsptr mat)
 {
 }
 
-void MbD::Item::fillPosICJacob(SpMatDsptr mat)
+void Item::fillPosICJacob(SpMatDsptr mat)
 {
 }

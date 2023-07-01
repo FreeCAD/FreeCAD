@@ -1,7 +1,7 @@
 #pragma once
+#include <ostream>
 #include <vector>
 #include <memory>
-//#include <type_traits>
 #include <cmath>
 #include <cassert>
 
@@ -27,6 +27,17 @@ namespace MbD {
 		//double maxMagnitude();
 		double maxMagnitudeOfVector();
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
+
+		virtual std::ostream& printOn(std::ostream& s) const {
+			std::string str = typeid(*this).name();
+			auto classname = str.substr(11, str.size() - 11);
+			s << classname << std::endl;
+			return s;
+		}
+		friend std::ostream& operator<<(std::ostream& s, const Array& array)
+		{
+			return array.printOn(s);
+		}
 
 	};
 	template<typename T>
@@ -99,7 +110,7 @@ namespace MbD {
 			this->at(ii) = array->at(i + ii);
 		}
 	}
-		using ListD = std::initializer_list<double>;
-		using ListListD = std::initializer_list<std::initializer_list<double>>;
-		using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
+	using ListD = std::initializer_list<double>;
+	using ListListD = std::initializer_list<std::initializer_list<double>>;
+	using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
 }

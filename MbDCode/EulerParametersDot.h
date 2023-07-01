@@ -20,6 +20,7 @@ namespace MbD {
 		void calcAdotBdotCdot();
 		void calcpAdotpE();
 		FMatDsptr aB();
+		FColDsptr omeOpO();
 
 		std::shared_ptr<EulerParameters<T>> qE;
 		FMatDsptr aAdot, aBdot, aCdot;
@@ -168,6 +169,16 @@ namespace MbD {
 	inline FMatDsptr EulerParametersDot<T>::aB()
 	{
 		return qE->aB;
+	}
+
+	template<typename T>
+	inline FColDsptr EulerParametersDot<T>::omeOpO()
+	{
+		auto aaa = this->aB();
+		auto bbb = aaa->timesFullColumn(this);
+		auto ccc = bbb->times(2.0);
+		return ccc;
+		//return this->aB->timesFullColumn(this)->times(2.0);
 	}
 
 	template<typename T>

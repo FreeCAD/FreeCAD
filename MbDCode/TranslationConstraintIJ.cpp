@@ -14,56 +14,56 @@ void TranslationConstraintIJ::initialize()
     initriIeJeIe();
 }
 
-void MbD::TranslationConstraintIJ::initializeLocally()
+void TranslationConstraintIJ::initializeLocally()
 {
     riIeJeIe->initializeLocally();
 }
 
-void MbD::TranslationConstraintIJ::initializeGlobally()
+void TranslationConstraintIJ::initializeGlobally()
 {
     riIeJeIe->initializeGlobally();
 }
 
-void MbD::TranslationConstraintIJ::initriIeJeIe()
+void TranslationConstraintIJ::initriIeJeIe()
 {
     riIeJeIe = CREATE<DispCompIecJecKec>::With(frmI, frmJ, frmI, axisI);
 }
 
-void MbD::TranslationConstraintIJ::postInput()
+void TranslationConstraintIJ::postInput()
 {
     riIeJeIe->postInput();
     Constraint::postInput();
 }
 
-void MbD::TranslationConstraintIJ::calcPostDynCorrectorIteration()
+void TranslationConstraintIJ::calcPostDynCorrectorIteration()
 {
     aG = riIeJeIe->value() - aConstant;
 }
 
-void MbD::TranslationConstraintIJ::prePosIC()
+void TranslationConstraintIJ::prePosIC()
 {
     riIeJeIe->prePosIC();
     Constraint::prePosIC();
 }
 
-MbD::ConstraintType MbD::TranslationConstraintIJ::type()
+ConstraintType TranslationConstraintIJ::type()
 {
-    return MbD::displacement;
+    return displacement;
 }
 
-void MbD::TranslationConstraintIJ::postPosICIteration()
+void TranslationConstraintIJ::postPosICIteration()
 {
     riIeJeIe->postPosICIteration();
     Item::postPosICIteration();
 }
 
-void MbD::TranslationConstraintIJ::preVelIC()
+void TranslationConstraintIJ::preVelIC()
 {
     riIeJeIe->preVelIC();
     Item::preVelIC();
 }
 
-void MbD::TranslationConstraintIJ::preAccIC()
+void TranslationConstraintIJ::preAccIC()
 {
     riIeJeIe->preAccIC();
     Constraint::preAccIC();

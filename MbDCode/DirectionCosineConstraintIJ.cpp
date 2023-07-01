@@ -16,12 +16,12 @@ void DirectionCosineConstraintIJ::initialize()
 	initaAijIeJe();
 }
 
-void MbD::DirectionCosineConstraintIJ::initializeLocally()
+void DirectionCosineConstraintIJ::initializeLocally()
 {
 	aAijIeJe->initializeLocally();
 }
 
-void MbD::DirectionCosineConstraintIJ::initializeGlobally()
+void DirectionCosineConstraintIJ::initializeGlobally()
 {
 	aAijIeJe->initializeGlobally();
 }
@@ -31,41 +31,41 @@ void DirectionCosineConstraintIJ::initaAijIeJe()
 	aAijIeJe = CREATE<DirectionCosineIecJec>::With(frmI, frmJ, axisI, axisJ);
 }
 
-void MbD::DirectionCosineConstraintIJ::postInput()
+void DirectionCosineConstraintIJ::postInput()
 {
 	aAijIeJe->postInput();
 	Constraint::postInput();
 }
 
-void MbD::DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
+void DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
 {
 	aG = aAijIeJe->aAijIeJe - aConstant;
 }
 
-void MbD::DirectionCosineConstraintIJ::prePosIC()
+void DirectionCosineConstraintIJ::prePosIC()
 {
 	aAijIeJe->prePosIC();
 	Constraint::prePosIC();
 }
 
-void MbD::DirectionCosineConstraintIJ::postPosICIteration()
+void DirectionCosineConstraintIJ::postPosICIteration()
 {
 	aAijIeJe->postPosICIteration();
 	Item::postPosICIteration();
 }
 
-MbD::ConstraintType MbD::DirectionCosineConstraintIJ::type()
+ConstraintType DirectionCosineConstraintIJ::type()
 {
-	return MbD::perpendicular;
+	return perpendicular;
 }
 
-void MbD::DirectionCosineConstraintIJ::preVelIC()
+void DirectionCosineConstraintIJ::preVelIC()
 {
 	aAijIeJe->preVelIC();
 	Item::preVelIC();
 }
 
-void MbD::DirectionCosineConstraintIJ::preAccIC()
+void DirectionCosineConstraintIJ::preAccIC()
 {
 	aAijIeJe->preAccIC();
 	Constraint::preAccIC();

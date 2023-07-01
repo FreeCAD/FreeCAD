@@ -2,10 +2,10 @@
 
 using namespace MbD;
 
-//MbD::NewtonRaphsonError::NewtonRaphsonError()
+//NewtonRaphsonError::NewtonRaphsonError()
 //{
 //}
 
-MbD::NewtonRaphsonError::NewtonRaphsonError(const std::string& msg) : std::runtime_error(msg)
+NewtonRaphsonError::NewtonRaphsonError(const std::string& msg) : std::runtime_error(msg)
 {
 }

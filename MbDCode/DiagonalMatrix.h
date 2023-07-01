@@ -26,6 +26,8 @@ namespace MbD {
 		double sumOfSquares() override;
 		int numberOfElements() override;
 		void zeroSelf() override;
+		std::ostream& printOn(std::ostream& s) const override;
+
 	};
 	template<typename T>
 	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
@@ -93,6 +95,18 @@ namespace MbD {
 		for (int i = 0; i < this->size(); i++) {
 			this->at(i) = 0.0;
 		}
+	}
+	template<typename T>
+	inline std::ostream& DiagonalMatrix<T>::printOn(std::ostream& s) const
+	{
+		s << "DiagMat[";
+		s << this->at(0);
+		for (int i = 1; i < this->size(); i++)
+		{
+			s << ", " << this->at(i);
+		}
+		s << "]";
+		return s;
 	}
 }
 

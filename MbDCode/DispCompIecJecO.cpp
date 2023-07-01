@@ -2,44 +2,44 @@
 
 using namespace MbD;
 
-MbD::DispCompIecJecO::DispCompIecJecO()
+DispCompIecJecO::DispCompIecJecO()
 {
 }
 
-MbD::DispCompIecJecO::DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+DispCompIecJecO::DispCompIecJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 
-void MbD::DispCompIecJecO::calcPostDynCorrectorIteration()
+void DispCompIecJecO::calcPostDynCorrectorIteration()
 {
 	riIeJeO = frmJ->riOeO(axis) - frmI->riOeO(axis);
 }
 
-FRowDsptr MbD::DispCompIecJecO::pvaluepXJ()
+FRowDsptr DispCompIecJecO::pvaluepXJ()
 {
 	assert(false);
 	return FRowDsptr();
 }
 
-FRowDsptr MbD::DispCompIecJecO::pvaluepEJ()
+FRowDsptr DispCompIecJecO::pvaluepEJ()
 {
 	assert(false);
 	return FRowDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecO::ppvaluepXJpEK()
+FMatDsptr DispCompIecJecO::ppvaluepXJpEK()
 {
 	assert(false);
 	return FMatDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecO::ppvaluepEJpEK()
+FMatDsptr DispCompIecJecO::ppvaluepEJpEK()
 {
 	assert(false);
 	return FMatDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecO::ppvaluepEJpEJ()
+FMatDsptr DispCompIecJecO::ppvaluepEJpEJ()
 {
 	assert(false);
 	return FMatDsptr();

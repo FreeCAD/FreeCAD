@@ -17,7 +17,7 @@ void AbsConstraint::initialize()
     Constraint::initialize();
 }
 
-void MbD::AbsConstraint::calcPostDynCorrectorIteration()
+void AbsConstraint::calcPostDynCorrectorIteration()
 {
     if (axis < 3) {
         aG = static_cast<PartFrame*>(owner)->qX->at(axis);
@@ -27,34 +27,34 @@ void MbD::AbsConstraint::calcPostDynCorrectorIteration()
     }
 }
 
-void MbD::AbsConstraint::useEquationNumbers()
+void AbsConstraint::useEquationNumbers()
 {
     iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX + axis;
 }
 
-void MbD::AbsConstraint::fillPosICJacob(SpMatDsptr mat)
+void AbsConstraint::fillPosICJacob(SpMatDsptr mat)
 {
     mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
     mat->atijplusNumber(iqXminusOnePlusAxis, iG, 1.0);
 }
 
-void MbD::AbsConstraint::fillPosICError(FColDsptr col)
+void AbsConstraint::fillPosICError(FColDsptr col)
 {
     Constraint::fillPosICError(col);
     col->at(iqXminusOnePlusAxis) += lam;
 }
 
-void MbD::AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
+void AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
     mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
 }
 
-void MbD::AbsConstraint::fillVelICJacob(SpMatDsptr mat)
+void AbsConstraint::fillVelICJacob(SpMatDsptr mat)
 {
     this->fillPosICJacob(mat);
 }
 
-void MbD::AbsConstraint::fillAccICIterError(FColDsptr col)
+void AbsConstraint::fillAccICIterError(FColDsptr col)
 {
     col->atiplusNumber(iqXminusOnePlusAxis, lam);
     auto partFrame = static_cast<PartFrame*>(owner);

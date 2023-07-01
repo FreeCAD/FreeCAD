@@ -19,12 +19,12 @@ void DirectionCosineIeqcJec::initialize()
 	ppAijIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
-void MbD::DirectionCosineIeqcJec::initializeGlobally()
+void DirectionCosineIeqcJec::initializeGlobally()
 {
 	ppAjOIepEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppAjOepEpE(axisI);
 }
 
-void MbD::DirectionCosineIeqcJec::calcPostDynCorrectorIteration()
+void DirectionCosineIeqcJec::calcPostDynCorrectorIteration()
 {
 	DirectionCosineIecJec::calcPostDynCorrectorIteration();
 	pAjOIepEIT = std::static_pointer_cast<EndFrameqc>(frmI)->pAjOepET(axisI);

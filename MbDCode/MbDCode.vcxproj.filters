@@ -426,6 +426,18 @@
     <ClCompile Include="EulerParametersDDot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StateData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataPosVelAcc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CADSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceTorqueData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -846,6 +858,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EulerParametersDDot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataPosVelAcc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CADSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceTorqueData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

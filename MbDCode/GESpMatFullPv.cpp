@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatFullPv::doPivoting(int p)
+void GESpMatFullPv::doPivoting(int p)
 {
 	//"Used by Gauss Elimination only."
 	//"Do full pivoting."
@@ -53,7 +53,7 @@ void MbD::GESpMatFullPv::doPivoting(int p)
 	}
 	markowitzPivotColCount = (int)rowPositionsOfNonZerosInPivotColumn->size();
 }
-void MbD::GESpMatFullPv::forwardEliminateWithPivot(int p)
+void GESpMatFullPv::forwardEliminateWithPivot(int p)
 {
 	//app is pivot.
 	//i > p, j > p
@@ -92,7 +92,7 @@ void MbD::GESpMatFullPv::forwardEliminateWithPivot(int p)
 	}
 }
 
-void MbD::GESpMatFullPv::backSubstituteIntoDU()
+void GESpMatFullPv::backSubstituteIntoDU()
 {
 	//"Use colOrder to get DU in upper triangular with nonzero diagonals."
 	//"Formula given by Eqn. 9.26 and 9.27 in Chapra's text 2nd Edition."
@@ -124,12 +124,12 @@ void MbD::GESpMatFullPv::backSubstituteIntoDU()
 	}
 }
 
-void MbD::GESpMatFullPv::postSolve()
+void GESpMatFullPv::postSolve()
 {
 	assert(false);
 }
 
-void MbD::GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	//"A conditioned copy of spMat is solved."
 	if (m != spMat->nrow() || n != spMat->ncol()) {

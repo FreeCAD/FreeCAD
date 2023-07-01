@@ -4,6 +4,7 @@
 #include "CREATE.h"
 #include "DiagonalMatrix.h"
 #include "EulerParameters.h"
+#include "DataPosVelAcc.h"
 
 
 using namespace MbD;
@@ -12,6 +13,11 @@ Part::Part() {
 }
 
 Part::Part(const char* str) : Item(str) {
+}
+
+System* MbD::Part::root()
+{
+	return system;
 }
 
 void Part::initialize()
@@ -71,92 +77,101 @@ FColDsptr Part::getomeOpO() {
 	return partFrame->getomeOpO();
 }
 
-void MbD::Part::setqXddot(FColDsptr x)
+void Part::setqXddot(FColDsptr x)
 {
 	partFrame->setqXddot(x);
 }
 
-FColDsptr MbD::Part::getqXddot()
+FColDsptr Part::getqXddot()
 {
 	return partFrame->getqXddot();
 }
 
-void MbD::Part::setqEddot(FColDsptr x)
+void Part::setqEddot(FColDsptr x)
 {
 	partFrame->setqEddot(x);
 }
 
-FColDsptr MbD::Part::getqEddot()
+FColDsptr Part::getqEddot()
 {
 	return partFrame->getqEddot();
 }
 
-void MbD::Part::qX(FColDsptr x)
+void Part::qX(FColDsptr x)
 {
 	partFrame->qX = x;
 }
 
-FColDsptr MbD::Part::qX()
+FColDsptr Part::qX()
 {
 	return partFrame->qX;
 }
 
-void MbD::Part::qE(std::shared_ptr<EulerParameters<double>> x)
+void Part::qE(std::shared_ptr<EulerParameters<double>> x)
 {
 	partFrame->qE = x;
 }
 
-std::shared_ptr<EulerParameters<double>> MbD::Part::qE()
+std::shared_ptr<EulerParameters<double>> Part::qE()
 {
 	return partFrame->qE;
 }
 
-void MbD::Part::qXdot(FColDsptr x)
+void Part::qXdot(FColDsptr x)
 {
 	partFrame->qXdot = x;
 }
 
-FColDsptr MbD::Part::qXdot()
+FColDsptr Part::qXdot()
 {
 	return partFrame->qXdot;
 }
 
-void MbD::Part::omeOpO(FColDsptr x)
+void Part::omeOpO(FColDsptr x)
 {
 	partFrame->setomeOpO(x);
 }
 
-FColDsptr MbD::Part::omeOpO()
+FColDsptr Part::omeOpO()
 {
-	assert(false);
-	return FColDsptr();
+	return partFrame->omeOpO();
 }
 
-void MbD::Part::qXddot(FColDsptr x)
+void Part::qXddot(FColDsptr x)
 {
 	partFrame->qXddot = x;
 }
 
-FColDsptr MbD::Part::qXddot()
+FColDsptr Part::qXddot()
 {
 	return partFrame->qXddot;
 }
 
-void MbD::Part::qEddot(FColDsptr x)
+void Part::qEddot(FColDsptr x)
 {
 	//ToDo: Should store EulerParametersDDot
 	//ToDo: Need alpOpO too
 	partFrame->qXddot = x;
 }
 
-FColDsptr MbD::Part::qEddot()
+FColDsptr Part::qEddot()
 {
 	return partFrame->qEddot;
 }
 
-void Part::setSystem(System& sys)
+FMatDsptr Part::aAOp()
 {
-	//May be needed in the future
+	return partFrame->aAOp();
+}
+
+FColDsptr Part::alpOpO()
+{
+	return partFrame->alpOpO();
+}
+
+void Part::setSystem(System* sys)
+{
+	system = sys;
 }
 
 void Part::asFixed()
@@ -164,13 +179,13 @@ void Part::asFixed()
 	partFrame->asFixed();
 }
 
-void MbD::Part::postInput()
+void Part::postInput()
 {
 	partFrame->postInput();
 	Item::postInput();
 }
 
-void MbD::Part::calcPostDynCorrectorIteration()
+void Part::calcPostDynCorrectorIteration()
 {
 	this->calcmE();
 	this->calcmEdot();
@@ -179,47 +194,47 @@ void MbD::Part::calcPostDynCorrectorIteration()
 	this->calcppTpEpEdot();
 }
 
-void MbD::Part::prePosIC()
+void Part::prePosIC()
 {
 	partFrame->prePosIC();
 }
 
-void MbD::Part::prePosKine()
+void Part::prePosKine()
 {
 	partFrame->prePosKine();
 }
 
-void MbD::Part::iqX(int eqnNo)
+void Part::iqX(int eqnNo)
 {
 	partFrame->iqX = eqnNo;
 }
 
-void MbD::Part::iqE(int eqnNo)
+void Part::iqE(int eqnNo)
 {
 	partFrame->iqE = eqnNo;
 
 }
 
-void MbD::Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
 	partFrame->fillEssenConstraints(essenConstraints);
 }
 
-void MbD::Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 }
 
-void MbD::Part::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+void Part::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
 {
 	partFrame->fillConstraints(allConstraints);
 }
 
-void MbD::Part::fillqsu(FColDsptr col)
+void Part::fillqsu(FColDsptr col)
 {
 	partFrame->fillqsu(col);
 }
 
-void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	//"Map wqX and wqE according to inertias. (0 to maximum inertia) map to (minw to maxw)"
 	//"When the inertias are zero, they are set to a small number for positive definiteness."
@@ -228,8 +243,8 @@ void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	//"Redundant constraint removal likes equal weights."
 	//"wqE(4) = 0.0d is ok because there is always the euler parameter constraint."
 
-	auto mMax = System::getInstance().maximumMass();
-	auto aJiMax = System::getInstance().maximumMomentOfInertia();
+	auto mMax = this->root()->maximumMass();
+	auto aJiMax = this->root()->maximumMomentOfInertia();
 	auto minw = 1.0e3;
 	auto maxw = 1.0e6;
 	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
@@ -251,17 +266,17 @@ void MbD::Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	partFrame->fillqsuWeights(diagMat);
 }
 
-void MbD::Part::fillqsulam(FColDsptr col)
+void Part::fillqsulam(FColDsptr col)
 {
 	partFrame->fillqsulam(col);
 }
 
-void MbD::Part::fillqsudot(FColDsptr col)
+void Part::fillqsudot(FColDsptr col)
 {
 	partFrame->fillqsudot(col);
 }
 
-void MbD::Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	//"wqXdot and wqEdot are set to their respective inertias."
 	//"When the inertias are zero, they are set to a small number for positive definiteness."
@@ -269,8 +284,8 @@ void MbD::Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMa
 	//"wqEdot(4) = 0.0d is ok because there is always the euler parameter constraint."
 
 		//| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
-	auto mMax = System::getInstance().maximumMass();
-	auto aJiMax = System::getInstance().maximumMomentOfInertia();
+	auto mMax = this->root()->maximumMass();
+	auto aJiMax = this->root()->maximumMomentOfInertia();
 	auto maxInertia = std::max(mMax, aJiMax);
 	if (maxInertia == 0) maxInertia = 1.0;
 	auto minw = 1.0e-12 * maxInertia;
@@ -289,94 +304,99 @@ void MbD::Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMa
 	partFrame->fillqsudotWeights(diagMat);
 }
 
-void MbD::Part::useEquationNumbers()
+void Part::useEquationNumbers()
 {
 	partFrame->useEquationNumbers();
 }
 
-void MbD::Part::setqsu(FColDsptr col)
+void Part::setqsu(FColDsptr col)
 {
 	partFrame->setqsu(col);
 }
 
-void MbD::Part::setqsulam(FColDsptr col)
+void Part::setqsulam(FColDsptr col)
 {
 	partFrame->setqsulam(col);
 }
 
-void MbD::Part::setqsudotlam(FColDsptr col)
+void Part::setqsudot(FColDsptr col)
+{
+	partFrame->setqsudot(col);
+}
+
+void Part::setqsudotlam(FColDsptr col)
 {
 	partFrame->setqsudotlam(col);
 }
 
-void MbD::Part::postPosICIteration()
+void Part::postPosICIteration()
 {
 	partFrame->postPosICIteration();
 }
 
-void MbD::Part::fillPosICError(FColDsptr col)
+void Part::fillPosICError(FColDsptr col)
 {
 	partFrame->fillPosICError(col);
 }
 
-void MbD::Part::fillPosICJacob(SpMatDsptr mat)
+void Part::fillPosICJacob(SpMatDsptr mat)
 {
 	partFrame->fillPosICJacob(mat);
 }
 
-void MbD::Part::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void Part::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
 {
 	partFrame->removeRedundantConstraints(redundantEqnNos);
 }
 
-void MbD::Part::reactivateRedundantConstraints()
+void Part::reactivateRedundantConstraints()
 {
 	partFrame->reactivateRedundantConstraints();
 }
 
-void MbD::Part::constraintsReport()
+void Part::constraintsReport()
 {
 	partFrame->constraintsReport();
 }
 
-void MbD::Part::postPosIC()
+void Part::postPosIC()
 {
 	partFrame->postPosIC();
 	this->calcmE();
 }
 
-void MbD::Part::outputStates()
+void Part::outputStates()
 {
 	Item::outputStates();
 	partFrame->outputStates();
 }
 
-void MbD::Part::preDyn()
+void Part::preDyn()
 {
 	partFrame->preDyn();
 }
 
-void MbD::Part::storeDynState()
+void Part::storeDynState()
 {
 	partFrame->storeDynState();
 }
 
-void MbD::Part::fillPosKineError(FColDsptr col)
+void Part::fillPosKineError(FColDsptr col)
 {
 	partFrame->fillPosKineError(col);
 }
 
-void MbD::Part::fillPosKineJacob(SpMatDsptr mat)
+void Part::fillPosKineJacob(SpMatDsptr mat)
 {
 	partFrame->fillPosKineJacob(mat);
 }
 
-void MbD::Part::preVelIC()
+void Part::preVelIC()
 {
 	partFrame->preVelIC();
 }
 
-void MbD::Part::postVelIC()
+void Part::postVelIC()
 {
 	partFrame->postVelIC();
 	this->calcp();
@@ -386,35 +406,35 @@ void MbD::Part::postVelIC()
 	this->calcppTpEpEdot();
 }
 
-void MbD::Part::fillVelICError(FColDsptr col)
+void Part::fillVelICError(FColDsptr col)
 {
 	partFrame->fillVelICError(col);
 }
 
-void MbD::Part::fillVelICJacob(SpMatDsptr mat)
+void Part::fillVelICJacob(SpMatDsptr mat)
 {
 	partFrame->fillVelICJacob(mat);
 }
 
-void MbD::Part::preAccIC()
+void Part::preAccIC()
 {
 	partFrame->preAccIC();
 	Item::preAccIC();
 }
 
-void MbD::Part::calcp()
+void Part::calcp()
 {
 	pX = mX->timesFullColumn(partFrame->qXdot);
 	pE = mE->timesFullColumn(partFrame->qEdot);
 }
 
-void MbD::Part::calcpdot()
+void Part::calcpdot()
 {
 	pXdot = mX->timesFullColumn(partFrame->qXddot);
 	pEdot = mEdot->timesFullColumn(partFrame->qEdot)->plusFullColumn(mE->timesFullColumn(partFrame->qEddot));
 }
 
-void MbD::Part::calcmEdot()
+void Part::calcmEdot()
 {
 	auto aC = partFrame->aC();
 	auto aCdot = partFrame->aCdot();
@@ -424,7 +444,7 @@ void MbD::Part::calcmEdot()
 	mEdot = term1->plusFullMatrix(term2);
 }
 
-void MbD::Part::calcpTpE()
+void Part::calcpTpE()
 {
 	//"pTpE is a column vector."
 	auto& qEdot = partFrame->qEdot;
@@ -433,7 +453,7 @@ void MbD::Part::calcpTpE()
 	pTpE = (pCpEtimesqEdot->transposeTimesFullColumn(aJ->timesFullColumn(aC->timesFullColumn(qEdot))))->times(4.0);
 }
 
-void MbD::Part::calcppTpEpE()
+void Part::calcppTpEpE()
 {
 	auto& qEdot = partFrame->qEdot;
 	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
@@ -441,7 +461,7 @@ void MbD::Part::calcppTpEpE()
 	ppTpEpE = pCpEtimesqEdot->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
 }
 
-void MbD::Part::calcppTpEpEdot()
+void Part::calcppTpEpEdot()
 {
 	//| qEdot aC a4J term1 pCpEtimesqEdot term2 |
 	auto& qEdot = partFrame->qEdot;
@@ -453,13 +473,13 @@ void MbD::Part::calcppTpEpEdot()
 	ppTpEpEdot = term1->plusFullMatrix(term2)->transpose();
 }
 
-void MbD::Part::calcmE()
+void Part::calcmE()
 {
 	auto aC = partFrame->aC();
 	mE = aC->transposeTimesFullMatrix(aJ->timesFullMatrix(aC))->times(4.0);
 }
 
-void MbD::Part::fillAccICIterError(FColDsptr col)
+void Part::fillAccICIterError(FColDsptr col)
 {
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
@@ -470,7 +490,7 @@ void MbD::Part::fillAccICIterError(FColDsptr col)
 	partFrame->fillAccICIterError(col);
 }
 
-void MbD::Part::fillAccICIterJacob(SpMatDsptr mat)
+void Part::fillAccICIterJacob(SpMatDsptr mat)
 {
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
@@ -479,12 +499,64 @@ void MbD::Part::fillAccICIterJacob(SpMatDsptr mat)
 	partFrame->fillAccICIterJacob(mat);
 }
 
-std::shared_ptr<EulerParametersDot<double>> MbD::Part::qEdot()
+std::shared_ptr<EulerParametersDot<double>> Part::qEdot()
 {
 	return partFrame->qEdot;
 }
 
-void MbD::Part::setqsuddotlam(FColDsptr qsudotlam)
+void Part::setqsuddotlam(FColDsptr col)
 {
-	partFrame->setqsuddotlam(qsudotlam);
+	partFrame->setqsuddotlam(col);
+}
+
+std::shared_ptr<StateData> Part::stateData()
+{
+	//"
+	//P : = part frame.
+	//p : = principal frame at cm.
+	//rOcmO : = rOPO + aAOP * rPcmP.
+	//aAOp : = aAOP * aAPp.
+	//vOcmO : = vOPO + aAdotOP * rPcmP
+	//: = vOPO + (omeOPO cross : aAOP * rPcmP).
+	//omeOpO : = omeOPO.
+	//aOcmO : = aOPO + aAddotOP * rPcmP
+	//: = aOPO + (alpOPO cross : aAOP * rPcmP) + (omeOPO cross : (omeOPO cross : aAOP * rPcmP)).
+	//alpOpO : = alpOPO.
+
+	//Therefore
+	//aAOP : = aAOp * aAPpT
+	//rOPO : = rOcmO - aAOP * rPcmP.
+	//omeOPO : = omeOpO.
+	//vOPO : = vOcmO - (omeOPO cross : aAOP * rPcmP).
+	//alpOPO : = alpOpO.
+	//aOPO : = aOcmO - (alpOPO cross : aAOP * rPcmP) - (omeOPO cross : (omeOPO cross :
+	//aAOP * rPcmP)).
+	//"
+
+	auto rOpO = this->qX();
+	auto aAOp = this->aAOp();
+	auto vOpO = this->qXdot();
+	auto omeOpO = this->omeOpO();
+	auto aOpO = this->qXddot();
+	auto alpOpO = this->alpOpO();
+	auto answer = std::make_shared<DataPosVelAcc>();
+	answer->rFfF = rOpO;
+	answer->aAFf = aAOp;
+	answer->vFfF = vOpO;
+	answer->omeFfF = omeOpO;
+	answer->aFfF = aOpO;
+	answer->alpFfF = alpOpO;
+	return answer;
+}
+
+double Part::suggestSmallerOrAcceptDynStepSize(double hnew)
+{
+	auto hnew2 = hnew;
+	hnew2 = partFrame->suggestSmallerOrAcceptDynStepSize(hnew2);
+	return hnew2;
+}
+
+void Part::postDynStep()
+{
+	partFrame->postDynStep();
 }

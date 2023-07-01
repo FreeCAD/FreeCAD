@@ -15,12 +15,12 @@ void AtPointConstraintIJ::initialize()
 	initriIeJeO();
 }
 
-void MbD::AtPointConstraintIJ::initializeLocally()
+void AtPointConstraintIJ::initializeLocally()
 {
 	riIeJeO->initializeLocally();
 }
 
-void MbD::AtPointConstraintIJ::initializeGlobally()
+void AtPointConstraintIJ::initializeGlobally()
 {
 	riIeJeO->initializeGlobally();
 }
@@ -30,41 +30,41 @@ void AtPointConstraintIJ::initriIeJeO()
 	riIeJeO = CREATE<DispCompIecJecO>::With(frmI, frmJ, axis);
 }
 
-void MbD::AtPointConstraintIJ::postInput()
+void AtPointConstraintIJ::postInput()
 {
 	riIeJeO->postInput();
 	Constraint::postInput();
 }
 
-void MbD::AtPointConstraintIJ::calcPostDynCorrectorIteration()
+void AtPointConstraintIJ::calcPostDynCorrectorIteration()
 {
 	aG = riIeJeO->riIeJeO - aConstant;
 }
 
-void MbD::AtPointConstraintIJ::prePosIC()
+void AtPointConstraintIJ::prePosIC()
 {
 	riIeJeO->prePosIC();
 	Constraint::prePosIC();
 }
 
-MbD::ConstraintType MbD::AtPointConstraintIJ::type()
+ConstraintType AtPointConstraintIJ::type()
 {
-	return MbD::displacement;
+	return displacement;
 }
 
-void MbD::AtPointConstraintIJ::postPosICIteration()
+void AtPointConstraintIJ::postPosICIteration()
 {
 	riIeJeO->postPosICIteration();
 	Item::postPosICIteration();
 }
 
-void MbD::AtPointConstraintIJ::preVelIC()
+void AtPointConstraintIJ::preVelIC()
 {
 	riIeJeO->preVelIC();
 	Item::preVelIC();
 }
 
-void MbD::AtPointConstraintIJ::preAccIC()
+void AtPointConstraintIJ::preAccIC()
 {
 	riIeJeO->preAccIC();
 	Constraint::preAccIC();

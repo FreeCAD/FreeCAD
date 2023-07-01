@@ -2,45 +2,45 @@
 
 using namespace MbD;
 
-MbD::DispCompIecJecKec::DispCompIecJecKec()
+DispCompIecJecKec::DispCompIecJecKec()
 {
 }
 
-MbD::DispCompIecJecKec::DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk): KinematicIeJe(frmi, frmj), efrmK(frmk), axisK(axisk)
+DispCompIecJecKec::DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk): KinematicIeJe(frmi, frmj), efrmK(frmk), axisK(axisk)
 {
 }
 
-FRowDsptr MbD::DispCompIecJecKec::pvaluepXJ()
-{
-    assert(false);
-    return FRowDsptr();
-}
-
-FRowDsptr MbD::DispCompIecJecKec::pvaluepEJ()
+FRowDsptr DispCompIecJecKec::pvaluepXJ()
 {
     assert(false);
     return FRowDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecKec::ppvaluepXJpEK()
+FRowDsptr DispCompIecJecKec::pvaluepEJ()
+{
+    assert(false);
+    return FRowDsptr();
+}
+
+FMatDsptr DispCompIecJecKec::ppvaluepXJpEK()
 {
     assert(false);
     return FMatDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecKec::ppvaluepEJpEK()
+FMatDsptr DispCompIecJecKec::ppvaluepEJpEK()
 {
     assert(false);
     return FMatDsptr();
 }
 
-FMatDsptr MbD::DispCompIecJecKec::ppvaluepEJpEJ()
+FMatDsptr DispCompIecJecKec::ppvaluepEJpEJ()
 {
     assert(false);
     return FMatDsptr();
 }
 
-double MbD::DispCompIecJecKec::value()
+double DispCompIecJecKec::value()
 {
     return riIeJeKe;
 }

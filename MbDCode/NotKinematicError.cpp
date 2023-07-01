@@ -2,6 +2,6 @@
 
 using namespace MbD;
 
-MbD::NotKinematicError::NotKinematicError(const std::string& msg) : std::runtime_error(msg)
+NotKinematicError::NotKinematicError(const std::string& msg) : std::runtime_error(msg)
 {
 }

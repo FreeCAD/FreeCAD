@@ -10,22 +10,23 @@
 #include "TooSmallStepSizeError.h"
 #include "TooManyTriesError.h"
 #include "SingularMatrixError.h"
+#include "DiscontinuityError.h"
 
 using namespace MbD;
 
-void MbD::QuasiIntegrator::preRun()
+void QuasiIntegrator::preRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDyn(); });
 }
 
-void MbD::QuasiIntegrator::initialize()
+void QuasiIntegrator::initialize()
 {
 	Solver::initialize();
 	integrator = CREATE<BasicQuasiIntegrator>::With();
 	integrator->setSystem(this);
 }
 
-void MbD::QuasiIntegrator::run()
+void QuasiIntegrator::run()
 {
 	try {
 		try {
@@ -65,17 +66,60 @@ void MbD::QuasiIntegrator::run()
 
 }
 
-void MbD::QuasiIntegrator::preFirstStep()
+void QuasiIntegrator::preFirstStep()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynFirstStep(); });
 }
 
-void MbD::QuasiIntegrator::preStep()
+void QuasiIntegrator::postFirstStep()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynFirstStep(); });
+	if (integrator->istep > 0) {
+		//"Noise make checking at the start unreliable."
+		this->checkForDiscontinuity();
+	}
+	this->checkForOutputThrough(integrator->t);
+}
+
+void QuasiIntegrator::preStep()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynStep(); });
 }
 
-double MbD::QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
+void QuasiIntegrator::checkForDiscontinuity()
+{
+	//"Check for discontinuity in (tpast,t] or [t,tpast) if integrating 
+	//backward."
+
+	auto t = integrator->t;
+	auto tprevious = integrator->tprevious();
+	auto epsilon = std::numeric_limits<double>::epsilon();
+	double tstartNew;
+	if (direction == 0) {
+		tstartNew = epsilon;
+	}
+	else {
+		epsilon = std::abs(t) * epsilon;
+		tstartNew = ((direction * t) + epsilon) / direction;
+	}
+	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { tstartNew = item->checkForDynDiscontinuityBetween(tprevious, tstartNew); });
+	if ((direction * tstartNew) > (direction * t)) {
+		//"No discontinuity in step"
+			return;
+	}
+	else {
+		this->checkForOutputThrough(tstartNew);
+			this->interpolateAt(tstartNew);
+			system->tstartPastsAddFirst(tstart);
+			system->tstart = tstartNew;
+			system->toutFirst = tout;
+			auto discontinuityTypes = std::make_shared<std::vector<DiscontinuityType>>();
+			system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->discontinuityAtaddTypeTo(tstartNew, discontinuityTypes); });
+			this->throwDiscontinuityError("", discontinuityTypes);
+	}
+}
+
+double QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
 {
 	auto hnew2 = hnew;
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { hnew2 = item->suggestSmallerOrAcceptDynFirstStepSize(hnew2); });
@@ -94,8 +138,68 @@ double MbD::QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
 	return hnew2;
 }
 
-void MbD::QuasiIntegrator::incrementTime(double tnew)
+double QuasiIntegrator::suggestSmallerOrAcceptStepSize(double hnew)
+{
+	auto hnew2 = hnew;
+	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { hnew2 = item->suggestSmallerOrAcceptDynStepSize(hnew2); });
+	if (hnew2 > hmax) {
+		hnew2 = hmax;
+		this->Solver::logString("StM: Step size is at user specified maximum.");
+	}
+	if (hnew2 < hmin) {
+		std::stringstream ss;
+		ss << "StM: Step size " << hnew2 << " < " << hmin << " user specified minimum.";
+		auto str = ss.str();
+		system->logString(str);
+		throw TooSmallStepSizeError("");
+	}
+	return hnew2;
+}
+
+void QuasiIntegrator::incrementTime(double tnew)
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->storeDynState(); });
 	IntegratorInterface::incrementTime(tnew);
+}
+
+void QuasiIntegrator::throwDiscontinuityError(const char* chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes)
+{
+	throw DiscontinuityError(chars, discontinuityTypes);
+}
+
+void QuasiIntegrator::checkForOutputThrough(double t)
+{
+	//"Kinematic analysis is done at every tout."
+	if (direction * t <= (direction * (tend + (0.1 * direction * hout)))) {
+		if (std::abs(tout - t) < 1.0e-12) {
+			system->output();
+			tout += direction * hout;
+		}
+	}
+	else {
+		integrator->_continue = false;
+	}
+}
+
+void QuasiIntegrator::interpolateAt(double tArg)
+{
+	//"Interpolate for system state at tArg and leave system in that state."
+	system->time(tArg);
+	this->runInitialConditionTypeSolution();
+}
+
+void QuasiIntegrator::postStep()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynStep(); });
+
+	if (integrator->istep > 0) {
+		//"Noise make checking at the start unreliable."
+		this->checkForDiscontinuity();
+	}
+	this->checkForOutputThrough(integrator->t);
+}
+
+void QuasiIntegrator::postRun()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDyn(); });
 }

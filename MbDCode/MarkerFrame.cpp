@@ -16,6 +16,11 @@ MarkerFrame::MarkerFrame()
 MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str) {
 }
 
+System* MarkerFrame::root()
+{
+	return partFrame->root();
+}
+
 void MarkerFrame::initialize()
 {
 	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
@@ -46,13 +51,13 @@ void MarkerFrame::initializeGlobally()
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->initializeGlobally(); });
 }
 
-void MbD::MarkerFrame::postInput()
+void MarkerFrame::postInput()
 {
 	Item::postInput();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postInput(); });
 }
 
-void MbD::MarkerFrame::calcPostDynCorrectorIteration()
+void MarkerFrame::calcPostDynCorrectorIteration()
 {
 	auto rOpO = partFrame->rOpO();
 	auto aAOp = partFrame->aAOp();
@@ -67,128 +72,148 @@ void MbD::MarkerFrame::calcPostDynCorrectorIteration()
 	}
 }
 
-void MbD::MarkerFrame::prePosIC()
+void MarkerFrame::prePosIC()
 {
 	Item::prePosIC();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->prePosIC(); });
 }
 
-int MbD::MarkerFrame::iqX()
+int MarkerFrame::iqX()
 {
 	return partFrame->iqX;
 }
 
-int MbD::MarkerFrame::iqE()
+int MarkerFrame::iqE()
 {
 	return partFrame->iqE;
 }
 
-void MbD::MarkerFrame::endFramesDo(const std::function<void(std::shared_ptr<EndFramec>)>& f)
+void MarkerFrame::endFramesDo(const std::function<void(std::shared_ptr<EndFramec>)>& f)
 {
 	std::for_each(endFrames->begin(), endFrames->end(), f);
 }
 
-void MbD::MarkerFrame::fillqsu(FColDsptr col)
+void MarkerFrame::fillqsu(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsu(col); });
 }
 
-void MbD::MarkerFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void MarkerFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuWeights(diagMat); });
 }
 
-void MbD::MarkerFrame::fillqsulam(FColDsptr col)
+void MarkerFrame::fillqsulam(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });
 }
 
-void MbD::MarkerFrame::fillqsudot(FColDsptr col)
+void MarkerFrame::fillqsudot(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudot(col); });
 }
 
-void MbD::MarkerFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void MarkerFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudotWeights(diagMat); });
 }
 
-void MbD::MarkerFrame::setqsu(FColDsptr col)
+void MarkerFrame::setqsu(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsu(col); });
 }
 
-void MbD::MarkerFrame::setqsulam(FColDsptr col)
+void MarkerFrame::setqsulam(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsulam(col); });
 }
 
-void MbD::MarkerFrame::setqsudotlam(FColDsptr col)
+void MarkerFrame::setqsudot(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsudot(col); });
+}
+
+void MarkerFrame::setqsudotlam(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsudotlam(col); });
 }
 
-void MbD::MarkerFrame::postPosICIteration()
+void MarkerFrame::postPosICIteration()
 {
 	Item::postPosICIteration();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosICIteration(); });
 }
 
-void MbD::MarkerFrame::postPosIC()
+void MarkerFrame::postPosIC()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosIC(); });
 }
 
-void MbD::MarkerFrame::preDyn()
+void MarkerFrame::preDyn()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preDyn(); });
 }
 
-void MbD::MarkerFrame::storeDynState()
+void MarkerFrame::storeDynState()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->storeDynState(); });
 }
 
-void MbD::MarkerFrame::preVelIC()
+void MarkerFrame::preVelIC()
 {
 	Item::preVelIC();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preVelIC(); });
 }
 
-void MbD::MarkerFrame::postVelIC()
+void MarkerFrame::postVelIC()
 {
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postVelIC(); });
 }
 
-void MbD::MarkerFrame::preAccIC()
+void MarkerFrame::preAccIC()
 {
 	Item::preAccIC();
 	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preAccIC(); });
 }
 
-FColDsptr MbD::MarkerFrame::qXdot()
+FColDsptr MarkerFrame::qXdot()
 {
 	return partFrame->qXdot;
 }
 
-std::shared_ptr<EulerParametersDot<double>> MbD::MarkerFrame::qEdot()
+std::shared_ptr<EulerParametersDot<double>> MarkerFrame::qEdot()
 {
 	return partFrame->qEdot;
 }
 
-FColDsptr MbD::MarkerFrame::qXddot()
+FColDsptr MarkerFrame::qXddot()
 {
 	return partFrame->qXddot;
 }
 
-FColDsptr MbD::MarkerFrame::qEddot()
+FColDsptr MarkerFrame::qEddot()
 {
 	return partFrame->qEddot;
 }
 
-void MbD::MarkerFrame::setqsuddotlam(FColDsptr qsudotlam)
+void MarkerFrame::setqsuddotlam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsuddotlam(qsudotlam); });
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsuddotlam(col); });
+}
+
+FColFMatDsptr MarkerFrame::pAOppE()
+{
+	return partFrame->pAOppE();
+}
+
+FMatDsptr MarkerFrame::aBOp()
+{
+	return partFrame->aBOp();
+}
+
+void MarkerFrame::postDynStep()
+{
+	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postDynStep(); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)

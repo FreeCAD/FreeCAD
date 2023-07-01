@@ -3,22 +3,22 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct()
+DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct()
 {
 }
 
-MbD::DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk)
+DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk)
 {
 }
 
-void MbD::DispCompIeqctJeqcKeqct::preVelIC()
+void DispCompIeqctJeqcKeqct::preVelIC()
 {
 	DispCompIeqcJeqcKeqct::preVelIC();
 	auto& mprIeJeOpt = std::static_pointer_cast<EndFrameqct>(frmI)->prOeOpt;
 	priIeJeKept -= aAjOKe->dot(mprIeJeOpt);
 }
 
-void MbD::DispCompIeqctJeqcKeqct::preAccIC()
+void DispCompIeqctJeqcKeqct::preAccIC()
 {
 	DispCompIeqcJeqcKeqct::preAccIC();
 	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);

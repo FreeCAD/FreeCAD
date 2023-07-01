@@ -17,26 +17,25 @@ namespace MbD {
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
-        virtual void iStep(int i);
-        virtual void postFirstStep();
+        void iStep(int i) override;
+        void postFirstStep() override;
+        void postStep() override;
         void postRun() override;
-        virtual void postStep();
-        virtual void preFirstStep();
-        virtual void preRun() override;
-        virtual void preStep();
-        virtual void reportStats() override;
+        void preFirstStep() override;
+        void preRun() override;
+        void preStep() override;
+        void reportStats() override;
         void run() override;
-        virtual void selectOrder();
-        virtual void subsequentSteps();
+        void selectOrder() override;
+        void subsequentSteps() override;
         void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
-        virtual void firstStep();
-        virtual void nextStep() = 0;
         
         virtual void setorder(int o);
         virtual void settnew(double t);
         virtual void sett(double t);
         void settime(double t);
+        double tprevious();
 
         IntegratorInterface* system;
         int istep = 0, iTry = 0, maxTry = 0;

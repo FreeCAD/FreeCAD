@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::LDUFullMatParPv::doPivoting(int p)
+void LDUFullMatParPv::doPivoting(int p)
 {
 	//"Use scalings. Do row pivoting."
 

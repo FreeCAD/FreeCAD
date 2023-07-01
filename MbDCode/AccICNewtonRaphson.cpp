@@ -1,12 +1,14 @@
 #include "AccICNewtonRaphson.h"
 #include "SystemSolver.h"
 
-bool MbD::AccICNewtonRaphson::isConverged()
+using namespace MbD;
+
+bool AccICNewtonRaphson::isConverged()
 {
 	return this->isConvergedToNumericalLimit();
 }
 
-void MbD::AccICNewtonRaphson::preRun()
+void AccICNewtonRaphson::preRun()
 {
 	std::string str("MbD: Solving for quasi kinematic acceleration.");
 	system->logString(str);

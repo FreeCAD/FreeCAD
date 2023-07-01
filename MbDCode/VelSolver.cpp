@@ -9,21 +9,21 @@
 
 using namespace MbD;
 
-void MbD::VelSolver::basicSolveEquations()
+void VelSolver::basicSolveEquations()
 {
 	x = matrixSolver->solvewithsaveOriginal(jacobian, errorVector, true);
 }
 
-void MbD::VelSolver::handleSingularMatrix()
+void VelSolver::handleSingularMatrix()
 {
 	std::string str = typeid(*matrixSolver).name();
-	if (str == "class MbD::GESpMatParPvMarkoFast") {
+	if (str == "class GESpMatParPvMarkoFast") {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
-		if (str == "class MbD::GESpMatParPvPrecise") {
+		if (str == "class GESpMatParPvPrecise") {
 			this->logSingularMatrixMessage();
 			matrixSolver = this->matrixSolverClassNew();
 		}
@@ -33,18 +33,18 @@ void MbD::VelSolver::handleSingularMatrix()
 	}
 }
 
-void MbD::VelSolver::logSingularMatrixMessage()
+void VelSolver::logSingularMatrixMessage()
 {
 	std::string str = "MbD: Velocity solver has encountered a singular matrix.";
 	system->logString(str);
 }
 
-std::shared_ptr<MatrixSolver> MbD::VelSolver::matrixSolverClassNew()
+std::shared_ptr<MatrixSolver> VelSolver::matrixSolverClassNew()
 {
 	return CREATE<GESpMatParPvPrecise>::With();
 }
 
-void MbD::VelSolver::solveEquations()
+void VelSolver::solveEquations()
 {
 	try {
 		this->basicSolveEquations();
@@ -54,7 +54,7 @@ void MbD::VelSolver::solveEquations()
 	}
 }
 
-void MbD::VelSolver::setSystem(Solver* sys)
+void VelSolver::setSystem(Solver* sys)
 {
 	system = static_cast<SystemSolver*>(sys);
 }

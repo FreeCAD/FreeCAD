@@ -7,7 +7,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatFullPvPosIC::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMatFullPvPosIC::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	GESpMatFullPv::preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	if (system == nullptr) {
@@ -19,7 +19,7 @@ void MbD::GESpMatFullPvPosIC::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsp
 	pivotRowLimit = -1;
 }
 
-void MbD::GESpMatFullPvPosIC::doPivoting(int p)
+void GESpMatFullPvPosIC::doPivoting(int p)
 {
 	//"Used by Gauss Elimination only."
 	//"Swap rows but keep columns in place."

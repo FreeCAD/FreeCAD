@@ -3,15 +3,15 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqcJeqcO::DispCompIeqcJeqcO()
+DispCompIeqcJeqcO::DispCompIeqcJeqcO()
 {
 }
 
-MbD::DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIeqcJecO(frmi, frmj, axis)
+DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIeqcJecO(frmi, frmj, axis)
 {
 }
 
-void MbD::DispCompIeqcJeqcO::initializeGlobally()
+void DispCompIeqcJeqcO::initializeGlobally()
 {
 	DispCompIeqcJecO::initializeGlobally();
 	priIeJeOpXJ = std::make_shared<FullRow<double>>(3, 0.0);
@@ -19,23 +19,23 @@ void MbD::DispCompIeqcJeqcO::initializeGlobally()
 	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppriOeOpEpE(axis);
 }
 
-void MbD::DispCompIeqcJeqcO::calcPostDynCorrectorIteration()
+void DispCompIeqcJeqcO::calcPostDynCorrectorIteration()
 {
 	DispCompIeqcJecO::calcPostDynCorrectorIteration();
 	priIeJeOpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->priOeOpE(axis);
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcO::pvaluepXJ()
+FRowDsptr DispCompIeqcJeqcO::pvaluepXJ()
 {
 	return priIeJeOpXJ;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcO::pvaluepEJ()
+FRowDsptr DispCompIeqcJeqcO::pvaluepEJ()
 {
 	return priIeJeOpEJ;
 }
 
-FMatDsptr MbD::DispCompIeqcJeqcO::ppvaluepEJpEJ()
+FMatDsptr DispCompIeqcJeqcO::ppvaluepEJpEJ()
 {
 	return ppriIeJeOpEJpEJ;
 }

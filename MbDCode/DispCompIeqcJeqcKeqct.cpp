@@ -4,15 +4,15 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
+DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
 {
 }
 
-MbD::DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
+DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
 {
 }
 
-void MbD::DispCompIeqcJeqcKeqct::initialize()
+void DispCompIeqcJeqcKeqct::initialize()
 {
 	DispCompIeqcJeqcKeqc::initialize();
 	ppriIeJeKepXIpt = std::make_shared<FullRow<double>>(3);
@@ -22,7 +22,7 @@ void MbD::DispCompIeqcJeqcKeqct::initialize()
 	ppriIeJeKepEKpt = std::make_shared<FullRow<double>>(4);
 }
 
-void MbD::DispCompIeqcJeqcKeqct::calcPostDynCorrectorIteration()
+void DispCompIeqcJeqcKeqct::calcPostDynCorrectorIteration()
 {
 	//"ppAjOIepEKpEK is not longer constant and must be set before any calculation."
 	auto efrmKqc = std::static_pointer_cast<EndFrameqc>(efrmK);
@@ -30,49 +30,49 @@ void MbD::DispCompIeqcJeqcKeqct::calcPostDynCorrectorIteration()
 	DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration();
 }
 
-void MbD::DispCompIeqcJeqcKeqct::preVelIC()
+void DispCompIeqcJeqcKeqct::preVelIC()
 {
 	Item::preVelIC();
 	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);
 	priIeJeKept = pAjOKept->dot(rIeJeO);
 }
 
-double MbD::DispCompIeqcJeqcKeqct::pvaluept()
+double DispCompIeqcJeqcKeqct::pvaluept()
 {
 	return priIeJeKept;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepXIpt()
+FRowDsptr DispCompIeqcJeqcKeqct::ppvaluepXIpt()
 {
 	return ppriIeJeKepXIpt;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEIpt()
+FRowDsptr DispCompIeqcJeqcKeqct::ppvaluepEIpt()
 {
 	return ppriIeJeKepEIpt;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEKpt()
+FRowDsptr DispCompIeqcJeqcKeqct::ppvaluepEKpt()
 {
 	return ppriIeJeKepEKpt;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepXJpt()
+FRowDsptr DispCompIeqcJeqcKeqct::ppvaluepXJpt()
 {
 	return ppriIeJeKepXJpt;
 }
 
-FRowDsptr MbD::DispCompIeqcJeqcKeqct::ppvaluepEJpt()
+FRowDsptr DispCompIeqcJeqcKeqct::ppvaluepEJpt()
 {
 	return ppriIeJeKepEJpt;
 }
 
-double MbD::DispCompIeqcJeqcKeqct::ppvalueptpt()
+double DispCompIeqcJeqcKeqct::ppvalueptpt()
 {
 	return ppriIeJeKeptpt;
 }
 
-void MbD::DispCompIeqcJeqcKeqct::preAccIC()
+void DispCompIeqcJeqcKeqct::preAccIC()
 {
 	Item::preAccIC();
 	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);

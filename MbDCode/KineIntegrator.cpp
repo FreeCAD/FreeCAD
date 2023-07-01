@@ -2,19 +2,44 @@
 
 #include "KineIntegrator.h"
 #include "SystemSolver.h"
+#include "Solver.h"
 
 using namespace MbD;
 
-void MbD::KineIntegrator::preRun()
+void KineIntegrator::preRun()
 {
-	std::string str = "MbD: Starting kinematic analysis.";
-	system->logString(str);
+	system->Solver::logString("MbD: Starting kinematic analysis.");
 	QuasiIntegrator::preRun();
 }
 
-void MbD::KineIntegrator::runInitialConditionTypeSolution()
+void KineIntegrator::firstStep()
+{
+	assert(false);
+}
+
+void KineIntegrator::subsequentSteps()
+{
+	assert(false);
+}
+
+void KineIntegrator::nextStep()
+{
+	assert(false);
+}
+
+void KineIntegrator::runInitialConditionTypeSolution()
 {
 	system->runPosKine();
 	system->runVelKine();
 	system->runAccKine();
+}
+
+void KineIntegrator::iStep(int i)
+{
+	assert(false);
+}
+
+void KineIntegrator::selectOrder()
+{
+	assert(false);
 }

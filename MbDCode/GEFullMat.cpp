@@ -4,12 +4,12 @@
 
 using namespace MbD;
 
-void MbD::GEFullMat::forwardEliminateWithPivot(int p)
+void GEFullMat::forwardEliminateWithPivot(int p)
 {
 	assert(false);
 }
 
-void MbD::GEFullMat::backSubstituteIntoDU()
+void GEFullMat::backSubstituteIntoDU()
 {
 	answerX = std::make_shared<FullColumn<double>>(n);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
@@ -25,27 +25,27 @@ void MbD::GEFullMat::backSubstituteIntoDU()
 	}
 }
 
-void MbD::GEFullMat::postSolve()
+void GEFullMat::postSolve()
 {
 	assert(false);
 }
 
-void MbD::GEFullMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void GEFullMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 }
 
-void MbD::GEFullMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GEFullMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 }
 
-double MbD::GEFullMat::getmatrixArowimaxMagnitude(int i)
+double GEFullMat::getmatrixArowimaxMagnitude(int i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }
 
-FColDsptr MbD::GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->preSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
 	for (int p = 0; p < m; p++)
@@ -58,7 +58,7 @@ FColDsptr MbD::GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDspt
 	return answerX;
 }
 
-FColDsptr MbD::GEFullMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr GEFullMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	assert(false);
 	return FColDsptr();

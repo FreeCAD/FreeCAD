@@ -11,7 +11,7 @@ namespace MbD {
         void initializeGlobally() override;
         void initriIeJeO() override;
         void calcPostDynCorrectorIteration() override;
-        MbD::ConstraintType type() override;
+        ConstraintType type() override;
         void preVelIC() override;
         void fillVelICError(FColDsptr col) override;
         void fillAccICIterError(FColDsptr col) override;

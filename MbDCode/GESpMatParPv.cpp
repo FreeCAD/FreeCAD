@@ -4,7 +4,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPv::forwardEliminateWithPivot(int p)
+void GESpMatParPv::forwardEliminateWithPivot(int p)
 {
 	//"rightHandSideB may be multidimensional."
 
@@ -36,7 +36,7 @@ void MbD::GESpMatParPv::forwardEliminateWithPivot(int p)
 	}
 }
 
-void MbD::GESpMatParPv::backSubstituteIntoDU()
+void GESpMatParPv::backSubstituteIntoDU()
 {
 	//"DU is upper triangular with nonzero diagonals."
 
@@ -64,6 +64,6 @@ void MbD::GESpMatParPv::backSubstituteIntoDU()
 	}
 }
 
-void MbD::GESpMatParPv::postSolve()
+void GESpMatParPv::postSolve()
 {
 }

@@ -26,7 +26,10 @@ namespace MbD {
 		virtual std::shared_ptr<std::vector<std::shared_ptr<Symbolic>>> getTerms();
 		virtual double getValue();
 
-		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym);
+		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym)
+		{
+			return sym.printOn(s);
+		}
 	};
 	using Symsptr = std::shared_ptr<Symbolic>;
 }

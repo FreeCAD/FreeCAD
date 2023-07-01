@@ -15,38 +15,38 @@ DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, i
 
 }
 
-void MbD::DirectionCosineIecJec::calcPostDynCorrectorIteration()
+void DirectionCosineIecJec::calcPostDynCorrectorIteration()
 {
 	aAjOIe = frmI->aAjOe(axisI);
 	aAjOJe = frmJ->aAjOe(axisJ);
 	aAijIeJe = aAjOIe->dot(aAjOJe);
 }
 
-FRowDsptr MbD::DirectionCosineIecJec::pvaluepXJ()
+FRowDsptr DirectionCosineIecJec::pvaluepXJ()
 {
 	assert(false);
 	return FRowDsptr();
 }
 
-FRowDsptr MbD::DirectionCosineIecJec::pvaluepEJ()
+FRowDsptr DirectionCosineIecJec::pvaluepEJ()
 {
 	assert(false);
 	return FRowDsptr();
 }
 
-FMatDsptr MbD::DirectionCosineIecJec::ppvaluepXJpEK()
+FMatDsptr DirectionCosineIecJec::ppvaluepXJpEK()
 {
 	assert(false);
 	return FMatDsptr();
 }
 
-FMatDsptr MbD::DirectionCosineIecJec::ppvaluepEJpEK()
+FMatDsptr DirectionCosineIecJec::ppvaluepEJpEK()
 {
 	assert(false);
 	return FMatDsptr();
 }
 
-FMatDsptr MbD::DirectionCosineIecJec::ppvaluepEJpEJ()
+FMatDsptr DirectionCosineIecJec::ppvaluepEJpEJ()
 {
 	assert(false);
 	return FMatDsptr();

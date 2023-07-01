@@ -12,7 +12,7 @@
 
 using namespace MbD;
 
-void MbD::PosICNewtonRaphson::run()
+void PosICNewtonRaphson::run()
 {
 	while (true) {
 		try {
@@ -28,14 +28,14 @@ void MbD::PosICNewtonRaphson::run()
 	}
 }
 
-void MbD::PosICNewtonRaphson::preRun()
+void PosICNewtonRaphson::preRun()
 {
 	std::string str("MbD: Assembling system. ");
 	system->logString(str);
 	PosNewtonRaphson::preRun();
 }
 
-void MbD::PosICNewtonRaphson::assignEquationNumbers()
+void PosICNewtonRaphson::assignEquationNumbers()
 {
 	auto parts = system->parts();
 	//auto contactEndFrames = system->contactEndFrames();
@@ -81,12 +81,12 @@ void MbD::PosICNewtonRaphson::assignEquationNumbers()
 	pivotRowLimits = std::make_shared<std::vector<int>>(rangelimits);
 }
 
-bool MbD::PosICNewtonRaphson::isConverged()
+bool PosICNewtonRaphson::isConverged()
 {
 	return this->isConvergedToNumericalLimit();
 }
 
-void MbD::PosICNewtonRaphson::handleSingularMatrix()
+void PosICNewtonRaphson::handleSingularMatrix()
 {
 	nSingularMatrixError++;
 	if (nSingularMatrixError = 1){
@@ -95,13 +95,13 @@ void MbD::PosICNewtonRaphson::handleSingularMatrix()
 	}
 	else {
 		std::string str = typeid(*matrixSolver).name();
-		if (str == "class MbD::GESpMatParPvMarkoFast") {
+		if (str == "class GESpMatParPvMarkoFast") {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 		}
 		else {
 			str = typeid(*matrixSolver).name();
-			if (str == "class MbD::GESpMatParPvPrecise") {
+			if (str == "class GESpMatParPvPrecise") {
 				this->lookForRedundantConstraints();
 				matrixSolver = this->matrixSolverClassNew();
 			}
@@ -112,7 +112,7 @@ void MbD::PosICNewtonRaphson::handleSingularMatrix()
 	}
 }
 
-void MbD::PosICNewtonRaphson::lookForRedundantConstraints()
+void PosICNewtonRaphson::lookForRedundantConstraints()
 {
 	std::string str("MbD: Checking for redundant constraints.");
 	system->logString(str);

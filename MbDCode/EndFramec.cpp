@@ -12,6 +12,11 @@ EndFramec::EndFramec() {
 EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
 }
 
+System* EndFramec::root()
+{
+	return markerFrame->root();
+}
+
 void EndFramec::initialize()
 {
 }
@@ -35,18 +40,38 @@ void EndFramec::initEndFrameqct()
 	assert(false);
 }
 
-void MbD::EndFramec::calcPostDynCorrectorIteration()
+void EndFramec::calcPostDynCorrectorIteration()
 {
 	rOeO = markerFrame->rOmO;
 	aAOe = markerFrame->aAOm;
 }
 
-FColDsptr MbD::EndFramec::aAjOe(int j)
+FColDsptr EndFramec::aAjOe(int j)
 {
 	return aAOe->column(j);
 }
 
-double MbD::EndFramec::riOeO(int i)
+double EndFramec::riOeO(int i)
 {
 	return rOeO->at(i);
+}
+
+FColDsptr EndFramec::rmeO()
+{
+	return rOeO->minusFullColumn(markerFrame->rOmO);
+}
+
+FColDsptr EndFramec::rpep()
+{
+	return FColDsptr();
+}
+
+FColFMatDsptr EndFramec::pAOppE()
+{
+	return FColFMatDsptr();
+}
+
+FMatDsptr EndFramec::aBOp()
+{
+	return FMatDsptr();
 }

@@ -35,12 +35,12 @@ double Variable::getValue()
 	return value;
 }
 
-std::ostream& MbD::Variable::printOn(std::ostream& s) const
+std::ostream& Variable::printOn(std::ostream& s) const
 {
 	return s << this->name;
 }
 
-void MbD::Variable::setValue(double val)
+void Variable::setValue(double val)
 {
 	value = val;
 }

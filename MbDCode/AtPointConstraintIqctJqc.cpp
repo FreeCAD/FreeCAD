@@ -9,7 +9,7 @@ AtPointConstraintIqctJqc::AtPointConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr f
 {
 }
 
-void MbD::AtPointConstraintIqctJqc::initializeGlobally()
+void AtPointConstraintIqctJqc::initializeGlobally()
 {
 	riIeJeO->initializeGlobally();
 	ppGpEJpEJ = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEJpEJ;
@@ -20,7 +20,7 @@ void AtPointConstraintIqctJqc::initriIeJeO()
 	riIeJeO = CREATE<DispCompIeqctJeqcO>::With(frmI, frmJ, axis);
 }
 
-void MbD::AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
+void AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
 {
 	//"ppGpEIpEI is no longer constant."
 
@@ -28,23 +28,23 @@ void MbD::AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
 	AtPointConstraintIqcJqc::calcPostDynCorrectorIteration();
 }
 
-MbD::ConstraintType MbD::AtPointConstraintIqctJqc::type()
+ConstraintType AtPointConstraintIqctJqc::type()
 {
-	return MbD::essential;
+	return essential;
 }
 
-void MbD::AtPointConstraintIqctJqc::preVelIC()
+void AtPointConstraintIqctJqc::preVelIC()
 {
 	AtPointConstraintIJ::preVelIC();
 	pGpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->priIeJeOpt;
 }
 
-void MbD::AtPointConstraintIqctJqc::fillVelICError(FColDsptr col)
+void AtPointConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
 	col->atiminusNumber(iG, pGpt);
 }
 
-void MbD::AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
+void AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	AtPointConstraintIqcJqc::fillAccICIterError(col);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
@@ -54,7 +54,7 @@ void MbD::AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 	col->atiplusNumber(iG, sum);
 }
 
-void MbD::AtPointConstraintIqctJqc::preAccIC()
+void AtPointConstraintIqctJqc::preAccIC()
 {
 	AtPointConstraintIJ::preAccIC();
 	ppGpEIpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEIpt;

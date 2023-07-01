@@ -3,7 +3,7 @@
 
 using namespace MbD;
 
-Symsptr MbD::Sum::timesSum(Symsptr sptr, Symsptr aSum)
+Symsptr Sum::timesSum(Symsptr sptr, Symsptr aSum)
 {
 	auto answer = std::make_shared<Sum>();
 	auto sumTERMs = aSum->getTerms();
@@ -22,17 +22,17 @@ Symsptr MbD::Sum::timesSum(Symsptr sptr, Symsptr aSum)
 	return answer;
 }
 
-Symsptr MbD::Sum::timesProduct(Symsptr sptr, Symsptr product)
+Symsptr Sum::timesProduct(Symsptr sptr, Symsptr product)
 {
 	return product->timesSum(product, sptr);
 }
 
-Symsptr MbD::Sum::timesFunction(Symsptr sptr, Symsptr function)
+Symsptr Sum::timesFunction(Symsptr sptr, Symsptr function)
 {
 	return function->timesSum(function, sptr);
 }
 
-Symsptr MbD::Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) {return sptr.get() == sym.get(); });
 	if (itr != set->end()) {
@@ -64,7 +64,7 @@ Symsptr MbD::Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<S
 	}
 }
 
-Symsptr MbD::Sum::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr Sum::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [this](Symsptr sym) {return this == (sym.get()); });
 	if (itr != set->end()) {
@@ -100,7 +100,7 @@ Symsptr MbD::Sum::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set
 	}
 }
 
-bool MbD::Sum::isSum()
+bool Sum::isSum()
 {
 	return true;
 }
@@ -112,7 +112,7 @@ double Sum::getValue()
 	return answer;
 }
 
-std::ostream& MbD::Sum::printOn(std::ostream& s) const
+std::ostream& Sum::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));

@@ -2,7 +2,7 @@
 
 using namespace MbD;
 
-void MbD::StableBackwardDifference::formTaylorMatrix()
+void StableBackwardDifference::formTaylorMatrix()
 {
 	//This form is numerically more stable and is prefered over the full Taylor Matrix.
 	//For method order 3:
@@ -17,14 +17,14 @@ void MbD::StableBackwardDifference::formTaylorMatrix()
 	}
 }
 
-void MbD::StableBackwardDifference::instantiateTaylorMatrix()
+void StableBackwardDifference::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order))) {
 		taylorMatrix = std::make_shared<FullMatrix<double>>(order, order);
 	}
 }
 
-void MbD::StableBackwardDifference::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
+void StableBackwardDifference::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
 {
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);

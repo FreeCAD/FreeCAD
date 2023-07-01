@@ -15,12 +15,12 @@ Symsptr Constant::differentiateWRT(Symsptr sptr, Symsptr var)
 	return std::make_shared<Constant>(0.0);
 }
 
-bool MbD::Constant::isConstant()
+bool Constant::isConstant()
 {
 	return true;
 }
 
-std::ostream& MbD::Constant::printOn(std::ostream& s) const
+std::ostream& Constant::printOn(std::ostream& s) const
 {
 	return s << this->value;
 }

@@ -9,8 +9,7 @@
 namespace MbD {
 	class System;
 	class PartFrame;
-	template<typename T>
-	class DiagonalMatrix;
+	template<typename T> class DiagonalMatrix;
 
 	class Part : public Item
 	{
@@ -18,6 +17,7 @@ namespace MbD {
 	public:
 		Part();
 		Part(const char* str);
+		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
@@ -45,7 +45,10 @@ namespace MbD {
 		FColDsptr qXddot();
 		void qEddot(FColDsptr x);
 		FColDsptr qEddot();
-		void setSystem(System& sys);
+		FMatDsptr aAOp();
+		FColDsptr alpOpO();
+		
+		void setSystem(System* sys);
 		void asFixed();
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
@@ -65,6 +68,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
+		void setqsudot(FColDsptr col) override;
 		void setqsudotlam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void fillPosICError(FColDsptr col) override;
@@ -93,8 +97,12 @@ namespace MbD {
 		void fillAccICIterError(FColDsptr col) override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
 		std::shared_ptr<EulerParametersDot<double>> qEdot();
-		void setqsuddotlam(FColDsptr qsudotlam) override;
+		void setqsuddotlam(FColDsptr col) override;
+		std::shared_ptr<StateData> stateData() override;
+		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
+		void postDynStep() override;
 
+		System* system;	//Use raw pointer when pointing backwards.
 		int ipX = -1; 
 		int ipE = -1; 
 		double m = 0.0; 

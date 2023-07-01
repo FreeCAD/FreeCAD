@@ -28,6 +28,9 @@ namespace MbD {
         std::shared_ptr<EulerParametersDot<double>> qEdot();
         FColDsptr qXddot();
         FColDsptr qEddot();
+        FColDsptr rpep() override;
+        FColFMatDsptr pAOppE() override;
+        FMatDsptr aBOp() override;
 
         FMatDsptr prOeOpE;
         std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;

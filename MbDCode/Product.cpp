@@ -7,7 +7,7 @@
 
 using namespace MbD;
 
-Symsptr MbD::Product::differentiateWRT(Symsptr sptr, Symsptr var)
+Symsptr Product::differentiateWRT(Symsptr sptr, Symsptr var)
 {
 	//"Apply chain rule of differentiation."
 	//	"(xyz)' := x'yz + xy'z + xyz'."
@@ -33,7 +33,7 @@ Symsptr MbD::Product::differentiateWRT(Symsptr sptr, Symsptr var)
 	return answer;
 }
 
-Symsptr MbD::Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) {return sptr.get() == sym.get(); });
 	if (itr != set->end()) {
@@ -64,7 +64,7 @@ Symsptr MbD::Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_s
 	return factor->timesSum(factor, sumOfProductsOfSums);
 }
 
-Symsptr MbD::Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [this](Symsptr sym) {return this == (sym.get()); });
 	if (itr != set->end()) {
@@ -103,7 +103,7 @@ Symsptr MbD::Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered
 	}
 }
 
-Symsptr MbD::Product::timesSum(Symsptr sptr, Symsptr aSum)
+Symsptr Product::timesSum(Symsptr sptr, Symsptr aSum)
 {
 	auto answer = std::make_shared<Sum>();
 	auto sumTERMs = aSum->getTerms();
@@ -120,7 +120,7 @@ Symsptr MbD::Product::timesSum(Symsptr sptr, Symsptr aSum)
 	return answer;
 }
 
-Symsptr MbD::Product::timesProduct(Symsptr sptr, Symsptr product)
+Symsptr Product::timesProduct(Symsptr sptr, Symsptr product)
 {
 	auto answer = std::make_shared<Product>(sptr->getTerms());
 	auto& answerTerms = answer->terms;
@@ -129,14 +129,14 @@ Symsptr MbD::Product::timesProduct(Symsptr sptr, Symsptr product)
 	return answer;
 }
 
-Symsptr MbD::Product::timesFunction(Symsptr sptr, Symsptr function)
+Symsptr Product::timesFunction(Symsptr sptr, Symsptr function)
 {
 	auto answer = std::make_shared<Product>(sptr->getTerms());
 	answer->terms->push_back(function);
 	return answer;
 }
 
-std::ostream& MbD::Product::printOn(std::ostream& s) const
+std::ostream& Product::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));
@@ -148,7 +148,7 @@ std::ostream& MbD::Product::printOn(std::ostream& s) const
 	return s;
 }
 
-bool MbD::Product::isProduct()
+bool Product::isProduct()
 {
 	return true;
 }

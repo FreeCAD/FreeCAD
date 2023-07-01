@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::GESpMatParPvMarko::doPivoting(int p)
+void GESpMatParPvMarko::doPivoting(int p)
 {
 	//"Search from bottom to top."
 	//"Check for singular pivot."
@@ -67,7 +67,7 @@ void MbD::GESpMatParPvMarko::doPivoting(int p)
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }
 
-void MbD::GESpMatParPvMarko::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMatParPvMarko::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	//"Optimized for speed."
 	if (m != spMat->nrow() || n != spMat->ncol()) {

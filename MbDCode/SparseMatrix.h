@@ -42,11 +42,7 @@ namespace MbD {
 		void atijminusNumber(int i, int j, double value);
 		void atijput(int i, int j, T value);
 
-		virtual std::ostream& printOn(std::ostream& s) const;
-		friend std::ostream& operator<<(std::ostream& s, const SparseMatrix& spMat)
-		{
-			return spMat.printOn(s);
-		}
+		std::ostream& printOn(std::ostream& s) const override;
 		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
 
 	};

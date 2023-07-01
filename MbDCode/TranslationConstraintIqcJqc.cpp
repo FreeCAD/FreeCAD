@@ -10,12 +10,12 @@ TranslationConstraintIqcJqc::TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrm
 {
 }
 
-void MbD::TranslationConstraintIqcJqc::initriIeJeIe()
+void TranslationConstraintIqcJqc::initriIeJeIe()
 {
 	riIeJeIe = CREATE<DispCompIeqcJeqcKeqc>::With(frmI, frmJ, frmI, axisI);
 }
 
-void MbD::TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
+void TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
 {
 	TranslationConstraintIqcJc::calcPostDynCorrectorIteration();
 	pGpXJ = riIeJeIe->pvaluepXJ();
@@ -25,21 +25,21 @@ void MbD::TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
 	ppGpEJpEJ = riIeJeIe->ppvaluepEJpEJ();
 }
 
-void MbD::TranslationConstraintIqcJqc::useEquationNumbers()
+void TranslationConstraintIqcJqc::useEquationNumbers()
 {
 	TranslationConstraintIqcJc::useEquationNumbers();
 	iqXJ = std::static_pointer_cast<EndFrameqc>(frmJ)->iqX();
 	iqEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->iqE();
 }
 
-void MbD::TranslationConstraintIqcJqc::fillPosICError(FColDsptr col)
+void TranslationConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	TranslationConstraintIqcJc::fillPosICError(col);
 	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 
-void MbD::TranslationConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
+void TranslationConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	TranslationConstraintIqcJc::fillPosICJacob(mat);
 	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
@@ -55,14 +55,14 @@ void MbD::TranslationConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
-void MbD::TranslationConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
+void TranslationConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 {
 	TranslationConstraintIqcJc::fillPosKineJacob(mat);
 	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
 	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
 }
 
-void MbD::TranslationConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
+void TranslationConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 {
 	TranslationConstraintIqcJc::fillVelICJacob(mat);
 	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
@@ -71,7 +71,7 @@ void MbD::TranslationConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
-void MbD::TranslationConstraintIqcJqc::fillAccICIterError(FColDsptr col)
+void TranslationConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 {
 	TranslationConstraintIqcJc::fillAccICIterError(col);
 	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);

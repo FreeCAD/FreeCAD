@@ -24,6 +24,7 @@ namespace MbD {
 	public:
 		PartFrame();
 		PartFrame(const char* str);
+		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
@@ -43,6 +44,8 @@ namespace MbD {
 		FColDsptr getqXddot();
 		void setqEddot(FColDsptr x);
 		FColDsptr getqEddot();
+		FColDsptr omeOpO();
+
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
@@ -59,6 +62,7 @@ namespace MbD {
 		FMatDsptr aAOp();
 		FMatDsptr aC();
 		FMatDsptr aCdot();
+		FColDsptr alpOpO();
 		FColFMatDsptr pAOppE();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
@@ -72,6 +76,8 @@ namespace MbD {
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void setqsudotlam(FColDsptr col) override;
+		void setqsudot(FColDsptr col) override;
+		void setqsuddotlam(FColDsptr col) override;
 		void postPosICIteration() override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
@@ -87,7 +93,10 @@ namespace MbD {
 		void preAccIC() override;
 		void fillAccICIterError(FColDsptr col) override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
-		void setqsuddotlam(FColDsptr qsudotlam) override;
+		FMatDsptr aBOp();
+		void fillPosKineJacob(SpMatDsptr mat) override;
+		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
+		void postDynStep() override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
 		int iqX = -1;

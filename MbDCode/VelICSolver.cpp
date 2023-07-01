@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-void MbD::VelICSolver::assignEquationNumbers()
+void VelICSolver::assignEquationNumbers()
 {
 	auto parts = system->parts();
 	//auto contactEndFrames = system->contactEndFrames();
@@ -37,14 +37,14 @@ void MbD::VelICSolver::assignEquationNumbers()
 	n = nEqns;
 }
 
-void MbD::VelICSolver::run()
+void VelICSolver::run()
 {
 	std::string str = "MbD: Solving for velocity initial conditions.";
 	system->logString(str);
 	this->runBasic();
 }
 
-void MbD::VelICSolver::runBasic()
+void VelICSolver::runBasic()
 {
 	//| qsudotOld qsudotWeights qsudotlam |
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->preVelIC(); });
@@ -64,7 +64,7 @@ void MbD::VelICSolver::runBasic()
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillVelICJacob(jacobian); });
 		matrixSolver = this->matrixSolverClassNew();
 		this->solveEquations();
-		auto qsudotlam = this->x;
+		auto& qsudotlam = this->x;
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsudotlam(qsudotlam); });
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->postVelIC(); });
 }

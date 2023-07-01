@@ -3,7 +3,7 @@
 
 using namespace MbD;
 
-void MbD::BasicQuasiIntegrator::firstStep()
+void BasicQuasiIntegrator::firstStep()
 {
 	istep = 0;
 	this->preFirstStep();
@@ -13,47 +13,34 @@ void MbD::BasicQuasiIntegrator::firstStep()
 	this->incrementTime();
 	this->runInitialConditionTypeSolution();
 	//this->reportTrialStepStats();
-
-	//while (this->isRedoingFirstStep())
-	//{
-	//	this->incrementTry();
-	//	orderNew = 1;
-	//	this->selectFirstStepSize();
-	//	this->changeTime();
-	//	this->runInitialConditionTypeSolution();
-	//	this->reportTrialStepStats();
-	//}
-	//this->postFirstStep();
+	this->postFirstStep();
 	//this->reportStepStats();
 }
 
-void MbD::BasicQuasiIntegrator::nextStep()
+bool BasicQuasiIntegrator::isRedoingFirstStep()
+{
+	return false;
+}
+
+void BasicQuasiIntegrator::nextStep()
 {
 	this->preStep();
 	iTry = 1;
 	this->selectOrder();
-	//this->selectStepSize();
-	//this->incrementTime();
-	//this->runInitialConditionTypeSolution();
+	this->selectStepSize();
+	this->incrementTime();
+	this->runInitialConditionTypeSolution();
 	//this->reportTrialStepStats();
-	//while (this->isRedoingStep()) {
-	//	this->incrementTry();
-	//	this->selectOrder();
-	//	this->selectStepSize();
-	//	this->changeTime();
-	//	this->runInitialConditionTypeSolution();
-	//	this->reportTrialStepStats();
-	//}
-	//this->postStep();
+	this->postStep();
 	//this->reportStepStats();
 }
 
-void MbD::BasicQuasiIntegrator::runInitialConditionTypeSolution()
+void BasicQuasiIntegrator::runInitialConditionTypeSolution()
 {
 	system->runInitialConditionTypeSolution();
 }
 
-void MbD::BasicQuasiIntegrator::selectFirstStepSize()
+void BasicQuasiIntegrator::selectFirstStepSize()
 {
 	if (iTry == 1) {
 		hnew = direction * (system->tout - t);
@@ -62,4 +49,15 @@ void MbD::BasicQuasiIntegrator::selectFirstStepSize()
 		hnew = 0.25 * h;
 	}
 	hnew = system->suggestSmallerOrAcceptFirstStepSize(hnew);
+}
+
+void BasicQuasiIntegrator::selectStepSize()
+{
+	if (iTry == 1) {
+		hnew = direction * (system->tout - t);
+	}
+	else {
+		hnew = 0.25 * h;
+	}
+	hnew = system->suggestSmallerOrAcceptStepSize(hnew);
 }

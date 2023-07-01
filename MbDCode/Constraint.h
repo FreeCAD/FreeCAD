@@ -22,7 +22,7 @@ namespace MbD {
 		virtual void fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
 		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
 		virtual void fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints);
-		virtual MbD::ConstraintType type();
+		virtual ConstraintType type();
 		void fillqsulam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void setqsudotlam(FColDsptr col) override;
@@ -35,13 +35,14 @@ namespace MbD {
 		void fillPosKineError(FColDsptr col) override;
 		void preAccIC() override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
-		void setqsuddotlam(FColDsptr qsudotlam) override;
-
+		void setqsuddotlam(FColDsptr col) override;
+		virtual void addToJointForceI(FColDsptr col);
+		virtual void addToJointTorqueI(FColDsptr col);
+		
 		int iG = -1;
 		double aG = 0.0;		//Constraint function
 		double lam = 0.0;		//Lambda is Lagrange Multiplier
 		double mu = 0, lamDeriv = 0;
-		Item* owner;	//A Joint or PartFrame owns the constraint.  //Use raw pointer when pointing backwards.
 	};
 }
 
