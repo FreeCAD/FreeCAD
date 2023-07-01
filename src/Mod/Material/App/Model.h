@@ -81,6 +81,8 @@ public:
     void setDescription(const std::string& description) { _description = description; }
     void setInheritance(const std::string &uuid) { _inheritance = uuid; }
 
+    void addColumn(ModelProperty &column) { _columns.push_back(column); }
+
 private:
     std::string _name;
     std::string _propertyType;
@@ -88,6 +90,7 @@ private:
     std::string _url;
     std::string _description;
     std::string _inheritance;
+    std::list<ModelProperty> _columns;
 };
 
 class MaterialsExport ModelValueProperty : public ModelProperty
@@ -108,8 +111,8 @@ public:
         Quantity = 5,
         Distribution = 6,
         List = 7,
-        Array = 8,
-        Table = 9,
+        Array2D = 8,
+        Array3D = 9,
         Color = 10,
         Image = 11,
         File = 12,

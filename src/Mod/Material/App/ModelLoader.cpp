@@ -244,6 +244,29 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<std::string, s
                            propUnits, propURL,
                            propDescription);
 
+            if (propType == "2DArray" || propType == "3DArray")
+            {
+                Base::Console().Log("Reading columns\n");
+                // Read the columns
+                auto cols = yamlProp["Columns"];
+                for (auto col: cols)
+                {
+                    std::string colName = col.first.as<std::string>();
+                    Base::Console().Log("\tColumns '%s'\n", colName.c_str());
+
+                    auto colProp = cols[colName];
+                    auto colPropType = yamlValue(colProp, "Type", "");
+                    auto colPropUnits = yamlValue(yamlProp, "Units", "");
+                    auto colPropURL = yamlValue(yamlProp, "URL", "");
+                    auto colPropDescription = yamlValue(yamlProp, "Description", "");
+                    ModelProperty colProperty(colName, colPropType,
+                                colPropUnits, colPropURL,
+                                colPropDescription);
+
+                    property.addColumn(colProperty);
+                }
+            }
+
             auto key = std::pair<std::string, std::string>(uuid, propName);
             if (inheritances->count(key) > 0)
                 property.setInheritance((*inheritances)[key]);
