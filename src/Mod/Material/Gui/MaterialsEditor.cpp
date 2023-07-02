@@ -283,7 +283,7 @@ void MaterialsEditor::createPhysicalTree()
 
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
-    tree->setItemDelegate(new MaterialDelegate(this));
+    tree->setItemDelegateForColumn(1, new MaterialDelegate(this));
 }
 
 void MaterialsEditor::createPreviews()
@@ -320,7 +320,7 @@ void MaterialsEditor::createAppearanceTree()
     tree->setHeaderHidden(false);
     tree->setUniformRowHeights(true);
     MaterialDelegate* delegate = new MaterialDelegate(this);
-    tree->setItemDelegate(delegate);
+    tree->setItemDelegateForColumn(1, delegate);
 
     connect(delegate, &MaterialDelegate::propertyChange,
             this, &MaterialsEditor::propertyChange);
@@ -622,8 +622,75 @@ MaterialDelegate::MaterialDelegate(QObject* parent)
 {
 }
 
+void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
+        const QModelIndex &index) const
+{
+    // Base::Console().Log("MaterialsEditor::paint()\n");
+    const QStandardItemModel *treeModel = static_cast<const QStandardItemModel *>(index.model());
+
+    // Check we're not the material model root. This is also used to access the entry columns
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group)
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+        return;
+    }
+
+    int row = index.row();
+
+    QString propertyName = group->child(row, 0)->text();
+    QString propertyType = QString::fromStdString("String");
+    if (group->child(row, 2))
+        propertyType = group->child(row, 2)->text();
+    QString propertyValue = QString::fromStdString("");
+    if (group->child(row, 1))
+        propertyValue = group->child(row, 1)->text();
+
+    if (propertyType.toStdString() != "Color" || index.column() != 1)
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+        return;
+    }
+
+    painter->save();
+
+    QColor color;
+    color.setRgba(parseColor(propertyValue));
+    painter->fillRect(option.rect.left() + 5, option.rect.top() + 5, option.rect.width() - 10, option.rect.height() - 10, QBrush(color));
+
+    painter->restore();
+}
+
+QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    const QStandardItemModel *treeModel = static_cast<const QStandardItemModel *>(index.model());
+
+    // Check we're not the material model root. This is also used to access the entry columns
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group)
+    {
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
+
+    int row = index.row();
+
+    QString propertyType = QString::fromStdString("String");
+    if (group->child(row, 2))
+        propertyType = group->child(row, 2)->text();
+
+    if (propertyType.toStdString() != "Color" || index.column() != 1)
+    {
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
+
+    return QSize(75, 50); // Standard QPushButton size
+}
+
 void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
+    Base::Console().Log("MaterialsEditor::setEditorData()\n");
     QVariant propertyType = editor->property("Type");
     const QStandardItemModel *model = static_cast<const QStandardItemModel *>(index.model());
     QStandardItem *item = model->itemFromIndex(index);
@@ -669,6 +736,7 @@ void MaterialDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
 QWidget* MaterialDelegate::createEditor(
     QWidget* parent, const QStyleOptionViewItem&, const QModelIndex& index) const
 {
+    Base::Console().Log("MaterialsEditor::createEditor()\n");
     if (index.column() != 1)
         return nullptr;
 
