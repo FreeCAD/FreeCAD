@@ -75,6 +75,7 @@ public:
     ~MaterialsEditor() override;
 
     void propertyChange(const QString &property, const QString value);
+    void onFavourite(bool checked);
     void onURL(bool checked);
     void onPhysicalAdd(bool checked);
     void onAppearanceAdd(bool checked);
@@ -97,6 +98,20 @@ private:
     QSvgWidget* _rendered;
     QSvgWidget* _vectored;
     bool _edited;
+    std::list<std::string> _favorites;
+    std::list<std::string> _recents;
+    int _recentMax;
+
+    void getFavorites();
+    void saveFavorites();
+    void addFavorite(const std::string& uuid);
+    void removeFavorite(const std::string& uuid);
+    bool isFavorite(const std::string& uuid) const;
+    
+    void getRecents();
+    void saveRecents();
+    void addRecent(const std::string& uuid);
+    bool isRecent(const std::string& uuid) const;
 
     void updatePreview() const;
     QString getColorHash(const std::string& colorString, int colorRange=255) const;
@@ -104,10 +119,14 @@ private:
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    void addRecents(QStandardItem* parent);
+    void addFavorites(QStandardItem *parent);
     void createPreviews();
     void createAppearanceTree();
     void createPhysicalTree();
     void createMaterialTree();
+    void fillMaterialTree();
+    void refreshMaterialTree();
     void addMaterials(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
     bool isMaterial(const fs::path &p) const { return Materials::MaterialManager::isMaterial(p); }
 };

@@ -61,6 +61,9 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
 {
     ui->setupUi(this);
 
+    getFavorites();
+    getRecents();
+
     createMaterialTree();
     createPhysicalTree();
     createAppearanceTree();
@@ -81,6 +84,8 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
             this, &MaterialsEditor::onPhysicalAdd);
     connect(ui->buttonAppearanceAdd, &QPushButton::clicked,
             this, &MaterialsEditor::onAppearanceAdd);
+    connect(ui->buttonFavorite, &QPushButton::clicked,
+            this, &MaterialsEditor::onFavourite);
 
     QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
     connect(selectionModel, &QItemSelectionModel::selectionChanged,
@@ -131,6 +136,164 @@ void MaterialsEditor::tryPython()
 
     App::GetApplication().closeActiveTransaction();
     Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
+}
+
+void MaterialsEditor::getFavorites()
+{
+    _favorites.clear();
+
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Favorites");
+    int count = param->GetInt("Favorites", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(i);
+        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        _favorites.push_back(uuid);
+    }
+}
+
+void MaterialsEditor::saveFavorites()
+{
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Favorites");
+
+    // Clear out the existing favorites
+    int count = param->GetInt("Favorites", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(i);
+        param->RemoveASCII(key.toStdString().c_str());
+    }
+
+    // Add the current values
+    param->SetInt("Favorites", _favorites.size());
+    int j = 0;
+    for (auto favorite: _favorites)
+    {
+        QString key = QString::fromLatin1("FAV%1").arg(j);
+        param->SetASCII(key.toStdString().c_str(), favorite);
+
+        j++;
+    }
+}
+
+void MaterialsEditor::addFavorite(const std::string &uuid)
+{
+    // Ensure it is a material. New, unsaved materials will not be
+    try
+    {
+        auto material = _materialManager.getMaterial(uuid);
+    }
+    catch(const Materials::MaterialNotFound&)
+    {
+        return;
+    }
+    
+    if (!isFavorite(uuid)) {
+        _favorites.push_back(uuid);
+        saveFavorites();
+        refreshMaterialTree();
+    }
+}
+
+void MaterialsEditor::removeFavorite(const std::string& uuid)
+{
+    if (isFavorite(uuid)) {
+        _favorites.remove(uuid);
+        saveFavorites();
+        refreshMaterialTree();
+    }
+}
+
+bool MaterialsEditor::isFavorite(const std::string& uuid) const
+{
+    for (auto it: _favorites)
+    {
+        if (it == uuid)
+            return true;
+    }
+    return false;
+}
+
+
+void MaterialsEditor::getRecents()
+{
+    _recents.clear();
+
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Recent");
+    _recentMax = param->GetInt("RecentMax", 5);
+    int count = param->GetInt("Recent", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(i);
+        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        _recents.push_back(uuid);
+    }
+}
+
+void MaterialsEditor::saveRecents()
+{
+    auto param =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Recent");
+
+    // Clear out the existing favorites
+    int count = param->GetInt("Recent", 0);
+    for (int i = 0; i < count; i++)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(i);
+        param->RemoveASCII(key.toStdString().c_str());
+    }
+
+    // Add the current values
+    int size = _recents.size();
+    if (size > _recentMax)
+        size = _recentMax;
+    param->SetInt("Recent", size);
+    int j = 0;
+    for (auto recent: _recents)
+    {
+        QString key = QString::fromLatin1("MRU%1").arg(j);
+        param->SetASCII(key.toStdString().c_str(), recent);
+
+        j++;
+        if (j >= size)
+            break;
+    }
+}
+
+void MaterialsEditor::addRecent(const std::string& uuid)
+{
+    // Ensure it is a material. New, unsaved materials will not be
+    try
+    {
+        auto material = _materialManager.getMaterial(uuid);
+    }
+    catch(const Materials::MaterialNotFound&)
+    {
+        return;
+    }
+    
+    // Ensure no duplicates
+    if (isRecent(uuid))
+        _recents.remove(uuid);
+
+    _recents.push_front(uuid);
+    while (_recents.size() > _recentMax)
+        _recents.pop_back();
+
+    saveRecents();
+}
+
+bool MaterialsEditor::isRecent(const std::string& uuid) const
+{
+    for (auto it: _recents)
+    {
+        if (it == uuid)
+            return true;
+    }
+    return false;
 }
 
 void MaterialsEditor::propertyChange(const QString &property, const QString value)
@@ -190,6 +353,18 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
     }
 }
 
+void MaterialsEditor::onFavourite(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Base::Console().Log("Favorite\n");
+    auto selected = _material.getUUID();
+    if (isFavorite(selected))
+        removeFavorite(selected);
+    else
+        addFavorite(selected);
+}
+
 void MaterialsEditor::onSave(bool checked)
 {
     Q_UNUSED(checked)
@@ -209,6 +384,7 @@ void MaterialsEditor::onSave(bool checked)
 
 void MaterialsEditor::accept()
 {
+    addRecent(_material.getUUID());
     QDialog::accept();
 }
 
@@ -326,32 +502,62 @@ void MaterialsEditor::createAppearanceTree()
             this, &MaterialsEditor::propertyChange);
 }
 
-void MaterialsEditor::createMaterialTree()
+void MaterialsEditor::addRecents(QStandardItem *parent)
 {
-    Materials::ModelManager &modelManager = getModelManager();
-    Q_UNUSED(modelManager)
-    // Materials::MaterialManager materialManager;
-
-    auto param =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material");
-    if (!param)
-        Base::Console().Log("Unable to find material parameter group\n");
-    else
-        Base::Console().Log("Found material parameter group\n");
-
     auto tree = ui->treeMaterials;
-    auto model = new QStandardItemModel();
-    tree->setModel(model);
+    for (auto& uuid : _recents) {
+        try
+        {
+            const Materials::Material &material = getMaterialManager().getMaterial(uuid);
 
-    tree->setHeaderHidden(true);
+            QIcon icon = QIcon(QString::fromStdString(material.getLibrary().getIconPath()));
+            auto card = new QStandardItem(icon, QString::fromStdString(material.getName()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                        | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+            addExpanded(tree, parent, card);
+        }
+        catch(const Materials::MaterialNotFound& )
+        {}
+    }
+}
+
+void MaterialsEditor::addFavorites(QStandardItem *parent)
+{
+    auto tree = ui->treeMaterials;
+    for (auto& uuid : _favorites) {
+        try
+        {
+            const Materials::Material &material = getMaterialManager().getMaterial(uuid);
+
+            QIcon icon = QIcon(QString::fromStdString(material.getLibrary().getIconPath()));
+            auto card = new QStandardItem(icon, QString::fromStdString(material.getName()));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                        | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+            addExpanded(tree, parent, card);
+        }
+        catch(const Materials::MaterialNotFound& )
+        {}
+    }
+}
+
+void MaterialsEditor::fillMaterialTree()
+{
+    auto tree = ui->treeMaterials;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
 
     auto lib = new QStandardItem(QString::fromStdString("Favorites"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
+    addFavorites(lib);
 
     lib = new QStandardItem(QString::fromStdString("Recent"));
     lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     addExpanded(tree, model, lib);
+    addRecents(lib);
 
     auto libraries = Materials::MaterialManager::getMaterialLibraries();
     for (const auto &value : *libraries)
@@ -363,6 +569,28 @@ void MaterialsEditor::createMaterialTree()
         auto path = value->getDirectoryPath();
         addMaterials(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
     }
+}
+
+void MaterialsEditor::createMaterialTree()
+{
+    // Materials::ModelManager &modelManager = getModelManager();
+    // Q_UNUSED(modelManager)
+
+    auto tree = ui->treeMaterials;
+    auto model = new QStandardItemModel();
+    tree->setModel(model);
+
+    tree->setHeaderHidden(true);
+    fillMaterialTree();
+}
+
+void MaterialsEditor::refreshMaterialTree()
+{
+    auto tree = ui->treeMaterials;
+    auto model = static_cast<QStandardItemModel *>(tree->model());
+    model->clear();
+
+    fillMaterialTree();
 }
 
 void MaterialsEditor::updatePreview() const
