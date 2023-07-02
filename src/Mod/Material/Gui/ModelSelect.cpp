@@ -267,18 +267,23 @@ void ModelSelect::addRecents(QStandardItem *parent)
 {
     auto tree = ui->treeModels;
     for (auto& uuid : _recents) {
-        const Materials::Model& model = getModelManager().getModel(uuid);
-
-        if (getModelManager().passFilter(_filter, model.getType()))
+        try
         {
-            QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
-            auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
-            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                        | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            const Materials::Model& model = getModelManager().getModel(uuid);
 
-            addExpanded(tree, parent, card);
+            if (getModelManager().passFilter(_filter, model.getType()))
+            {
+                QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
+                auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                            | Qt::ItemIsDropEnabled);
+                card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+                addExpanded(tree, parent, card);
+            }
         }
+        catch(const Materials::ModelNotFound& )
+        {}
     }
 }
 
@@ -286,18 +291,23 @@ void ModelSelect::addFavorites(QStandardItem *parent)
 {
     auto tree = ui->treeModels;
     for (auto& uuid : _favorites) {
-        const Materials::Model& model = getModelManager().getModel(uuid);
-
-        if (getModelManager().passFilter(_filter, model.getType()))
+        try
         {
-            QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
-            auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
-            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                        | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            const Materials::Model& model = getModelManager().getModel(uuid);
 
-            addExpanded(tree, parent, card);
+            if (getModelManager().passFilter(_filter, model.getType()))
+            {
+                QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
+                auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                            | Qt::ItemIsDropEnabled);
+                card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+
+                addExpanded(tree, parent, card);
+            }
         }
+        catch(const Materials::ModelNotFound& )
+        {}
     }
 }
 
