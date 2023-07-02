@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QColorDialog>
 #endif
 
 #include <limits>
@@ -41,6 +42,7 @@
 #include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/SpinBox.h>
+// #include <Gui/FileDialog.h>
 
 #include <QItemSelectionModel>
 
@@ -494,7 +496,7 @@ void MaterialsEditor::createAppearanceTree()
     tree->setColumnHidden(2, true);
 
     tree->setHeaderHidden(false);
-    tree->setUniformRowHeights(true);
+    tree->setUniformRowHeights(false);
     MaterialDelegate* delegate = new MaterialDelegate(this);
     tree->setItemDelegateForColumn(1, delegate);
 
@@ -850,6 +852,73 @@ MaterialDelegate::MaterialDelegate(QObject* parent)
 {
 }
 
+bool MaterialDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    if (index.column() == 1)
+    {
+        if (event->type() == QEvent::MouseButtonDblClick)
+        {
+            const QStandardItemModel *treeModel = static_cast<const QStandardItemModel *>(index.model());
+
+            // Check we're not the material model root. This is also used to access the entry columns
+            auto item = treeModel->itemFromIndex(index);
+            auto group = item->parent();
+            if (!group)
+            {
+                return QStyledItemDelegate::editorEvent(event, model, option, index);
+            }
+
+            int row = index.row();
+
+            QString propertyName = group->child(row, 0)->text();
+            QString propertyType = QString::fromStdString("String");
+            if (group->child(row, 2))
+                propertyType = group->child(row, 2)->text();
+
+            std::string type = propertyType.toStdString();
+            if (type == "Color")
+            {
+                Base::Console().Log("Edit color\n");
+                showColorModal(item);
+                // Mark as handled
+                return true;
+            }
+        }
+    }
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+}
+
+void MaterialDelegate::showColorModal(QStandardItem *item)
+{
+    QColor currentColor; // = d->col;
+    currentColor.setRgba(parseColor(item->text()));
+    QColorDialog* dlg = new QColorDialog(currentColor);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    if (Gui::DialogOptions::dontUseNativeColorDialog())
+        dlg->setOptions(QColorDialog::DontUseNativeDialog);
+    dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, false);
+
+    dlg->setCurrentColor(currentColor);
+    dlg->adjustSize();
+
+    connect(dlg, &QColorDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            QColor color = dlg->selectedColor();
+            if (color.isValid()) {
+                QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
+                                        .arg(color.red()/255.0)
+                                        .arg(color.green()/255.0)
+                                        .arg(color.blue()/255.0)
+                                        .arg(color.alpha()/255.0);
+                item->setText(colorText);
+            }
+        }
+    });
+
+    dlg->exec();
+}
+
 void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         const QModelIndex &index) const
 {
@@ -885,7 +954,14 @@ void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     QColor color;
     color.setRgba(parseColor(propertyValue));
-    painter->fillRect(option.rect.left() + 5, option.rect.top() + 5, option.rect.width() - 10, option.rect.height() - 10, QBrush(color));
+    int left = option.rect.left() + 5;
+    int width = option.rect.width() - 10;
+    if (option.rect.width() > 75)
+    {
+        left += (option.rect.width() - 75) / 2;
+        width = 65;
+    }
+    painter->fillRect(left, option.rect.top() + 5, width, option.rect.height() - 10, QBrush(color));
 
     painter->restore();
 }
@@ -913,7 +989,7 @@ QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
         return QStyledItemDelegate::sizeHint(option, index);
     }
 
-    return QSize(75, 50); // Standard QPushButton size
+    return QSize(75, 23); // Standard QPushButton size
 }
 
 void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
@@ -930,16 +1006,7 @@ void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
     QString propertyName = group->child(row, 0)->text();
 
     std::string type = propertyType.toString().toStdString();
-    if (type == "Color")
-    {
-        QColor color = editor->property("color").value<QColor>();
-        QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
-                                .arg(color.red()/255.0)
-                                .arg(color.green()/255.0)
-                                .arg(color.blue()/255.0)
-                                .arg(color.alpha()/255.0);
-        item->setText(colorText);
-    } else if (type == "File")
+    if (type == "File")
     {
         Gui::FileChooser* chooser = static_cast<Gui::FileChooser*>(editor);
         item->setText(chooser->fileName());
@@ -1038,14 +1105,6 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent, const QString &property
         combo->insertItem(2, QString::fromStdString("True"));
         combo->setCurrentText(propertyValue);
         widget = combo;
-    } else if (type == "Color")
-    {
-        Gui::PrefColorButton *button = new Gui::PrefColorButton();
-        QColor color;
-        color.setRgba(parseColor(propertyValue));
-        button->setProperty("color", color);
-
-        widget = button;
     } else if (type == "Quantity")
     {
         Gui::InputField *input = new Gui::InputField();

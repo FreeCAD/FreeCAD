@@ -56,6 +56,10 @@ public:
     void setModelData(QWidget* editor, QAbstractItemModel* model,
                       const QModelIndex& index) const override;
 
+protected:
+    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
+                     const QModelIndex& index) override;
+
 Q_SIGNALS:
     /** Emits this signal when a property has changed */
     void propertyChange(const QString &property, const QString value);
@@ -64,6 +68,7 @@ private:
     QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
                           const QString& propertyValue, const QString &propertyUnits) const;
     QRgb parseColor(const QString& color) const;
+    void showColorModal(QStandardItem *item);
 };
 
 class MaterialsEditor : public QDialog
