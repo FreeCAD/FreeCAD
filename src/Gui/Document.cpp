@@ -37,11 +37,11 @@
 #endif
 
 #include <App/AutoTransaction.h>
-#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
@@ -412,7 +412,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->_editSubname.clear();
 
     if (subname) {
-        const char *element = Data::ComplexGeoData::findElementName(subname);
+        const char *element = Data::findElementName(subname);
         if (element) {
             d->_editSubname = std::string(subname,element-subname);
             d->_editSubElement = element;

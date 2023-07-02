@@ -725,7 +725,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../SpreadsheetView.cpp" line="426"/>
       <source>Alias contains invalid characters!</source>
-      <translation>Псеўданім змяшчае недапушчальныя знакі!</translation>
+      <translation>Псеўданім змяшчае хібныя знакі!</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="432"/>
@@ -733,6 +733,11 @@ switch the design configuration. The property will be created if not exist.</sou
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Звярніцеся да клеткі па псеўданіму, напрыклад
 Аркуш.імя_псеўданіма замест Аркуш.В1</translation>
+    </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Аркуш</translation>
     </message>
   </context>
   <context>
@@ -1176,7 +1181,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>

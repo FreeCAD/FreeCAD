@@ -39,6 +39,7 @@
 #include <App/GroupExtension.h>
 #include <App/Link.h>
 #include <App/OriginFeature.h>
+#include <App/ElementNamingUtils.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
@@ -382,7 +383,7 @@ App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject*
     auto sobj = Part::Feature::getSubObject(subname, pyObj, mat, transform, depth);
     if (sobj)
         return sobj;
-    if (Data::ComplexGeoData::findElementName(subname) == subname)
+    if (Data::findElementName(subname) == subname)
         return nullptr;
 
     const char* dot = strchr(subname, '.');
@@ -405,7 +406,7 @@ App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject*
             }
             else if (!boost::equals(sobj->getNameInDocument(), name))
                 continue;
-            name = Data::ComplexGeoData::noElementName(sub.c_str());
+            name = Data::noElementName(sub.c_str());
             name += dot + 1;
             if (mat && transform)
                 *mat *= Placement.getValue().toMatrix();
@@ -640,7 +641,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     std::ostringstream ss;
                     ss << "Failed to obtain shape " <<
                         obj->getFullName() << '.'
-                        << Data::ComplexGeoData::oldElementName(sub.c_str());
+                        << Data::oldElementName(sub.c_str());
                     errMsg = ss.str();
                 }
             }

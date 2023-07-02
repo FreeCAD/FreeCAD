@@ -35,7 +35,7 @@
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Select what type of shape to use to constrain the underlying Path.</string>
            </property>
            <property name="currentIndex">
             <number>2</number>
@@ -84,7 +84,7 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="stockExisting">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Select the body to be used to constrain the underlying Path.</string>
            </property>
           </widget>
          </item>
@@ -104,7 +104,7 @@
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockExtXneg">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MinX</string>
            </property>
           </widget>
          </item>
@@ -117,7 +117,7 @@
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MaxX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MaxX</string>
            </property>
           </widget>
          </item>
@@ -131,14 +131,14 @@
          <item row="1" column="2">
           <widget class="Gui::InputField" name="stockExtYneg">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MinY</string>
            </property>
           </widget>
          </item>
         <item row="1" column="3">
           <widget class="Gui::InputField" name="stockExtYpos">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MaxY</string>
            </property>
           </widget>
          </item>
@@ -152,14 +152,14 @@
          <item row="2" column="2">
           <widget class="Gui::InputField" name="stockExtZneg">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MinZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MinZ</string>
            </property>
           </widget>
          </item>
          <item row="2" column="3">
           <widget class="Gui::InputField" name="stockExtZpos">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of bounding box's MaxZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Extension of bounding box's MaxZ</string>
            </property>
           </widget>
          </item>
@@ -179,7 +179,7 @@
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockCylinderRadius">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Radius of the Cylinder</string>
            </property>
           </widget>
          </item>
@@ -193,7 +193,7 @@
         <item row="1" column="2">
           <widget class="Gui::InputField" name="stockCylinderHeight">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Height of the Cylinder</string>
            </property>
           </widget>
          </item>
@@ -213,7 +213,7 @@
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockBoxLength">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Length of the Box</string>
            </property>
           </widget>
          </item>
@@ -227,7 +227,7 @@
          <item row="1" column="2">
           <widget class="Gui::InputField" name="stockBoxWidth">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Width of the Box</string>
            </property>
           </widget>
          </item>
@@ -241,7 +241,7 @@
         <item row="2" column="2">
           <widget class="Gui::InputField" name="stockBoxHeight">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>Height of the Box</string>
            </property>
           </widget>
          </item>
@@ -254,7 +254,7 @@
    <item>
     <widget class="QCheckBox" name="stockInside">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</string>
      </property>
      <property name="text">
       <string>Constrained to Inside</string>

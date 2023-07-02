@@ -1,7 +1,7 @@
 ============= English Contents =================
 Author: LiFeng <felix@95839.com>
 Date: 22,July 2020 18:16:50 (GMT +0800)
-version: 0.0.2 
+version: 0.0.2
 
 There are new version templates which used by People's Republic of China national drawing standard. This version obey rules of GB/T 14689-2008.
 
@@ -11,7 +11,7 @@ The version changed next things:
 
 2) add some clip mark information for templates which own clip edge. The staff can using the clip mark to help do binding work for all drawing.
 
-3) add all size landscape template files which one type owns clip edges and another type have clip edges. 
+3) add all size landscape template files which one type owns clip edges and another type have clip edges.
 
 4) filename define rules changed for difference types template. The file own "_CLIP.svg" mean the template has clip edge. The one own "_NO_CLIP.svg" mean that file not has clip edge.
 
@@ -27,7 +27,7 @@ The version changed next things:
 
 8) Change some font size and location for title block parts than old version
 
-9) add template version information for template. 
+9) add template version information for template.
 
 10) add A4 and A3 portrait type template. The portrait type template will be used by desktop prints.
 

@@ -363,7 +363,7 @@ def toCartesian(radius, angle):
 
 
 def findRootNewton(f, f_prime, x_min, x_max):
-    """Appy Newton's Method to find the root of f within x_min and x_max
+    """Apply Newton's Method to find the root of f within x_min and x_max
     We assume that there is a root in that range and that f is strictly monotonic,
     i.e. we don't take precautions for overshooting beyond the input range.
     """

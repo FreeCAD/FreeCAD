@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>Select one of the post processors. FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.</string>
    </property>
   </widget>
  </widget>

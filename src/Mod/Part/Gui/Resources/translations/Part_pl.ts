@@ -2954,7 +2954,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Nieznany błąd</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4100,7 +4100,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Nieznany błąd</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -5597,7 +5597,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
       <source>Frenet</source>
-      <translation>Wektor Freneta</translation>
+      <translation>Freneta</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="488"/>
@@ -5707,28 +5707,28 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Środowisko pracy Część i Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Część /           
 Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -5800,20 +5800,20 @@ Do you want to continue?</source>
       <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
@@ -6029,63 +6029,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Operacja logiczna - sprawdzenie nieznane</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Operacja logiczna: Nieznane sprawdzenie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Operacja logiczna - zły typ</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Operacja logiczna: Błędny typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Operacja logiczna - samoprzenikanie</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Operacja logiczna: Znaleziono samoprzecięcie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation>Operacja logiczna - małe krawędzie</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Operacja logiczna: zbyt mała krawędź</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation>Operacja logiczna - nieodzyskiwalna ściana</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Operacja logiczna: ściana nieodzyskiwalna</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation>Operacja logiczna - niekompatybilność wierzchołka</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Operacja logiczna: niekompatybilność wierzchołka</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation>Operacja logiczna - niekompatybilność krawędzi</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Operacja logiczna: niekompatybilność krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation>Operacja logiczna - niekompatybilność ściany</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Operacja logiczna: niekompatybilność ściany</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation>Operacja logiczna - operacja przerwana</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Operacja logiczna: Przerwana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation>Operacja logiczna - GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Operacja logiczna: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation>Operacja logiczna - nieprawidłowa krzywa na powierzchni</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Operacja logiczna: nieprawidłowa krzywa na powierzchni</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation>Operacja logiczna - niepoprawna</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Operacja logiczna: Nieprawidłowa</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>

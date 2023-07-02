@@ -243,17 +243,11 @@ class TestMetadataAuxiliaryFunctions(unittest.TestCase):
         v_list = min_version.version_as_list
         metadata = Metadata()
         wb1 = Metadata()
-        wb1.freecadmin = Version(
-            from_list=[v_list[0] + 1, v_list[1], v_list[2], v_list[3]]
-        )
+        wb1.freecadmin = Version(from_list=[v_list[0] + 1, v_list[1], v_list[2], v_list[3]])
         wb2 = Metadata()
-        wb2.freecadmin = Version(
-            from_list=[v_list[0], v_list[1] + 1, v_list[2], v_list[3]]
-        )
+        wb2.freecadmin = Version(from_list=[v_list[0], v_list[1] + 1, v_list[2], v_list[3]])
         wb3 = Metadata()
-        wb3.freecadmin = Version(
-            from_list=[v_list[0], v_list[1], v_list[2] + 1, v_list[3]]
-        )
+        wb3.freecadmin = Version(from_list=[v_list[0], v_list[1], v_list[2] + 1, v_list[3]])
         m1 = Metadata()
         m1.freecadmin = min_version
         metadata.content = {"workbench": [wb1, wb2, wb3], "macro": [m1]}
@@ -351,6 +345,14 @@ class TestMetadataReader(unittest.TestCase):
         MetadataReader._parse_child_element("", child, mock_metadata)
         self.assertEqual(Version("1.2.3"), mock_metadata.version)
 
+    def test_parse_child_element_version_bad(self):
+        from addonmanager_metadata import Metadata, Version, MetadataReader
+
+        mock_metadata = Metadata()
+        child = self.given_mock_tree_node("version", "1-2-3")
+        MetadataReader._parse_child_element("", child, mock_metadata)
+        self.assertEqual(Version("0.0.0"), mock_metadata.version)
+
     def test_parse_child_element_lists_of_strings(self):
         from addonmanager_metadata import Metadata, MetadataReader
 
@@ -413,9 +415,7 @@ class TestMetadataReader(unittest.TestCase):
             if type == "repository":
                 branch = f"Branch {i} for {tag}"
             expected_results.append(Url(location=text, type=url_type, branch=branch))
-            child = self.given_mock_tree_node(
-                tag, text, {"type": type, "branch": branch}
-            )
+            child = self.given_mock_tree_node(tag, text, {"type": type, "branch": branch})
             MetadataReader._parse_child_element("", child, mock_metadata)
         self.assertEqual(len(mock_metadata.__dict__[tag]), 10)
         self.assertListEqual(mock_metadata.__dict__[tag], expected_results)
@@ -448,9 +448,7 @@ class TestMetadataReader(unittest.TestCase):
                         text = f"Test {i} for {tag}"
                         dependency_type = DependencyType(i % len(DependencyType))
                         dependency_type_str = str(dependency_type)
-                        expected = Dependency(
-                            package=text, dependency_type=dependency_type
-                        )
+                        expected = Dependency(package=text, dependency_type=dependency_type)
                         expected.__dict__[attribute] = attr_value
                         expected_results.append(expected)
                         child = self.given_mock_tree_node(
@@ -548,9 +546,7 @@ class TestMetadataReaderIntegration(unittest.TestCase):
         self.assertEqual(Version("1.0.1"), metadata.version)
         self.assertEqual("2022-01-07", metadata.date)
         self.assertEqual("Resources/icons/PackageIcon.svg", metadata.icon)
-        self.assertListEqual(
-            [License(name="LGPLv2.1", file="LICENSE")], metadata.license
-        )
+        self.assertListEqual([License(name="LGPLv2.1", file="LICENSE")], metadata.license)
         self.assertListEqual(
             [Contact(name="FreeCAD Developer", email="developer@freecad.org")],
             metadata.maintainer,

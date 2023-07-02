@@ -32,7 +32,8 @@
 #include "VisualLayer.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 }
 
@@ -44,7 +45,6 @@ class SketcherGuiExport PropertyVisualLayerList: public App::PropertyListsT<Visu
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-
     /**
      * A constructor.
      * A more elaborate description of the constructor.
@@ -57,20 +57,20 @@ public:
      */
     ~PropertyVisualLayerList() override;
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
-    unsigned int getMemSize () const override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+    unsigned int getMemSize() const override;
 
 protected:
-    VisualLayer getPyValue(PyObject *) const override;
+    VisualLayer getPyValue(PyObject*) const override;
 };
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_PropertyVisualLayerList_H
+#endif// SKETCHERGUI_PropertyVisualLayerList_H

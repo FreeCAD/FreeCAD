@@ -22,15 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <cmath>
+#include <cfloat>
+#include <cmath>
 
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/nodes/SoCamera.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "SoZoomTranslation.h"
@@ -71,28 +71,31 @@ float SoZoomTranslation::calculateScaleFactor(SoAction* action) const
     // Dividing by 5 seems to work well
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
     float aspectRatio = SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-    scaleFactor = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
+    scaleFactor = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5 * aspectRatio);
     return scaleFactor;
 }
 
-SoZoomTranslation::SoZoomTranslation(): scaleFactor(0)
+SoZoomTranslation::SoZoomTranslation()
+    : scaleFactor(0)
 {
     SO_NODE_CONSTRUCTOR(SoZoomTranslation);
-    SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
+    SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f, 0.f, 0.f)));
 }
 
-void SoZoomTranslation::GLRender(SoGLRenderAction * action)
+void SoZoomTranslation::GLRender(SoGLRenderAction* action)
 {
-    SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction*)action);
 }
 
 // Doc in superclass.
-void SoZoomTranslation::doAction(SoAction * action)
+void SoZoomTranslation::doAction(SoAction* action)
 {
     SbVec3f v;
-    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)
+        && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
         return;
-    } else {
+    }
+    else {
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
@@ -107,19 +110,21 @@ void SoZoomTranslation::doAction(SoAction * action)
     SoModelMatrixElement::translateBy(action->getState(), this, v);
 }
 
-void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
+void SoZoomTranslation::getMatrix(SoGetMatrixAction* action)
 {
     SbVec3f v;
-    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f) && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    if (this->translation.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)
+        && this->abPos.getValue() == SbVec3f(0.0f, 0.0f, 0.0f)) {
         return;
-    } else {
+    }
+    else {
         SbVec3f absVtr = this->abPos.getValue();
         SbVec3f relVtr = this->translation.getValue();
 
         float sf = this->calculateScaleFactor(action);
         // For Sketcher Keep Z value the same
-        relVtr[0] = (relVtr[0] != 0) ? sf  * relVtr[0] : 0;
-        relVtr[1] = (relVtr[1] != 0) ? sf  * relVtr[1] : 0;
+        relVtr[0] = (relVtr[0] != 0) ? sf * relVtr[0] : 0;
+        relVtr[1] = (relVtr[1] != 0) ? sf * relVtr[1] : 0;
 
         v = absVtr + relVtr;
     }
@@ -131,23 +136,23 @@ void SoZoomTranslation::getMatrix(SoGetMatrixAction * action)
     action->getInverse().multRight(m);
 }
 
-void SoZoomTranslation::callback(SoCallbackAction * action)
+void SoZoomTranslation::callback(SoCallbackAction* action)
 {
-    SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction*)action);
 }
 
-void SoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
+void SoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction* action)
 {
-    SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction*)action);
 }
 
-void SoZoomTranslation::pick(SoPickAction * action)
+void SoZoomTranslation::pick(SoPickAction* action)
 {
-    SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction*)action);
 }
 
 // Doc in superclass.
-void SoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+void SoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction* action)
 {
-    SoZoomTranslation::doAction((SoAction *)action);
+    SoZoomTranslation::doAction((SoAction*)action);
 }

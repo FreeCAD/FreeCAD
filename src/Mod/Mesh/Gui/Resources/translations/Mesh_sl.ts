@@ -1429,12 +1429,12 @@ protisvetlobe ali pa črna.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>Prikazan bo mejni kvader</translation>
+      <translation>Očrtni kvader bo prikazan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Prikaži mejni kvader za poudarjena ali izbrana ploskovja</translation>
+      <translation>Prikaži očrtni kvader označenih ali izbranih ploskovij</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
@@ -2089,6 +2089,11 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <name>QObject</name>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Prikaz</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Uvoz - Izvoz</translation>
     </message>

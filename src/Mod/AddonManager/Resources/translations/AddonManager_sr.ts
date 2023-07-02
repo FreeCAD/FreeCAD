@@ -22,37 +22,41 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Образац</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Икона</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
       <translation>&lt;b&gt;Име пакета&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Верзија</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="91"/>
+      <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Опис</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="94"/>
+      <location filename="../../compact_view.py" line="88"/>
+      <source>Update Available</source>
+      <translation>Доступно је ажурирање</translation>
+    </message>
+    <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
       <translation>На располагању је новија верзија</translation>
@@ -268,7 +272,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Заустави ажурирање кеша</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -461,7 +465,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Доступно је ажурирање</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -653,18 +657,18 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Python executable (optional):</source>
-      <translation>Извршна Python датотека (необавезно):</translation>
+      <source>Path to Python executable (optional):</source>
+      <translation>Стаза ка извршној Python датотеци (необавезно):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>Path to git executable (optional):</source>
+      <translation>Стаза ка извршној git датотеци (необавезно):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
       <translation>Путања до Python извршне датотеке за инсталацију пакета са пип-ом. Аутоматски се детектује ако је потребно и није наведено.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
-      <source>git executable (optional):</source>
-      <translation>Извршна git датотека (необавезно):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -887,11 +891,6 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
       <translation>Икона</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_add_content.ui" line="179"/>
-      <source>actualIcon</source>
-      <translation>актуелна иконица</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -1175,118 +1174,113 @@ installed addons will be checked for available updates
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="125"/>
-      <source>Addon Manager</source>
-      <translation>Менаџер додатака</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="236"/>
+      <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
       <translation>Покреће се...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="279"/>
+      <location filename="../../AddonManager.py" line="268"/>
       <source>Loading addon information</source>
       <translation>Учитавање информација о додацима</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="305"/>
+      <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Радни процес {} се дуго зауставља...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="363"/>
+      <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
       <translation>Претходни процес кеширања је прекинут, поново се покреће...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="382"/>
+      <location filename="../../AddonManager.py" line="369"/>
       <source>Custom repo list changed, forcing recache...
 </source>
       <translation>Корисничка листа спремишта је промењена, принудно поновно кеширање...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="435"/>
+      <location filename="../../AddonManager.py" line="422"/>
       <source>Addon manager</source>
       <translation>Менаџер додатака</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="442"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Мораш поново покренути FreeCAD да би промене ступиле на снагу.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="448"/>
+      <location filename="../../AddonManager.py" line="435"/>
       <source>Restart now</source>
       <translation>Поново покрени сада</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="449"/>
+      <location filename="../../AddonManager.py" line="436"/>
       <source>Restart later</source>
       <translation>Поново покрени касније</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="516"/>
-      <location filename="../../AddonManager.py" line="987"/>
+      <location filename="../../AddonManager.py" line="501"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
       <translation>Освежи локални кеш</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="662"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation>Ажурирање кеша...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="706"/>
+      <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation>Није могуће пронаћи Додатак &apos;{}&apos; да би изабрао
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="736"/>
-      <location filename="../../AddonManager.py" line="771"/>
+      <location filename="../../AddonManager.py" line="691"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation>Проверавам да ли постоје ажурирања...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="766"/>
+      <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
       <translation>Примени {} ажурирање(а)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="775"/>
+      <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
       <translation>Нема доступних ажурирања</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="912"/>
-      <location filename="../../AddonManager.py" line="938"/>
-      <location filename="../../AddonManager.py" line="1041"/>
+      <location filename="../../AddonManager.py" line="861"/>
+      <location filename="../../AddonManager.py" line="887"/>
+      <location filename="../../AddonManager.py" line="988"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Не може се покренути нови програм за инсталацију док се претходни не заврши.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1027"/>
+      <location filename="../../AddonManager.py" line="974"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>Извршавање макроа није успело. Погледај конзолу за детаље о грешкама.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Програмер задужен за одржавање</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
       <translation>Аутор</translation>
     </message>
@@ -1502,8 +1496,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Успешно</translation>
@@ -1610,12 +1604,12 @@ installed addons will be checked for available updates
       <translation>Локација за нову лиценцну датотеку</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation>Примљен {} код одговора са сервера</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation>Инсталирање макро-а {} није успело</translation>
     </message>
@@ -1635,9 +1629,9 @@ installed addons will be checked for available updates
       <translation>Изабери датотеку иконе за ову ставку садржаја</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} није подфасцикла {}</translation>
     </message>
@@ -2467,12 +2461,12 @@ installed addons will be checked for available updates
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="151"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Менаџер додатака</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="155"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Управљај спољним радним окружењима, макро-има и пакетима подешавања</translation>
     </message>
@@ -2503,7 +2497,15 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
-      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+      <translation>Аутоматски направљена Макро палета алатки</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AddonManager.py" line="124"/>
+      <source>Addon Manager</source>
+      <translation>Менаџер додатака</translation>
     </message>
   </context>
 </TS>

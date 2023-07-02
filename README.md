@@ -6,7 +6,8 @@
 [Documentation](https://wiki.freecad.org) •
 [Forum](https://forum.freecad.org/) •
 [Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
-[Git repository](https://github.com/FreeCAD/FreeCAD)
+[Git repository](https://github.com/FreeCAD/FreeCAD) •
+[Blog](https://blog.freecad.org)
 
 
 [![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][gitlab-branch-master] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Liberapay](https://img.shields.io/liberapay/receives/FreeCAD.svg?logo=liberapay)](https://liberapay.com/FreeCAD)
@@ -89,6 +90,7 @@ Reporting Issues
 ---------
 
 To report an issue please:
+
 - First post to forum to verify the issue; 
 - Link forum thread to bug tracker ticket and vice-a-versa; 
 - Use the most updated stable or development versions of FreeCAD; 
@@ -97,10 +99,16 @@ To report an issue please:
 - Upload an example file to demonstrate problem. 
 
 For more detail see:
+
 - [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
 - [Contributing](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
+- [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
+
+The [FPA](https://fpa.freecad.org) offers developers the opportunity
+to apply for a grant to work on projects of their choosing. Check
+[jobs and funding](https://blog.freecad.org/jobs/) to know more.
 
 
 Usage & Getting help

@@ -60,9 +60,9 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 
-def makeSite(objectslist=None,baseobj=None,name="Site"):
+def makeSite(objectslist=None,baseobj=None,name=None):
 
-    '''makeBuilding(objectslist): creates a site including the
+    '''makeBuilding([objectslist],[baseobj],[name]): creates a site including the
     objects from the given list.'''
 
     if not FreeCAD.ActiveDocument:
@@ -70,7 +70,7 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
         return
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Site")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Site")
     _Site(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSite(obj.ViewObject)
@@ -513,7 +513,7 @@ class _CommandSite:
         return {'Pixmap'  : 'Arch_Site',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Site","Site"),
                 'Accel': "S, I",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site including selected objects.")}
 
     def IsActive(self):
 

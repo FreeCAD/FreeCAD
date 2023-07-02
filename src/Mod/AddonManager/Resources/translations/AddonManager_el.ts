@@ -6,56 +6,60 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Προσαρμοσμένο αποθετήριο</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL Χώρου Αποθήκευσης</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Κλάδος</translation>
     </message>
   </context>
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Μορφή</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Εικονίδιο</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Όνομα πακέτου&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Έκδοση</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="91"/>
+      <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="94"/>
+      <location filename="../../compact_view.py" line="88"/>
+      <source>Update Available</source>
+      <translation>Διαθέσιμη Ενημέρωση</translation>
+    </message>
+    <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Διαθέσιμη ενημέρωση</translation>
     </message>
   </context>
   <context>
@@ -63,12 +67,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Εξαρτήσεις</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Τύπος εξάρτησης</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -78,7 +82,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Προαιρετικό;</translation>
     </message>
   </context>
   <context>
@@ -87,31 +91,31 @@
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="213"/>
       <source>Resolve Dependencies</source>
-      <translation type="unfinished">Resolve Dependencies</translation>
+      <translation>Επίλυση Εξαρτήσεων</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="29"/>
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+      <translation>Αυτό το πρόσθετο έχει τις ακόλουθες απαιτούμενες και προαιρετικές εξαρτήσεις. Πρέπει να τα εγκαταστήσετε για να μπορέσει να χρησιμοποιηθεί αυτό το πρόσθετο.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+Θέλετε ο Διαχειριστής πρόσθετων να τα εγκαταστήσει αυτόματα; Επιλέξτε &quot;Παράβλεψη&quot; για να εγκαταστήσετε το πρόσθετο χωρίς να εγκαταστήσετε τις εξαρτήσεις.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>Πρόσθετα FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Απαιτούμενες ενότητες Python</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Προαιρετικές ενότητες Python</translation>
     </message>
   </context>
   <context>
@@ -119,34 +123,34 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Πρόσθετα Εργαλεία Προγραμματιστή</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Διαδρομή προς το πρόσθετο</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Περιήγηση...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Μεταδεδομένα</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Κύριος κλάδος</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Επεξήγηση το τι παρέχει αυτό το Πρόσθετο. Εμφανίζεται στη Διαχείριση Πρόσθετου. Δεν είναι απαραίτητο να δηλωθεί ότι πρόκειται για ένα πρόσθετο FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -156,7 +160,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>URL Συζήτησης</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -166,17 +170,18 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>URL εντοπισμού σφαλμάτων</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Σημασιολογικά (1.2.3-beta) ή CalVer (2022.08.30) στυλ που υποστηρίζονται
+Υποστηριζόμενα στυλ Σημασιολογικού (1.2.3-beta) ή με ημερομηνία Έκδοσης (30/8/2022)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Ορισμός σε σημερινή έκδοση (CalVer στυλ)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -184,43 +189,43 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Προαιρετικό)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>Εμφανίζεται στο Addon Manager&apos;s λίστα των Addons. Δεν πρέπει να συμπεριλάβετε τη λέξη &quot;FreeCAD&quot;, και πρέπει να είναι ένα έγκυρο όνομα καταλόγου σε όλα τα λειτουργικά συστήματα υποστήριξης.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>ΔΙΑΒΑΣΤΕ τη διεύθυνση URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+      <translation>TIP: Εφόσον  αυτό εμφανίζεται στη Διαχείριση Πρόσθετων του FreeCAD , δεν είναι απαραίτητο να καταλαμβάνετε χώρο λέγοντας πράγματα όπως &quot;Αυτό είναι ένα FreeCAD Addon. .&quot; - απλά πείτε τι κάνει.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL Χώρου Αποθήκευσης</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>URL Ιστοσελίδας</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>URL τεκμηρίωσης</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Όνομα Πρόσθετου</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -230,27 +235,27 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Προτείνεται)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Ελάχιστη Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+      <translation>(Προαιρετικά, υποστηρίζεται μόνο έκδοση 3.x)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Ανίχνευση...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
+      <translation>Περιεχόμενα Πρόσθετου</translation>
     </message>
   </context>
   <context>
@@ -258,7 +263,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Διαχειριστής Πρόσθετων</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="64"/>
@@ -268,12 +273,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Διακοπή ενημέρωσης προσωρινής μνήμης</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Ανανέωση τοπικής προσωρινής μνήμης</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="110"/>
@@ -283,7 +288,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Ενημέρωση όλων των προσθέτων</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -293,22 +298,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Προβολή και ενημέρωση εξαρτήσεων πακέτων Python</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Εξαρτήσεις για Python...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Εργαλεία για προγραμματιστές...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>Κλείσιμο του Διαχειριστή Προσθέτων</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
@@ -318,7 +323,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Επεξεργασία Ετικετών</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
@@ -333,7 +338,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation type="unfinished">Welcome to the Addon Manager</translation>
+      <translation>Καλώς ήλθατε στο Διαχειριστή Προσθέτων</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
@@ -343,7 +348,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>Ρυθμίσεις Λήψης</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -381,22 +386,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Επεξεργασία Εξάρτησης</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Τύπος Εξάρτησης</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Εξάρτηση</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Όνομα πακέτου, εάν &quot;Άλλο...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
@@ -411,7 +416,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Προαιρετικό</translation>
     </message>
   </context>
   <context>
@@ -432,7 +437,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="120"/>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Όνομα πακέτου&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="121"/>
@@ -444,7 +449,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(ετικέτες)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="125"/>
@@ -456,17 +461,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="126"/>
       <location filename="../../expanded_view.ui" line="171"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Συντηρητής</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Διαθέσιμη Ενημέρωση</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Διαθέσιμη ενημέρωση</translation>
     </message>
   </context>
   <context>
@@ -480,7 +485,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Άδειες</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -490,7 +495,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
+      <translation>Αρχείο άδειας</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
@@ -510,7 +515,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>Email</translation>
     </message>
   </context>
   <context>
@@ -528,7 +533,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>Έκδοση FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
@@ -552,7 +557,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Προαιρετικό</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
@@ -652,18 +657,18 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Python executable (optional):</source>
-      <translation>Εκτελέσιμο Python (προαιρετικό):</translation>
+      <source>Path to Python executable (optional):</source>
+      <translation type="unfinished">Path to Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>Path to git executable (optional):</source>
+      <translation type="unfinished">Path to git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
       <translation>Η διαδρομή προς το εκτελέσιμο Python για εγκατάσταση πακέτου με pip. Ανιχνεύεται αυτόματα εάν χρειάζεται και δεν καθορίζεται.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
-      <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -711,12 +716,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="52"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Εγκατάσταση</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="59"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Απεγκατάσταση</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="66"/>
@@ -855,12 +860,12 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Περιήγηση...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Όνομα Πακέτου Προτίμησης</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
@@ -886,11 +891,6 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
       <translation>Εικονίδιο</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_add_content.ui" line="179"/>
-      <source>actualIcon</source>
-      <translation type="unfinished">actualIcon</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -935,12 +935,13 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Σημασιολογικά (1.2.3-beta) ή CalVer (2022.08.30) στυλ που υποστηρίζονται
+Υποστηριζόμενα στυλ Σημασιολογικού (1.2.3-beta) ή με ημερομηνία Έκδοσης (30/8/2022)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Ορισμός σε σημερινή έκδοση (CalVer στυλ)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -1113,7 +1114,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Περιήγηση...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
@@ -1174,118 +1175,113 @@ installed addons will be checked for available updates
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="125"/>
-      <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="236"/>
+      <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
       <translation type="unfinished">Starting up...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="279"/>
+      <location filename="../../AddonManager.py" line="268"/>
       <source>Loading addon information</source>
       <translation type="unfinished">Loading addon information</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="305"/>
+      <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="363"/>
+      <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
       <translation type="unfinished">Previous cache process was interrupted, restarting...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="382"/>
+      <location filename="../../AddonManager.py" line="369"/>
       <source>Custom repo list changed, forcing recache...
 </source>
       <translation type="unfinished">Custom repo list changed, forcing recache...
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="435"/>
+      <location filename="../../AddonManager.py" line="422"/>
       <source>Addon manager</source>
       <translation type="unfinished">Addon manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="442"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="448"/>
+      <location filename="../../AddonManager.py" line="435"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="449"/>
+      <location filename="../../AddonManager.py" line="436"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="516"/>
-      <location filename="../../AddonManager.py" line="987"/>
+      <location filename="../../AddonManager.py" line="501"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Ανανέωση τοπικής προσωρινής μνήμης</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="662"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="706"/>
+      <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation type="unfinished">Could not find addon &apos;{}&apos; to select
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="736"/>
-      <location filename="../../AddonManager.py" line="771"/>
+      <location filename="../../AddonManager.py" line="691"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation type="unfinished">Checking for updates...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="766"/>
+      <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
       <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="775"/>
+      <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
       <translation type="unfinished">No updates available</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="912"/>
-      <location filename="../../AddonManager.py" line="938"/>
-      <location filename="../../AddonManager.py" line="1041"/>
+      <location filename="../../AddonManager.py" line="861"/>
+      <location filename="../../AddonManager.py" line="887"/>
+      <location filename="../../AddonManager.py" line="988"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation type="unfinished">Cannot launch a new installer until the previous one has finished.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1027"/>
+      <location filename="../../AddonManager.py" line="974"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Συντηρητής</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
       <translation>Συγγραφέας</translation>
     </message>
@@ -1501,8 +1497,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1525,12 +1521,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="912"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Εγκατάσταση</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="915"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Απεγκατάσταση</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="923"/>
@@ -1609,12 +1605,12 @@ installed addons will be checked for available updates
       <translation type="unfinished">Location for new license file</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation type="unfinished">Received {} response code from server</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation type="unfinished">Failed to install macro {}</translation>
     </message>
@@ -1634,9 +1630,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1989,7 +1985,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Ετικέτες</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2117,7 +2113,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="193"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Κλάδος</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="179"/>
@@ -2414,7 +2410,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.py" line="274"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL Χώρου Αποθήκευσης</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="280"/>
@@ -2466,12 +2462,12 @@ installed addons will be checked for available updates
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="151"/>
       <source>&amp;Addon manager</source>
       <translation type="unfinished">&amp;Addon manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="155"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
     </message>
@@ -2503,6 +2499,14 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="652"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AddonManager.py" line="124"/>
+      <source>Addon Manager</source>
+      <translation>Διαχειριστής Πρόσθετων</translation>
     </message>
   </context>
 </TS>

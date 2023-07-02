@@ -1535,7 +1535,7 @@ nei suoi componenti X, Y e Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Shape splitting and Compsolid creation tools.</source>
-      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
+      <translation>Strumenti di taglio della forma e creazione solidi composti.</translation>
     </message>
   </context>
   <context>
@@ -1912,12 +1912,12 @@ nei suoi componenti X, Y e Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Crea oggetto punti dalla geometria</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Crea un oggetto punti selezionabile dall'oggetto geometrico selezionato</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Punti dalla geometria</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2956,7 +2956,7 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Errore sconosciuto</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4097,7 +4097,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Errore sconosciuto</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4830,7 +4830,7 @@ saranno visibili solo i tagli creati</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew shape</source>
-      <translation type="unfinished">Sew shape</translation>
+      <translation>Cuci forma</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
@@ -5358,7 +5358,7 @@ Controlli individuali delle operazioni booleane:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="590"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>Oggetto controllato</translation>
     </message>
   </context>
   <context>
@@ -5704,27 +5704,27 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>Ambiente di lavoro Part e Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>Importa/Esporta</translation>
     </message>
@@ -5796,20 +5796,20 @@ Do you want to continue?</source>
       <translation>Nessun riferimento selezionato</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Bordo</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Vertice</translation>
     </message>
@@ -6025,63 +6025,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation>Controllo Op Booleano Sconosciuto</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>Operazione booleana: Controllo sconosciuto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation>Tipo Op Booleano Non Valido</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>Operazione booleana: Tipo difettoso</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation>Autointersecazione Op booleana</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>Operazione booleana: Auto-intersezione trovata</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation type="unfinished">Boolean Op Too Small Edge</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>Operazione booleana: Bordo troppo piccolo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation type="unfinished">Boolean Op Non-Recoverable Face</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>Operazione booleana: Faccia non recuperabile</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Vertex</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>Operazione booleana: Incompatibilità del vertice</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Edge</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>Operazione booleana: Incompatibilità del bordo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Face</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>Operazione booleana: Incompatibilità della faccia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation type="unfinished">Boolean Op Operation Aborted</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>Operazione booleana: Fallita</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation type="unfinished">Boolean Op GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>Operazione booleana: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation type="unfinished">Boolean Op Invalid Curve On Surface</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>Operazione booleana: Curva non valida sulla superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation type="unfinished">Boolean Op Not Valid</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>Operazione booleana: Non valida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6173,12 +6173,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Distanza nello spazio dei parametri</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Inserisci distanza:</translation>
     </message>
   </context>
   <context>
@@ -6573,7 +6573,7 @@ Creerà un 'filtro composto' per ogni forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Tipo di forma</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6608,7 +6608,7 @@ Creerà un 'filtro composto' per ogni forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Solidi composti</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6648,7 +6648,7 @@ Creerà un 'filtro composto' per ogni forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Centro della curva</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6663,7 +6663,7 @@ Creerà un 'filtro composto' per ogni forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>È chiuso</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6673,12 +6673,12 @@ Creerà un 'filtro composto' per ogni forma.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Centro globale di massa</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Posizionamento globale</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>

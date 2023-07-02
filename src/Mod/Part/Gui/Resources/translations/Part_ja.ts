@@ -1535,7 +1535,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Shape splitting and Compsolid creation tools.</source>
-      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
+      <translation>シェイプ分割と複合ソリッド作成のツール</translation>
     </message>
   </context>
   <context>
@@ -1912,12 +1912,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>ジオメトリーから点オブジェクトを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>選択したジオメトリーオブジェクトから選択可能な点オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>ジオメトリーからの点</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2751,7 +2751,7 @@ STEPファイルをインポートして戻す場合は、
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
       <source>Use legacy export function</source>
-      <translation type="unfinished">Use legacy export function</translation>
+      <translation>旧エクスポート機能を使用</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -2952,7 +2952,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>原因不明のエラー</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -4095,7 +4095,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>原因不明のエラー</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4143,7 +4143,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;テッセレーション&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;サーフェイスに対してテッセレーションしたメッシュの最大偏差を定義します。小さな値にするほどレンダリング速度が遅くなりますが、細密さ/解像度の向上した結果となります。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4667,10 +4667,8 @@ the sketch plane's normal vector will be used</source>
 will be taken from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only properly if all objects
-have the same values.</translation>
+      <translation>チェックされている場合、色と透明度は切断されたオブジェクトのものが使用されます。
+すべてのオブジェクトが同じ値を持つ場合にのみ正常に動作します。</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="308"/>
@@ -4695,19 +4693,18 @@ have the same values.</translation>
       <source>Allows to cut objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation type="unfinished">Allows to cut objects intersecting each other
-for the price that all cut objects
-will get the same color</translation>
+      <translation>すべての切断オブジェクトが同じ色になることと引き換えに、
+互いに交差するオブジェクトを切断できるようにします。</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="376"/>
       <source>Cut intersecting objects</source>
-      <translation type="unfinished">Cut intersecting objects</translation>
+      <translation>交差するオブジェクトを切り取り</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
       <source>Color for all objects</source>
-      <translation type="unfinished">Color for all objects</translation>
+      <translation>すべてのオブジェクトの色</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="511"/>
@@ -5128,26 +5125,24 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.</translation>
+      <translation>この設定をスキップし、ジオメトリーチェックを自動的に実行します。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
       <source>Default: false</source>
-      <translation type="unfinished">Default: false</translation>
+      <translation>デフォルト: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
       <source>Run boolean operation check</source>
-      <translation type="unfinished">Run boolean operation check</translation>
+      <translation>ブーリアン演算の検査を実行</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always
-mean the checked object is unusable.  Default: false</translation>
+      <translation>ブーリアン演算の追加検査。標準の BRep ジオメトリー検査では見落とされるようなエラーを発見できる場合があります。これらのエラーは、必ずしも検査されたオブジェクトが使用できないことを意味するものではありません。デフォルト: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
@@ -5197,28 +5192,28 @@ the check geometry tool.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>
 Individual boolean operation checks:</source>
-      <translation type="unfinished">
-Individual boolean operation checks:</translation>
+      <translation>
+個々のブーリアン演算の検査:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
       <source>Bad type</source>
-      <translation type="unfinished">Bad type</translation>
+      <translation>不正なタイプ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
       <source>Self-intersect</source>
-      <translation type="unfinished">Self-intersect</translation>
+      <translation>自己交差</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Too small edge</source>
-      <translation type="unfinished">Too small edge</translation>
+      <translation>エッジが小さすぎます</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>Nonrecoverable face</source>
-      <translation type="unfinished">Nonrecoverable face</translation>
+      <translation>回復不能な面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
@@ -5228,22 +5223,22 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
       <source>Incompatibility of face</source>
-      <translation type="unfinished">Incompatibility of face</translation>
+      <translation>面の非互換性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
       <source>Incompatibility of vertex</source>
-      <translation type="unfinished">Incompatibility of vertex</translation>
+      <translation>頂点の非互換性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
       <source>Incompatibility of edge</source>
-      <translation type="unfinished">Incompatibility of edge</translation>
+      <translation>エッジの非互換性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>サーフェス上の無効な曲線</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
@@ -5316,7 +5311,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="417"/>
       <source>Boolean operation check...</source>
-      <translation type="unfinished">Boolean operation check...</translation>
+      <translation>ブーリアン演算の検査...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="419"/>
@@ -5332,24 +5327,24 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="478"/>
       <source>Checking</source>
-      <translation type="unfinished">Checking</translation>
+      <translation>検査中</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="501"/>
       <source>%1 processed out of %2 selected</source>
-      <translation type="unfinished">%1 processed out of %2 selected</translation>
+      <translation>選択した %2 のうち %1 が処理されました。</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>%n invalid shapes.</source>
-      <translation type="unfinished">
-        <numerusform>%n invalid shapes.</numerusform>
+      <translation>
+        <numerusform>%n の無効なシェイプ。</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="590"/>
       <source>Checked object</source>
-      <translation type="unfinished">Checked object</translation>
+      <translation>検査されたオブジェクト</translation>
     </message>
   </context>
   <context>
@@ -5695,27 +5690,27 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1を編集</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation>パートとパートデザインのワークベンチ</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>インポート/エクスポート</translation>
     </message>
@@ -5787,20 +5782,20 @@ Do you want to continue?</source>
       <translation>参照が選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>エッジ</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>頂点</translation>
     </message>
@@ -6016,63 +6011,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation type="unfinished">Boolean Op Check Unknown</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation>ブーリアン演算: 不明な検査</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation type="unfinished">Boolean Op Bad Type</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation>ブーリアン演算: 不正なタイプ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation type="unfinished">Boolean Op Self Intersect</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation>ブーリアン演算: 自己交差が見つかりました。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation type="unfinished">Boolean Op Too Small Edge</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation>ブーリアン演算: エッジが小さすぎます。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation type="unfinished">Boolean Op Non-Recoverable Face</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation>ブーリアン演算: 回復不能な面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Vertex</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation>ブーリアン演算: 頂点が非互換</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Edge</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation>ブーリアン演算: エッジが非互換</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Face</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation>ブーリアン演算: 面が非互換</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation type="unfinished">Boolean Op Operation Aborted</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation>ブーリアン演算: 中断されました。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation type="unfinished">Boolean Op GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation>ブーリアン演算: Geomabs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation type="unfinished">Boolean Op Invalid Curve On Surface</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation>ブーリアン演算: サーフェス上の無効な曲線</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation type="unfinished">Boolean Op Not Valid</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation>ブーリアン演算: 無効です。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6159,17 +6154,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>チューブを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>パラメーター空間での距離</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>距離を入力:</translation>
     </message>
   </context>
   <context>
@@ -6240,12 +6235,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>チューブを作成</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>チューブを作成</translation>
     </message>
   </context>
   <context>
@@ -6253,12 +6248,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>エラーが起きたため結果計算に失敗しました:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>フィーチャーを作成する場合は「続行」を、キャンセルする場合は「破棄」をクリックしてください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -6266,7 +6261,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6276,17 +6271,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>2つ以上のオブジェクト、または1つ以上のコンパウンドを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>ベースとなるオブジェクト、埋め込むオブジェクトの順に選択してこのツールを起動してください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>切り抜きを行うオブジェクトを選択し、さらに切り抜きに一致すべきオブジェクトを選択してこのツールを起動してください。</translation>
     </message>
   </context>
   <context>
@@ -6294,12 +6289,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>オブジェクトを接続</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>中空が維持されるようにオブジェクトを融合</translation>
     </message>
   </context>
   <context>
@@ -6307,12 +6302,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>オブジェクト埋め込み</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>中空が維持されるようにオブジェクトを別のオブジェクトと融合</translation>
     </message>
   </context>
   <context>
@@ -6320,12 +6315,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>オブジェクトを切り抜き</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>オブジェクトが別のオブジェクトと合うように切り抜き</translation>
     </message>
   </context>
   <context>
@@ -6335,14 +6330,14 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>エラーが起きたため結果計算に失敗しました:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>フィーチャーを作成する場合は「続行」を、キャンセルする場合は「破棄」をクリックしてください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6353,7 +6348,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6367,13 +6362,13 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>2つ以上のオブジェクト、または複数のコンパウンドを最初に選択してください。コンパウンドが1つだけ選択されている場合にはコンパウンド形状がそれぞれ交差されます（それ以外の場合、自己交差しているコンパウンドは無効です）。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>最初に少なくとも 2 つのオブジェクトを選択してください。1つ目のオブジェクトがスライス対象となり、残りのオブジェクトでスライスされます。</translation>
     </message>
   </context>
   <context>
@@ -6389,31 +6384,29 @@ Do you want to continue?</source>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>体積、面積、寸法といった特徴量、または特定のアイテムを選択して選択したコンパウンドからオブジェクトをフィルタリング抽出します。
+2 つ目のオブジェクトを選択した場合、それが衝突や距離によるフィルタリングの参照として使用されます。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>まずコンパウンドであるシェイプを選択してください。2つ目の選択アイテム (省略可) がステンシルとして扱われます。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>エラーが起きたため結果計算に失敗しました:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>フィーチャーを作成する場合は「続行」を、キャンセルする場合は「破棄」をクリックしてください。</translation>
     </message>
   </context>
   <context>
@@ -6421,24 +6414,24 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>コンパウンドを分解</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>シェイプのコンパウンドを別々のオブジェクトに分割します。
+それぞれのスライスに対して「コンパウンド・フィルター」を作成します。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>最初にコンパウンドであるシェイプを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
   </context>
   <context>
@@ -6446,22 +6439,22 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
       <source>No object named {}</source>
-      <translation type="unfinished">No object named {}</translation>
+      <translation>{} という名前のオブジェクトはありません。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>リンクをパースできません (複数のコロンが見つかりました)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>オブジェクト {} は移動、アタッチできません。アタッチ対象を編集できません。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{} はアタッチできません。アタッチメントエディターダイアログを使用すればオブジェクトを配置できますが、その場合にはアタッチメントはパラメトリックにはなりません。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6478,27 +6471,27 @@ It will create a 'Compound Filter' for each shape.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
       <source>Edit attachment of {}</source>
-      <translation type="unfinished">Edit attachment of {}</translation>
+      <translation>{} のアタッチメントを編集</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>無視されました。オブジェクトを自身にアタッチすることはできません！</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>{} はアタッチされているオブジェクトに依存しているので、アタッチ対象として使用できません。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{} ({} を追加)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{} (さらに参照を追加)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
@@ -6508,7 +6501,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>参照 {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
@@ -6518,7 +6511,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>リンクを解決できませんでした。{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -6528,12 +6521,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>モード {} でアタッチ</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>エラー: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
@@ -6551,12 +6544,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>アタッチメント...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>選択したオブジェクトのアタッチ対象を編集</translation>
     </message>
   </context>
   <context>
@@ -6564,7 +6557,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>シェイプの種類</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6599,7 +6592,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>複合ソリッド</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
@@ -6639,7 +6632,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>曲線の中心</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
@@ -6654,7 +6647,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>閉じるかどうか</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6664,12 +6657,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>全体の重心</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>グローバル配置</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
@@ -6682,7 +6675,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>ブーリアン演算 フラグメント</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6691,11 +6684,9 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>２つ以上の選択したオブジェクト、またはコンパウンド内部のシェイプから「ブーリアン演算 フラグメント」オブジェクトを作成。
+これはブーリアン演算の結合ですが、さらに元のシェイプの交差面でスライスが行われます。
+それぞれのスライスを取り出すには「コンパウンド・フィルター」を使用します。</translation>
     </message>
   </context>
   <context>
@@ -6703,16 +6694,16 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>スライスしてコンパウンドへ</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>他のオブジェクトを切断面として使用して選択したオブジェクトをスライスします。
+結果の断片は1つのコンパウンドに保持されます。
+それぞれのスライスを取り出すには「コンパウンド・フィルター」を使用します。</translation>
     </message>
   </context>
   <context>
@@ -6720,14 +6711,14 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>スライス分割</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>選択したオブジェクトを他のオブジェクトでスライスし、分割します。
+それぞれのスライスに対して「コンパウンド・フィルター」を作成します。</translation>
     </message>
   </context>
   <context>
@@ -6735,7 +6726,7 @@ It will create a 'Compound Filter' for each slice.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>ブーリアン演算 XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
@@ -6743,10 +6734,9 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>２つ以上の選択したオブジェクト、またはコンパウンド内部のシェイプを使用して「排他的論理和」ブーリアン演算を行います。
+これによってシェイプの重なり合った体積が取り除かれます。
+残った断片を取り出すには「コンパウンド・フィルター」を使用します。</translation>
     </message>
   </context>
 </TS>

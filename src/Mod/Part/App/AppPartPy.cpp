@@ -74,6 +74,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -101,7 +102,6 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeWirePy.h"
-
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -2286,14 +2286,14 @@ private:
         const char *subname;
         if (!PyArg_ParseTuple(args.ptr(), "s",&subname))
             throw Py::Exception();
-        auto element = Data::ComplexGeoData::findElementName(subname);
+        auto element = Data::findElementName(subname);
         std::string sub(subname,element-subname);
         Py::List list;
         list.append(Py::String(sub));
         const char *dot = strchr(element,'.');
         if(!dot)
             dot = element+strlen(element);
-        const char *mapped = Data::ComplexGeoData::isMappedElement(element);
+        const char *mapped = Data::isMappedElement(element);
         if(mapped)
             list.append(Py::String(std::string(mapped,dot-mapped)));
         else
@@ -2317,8 +2317,8 @@ private:
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
         if (mapped && mapped[0]) {
-            if (!Data::ComplexGeoData::isMappedElement(mapped))
-                subname += Data::ComplexGeoData::elementMapPrefix();
+            if (!Data::isMappedElement(mapped))
+                subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
         if (element && element[0]) {

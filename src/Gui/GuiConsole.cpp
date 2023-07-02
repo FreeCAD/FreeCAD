@@ -81,9 +81,14 @@ GUIConsole::~GUIConsole (void)
       FreeConsole();
 }
 
-void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                         Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to std log
+    if(recipient == Base::IntendedRecipient::User || content == Base::ContentType::Translated)
+        return;
 
     int color = -1;
     switch(level){
@@ -116,9 +121,14 @@ void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
 GUIConsole::GUIConsole () {}
 GUIConsole::~GUIConsole () {}
-void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                         Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to std log
+    if(recipient == Base::IntendedRecipient::User || content == Base::ContentType::Translated)
+        return;
 
     switch(level){
         case Base::LogStyle::Warning:

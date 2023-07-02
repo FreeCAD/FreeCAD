@@ -401,12 +401,10 @@ int imageVerticalBalance(QImage p, int sizeHint) {
 
 void NaviCubeImplementation::createCubeFaceTextures() {
     int texSize = 192; // Works well for the max cube size 1024
-    // find font sizes
     QFont font;
-    if (!m_TextFont.empty()) {
-        QString fontString = QString::fromStdString(m_TextFont);
-        font.fromString(fontString);
-    }
+    if (m_TextFont.empty()) font.fromString(QStringLiteral("Arial"));
+    else font.fromString(QString::fromStdString(m_TextFont));
+    font.setStyleHint(QFont::SansSerif);
     if (m_FontWeight > 0) {
         font.setWeight(convertWeights(m_FontWeight));
     }
@@ -454,9 +452,10 @@ void NaviCubeImplementation::createCubeFaceTextures() {
             delete m_LabelTextures[pickId].texture;
         }
         m_LabelTextures[pickId].texture = new QOpenGLTexture(image.mirrored());
-        m_LabelTextures[pickId].texture->generateMipMaps();
+        m_LabelTextures[pickId].texture->setMaximumAnisotropy(4.0);
         m_LabelTextures[pickId].texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
         m_LabelTextures[pickId].texture->setMagnificationFilter(QOpenGLTexture::Linear);
+        m_LabelTextures[pickId].texture->generateMipMaps();
     }
 }
 
@@ -668,8 +667,8 @@ void NaviCubeImplementation::prepare() {
     addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, M_PI);
 
     // create the flat buttons
-    addButtonFace(PickId::ArrowNorth, SbVec3f(1, 0, 0));
-    addButtonFace(PickId::ArrowSouth, SbVec3f(-1, 0, 0));
+    addButtonFace(PickId::ArrowNorth, SbVec3f(-1, 0, 0));
+    addButtonFace(PickId::ArrowSouth, SbVec3f(1, 0, 0));
     addButtonFace(PickId::ArrowEast, SbVec3f(0, 1, 0));
     addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));

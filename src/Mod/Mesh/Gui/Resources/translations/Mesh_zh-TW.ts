@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
@@ -2089,6 +2089,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <name>QObject</name>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>顯示</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>匯入-匯出</translation>
     </message>

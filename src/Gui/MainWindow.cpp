@@ -230,8 +230,7 @@ private:
         assert(actions.size() <= maxSchema);
         for(int i = 0; i < maxSchema ; i++)
         {
-            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
-                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
         }
     }
 };
@@ -446,16 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
-
-    // setup font substitutions for NaviCube
-    // Helvetica usually gives good enough results on mac & linux
-    // in rare cases Helvetica matches a bad font on linux
-    // Nimbus Sans Narrow and Open Sans Condensed added as fallback
-    // Bahnschrift is a condensed font available on windows versions since 2017
-    // Arial added as fallback for older version
-    auto substitutions = QStringLiteral("Bahnschrift,Helvetica,Nimbus Sans Narrow,Open Sans Condensed,Arial,Sans");
-    auto family = QStringLiteral("FreeCAD NaviCube");
-    QFont::insertSubstitutions(family, substitutions.split(QLatin1Char(',')));
 
     statusBar()->showMessage(tr("Ready"), 2001);
 }
@@ -1180,6 +1169,10 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         return;
     auto view = dynamic_cast<MDIView*>(w->widget());
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
+    d->activeView = view;
+    Application::Instance->viewActivated(view);
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1205,9 +1198,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
     updateActions(true);
 }
 
@@ -1763,11 +1753,14 @@ QPixmap MainWindow::splashImage() const
         fontExe.setPointSizeF(20.0);
         QFontMetrics metricExe(fontExe);
         int l = QtTools::horizontalAdvance(metricExe, title);
+        if (title == QLatin1String("FreeCAD")) {
+            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
+        }
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSizeF(12.0);
+        fontVer.setPointSizeF(14.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
@@ -1788,7 +1781,10 @@ QPixmap MainWindow::splashImage() const
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
-            painter.drawText(x, y, title);
+            if (title != QLatin1String("FreeCAD")) {
+                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
+                painter.drawText(x, y, title);
+            }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
             painter.end();
@@ -2253,9 +2249,16 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
 
     int messageType = -1;
     switch(level){

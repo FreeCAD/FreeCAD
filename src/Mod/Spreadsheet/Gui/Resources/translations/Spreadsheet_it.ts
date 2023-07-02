@@ -737,6 +737,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Fa riferimento alla cella tramite alias, ad esempio
 Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Foglio di calcolo</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1163,7 +1168,7 @@ Predefinito a: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>

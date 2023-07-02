@@ -258,7 +258,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
             feature->getAddSubShape(fuseShape, cutShape);
             if (fuseShape.isNull() && cutShape.isNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of addsub feature is empty"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
             gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
             if (!fuseShape.isNull())
                 fuseShape = fuseShape.makeTransform(trsf);

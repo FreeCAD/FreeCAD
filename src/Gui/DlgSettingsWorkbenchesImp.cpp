@@ -254,9 +254,12 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     std::ostringstream orderedStr, disabledStr, autoloadStr;
 
     auto addStrToOss = [](std::string wbName, std::ostringstream& oss) {
-        if (!oss.str().empty())
-            oss << ",";
-        oss << wbName;
+        if (oss.str().find(wbName) == std::string::npos) {
+            if (!oss.str().empty()) {
+                oss << ",";
+            }
+            oss << wbName;
+        }
     };
 
     for (int i = 0; i < ui->wbList->count(); i++) {
@@ -289,6 +292,9 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     hGrp->SetASCII("Ordered", orderedStr.str().c_str());
     hGrp->SetASCII("Disabled", disabledStr.str().c_str());
+
+    //Update the list of workbenches in the WorkbenchGroup and in the WorkbenchComboBox & workbench QMenu
+    Application::Instance->signalRefreshWorkbenches();
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
@@ -474,8 +480,6 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
 {
-    requireRestart();
-
     setStartWorkbenchComboItems();
 
     //reorder the list of items.
@@ -548,7 +552,6 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
-    requireRestart();
     for (int i = 0; i < ui->wbList->count(); i++) {
         wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {

@@ -472,9 +472,15 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                           Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to the Report View
+    if( recipient == Base::IntendedRecipient::User ||
+        content == Base::ContentType::Translated)
+        return;
 
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
     switch (level) {

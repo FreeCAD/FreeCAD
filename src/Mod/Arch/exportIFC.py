@@ -1919,6 +1919,9 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
+        if h == b:
+            # are these edges unordered? To be on the safe side, check the next one
+            h = p.Edges[2].Length
         profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
@@ -2365,7 +2368,7 @@ def getRepresentation(
         placement = ifcbin.createIfcLocalPlacement()
         representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
         # additional representations?
-        if Draft.getType(obj) in ["Wall"]:
+        if Draft.getType(obj) in ["Wall","Structure"]:
             addrepr = createAxis(ifcfile,obj,preferences)
             if addrepr:
                 representation = representation + [addrepr]
@@ -2474,9 +2477,14 @@ def getAxisContext(ifcfile):
 def createAxis(ifcfile,obj,preferences):
     """Creates an axis for a given wall, if applicable"""
 
-    if hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
-        if obj.Base.Shape.ShapeType in ["Wire","Edge"]:
-            curve = createCurve(ifcfile,obj.Base.Shape,preferences["SCALE_FACTOR"])
+    shape = None
+    if getattr(obj,"Nodes",None):
+        shape = Part.makePolygon([obj.Placement.multVec(v) for v in obj.Nodes])
+    elif hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
+        shape = obj.Base.Shape
+    if shape:
+        if shape.ShapeType in ["Wire","Edge"]:
+            curve = createCurve(ifcfile,shape,preferences["SCALE_FACTOR"])
             if curve:
                 ctx = getAxisContext(ifcfile)
                 axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])

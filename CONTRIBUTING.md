@@ -31,7 +31,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
 ## 3. Roles
-1. "User": An member of the wider FreeCAD community who uses the software.
+1. "User": A member of the wider FreeCAD community who uses the software.
 2. "Contributor": A person who submits a contribution that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also Maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor.
 3. "Maintainer": A person who merges contributions. Maintainers may or may not be Contributors. Their role is to enforce the process. Maintainers have commit access to the repository.
 4. "Administrator": Administrators have additional authority to maintain the list of designated Maintainers.

@@ -279,6 +279,7 @@ SET(PathTests_SRCS
     PathTests/drill_test1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
+    PathTests/test_profile.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_filenaming.fcstd
     PathTests/test_geomop.fcstd
@@ -306,6 +307,7 @@ SET(PathTests_SRCS
     PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
+    PathTests/TestPathProfile.py
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathRotationGenerator.py
     PathTests/TestPathSetupSheet.py

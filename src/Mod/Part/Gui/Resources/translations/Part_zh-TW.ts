@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="275"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>點被放置在物件的 Placement.Position 上。適用於具有位置的物件，以及橢圓/拋物線/雙曲線邊緣。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="277"/>
@@ -178,13 +178,13 @@
       <location filename="../../AttacherTexts.cpp" line="283"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">On edge</translation>
+      <translation>在邊上</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>點被放置在邊上，MapPathParameter 控制位置。此外，可以連結頂點以進行投影。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="286"/>
@@ -196,7 +196,7 @@
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>邊緣的圓曲線的相切圓心。可選的頂點連結定義位置。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="289"/>
@@ -277,32 +277,32 @@
       <location filename="../../AttacherTexts.cpp" line="205"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>物件的 X 方向</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
       <location filename="../../AttacherTexts.cpp" line="212"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>線條與物件的本地 X 軸對齊。適用於具有位置的物件，以及橢圓/拋物線/雙曲線邊緣。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>物件的 Y 方向</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>線條與物件的本地 Y 軸對齊。適用於具有位置的物件，以及橢圓/拋物線/雙曲線邊緣。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="211"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>物件的 Z 方向</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="214"/>
@@ -314,7 +314,7 @@
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>線條是曲緣相切圓的軸線。可選的頂點定義位置。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="217"/>
@@ -374,13 +374,13 @@
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>與邊相切的直線。可選的頂點連結定義位置。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="232"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>法線與邊垂直</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -534,37 +534,37 @@
       <location filename="../../AttacherTexts.cpp" line="133"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>物件的 XY 平面</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>平面與連結物件的本地 XY 平面對齊。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>物件的 XZ 平面</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>平面與連結物件的本地 XZ 平面對齊。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>物件的 YZ 平面</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>平面與連結物件的本地 YZ 平面對齊。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="142"/>
@@ -594,7 +594,7 @@
       <location filename="../../AttacherTexts.cpp" line="148"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>法線與邊垂直</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
@@ -731,37 +731,37 @@
       <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>物件的 X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>位置被設定為與連結物件的位置相等。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>物件的 X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>X'、Y'、Z' 軸分別與物件的本地 X、Z、-Y 軸相匹配。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>物件的 Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>X'、Y'、Z' 軸分別與物件的本地 Y、Z、X 軸相匹配。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="67"/>
@@ -791,7 +791,7 @@
       <location filename="../../AttacherTexts.cpp" line="73"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z軸相切至邊</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2395"/>
       <location filename="../../Command.cpp" line="2397"/>
       <source>Box selection</source>
-      <translation>窗選</translation>
+      <translation>拉框選擇</translation>
     </message>
   </context>
   <context>
@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2137"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>設定選取物件每個個別面的顏色。</translation>
     </message>
   </context>
   <context>
@@ -1266,7 +1266,7 @@ between two vertices of them.</translation>
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -1530,7 +1530,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="685"/>
       <source>Split objects...</source>
-      <translation type="unfinished">Split objects...</translation>
+      <translation>分割物件...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
@@ -1912,7 +1912,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>從幾何圖形建立點物件</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
@@ -2649,7 +2649,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1067"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>倒角邊</translation>
     </message>
   </context>
   <context>
@@ -2798,7 +2798,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>沿著邊：</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -3066,7 +3066,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
       <source>Chamfer Parameter</source>
-      <translation type="unfinished">Chamfer Parameter</translation>
+      <translation>倒角參數</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
@@ -3081,7 +3081,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>要倒角的邊</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="864"/>
@@ -3923,7 +3923,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add edge</source>
-      <translation type="unfinished">Add edge</translation>
+      <translation>加上邊</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
@@ -3938,7 +3938,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show Edges</source>
-      <translation type="unfinished">Show Edges</translation>
+      <translation>顯示邊</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -4271,7 +4271,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>形狀外觀</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
@@ -4301,7 +4301,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>形狀透明度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
@@ -4337,7 +4337,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="186"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>頂點顏色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="193"/>
@@ -4801,7 +4801,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="547"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>選擇相鄰的邊</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="554"/>
@@ -4872,7 +4872,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="336"/>
       <source>Select one or more edges from a single object.</source>
-      <translation type="unfinished">Select one or more edges from a single object.</translation>
+      <translation>從單一物件中選擇一或多個邊。</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
@@ -5417,7 +5417,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>窗選</translation>
+      <translation>拉框選擇</translation>
     </message>
   </context>
   <context>
@@ -5529,7 +5529,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>由邊緣形成的線段</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -5707,27 +5707,27 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>編輯 %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="232"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Import-Export</source>
       <translation>匯入-匯出</translation>
     </message>
@@ -5800,20 +5800,20 @@ Do you want to continue?</source>
       <translation>尚未選擇參考之物件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6029,63 +6029,63 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean Op Check Unknown</source>
-      <translation type="unfinished">Boolean Op Check Unknown</translation>
+      <source>Boolean operation: Unknown check</source>
+      <translation type="unfinished">Boolean operation: Unknown check</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean Op Bad Type</source>
-      <translation type="unfinished">Boolean Op Bad Type</translation>
+      <source>Boolean operation: Bad type</source>
+      <translation type="unfinished">Boolean operation: Bad type</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean Op Self Intersect</source>
-      <translation type="unfinished">Boolean Op Self Intersect</translation>
+      <source>Boolean operation: Self-intersection found</source>
+      <translation type="unfinished">Boolean operation: Self-intersection found</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean Op Too Small Edge</source>
-      <translation type="unfinished">Boolean Op Too Small Edge</translation>
+      <source>Boolean operation: Edge too small</source>
+      <translation type="unfinished">Boolean operation: Edge too small</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean Op Non-Recoverable Face</source>
-      <translation type="unfinished">Boolean Op Non-Recoverable Face</translation>
+      <source>Boolean operation: Non-recoverable face</source>
+      <translation type="unfinished">Boolean operation: Non-recoverable face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean Op Incompatibility Of Vertex</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Vertex</translation>
+      <source>Boolean operation: Incompatibility of vertex</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean Op Incompatibility Of Edge</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Edge</translation>
+      <source>Boolean operation: Incompatibility of edge</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of edge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean Op Incompatibility Of Face</source>
-      <translation type="unfinished">Boolean Op Incompatibility Of Face</translation>
+      <source>Boolean operation: Incompatibility of face</source>
+      <translation type="unfinished">Boolean operation: Incompatibility of face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean Op Operation Aborted</source>
-      <translation type="unfinished">Boolean Op Operation Aborted</translation>
+      <source>Boolean operation: Aborted</source>
+      <translation type="unfinished">Boolean operation: Aborted</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>Boolean Op GeomAbs_C0</source>
-      <translation type="unfinished">Boolean Op GeomAbs_C0</translation>
+      <source>Boolean operation: GeomAbs_C0</source>
+      <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean Op Invalid Curve On Surface</source>
-      <translation type="unfinished">Boolean Op Invalid Curve On Surface</translation>
+      <source>Boolean operation: Invalid curve on surface</source>
+      <translation type="unfinished">Boolean operation: Invalid curve on surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean Op Not Valid</source>
-      <translation type="unfinished">Boolean Op Not Valid</translation>
+      <source>Boolean operation: Not valid</source>
+      <translation type="unfinished">Boolean operation: Not valid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -6107,7 +6107,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1420"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>選擇 </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1504"/>
@@ -6167,7 +6167,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>附件編輯器</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
@@ -6182,7 +6182,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>輸入距離：</translation>
     </message>
   </context>
   <context>

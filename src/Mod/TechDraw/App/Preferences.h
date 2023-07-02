@@ -51,6 +51,7 @@ public:
     static QString labelFontQString();
     static double labelFontSizeMM();
     static double dimFontSizeMM();
+    static double dimArrowSize();
 
     static App::Color normalColor();
     static App::Color selectColor();
@@ -74,6 +75,7 @@ public:
     static std::string lineGroupFile();
 
     static const double DefaultFontSizeInMM;
+    static const double DefaultArrowSize;
 
     static std::string formatSpec();
     static int altDecimals();

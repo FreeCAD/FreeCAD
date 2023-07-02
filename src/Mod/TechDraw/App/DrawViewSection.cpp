@@ -723,7 +723,9 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
         }
 
         if (goodWires.empty()) {
-            Base::Console().Warning("DVS::mapToPage - %s - section face has no valid wires.\n",
+            // this may or may not be significant.  In the offset or noparallel strategies,
+            // a profile segment that is parallel to the SectionNormal will not generate a face.
+            Base::Console().Log("DVS::mapToPage - %s - section face has no valid wires.\n",
                                     getNameInDocument());
             continue;
         }

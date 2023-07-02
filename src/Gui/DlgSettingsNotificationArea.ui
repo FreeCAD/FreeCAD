@@ -64,22 +64,22 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="GroupBoxSubscriptions">
      <property name="title">
-      <string>Additional data Sources</string>
+      <string>Additional data sources</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="errorSubscriptionEnabled">
+       <widget class="Gui::PrefCheckBox" name="developerErrorSubscriptionEnabled">
         <property name="toolTip">
-         <string>Errors will appear in the notification area</string>
+         <string>Errors intended for developers will appear in the notification area</string>
         </property>
         <property name="text">
-         <string>Errors</string>
+         <string>Debug errors</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ErrorSubscriptionEnabled</cstring>
+         <cstring>DeveloperErrorSubscriptionEnabled</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NotificationArea</cstring>
@@ -87,18 +87,18 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="warningSubscriptionEnabled">
+       <widget class="Gui::PrefCheckBox" name="developerWarningSubscriptionEnabled">
         <property name="toolTip">
-         <string>Warnings will appear in the notification area</string>
+         <string>Warnings intended for developers will appear in the notification area</string>
         </property>
         <property name="text">
-         <string>Warnings</string>
+         <string>Debug warnings</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>WarningSubscriptionEnabled</cstring>
+         <cstring>DeveloperWarningSubscriptionEnabled</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>NotificationArea</cstring>

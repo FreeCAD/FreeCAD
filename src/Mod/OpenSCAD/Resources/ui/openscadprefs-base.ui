@@ -286,7 +286,7 @@
            <string>Minimum angle for a fragment</string>
           </property>
           <property name="text">
-           <string>angular (fa)</string>
+           <string>angle (fa)</string>
           </property>
          </widget>
         </item>

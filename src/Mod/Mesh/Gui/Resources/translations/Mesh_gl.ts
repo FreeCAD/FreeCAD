@@ -2088,6 +2088,11 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     <name>QObject</name>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
+      <source>Display</source>
+      <translation>Visualización</translation>
+    </message>
+    <message>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Importar-Exportar</translation>
     </message>

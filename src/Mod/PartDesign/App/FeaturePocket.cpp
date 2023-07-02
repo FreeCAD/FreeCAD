@@ -76,14 +76,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
         (!UpToFace.getValue() && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
-    // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Length of pocket too small"));
-
     double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Second length of pocket too small"));
 
     TopoDS_Shape profileshape;
     try {
@@ -194,7 +188,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
             int prismCount = countSolids(prism);
             if (prismCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             this->Shape.setValue(getSolid(prism));
@@ -225,11 +219,11 @@ App::DocumentObjectExecReturn *Pocket::execute()
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Resulting shape is not a solid"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
 
             }
             solRes = refineShapeIfActive(solRes);

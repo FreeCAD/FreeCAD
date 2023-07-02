@@ -738,6 +738,11 @@ switch the design configuration. The property will be created if not exist.</tra
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Hesap Tablosu</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1163,7 +1168,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Adsız</translation>
     </message>

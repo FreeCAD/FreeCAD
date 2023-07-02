@@ -26,14 +26,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>ToolController</string>
+         <string>Tool Controller</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -47,7 +47,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -60,7 +60,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string></string>
         </property>
         <property name="text">
          <string>Discretization Deflection</string>
@@ -70,7 +70,7 @@
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="discretize">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</string>
         </property>
         <property name="decimals">
          <number>3</number>
@@ -92,7 +92,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string></string>
         </property>
         <property name="text">
          <string>Filter Colinear lines</string>
@@ -102,7 +102,7 @@
       <item row="1" column="1">
        <widget class="QSpinBox" name="colinearFilter">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</string>
         </property>
         <property name="maximum">
          <number>90</number>

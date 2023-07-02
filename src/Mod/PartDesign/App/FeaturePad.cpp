@@ -69,13 +69,8 @@ Pad::Pad()
 
 App::DocumentObjectExecReturn *Pad::execute()
 {
-    // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Length of pad too small"));
     double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Second length of pad too small"));
 
     // if midplane is true, disable reversed and vice versa
     bool hasMidplane = Midplane.getValue();
@@ -219,11 +214,11 @@ App::DocumentObjectExecReturn *Pad::execute()
             TopoDS_Shape solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Resulting shape is not a solid"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             solRes = refineShapeIfActive(solRes);
@@ -232,7 +227,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         else {
             int solidCount = countSolids(prism);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
            this->Shape.setValue(getSolid(prism));

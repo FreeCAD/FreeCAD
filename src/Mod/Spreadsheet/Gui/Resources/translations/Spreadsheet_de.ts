@@ -736,6 +736,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Zellbezug mit Alias, zum Beispiel
 Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -922,7 +927,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Wenn aktiviert, wird für den Zell-String die benutzerdefinierte Darstellung verwendet.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
@@ -936,11 +941,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Das Format der benutzerdefinierten Stringdarstellung.
+Standard: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - Alias Name
+%V - Zellwert</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
@@ -1141,7 +1146,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1162,7 +1167,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>

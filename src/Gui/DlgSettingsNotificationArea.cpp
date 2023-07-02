@@ -51,8 +51,8 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->autoRemoveUserNotifications->setEnabled(true);
             ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(true);
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(true);
-            ui->errorSubscriptionEnabled->setEnabled(true);
-            ui->warningSubscriptionEnabled->setEnabled(true);
+            ui->developerErrorSubscriptionEnabled->setEnabled(true);
+            ui->developerWarningSubscriptionEnabled->setEnabled(true);
             QMessageBox::information(this,
                                      tr("Notification Area"),
                                      tr("Activation of the Notification Area only takes effect "
@@ -68,8 +68,8 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
             ui->autoRemoveUserNotifications->setEnabled(false);
             ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(false);
             ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(false);
-            ui->errorSubscriptionEnabled->setEnabled(false);
-            ui->warningSubscriptionEnabled->setEnabled(false);
+            ui->developerErrorSubscriptionEnabled->setEnabled(false);
+            ui->developerWarningSubscriptionEnabled->setEnabled(false);
             // N.B: Deactivation is handled by the Notification Area itself, as it listens to all
             // its configuration parameters.
         }
@@ -91,8 +91,8 @@ void DlgSettingsNotificationArea::saveSettings()
     ui->notificationWidth->onSave();
     ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->onSave();
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onSave();
-    ui->errorSubscriptionEnabled->onSave();
-    ui->warningSubscriptionEnabled->onSave();
+    ui->developerErrorSubscriptionEnabled->onSave();
+    ui->developerWarningSubscriptionEnabled->onSave();
 }
 
 void DlgSettingsNotificationArea::loadSettings()
@@ -107,8 +107,8 @@ void DlgSettingsNotificationArea::loadSettings()
     ui->notificationWidth->onRestore();
     ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->onRestore();
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onRestore();
-    ui->errorSubscriptionEnabled->onRestore();
-    ui->warningSubscriptionEnabled->onRestore();
+    ui->developerErrorSubscriptionEnabled->onRestore();
+    ui->developerWarningSubscriptionEnabled->onRestore();
 }
 
 void DlgSettingsNotificationArea::changeEvent(QEvent* e)

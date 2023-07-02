@@ -76,6 +76,7 @@ BuildRequires:  qt5-qttools-static
 BuildRequires:  qt5-qtxmlpatterns-devel
 
 BuildRequires:  fmt-devel
+BuildRequires:  qqc2-desktop-style
 
 
 BuildRequires:  xerces-c

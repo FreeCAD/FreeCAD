@@ -739,6 +739,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
 'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -1165,7 +1170,7 @@ Lehenespenak: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Izenik gabea</translation>
     </message>

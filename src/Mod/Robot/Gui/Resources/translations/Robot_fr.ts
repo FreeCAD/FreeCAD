@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="250"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Définir les valeurs par défaut pour la vitesse, l’accélération et la continuité pour les commandes suivantes de la création du point de passage</translation>
+      <translation>Définir les valeurs par défaut pour la vitesse, l’accélération et la continuité pour les commandes suivantes de la création des points de passage</translation>
     </message>
   </context>
   <context>
@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>Mauvaise sélection</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>Sélectionnez un robot</translation>
     </message>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Sélectionnez un robot et une trajectoire.</translation>
     </message>
@@ -630,7 +630,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectory.ui" line="20"/>
       <source>Form</source>
-      <translation>Forme</translation>
+      <translation>Formulaire</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="58"/>

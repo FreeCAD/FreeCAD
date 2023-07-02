@@ -29,7 +29,7 @@
 #include <Base/Uuid.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "ComplexGeoDataPy.h"
 #include "Document.h"
 #include "DocumentObserver.h"
@@ -1051,7 +1051,7 @@ DocumentObject *LinkBaseExtension::getLink(int depth) const{
 }
 
 int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname) {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
+    if(!subname || Data::isMappedElement(subname))
         return -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
@@ -1073,7 +1073,7 @@ int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname)
 }
 
 int LinkBaseExtension::getElementIndex(const char *subname, const char **psubname) const {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
+    if(!subname || Data::isMappedElement(subname))
         return -1;
     int idx = -1;
     const char *dot = strchr(subname,'.');
@@ -1313,7 +1313,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 return true;
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
             // do not resolve the link if this element is the last referenced object
-            if(!subname || Data::ComplexGeoData::isMappedElement(subname) || !strchr(subname,'.'))
+            if(!subname || Data::isMappedElement(subname) || !strchr(subname,'.'))
                 ret = elements[idx];
             return true;
         }
@@ -1381,7 +1381,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     std::string postfix;
     if(ret) {
         // do not resolve the link if we are the last referenced object
-        if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) {
+        if(subname && !Data::isMappedElement(subname) && strchr(subname,'.')) {
             if(mat)
                 *mat = matNext;
         }
@@ -1394,7 +1394,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         }
         else {
             if(idx) {
-                postfix = Data::ComplexGeoData::indexPostfix();
+                postfix = Data::POSTFIX_INDEX;
                 postfix += std::to_string(idx);
             }
             if(mat)
@@ -1488,7 +1488,7 @@ void LinkBaseExtension::parseSubName() const {
     }
     const auto &subs = xlink->getSubValues();
     auto subname = subs.front().c_str();
-    auto element = Data::ComplexGeoData::findElementName(subname);
+    auto element = Data::findElementName(subname);
     if(!element || !element[0]) {
         mySubName = subs[0];
         if(hasSubElement)
@@ -1499,7 +1499,7 @@ void LinkBaseExtension::parseSubName() const {
     mySubName = std::string(subname,element-subname);
     for(std::size_t i=1;i<subs.size();++i) {
         auto &sub = subs[i];
-        element = Data::ComplexGeoData::findElementName(sub.c_str());
+        element = Data::findElementName(sub.c_str());
         if(element && element[0] && boost::starts_with(sub,mySubName))
             mySubElements.emplace_back(element);
     }
@@ -1938,7 +1938,7 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
         } else {
             std::set<std::string> subset(mySubElements.begin(),mySubElements.end());
             auto sub = xlink->getSubValues().front();
-            auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+            auto element = Data::findElementName(sub.c_str());
             if(element && element[0]) {
                 subset.insert(element);
                 sub.resize(element - sub.c_str());

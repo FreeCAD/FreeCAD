@@ -28,7 +28,7 @@
 #endif
 
 #include <App/Application.h>
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
@@ -294,8 +294,8 @@ void StdCmdLinkMakeRelative::activated(int) {
             if(!sel.pObject || !sel.pObject->getNameInDocument())
                 continue;
             auto key = std::make_pair(sel.pObject,
-                    Data::ComplexGeoData::noElementName(sel.SubName));
-            auto element = Data::ComplexGeoData::findElementName(sel.SubName);
+                    Data::noElementName(sel.SubName));
+            auto element = Data::findElementName(sel.SubName);
             auto &info = linkInfo[key];
             info.first = sel.pResolvedObject;
             if(element && element[0])

@@ -171,7 +171,6 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     if (!children.empty()) {
         // this link points to other links???
         for (auto& l:children) {
-            Base::Console().Message("SE::getXShapes - processing a child\n");
             bool childNeedsTransform = false;
             Base::Placement childPlm;
             Base::Matrix4D childScale;
@@ -253,7 +252,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
 
 std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::DocumentObject* docObj)
 {
-    Base::Console().Message("SE::getShapesFromObject(%s)\n", docObj->getNameInDocument());
+//    Base::Console().Message("SE::getShapesFromObject(%s)\n", docObj->getNameInDocument());
     std::vector<TopoDS_Shape> result;
 
     const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(docObj);
@@ -418,7 +417,7 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
 
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
-    Base::Console().Message("SE::getLocation3dFromFeat()\n");
+//    Base::Console().Message("SE::getLocation3dFromFeat()\n");
     if (!isPointType(obj)) {
         return Base::Vector3d(0.0, 0.0, 0.0);
     }

@@ -83,7 +83,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
       <source>Number of gear teeth</source>
-      <translation type="unfinished">Number of gear teeth</translation>
+      <translation>기어 톱니 수</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
@@ -129,17 +129,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1430"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Additive helix</source>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation>선택한 스케치를 나선을 따라 스윕</translation>
     </message>
@@ -147,17 +147,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1313"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1314"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Additive loft</source>
       <translation>로프트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1315"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>선택한 프로파일을 다른 프로파일 섹션으로 로프트</translation>
     </message>
@@ -165,17 +165,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1211"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Additive pipe</source>
       <translation>파이프</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>선택된 스케치를 경로 또는 다른 프로파일을 따라 스윕</translation>
     </message>
@@ -201,17 +201,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2327"/>
+      <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
       <translation>부울 작업</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>두 개 이상 바디의 불리언 작업</translation>
     </message>
@@ -237,17 +237,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Chamfer</source>
       <translation>모따기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1726"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>선택된 모서리에 챔퍼</translation>
     </message>
@@ -273,17 +273,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
       <translation>흘수</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1755"/>
       <source>Make a draft on a face</source>
       <translation>면에 구배 생성</translation>
     </message>
@@ -309,17 +309,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1680"/>
+      <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1681"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Fillet</source>
       <translation>필렛</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1682"/>
+      <location filename="../../Command.cpp" line="1698"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>모서리, 면, 바디에 필렛 생성</translation>
     </message>
@@ -327,17 +327,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../Command.cpp" line="1161"/>
       <source>Groove</source>
       <translation>그루브</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1146"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Groove a selected sketch</source>
       <translation>선택된 스케치를 사용하여 그루브</translation>
     </message>
@@ -345,17 +345,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1038"/>
+      <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1039"/>
+      <location filename="../../Command.cpp" line="1055"/>
       <source>Hole</source>
       <translation>구멍</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1040"/>
+      <location filename="../../Command.cpp" line="1056"/>
       <source>Create a hole with the selected sketch</source>
       <translation>선택한 스케치를 사용하여 구멍 생성</translation>
     </message>
@@ -381,17 +381,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2042"/>
       <source>LinearPattern</source>
       <translation>선형 패턴</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Create a linear pattern feature</source>
       <translation>선형 패턴 형상을 생성</translation>
     </message>
@@ -417,17 +417,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="1963"/>
+      <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1964"/>
+      <location filename="../../Command.cpp" line="1980"/>
       <source>Mirrored</source>
       <translation>대칭</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1965"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Create a mirrored feature</source>
       <translation>대칭 형상 생성</translation>
     </message>
@@ -489,17 +489,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2203"/>
+      <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2204"/>
+      <location filename="../../Command.cpp" line="2220"/>
       <source>Create MultiTransform</source>
       <translation>다중 패턴 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2205"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>Create a multitransform feature</source>
       <translation>다중 패턴 형상 생성</translation>
     </message>
@@ -507,17 +507,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
       <translation>스케치 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="504"/>
       <source>Create a new sketch</source>
       <translation>새로운 스케치 생성</translation>
     </message>
@@ -525,17 +525,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>Pad</source>
       <translation>돌출</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Pad a selected sketch</source>
       <translation>선택된 스케치를 돌출</translation>
     </message>
@@ -561,17 +561,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Pocket</source>
       <translation>돌출 컷</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
+      <location filename="../../Command.cpp" line="1024"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>선택된 스케치를 사용하여 돌출 컷 생성</translation>
     </message>
@@ -597,17 +597,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2090"/>
+      <location filename="../../Command.cpp" line="2106"/>
       <source>PolarPattern</source>
       <translation>원형 패턴</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2091"/>
+      <location filename="../../Command.cpp" line="2107"/>
       <source>Create a polar pattern feature</source>
       <translation>원형 패턴 형상 생성</translation>
     </message>
@@ -615,17 +615,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1086"/>
+      <location filename="../../Command.cpp" line="1102"/>
       <source>Revolution</source>
       <translation>회전</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
+      <location filename="../../Command.cpp" line="1103"/>
       <source>Revolve a selected sketch</source>
       <translation>선택된 스케치를 회전</translation>
     </message>
@@ -633,17 +633,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2154"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2155"/>
+      <location filename="../../Command.cpp" line="2171"/>
       <source>Scaled</source>
       <translation>배율</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2156"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Create a scaled feature</source>
       <translation>축척된 피쳐 생성</translation>
     </message>
@@ -683,17 +683,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Subtractive helix</source>
       <translation>빼기 나선</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation>나선을 따라 선택한 스케치를 스윕하고 본체에서 제거</translation>
     </message>
@@ -701,17 +701,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1365"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Subtractive loft</source>
       <translation type="unfinished">Subtractive loft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>다른 프로파일 섹션을 통해 선택한 프로파일을 로프트하고 본체에서 제거</translation>
     </message>
@@ -719,17 +719,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1262"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1263"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Subtractive pipe</source>
       <translation type="unfinished">Subtractive pipe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
       <translation>경로를 따라 또는 다른 프로파일로 선택한 스케치를 스윕하고 본체에서 제거</translation>
     </message>
@@ -737,17 +737,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
       <translation>부품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1806"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Make a thick solid</source>
       <translation>솔리드에 두께를 제외한 부분을 잘라낸 모델을 생성합니다.</translation>
     </message>
@@ -883,8 +883,8 @@ so that self intersection is avoided.</translation>
       <translation>Clone 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Make copy</source>
       <translation>사본 만들기</translation>
     </message>
@@ -899,18 +899,18 @@ so that self intersection is avoided.</translation>
       <translation>새 스케치 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2269"/>
       <source>Convert to MultiTransform feature</source>
       <translation>MultiTransform 기능으로 변환</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Create Boolean</source>
       <translation>부울 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>바디 추가</translation>
     </message>
@@ -3485,110 +3485,110 @@ click again to end selection</translation>
       <translation>평면을 먼저 생성하거나 스케치를 생성할 면을 먼저 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1914"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>A dialog is already open in the task panel</source>
       <translation>테스크 패널에 이미 다이얼로그가 열려있습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1915"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <source>Do you want to close this dialog?</source>
       <translation>다이얼로그를 닫으시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="775"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="813"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
       <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>No sketch to work on</source>
       <translation>작업을 수행할 스케치가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>No sketch is available in the document</source>
       <translation>이 문서에는 사용할 수 있는 스케치가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1563"/>
-      <location filename="../../Command.cpp" line="1589"/>
+      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
-      <location filename="../../Command.cpp" line="1941"/>
+      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1957"/>
       <source>Selection is not in Active Body</source>
       <translation>작업 바디(Body)에 선택된 것이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1585"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1595"/>
       <source>Wrong object type</source>
       <translation>잘못된 객체 타입</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>%1 works only on parts.</source>
       <translation>%1 파트에서만 사용 가능합니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Shape of the selected Part is empty</source>
       <translation>선택된 파트가 비어있습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>No valid features in this document</source>
       <translation>이 문서에는 유효한 피처가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1933"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Please create a feature first.</source>
       <translation type="unfinished">Please create a feature first.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1942"/>
+      <location filename="../../Command.cpp" line="1958"/>
       <source>Please select only one feature in an active body.</source>
       <translation type="unfinished">Please select only one feature in an active body.</translation>
     </message>
@@ -3774,14 +3774,14 @@ This may lead to unexpected results.</source>
       <translation>기본 피처없이 빼기(Subtractive) 피처를 생성할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
@@ -3796,7 +3796,7 @@ This may lead to unexpected results.</source>
       <translation>면 선택</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="122"/>
+      <location filename="../../Utils.cpp" line="139"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,40 +3805,40 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Body가 없는 PartDesign 개체가 있는 레거시 문서가 있는 경우 PartDesign의 마이그레이션 기능을 사용하여 Body에 넣습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="170"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
       <translation>작업 바디(Body)가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="171"/>
+      <location filename="../../Utils.cpp" line="188"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>새로운 부품설계(PartDesign) 객체를 생성하기 위해서, 문서에 활성화된 바디(Body)가 있어야 합니다. 하나의 바디(Body)를 더블 클릭하여 활성화하거나 새로운 바디(Body)를 생성하세요.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="206"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>Feature is not in a body</source>
       <translation>바디(Body)에 피처가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="207"/>
+      <location filename="../../Utils.cpp" line="224"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>이 피처를 사용하기 위해서는, 피처가 현재 문서에 있는 바디(Body) 객체에 속해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="239"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>Feature is not in a part</source>
       <translation>피처가 파트에 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="240"/>
+      <location filename="../../Utils.cpp" line="257"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>이 피처를 사용하기 위해서는, 피처가 현재 문서에 있는 파트 객체에 속해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="76"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <source>Edit %1</source>
       <translation type="unfinished">Edit %1</translation>
     </message>
@@ -4933,12 +4933,17 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Fusion of tools failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
       <source>Resulting shape is not a solid</source>
       <translation type="unfinished">Resulting shape is not a solid</translation>
     </message>
@@ -4953,9 +4958,24 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Common operation failed</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
-      <source>Boolean: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Boolean: Result has multiple solids. This is not supported at this time.</translation>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <source>Result has multiple solids: that is not currently supported.</source>
+      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -4974,11 +4994,6 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../../App/FeatureFillet.cpp" line="131"/>
       <source>Resulting shape is invalid</source>
       <translation type="unfinished">Resulting shape is invalid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <source>Chamfer: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Chamfer: Result has multiple solids. This is not supported at this time.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
@@ -5001,11 +5016,6 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Failed to create draft</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <source>Fuse: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Fuse: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeatureFillet.cpp" line="93"/>
       <source>Fillet radius must be greater than zero</source>
       <translation type="unfinished">Fillet radius must be greater than zero</translation>
@@ -5014,11 +5024,6 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <source>Failed to create fillet</source>
       <translation type="unfinished">Failed to create fillet</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-      <source>Fillet: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Fillet: Result has multiple solids. This is not supported at this time.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="78"/>
@@ -5031,8 +5036,8 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Angle of groove too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="101"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -5043,14 +5048,14 @@ over 90: larger hole radius at the bottom</translation>
   - 선택한 스케치는 활성 바디에 속하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="118"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="118"/>
       <source>Creating a face from sketch failed</source>
       <translation type="unfinished">Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="140"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="140"/>
       <source>Revolve axis intersects the sketch</source>
       <translation type="unfinished">Revolve axis intersects the sketch</translation>
     </message>
@@ -5060,19 +5065,14 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Cut out of base feature failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
-      <source>Groove: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Groove: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="173"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="173"/>
       <source>Could not revolve the sketch!</source>
       <translation type="unfinished">Could not revolve the sketch!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="180"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="180"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -5127,10 +5127,10 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: Could not build</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <location filename="../../../App/FeatureHelix.cpp" line="330"/>
       <location filename="../../../App/FeatureHelix.cpp" line="360"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Result is not a solid</source>
       <translation type="unfinished">Error: Result is not a solid</translation>
     </message>
@@ -5232,25 +5232,15 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: Adding the thread failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation type="unfinished">Boolean operation failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <source>Hole: Resulting shape is not a solid</source>
-      <translation type="unfinished">Hole: Resulting shape is not a solid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <source>Hole: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Hole: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="248"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -5337,18 +5327,6 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation type="unfinished">Loft: Adding the loft failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
-      <source>Loft: Resulting shape is not a solid</source>
-      <translation type="unfinished">Loft: Resulting shape is not a solid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
-      <source>Loft: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Loft: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
       <translation type="unfinished">Loft: Subtracting the loft failed</translation>
@@ -5359,48 +5337,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="75"/>
-      <source>Length of pad too small</source>
-      <translation type="unfinished">Length of pad too small</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="78"/>
-      <source>Second length of pad too small</source>
-      <translation type="unfinished">Second length of pad too small</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="130"/>
+      <location filename="../../../App/FeaturePad.cpp" line="125"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="141"/>
+      <location filename="../../../App/FeaturePad.cpp" line="136"/>
       <source>Pad: Creating a face from sketch failed</source>
       <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="205"/>
+      <location filename="../../../App/FeaturePad.cpp" line="200"/>
       <source>Pad: Resulting shape is empty</source>
       <translation type="unfinished">Pad: Resulting shape is empty</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="216"/>
+      <location filename="../../../App/FeaturePad.cpp" line="211"/>
       <source>Pad: Fusion with base feature failed</source>
       <translation type="unfinished">Pad: Fusion with base feature failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="222"/>
-      <source>Pad: Resulting shape is not a solid</source>
-      <translation type="unfinished">Pad: Resulting shape is not a solid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="226"/>
-      <location filename="../../../App/FeaturePad.cpp" line="235"/>
-      <source>Pad: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Pad: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="248"/>
+      <location filename="../../../App/FeaturePad.cpp" line="243"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -5477,12 +5434,6 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Adding the pipe failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <source>Pipe: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Pipe: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeaturePipe.cpp" line="409"/>
       <source>Subtracting the pipe failed</source>
       <translation type="unfinished">Subtracting the pipe failed</translation>
@@ -5518,55 +5469,34 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Invalid spine.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="82"/>
-      <source>Pocket: Length of pocket too small</source>
-      <translation type="unfinished">Pocket: Length of pocket too small</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="86"/>
-      <source>Pocket: Second length of pocket too small</source>
-      <translation type="unfinished">Pocket: Second length of pocket too small</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="138"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
       <source>Pocket: Creating a face from sketch failed</source>
       <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="155"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
       <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="190"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
       <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="197"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="232"/>
-      <source>Pocket: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Pocket: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="214"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
       <source>Pocket: Resulting shape is empty</source>
       <translation type="unfinished">Pocket: Resulting shape is empty</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="223"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
       <source>Pocket: Cut out of base feature failed</source>
       <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="228"/>
-      <source>Pocket: Resulting shape is not a solid</source>
-      <translation type="unfinished">Pocket: Resulting shape is not a solid</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="90"/>
@@ -5579,19 +5509,9 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Adding the primitive failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
-      <source>Additive: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Additive: Result has multiple solids. This is not supported at this time.</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="119"/>
       <source>Subtracting the primitive failed</source>
       <translation type="unfinished">Subtracting the primitive failed</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
-      <source>Subtractive: Result has multiple solids. This is not supported at this time.</source>
-      <translation type="unfinished">Subtractive: Result has multiple solids. This is not supported at this time.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
@@ -5733,8 +5653,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
-      <source>Shape of addsub feature is empty</source>
-      <translation type="unfinished">Shape of addsub feature is empty</translation>
+      <source>Shape of additive/subtractive feature is empty</source>
+      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>

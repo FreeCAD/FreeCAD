@@ -290,10 +290,10 @@ App::DocumentObjectExecReturn *Loft::execute()
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Resulting shape is not a solid"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -308,10 +308,10 @@ App::DocumentObjectExecReturn *Loft::execute()
             TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Resulting shape is not a solid"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Result has multiple solids. This is not supported at this time."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);

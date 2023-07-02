@@ -58,7 +58,7 @@ runs:
         if: always()
         shell: bash
         run: |
-          # Printing global result
+          # Print global result
           if [ ${{ job.status }} != "success" ]
           then
             echo "<details><summary>:fire: C++ tests failed</summary>" >> ${{ inputs.reportFile }}

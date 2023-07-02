@@ -32,76 +32,110 @@
 #include "Analyse.h"
 
 
-namespace Sketcher {
+namespace Sketcher
+{
 
 class SketchObject;
 
 class SketcherExport SketchAnalysis
 {
 public:
-    /// Creates an instance of the SketchAnalysis object, taking as parameter a pointer to an SketchObject.
+    /// Creates an instance of the SketchAnalysis object, taking as parameter a pointer to an
+    /// SketchObject.
     ///
     /// There is a first type of routines, simple routines, which work in the following order:
     /// Detect - (Analyse) - [Get] - [Set] - Make
     ///
     /// The Detect step just identifies possible missing constraints.
     ///
-    /// The Analyse, which is not available for all the routines, operates in detected constraints of the same routine, to
-    /// look for alternatives. For example, a general pointonpoint detection leads to a search for coincident constraints, which
-    /// can be later run via Analyse if it is intended to convert endpoint coincidence to endpoint perpendicular and tangent constraints.
+    /// The Analyse, which is not available for all the routines, operates in detected constraints
+    /// of the same routine, to look for alternatives. For example, a general pointonpoint detection
+    /// leads to a search for coincident constraints, which can be later run via Analyse if it is
+    /// intended to convert endpoint coincidence to endpoint perpendicular and tangent constraints.
     ///
-    /// The Get retrieves the result of the analysis as a vector of ConstraintIds, indicating the suggested constraints. This step is intended
-    /// for enabling the user to check the result of the analysis, rather than applying it. If only applying is intended, this step is not necessary
-    /// as the Make will operate on the result of the Detect - Analyse directly.
+    /// The Get retrieves the result of the analysis as a vector of ConstraintIds, indicating the
+    /// suggested constraints. This step is intended for enabling the user to check the result of
+    /// the analysis, rather than applying it. If only applying is intended, this step is not
+    /// necessary as the Make will operate on the result of the Detect - Analyse directly.
     ///
-    /// The Set changes the detected result. It modifies the SketchAnalysis object. It only modifies the SketchObject as far as the SketchAnalysis is changed.
-    /// It does not apply any changes to the sketch. It is intended so as to enable the user to change the result that will be applied.
+    /// The Set changes the detected result. It modifies the SketchAnalysis object. It only modifies
+    /// the SketchObject as far as the SketchAnalysis is changed. It does not apply any changes to
+    /// the sketch. It is intended so as to enable the user to change the result that will be
+    /// applied.
     ///
     /// Neither the Detect, nor the Analyse, nor the Get steps modify the Sketch geometry.
     ///
     /// Make applies the constraints stored internally in the SketchAnalysis object.
     ///
-    /// A second type of routines, complex routines, are thought for running fully automatic and they Detect, Analyse and Make.
-    /// They may also apply a variety of constraint types.
+    /// A second type of routines, complex routines, are thought for running fully automatic and
+    /// they Detect, Analyse and Make. They may also apply a variety of constraint types.
     ///
-    /// A third type of routines do not relate to autoconstraining at all, and include validation methods for sketches.
-    explicit SketchAnalysis(Sketcher::SketchObject * Obj);
+    /// A third type of routines do not relate to autoconstraining at all, and include validation
+    /// methods for sketches.
+    explicit SketchAnalysis(Sketcher::SketchObject* Obj);
     ~SketchAnalysis();
 
     // Simple routines (see constructor)
 
     /// Point on Point constraint simple routine Detect step (see constructor)
-    /// Detect detects only coincident constraints, Analyse converts coincident to endpoint perpendicular/tangent where appropriate
-    int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000, bool includeconstruction = true);
+    /// Detect detects only coincident constraints, Analyse converts coincident to endpoint
+    /// perpendicular/tangent where appropriate
+    int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000,
+                                             bool includeconstruction = true);
     /// Point on Point constraint simple routine Analyse step (see constructor)
-    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
+    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI / 8);
     /// Point on Point constraint simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingPointOnPointConstraints() {return vertexConstraints;}
+    std::vector<ConstraintIds>& getMissingPointOnPointConstraints()
+    {
+        return vertexConstraints;
+    }
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
-    void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl) {vertexConstraints = cl;}
+    void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl)
+    {
+        vertexConstraints = cl;
+    }
     /// Point on Point constraint simple routine Make step (see constructor)
-    /// if onebyone, then the sketch is solved after each individual constraint addition and any redundancy removed.
+    /// if onebyone, then the sketch is solved after each individual constraint addition and any
+    /// redundancy removed.
     void makeMissingPointOnPointCoincident(bool onebyone = false);
 
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
-    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
+    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
     /// Vertical/Horizontal constraints simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints() {return verthorizConstraints;}
+    std::vector<ConstraintIds>& getMissingVerticalHorizontalConstraints()
+    {
+        return verthorizConstraints;
+    }
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
-    void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl) {verthorizConstraints = cl;}
+    void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl)
+    {
+        verthorizConstraints = cl;
+    }
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
     void makeMissingVerticalHorizontal(bool onebyone = false);
 
     /// Equality constraints simple routine Detect step (see constructor)
     int detectMissingEqualityConstraints(double precision);
     /// Equality constraints simple routine Get step for line segments (see constructor)
-    std::vector<ConstraintIds> &getMissingLineEqualityConstraints() {return lineequalityConstraints;}
+    std::vector<ConstraintIds>& getMissingLineEqualityConstraints()
+    {
+        return lineequalityConstraints;
+    }
     /// Equality constraints simple routine Get step for radii (see constructor)
-    std::vector<ConstraintIds> &getMissingRadiusConstraints() {return radiusequalityConstraints;}
+    std::vector<ConstraintIds>& getMissingRadiusConstraints()
+    {
+        return radiusequalityConstraints;
+    }
     /// Equality constraints simple routine Set step for line segments (see constructor)
-    void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl) {lineequalityConstraints = cl;}
+    void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl)
+    {
+        lineequalityConstraints = cl;
+    }
     /// Equality constraints simple routine Set step for radii (see constructor)
-    void setMissingRadiusConstraints(std::vector<ConstraintIds>& cl) {radiusequalityConstraints = cl;}
+    void setMissingRadiusConstraints(std::vector<ConstraintIds>& cl)
+    {
+        radiusequalityConstraints = cl;
+    }
     /// Equality constraints simple routine Make step (see constructor)
     void makeMissingEquality(bool onebyone = true);
 
@@ -114,16 +148,20 @@ public:
 
     /// Fully automated multi-constraint autoconstraining
     ///
-    /// It DELETES all the constraints currently present in the Sketcher. The reason is that it makes assumptions to avoid redundancies.
+    /// It DELETES all the constraints currently present in the Sketcher. The reason is that it
+    /// makes assumptions to avoid redundancies.
     ///
     /// It applies coincidents - vertical/horizontal constraints and equality constraints.
-    int autoconstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/8, bool includeconstruction = true);
+    int autoconstraint(double precision = Precision::Confusion() * 1000,
+                       double angleprecision = M_PI / 8, bool includeconstruction = true);
 
-    // helper functions, which may be used by more complex methods, and/or called directly by user space (python) methods
+    // helper functions, which may be used by more complex methods, and/or called directly by user
+    // space (python) methods
 
     /// solves the sketch and retrieves the error status, and the degrees of freedom.
-    /// It enables to solve updating the geometry (so moving the geometry to match the constraints) or preserving the geometry.
-    void solvesketch(int &status, int &dofs, bool updategeo);
+    /// It enables to solve updating the geometry (so moving the geometry to match the constraints)
+    /// or preserving the geometry.
+    void solvesketch(int& status, int& dofs, bool updategeo);
 
     // third type of routines
     std::vector<Base::Vector3d> getOpenVertices() const;
@@ -146,9 +184,8 @@ protected:
 protected:
     bool checkHorizontal(Base::Vector3d dir, double angleprecision);
     bool checkVertical(Base::Vector3d dir, double angleprecision);
-
 };
 
-} //namespace Sketcher
+}// namespace Sketcher
 
-#endif // SKETCHER_SKETCHANALYSIS_H
+#endif// SKETCHER_SKETCHANALYSIS_H

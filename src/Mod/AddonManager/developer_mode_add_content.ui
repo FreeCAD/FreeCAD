@@ -176,7 +176,7 @@
        <item>
         <widget class="QLabel" name="iconLabel">
          <property name="text">
-          <string>actualIcon</string>
+          <cstring>actualIcon</cstring>
          </property>
         </widget>
        </item>
