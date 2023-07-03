@@ -27,19 +27,20 @@
 
 #include <Gui/MainWindow.h>
 
-#include <Mod/Material/App/MaterialLibrary.h>
+#include <Mod/Material/App/Materials.h>
 #include "Array3D.h"
 #include "ui_Array3D.h"
 
 
 using namespace MatGui;
 
-/* TRANSLATOR MatGui::MaterialsEditor */
-
-Array3D::Array3D(QWidget* parent)
+Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWidget* parent)
   : QDialog(parent), ui(new Ui_Array3D)
 {
     ui->setupUi(this);
+
+    Base::Console().Log("Material '%s'\n", material->getName().c_str());
+    Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &Array3D::accept);

@@ -98,7 +98,7 @@ bool MaterialDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                 return true;
             } else if (type == "3DArray") {
                 Base::Console().Log("Edit 3DArray\n");
-                showArray3DModal(item);
+                showArray3DModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
@@ -156,9 +156,10 @@ void MaterialDelegate::showArray2DModal(const QString &propertyName, QStandardIt
     dlg->exec();
 }
 
-void MaterialDelegate::showArray3DModal(QStandardItem *item)
+void MaterialDelegate::showArray3DModal(const QString &propertyName, QStandardItem *item)
 {
-    Array3D* dlg = new Array3D();
+    Materials::Material *material = item->data().value<Materials::Material *>();
+    Array3D* dlg = new Array3D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 

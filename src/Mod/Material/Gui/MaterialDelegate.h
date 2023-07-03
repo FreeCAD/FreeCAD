@@ -68,7 +68,7 @@ private:
     QRgb parseColor(const QString& color) const;
     void showColorModal(QStandardItem *item);
     void showArray2DModal(const QString &propertyName, QStandardItem* item);
-    void showArray3DModal(QStandardItem* item);
+    void showArray3DModal(const QString &propertyName, QStandardItem* item);
 };
 
 } // namespace MatGui

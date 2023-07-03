@@ -35,7 +35,7 @@ class Array3D : public QDialog
     Q_OBJECT
 
 public:
-    explicit Array3D(QWidget* parent = nullptr);
+    explicit Array3D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
     ~Array3D() override;
 
     void accept() override;
