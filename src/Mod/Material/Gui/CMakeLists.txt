@@ -59,6 +59,8 @@ SET(MatGui_SRCS
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui
+    MaterialDelegate.cpp
+    MaterialDelegate.h
     MaterialSave.cpp
     MaterialSave.h
     MaterialSave.ui

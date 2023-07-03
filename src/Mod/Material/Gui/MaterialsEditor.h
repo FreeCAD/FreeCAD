@@ -42,37 +42,6 @@ namespace MatGui {
 
 class Ui_MaterialsEditor;
 
-class MaterialDelegate : public QStyledItemDelegate
-{
-    Q_OBJECT
-public:
-    explicit MaterialDelegate(QObject* parent=nullptr);
-    QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const override;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option,
-            const QModelIndex& index) const;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
-    void setModelData(QWidget* editor, QAbstractItemModel* model,
-                      const QModelIndex& index) const override;
-
-protected:
-    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
-                     const QModelIndex& index) override;
-
-Q_SIGNALS:
-    /** Emits this signal when a property has changed */
-    void propertyChange(const QString &property, const QString value);
-
-private:
-    QWidget* createWidget(QWidget* parent, const QString& propertyName, const QString& propertyType,
-                          const QString& propertyValue, const QString &propertyUnits) const;
-    QRgb parseColor(const QString& color) const;
-    void showColorModal(QStandardItem *item);
-    void showArray2DModal(QStandardItem* item);
-    void showArray3DModal(QStandardItem* item);
-};
-
 class MaterialsEditor : public QDialog
 {
     Q_OBJECT
