@@ -39,6 +39,10 @@
 #   include <xercesc/parsers/XercesDOMParser.hpp>
 #endif
 
+#ifdef _MSC_VER
+# define strdup _strdup
+#endif
+
 XERCES_CPP_NAMESPACE_USE
 
 //using namespace std;
