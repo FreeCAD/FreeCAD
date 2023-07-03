@@ -923,6 +923,12 @@ void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         const QModelIndex &index) const
 {
     // Base::Console().Log("MaterialsEditor::paint()\n");
+    if (index.column() != 1)
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+        return;
+    }
+
     const QStandardItemModel *treeModel = static_cast<const QStandardItemModel *>(index.model());
 
     // Check we're not the material model root. This is also used to access the entry columns
@@ -944,26 +950,40 @@ void MaterialDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if (group->child(row, 1))
         propertyValue = group->child(row, 1)->text();
 
-    if (propertyType.toStdString() != "Color" || index.column() != 1)
+    std::string type = propertyType.toStdString();
+    if (type == "Color")
     {
-        QStyledItemDelegate::paint(painter, option, index);
+        painter->save();
+
+        QColor color;
+        color.setRgba(parseColor(propertyValue));
+        int left = option.rect.left() + 5;
+        int width = option.rect.width() - 10;
+        if (option.rect.width() > 75)
+        {
+            left += (option.rect.width() - 75) / 2;
+            width = 65;
+        }
+        painter->fillRect(left, option.rect.top() + 5, width, option.rect.height() - 10, QBrush(color));
+
+        painter->restore();
+        return;
+    } else if (type == "2DArray" || type == "3DArray") {
+        // painter->save();
+
+        QImage table(QString::fromStdString(":/icons/table.svg"));
+        QRect target(option.rect);
+        if (target.width() > target.height())
+            target.setWidth(target.height());
+        else
+            target.setHeight(target.width());
+        painter->drawImage(target, table, table.rect());
+
+        // painter->restore();
         return;
     }
 
-    painter->save();
-
-    QColor color;
-    color.setRgba(parseColor(propertyValue));
-    int left = option.rect.left() + 5;
-    int width = option.rect.width() - 10;
-    if (option.rect.width() > 75)
-    {
-        left += (option.rect.width() - 75) / 2;
-        width = 65;
-    }
-    painter->fillRect(left, option.rect.top() + 5, width, option.rect.height() - 10, QBrush(color));
-
-    painter->restore();
+    QStyledItemDelegate::paint(painter, option, index);
 }
 
 QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -1142,6 +1162,8 @@ QRgb MaterialDelegate::parseColor(const QString &color) const
     trimmed.replace(QRegularExpression(QString::fromStdString("\\(([^<]*)\\)")),
             QString::fromStdString("\\1"));
     QStringList parts = trimmed.split(QString::fromStdString(","));
+    if (parts.length() < 4)
+        return qRgba(0, 0, 0, 1);
     int red = parts.at(0).toDouble() * 255;
     int green = parts.at(1).toDouble() * 255;
     int blue = parts.at(2).toDouble() * 255;
