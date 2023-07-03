@@ -52,6 +52,8 @@
 #include "ui_MaterialsEditor.h"
 #include "ModelSelect.h"
 #include "MaterialSave.h"
+#include "Array2D.h"
+#include "Array3D.h"
 
 
 using namespace MatGui;
@@ -882,6 +884,16 @@ bool MaterialDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                 showColorModal(item);
                 // Mark as handled
                 return true;
+            } else if (type == "2DArray") {
+                Base::Console().Log("Edit 2DArray\n");
+                showArray2DModal(item);
+                // Mark as handled
+                return true;
+            } else if (type == "3DArray") {
+                Base::Console().Log("Edit 3DArray\n");
+                showArray3DModal(item);
+                // Mark as handled
+                return true;
             }
         }
     }
@@ -913,6 +925,40 @@ void MaterialDelegate::showColorModal(QStandardItem *item)
                                         .arg(color.alpha()/255.0);
                 item->setText(colorText);
             }
+        }
+    });
+
+    dlg->exec();
+}
+
+void MaterialDelegate::showArray2DModal(QStandardItem *item)
+{
+    Array2D* dlg = new Array2D();
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
+        }
+    });
+
+    dlg->exec();
+}
+
+void MaterialDelegate::showArray3DModal(QStandardItem *item)
+{
+    Array3D* dlg = new Array3D();
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
         }
     });
 
