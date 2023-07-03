@@ -256,6 +256,33 @@ def resolveFileName(job, subpartname, sequencenumber):
     return fullPath
 
 
+def fixtureSetup(order, fixture, job):
+    """Convert a Fixure setting to _TempObject instance with a G0 move to a
+    safe height every time the fixture coordinate system change.  Skip
+    the move for first fixture, to avoid moving before tool and tool
+    height compensation is enabled.
+
+    """
+
+    fobj = _TempObject()
+    c1 = Path.Command(fixture)
+    fobj.Path = Path.Path([c1])
+    # Avoid any tool move after G49 in preamble and before tool change
+    # and G43 in case tool height compensation is in use, to avoid
+    # dangerous move without tool compesation.
+    if order != 0:
+        c2 = Path.Command(
+            "G0 Z"
+            + str(
+                job.Stock.Shape.BoundBox.ZMax
+                + job.SetupSheet.ClearanceHeightOffset.Value
+            )
+        )
+        fobj.Path.addCommands(c2)
+    fobj.InList.append(job)
+    return fobj
+
+
 def buildPostList(job):
     """Takes the job and determines the specific objects and order to
     postprocess  Returns a list of objects which can be passed to
@@ -273,20 +300,7 @@ def buildPostList(job):
         currTool = None
         for index, f in enumerate(wcslist):
             # create an object to serve as the fixture path
-            fobj = _TempObject()
-            c1 = Path.Command(f)
-            fobj.Path = Path.Path([c1])
-            if index != 0:
-                c2 = Path.Command(
-                    "G0 Z"
-                    + str(
-                        job.Stock.Shape.BoundBox.ZMax
-                        + job.SetupSheet.ClearanceHeightOffset.Value
-                    )
-                )
-                fobj.Path.addCommands(c2)
-            fobj.InList.append(job)
-            sublist = [fobj]
+            sublist = [fixtureSetup(index, f, job)]
 
             # Now generate the gcode
             for obj in job.Operations.Group:
@@ -310,20 +324,9 @@ def buildPostList(job):
 
         # Build the fixture list
         fixturelist = []
-        for f in wcslist:
+        for index, f in enumerate(wcslist):
             # create an object to serve as the fixture path
-            fobj = _TempObject()
-            c1 = Path.Command(f)
-            c2 = Path.Command(
-                "G0 Z"
-                + str(
-                    job.Stock.Shape.BoundBox.ZMax
-                    + job.SetupSheet.ClearanceHeightOffset.Value
-                )
-            )
-            fobj.Path = Path.Path([c1, c2])
-            fobj.InList.append(job)
-            fixturelist.append(fobj)
+            fixturelist.append(fixtureSetup(index, f, job))
 
         # Now generate the gcode
         curlist = []  # list of ops for tool, will repeat for each fixture
@@ -378,7 +381,6 @@ def buildPostList(job):
         # Order by operation means ops are done in each fixture in
         # sequence.
         currTool = None
-        firstFixture = True
 
         # Now generate the gcode
         for obj in job.Operations.Group:
@@ -390,22 +392,8 @@ def buildPostList(job):
             sublist = []
             Path.Log.debug("obj: {}".format(obj.Name))
 
-            for f in wcslist:
-                fobj = _TempObject()
-                c1 = Path.Command(f)
-                fobj.Path = Path.Path([c1])
-                if not firstFixture:
-                    c2 = Path.Command(
-                        "G0 Z"
-                        + str(
-                            job.Stock.Shape.BoundBox.ZMax
-                            + job.SetupSheet.ClearanceHeightOffset.Value
-                        )
-                    )
-                    fobj.Path.addCommands(c2)
-                fobj.InList.append(job)
-                sublist.append(fobj)
-                firstFixture = False
+            for index, f in enumerate(wcslist):
+                sublist.append(fixtureSetup(index, f, job))
                 tc = PathUtil.toolControllerForOp(obj)
                 if tc is not None:
                     if job.SplitOutput or (tc.ToolNumber != currTool):
