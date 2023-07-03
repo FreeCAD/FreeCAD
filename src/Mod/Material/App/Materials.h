@@ -152,6 +152,8 @@ private:
 
 };
 
+Q_DECLARE_METATYPE(Material *)
+
 } // namespace Materials
 
 #endif // MATERIAL_MATERIALS_H

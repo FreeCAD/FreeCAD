@@ -93,7 +93,7 @@ bool MaterialDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
                 return true;
             } else if (type == "2DArray") {
                 Base::Console().Log("Edit 2DArray\n");
-                showArray2DModal(item);
+                showArray2DModal(propertyName, item);
                 // Mark as handled
                 return true;
             } else if (type == "3DArray") {
@@ -138,9 +138,10 @@ void MaterialDelegate::showColorModal(QStandardItem *item)
     dlg->exec();
 }
 
-void MaterialDelegate::showArray2DModal(QStandardItem *item)
+void MaterialDelegate::showArray2DModal(const QString &propertyName, QStandardItem *item)
 {
-    Array2D* dlg = new Array2D();
+    Materials::Material *material = item->data().value<Materials::Material *>();
+    Array2D* dlg = new Array2D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 

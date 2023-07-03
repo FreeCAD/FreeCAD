@@ -35,7 +35,7 @@ class Array2D : public QDialog
     Q_OBJECT
 
 public:
-    explicit Array2D(QWidget* parent = nullptr);
+    explicit Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
     ~Array2D() override;
 
     void accept() override;

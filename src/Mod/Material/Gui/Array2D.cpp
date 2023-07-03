@@ -27,7 +27,7 @@
 
 #include <Gui/MainWindow.h>
 
-#include <Mod/Material/App/MaterialLibrary.h>
+#include <Mod/Material/App/Materials.h>
 #include "Array2D.h"
 #include "ui_Array2D.h"
 
@@ -36,10 +36,13 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
 
-Array2D::Array2D(QWidget* parent)
+Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent)
   : QDialog(parent), ui(new Ui_Array2D)
 {
     ui->setupUi(this);
+
+    Base::Console().Log("Material '%s'\n", material->getName().c_str());
+    Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &Array2D::accept);

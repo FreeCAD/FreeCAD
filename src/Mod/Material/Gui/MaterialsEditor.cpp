@@ -721,6 +721,9 @@ void MaterialsEditor::updateMaterialAppearance()
 
                     auto valueItem = new QStandardItem(QString::fromStdString(_material.getAppearanceValue(key)));
                     valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                    QVariant variant;
+                    variant.setValue(&_material);
+                    valueItem->setData(variant);
                     items.append(valueItem);
 
                     auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
@@ -780,6 +783,9 @@ void MaterialsEditor::updateMaterialProperties()
 
                     auto valueItem = new QStandardItem(QString::fromStdString(_material.getPhysicalValue(key)));
                     valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
+                    QVariant variant;
+                    variant.setValue(&_material);
+                    valueItem->setData(variant);
                     items.append(valueItem);
 
                     auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
