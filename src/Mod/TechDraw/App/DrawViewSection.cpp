@@ -85,11 +85,11 @@
 
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
-#include "DrawProjGroupItem.h"
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
+#include "DrawViewDetail.h"
 
 #include "DrawViewSection.h"
 
@@ -270,6 +270,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     App::DocumentObject *base = BaseView.getValue();
     TechDraw::DrawViewPart *dvp = nullptr;
     TechDraw::DrawViewSection *dvs = nullptr;
+    TechDraw::DrawViewDetail *dvd = nullptr;
     if (!base) {
         return TopoDS_Shape();
     }
@@ -278,13 +279,15 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection *>(base);
         shapeToCut = dvs->getCutShape();
+    } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+        dvd = static_cast<TechDraw::DrawViewDetail *>(base);
+        shapeToCut = dvd->getDetailShape();
     } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         dvp = static_cast<TechDraw::DrawViewPart *>(base);
         shapeToCut = dvp->getSourceShape();
         if (FuseBeforeCut.getValue()) {
-            shapeToCut = dvp->getSourceShapeFused();
+            shapeToCut = dvp->getSourceShape(true);
         }
-
     } else {
         Base::Console().Message("DVS::getShapeToCut - base is weird\n");
         return TopoDS_Shape();
@@ -1072,16 +1075,6 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
     if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         TechDraw::DrawViewPart* baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
         return baseDVP;
-    }
-    return nullptr;
-}
-
-TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
-{
-    App::DocumentObject* base = BaseView.getValue();
-    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
-        return baseDPGI;
     }
     return nullptr;
 }
