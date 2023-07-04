@@ -139,10 +139,8 @@ public:
     Base::Vector3d getXDirection() const override;//don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
-    TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
     //section face related methods
-    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces; }
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
     TopoDS_Face getSectionTopoDSFace(int i);
     virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
