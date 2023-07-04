@@ -71,7 +71,6 @@ if cfolders:
     else:
         FreeCADGui.loadFile(os.path.join(cfolder, f), mod)
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
-    FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
     StartPage.postStart()
