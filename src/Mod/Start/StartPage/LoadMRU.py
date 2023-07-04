@@ -37,7 +37,7 @@ if (
     or ext.lower() == "iges"
     or ext.lower() == "igs"
 ):
-    FreeCAD.loadFile(os.path.join(cfolder, f), mod)
+    FreeCAD.loadFile(filename, mod)
 elif (
     ext.lower() == "bmp"
     or ext.lower() == "cur"
@@ -55,10 +55,10 @@ elif (
     or ext.lower() == "xpm"
 ):
     FreeCAD.newDocument()
-    FreeCADGui.insert(os.path.join(cfolder, f), FreeCAD.activeDocument().Name)
+    FreeCADGui.insert(filename, FreeCAD.activeDocument().Name)
     FreeCAD.activeDocument().recompute()
 else:
-    FreeCADGui.loadFile(os.path.join(cfolder, f), mod)
+    FreeCADGui.loadFile(filename, mod)
 FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
 from StartPage import StartPage
