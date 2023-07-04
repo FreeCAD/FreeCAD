@@ -82,6 +82,7 @@ public:
     void setInheritance(const std::string &uuid) { _inheritance = uuid; }
 
     void addColumn(ModelProperty &column) { _columns.push_back(column); }
+    const std::list<ModelProperty> &columns() const { return _columns; }
 
 private:
     std::string _name;
@@ -150,6 +151,8 @@ protected:
     void setType(const std::string& type);
     void setType(ValueType type) { _valueType = type; }
 
+    void addColumn(ModelValueProperty &column) { _columns.push_back(column); }
+
 private:
     std::string _modelUUID;
     ValueType _valueType;
@@ -158,6 +161,7 @@ private:
     int _valueInt;
     double _valueFloat;
     Base::Quantity _valueQuantity;
+    std::list<ModelValueProperty> _columns;
 };
 
 class MaterialsExport Model : public Base::BaseClass

@@ -73,6 +73,10 @@ ModelValueProperty::ModelValueProperty(const ModelProperty &property) :
     ModelProperty(property)
 {
     setType(getPropertyType());
+    for (auto it : property.columns()) {
+        ModelValueProperty prop(it);
+        addColumn(prop);
+    }
 }
 
 ModelValueProperty::~ModelValueProperty()

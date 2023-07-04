@@ -151,6 +151,24 @@ void Material::setAppearanceValue(const std::string& name, const std::string &va
     _appearance[name].setValue(value); // may not be a string type
 }
 
+ModelValueProperty &Material::getPhysicalProperty(const std::string &name)
+{
+    try {
+        return _physical.at(name);
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
+ModelValueProperty &Material::getAppearanceProperty(const std::string &name)
+{
+    try {
+        return _appearance.at(name);
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
 const std::string Material::getPhysicalValue(const std::string &name) const
 {
     try {

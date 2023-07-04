@@ -44,6 +44,18 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
     Base::Console().Log("Material '%s'\n", material->getName().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
+    if (material->hasPhysicalProperty(propertyName))
+    {
+        _property = &(material->getPhysicalProperty(propertyName));
+    } else if (material->hasAppearanceProperty(propertyName)) {
+        _property = &(material->getAppearanceProperty(propertyName));
+    } else {
+        _property = nullptr;
+    }
+
+    setupDefault();
+    setupArray();
+
     connect(ui->standardButtons, &QDialogButtonBox::accepted,
             this, &Array2D::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected,
@@ -53,6 +65,16 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
 Array2D::~Array2D()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+void Array2D::setupDefault()
+{
+
+}
+
+void Array2D::setupArray()
+{
+
 }
 
 void Array2D::accept()

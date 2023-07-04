@@ -124,6 +124,10 @@ public:
         setAppearanceValue(name.toStdString(), value.toStdString());
     }
 
+    ModelValueProperty &getPhysicalProperty(const std::string &name);
+    ModelValueProperty &getPhysicalProperty(const QString& name) { return getPhysicalProperty(name.toStdString()); }
+    ModelValueProperty &getAppearanceProperty(const std::string &name);
+    ModelValueProperty &getAppearanceProperty(const QString& name) { return getAppearanceProperty(name.toStdString()); }
     const std::string getPhysicalValue(const std::string &name) const;
     const std::string getAppearanceValue(const std::string &name) const;
     bool hasPhysicalProperty(const std::string& name) const;

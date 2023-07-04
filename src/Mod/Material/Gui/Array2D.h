@@ -26,6 +26,8 @@
 #include <QDialog>
 #include <QStandardItem>
 
+#include <Mod/Material/App/Model.h>
+
 namespace MatGui {
 
 class Ui_Array2D;
@@ -43,6 +45,10 @@ public:
 
 private:
     std::unique_ptr<Ui_Array2D> ui;
+    Materials::ModelValueProperty *_property;
+
+    void setupDefault();
+    void setupArray();
 };
 
 } // namespace MatGui
