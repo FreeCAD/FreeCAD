@@ -27,8 +27,39 @@ import FreeCADGui
 rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
 filename = rf.GetString("MRU"+str(MRU))
 ext = os.path.splitext(filename)[1].lower().strip(".")
-mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("DefaultImport"+ext, "")
-FreeCADGui.loadFile(filename, mod)
+mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString(
+    "DefaultImport"+ext, ""
+)
+if (
+    ext.lower() == "fcstd"
+    or ext.lower() == "step"
+    or ext.lower() == "stp"
+    or ext.lower() == "iges"
+    or ext.lower() == "igs"
+):
+    FreeCAD.loadFile(os.path.join(cfolder, f), mod)
+elif (
+    ext.lower() == "bmp"
+    or ext.lower() == "cur"
+    or ext.lower() == "gif"
+    or ext.lower() == "ico"
+    or ext.lower() == "pbm"
+    or ext.lower() == "pgm"
+    or ext.lower() == "png"
+    or ext.lower() == "jpg"
+    or ext.lower() == "jpeg"
+    or ext.lower() == "ppm"
+    or ext.lower() == "svg"
+    or ext.lower() == "svgz"
+    or ext.lower() == "xbm"
+    or ext.lower() == "xpm"
+):
+    FreeCAD.newDocument()
+    FreeCADGui.insert(os.path.join(cfolder, f), FreeCAD.activeDocument().Name)
+    FreeCAD.activeDocument().recompute()
+else:
+    FreeCADGui.loadFile(os.path.join(cfolder, f), mod)
+FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
 from StartPage import StartPage
 StartPage.postStart()
