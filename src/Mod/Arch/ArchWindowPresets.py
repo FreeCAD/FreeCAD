@@ -53,7 +53,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         o2 = float(o2)
         # h1, h2, w1, w2 cannot be null (for now)
         # TODO allow these to be null (don't create the component if so)
-        if not h1 or not h2 or not w1 or not w2:
+        if h1*h2*w1*w2 == 0:
             FreeCAD.Console.PrintError("H1, H2, W1 and W2 parameters cannot be zero. Aborting\n")
             return
         # small spacing to avoid wrong auto-wires in sketch
