@@ -42,6 +42,14 @@ if cfolders:
         "DefaultImport" + ext, ""
     )
     if (
+        ext.lower() == "fcstd"
+        or ext.lower() == "step"
+        or ext.lower() == "stp"
+        or ext.lower() == "iges"
+        or ext.lower() == "igs"
+    ):
+        FreeCAD.loadFile(os.path.join(cfolder, f), mod)
+    elif (
         ext.lower() == "bmp"
         or ext.lower() == "cur"
         or ext.lower() == "gif"
@@ -57,11 +65,12 @@ if cfolders:
         or ext.lower() == "xbm"
         or ext.lower() == "xpm"
     ):
-        App.newDocument()
-        FreeCADGui.insert(os.path.join(cfolder, f), App.activeDocument().Name)
-        App.activeDocument().recompute()
+        FreeCAD.newDocument()
+        FreeCADGui.insert(os.path.join(cfolder, f), FreeCAD.activeDocument().Name)
+        FreeCAD.activeDocument().recompute()
     else:
-        FreeCAD.loadFile(os.path.join(cfolder, f), mod)
+        FreeCADGui.loadFile(os.path.join(cfolder, f), mod)
+    FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
