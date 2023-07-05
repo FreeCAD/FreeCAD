@@ -24,10 +24,12 @@
 
 # adapted from https://github.com/FreeCAD/FreeCAD-Bundle/blob/master/conda/linux/create_bundle.sh
 
-# This script produces a FreeCAD AppImage locally using conda repositories. It is a all-in-one
-# script that can be run from anywhere and does not rely on the FreeCAD source code. It fetches
-# everything form conda repositories. Therefore, you need to make sure they contain the FreeCAD
-# package you want to build. An easy way to check is by searching for available FreeCAD packages:
+# This script produces a FreeCAD AppImage locally using conda repositories. It
+# is a all-in-one script that fetches FreeCAD and all dependencies from conda
+# repo (it also extracts a couple of XDG files from the FreeCAD source). Everything
+# comes form conda repositories, therefore, you need to make sure they contain the
+# FreeCAD package you want to build. An easy way to check is by searching for
+# available FreeCAD packages:
 #
 #     conda search "freecad=0.21.0" -c adrianinsaval/label/dev -c freecad -c conda-forge
 #
