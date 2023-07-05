@@ -156,7 +156,7 @@ int MappedName::findTagInElementName(long* tag, int* len, const char* postfix,
            return -1;
         if (_len && recursive && (tag || len)) {
             // in case of recursive tag postfix (used by hierarchy element
-            // map), look for any embedded tag postifx
+            // map), look for any embedded tag postfix
             int next = MappedName::fromRawData(*this, pos-_len, _len).rfind(POSTFIX_TAG);
             if (next >= 0) {
                 next += pos - _len;

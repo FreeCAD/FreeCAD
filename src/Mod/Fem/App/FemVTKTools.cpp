@@ -613,7 +613,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
         return newobj;
     }
     else {
-        return pcDoc->addObject(type.getName());// create in the acitive document
+        return pcDoc->addObject(type.getName());// create in the active document
     }
 }
 

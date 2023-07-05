@@ -1565,7 +1565,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                     touch();
                 }
                 // applied to a node means clear all visibility setting, so
-                // return true to propgate the action
+                // return true to propagate the action
                 return selAction->getType()==SoSelectionElementAction::Color ||
                        action->getWhatAppliedTo()==SoAction::NODE;
 
