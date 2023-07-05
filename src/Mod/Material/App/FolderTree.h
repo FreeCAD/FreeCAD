@@ -40,11 +40,11 @@ public:
     NodeType getType(void) const { return _type; }
     void setType(NodeType type) { _type = type; }
 
-    const std::map<std::string, FolderTreeNode<T>*> *getFolder(void) const { return _folder; }
-    std::map<std::string, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
+    const std::map<QString, FolderTreeNode<T>*> *getFolder(void) const { return _folder; }
+    std::map<QString, FolderTreeNode<T>*> *getFolder(void) { return _folder; }
     const T *getData(void) const { return _data; }
 
-    void setFolder(std::map<std::string, FolderTreeNode<T>*> *folder)
+    void setFolder(std::map<QString, FolderTreeNode<T>*> *folder)
     {
         setType(FolderNode);
         _folder = folder;
@@ -57,7 +57,7 @@ public:
 
 private:
     NodeType    _type;
-    std::map<std::string, FolderTreeNode<T> *> *_folder;
+    std::map<QString, FolderTreeNode<T> *> *_folder;
     const T *_data;
 };
 

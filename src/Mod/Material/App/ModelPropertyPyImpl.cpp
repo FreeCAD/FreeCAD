@@ -39,15 +39,15 @@ std::string ModelPropertyPy::representation() const
     ModelPropertyPy::PointerType ptr = getModelPropertyPtr();
     std::stringstream str;
     str << "Property [Name=(";
-    str << ptr->getName();
+    str << ptr->getName().toStdString();
     str << "), Type=(";
-    str << ptr->getPropertyType();
+    str << ptr->getPropertyType().toStdString();
     str << "), Units=(";
-    str << ptr->getUnits();
+    str << ptr->getUnits().toStdString();
     str << "), URL=(";
-    str << ptr->getURL();
+    str << ptr->getURL().toStdString();
     str << "), Description=(";
-    str << ptr->getDescription();
+    str << ptr->getDescription().toStdString();
     str << ")]";
 
     return str.str();
@@ -67,27 +67,27 @@ int ModelPropertyPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String ModelPropertyPy::getName() const
 {
-    return Py::String(getModelPropertyPtr()->getName());
+    return Py::String(getModelPropertyPtr()->getName().toStdString());
 }
 
 Py::String ModelPropertyPy::getType() const
 {
-    return Py::String(getModelPropertyPtr()->getPropertyType());
+    return Py::String(getModelPropertyPtr()->getPropertyType().toStdString());
 }
 
 Py::String ModelPropertyPy::getUnits() const
 {
-    return Py::String(getModelPropertyPtr()->getUnits());
+    return Py::String(getModelPropertyPtr()->getUnits().toStdString());
 }
 
 Py::String ModelPropertyPy::getURL() const
 {
-    return Py::String(getModelPropertyPtr()->getURL());
+    return Py::String(getModelPropertyPtr()->getURL().toStdString());
 }
 
 Py::String ModelPropertyPy::getDescription() const
 {
-    return Py::String(getModelPropertyPtr()->getDescription());
+    return Py::String(getModelPropertyPtr()->getDescription().toStdString());
 }
 
 PyObject *ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const

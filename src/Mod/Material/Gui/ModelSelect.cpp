@@ -89,7 +89,7 @@ void ModelSelect::getFavorites()
     for (int i = 0; i < count; i++)
     {
         QString key = QString::fromLatin1("FAV%1").arg(i);
-        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _favorites.push_back(uuid);
     }
 }
@@ -113,13 +113,13 @@ void ModelSelect::saveFavorites()
     for (auto favorite: _favorites)
     {
         QString key = QString::fromLatin1("FAV%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), favorite);
+        param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
 
         j++;
     }
 }
 
-void ModelSelect::addFavorite(const std::string &uuid)
+void ModelSelect::addFavorite(const QString &uuid)
 {
     if (!isFavorite(uuid)) {
         _favorites.push_back(uuid);
@@ -128,7 +128,7 @@ void ModelSelect::addFavorite(const std::string &uuid)
     }
 }
 
-void ModelSelect::removeFavorite(const std::string& uuid)
+void ModelSelect::removeFavorite(const QString& uuid)
 {
     if (isFavorite(uuid)) {
         _favorites.remove(uuid);
@@ -137,7 +137,7 @@ void ModelSelect::removeFavorite(const std::string& uuid)
     }
 }
 
-bool ModelSelect::isFavorite(const std::string& uuid) const
+bool ModelSelect::isFavorite(const QString& uuid) const
 {
     for (auto it: _favorites)
     {
@@ -159,7 +159,7 @@ void ModelSelect::getRecents()
     for (int i = 0; i < count; i++)
     {
         QString key = QString::fromLatin1("MRU%1").arg(i);
-        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _recents.push_back(uuid);
     }
 }
@@ -186,7 +186,7 @@ void ModelSelect::saveRecents()
     for (auto recent: _recents)
     {
         QString key = QString::fromLatin1("MRU%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), recent);
+        param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
         j++;
         if (j >= size)
@@ -194,7 +194,7 @@ void ModelSelect::saveRecents()
     }
 }
 
-void ModelSelect::addRecent(const std::string& uuid)
+void ModelSelect::addRecent(const QString& uuid)
 {
     // Ensure no duplicates
     if (isRecent(uuid))
@@ -207,7 +207,7 @@ void ModelSelect::addRecent(const std::string& uuid)
     saveRecents();
 }
 
-bool ModelSelect::isRecent(const std::string& uuid) const
+bool ModelSelect::isRecent(const QString& uuid) const
 {
     for (auto it: _recents)
     {
@@ -237,7 +237,7 @@ void ModelSelect::addExpanded(QTreeView *tree, QStandardItemModel *parent, QStan
     tree->setExpanded(child->index(), true);
 }
 
-void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree, const QIcon &icon)
+void ModelSelect::addModels(QStandardItem &parent, const std::map<QString, Materials::ModelTreeNode*>* modelTree, const QIcon &icon)
 {
     auto tree = ui->treeModels;
     for (auto& mod : *modelTree) {
@@ -245,19 +245,19 @@ void ModelSelect::addModels(QStandardItem &parent, const std::map<std::string, M
         if (nodePtr->getType() == Materials::ModelTreeNode::DataNode)
         {
             const Materials::Model *model = nodePtr->getData();
-            std::string uuid = model->getUUID();
+            QString uuid = model->getUUID();
 
-            auto card = new QStandardItem(icon, QString::fromStdString(model->getName()));
+            auto card = new QStandardItem(icon, model->getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
             addExpanded(tree, &parent, card);
         } else {
-            auto node = new QStandardItem(QString::fromStdString(mod.first));
+            auto node = new QStandardItem(mod.first);
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            const std::map<std::string, Materials::ModelTreeNode*>* treeMap = nodePtr->getFolder();
+            const std::map<QString, Materials::ModelTreeNode*>* treeMap = nodePtr->getFolder();
             addModels(*node, treeMap, icon);
         }
     }
@@ -273,11 +273,11 @@ void ModelSelect::addRecents(QStandardItem *parent)
 
             if (getModelManager().passFilter(_filter, model.getType()))
             {
-                QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
-                auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+                QIcon icon = QIcon(model.getLibrary().getIconPath());
+                auto card = new QStandardItem(icon, model.getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                             | Qt::ItemIsDropEnabled);
-                card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+                card->setData(QVariant(uuid), Qt::UserRole);
 
                 addExpanded(tree, parent, card);
             }
@@ -297,11 +297,11 @@ void ModelSelect::addFavorites(QStandardItem *parent)
 
             if (getModelManager().passFilter(_filter, model.getType()))
             {
-                QIcon icon = QIcon(QString::fromStdString(model.getLibrary().getIconPath()));
-                auto card = new QStandardItem(icon, QString::fromStdString(model.getName()));
+                QIcon icon = QIcon(model.getLibrary().getIconPath());
+                auto card = new QStandardItem(icon, model.getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                             | Qt::ItemIsDropEnabled);
-                card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+                card->setData(QVariant(uuid), Qt::UserRole);
 
                 addExpanded(tree, parent, card);
             }
@@ -352,14 +352,14 @@ void ModelSelect::fillTree()
     std::list<Materials::ModelLibrary*> *libraries = getModelManager().getModelLibraries();
     for (Materials::ModelLibrary *library : *libraries)
     {
-        lib = new QStandardItem(QString::fromStdString(library->getName()));
+        lib = new QStandardItem(library->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
         // auto path = library->getDirectoryPath();
-        std::map<std::string, Materials::ModelTreeNode*>* modelTree = getModelManager().getModelTree(*library, _filter);
+        std::map<QString, Materials::ModelTreeNode*>* modelTree = getModelManager().getModelTree(*library, _filter);
         // delete modelTree;
-        addModels(*lib, modelTree, QIcon(QString::fromStdString(library->getIconPath())));
+        addModels(*lib, modelTree, QIcon(library->getIconPath()));
     }
 }
 
@@ -412,23 +412,23 @@ void ModelSelect::updateModelProperties(const Materials::Model &model)
     {
         QList<QStandardItem*> items;
 
-        std::string key = itp->first;
+        QString key = itp->first;
         Materials::ModelProperty modelProperty = itp->second;
         
         auto inherited = new QStandardItem(QString::fromStdString(modelProperty.isInherited() ? "*" : ""));
         // inherited->setToolTip(QString::fromStdString(modelProperty.getDescription()));
         items.append(inherited);
         
-        auto propertyItem = new QStandardItem(QString::fromStdString(key));
+        auto propertyItem = new QStandardItem(key);
         items.append(propertyItem);
 
-        auto unitsItem = new QStandardItem(QString::fromStdString(modelProperty.getUnits()));
+        auto unitsItem = new QStandardItem(modelProperty.getUnits());
         items.append(unitsItem);
 
-        auto descriptionItem = new QStandardItem(QString::fromStdString(modelProperty.getDescription()));
+        auto descriptionItem = new QStandardItem(modelProperty.getDescription());
         items.append(descriptionItem);
 
-        auto urlItem = new QStandardItem(QString::fromStdString(modelProperty.getURL()));
+        auto urlItem = new QStandardItem(modelProperty.getURL());
         items.append(urlItem);
 
         // addExpanded(tree, modelRoot, propertyItem);
@@ -436,15 +436,15 @@ void ModelSelect::updateModelProperties(const Materials::Model &model)
     }
 }
 
-void ModelSelect::updateMaterialModel(const std::string &uuid)
+void ModelSelect::updateMaterialModel(const QString &uuid)
 {
     Materials::Model model = getModelManager().getModel(uuid);
 
     // Update the general information
-    ui->editName->setText(QString::fromStdString(model.getName()));
-    ui->editURL->setText(QString::fromStdString(model.getURL()));
-    ui->editDOI->setText(QString::fromStdString(model.getDOI()));
-    ui->editDescription->setText(QString::fromStdString(model.getDescription()));
+    ui->editName->setText(model.getName());
+    ui->editURL->setText(model.getURL());
+    ui->editDOI->setText(model.getDOI());
+    ui->editDescription->setText(model.getDescription());
 
     if (model.getType() == Materials::Model::ModelType_Physical) {
         ui->tabWidget->setTabText(1, QString::fromStdString("Properties"));
@@ -485,15 +485,15 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
         if (item) {
             try
             {
-                _selected = item->data(Qt::UserRole).toString().toStdString();
-                Base::Console().Log("\t%s\n", _selected.c_str());
+                _selected = item->data(Qt::UserRole).toString();
+                Base::Console().Log("\t%s\n", _selected.toStdString().c_str());
                 updateMaterialModel(_selected);
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
                 ui->buttonFavorite->setEnabled(true);
             }
             catch(const std::exception& e)
             {
-                _selected = "";
+                _selected = QString::fromStdString("");
                 Base::Console().Log("Error %s\n", e.what());
                 clearMaterialModel();
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);

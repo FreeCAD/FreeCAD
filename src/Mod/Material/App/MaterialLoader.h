@@ -36,36 +36,36 @@ class MaterialEntry
 {
 public:
     explicit MaterialEntry();
-    explicit MaterialEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid);
+    explicit MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+        const QString &modelUuid);
     virtual ~MaterialEntry();
 
-    virtual void addToTree(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *_materialPathMap) = 0;
+    virtual void addToTree(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *_materialPathMap) = 0;
 
     const MaterialLibrary &getLibrary() const { return _library; }
-    const std::string &getName() const { return _name; }
+    const QString &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string &getUUID() const { return _uuid; }
+    const QString &getUUID() const { return _uuid; }
     bool getDereferenced() const { return _dereferenced; }
 
     void markDereferenced() { _dereferenced = true; }
 
 protected:
     MaterialLibrary _library;
-    std::string _name;
+    QString _name;
     QDir _directory;
-    std::string _uuid;
+    QString _uuid;
     bool _dereferenced;
 };
 
 class MaterialYamlEntry : public MaterialEntry
 {
 public:
-    explicit MaterialYamlEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData);
+    explicit MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+        const QString &modelUuid, const YAML::Node &modelData);
     ~MaterialYamlEntry() override;
 
-    void addToTree(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *_materialPathMap) override;
+    void addToTree(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *_materialPathMap) override;
 
     const YAML::Node &getModel() const { return _model; }
     YAML::Node *getModelPtr() { return &_model; }
@@ -73,7 +73,7 @@ public:
 private:
     explicit MaterialYamlEntry();
 
-    std::string yamlValue(const YAML::Node& node, const std::string& key,
+    QString yamlValue(const YAML::Node& node, const std::string& key,
                                           const std::string& defaultValue);
 
     YAML::Node _model;
@@ -82,7 +82,7 @@ private:
 class MaterialLoader
 {
 public:
-    explicit MaterialLoader(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *materialPathMap, std::list<MaterialLibrary*> *libraryList);
+    explicit MaterialLoader(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *materialPathMap, std::list<MaterialLibrary*> *libraryList);
     virtual ~MaterialLoader();
 
     std::list<MaterialLibrary*>* getMaterialLibraries();
@@ -95,13 +95,13 @@ private:
     void addToTree(MaterialEntry* model);
     void dereference(MaterialEntry* parent, const MaterialEntry* child);
     void dereference(MaterialEntry* model);
-    MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const std::string &path) const;
+    MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const QString &path) const;
     void addLibrary(MaterialLibrary* model);
     void loadLibrary(const MaterialLibrary &library);
     void loadLibraries(void);
-    static std::map<std::string, MaterialEntry*> *_materialEntryMap;
-    std::map<std::string, Material*> *_materialMap;
-    std::map<std::string, Material*> *_materialPathMap;
+    static std::map<QString, MaterialEntry*> *_materialEntryMap;
+    std::map<QString, Material*> *_materialMap;
+    std::map<QString, Material*> *_materialPathMap;
     std::list<MaterialLibrary*> *_libraryList;
 };
 

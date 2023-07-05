@@ -40,35 +40,35 @@ std::string ModelPy::representation() const
     ModelPy::PointerType ptr = getModelPtr();
     std::stringstream str;
     str << "Property [Name=(";
-    str << ptr->getName();
+    str << ptr->getName().toStdString();
     str << "), UUID=(";
-    str << ptr->getUUID();
+    str << ptr->getUUID().toStdString();
     str << "), Library Name=(";
-    str << ptr->getLibrary().getName();
+    str << ptr->getLibrary().getName().toStdString();
     str << "), Library Root=(";
-    str << ptr->getLibrary().getDirectoryPath();
+    str << ptr->getLibrary().getDirectoryPath().toStdString();
      str << "), Library Icon=(";
-    str << ptr->getLibrary().getIconPath();
+    str << ptr->getLibrary().getIconPath().toStdString();
     str << "), Relative Path=(";
-    str << ptr->getRelativePath();
+    str << ptr->getRelativePath().toStdString();
     str << "), Directory=(";
     str << ptr->getDirectory().absolutePath().toStdString();
     str << "), URL=(";
-    str << ptr->getURL();
+    str << ptr->getURL().toStdString();
     str << "), DOI=(";
-    str << ptr->getDOI();
+    str << ptr->getDOI().toStdString();
     str << "), Description=(";
-    str << ptr->getDescription();
+    str << ptr->getDescription().toStdString();
     str << "), Inherits=[";
-    const std::vector<std::string> &inherited = getModelPtr()->getInheritance();
+    const std::vector<QString> &inherited = getModelPtr()->getInheritance();
     for (auto it = inherited.begin(); it != inherited.end(); it++)
     {
-        std::string uuid = *it;
+        QString uuid = *it;
         if (it != inherited.begin())
             str << "), UUID=(";
         else
             str << "UUID=(";
-        str << uuid << ")";
+        str << uuid.toStdString() << ")";
     }
     str << "]]";
 
@@ -89,27 +89,27 @@ int ModelPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String ModelPy::getLibraryName() const
 {
-    return Py::String(getModelPtr()->getLibrary().getName());
+    return Py::String(getModelPtr()->getLibrary().getName().toStdString());
 }
 
 Py::String ModelPy::getLibraryRoot() const
 {
-    return Py::String(getModelPtr()->getLibrary().getDirectoryPath());
+    return Py::String(getModelPtr()->getLibrary().getDirectoryPath().toStdString());
 }
 
 Py::String ModelPy::getRelativePath() const
 {
-    return Py::String(getModelPtr()->getRelativePath());
+    return Py::String(getModelPtr()->getRelativePath().toStdString());
 }
 
 Py::String ModelPy::getLibraryIcon() const
 {
-    return Py::String(getModelPtr()->getLibrary().getIconPath());
+    return Py::String(getModelPtr()->getLibrary().getIconPath().toStdString());
 }
 
 Py::String ModelPy::getName() const
 {
-    return Py::String(getModelPtr()->getName());
+    return Py::String(getModelPtr()->getName().toStdString());
 }
 
 Py::String ModelPy::getDirectory() const
@@ -119,34 +119,34 @@ Py::String ModelPy::getDirectory() const
 
 Py::String ModelPy::getUUID() const
 {
-    return Py::String(getModelPtr()->getUUID());
+    return Py::String(getModelPtr()->getUUID().toStdString());
 }
 
 Py::String ModelPy::getDescription() const
 {
-    return Py::String(getModelPtr()->getDescription());
+    return Py::String(getModelPtr()->getDescription().toStdString());
 }
 
 Py::String ModelPy::getURL() const
 {
-    return Py::String(getModelPtr()->getURL());
+    return Py::String(getModelPtr()->getURL().toStdString());
 }
 
 Py::String ModelPy::getDOI() const
 {
-    return Py::String(getModelPtr()->getDOI());
+    return Py::String(getModelPtr()->getDOI().toStdString());
 }
 
 Py::List ModelPy::getInherited() const
 {
-    const std::vector<std::string> &inherited = getModelPtr()->getInheritance();
+    const std::vector<QString> &inherited = getModelPtr()->getInheritance();
     Py::List list;
 
     for (auto it = inherited.begin(); it != inherited.end(); it++)
     {
-        std::string uuid = *it;
+        QString uuid = *it;
 
-        list.append(Py::String(uuid));
+        list.append(Py::String(uuid.toStdString()));
     }
 
     return list;
@@ -159,11 +159,11 @@ Py::Dict ModelPy::getProperties() const
 
     for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++)
     {
-        std::string key = it->first;
+        QString key = it->first;
         ModelProperty &modelProperty = it->second;
 
         PyObject *modelPropertyPy = new ModelPropertyPy(new ModelProperty(modelProperty));
-        dict.setItem(Py::String(key), Py::Object(modelPropertyPy, true));
+        dict.setItem(Py::String(key.toStdString()), Py::Object(modelPropertyPy, true));
     }
 
     return dict;

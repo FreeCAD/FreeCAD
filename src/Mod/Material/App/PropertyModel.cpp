@@ -55,7 +55,7 @@ void PropertyModel::setPyObject(PyObject *)
     //     setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
     // }
     // else {
-    //     std::string error = std::string("type must be 'Material', not ");
+    //     QString error = QString("type must be 'Material', not ");
     //     error += value->ob_type->tp_name;
     //     throw Base::TypeError(error);
     // }
@@ -73,19 +73,19 @@ const Model& PropertyModel::getValue() const
     return _model;
 }
 
-const std::string PropertyModel::getBase() const
+const QString PropertyModel::getBase() const
 {
     return _model.getBase();
 }
 
-void PropertyModel::setName(const std::string& name)
+void PropertyModel::setName(const QString& name)
 {
     aboutToSetValue();
     _model.setName(name);
     hasSetValue();
 }
 
-const std::string& PropertyModel::getName() const
+const QString& PropertyModel::getName() const
 {
     return _model.getName();
 }
@@ -102,26 +102,26 @@ Model::ModelType PropertyModel::getType() const
     return _model.getType();
 }
 
-void PropertyModel::setDirectory(const std::string& directory)
+void PropertyModel::setDirectory(const QString& directory)
 {
     aboutToSetValue();
     _model.setDirectory(directory);
     hasSetValue();
 }
 
-const std::string PropertyModel::getDirectory() const
+const QString PropertyModel::getDirectory() const
 {
-    return _model.getDirectory().absolutePath().toStdString();
+    return _model.getDirectory().absolutePath();
 }
 
-void PropertyModel::setUUID(const std::string& uuid)
+void PropertyModel::setUUID(const QString& uuid)
 {
     aboutToSetValue();
     _model.setUUID(uuid);
     hasSetValue();
 }
 
-const std::string& PropertyModel::getUUID() const
+const QString& PropertyModel::getUUID() const
 {
     return _model.getUUID();
 }
@@ -129,7 +129,7 @@ const std::string& PropertyModel::getUUID() const
 void PropertyModel::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<PropertyModel UUID=\""
-        << _model.getUUID()
+        << _model.getUUID().toStdString()
         << "\"/>" << std::endl;
 }
 

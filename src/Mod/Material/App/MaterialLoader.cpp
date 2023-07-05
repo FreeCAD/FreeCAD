@@ -43,44 +43,44 @@ MaterialEntry::MaterialEntry():
     _dereferenced(false)
 {}
 
-MaterialEntry::MaterialEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid):
+MaterialEntry::MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+        const QString &modelUuid):
     _library(library), _name(modelName), _directory(dir), _uuid(modelUuid), _dereferenced(false)
 {}
 
 MaterialEntry::~MaterialEntry()
 {}
 
-MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary &library, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData):
+MaterialYamlEntry::MaterialYamlEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
+        const QString &modelUuid, const YAML::Node &modelData):
     MaterialEntry(library, modelName, dir, modelUuid), _model(modelData)
 {}
 
 MaterialYamlEntry::~MaterialYamlEntry()
 {}
 
-std::string MaterialYamlEntry::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
+QString MaterialYamlEntry::yamlValue(const YAML::Node &node, const std::string &key, const std::string &defaultValue)
 {
     if (node[key])
-        return node[key].as<std::string>();
-    return defaultValue;
+        return QString::fromStdString(node[key].as<std::string>());
+    return QString::fromStdString(defaultValue);
 }
 
-void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *materialPathMap)
+void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *materialPathMap)
 {
-    std::set<std::string> exclude;
-    exclude.insert("General");
-    exclude.insert("Inherits");
+    std::set<QString> exclude;
+    exclude.insert(QString::fromStdString("General"));
+    exclude.insert(QString::fromStdString("Inherits"));
 
     auto yamlModel = getModel();
     auto library = getLibrary();
     auto name = getName();
     auto directory = getDirectory();
-    std::string uuid = getUUID();
+    QString uuid = getUUID();
 
-    std::string version = yamlValue(yamlModel["General"], "Version", "");
-    std::string authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
-    std::string description = yamlValue(yamlModel["General"], "Description", "");
+    QString version = yamlValue(yamlModel["General"], "Version", "");
+    QString authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
+    QString description = yamlValue(yamlModel["General"], "Description", "");
 
     Material *finalModel = new Material(library, directory, uuid, name);
     finalModel->setVersion(version);
@@ -93,7 +93,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
         for(auto it = inherits.begin(); it != inherits.end(); it++) {
             std::string nodeName = (*it)["UUID"].as<std::string>();
 
-            finalModel->setParentUUID(nodeName); // Should only be one. Need to check
+            finalModel->setParentUUID(QString::fromStdString(nodeName)); // Should only be one. Need to check
         }
     }
 
@@ -106,7 +106,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
             // Add the model uuid
             auto modelNode = models[modelName];
             std::string modelUUID = modelNode["UUID"].as<std::string>();
-            finalModel->addPhysical(modelUUID);
+            finalModel->addPhysical(QString::fromStdString(modelUUID));
 
             // Add the property values
             auto properties = yamlModel["Models"][modelName];
@@ -115,7 +115,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setPhysicalValue(propertyName, propertyValue);
+                finalModel->setPhysicalValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
             }
         }
     }
@@ -129,7 +129,7 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
             // Add the model uuid
             auto modelNode = models[modelName];
             std::string modelUUID = modelNode["UUID"].as<std::string>();
-            finalModel->addAppearance(modelUUID);
+            finalModel->addAppearance(QString::fromStdString(modelUUID));
 
             // Add the property values
             auto properties = yamlModel["AppearanceModels"][modelName];
@@ -138,20 +138,20 @@ void MaterialYamlEntry::addToTree(std::map<std::string, Material*> *materialMap,
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setAppearanceValue(propertyName, propertyValue);
+                finalModel->setAppearanceValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
             }
         }
     }
 
-    std::string path = directory.absolutePath().toStdString();
-    Base::Console().Log("\tPath '%s'\n", path.c_str());
+    QString path = directory.absolutePath();
+    Base::Console().Log("\tPath '%s'\n", path.toStdString().c_str());
     (*materialMap)[uuid] = finalModel;
     (*materialPathMap)[path] = finalModel;
 }
 
-std::map<std::string, MaterialEntry*> *MaterialLoader::_materialEntryMap = nullptr;
+std::map<QString, MaterialEntry*> *MaterialLoader::_materialEntryMap = nullptr;
 
-MaterialLoader::MaterialLoader(std::map<std::string, Material*> *materialMap, std::map<std::string, Material*> *materialPathMap, std::list<MaterialLibrary*> *libraryList) :
+MaterialLoader::MaterialLoader(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *materialPathMap, std::list<MaterialLibrary*> *libraryList) :
     _materialMap(materialMap), _materialPathMap(materialPathMap), _libraryList(libraryList)
 {
     loadLibraries();
@@ -168,14 +168,14 @@ void MaterialLoader::addLibrary(MaterialLibrary *model)
     _libraryList->push_back(model);
 }
 
-MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &library, const std::string &path) const
+MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &library, const QString &path) const
 {
-    QDir modelDir(QString::fromStdString(path));
+    QDir modelDir(path);
     MaterialEntry* model = nullptr;
 
     if (MaterialConfigLoader::isConfigStyle(path))
     {
-        Base::Console().Log("Old format .FCMat file: '%s'\n", path.c_str());
+        Base::Console().Log("Old format .FCMat file: '%s'\n", path.toStdString().c_str());
         Material *material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
             (*_materialMap)[material->getUUID()] = material;
@@ -188,15 +188,15 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
     }
 
     try {
-        YAML::Node yamlroot = YAML::LoadFile(path);
+        YAML::Node yamlroot = YAML::LoadFile(path.toStdString());
 
         const std::string uuid = yamlroot["General"]["UUID"].as<std::string>();
         const std::string name = yamlroot["General"]["Name"].as<std::string>();
 
-        model = new MaterialYamlEntry(library, name, modelDir, uuid, yamlroot);
+        model = new MaterialYamlEntry(library, QString::fromStdString(name), modelDir, QString::fromStdString(uuid), yamlroot);
         showYaml(yamlroot);
     } catch (YAML::Exception const &) {
-        Base::Console().Log("YAML parsing error: '%s'\n", path.c_str());
+        Base::Console().Log("YAML parsing error: '%s'\n", path.toStdString().c_str());
 
         // Perhaps try parsing the older format?
     }
@@ -223,7 +223,7 @@ void MaterialLoader::dereference(MaterialEntry *parent, const MaterialEntry *chi
     // auto childYaml = child->getModel();
     // auto childBase = child->getBase();
 
-    // std::set<std::string> exclude;
+    // std::set<QString> exclude;
     // exclude.insert("Name");
     // exclude.insert("UUID");
     // exclude.insert("URL");
@@ -234,7 +234,7 @@ void MaterialLoader::dereference(MaterialEntry *parent, const MaterialEntry *chi
     // auto parentProperties = (*parentPtr)[parentBase];
     // auto childProperties = childYaml[childBase];
     // for(auto it = childProperties.begin(); it != childProperties.end(); it++) {
-    //     std::string name = it->first.as<std::string>();
+    //     QString name = it->first.as<QString>();
     //     if (exclude.count(name) == 0) {
     //         // showYaml(it->second);
     //         if (!parentProperties[name])
@@ -258,8 +258,8 @@ void MaterialLoader::dereference(MaterialEntry *model)
     // if (yamlModel[base]["Inherits"]) {
     //     auto inherits = yamlModel[base]["Inherits"];
     //     for(auto it = inherits.begin(); it != inherits.end(); it++) {
-    //         // auto nodeName = it->first.as<std::string>();
-    //         std::string nodeName = (*it)["UUID"].as<std::string>();
+    //         // auto nodeName = it->first.as<QString>();
+    //         QString nodeName = (*it)["UUID"].as<QString>();
 
     //         // This requires that all models have already been loaded undereferenced
     //         try {
@@ -278,7 +278,7 @@ void MaterialLoader::dereference(MaterialEntry *model)
 void MaterialLoader::loadLibrary(const MaterialLibrary &library)
 {
     if (_materialEntryMap == nullptr)
-        _materialEntryMap = new std::map<std::string, MaterialEntry*>();
+        _materialEntryMap = new std::map<QString, MaterialEntry*>();
 
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -286,9 +286,9 @@ void MaterialLoader::loadLibrary(const MaterialLibrary &library)
         QFileInfo file(pathname);
         if (file.isFile()) {
             if (file.suffix().toStdString() == "FCMat") {
-                std::string libraryName = file.baseName().toStdString();
+                QString libraryName = file.baseName();
 
-                auto model = getMaterialFromPath(library, file.canonicalFilePath().toStdString());
+                auto model = getMaterialFromPath(library, file.canonicalFilePath());
                 if (model) {
                     (*_materialEntryMap)[model->getUUID()] = model;
                 }
@@ -329,7 +329,10 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir() + "/Mod/Material/Resources/Materials");
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("System", materialDir, ":/icons/freecad.svg", true);
+        auto libData = new MaterialLibrary(QString::fromStdString("System"),
+                                           materialDir,
+                                           QString::fromStdString(":/icons/freecad.svg"),
+                                           true);
         _libraryList->push_back(libData);
     }
 
@@ -339,13 +342,13 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
             "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
         for (auto &group : moduleParam->GetGroups()) {
             // auto module = moduleParam->GetGroup(group->GetGroupName());
-            auto moduleName = group->GetGroupName();
-            auto materialDir = group->GetASCII("ModuleDir", "");
-            auto materialIcon = group->GetASCII("ModuleIcon", "");
+            auto moduleName = QString::fromStdString(group->GetGroupName());
+            auto materialDir = QString::fromStdString(group->GetASCII("ModuleDir", ""));
+            auto materialIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
             auto materialReadOnly = group->GetBool("ModuleReadOnly", true);
 
             if (materialDir.length() > 0) {
-                QDir dir(QString::fromStdString(materialDir));
+                QDir dir(materialDir);
                 auto libData = new MaterialLibrary(moduleName, dir, materialIcon, materialReadOnly);
                 if (dir.exists()) {
                     _libraryList->push_back(libData);
@@ -358,7 +361,11 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("User", materialDir, ":/icons/preferences-general.svg", false);
+        auto libData =
+            new MaterialLibrary(QString::fromStdString("User"),
+                                materialDir,
+                                QString::fromStdString(":/icons/preferences-general.svg"),
+                                false);
         if (materialDir.exists()) {
             _libraryList->push_back(libData);
         }
@@ -368,7 +375,10 @@ std::list<MaterialLibrary *> *MaterialLoader::getMaterialLibraries()
     {
         QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
         QDir materialDir(resourceDir);
-        auto libData = new MaterialLibrary("Custom", materialDir, ":/icons/user.svg", false);
+        auto libData = new MaterialLibrary(QString::fromStdString("Custom"),
+                                           materialDir,
+                                           QString::fromStdString(":/icons/user.svg"),
+                                           false);
         if (materialDir.exists()) {
             _libraryList->push_back(libData);
         }

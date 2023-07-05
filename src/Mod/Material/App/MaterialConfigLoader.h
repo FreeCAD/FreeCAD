@@ -38,27 +38,27 @@ public:
     virtual ~MaterialConfigLoader();
 
 
-    static bool isConfigStyle(const std::string& path);
-    static Material *getMaterialFromPath(const MaterialLibrary &library, const std::string &path);
+    static bool isConfigStyle(const QString& path);
+    static Material *getMaterialFromPath(const MaterialLibrary &library, const QString &path);
 
 private:
-    static std::string value(const QSettings &fcmat, const std::string &name, const std::string &defaultValue)
+    static QString value(const QSettings &fcmat, const std::string &name, const std::string &defaultValue)
     {
-        return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue)).toString().toStdString();
+        return fcmat.value(QString::fromStdString(name), QString::fromStdString(defaultValue)).toString();
     }
 
-    static void setPhysicalValue(Material *finalModel, const std::string &name, const std::string &value)
+    static void setPhysicalValue(Material *finalModel, const std::string &name, const QString &value)
     {
         if (value.length() > 0)
-            finalModel->setPhysicalValue(name, value);
+            finalModel->setPhysicalValue(QString::fromStdString(name), value);
     }
-    static void setAppearanceValue(Material *finalModel, const std::string &name, const std::string &value)
+    static void setAppearanceValue(Material *finalModel, const std::string &name, const QString &value)
     {
         if (value.length() > 0)
-            finalModel->setAppearanceValue(name, value);
+            finalModel->setAppearanceValue(QString::fromStdString(name), value);
     }
 
-    static std::string getAuthorAndLicense(const std::string& path);
+    static QString getAuthorAndLicense(const QString& path);
     static void addMechanical(const QSettings &fcmat, Material *finalModel);
     static void addFluid(const QSettings &fcmat, Material *finalModel);
     static void addThermal(const QSettings &fcmat, Material *finalModel);

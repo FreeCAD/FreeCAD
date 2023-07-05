@@ -51,29 +51,29 @@ public:
     void onDOI(bool checked);
     void onFavourite(bool checked);
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
-    const std::string &selectedModel() const { return _selected; }
+    const QString &selectedModel() const { return _selected; }
     void accept() override;
     void reject() override;
 
 private:
     void getFavorites();
     void saveFavorites();
-    void addFavorite(const std::string& uuid);
-    void removeFavorite(const std::string& uuid);
-    bool isFavorite(const std::string& uuid) const;
+    void addFavorite(const QString& uuid);
+    void removeFavorite(const QString& uuid);
+    bool isFavorite(const QString& uuid) const;
     
     void getRecents();
     void saveRecents();
-    void addRecent(const std::string& uuid);
-    bool isRecent(const std::string& uuid) const;
+    void addRecent(const QString& uuid);
+    bool isRecent(const QString& uuid) const;
 
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView *tree, QStandardItemModel *parent, QStandardItem *child);
     void addRecents(QStandardItem* parent);
     void addFavorites(QStandardItem *parent);
-    void addModels(QStandardItem& parent, const std::map<std::string, Materials::ModelTreeNode*>* modelTree,
+    void addModels(QStandardItem& parent, const std::map<QString, Materials::ModelTreeNode*>* modelTree,
                    const QIcon& icon);
-    void updateMaterialModel(const std::string& uuid);
+    void updateMaterialModel(const QString& uuid);
     void clearMaterialModel(void);
     void createModelTree();
     void refreshModelTree();
@@ -87,9 +87,9 @@ private:
 
     Materials::ModelManager::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
-    std::string _selected;
-    std::list<std::string> _favorites;
-    std::list<std::string> _recents;
+    QString _selected;
+    std::list<QString> _favorites;
+    std::list<QString> _recents;
     int _recentMax;
 };
 

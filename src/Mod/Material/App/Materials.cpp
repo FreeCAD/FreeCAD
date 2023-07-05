@@ -41,9 +41,9 @@ ModelData::ModelData()
 
 }
 
-ModelData::ModelData(const std::string& name, const std::string& type,
-                        const std::string& units, const std::string& url,
-                        const std::string& description):
+ModelData::ModelData(const QString& name, const QString& type,
+                        const QString& units, const QString& url,
+                        const QString& description):
     _name(name), _type(type), _units(units), _url(url), _description(description)
 {
 
@@ -59,15 +59,15 @@ TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 Material::Material()
 {}
 
-Material::Material(const MaterialLibrary &library, const std::string& directory,
-            const std::string& uuid, const std::string& name) :
+Material::Material(const MaterialLibrary &library, const QString& directory,
+            const QString& uuid, const QString& name) :
     _library(library), _uuid(uuid), _name(name)
 {
     setDirectory(directory);
 }
 
 Material::Material(const MaterialLibrary &library, const QDir& directory,
-            const std::string& uuid, const std::string& name) :
+            const QString& uuid, const QString& name) :
     _library(library), _directory(directory), _uuid(uuid), _name(name)
 {}
 
@@ -79,7 +79,7 @@ Material::~Material()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void Material::addPhysical(const std::string &uuid)
+void Material::addPhysical(const QString &uuid)
 {
     if (hasPhysicalModel(uuid))
         return;
@@ -93,7 +93,7 @@ void Material::addPhysical(const std::string &uuid)
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
-            std::string propertyName = it->first;
+            QString propertyName = it->first;
             ModelProperty property = it->second;
 
             _physical[propertyName] = ModelValueProperty(property);
@@ -102,7 +102,7 @@ void Material::addPhysical(const std::string &uuid)
     }
 }
 
-void Material::addAppearance(const std::string &uuid)
+void Material::addAppearance(const QString &uuid)
 {
     if (hasAppearanceModel(uuid))
         return;
@@ -116,7 +116,7 @@ void Material::addAppearance(const std::string &uuid)
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
-            std::string propertyName = it->first;
+            QString propertyName = it->first;
             ModelProperty property = it->second;
 
             _appearance[propertyName] = ModelValueProperty(property);
@@ -126,32 +126,32 @@ void Material::addAppearance(const std::string &uuid)
 }
 
 
-void Material::setPhysicalValue(const std::string& name, const std::string &value)
+void Material::setPhysicalValue(const QString& name, const QString &value)
 {
     _physical[name].setValue(value); // may not be a string type
 }
 
-void Material::setPhysicalValue(const std::string& name, int value)
+void Material::setPhysicalValue(const QString& name, int value)
 {
     _physical[name].setInt(value);
 }
 
-void Material::setPhysicalValue(const std::string& name, double value)
+void Material::setPhysicalValue(const QString& name, double value)
 {
     _physical[name].setFloat(value);
 }
 
-void Material::setPhysicalValue(const std::string& name, const Base::Quantity value)
+void Material::setPhysicalValue(const QString& name, const Base::Quantity value)
 {
     _physical[name].setQuantity(value);
 }
 
-void Material::setAppearanceValue(const std::string& name, const std::string &value)
+void Material::setAppearanceValue(const QString& name, const QString &value)
 {
     _appearance[name].setValue(value); // may not be a string type
 }
 
-ModelValueProperty &Material::getPhysicalProperty(const std::string &name)
+ModelValueProperty &Material::getPhysicalProperty(const QString &name)
 {
     try {
         return _physical.at(name);
@@ -160,7 +160,7 @@ ModelValueProperty &Material::getPhysicalProperty(const std::string &name)
     }
 }
 
-ModelValueProperty &Material::getAppearanceProperty(const std::string &name)
+ModelValueProperty &Material::getAppearanceProperty(const QString &name)
 {
     try {
         return _appearance.at(name);
@@ -169,7 +169,7 @@ ModelValueProperty &Material::getAppearanceProperty(const std::string &name)
     }
 }
 
-const std::string Material::getPhysicalValue(const std::string &name) const
+const QString Material::getPhysicalValue(const QString &name) const
 {
     try {
         return _physical.at(name).getValue();
@@ -178,7 +178,7 @@ const std::string Material::getPhysicalValue(const std::string &name) const
     }
 }
 
-const std::string Material::getAppearanceValue(const std::string &name) const
+const QString Material::getAppearanceValue(const QString &name) const
 {
     try {
         return _appearance.at(name).getValue();
@@ -187,7 +187,7 @@ const std::string Material::getAppearanceValue(const std::string &name) const
     }
 }
 
-bool Material::hasPhysicalProperty(const std::string& name) const
+bool Material::hasPhysicalProperty(const QString& name) const
 {
     try {
         static_cast<void>(_physical.at(name));
@@ -197,7 +197,7 @@ bool Material::hasPhysicalProperty(const std::string& name) const
     return true;
 }
 
-bool Material::hasAppearanceProperty(const std::string& name) const
+bool Material::hasAppearanceProperty(const QString& name) const
 {
     try {
         static_cast<void>(_appearance.at(name));
@@ -207,18 +207,18 @@ bool Material::hasAppearanceProperty(const std::string& name) const
     return true;
 }
 
-bool Material::hasPhysicalModel(const std::string& uuid) const
+bool Material::hasPhysicalModel(const QString& uuid) const
 {
-    for (std::string modelUUID: _physicalUuids)
+    for (QString modelUUID: _physicalUuids)
         if (modelUUID == uuid)
             return true;
 
     return false;
 }
 
-bool Material::hasAppearanceModel(const std::string& uuid) const
+bool Material::hasAppearanceModel(const QString& uuid) const
 {
-    for (std::string modelUUID: _appearanceUuids)
+    for (QString modelUUID: _appearanceUuids)
         if (modelUUID == uuid)
             return true;
 

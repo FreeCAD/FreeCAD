@@ -78,7 +78,7 @@ PyObject* ModelManagerPy::getModel(PyObject *args)
         return nullptr;
 
     try {
-        const Model model = getModelManagerPtr()->getModel(uuid);
+        const Model model = getModelManagerPtr()->getModel(QString::fromStdString(uuid));
         return new ModelPy(new Model(model));
     } catch (ModelNotFound const &) {
         return nullptr;
@@ -96,7 +96,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
     if (libPath.length() > 0)
     {
         try {
-            const Model &model = getModelManagerPtr()->getModelByPath(path, libPath);
+            const Model &model = getModelManagerPtr()->getModelByPath(QString::fromStdString(path), QString::fromStdString(libPath));
             return new ModelPy(new Model(model));
         } catch (ModelNotFound const &) {
             return nullptr;
@@ -104,7 +104,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject *args)
     }
 
     try {
-        const Model &model = getModelManagerPtr()->getModelByPath(path);
+        const Model &model = getModelManagerPtr()->getModelByPath(QString::fromStdString(path));
         return new ModelPy(new Model(model));
     } catch (ModelNotFound const &) {
         return nullptr;
@@ -120,9 +120,9 @@ Py::List ModelManagerPy::getModelLibraries() const
     {
         ModelLibrary *lib = *it;
         Py::Tuple libTuple(3);
-        libTuple.setItem(0,Py::String(lib->getName()));
-        libTuple.setItem(1,Py::String(lib->getDirectoryPath()));
-        libTuple.setItem(2,Py::String(lib->getIconPath()));
+        libTuple.setItem(0,Py::String(lib->getName().toStdString()));
+        libTuple.setItem(1,Py::String(lib->getDirectoryPath().toStdString()));
+        libTuple.setItem(2,Py::String(lib->getIconPath().toStdString()));
 
         list.append(libTuple);
     }
@@ -132,16 +132,16 @@ Py::List ModelManagerPy::getModelLibraries() const
 
 Py::Dict ModelManagerPy::getModels() const
 {
-    std::map<std::string, Model*> *models = getModelManagerPtr()->getModels();
+    std::map<QString, Model*> *models = getModelManagerPtr()->getModels();
     Py::Dict dict;
 
     for (auto it = models->begin(); it != models->end(); it++)
     {
-        std::string key = it->first;
+        QString key = it->first;
         Model *model = it->second;
 
         PyObject *modelPy = new ModelPy(new Model(*model));
-        dict.setItem(Py::String(key), Py::Object(modelPy,true));
+        dict.setItem(Py::String(key.toStdString()), Py::Object(modelPy,true));
     }
 
     return dict;

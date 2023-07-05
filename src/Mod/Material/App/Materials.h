@@ -40,29 +40,29 @@ class MaterialsExport ModelData : public Base::BaseClass
 
 public:
     explicit ModelData();
-    explicit ModelData(const std::string& name, const std::string& type,
-                           const std::string& units, const std::string& url,
-                           const std::string& description);
+    explicit ModelData(const QString& name, const QString& type,
+                           const QString& units, const QString& url,
+                           const QString& description);
     virtual ~ModelData();
 
-    const std::string &getName() const {  return _name; }
-    const std::string &getType() const {  return _type; }
-    const std::string &getUnits() const {  return _units; }
-    const std::string &getURL() const {  return _url; }
-    const std::string &getDescription() const {  return _description; }
+    const QString &getName() const {  return _name; }
+    const QString &getType() const {  return _type; }
+    const QString &getUnits() const {  return _units; }
+    const QString &getURL() const {  return _url; }
+    const QString &getDescription() const {  return _description; }
 
-    void setName(const std::string& name) { _name = name; }
-    void setType(const std::string& type) { _type = type; }
-    void setUnits(const std::string& units) { _units = units; }
-    void setURL(const std::string& url) { _url = url; }
-    void setDescription(const std::string& description) { _description = description; }
+    void setName(const QString& name) { _name = name; }
+    void setType(const QString& type) { _type = type; }
+    void setUnits(const QString& units) { _units = units; }
+    void setURL(const QString& url) { _url = url; }
+    void setDescription(const QString& description) { _description = description; }
 
 private:
-    std::string _name;
-    std::string _type;
-    std::string _units;
-    std::string _url;
-    std::string _description;
+    QString _name;
+    QString _type;
+    QString _units;
+    QString _url;
+    QString _description;
 };
 
 class MaterialsExport Material : public Base::BaseClass
@@ -71,93 +71,81 @@ class MaterialsExport Material : public Base::BaseClass
 
 public:
     explicit Material();
-    explicit Material(const MaterialLibrary &library, const std::string& directory,
-                      const std::string& uuid, const std::string& name);
+    explicit Material(const MaterialLibrary &library, const QString& directory,
+                      const QString& uuid, const QString& name);
     explicit Material(const MaterialLibrary &library, const QDir& directory,
-                      const std::string& uuid, const std::string& name);
+                      const QString& uuid, const QString& name);
     virtual ~Material();
 
     const MaterialLibrary &getLibrary() const { return _library; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
-    const std::string getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()).toStdString(); }
-    const std::string &getUUID() const { return _uuid; }
-    const std::string &getVersion() const { return _version; }
-    const std::string &getName() const { return _name; }
-    const std::string &getAuthorAndLicense() const { return _authorAndLicense; }
-    const std::string &getParentUUID() const { return _parentUuid; }
-    const std::string &getDescription() const { return _description; }
-    const std::string &getURL() const { return _url; }
-    const std::string &getReference() const { return _reference; }
-    const std::list<std::string> &getTags() const { return _tags; }
-    const std::vector<std::string> *getPhysicalModels() const { return &_physicalUuids; }
-    const std::vector<std::string> *getAppearanceModels() const { return &_appearanceUuids; }
+    const QString getDirectoryPath() const { return _directory.absolutePath(); }
+    const QString getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()); }
+    const QString &getUUID() const { return _uuid; }
+    const QString &getVersion() const { return _version; }
+    const QString &getName() const { return _name; }
+    const QString &getAuthorAndLicense() const { return _authorAndLicense; }
+    const QString &getParentUUID() const { return _parentUuid; }
+    const QString &getDescription() const { return _description; }
+    const QString &getURL() const { return _url; }
+    const QString &getReference() const { return _reference; }
+    const std::list<QString> &getTags() const { return _tags; }
+    const std::vector<QString> *getPhysicalModels() const { return &_physicalUuids; }
+    const std::vector<QString> *getAppearanceModels() const { return &_appearanceUuids; }
 
     void setLibrary(const MaterialLibrary &library) { _library = library; }
-    void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
+    void setDirectory(const QString& directory) { _directory = QDir(directory); }
     void setDirectory(const QDir &directory) { _directory = directory; }
-    void setUUID(const std::string& uuid) { _uuid = uuid; }
-    void setVersion(const std::string& uuid) { _version = uuid; }
-    void setName(const std::string& name) { _name = name; }
-    void setAuthorAndLicense(const std::string& authorAndLicense) { _authorAndLicense = authorAndLicense; }
-    void setParentUUID(const std::string& uuid) { _parentUuid = uuid; }
-    void setDescription(const std::string& description) { _description = description; }
-    void setURL(const std::string& url) { _url = url; }
-    void setReference(const std::string& reference) { _reference = reference; }
-    void addTag(const std::string& tag) { Q_UNUSED(tag); }
-    void removeTag(const std::string& tag) { Q_UNUSED(tag); }
-    void addPhysical(const std::string& uuid);
-    void addAppearance(const std::string& uuid);
+    void setUUID(const QString& uuid) { _uuid = uuid; }
+    void setVersion(const QString& uuid) { _version = uuid; }
+    void setName(const QString& name) { _name = name; }
+    void setAuthorAndLicense(const QString& authorAndLicense) { _authorAndLicense = authorAndLicense; }
+    void setParentUUID(const QString& uuid) { _parentUuid = uuid; }
+    void setDescription(const QString& description) { _description = description; }
+    void setURL(const QString& url) { _url = url; }
+    void setReference(const QString& reference) { _reference = reference; }
+    void addTag(const QString& tag) { Q_UNUSED(tag); }
+    void removeTag(const QString& tag) { Q_UNUSED(tag); }
+    void addPhysical(const QString& uuid);
+    void addAppearance(const QString& uuid);
     
-    void setPhysicalValue(const std::string& name, const std::string &value);
-    void setPhysicalValue(const QString& name, const QString &value)
-    {
-        setPhysicalValue(name.toStdString(), value.toStdString());
-    }
-    void setPhysicalValue(const std::string& name, int value);
-    void setPhysicalValue(const std::string& name, double value);
-    void setPhysicalValue(const std::string& name, const Base::Quantity value);
+    void setPhysicalValue(const QString& name, const QString &value);
+    void setPhysicalValue(const QString& name, int value);
+    void setPhysicalValue(const QString& name, double value);
+    void setPhysicalValue(const QString& name, const Base::Quantity value);
 
-    void setAppearanceValue(const std::string& name, const std::string &value);
-    void setAppearanceValue(const QString& name, const QString &value)
-    {
-        setAppearanceValue(name.toStdString(), value.toStdString());
-    }
+    void setAppearanceValue(const QString& name, const QString &value);
 
-    ModelValueProperty &getPhysicalProperty(const std::string &name);
-    ModelValueProperty &getPhysicalProperty(const QString& name) { return getPhysicalProperty(name.toStdString()); }
-    ModelValueProperty &getAppearanceProperty(const std::string &name);
-    ModelValueProperty &getAppearanceProperty(const QString& name) { return getAppearanceProperty(name.toStdString()); }
-    const std::string getPhysicalValue(const std::string &name) const;
-    const std::string getAppearanceValue(const std::string &name) const;
-    bool hasPhysicalProperty(const std::string& name) const;
-    bool hasPhysicalProperty(const QString& name) const { return hasPhysicalProperty(name.toStdString()); }
-    bool hasAppearanceProperty(const std::string& name) const;
-    bool hasAppearanceProperty(const QString& name) const { return hasAppearanceProperty(name.toStdString()); }
-    bool hasPhysicalModel(const std::string& uuid) const;
-    bool hasAppearanceModel(const std::string& uuid) const;
+    ModelValueProperty &getPhysicalProperty(const QString &name);
+    ModelValueProperty &getAppearanceProperty(const QString &name);
+    const QString getPhysicalValue(const QString &name) const;
+    const QString getAppearanceValue(const QString &name) const;
+    bool hasPhysicalProperty(const QString& name) const;
+    bool hasAppearanceProperty(const QString& name) const;
+    bool hasPhysicalModel(const QString& uuid) const;
+    bool hasAppearanceModel(const QString& uuid) const;
 
 private:
     MaterialLibrary _library;
     QDir _directory;
-    std::string _uuid;
-    std::string _version;
-    std::string _name;
-    std::string _authorAndLicense;
-    std::string _parentUuid;
-    std::string _description;
-    std::string _url;
-    std::string _reference;
-    std::list<std::string> _tags;
-    std::vector<std::string> _physicalUuids;
-    std::vector<std::string> _appearanceUuids;
-    std::map<std::string, ModelValueProperty> _physical;
-    std::map<std::string, ModelValueProperty> _appearance;
+    QString _uuid;
+    QString _version;
+    QString _name;
+    QString _authorAndLicense;
+    QString _parentUuid;
+    QString _description;
+    QString _url;
+    QString _reference;
+    std::list<QString> _tags;
+    std::vector<QString> _physicalUuids;
+    std::vector<QString> _appearanceUuids;
+    std::map<QString, ModelValueProperty> _physical;
+    std::map<QString, ModelValueProperty> _appearance;
 
 };
 
-Q_DECLARE_METATYPE(Material *)
-
 } // namespace Materials
+
+Q_DECLARE_METATYPE(Materials::Material *)
 
 #endif // MATERIAL_MATERIALS_H

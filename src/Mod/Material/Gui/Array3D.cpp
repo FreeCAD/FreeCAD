@@ -39,7 +39,7 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
 {
     ui->setupUi(this);
 
-    Base::Console().Log("Material '%s'\n", material->getName().c_str());
+    Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted,

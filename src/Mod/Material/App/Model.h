@@ -36,13 +36,13 @@ class MaterialsExport ModelLibrary : public Base::BaseClass
 
 public:
     explicit ModelLibrary();
-    explicit ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon);
+    explicit ModelLibrary(const QString &libraryName, const QDir &dir, const QString &icon);
     virtual ~ModelLibrary();
 
-    const std::string &getName() const { return _name; }
+    const QString &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
-    const std::string &getIconPath() const { return _iconPath; }
+    const QString getDirectoryPath() const { return _directory.absolutePath(); }
+    const QString &getIconPath() const { return _iconPath; }
     bool operator==(const ModelLibrary& library) const
     {
         return (_name == library._name) && (_directory == library._directory);
@@ -50,9 +50,9 @@ public:
     bool operator!=(const ModelLibrary& library) const { return !operator==(library); }
 
 private:
-    std::string _name;
+    QString _name;
     QDir _directory;
-    std::string _iconPath;
+    QString _iconPath;
 };
 
 class MaterialsExport ModelProperty : public Base::BaseClass
@@ -61,36 +61,36 @@ class MaterialsExport ModelProperty : public Base::BaseClass
 
 public:
     explicit ModelProperty();
-    explicit ModelProperty(const std::string& name, const std::string& type,
-                           const std::string& units, const std::string& url,
-                           const std::string& description);
+    explicit ModelProperty(const QString& name, const QString& type,
+                           const QString& units, const QString& url,
+                           const QString& description);
     virtual ~ModelProperty();
 
-    const std::string &getName() const {  return _name; }
-    const std::string &getPropertyType() const {  return _propertyType; }
-    const std::string &getUnits() const {  return _units; }
-    const std::string &getURL() const {  return _url; }
-    const std::string &getDescription() const {  return _description; }
-    const std::string &getInheritance() const { return _inheritance; }
+    const QString &getName() const {  return _name; }
+    const QString &getPropertyType() const {  return _propertyType; }
+    const QString &getUnits() const {  return _units; }
+    const QString &getURL() const {  return _url; }
+    const QString &getDescription() const {  return _description; }
+    const QString &getInheritance() const { return _inheritance; }
     bool isInherited() const { return (_inheritance.length() > 0); }
 
-    void setName(const std::string& name) { _name = name; }
-    virtual void setPropertyType(const std::string& type) { _propertyType = type; }
-    void setUnits(const std::string& units) { _units = units; }
-    void setURL(const std::string& url) { _url = url; }
-    void setDescription(const std::string& description) { _description = description; }
-    void setInheritance(const std::string &uuid) { _inheritance = uuid; }
+    void setName(const QString& name) { _name = name; }
+    virtual void setPropertyType(const QString& type) { _propertyType = type; }
+    void setUnits(const QString& units) { _units = units; }
+    void setURL(const QString& url) { _url = url; }
+    void setDescription(const QString& description) { _description = description; }
+    void setInheritance(const QString &uuid) { _inheritance = uuid; }
 
     void addColumn(ModelProperty &column) { _columns.push_back(column); }
     const std::vector<ModelProperty> &columns() const { return _columns; }
 
 private:
-    std::string _name;
-    std::string _propertyType;
-    std::string _units;
-    std::string _url;
-    std::string _description;
-    std::string _inheritance;
+    QString _name;
+    QString _propertyType;
+    QString _units;
+    QString _url;
+    QString _description;
+    QString _inheritance;
     std::vector<ModelProperty> _columns;
 };
 
@@ -122,43 +122,43 @@ public:
 
     ValueType getType(void) const { return _valueType; }
 
-    const std::string& getModelUUID(void) const;
-    const std::string getValue(void) const;
-    const std::string& getString(void) const;
+    const QString& getModelUUID(void) const;
+    const QString getValue(void) const;
+    const QString& getString(void) const;
     bool getBoolean(void) const;
     int getInt(void) const;
     double getFloat(void) const;
     const Base::Quantity& getQuantity(void) const;
-    const std::string& getURL(void) const;
+    const QString& getURL(void) const;
 
     ModelValueProperty &getColumn(int column);
 
-    void setModelUUID(const std::string& uuid);
-    void setPropertyType(const std::string& type) override;
-    void setValue(const std::string& value);
-    void setString(const std::string& value);
+    void setModelUUID(const QString& uuid);
+    void setPropertyType(const QString& type) override;
+    void setValue(const QString& value);
+    void setString(const QString& value);
     void setBoolean(bool value);
     void setBoolean(int value);
-    void setBoolean(const std::string& value);
+    void setBoolean(const QString& value);
     void setInt(int value);
-    void setInt(const std::string& value);
+    void setInt(const QString& value);
     void setFloat(double value);
-    void setFloat(const std::string& value);
+    void setFloat(const QString& value);
     void setQuantity(const Base::Quantity& value);
-    void setQuantity(double value, const std::string& units);
-    void setQuantity(const std::string& value);
-    void setURL(const std::string& value);
+    void setQuantity(double value, const QString& units);
+    void setQuantity(const QString& value);
+    void setURL(const QString& value);
 
 protected:
-    void setType(const std::string& type);
+    void setType(const QString& type);
     void setType(ValueType type) { _valueType = type; }
 
     void addColumn(ModelValueProperty &column) { _columns.push_back(column); }
 
 private:
-    std::string _modelUUID;
+    QString _modelUUID;
     ValueType _valueType;
-    std::string _valueString;
+    QString _valueString;
     bool _valueBoolean;
     int _valueInt;
     double _valueFloat;
@@ -177,34 +177,34 @@ public:
     };
 
     explicit Model();
-    explicit Model(const ModelLibrary &library, ModelType type, const std::string &name, const QDir &directory, 
-        const std::string &uuid, const std::string& description, const std::string& url,
-        const std::string& doi);
+    explicit Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory, 
+        const QString &uuid, const QString& description, const QString& url,
+        const QString& doi);
     virtual ~Model();
 
     const ModelLibrary &getLibrary() const { return _library; }
-    const std::string getBase() const { return (_type == ModelType_Physical) ? "Model" : "AppearanceModel"; }
-    const std::string &getName() const { return _name; }
+    const QString getBase() const { return (_type == ModelType_Physical) ? QString::fromStdString("Model") : QString::fromStdString("AppearanceModel"); }
+    const QString &getName() const { return _name; }
     ModelType getType() const { return _type; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
-    const std::string getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()).toStdString(); }
-    const std::string &getUUID() const { return _uuid; }
-    const std::string &getDescription() const { return _description; }
-    const std::string &getURL() const { return _url; }
-    const std::string &getDOI() const { return _doi; }
+    const QString getDirectoryPath() const { return _directory.absolutePath(); }
+    const QString getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()); }
+    const QString &getUUID() const { return _uuid; }
+    const QString &getDescription() const { return _description; }
+    const QString &getURL() const { return _url; }
+    const QString &getDOI() const { return _doi; }
 
     void setLibrary(const ModelLibrary &library) { _library = library; }
     void setType(ModelType type) { _type = type; }
-    void setName(const std::string& name) { _name = name; }
-    void setDirectory(const std::string& directory) { _directory = QDir(QString::fromStdString(directory)); }
-    void setUUID(const std::string& uuid) { _uuid = uuid; }
-    void setDescription(const std::string& description) { _description = description; }
-    void setURL(const std::string& url) { _url = url; }
-    void setDOI(const std::string& doi) { _doi = doi; }
+    void setName(const QString& name) { _name = name; }
+    void setDirectory(const QString& directory) { _directory = QDir(directory); }
+    void setUUID(const QString& uuid) { _uuid = uuid; }
+    void setDescription(const QString& description) { _description = description; }
+    void setURL(const QString& url) { _url = url; }
+    void setDOI(const QString& doi) { _doi = doi; }
 
-    void addInheritance(const std::string &uuid) { _inheritedUuids.push_back(uuid); }
-    const std::vector<std::string> &getInheritance() const { return _inheritedUuids; }
+    void addInheritance(const QString &uuid) { _inheritedUuids.push_back(uuid); }
+    const std::vector<QString> &getInheritance() const { return _inheritedUuids; }
 
     bool operator==(const Model& m) const
     {
@@ -212,11 +212,11 @@ public:
     }
     bool operator!=(const Model& m) const { return !operator==(m); }
 
-    ModelProperty& operator[](const std::string& key);
+    ModelProperty& operator[](const QString& key);
     void addProperty(ModelProperty &property) { _properties[property.getName()] = property; }
 
-    using iterator=typename std::map<std::string, ModelProperty>::iterator;
-    using const_iterator=typename std::map<std::string, ModelProperty>::const_iterator;
+    using iterator=typename std::map<QString, ModelProperty>::iterator;
+    using const_iterator=typename std::map<QString, ModelProperty>::const_iterator;
     iterator begin() { return _properties.begin(); }
     const_iterator begin() const noexcept { return _properties.begin(); }
     iterator end() noexcept { return _properties.end(); }
@@ -227,14 +227,14 @@ public:
 private:
     ModelLibrary _library;
     ModelType _type;
-    std::string _name;
+    QString _name;
     QDir _directory;
-    std::string _uuid;
-    std::string _description;
-    std::string _url;
-    std::string _doi;
-    std::vector<std::string> _inheritedUuids;
-    std::map<std::string, ModelProperty> _properties;
+    QString _uuid;
+    QString _description;
+    QString _url;
+    QString _doi;
+    std::vector<QString> _inheritedUuids;
+    std::map<QString, ModelProperty> _properties;
 };
 
 } // namespace Materials

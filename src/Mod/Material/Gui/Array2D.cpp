@@ -42,7 +42,7 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
 {
     ui->setupUi(this);
 
-    Base::Console().Log("Material '%s'\n", material->getName().c_str());
+    Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
     if (material->hasPhysicalProperty(propertyName))
@@ -77,11 +77,11 @@ void Array2D::setupDefault()
     {
         auto column1 = _property->getColumn(0);
         QString label =
-            QString::fromStdString("Default ") + QString::fromStdString(column1.getName());
+            QString::fromStdString("Default ") + column1.getName();
         ui->labelDefault->setText(label);
-        if (column1.getPropertyType() == "Quantity")
+        if (column1.getPropertyType() == QString::fromStdString("Quantity"))
         {
-            ui->inputDefault->setUnitText(QString::fromStdString(column1.getUnits()));
+            ui->inputDefault->setUnitText(column1.getUnits());
         }
     }
     catch(const Materials::PropertyNotFound&)
@@ -96,7 +96,7 @@ void Array2D::setHeaders(QStandardItemModel *model)
 {
     QStringList headers;
     for (auto column: _property->columns())
-        headers.append(QString::fromStdString(column.getName()));
+        headers.append(column.getName());
     model->setHorizontalHeaderLabels(headers);
 }
 

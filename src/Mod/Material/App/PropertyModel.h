@@ -47,16 +47,16 @@ public:
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
 
-    const std::string getBase() const;
-    const std::string& getName() const;
+    const QString getBase() const;
+    const QString& getName() const;
     Model::ModelType getType() const;
-    const std::string getDirectory() const;
-    const std::string& getUUID() const;
+    const QString getDirectory() const;
+    const QString& getUUID() const;
 
-    void setName(const std::string& name);
+    void setName(const QString& name);
     void setType(Model::ModelType type);
-    void setDirectory(const std::string& directory);
-    void setUUID(const std::string& uuid);
+    void setDirectory(const QString& directory);
+    void setUUID(const QString& uuid);
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;

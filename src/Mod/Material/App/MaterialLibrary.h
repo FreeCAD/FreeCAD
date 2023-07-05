@@ -40,32 +40,30 @@ class MaterialsExport MaterialLibrary : public Base::BaseClass
 
 public:
     explicit MaterialLibrary();
-    explicit MaterialLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon, bool readOnly = true);
+    explicit MaterialLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
     virtual ~MaterialLibrary();
 
-    const std::string &getName() const { return _name; }
+    const QString &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string getDirectoryPath() const { return _directory.absolutePath().toStdString(); }
-    const std::string &getIconPath() const { return _iconPath; }
+    const QString getDirectoryPath() const { return _directory.absolutePath(); }
+    const QString &getIconPath() const { return _iconPath; }
     bool operator==(const MaterialLibrary& library) const
     {
         return (_name == library._name) && (_directory == library._directory);
     }
     bool operator!=(const MaterialLibrary& library) const { return !operator==(library); }
 
-    void createPath(const std::string& path);
-    void saveMaterial(const Material& material, const std::string& path);
+    void createPath(const QString& path);
+    void saveMaterial(const Material& material, const QString& path);
 
     bool isReadOnly() const { return _readOnly; }
 
 protected:
-    std::string _name;
+    QString _name;
     QDir _directory;
-    std::string _iconPath;
+    QString _iconPath;
     bool _readOnly;
 };
-
-Q_DECLARE_METATYPE(MaterialLibrary)
 
 class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
 {
@@ -73,12 +71,13 @@ class MaterialsExport MaterialExternalLibrary : public MaterialLibrary
 
 public:
     explicit MaterialExternalLibrary();
-    explicit MaterialExternalLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon, bool readOnly = true);
+    explicit MaterialExternalLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
     virtual ~MaterialExternalLibrary();
 };
 
-Q_DECLARE_METATYPE(MaterialExternalLibrary)
-
 } // namespace Materials
+
+Q_DECLARE_METATYPE(Materials::MaterialLibrary)
+Q_DECLARE_METATYPE(Materials::MaterialExternalLibrary)
 
 #endif // MATERIAL_MATERIALLIBRARY_H

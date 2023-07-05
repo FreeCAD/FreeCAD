@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include <QStandardItem>
+#include <QTableView>
 
 #include <Mod/Material/App/Model.h>
 

@@ -65,7 +65,7 @@ PyObject* MaterialManagerPy::getMaterial(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &uuid))
         return nullptr;
 
-    const Material &material = getMaterialManagerPtr()->getMaterial(uuid);
+    const Material &material = getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
     return new MaterialPy(new Material(material));
 }
 
@@ -79,11 +79,11 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject *args)
     std::string libPath(lib);
     if (libPath.length() > 0)
     {
-        const Material &material = getMaterialManagerPtr()->getMaterialByPath(path, libPath);
+        const Material &material = getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path), QString::fromStdString(libPath));
         return new MaterialPy(new Material(material));
     }
 
-    const Material &material = getMaterialManagerPtr()->getMaterialByPath(path);
+    const Material &material = getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
     return new MaterialPy(new Material(material));
 }
 
@@ -96,9 +96,9 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
     {
         MaterialLibrary *lib = *it;
         Py::Tuple libTuple(3);
-        libTuple.setItem(0,Py::String(lib->getName()));
-        libTuple.setItem(1,Py::String(lib->getDirectoryPath()));
-        libTuple.setItem(2,Py::String(lib->getIconPath()));
+        libTuple.setItem(0,Py::String(lib->getName().toStdString()));
+        libTuple.setItem(1,Py::String(lib->getDirectoryPath().toStdString()));
+        libTuple.setItem(2,Py::String(lib->getIconPath().toStdString()));
 
         list.append(libTuple);
     }
@@ -108,16 +108,16 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
 
 Py::Dict MaterialManagerPy::getMaterials() const
 {
-    std::map<std::string, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
+    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
     Py::Dict dict;
 
     for (auto it = Materials->begin(); it != Materials->end(); it++)
     {
-        std::string key = it->first;
+        QString key = it->first;
         Material *material = it->second;
 
         PyObject *materialPy = new MaterialPy(new Material(*material));
-        dict.setItem(Py::String(key), Py::Object(materialPy,true));
+        dict.setItem(Py::String(key.toStdString()), Py::Object(materialPy,true));
     }
 
     return dict;

@@ -34,15 +34,15 @@ namespace Materials {
 class ModelEntry
 {
 public:
-    explicit ModelEntry(const ModelLibrary &library, const std::string &baseName, const std::string &modelName, const QDir &dir, 
-        const std::string &modelUuid, const YAML::Node &modelData);
+    explicit ModelEntry(const ModelLibrary &library, const QString &baseName, const QString &modelName, const QDir &dir, 
+        const QString &modelUuid, const YAML::Node &modelData);
     virtual ~ModelEntry();
 
     const ModelLibrary &getLibrary() const { return _library; }
-    const std::string &getBase() const { return _base; }
-    const std::string &getName() const { return _name; }
+    const QString &getBase() const { return _base; }
+    const QString &getName() const { return _name; }
     const QDir &getDirectory() const { return _directory; }
-    const std::string &getUUID() const { return _uuid; }
+    const QString &getUUID() const { return _uuid; }
     const YAML::Node &getModel() const { return _model; }
     YAML::Node *getModelPtr() { return &_model; }
     bool getDereferenced() const { return _dereferenced; }
@@ -53,10 +53,10 @@ private:
     explicit ModelEntry();
 
     ModelLibrary _library;
-    std::string _base;
-    std::string _name;
+    QString _base;
+    QString _name;
     QDir _directory;
-    std::string _uuid;
+    QString _uuid;
     YAML::Node _model;
     bool _dereferenced;
 };
@@ -64,28 +64,28 @@ private:
 class ModelLoader
 {
 public:
-    explicit ModelLoader(std::map<std::string, Model*> *modelMap, std::list<ModelLibrary*> *libraryList);
+    explicit ModelLoader(std::map<QString, Model*> *modelMap, std::list<ModelLibrary*> *libraryList);
     virtual ~ModelLoader();
 
     std::list<ModelLibrary*> *getModelLibraries();
-    static const std::string getUUIDFromPath(const std::string &path);
+    static const QString getUUIDFromPath(const QString &path);
 
 private:
     explicit ModelLoader();
 
-    std::string yamlValue(const YAML::Node& node, const std::string& key,
-                                          const std::string& defaultValue);
-    void addToTree(ModelEntry* model, std::map<std::pair<std::string, std::string>, std::string> *inheritances);
+    QString yamlValue(const YAML::Node& node, const std::string& key,
+                      const std::string& defaultValue);
+    void addToTree(ModelEntry* model, std::map<std::pair<QString, QString>, QString> *inheritances);
     void showYaml(const YAML::Node& yaml) const;
-    void dereference(const std::string& uuid, ModelEntry* parent, const ModelEntry* child,
-                     std::map<std::pair<std::string, std::string>, std::string>* inheritances);
-    void dereference(ModelEntry* model, std::map<std::pair<std::string, std::string>, std::string> *inheritances);
-    ModelEntry *getModelFromPath(const ModelLibrary &library, const std::string &path) const;
+    void dereference(const QString& uuid, ModelEntry* parent, const ModelEntry* child,
+                     std::map<std::pair<QString, QString>, QString>* inheritances);
+    void dereference(ModelEntry* model, std::map<std::pair<QString, QString>, QString> *inheritances);
+    ModelEntry *getModelFromPath(const ModelLibrary &library, const QString &path) const;
     void addLibrary(ModelLibrary* model);
     void loadLibrary(const ModelLibrary &library);
     void loadLibraries(void);
-    static std::map<std::string, ModelEntry*> *_modelEntryMap;
-    std::map<std::string, Model*> *_modelMap;
+    static std::map<QString, ModelEntry*> *_modelEntryMap;
+    std::map<QString, Model*> *_modelMap;
     std::list<ModelLibrary*> *_libraryList;
 };
 

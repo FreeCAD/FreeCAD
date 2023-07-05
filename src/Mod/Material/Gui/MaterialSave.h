@@ -54,7 +54,7 @@ public:
     void createModelTree();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
-    void addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree, 
+    void addMaterials(QStandardItem &parent, const std::map<QString, Materials::MaterialTreeNode*>* modelTree, 
         const QIcon &folderIcon, const QIcon &icon);
     void showSelectedTree();
 

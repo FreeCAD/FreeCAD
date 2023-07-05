@@ -55,9 +55,9 @@ MaterialConfigLoader::MaterialConfigLoader()
 MaterialConfigLoader::~MaterialConfigLoader()
 {}
 
-bool MaterialConfigLoader::isConfigStyle(const std::string& path)
+bool MaterialConfigLoader::isConfigStyle(const QString& path)
 {
-    std::ifstream infile(path);
+    std::ifstream infile(path.toStdString());
 
     // Check the first 2 lines for a ";"
     for (int i = 0; i < 2; i++) {
@@ -71,10 +71,10 @@ bool MaterialConfigLoader::isConfigStyle(const std::string& path)
     return true;
 }
 
-std::string MaterialConfigLoader::getAuthorAndLicense(const std::string& path)
+QString MaterialConfigLoader::getAuthorAndLicense(const QString& path)
 {
-    std::ifstream infile(path);
-    std::string noAuthor = "";
+    std::ifstream infile(path.toStdString());
+    QString noAuthor;
 
     // Skip the first line
     std::string line;
@@ -86,19 +86,19 @@ std::string MaterialConfigLoader::getAuthorAndLicense(const std::string& path)
         return noAuthor;
     std::size_t found = line.find(";");
     if (found!=std::string::npos)
-        return trim_copy(line.substr(found + 1));
+        return QString::fromStdString(trim_copy(line.substr(found + 1)));
 
     return noAuthor;
 }
 
 void MaterialConfigLoader::addVectorRendering(const QSettings &fcmat, Material *finalModel)
 {
-    std::string sectionFillPattern = value(fcmat, "VectorRendering/SectionFillPattern", "");
-    std::string sectionLinewidth = value(fcmat, "VectorRendering/SectionLinewidth", "");
-    std::string sectionColor = value(fcmat, "VectorRendering/SectionColor", "");
-    std::string viewColor = value(fcmat, "VectorRendering/ViewColor", "");
-    std::string viewFillPattern = value(fcmat, "VectorRendering/ViewFillPattern", "");
-    std::string viewLinewidth = value(fcmat, "VectorRendering/ViewLinewidth", "");
+    QString sectionFillPattern = value(fcmat, "VectorRendering/SectionFillPattern", "");
+    QString sectionLinewidth = value(fcmat, "VectorRendering/SectionLinewidth", "");
+    QString sectionColor = value(fcmat, "VectorRendering/SectionColor", "");
+    QString viewColor = value(fcmat, "VectorRendering/ViewColor", "");
+    QString viewFillPattern = value(fcmat, "VectorRendering/ViewFillPattern", "");
+    QString viewLinewidth = value(fcmat, "VectorRendering/ViewLinewidth", "");
 
     if (sectionFillPattern.length() + sectionLinewidth.length() + sectionColor.length() +
             viewColor.length() + viewFillPattern.length() + viewLinewidth.length() > 0)
@@ -115,16 +115,16 @@ void MaterialConfigLoader::addVectorRendering(const QSettings &fcmat, Material *
 
 void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalModel)
 {
-    std::string ambientColor = value(fcmat, "Rendering/AmbientColor", "");
-    std::string diffuseColor = value(fcmat, "Rendering/DiffuseColor", "");
-    std::string emissiveColor = value(fcmat, "Rendering/EmissiveColor", "");
-    std::string shininess = value(fcmat, "Rendering/Shininess", "");
-    std::string specularColor = value(fcmat, "Rendering/SpecularColor", "");
-    std::string transparency = value(fcmat, "Rendering/Transparency", "");
-    std::string texturePath = value(fcmat, "Rendering/TexturePath", "");
-    std::string textureScaling = value(fcmat, "Rendering/TextureScaling", "");
-    std::string fragmentShader = value(fcmat, "Rendering/FragmentShader", "");
-    std::string vertexShader = value(fcmat, "Rendering/VertexShader", "");
+    QString ambientColor = value(fcmat, "Rendering/AmbientColor", "");
+    QString diffuseColor = value(fcmat, "Rendering/DiffuseColor", "");
+    QString emissiveColor = value(fcmat, "Rendering/EmissiveColor", "");
+    QString shininess = value(fcmat, "Rendering/Shininess", "");
+    QString specularColor = value(fcmat, "Rendering/SpecularColor", "");
+    QString transparency = value(fcmat, "Rendering/Transparency", "");
+    QString texturePath = value(fcmat, "Rendering/TexturePath", "");
+    QString textureScaling = value(fcmat, "Rendering/TextureScaling", "");
+    QString fragmentShader = value(fcmat, "Rendering/FragmentShader", "");
+    QString vertexShader = value(fcmat, "Rendering/VertexShader", "");
 
     // Check which model we need
     bool useTexture = false;
@@ -166,9 +166,9 @@ void MaterialConfigLoader::addRendering(const QSettings &fcmat, Material *finalM
 
 void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel)
 {
-    std::string productURL = value(fcmat, "Cost/ProductURL", "");
-    std::string specificPrice = value(fcmat, "Cost/SpecificPrice", "");
-    std::string vendor = value(fcmat, "Cost/Vendor", "");
+    QString productURL = value(fcmat, "Cost/ProductURL", "");
+    QString specificPrice = value(fcmat, "Cost/SpecificPrice", "");
+    QString vendor = value(fcmat, "Cost/Vendor", "");
 
     if (productURL.length() + specificPrice.length() + vendor.length() > 0)
         finalModel->addPhysical(ModelUUID_Costs_Default);
@@ -181,14 +181,14 @@ void MaterialConfigLoader::addCosts(const QSettings &fcmat, Material *finalModel
 
 void MaterialConfigLoader::addArchitectural(const QSettings &fcmat, Material *finalModel)
 {
-    std::string color = value(fcmat, "Architectural/Color", "");
-    std::string environmentalEfficiencyClass = value(fcmat, "Architectural/EnvironmentalEfficiencyClass", "");
-    std::string executionInstructions = value(fcmat, "Architectural/ExecutionInstructions", "");
-    std::string finish = value(fcmat, "Architectural/Finish", "");
-    std::string fireResistanceClass = value(fcmat, "Architectural/FireResistanceClass", "");
-    std::string model = value(fcmat, "Architectural/Model", "");
-    std::string soundTransmissionClass = value(fcmat, "Architectural/SoundTransmissionClass", "");
-    std::string unitsPerQuantity = value(fcmat, "Architectural/UnitsPerQuantity", "");
+    QString color = value(fcmat, "Architectural/Color", "");
+    QString environmentalEfficiencyClass = value(fcmat, "Architectural/EnvironmentalEfficiencyClass", "");
+    QString executionInstructions = value(fcmat, "Architectural/ExecutionInstructions", "");
+    QString finish = value(fcmat, "Architectural/Finish", "");
+    QString fireResistanceClass = value(fcmat, "Architectural/FireResistanceClass", "");
+    QString model = value(fcmat, "Architectural/Model", "");
+    QString soundTransmissionClass = value(fcmat, "Architectural/SoundTransmissionClass", "");
+    QString unitsPerQuantity = value(fcmat, "Architectural/UnitsPerQuantity", "");
 
     if (color.length() + environmentalEfficiencyClass.length() + executionInstructions.length() +
             finish.length() + fireResistanceClass.length() + model.length() +
@@ -208,9 +208,9 @@ void MaterialConfigLoader::addArchitectural(const QSettings &fcmat, Material *fi
 
 void MaterialConfigLoader::addElectromagnetic(const QSettings &fcmat, Material *finalModel)
 {
-    std::string relativePermittivity = value(fcmat, "Electromagnetic/RelativePermittivity", "");
-    std::string electricalConductivity = value(fcmat, "Electromagnetic/ElectricalConductivity", "");
-    std::string relativePermeability = value(fcmat, "Electromagnetic/RelativePermeability", "");
+    QString relativePermittivity = value(fcmat, "Electromagnetic/RelativePermittivity", "");
+    QString electricalConductivity = value(fcmat, "Electromagnetic/ElectricalConductivity", "");
+    QString relativePermeability = value(fcmat, "Electromagnetic/RelativePermeability", "");
 
     if (relativePermittivity.length() + electricalConductivity.length() + relativePermeability.length() > 0)
         finalModel->addPhysical(ModelUUID_Electromagnetic_Default);
@@ -223,9 +223,9 @@ void MaterialConfigLoader::addElectromagnetic(const QSettings &fcmat, Material *
 
 void MaterialConfigLoader::addThermal(const QSettings &fcmat, Material *finalModel)
 {
-    std::string specificHeat = value(fcmat, "Thermal/SpecificHeat", "");
-    std::string thermalConductivity = value(fcmat, "Thermal/ThermalConductivity", "");
-    std::string thermalExpansionCoefficient = value(fcmat, "Thermal/ThermalExpansionCoefficient", "");
+    QString specificHeat = value(fcmat, "Thermal/SpecificHeat", "");
+    QString thermalConductivity = value(fcmat, "Thermal/ThermalConductivity", "");
+    QString thermalExpansionCoefficient = value(fcmat, "Thermal/ThermalExpansionCoefficient", "");
 
     if (specificHeat.length() + thermalConductivity.length() + thermalExpansionCoefficient.length() > 0)
         finalModel->addPhysical(ModelUUID_Thermal_Default);
@@ -238,10 +238,10 @@ void MaterialConfigLoader::addThermal(const QSettings &fcmat, Material *finalMod
 
 void MaterialConfigLoader::addFluid(const QSettings &fcmat, Material *finalModel)
 {
-    std::string density = value(fcmat, "Fluidic/Density", "");
-    std::string dynamicViscosity = value(fcmat, "Fluidic/DynamicViscosity", "");
-    std::string kinematicViscosity = value(fcmat, "Fluidic/KinematicViscosity", "");
-    std::string prandtlNumber = value(fcmat, "Fluidic/PrandtlNumber", "");
+    QString density = value(fcmat, "Fluidic/Density", "");
+    QString dynamicViscosity = value(fcmat, "Fluidic/DynamicViscosity", "");
+    QString kinematicViscosity = value(fcmat, "Fluidic/KinematicViscosity", "");
+    QString prandtlNumber = value(fcmat, "Fluidic/PrandtlNumber", "");
 
     // Check which model we need
     bool useDensity = false;
@@ -268,18 +268,18 @@ void MaterialConfigLoader::addFluid(const QSettings &fcmat, Material *finalModel
 
 void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *finalModel)
 {
-    std::string density = value(fcmat, "Mechanical/Density", "");
-    std::string bulkModulus = value(fcmat, "Mechanical/BulkModulus", "");
-    std::string poissonRatio = value(fcmat, "Mechanical/PoissonRatio", "");
-    std::string shearModulus = value(fcmat, "Mechanical/ShearModulus", "");
-    std::string youngsModulus = value(fcmat, "Mechanical/YoungsModulus", "");
-    std::string angleOfFriction = value(fcmat, "Mechanical/AngleOfFriction", "");
-    std::string compressiveStrength = value(fcmat, "Mechanical/CompressiveStrength", "");
-    std::string fractureToughness = value(fcmat, "Mechanical/FractureToughness", "");
-    std::string ultimateStrain = value(fcmat, "Mechanical/UltimateStrain", "");
-    std::string ultimateTensileStrength = value(fcmat, "Mechanical/UltimateTensileStrength", "");
-    std::string yieldStrength = value(fcmat, "Mechanical/YieldStrength", "");
-    std::string stiffness = value(fcmat, "Mechanical/Stiffness", "");
+    QString density = value(fcmat, "Mechanical/Density", "");
+    QString bulkModulus = value(fcmat, "Mechanical/BulkModulus", "");
+    QString poissonRatio = value(fcmat, "Mechanical/PoissonRatio", "");
+    QString shearModulus = value(fcmat, "Mechanical/ShearModulus", "");
+    QString youngsModulus = value(fcmat, "Mechanical/YoungsModulus", "");
+    QString angleOfFriction = value(fcmat, "Mechanical/AngleOfFriction", "");
+    QString compressiveStrength = value(fcmat, "Mechanical/CompressiveStrength", "");
+    QString fractureToughness = value(fcmat, "Mechanical/FractureToughness", "");
+    QString ultimateStrain = value(fcmat, "Mechanical/UltimateStrain", "");
+    QString ultimateTensileStrength = value(fcmat, "Mechanical/UltimateTensileStrength", "");
+    QString yieldStrength = value(fcmat, "Mechanical/YieldStrength", "");
+    QString stiffness = value(fcmat, "Mechanical/Stiffness", "");
 
     // Check which model we need
     bool useDensity = false;
@@ -320,21 +320,21 @@ void MaterialConfigLoader::addMechanical(const QSettings &fcmat, Material *final
 
 }
 
-Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &library, const std::string &path)
+Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &library, const QString &path)
 {
-    QDir modelDir(QString::fromStdString(path));
-    std::string authorAndLicense = getAuthorAndLicense(path);
+    QDir modelDir(path);
+    QString authorAndLicense = getAuthorAndLicense(path);
 
-    QSettings fcmat(QString::fromStdString(path), QSettings::IniFormat);
+    QSettings fcmat(path, QSettings::IniFormat);
 
     // General section
-    std::string name = value(fcmat, "Name", "");
-    std::string uuid = QUuid::createUuid().toString(QUuid::WithoutBraces).toStdString();
+    QString name = value(fcmat, "Name", "");
+    QString uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
-    std::string version = QUuid::createUuid().toString(QUuid::WithoutBraces).toStdString();
-    std::string description = value(fcmat, "Description", "");
-    std::string sourceReference = value(fcmat, "ReferenceSource", "");
-    std::string sourceURL = value(fcmat, "SourceURL", "");
+    QString version = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    QString description = value(fcmat, "Description", "");
+    QString sourceReference = value(fcmat, "ReferenceSource", "");
+    QString sourceURL = value(fcmat, "SourceURL", "");
 
     Material *finalModel = new Material(library, modelDir, uuid, name);
     finalModel->setVersion(version);
@@ -343,7 +343,7 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
     finalModel->setReference(sourceReference);
     finalModel->setURL(sourceURL);
 
-    std::string father = value(fcmat, "Father", "");
+    QString father = value(fcmat, "Father", "");
     if (father.length() > 0)
     {
         finalModel->addPhysical(ModelUUID_Legacy_Father);
@@ -352,10 +352,10 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
         setPhysicalValue(finalModel, "Father", father);
     }
 
-    std::string kindOfMaterial = value(fcmat, "KindOfMaterial", "");
-    std::string materialNumber = value(fcmat, "MaterialNumber", "");
-    std::string norm = value(fcmat, "Norm", "");
-    std::string standardCode = value(fcmat, "StandardCode", "");
+    QString kindOfMaterial = value(fcmat, "KindOfMaterial", "");
+    QString materialNumber = value(fcmat, "MaterialNumber", "");
+    QString norm = value(fcmat, "Norm", "");
+    QString standardCode = value(fcmat, "StandardCode", "");
     if (kindOfMaterial.length() + materialNumber.length() + norm.length() + standardCode.length() > 0)
     {
         finalModel->addPhysical(ModelUUID_Legacy_MaterialStandard);

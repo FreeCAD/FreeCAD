@@ -74,23 +74,23 @@ private:
     QSvgWidget* _rendered;
     QSvgWidget* _vectored;
     bool _edited;
-    std::list<std::string> _favorites;
-    std::list<std::string> _recents;
+    std::list<QString> _favorites;
+    std::list<QString> _recents;
     int _recentMax;
 
     void getFavorites();
     void saveFavorites();
-    void addFavorite(const std::string& uuid);
-    void removeFavorite(const std::string& uuid);
-    bool isFavorite(const std::string& uuid) const;
+    void addFavorite(const QString& uuid);
+    void removeFavorite(const QString& uuid);
+    bool isFavorite(const QString& uuid) const;
     
     void getRecents();
     void saveRecents();
-    void addRecent(const std::string& uuid);
-    bool isRecent(const std::string& uuid) const;
+    void addRecent(const QString& uuid);
+    bool isRecent(const QString& uuid) const;
 
     void updatePreview() const;
-    QString getColorHash(const std::string& colorString, int colorRange=255) const;
+    QString getColorHash(const QString& colorString, int colorRange=255) const;
 
     void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
@@ -103,7 +103,7 @@ private:
     void createMaterialTree();
     void fillMaterialTree();
     void refreshMaterialTree();
-    void addMaterials(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon);
+    void addMaterials(QStandardItem &parent, const QString &top, const QString &folder, const QIcon &icon);
     bool isMaterial(const fs::path &p) const { return Materials::MaterialManager::isMaterial(p); }
 };
 

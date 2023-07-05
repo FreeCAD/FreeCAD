@@ -42,28 +42,28 @@ public:
     explicit MaterialManager();
     virtual ~MaterialManager();
 
-    std::map<std::string, Material *> *getMaterials() { return _materialMap; }
-    const Material& getMaterial(const std::string& uuid) const;
-    const Material &getMaterialByPath(const std::string &path) const;
-    const Material &getMaterialByPath(const std::string &path, const std::string &libraryPath) const;
+    std::map<QString, Material *> *getMaterials() { return _materialMap; }
+    const Material& getMaterial(const QString& uuid) const;
+    const Material &getMaterialByPath(const QString &path) const;
+    const Material &getMaterialByPath(const QString &path, const QString &libraryPath) const;
 
     // Library management
     static std::list<MaterialLibrary*>* getMaterialLibraries();
-    std::map<std::string, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
+    std::map<QString, MaterialTreeNode*>* getMaterialTree(const MaterialLibrary &library);
     std::list<QString>* getMaterialFolders(const MaterialLibrary &library);
-    void createPath(MaterialLibrary* library, const std::string& path) { library->createPath(path); }
-    void saveMaterial(MaterialLibrary* library, const Material& material, const std::string& path) {
+    void createPath(MaterialLibrary* library, const QString& path) { library->createPath(path); }
+    void saveMaterial(MaterialLibrary* library, const Material& material, const QString& path) {
         library->saveMaterial(material, path);
     }
 
     static bool isMaterial(const fs::path &p);
 
 private:
-    const std::string getUUIDFromPath(const std::string& path) const;
+    const QString getUUIDFromPath(const QString& path) const;
 
     static std::list<MaterialLibrary *> *_libraryList;
-    static std::map<std::string, Material *> *_materialMap;
-    static std::map<std::string, Material *> *_materialPathMap;
+    static std::map<QString, Material *> *_materialMap;
+    static std::map<QString, Material *> *_materialPathMap;
 };
 
 } // namespace Materials

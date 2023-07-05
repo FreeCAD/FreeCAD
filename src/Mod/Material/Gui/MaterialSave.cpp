@@ -22,7 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
+#include <QTreeView>
 #endif
 
 #include <Gui/MainWindow.h>
@@ -87,7 +88,7 @@ void MaterialSave::setLibraries()
         {
             QVariant libraryVariant;
             libraryVariant.setValue(*library);
-            ui->comboLibrary->addItem(QString::fromStdString(library->getName()), libraryVariant);
+            ui->comboLibrary->addItem(library->getName(), libraryVariant);
         }
     }
 }
@@ -112,7 +113,7 @@ void MaterialSave::addExpanded(QTreeView *tree, QStandardItemModel *parent, QSta
     tree->setExpanded(child->index(), true);
 }
 
-void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::string, Materials::MaterialTreeNode*>* modelTree, 
+void MaterialSave::addMaterials(QStandardItem &parent, const std::map<QString, Materials::MaterialTreeNode*>* modelTree, 
         const QIcon &folderIcon, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
@@ -121,19 +122,19 @@ void MaterialSave::addMaterials(QStandardItem &parent, const std::map<std::strin
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode)
         {
             const Materials::Material *material = nodePtr->getData();
-            std::string uuid = material->getUUID();
+            QString uuid = material->getUUID();
 
-            auto card = new QStandardItem(icon, QString::fromStdString(material->getName()));
+            auto card = new QStandardItem(icon, material->getName());
             // card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
             //             | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
             addExpanded(tree, &parent, card);
         } else {
-            auto node = new QStandardItem(folderIcon, QString::fromStdString(mat.first));
+            auto node = new QStandardItem(folderIcon, mat.first);
             addExpanded(tree, &parent, node);
             // node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-            const std::map<std::string, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
+            const std::map<QString, Materials::MaterialTreeNode*>* treeMap = nodePtr->getFolder();
             addMaterials(*node, treeMap, folderIcon, icon);
         }
     }
@@ -149,14 +150,14 @@ void MaterialSave::showSelectedTree()
     {
         auto variant = ui->comboLibrary->currentData();
         auto library = variant.value<Materials::MaterialLibrary>();
-        QIcon icon(QString::fromStdString(library.getIconPath()));
+        QIcon icon(library.getIconPath());
         QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
-        auto lib = new QStandardItem(QString::fromStdString(library.getName()));
+        auto lib = new QStandardItem(library.getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        std::map<std::string, Materials::MaterialTreeNode*>* modelTree = _manager.getMaterialTree(library);
+        std::map<QString, Materials::MaterialTreeNode*>* modelTree = _manager.getMaterialTree(library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No writeable library"),

@@ -39,17 +39,17 @@ std::string MaterialPy::representation() const
     MaterialPy::PointerType ptr = getMaterialPtr();
     std::stringstream str;
     str << "Property [Name=(";
-    str << ptr->getName();
+    str << ptr->getName().toStdString();
     str << "), UUID=(";
-    str << ptr->getUUID();
+    str << ptr->getUUID().toStdString();
     str << "), Library Name=(";
-    str << ptr->getLibrary().getName();
+    str << ptr->getLibrary().getName().toStdString();
     str << "), Library Root=(";
-    str << ptr->getLibrary().getDirectoryPath();
+    str << ptr->getLibrary().getDirectoryPath().toStdString();
      str << "), Library Icon=(";
-    str << ptr->getLibrary().getIconPath();
+    str << ptr->getLibrary().getIconPath().toStdString();
     str << "), Relative Path=(";
-    str << ptr->getRelativePath();
+    str << ptr->getRelativePath().toStdString();
     str << "), Directory=(";
     str << ptr->getDirectory().absolutePath().toStdString();
     // str << "), URL=(";
@@ -89,27 +89,27 @@ int MaterialPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String MaterialPy::getLibraryName() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getName());
+    return Py::String(getMaterialPtr()->getLibrary().getName().toStdString());
 }
 
 Py::String MaterialPy::getLibraryRoot() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getDirectoryPath());
+    return Py::String(getMaterialPtr()->getLibrary().getDirectoryPath().toStdString());
 }
 
 Py::String MaterialPy::getRelativePath() const
 {
-    return Py::String(getMaterialPtr()->getRelativePath());
+    return Py::String(getMaterialPtr()->getRelativePath().toStdString());
 }
 
 Py::String MaterialPy::getLibraryIcon() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getIconPath());
+    return Py::String(getMaterialPtr()->getLibrary().getIconPath().toStdString());
 }
 
 Py::String MaterialPy::getName() const
 {
-    return Py::String(getMaterialPtr()->getName());
+    return Py::String(getMaterialPtr()->getName().toStdString());
 }
 
 Py::String MaterialPy::getDirectory() const
@@ -119,44 +119,44 @@ Py::String MaterialPy::getDirectory() const
 
 Py::String MaterialPy::getUUID() const
 {
-    return Py::String(getMaterialPtr()->getUUID());
+    return Py::String(getMaterialPtr()->getUUID().toStdString());
 }
 
 Py::String MaterialPy::getDescription() const
 {
-    return Py::String(getMaterialPtr()->getDescription());
+    return Py::String(getMaterialPtr()->getDescription().toStdString());
 }
 
 Py::String MaterialPy::getURL() const
 {
-    return Py::String(getMaterialPtr()->getURL());
+    return Py::String(getMaterialPtr()->getURL().toStdString());
 }
 
 Py::String MaterialPy::getReference() const
 {
-    return Py::String(getMaterialPtr()->getReference());
+    return Py::String(getMaterialPtr()->getReference().toStdString());
 }
 
 Py::String MaterialPy::getParent() const
 {
-    return Py::String(getMaterialPtr()->getParentUUID());
+    return Py::String(getMaterialPtr()->getParentUUID().toStdString());
 }
 
 Py::String MaterialPy::getAuthorAndLicense() const
 {
-    return Py::String(getMaterialPtr()->getAuthorAndLicense());
+    return Py::String(getMaterialPtr()->getAuthorAndLicense().toStdString());
 }
 
 Py::List MaterialPy::getPhysicalModels() const
 {
-    const std::vector<std::string> *models = getMaterialPtr()->getPhysicalModels();
+    const std::vector<QString> *models = getMaterialPtr()->getPhysicalModels();
     Py::List list;
 
     for (auto it = models->begin(); it != models->end(); it++)
     {
-        std::string uuid = *it;
+        QString uuid = *it;
 
-        list.append(Py::String(uuid));
+        list.append(Py::String(uuid.toStdString()));
     }
 
     return list;
@@ -164,14 +164,14 @@ Py::List MaterialPy::getPhysicalModels() const
 
 Py::List MaterialPy::getTags() const
 {
-    const std::list<std::string> &tags = getMaterialPtr()->getTags();
+    const std::list<QString> &tags = getMaterialPtr()->getTags();
     Py::List list;
 
     for (auto it = tags.begin(); it != tags.end(); it++)
     {
-        std::string uuid = *it;
+        QString uuid = *it;
 
-        list.append(Py::String(uuid));
+        list.append(Py::String(uuid.toStdString()));
     }
 
     return list;

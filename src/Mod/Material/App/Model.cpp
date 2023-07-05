@@ -33,7 +33,7 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::ModelLibrary, Base::BaseClass)
 
-ModelLibrary::ModelLibrary(const std::string &libraryName, const QDir &dir, const std::string &icon):
+ModelLibrary::ModelLibrary(const QString &libraryName, const QDir &dir, const QString &icon):
     _name(libraryName), _directory(dir), _iconPath(icon)
 {}
 ModelLibrary::ModelLibrary()
@@ -49,9 +49,9 @@ ModelProperty::ModelProperty()
 
 }
 
-ModelProperty::ModelProperty(const std::string& name, const std::string& type,
-                        const std::string& units, const std::string& url,
-                        const std::string& description):
+ModelProperty::ModelProperty(const QString& name, const QString& type,
+                        const QString& units, const QString& url,
+                        const QString& description):
     _name(name), _propertyType(type), _units(units), _url(url), _description(description)
 {
 
@@ -84,12 +84,12 @@ ModelValueProperty::~ModelValueProperty()
 
 }
 
-void ModelValueProperty::setModelUUID(const std::string& uuid)
+void ModelValueProperty::setModelUUID(const QString& uuid)
 {
     _modelUUID = uuid;
 }
 
-const std::string ModelValueProperty::getValue(void) const
+const QString ModelValueProperty::getValue(void) const
 {
     switch (_valueType){
         case ValueType::String:
@@ -97,54 +97,54 @@ const std::string ModelValueProperty::getValue(void) const
             return _valueString;
 
         case ValueType::Boolean:
-            return (_valueBoolean) ? "true" : "false";
+            return (_valueBoolean) ? QString::fromStdString("true") : QString::fromStdString("false");
 
         case ValueType::Int:
-            return std::to_string(_valueInt);
+            return QString::number(_valueInt);
 
         case ValueType::Float:
-            return std::to_string(_valueFloat);
+            return QString::number(_valueFloat);
 
         default:
             break;
     }
 
-    return "";
+    return QString::fromStdString("");
 }
 
-void ModelValueProperty::setPropertyType(const std::string& type)
+void ModelValueProperty::setPropertyType(const QString& type)
 {
     ModelProperty::setPropertyType(type);
     setType(type);
 }
 
-void ModelValueProperty::setType(const std::string& type)
+void ModelValueProperty::setType(const QString& type)
 {
-    if (type == "String")
+    if (type == QString::fromStdString("String"))
     {
        setType(ValueType::String);
-    } else if (type == "Boolean")
+    } else if (type == QString::fromStdString("Boolean"))
     {
        setType(ValueType::Boolean);
-    } else if (type == "Int")
+    } else if (type == QString::fromStdString("Int"))
     {
        setType(ValueType::Int);
-    } else if (type == "Float")
+    } else if (type == QString::fromStdString("Float"))
     {
        setType(ValueType::Float);
-    } else if (type == "URL")
+    } else if (type == QString::fromStdString("URL"))
     {
        setType(ValueType::URL);
-    } else if (type == "Quantity")
+    } else if (type == QString::fromStdString("Quantity"))
     {
        setType(ValueType::String);
-    } else if (type == "Color")
+    } else if (type == QString::fromStdString("Color"))
     {
        setType(ValueType::String);
-    } else if (type == "File")
+    } else if (type == QString::fromStdString("File"))
     {
        setType(ValueType::String);
-    } else if (type == "Image")
+    } else if (type == QString::fromStdString("Image"))
     {
        setType(ValueType::String);
     } else {
@@ -162,7 +162,7 @@ ModelValueProperty &ModelValueProperty::getColumn(int column)
     }
 }
 
-void ModelValueProperty::setValue(const std::string& value)
+void ModelValueProperty::setValue(const QString& value)
 {
     if (_valueType == ValueType::Boolean)
        setBoolean(value);
@@ -176,7 +176,7 @@ void ModelValueProperty::setValue(const std::string& value)
        setString(value);
 }
 
-void ModelValueProperty::setString(const std::string& value)
+void ModelValueProperty::setString(const QString& value)
 {
     // _valueType = ValueType::String;
     _valueString = value;
@@ -194,15 +194,16 @@ void ModelValueProperty::setBoolean(int value)
     _valueBoolean = (value != 0);
 }
 
-void ModelValueProperty::setBoolean(const std::string& value)
+void ModelValueProperty::setBoolean(const QString& value)
 {
     // _valueType = ValueType::Boolean;
-    if ((value == "true") || (value == "True"))
+    std::string val = value.toStdString();
+    if ((val == "true") || (val == "True"))
        _valueBoolean = true;
-    else if ((value == "false") || (value == "False"))
+    else if ((val == "false") || (val == "False"))
        _valueBoolean = true;
     else
-        _valueBoolean = std::stoi(value);
+        _valueBoolean = std::stoi(val);
 }
 
 void ModelValueProperty::setInt(int value)
@@ -211,10 +212,10 @@ void ModelValueProperty::setInt(int value)
     _valueInt = value;
 }
 
-void ModelValueProperty::setInt(const std::string& value)
+void ModelValueProperty::setInt(const QString& value)
 {
     // _valueType = ValueType::Int;
-    _valueInt = std::stoi(value);
+    _valueInt = std::stoi(value.toStdString());
 }
 
 void ModelValueProperty::setFloat(double value)
@@ -223,10 +224,10 @@ void ModelValueProperty::setFloat(double value)
     _valueFloat = value;
 }
 
-void ModelValueProperty::setFloat(const std::string& value)
+void ModelValueProperty::setFloat(const QString& value)
 {
     // _valueType = ValueType::Float;
-    _valueFloat = std::stod(value);
+    _valueFloat = std::stod(value.toStdString());
 }
 
 void ModelValueProperty::setQuantity(const Base::Quantity& value)
@@ -235,16 +236,16 @@ void ModelValueProperty::setQuantity(const Base::Quantity& value)
     _valueQuantity = value;
 }
 
-void ModelValueProperty::setQuantity(double value, const std::string& units)
+void ModelValueProperty::setQuantity(double value, const QString& units)
 {
     Q_UNUSED(units);
 
     // _valueType = ValueType::Quantity;
     // _valueQuantity = Base::Quantity(value, QString::fromStdString(units));
-    _valueString = value;
+    _valueString = QString::number(value);
 }
 
-void ModelValueProperty::setQuantity(const std::string& value)
+void ModelValueProperty::setQuantity(const QString& value)
 {
     Q_UNUSED(value);
 
@@ -252,7 +253,7 @@ void ModelValueProperty::setQuantity(const std::string& value)
     // _valueQuantity = value;
 }
 
-void ModelValueProperty::setURL(const std::string& value)
+void ModelValueProperty::setURL(const QString& value)
 {
     // _valueType = ValueType::URL;
     _valueString = value; // Different type but same representation
@@ -264,9 +265,9 @@ TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 Model::Model()
 {}
 
-Model::Model(const ModelLibrary &library, ModelType type, const std::string &name, const QDir &directory, 
-        const std::string &uuid, const std::string& description, const std::string& url,
-        const std::string& doi):
+Model::Model(const ModelLibrary &library, ModelType type, const QString &name, const QDir &directory, 
+        const QString &uuid, const QString& description, const QString& url,
+        const QString& doi):
     _library(library), _type(type), _name(name), _directory(directory), _uuid(uuid), _description(description),
     _url(url), _doi(doi)
 {}
@@ -274,7 +275,7 @@ Model::Model(const ModelLibrary &library, ModelType type, const std::string &nam
 Model::~Model()
 {}
 
-ModelProperty& Model::operator[] (const std::string& key)
+ModelProperty& Model::operator[] (const QString& key)
 {
     try {
         return _properties.at(key);

@@ -39,8 +39,8 @@ TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 MaterialLibrary::MaterialLibrary()
 {}
 
-MaterialLibrary::MaterialLibrary(const std::string& libraryName, const QDir& dir,
-                                 const std::string& icon, bool readOnly) :
+MaterialLibrary::MaterialLibrary(const QString& libraryName, const QDir& dir,
+                                 const QString& icon, bool readOnly) :
     _name(libraryName), _directory(dir), _iconPath(icon), _readOnly(readOnly)
 {}
 
@@ -49,13 +49,15 @@ MaterialLibrary::~MaterialLibrary()
     // delete directory;
 }
 
-void MaterialLibrary::createPath(const std::string& path)
+void MaterialLibrary::createPath(const QString& path)
 {
-
+    Q_UNUSED(path)
 }
 
-void MaterialLibrary::saveMaterial(const Material& material, const std::string& path)
+void MaterialLibrary::saveMaterial(const Material& material, const QString& path)
 {
+    Q_UNUSED(material)
+    Q_UNUSED(path)
 
 }
 
@@ -64,8 +66,8 @@ TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, MaterialLibrary::MaterialL
 MaterialExternalLibrary::MaterialExternalLibrary()
 {}
 
-MaterialExternalLibrary::MaterialExternalLibrary(const std::string& libraryName, const QDir& dir,
-                                 const std::string& icon, bool readOnly) :
+MaterialExternalLibrary::MaterialExternalLibrary(const QString& libraryName, const QDir& dir,
+                                 const QString& icon, bool readOnly) :
     MaterialLibrary(libraryName, dir, icon, readOnly)
 {}
 

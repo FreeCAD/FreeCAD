@@ -22,7 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QColorDialog>
+#include <QColorDialog>
+#include <QPainter>
 #endif
 
 #include <limits>

@@ -151,7 +151,7 @@ void MaterialsEditor::getFavorites()
     for (int i = 0; i < count; i++)
     {
         QString key = QString::fromLatin1("FAV%1").arg(i);
-        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _favorites.push_back(uuid);
     }
 }
@@ -175,13 +175,13 @@ void MaterialsEditor::saveFavorites()
     for (auto favorite: _favorites)
     {
         QString key = QString::fromLatin1("FAV%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), favorite);
+        param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
 
         j++;
     }
 }
 
-void MaterialsEditor::addFavorite(const std::string &uuid)
+void MaterialsEditor::addFavorite(const QString &uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try
@@ -200,7 +200,7 @@ void MaterialsEditor::addFavorite(const std::string &uuid)
     }
 }
 
-void MaterialsEditor::removeFavorite(const std::string& uuid)
+void MaterialsEditor::removeFavorite(const QString& uuid)
 {
     if (isFavorite(uuid)) {
         _favorites.remove(uuid);
@@ -209,7 +209,7 @@ void MaterialsEditor::removeFavorite(const std::string& uuid)
     }
 }
 
-bool MaterialsEditor::isFavorite(const std::string& uuid) const
+bool MaterialsEditor::isFavorite(const QString& uuid) const
 {
     for (auto it: _favorites)
     {
@@ -231,7 +231,7 @@ void MaterialsEditor::getRecents()
     for (int i = 0; i < count; i++)
     {
         QString key = QString::fromLatin1("MRU%1").arg(i);
-        std::string uuid = param->GetASCII(key.toStdString().c_str(), "");
+        QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _recents.push_back(uuid);
     }
 }
@@ -258,7 +258,7 @@ void MaterialsEditor::saveRecents()
     for (auto recent: _recents)
     {
         QString key = QString::fromLatin1("MRU%1").arg(j);
-        param->SetASCII(key.toStdString().c_str(), recent);
+        param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
         j++;
         if (j >= size)
@@ -266,7 +266,7 @@ void MaterialsEditor::saveRecents()
     }
 }
 
-void MaterialsEditor::addRecent(const std::string& uuid)
+void MaterialsEditor::addRecent(const QString& uuid)
 {
     // Ensure it is a material. New, unsaved materials will not be
     try
@@ -289,7 +289,7 @@ void MaterialsEditor::addRecent(const std::string& uuid)
     saveRecents();
 }
 
-bool MaterialsEditor::isRecent(const std::string& uuid) const
+bool MaterialsEditor::isRecent(const QString& uuid) const
 {
     for (auto it: _recents)
     {
@@ -330,8 +330,8 @@ void MaterialsEditor::onPhysicalAdd(bool checked)
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
     {
-        std::string selected = dialog.selectedModel();
-        Base::Console().Log("Selected model '%s'\n", selected.c_str());
+        QString selected = dialog.selectedModel();
+        Base::Console().Log("Selected model '%s'\n", selected.toStdString().c_str());
         _material.addPhysical(selected);
         updateMaterial();
     } else {
@@ -347,8 +347,8 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
     {
-        std::string selected = dialog.selectedModel();
-        Base::Console().Log("Selected model '%s'\n", selected.c_str());
+        QString selected = dialog.selectedModel();
+        Base::Console().Log("Selected model '%s'\n", selected.toStdString().c_str());
         _material.addAppearance(selected);
         updateMaterial();
     } else {
@@ -376,7 +376,7 @@ void MaterialsEditor::onSave(bool checked)
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
     {
-    //     std::string selected = dialog.selectedModel();
+    //     QString selected = dialog.selectedModel();
     //     Base::Console().Log("Selected model '%s'\n", selected.c_str());
     //     _material.addAppearance(selected);
     //     updateMaterial();
@@ -404,24 +404,24 @@ void MaterialsEditor::reject()
 //     auto pixmap = icon.pixmap();
 // }
 
-void MaterialsEditor::addMaterials(QStandardItem &parent, const std::string &top, const std::string &folder, const QIcon &icon)
+void MaterialsEditor::addMaterials(QStandardItem &parent, const QString &top, const QString &folder, const QIcon &icon)
 {
     auto tree = ui->treeMaterials;
-    for (const auto& mod : fs::directory_iterator(folder)) {
+    for (const auto& mod : fs::directory_iterator(folder.toStdString())) {
         if (fs::is_directory(mod)) {
             auto node = new QStandardItem(QString::fromStdString(mod.path().filename().string()));
             addExpanded(tree, &parent, node);
             node->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
-            addMaterials(*node, top, mod.path().string(), icon);
+            addMaterials(*node, top, QString::fromStdString(mod.path().string()), icon);
         }
         else if (isMaterial(mod)) {
             auto card = new QStandardItem(icon, QString::fromStdString(mod.path().filename().string()));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
             try {
-                auto material = getMaterialManager().getMaterialByPath(mod.path().string());
-                card->setData(QVariant(QString::fromStdString(material.getUUID())), Qt::UserRole);
+                auto material = getMaterialManager().getMaterialByPath(QString::fromStdString(mod.path().string()));
+                card->setData(QVariant(material.getUUID()), Qt::UserRole);
             } catch (Materials::ModelNotFound &e) {
                 Base::Console().Log("Model not found error\n");
             } catch (std::exception &e) {
@@ -513,11 +513,11 @@ void MaterialsEditor::addRecents(QStandardItem *parent)
         {
             const Materials::Material &material = getMaterialManager().getMaterial(uuid);
 
-            QIcon icon = QIcon(QString::fromStdString(material.getLibrary().getIconPath()));
-            auto card = new QStandardItem(icon, QString::fromStdString(material.getName()));
+            QIcon icon = QIcon(material.getLibrary().getIconPath());
+            auto card = new QStandardItem(icon, material.getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
             addExpanded(tree, parent, card);
         }
@@ -534,11 +534,11 @@ void MaterialsEditor::addFavorites(QStandardItem *parent)
         {
             const Materials::Material &material = getMaterialManager().getMaterial(uuid);
 
-            QIcon icon = QIcon(QString::fromStdString(material.getLibrary().getIconPath()));
-            auto card = new QStandardItem(icon, QString::fromStdString(material.getName()));
+            QIcon icon = QIcon(material.getLibrary().getIconPath());
+            auto card = new QStandardItem(icon, material.getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                         | Qt::ItemIsDropEnabled);
-            card->setData(QVariant(QString::fromStdString(uuid)), Qt::UserRole);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
             addExpanded(tree, parent, card);
         }
@@ -565,12 +565,12 @@ void MaterialsEditor::fillMaterialTree()
     auto libraries = Materials::MaterialManager::getMaterialLibraries();
     for (const auto &value : *libraries)
     {
-        lib = new QStandardItem(QString::fromStdString(value->getName()));
+        lib = new QStandardItem(value->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
         auto path = value->getDirectoryPath();
-        addMaterials(*lib, path, path, QIcon(QString::fromStdString(value->getIconPath())));
+        addMaterials(*lib, path, path, QIcon(value->getIconPath()));
     }
 }
 
@@ -598,22 +598,22 @@ void MaterialsEditor::refreshMaterialTree()
 
 void MaterialsEditor::updatePreview() const
 {
-    std::string diffuseColor;
-    std::string highlightColor;
-    std::string sectionColor;
+    QString diffuseColor;
+    QString highlightColor;
+    QString sectionColor;
 
-    if (_material.hasAppearanceProperty(static_cast<std::string>("DiffuseColor")))
-        diffuseColor = _material.getAppearanceValue("DiffuseColor");
-    else if (_material.hasAppearanceProperty(static_cast<std::string>("ViewColor")))
-        diffuseColor = _material.getAppearanceValue("ViewColor");
-    else if (_material.hasAppearanceProperty(static_cast<std::string>("Color")))
-        diffuseColor = _material.getAppearanceValue("Color");
+    if (_material.hasAppearanceProperty(QString::fromStdString("DiffuseColor")))
+        diffuseColor = _material.getAppearanceValue(QString::fromStdString("DiffuseColor"));
+    else if (_material.hasAppearanceProperty(QString::fromStdString("ViewColor")))
+        diffuseColor = _material.getAppearanceValue(QString::fromStdString("ViewColor"));
+    else if (_material.hasAppearanceProperty(QString::fromStdString("Color")))
+        diffuseColor = _material.getAppearanceValue(QString::fromStdString("Color"));
 
-    if (_material.hasAppearanceProperty(static_cast<std::string>("SpecularColor")))
-        highlightColor = _material.getAppearanceValue("SpecularColor");
+    if (_material.hasAppearanceProperty(QString::fromStdString("SpecularColor")))
+        highlightColor = _material.getAppearanceValue(QString::fromStdString("SpecularColor"));
 
-    if (_material.hasAppearanceProperty(static_cast<std::string>("SectionColor")))
-        sectionColor = _material.getAppearanceValue("SectionColor");
+    if (_material.hasAppearanceProperty(QString::fromStdString("SectionColor")))
+        sectionColor = _material.getAppearanceValue(QString::fromStdString("SectionColor"));
 
     if ((diffuseColor.length() + highlightColor.length()) > 0)
     {
@@ -656,13 +656,13 @@ void MaterialsEditor::updatePreview() const
     }
 }
 
-QString MaterialsEditor::getColorHash(const std::string &colorString, int colorRange) const
+QString MaterialsEditor::getColorHash(const QString &colorString, int colorRange) const
 {
     /*
         returns a '#000000' string from a '(0.1,0.2,0.3)' string. Optionally the string
         has a fourth value for alpha (transparency)
     */
-    std::stringstream stream(colorString);
+    std::stringstream stream(colorString.toStdString());
 
     char c; stream >> c; // read "("
     double red; stream >> red;
@@ -698,38 +698,38 @@ void MaterialsEditor::updateMaterialAppearance()
     tree->setColumnWidth(1, 250);
     tree->setColumnHidden(2, true);
 
-    const std::vector<std::string> *models = _material.getAppearanceModels();
+    const std::vector<QString> *models = _material.getAppearanceModels();
     if (models) {
         for (auto it = models->begin(); it != models->end(); it++)
         {
-            std::string uuid = *it;
+            QString uuid = *it;
             try {
                 const Materials::Model &model = getModelManager().getModel(uuid);
-                std::string name = model.getName();
+                QString name = model.getName();
 
-                auto modelRoot = new QStandardItem(QString::fromStdString(name));
+                auto modelRoot = new QStandardItem(name);
                 modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
                 addExpanded(tree, treeModel, modelRoot);
                 for (auto itp = model.begin(); itp != model.end(); itp++)
                 {
                     QList<QStandardItem*> items;
 
-                    std::string key = itp->first;
-                    auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                    propertyItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                    QString key = itp->first;
+                    auto propertyItem = new QStandardItem(key);
+                    propertyItem->setToolTip(itp->second.getDescription());
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getAppearanceValue(key)));
-                    valueItem->setToolTip(QString::fromStdString(itp->second.getDescription()));
+                    auto valueItem = new QStandardItem(_material.getAppearanceValue(key));
+                    valueItem->setToolTip(itp->second.getDescription());
                     QVariant variant;
                     variant.setValue(&_material);
                     valueItem->setData(variant);
                     items.append(valueItem);
 
-                    auto typeItem = new QStandardItem(QString::fromStdString(itp->second.getPropertyType()));
+                    auto typeItem = new QStandardItem(itp->second.getPropertyType());
                     items.append(typeItem);
 
-                    auto unitsItem = new QStandardItem(QString::fromStdString(itp->second.getUnits()));
+                    auto unitsItem = new QStandardItem(itp->second.getUnits());
                     items.append(unitsItem);
 
                     modelRoot->appendRow(items);
@@ -759,39 +759,39 @@ void MaterialsEditor::updateMaterialProperties()
     tree->setColumnHidden(2, true);
     tree->setColumnHidden(3, true);
 
-    const std::vector<std::string> *models = _material.getPhysicalModels();
+    const std::vector<QString> *models = _material.getPhysicalModels();
     if (models) {
         for (auto it = models->begin(); it != models->end(); it++)
         {
-            std::string uuid = *it;
+            QString uuid = *it;
             try {
                 const Materials::Model &model = getModelManager().getModel(uuid);
-                std::string name = model.getName();
+                QString name = model.getName();
 
-                auto modelRoot = new QStandardItem(QString::fromStdString(name));
+                auto modelRoot = new QStandardItem(name);
                 modelRoot->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
                 addExpanded(tree, treeModel, modelRoot);
                 for (auto itp = model.begin(); itp != model.end(); itp++)
                 {
                     QList<QStandardItem*> items;
 
-                    std::string key = itp->first;
+                    QString key = itp->first;
                     Materials::ModelProperty modelProperty = itp->second;
-                    auto propertyItem = new QStandardItem(QString::fromStdString(key));
-                    propertyItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
+                    auto propertyItem = new QStandardItem(key);
+                    propertyItem->setToolTip(modelProperty.getDescription());
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(QString::fromStdString(_material.getPhysicalValue(key)));
-                    valueItem->setToolTip(QString::fromStdString(modelProperty.getDescription()));
+                    auto valueItem = new QStandardItem(_material.getPhysicalValue(key));
+                    valueItem->setToolTip(modelProperty.getDescription());
                     QVariant variant;
                     variant.setValue(&_material);
                     valueItem->setData(variant);
                     items.append(valueItem);
 
-                    auto typeItem = new QStandardItem(QString::fromStdString(modelProperty.getPropertyType()));
+                    auto typeItem = new QStandardItem(modelProperty.getPropertyType());
                     items.append(typeItem);
 
-                    auto unitsItem = new QStandardItem(QString::fromStdString(modelProperty.getUnits()));
+                    auto unitsItem = new QStandardItem(modelProperty.getUnits());
                     items.append(unitsItem);
 
                     // addExpanded(tree, modelRoot, propertyItem);
@@ -807,13 +807,13 @@ void MaterialsEditor::updateMaterialProperties()
 void MaterialsEditor::updateMaterial()
 {
     // Update the general information
-    ui->editName->setText(QString::fromStdString(_material.getName()));
-    ui->editAuthorLicense->setText(QString::fromStdString(_material.getAuthorAndLicense()));
-    // ui->editParent->setText(QString::fromStdString(_material.getName()));
-    ui->editSourceURL->setText(QString::fromStdString(_material.getURL()));
-    ui->editSourceReference->setText(QString::fromStdString(_material.getReference()));
-    // ui->editTags->setText(QString::fromStdString(_material.getName()));
-    ui->editDescription->setText(QString::fromStdString(_material.getDescription()));
+    ui->editName->setText(_material.getName());
+    ui->editAuthorLicense->setText(_material.getAuthorAndLicense());
+    // ui->editParent->setText(_material.getName());
+    ui->editSourceURL->setText(_material.getURL());
+    ui->editSourceReference->setText(_material.getReference());
+    // ui->editTags->setText(_material.getName());
+    ui->editDescription->setText(_material.getDescription());
 
     updateMaterialProperties();
     updateMaterialAppearance();
@@ -837,7 +837,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected, const QIt
         QStandardItem* item = model->itemFromIndex(*it);
         Base::Console().Log("%s\n", item->text().toStdString().c_str());
         if (item) {
-            std::string uuid = item->data(Qt::UserRole).toString().toStdString();
+            QString uuid = item->data(Qt::UserRole).toString();
             try
             {
                 _material = getMaterialManager().getMaterial(uuid);
