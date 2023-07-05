@@ -153,6 +153,15 @@ void ModelValueProperty::setType(const std::string& type)
     }
 }
 
+ModelValueProperty &ModelValueProperty::getColumn(int column)
+{
+    try {
+        return _columns.at(column);
+    } catch (std::out_of_range const&) {
+        throw PropertyNotFound();
+    }
+}
+
 void ModelValueProperty::setValue(const std::string& value)
 {
     if (_valueType == ValueType::Boolean)

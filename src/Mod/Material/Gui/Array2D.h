@@ -48,6 +48,8 @@ private:
     Materials::ModelValueProperty *_property;
 
     void setupDefault();
+    void setHeaders(QStandardItemModel *model);
+    void setColumnWidths(QTableView *table);
     void setupArray();
 };
 

@@ -82,7 +82,7 @@ public:
     void setInheritance(const std::string &uuid) { _inheritance = uuid; }
 
     void addColumn(ModelProperty &column) { _columns.push_back(column); }
-    const std::list<ModelProperty> &columns() const { return _columns; }
+    const std::vector<ModelProperty> &columns() const { return _columns; }
 
 private:
     std::string _name;
@@ -91,7 +91,7 @@ private:
     std::string _url;
     std::string _description;
     std::string _inheritance;
-    std::list<ModelProperty> _columns;
+    std::vector<ModelProperty> _columns;
 };
 
 class MaterialsExport ModelValueProperty : public ModelProperty
@@ -131,6 +131,8 @@ public:
     const Base::Quantity& getQuantity(void) const;
     const std::string& getURL(void) const;
 
+    ModelValueProperty &getColumn(int column);
+
     void setModelUUID(const std::string& uuid);
     void setPropertyType(const std::string& type) override;
     void setValue(const std::string& value);
@@ -161,7 +163,7 @@ private:
     int _valueInt;
     double _valueFloat;
     Base::Quantity _valueQuantity;
-    std::list<ModelValueProperty> _columns;
+    std::vector<ModelValueProperty> _columns;
 };
 
 class MaterialsExport Model : public Base::BaseClass

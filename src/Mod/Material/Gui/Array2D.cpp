@@ -28,6 +28,7 @@
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/Exceptions.h>
 #include "Array2D.h"
 #include "ui_Array2D.h"
 
@@ -69,11 +70,55 @@ Array2D::~Array2D()
 
 void Array2D::setupDefault()
 {
+    if (_property == nullptr)
+        return;
 
+    try
+    {
+        auto column1 = _property->getColumn(0);
+        QString label =
+            QString::fromStdString("Default ") + QString::fromStdString(column1.getName());
+        ui->labelDefault->setText(label);
+        if (column1.getPropertyType() == "Quantity")
+        {
+            ui->inputDefault->setUnitText(QString::fromStdString(column1.getUnits()));
+        }
+    }
+    catch(const Materials::PropertyNotFound&)
+    {
+        return;
+    }
+    
+    
+}
+
+void Array2D::setHeaders(QStandardItemModel *model)
+{
+    QStringList headers;
+    for (auto column: _property->columns())
+        headers.append(QString::fromStdString(column.getName()));
+    model->setHorizontalHeaderLabels(headers);
+}
+
+void Array2D::setColumnWidths(QTableView *table)
+{
+    int length = _property->columns().size();
+    for (int i = 0; i < length; i++)
+        table->setColumnWidth(i, 100);
 }
 
 void Array2D::setupArray()
 {
+    if (_property == nullptr)
+        return;
+
+    auto table = ui->tableView;
+    auto model = new QStandardItemModel();
+    table->setModel(model);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    setHeaders(model);
+    setColumnWidths(table);
 
 }
 
