@@ -48,7 +48,7 @@ texts, colors,layers (from groups)
 # scaling factor between autocad font sizes and coin font sizes
 # the minimum version of the dxfLibrary needed to run
 TEXTSCALING = 1.35
-CURRENTDXFLIB = 1.40
+CURRENTDXFLIB = 1.41
 
 import sys
 import os
