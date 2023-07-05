@@ -42,12 +42,12 @@ using namespace TechDraw;
 
 QGIEdge::QGIEdge(int index) :
     projIndex(index),
-    isCosmetic(false),
+    // isCosmetic(false),
     isHiddenEdge(false),
     isSmoothEdge(false)
 {
     setWidth(1.0);
-    setCosmetic(isCosmetic);
+    setCosmetic(false);
     setFill(Qt::NoBrush);
 }
 
@@ -55,7 +55,6 @@ QGIEdge::QGIEdge(int index) :
 void QGIEdge::setCosmetic(bool state)
 {
 //    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
-    isCosmetic = state;
     if (state) {
         setWidth(0.0);
     }

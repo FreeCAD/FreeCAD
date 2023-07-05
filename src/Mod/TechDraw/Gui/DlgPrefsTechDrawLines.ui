@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::DlgPrefsTechDrawLinesImp</class>
+ <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDrawLinesImp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>489</width>
+    <height>619</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Line Styles</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>365</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Line Styles</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="3" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="text">
+           <string>–</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <widget class="Gui::PrefTableWidget" name="tableWidget">
+        <property name="rowCount">
+         <number>15</number>
+        </property>
+        <property name="columnCount">
+         <number>3</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LineStyles</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/TechDraw/Lines</cstring>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderHighlightSections">
+         <bool>true</bool>
+        </attribute>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <row/>
+        <column>
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Dash Array</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 01</string>
+         </property>
+        </item>
+        <item row="0" column="1">
+         <property name="text">
+          <string>continuous</string>
+         </property>
+        </item>
+        <item row="0" column="2">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 02</string>
+         </property>
+        </item>
+        <item row="1" column="1">
+         <property name="text">
+          <string>12 3</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 03</string>
+         </property>
+        </item>
+        <item row="2" column="1">
+         <property name="text">
+          <string>12 18</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 04</string>
+         </property>
+        </item>
+        <item row="3" column="1">
+         <property name="text">
+          <string>24 3 1 3</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 05</string>
+         </property>
+        </item>
+        <item row="4" column="1">
+         <property name="text">
+          <string>24 3 1 3 1 3</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 06</string>
+         </property>
+        </item>
+        <item row="5" column="1">
+         <property name="text">
+          <string>24 3 1 3 1 3 1 3</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 07</string>
+         </property>
+        </item>
+        <item row="6" column="1">
+         <property name="text">
+          <string>1 3</string>
+         </property>
+        </item>
+        <item row="7" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 08</string>
+         </property>
+        </item>
+        <item row="7" column="1">
+         <property name="text">
+          <string>24 3 6 3</string>
+         </property>
+        </item>
+        <item row="8" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 09</string>
+         </property>
+        </item>
+        <item row="8" column="1">
+         <property name="text">
+          <string>24 3 6 3</string>
+         </property>
+        </item>
+        <item row="9" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 10</string>
+         </property>
+        </item>
+        <item row="9" column="1">
+         <property name="text">
+          <string>12 3 1 3</string>
+         </property>
+        </item>
+        <item row="10" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 11</string>
+         </property>
+        </item>
+        <item row="10" column="1">
+         <property name="text">
+          <string>12 3 1 3 12 3</string>
+         </property>
+        </item>
+        <item row="11" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 12</string>
+         </property>
+        </item>
+        <item row="11" column="1">
+         <property name="text">
+          <string>12 3 1 3 1 3</string>
+         </property>
+        </item>
+        <item row="12" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 13</string>
+         </property>
+        </item>
+        <item row="12" column="1">
+         <property name="text">
+          <string>12 3 12 3 1 3 1 3</string>
+         </property>
+        </item>
+        <item row="13" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 14</string>
+         </property>
+        </item>
+        <item row="13" column="1">
+         <property name="text">
+          <string>12 3 1 3 1 3 1 3</string>
+         </property>
+        </item>
+        <item row="14" column="0">
+         <property name="text">
+          <string>ISO 128-20 – 15</string>
+         </property>
+        </item>
+        <item row="14" column="1">
+         <property name="text">
+          <string>12 3 12 3 1 3 1 3 1 3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

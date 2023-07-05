@@ -1,5 +1,5 @@
-/***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ /**************************************************************************
+ *   Copyright (c) 2023 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,50 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
-#define DRAWINGGUI_QGRAPHICSITEMEDGE_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPLINES_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMPLINES_H
 
+#include <memory>
+#include <QTableWidgetItem>
+
+#include <Gui/PropertyPage.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "QGIPrimPath.h"
 
-namespace TechDrawGui
-{
+namespace TechDrawGui {
+class Ui_DlgPrefsTechDrawLinesImp;
 
-class TechDrawGuiExport QGIEdge : public QGIPrimPath
+class DlgPrefsTechDrawLinesImp : public Gui::Dialog::PreferencePage
 {
+    Q_OBJECT
+
 public:
-    explicit QGIEdge(int index);
-    ~QGIEdge() {}
+    explicit DlgPrefsTechDrawLinesImp( QWidget* parent = nullptr );
+    ~DlgPrefsTechDrawLinesImp() override;
 
-    enum {Type = QGraphicsItem::UserType + 103};
+    static QIcon iconOfLineStyle(QString dashArray);
+    static QIcon iconOfLineStyle(QVector<double> dashArray) ;
 
-    int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
-
-    int getProjIndex() const { return projIndex; }
-
-    void setCosmetic(bool state);
-    void setHiddenEdge(bool b);
-    bool getHiddenEdge() { return(isHiddenEdge); }
-    void setSmoothEdge(bool b) { isSmoothEdge = b; }
-    bool getSmoothEdge() { return(isSmoothEdge); }
-    virtual void setPrettyNormal() override;
-
-    double getEdgeFuzz(void) const;
+public Q_SLOTS:
+    void onLineGroupChanged(int);
 
 protected:
-    int projIndex;                                                     //index of edge in Projection. must exist.
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
+    void cellEdited(QTableWidgetItem* item);
 
-    bool isHiddenEdge;
-    bool isSmoothEdge;
-    QColor getHiddenColor();
-    Qt::PenStyle getHiddenStyle();
+    void addRow() const;
+    void populateCellsWithPreview();
 
 private:
+    std::unique_ptr<Ui_DlgPrefsTechDrawLinesImp> ui;
 };
 
-}
+} // namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPLINES_H

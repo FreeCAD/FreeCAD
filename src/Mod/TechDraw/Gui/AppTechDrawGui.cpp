@@ -38,6 +38,7 @@
 #include "DlgPrefsTechDrawDimensionsImp.h"
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "DlgPrefsTechDrawHLRImp.h"
+#include "DlgPrefsTechDrawLinesImp.h"
 #include "DlgPrefsTechDrawScaleImp.h"
 #include "MDIViewPage.h"
 #include "ViewProviderAnnotation.h"
@@ -172,6 +173,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));     //Scale
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));//Dimensions
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));//Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawLinesImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));     //Lines
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));    //Colors
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));       //HLR
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));  //Advanced

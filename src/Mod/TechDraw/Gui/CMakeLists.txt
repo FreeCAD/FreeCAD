@@ -54,6 +54,7 @@ set(TechDrawGui_UIC_SRCS
     DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawLines.ui
     DlgPrefsTechDrawColors.ui
     DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDrawGeneral.ui
@@ -136,6 +137,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawAnnotationImp.cpp
     DlgPrefsTechDrawAnnotationImp.h
+    DlgPrefsTechDrawLines.ui
+    DlgPrefsTechDrawLinesImp.h
+    DlgPrefsTechDrawLinesImp.cpp
     DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDrawDimensionsImp.cpp
     DlgPrefsTechDrawDimensionsImp.h

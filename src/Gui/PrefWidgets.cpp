@@ -27,6 +27,7 @@
 #endif
 
 #include <cstring>
+#include <csignal>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -842,6 +843,44 @@ void PrefFontBox::savePreferences()
   QFont currFont = currentFont();
   QString currName = currFont.family();
   getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
+}
+
+
+// --------------------------------------------------------------------
+
+PrefTableWidget::PrefTableWidget(QWidget* parent) : QTableWidget(parent)
+{
+}
+
+void PrefTableWidget::restorePreferences()
+{
+
+}
+
+void PrefTableWidget::savePreferences()
+{
+    if(getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
+
+    getWindowParameter()->SetASCII(entryName(), toStdString().c_str());
+}
+
+//! Returns string of table data "<row1col1>─<row1col2>─<row1col3>─\v<row2col1>─<row2col2>─<row2col3>─\v"
+// Would QXMLSerilizer be suited for this? Could it cause a security exploit using QXMLQuery on foreign files?
+std::string PrefTableWidget::toStdString()
+{
+    QString data;
+    for(int row = 0; row < rowCount(); row++) {
+        for (int column = 0; column < columnCount(); column++) {
+            data.append(item(row, column)->text());
+            data.append(QString::fromUtf8("─"));  // U+2500
+        }
+        data.append(QString::fromUtf8("│"));  // U+2502
+    }
+
+    return data.toStdString();
 }
 
 #include "moc_PrefWidgets.cpp"

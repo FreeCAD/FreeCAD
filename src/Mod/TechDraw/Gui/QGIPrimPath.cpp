@@ -287,6 +287,17 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    // qreal dot = 1;
+    // qreal gap = 3;
+    // qreal shortDash = 6;
+    // qreal dash = 12;
+    // qreal longDash = 24;
+    // qreal space = 18;
+
+    // QVector pattern = {dash, gap, shortDash, space};
+
+    // m_pen.setStyle(Qt::CustomDashLine);
+    // m_pen.setDashPattern(pattern);
     setPen(m_pen);
     setBrush(m_brush);
 

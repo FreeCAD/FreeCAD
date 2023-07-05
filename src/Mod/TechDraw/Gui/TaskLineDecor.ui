@@ -97,34 +97,6 @@
      </item>
      <item row="3" column="2">
       <widget class="QComboBox" name="cb_Style">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Continuous</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dash</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDotDot</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item row="4" column="0">

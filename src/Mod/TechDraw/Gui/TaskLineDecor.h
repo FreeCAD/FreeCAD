@@ -64,6 +64,7 @@ protected:
     void initUi();
     void applyDecorations();
     void getDefaults();
+    void populateStyles();
 
 private:
     std::unique_ptr<Ui_TaskLineDecor> ui;

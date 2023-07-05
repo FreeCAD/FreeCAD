@@ -37,7 +37,9 @@
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
+#include "DlgPrefsTechDrawLinesImp.h"
 #include "TaskLineDecor.h"
 #include "ui_TaskLineDecor.h"
 #include "ui_TaskRestoreLines.h"
@@ -92,6 +94,26 @@ void TaskLineDecor::initUi()
     ui->dsb_Weight->setValue(m_weight);
     ui->dsb_Weight->setSingleStep(0.1);
     ui->cb_Visible->setCurrentIndex(m_visible);
+
+    Base::Console().Message("was ehre\n");
+    populateStyles();
+}
+
+//! Load the available styles from preferneces into the styles combo box
+void TaskLineDecor::populateStyles() {
+    // Add styles from preferences
+    std::string rawData = Preferences::getPreferenceGroup("Lines")->GetASCII("LineStyles");
+    QString dataString = QString::fromStdString(rawData);
+    QStringList rows = dataString.split(QString::fromUtf8("│"), Qt::SkipEmptyParts);
+
+    for (const QString& row : rows) {
+        QStringList columns = row.split(QString::fromUtf8("─"), Qt::SkipEmptyParts);
+        const QString& name = columns.at(0);
+        const QString& dashArray = columns.at(1);
+        QIcon icon = DlgPrefsTechDrawLinesImp::iconOfLineStyle(dashArray);
+        ui->cb_Style->setIconSize(QSize(250, 30));
+        ui->cb_Style->addItem(icon, name);
+    }
 }
 
 void TaskLineDecor::getDefaults()
@@ -150,9 +172,15 @@ void TaskLineDecor::getDefaults()
     }
 }
 
-void TaskLineDecor::onStyleChanged()
+void TaskLineDecor::onStyleChanged(int index)
 {
-    m_style = ui->cb_Style->currentIndex() + 1;
+    QString option = ui->cb_Style->itemText(index);
+    if (option.compare(QString("continuous")) == 0) {
+        m_style = Qt::SolidLine;
+    }
+    else {
+        m_style = Qt::CustomDashLine;
+    }
     applyDecorations();
     m_partFeat->requestPaint();
 }
