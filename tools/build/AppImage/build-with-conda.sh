@@ -33,10 +33,10 @@
 #
 
 
-# To use this scriipt, you will need:
+# To use this script, you will need:
 #
 #     1) Mambaforge from https://github.com/conda-forge/miniforge#mambaforge
-#     if you choose to not install the conda environment when installing Mambaforge, 
+#     if you choose to not install the conda environment when installing Mambaforge,
 #     you will need to do it before running this script, by running the following
 #     in your terminal. This will make the "conda" and "mamba" commands available:
 #     eval "$(/home/yorik/Mambaforge/bin/conda shell.zsh hook)"
@@ -200,7 +200,7 @@ find . -name "*.cmake" -type f -delete
 echo "\nCreating the appimage"
 chmod a+x ./AppDir/AppRun
 appimagetool-${arch}.AppImage --sign-key ${gpg_key} AppDir ${package_name}.AppImage
-  
+
 echo "\nCreating hash"
 shasum -a 256 ${package_name}.AppImage > ${package_name}.AppImage-SHA256.txt
 
