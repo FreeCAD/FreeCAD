@@ -42,5 +42,5 @@ target_link_libraries(Tests_run gtest_main ${Google_Tests_LIBS} FreeCADApp)
 
 add_executable(Sketcher_tests_run)
 add_subdirectory(src/Mod/Sketcher)
-target_include_directories(Sketcher_tests_run PUBLIC ${EIGEN3_INCLUDE_DIR})
+target_include_directories(Sketcher_tests_run PUBLIC ${EIGEN3_INCLUDE_DIR} ${OCC_INCLUDE_DIR} ${Python3_INCLUDE_DIRS})
 target_link_libraries(Sketcher_tests_run gtest_main ${Google_Tests_LIBS} Sketcher)
