@@ -195,7 +195,12 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
         }
     }
     else {
-        edgeGeomList = dvp->getEdgeGeometry();//do the whole View
+        for (auto& edge : dvp->getEdgeGeometry()) {
+            if (!edge->getCosmetic()) {
+                // skip cosmetic edges
+                edgeGeomList.push_back(edge);
+            }
+        }
     }
 
     if (edgeGeomList.empty()) {
