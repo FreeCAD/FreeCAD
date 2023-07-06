@@ -63,27 +63,27 @@ public:
     ElementMap();
 
     /** Ensures that naming is properly assigned. It then marks as "used" all the StringID
-     * that are used to make up this particular map and are stored in the hasher passed
+     * that are used to make up this particular map and are stored in the hasherRef passed
      * as a parameter. Finally do this recursively for all childEelementMaps as well.
      *
-     * @param hasher where all the StringID needed to build the map are stored.
+     * @param hasherRef where all the StringID needed to build the map are stored.
     */
     // FIXME this should be made part of \c save, to achieve symmetry with the restore method
-    void beforeSave(const ::App::StringHasherRef& hasher) const;
+    void beforeSave(const ::App::StringHasherRef& hasherRef) const;
 
     /** Serialize this map. Calls \c collectChildMaps to get \c childMapSet and
      * \c postfixMap, then calls the other (private) save function with those parameters.
-     * @param s: serialized stream
+     * @param stream: serialized stream
     */
-    void save(std::ostream& s) const;
+    void save(std::ostream& stream) const;
 
-    /** Deserialize and restore this map. This function restores \c childMaps and 
+    /** Deserialize and restore this map. This function restores \c childMaps and
      * \c postfixes from the stream, then calls the other (private) restore function with those
      * parameters.
-     * @param hasher: where all the StringIDs are stored
-     * @param s: stream to deserialize
+     * @param hasherRef: where all the StringIDs are stored
+     * @param stream: stream to deserialize
     */
-    ElementMapPtr restore(::App::StringHasherRef hasher, std::istream& s);
+    ElementMapPtr restore(::App::StringHasherRef hasherRef, std::istream& stream);
 
 
     /** Add a sub-element name mapping.
@@ -187,20 +187,20 @@ public:
 
 private:
     /** Serialize this map
-     * @param s: serialized stream
+     * @param stream: serialized stream
      * @param childMapSet: where all child element maps are stored
      * @param postfixMap. where all postfixes are stored
     */
-    void save(std::ostream& s, int index, const std::map<const ElementMap*, int>& childMapSet,
+    void save(std::ostream& stream, int index, const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
 
     /** Deserialize and restore this map.
-     * @param hasher: where all the StringIDs are stored
-     * @param s: stream to deserialize
+     * @param hasherRef: where all the StringIDs are stored
+     * @param stream: stream to deserialize
      * @param childMaps: where all child element maps are stored
      * @param postfixes. where all postfixes are stored
     */
-    ElementMapPtr restore(::App::StringHasherRef hasher, std::istream& s,
+    ElementMapPtr restore(::App::StringHasherRef hasherRef, std::istream& stream,
                           std::vector<ElementMapPtr>& childMaps,
                           const std::vector<std::string>& postfixes);
 
@@ -224,9 +224,9 @@ private:
 
     /* Note: the original proc passed `ComplexGeoData& master` for getting the `Tag`,
      *   now it just passes `long masterTag`.*/
-    virtual MappedName renameDuplicateElement(int index, const IndexedName& element,
-                                              const IndexedName& element2, const MappedName& name,
-                                              ElementIDRefs& sids, long masterTag);
+    MappedName renameDuplicateElement(int index, const IndexedName& element,
+                                      const IndexedName& element2, const MappedName& name,
+                                      ElementIDRefs& sids, long masterTag) const;
 
     /** Convenience method to hash the main element name
      *

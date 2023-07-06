@@ -45,21 +45,29 @@ class ElementMapTest: public ::testing::Test
 protected:
     static void SetUpTestSuite()
     {
-        int argc = 1;
-        char* argv[] = {"FreeCAD"};
-        App::Application::Config()["ExeName"] = "FreeCAD";
-        App::Application::init(argc, argv);
+        if (App::Application::GetARGC() == 0) {
+            int argc = 1;
+            char* argv[] = {"FreeCAD"};
+            App::Application::Config()["ExeName"] = "FreeCAD";
+            App::Application::init(argc, argv);
+        }
     }
 
     void SetUp() override
     {
-        App::GetApplication().newDocument("test", "testUser");
+        _docName = App::GetApplication().getUniqueDocumentName("test");
+        App::GetApplication().newDocument(_docName.c_str(), "testUser");
         _sids = &_sid;
         _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
+        ASSERT_EQ(_hasher.getRefCount(), 1);
     }
 
-    // void TearDown() override {}
+    void TearDown() override
+    {
+        App::GetApplication().closeDocument(_docName.c_str());
+    }
 
+    std::string _docName;
     Data::ElementIDRefs _sid;
     QVector<App::StringIDRef>* _sids;
     App::StringHasherRef _hasher;
