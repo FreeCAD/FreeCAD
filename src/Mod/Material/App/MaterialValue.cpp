@@ -31,22 +31,24 @@ using namespace Materials;
 
 /* TRANSLATOR Material::MaterialValue */
 
-// MaterialValue::MaterialValue()
-// {}
+MaterialValue::MaterialValue() :
+    _valueType(None)
+{}
 
-// MaterialValue::~MaterialValue()
-// {
-//     // delete directory;
-// }
+MaterialValue::MaterialValue(ValueType type) :
+    _valueType(type)
+{}
 
-// MaterialValueString::MaterialValueString()
-// {
+MaterialValue::~MaterialValue()
+{}
 
-// }
+//===
 
-// MaterialValueString::~MaterialValueString()
-// {
+Material2DArray::Material2DArray() :
+    MaterialValue(Array2D)
+{}
 
-// }
+Material2DArray::~Material2DArray()
+{}
 
 #include "moc_MaterialValue.cpp"

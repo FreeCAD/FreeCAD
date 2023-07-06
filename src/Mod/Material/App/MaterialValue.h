@@ -23,59 +23,70 @@
 #ifndef MATERIAL_MATERIALVALUE_H
 #define MATERIAL_MATERIALVALUE_H
 
-#include <string>
-// #include <Base/BaseClass.h>
-
-// namespace fs = boost::filesystem;
+#include <QVariant>
 
 namespace Materials {
 
-enum MaterialValueType {
-    String = 0,
-    Int = 1,
-    Float = 2,
-    Quantity = 3,
-    Distribution = 4,
-    List = 5,
-    Array = 6,
-    Table = 7,
-    Color = 8,
-    Image = 9,
-    ImageRef = 10
-};
-
-template<class T, MaterialValueType valueType>
 class MaterialsExport MaterialValue
 {
 public:
+    enum ValueType {
+        None = 0,
+        String = 1,
+        Boolean = 2,
+        Int = 3,
+        Float = 4,
+        Quantity = 5,
+        Distribution = 6,
+        List = 7,
+        Array2D = 8,
+        Array3D = 9,
+        Color = 10,
+        Image = 11,
+        File = 12,
+        URL = 13
+    };
+    MaterialValue();
+    MaterialValue(ValueType type);
+    virtual ~MaterialValue();
 
-    MaterialValueType getType() { return valueType; }
+    ValueType getType() { return _valueType; }
 
-    const T &getValue(void) const { return _value; }
-    void setValue (const T &value) { _value = value; }
+    const QVariant &getValue(void) const { return _value; }
+    virtual const QVariant &getValueAt(const QVariant &value) const { return _value; }
+    void setValue (const QVariant &value) { _value = value; }
 
 protected:
-    T _value;
+    ValueType _valueType;
+    QVariant _value;
+
+    void setType(ValueType type) { _valueType = type; }
 };
 
-class MaterialsExport MaterialValueString : public MaterialValue<std::string, MaterialValueType::String>
+class MaterialsExport Material2DArray : public MaterialValue
 {
 public:
-    const std::string evaluate(void) const { return _value; }
-};
+    Material2DArray();
+    ~Material2DArray() override;
 
-class MaterialsExport MaterialValueInt : public MaterialValue<int, MaterialValueType::Int>
-{
-public:
-    int evaluate(void) const { return _value; }
-};
+    void setDefault(MaterialValue value) { _default = value; }
+    MaterialValue getDefault() const { return _default; }
 
-class MaterialsExport MaterialValueFloat : public MaterialValue<double, MaterialValueType::Float>
-{
-public:
-    double evaluate(void) const { return _value; }
+    const std::vector<QVariant> &getRow(int row);
+    void addRow(std::vector<QVariant> *row);
+    std::vector<QVariant> *deleteRow(int row);
+
+    void setValue(int row, int column,  const QVariant &value);
+    const QVariant &getValue(int row, int column);
+
+protected:
+    std::vector<std::vector<QVariant> *> _rows;
+    MaterialValue _default;
 };
 
 } // namespace Materials
+
+Q_DECLARE_METATYPE(Materials::MaterialValue)
+Q_DECLARE_METATYPE(Materials::Material2DArray)
 
 #endif // MATERIAL_MATERIALVALUE_H
