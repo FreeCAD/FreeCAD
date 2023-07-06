@@ -20,7 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Post Process command that will make use of the Output File and Post Processor entries in PathJob """
+"""Post Process command that will make use of the Output File and Post
+Processor entries in PathJob """
 
 
 import FreeCAD
@@ -28,7 +29,7 @@ import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import os
 import re
 
@@ -152,6 +153,8 @@ def processFileNameSubstitutions(
 
 
 def resolveFileName(job, subpartname, sequencenumber):
+    """Generate the file name to use as output."""
+
     Path.Log.track(subpartname, sequencenumber)
 
     validPathSubstitutions = ["D", "d", "M", "j"]
@@ -163,8 +166,9 @@ def resolveFileName(job, subpartname, sequencenumber):
 
     # Override with document default if it exists
     if job.PostProcessorOutputFile:
-        matchstring = job.PostProcessorOutputFile
-        candidateOutputPath, candidateFilename = os.path.split(matchstring)
+        candidateOutputPath, candidateFilename = os.path.split(
+            job.PostProcessorOutputFile
+        )
 
         if candidateOutputPath:
             outputpath = candidateOutputPath
@@ -172,7 +176,7 @@ def resolveFileName(job, subpartname, sequencenumber):
         if candidateFilename:
             filename, ext = os.path.splitext(candidateFilename)
 
-    # Strip any invalid substitutions from the ouputpath
+    # Strip any invalid substitutions from the outputpath
     for match in re.findall("%(.)", outputpath):
         if match not in validPathSubstitutions:
             outputpath = outputpath.replace(f"%{match}", "")
@@ -229,9 +233,9 @@ def resolveFileName(job, subpartname, sequencenumber):
             n = 1
             if nr.isdigit():
                 n = int(nr)
-            while os.path.isfile("%s%03d%s" % (fn, n, ext)):
+            while os.path.isfile(f"{fn}{n:03d}{ext}"):
                 n = n + 1
-            fullPath = "%s%03d%s" % (fn, n, ext)
+            fullPath = f"{fn}{n:03d}{ext}"
 
     if openDialog:
         foo = QtGui.QFileDialog.getSaveFileName(
