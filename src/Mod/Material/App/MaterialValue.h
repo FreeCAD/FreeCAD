@@ -67,13 +67,13 @@ public:
 class MaterialsExport MaterialValueInt : public MaterialValue<int, MaterialValueType::Int>
 {
 public:
-    const int evaluate(void) const { return _value; }
+    int evaluate(void) const { return _value; }
 };
 
 class MaterialsExport MaterialValueFloat : public MaterialValue<double, MaterialValueType::Float>
 {
 public:
-    const double evaluate(void) const { return _value; }
+    double evaluate(void) const { return _value; }
 };
 
 } // namespace Materials
