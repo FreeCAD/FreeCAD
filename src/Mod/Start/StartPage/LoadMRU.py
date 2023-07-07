@@ -31,28 +31,12 @@ mod = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString
     "DefaultImport"+ext, ""
 )
 if (
-    ext.lower() == "fcstd"
-    or ext.lower() == "step"
-    or ext.lower() == "stp"
-    or ext.lower() == "iges"
-    or ext.lower() == "igs"
+    ext.lower() in ("fcstd", "stp", "step", "iges", "igs")
 ):
     FreeCAD.loadFile(filename, mod)
 elif (
-    ext.lower() == "bmp"
-    or ext.lower() == "cur"
-    or ext.lower() == "gif"
-    or ext.lower() == "ico"
-    or ext.lower() == "pbm"
-    or ext.lower() == "pgm"
-    or ext.lower() == "png"
-    or ext.lower() == "jpg"
-    or ext.lower() == "jpeg"
-    or ext.lower() == "ppm"
-    or ext.lower() == "svg"
-    or ext.lower() == "svgz"
-    or ext.lower() == "xbm"
-    or ext.lower() == "xpm"
+    ext.lower() in ("bmp", "cur", "gif", "ico", "pbm", "pgm", "png", "jpg",
+                    "jpeg", "ppm", "svg", "svgz", "xbm", "xpm")
 ):
     FreeCAD.newDocument()
     FreeCADGui.insert(filename, FreeCAD.activeDocument().Name)
