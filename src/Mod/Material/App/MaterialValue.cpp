@@ -25,6 +25,7 @@
 #endif
 
 #include "MaterialValue.h"
+#include "Exceptions.h"
 
 
 using namespace Materials;
@@ -50,5 +51,47 @@ Material2DArray::Material2DArray() :
 
 Material2DArray::~Material2DArray()
 {}
+
+MaterialValue Material2DArray::getDefault() const
+{
+    MaterialValue ret(_valueType);
+    ret.setValue(_value);
+    return ret;
+}
+
+const std::vector<QVariant> &Material2DArray::getRow(int row)
+{
+    try {
+        return *(_rows.at(row));
+    } catch (std::out_of_range const &) {
+        throw InvalidRow();
+    }
+
+}
+
+void Material2DArray::addRow(std::vector<QVariant> *row)
+{
+    _rows.push_back(row);
+}
+
+std::vector<QVariant> *Material2DArray::deleteRow(int row)
+{
+    return nullptr;
+}
+
+void Material2DArray::setValue(int row, int column,  const QVariant &value)
+{
+    auto val = getRow(row);
+}
+
+const QVariant &Material2DArray::getValue(int row, int column)
+{
+    auto val = getRow(row);
+    try {
+        return val.at(column);
+    } catch (std::out_of_range const &) {
+        throw InvalidColumn();
+    }
+}
 
 #include "moc_MaterialValue.cpp"

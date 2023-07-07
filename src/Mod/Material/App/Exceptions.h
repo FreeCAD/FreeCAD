@@ -61,6 +61,22 @@ public:
     ~InvalidModel() throw() override {}
 };
 
+class InvalidRow : public Base::Exception
+{
+public:
+    InvalidRow(){}
+    explicit InvalidRow(char* msg){this->setMessage(msg);}
+    ~InvalidRow() throw() override {}
+};
+
+class InvalidColumn : public Base::Exception
+{
+public:
+    InvalidColumn(){}
+    explicit InvalidColumn(char* msg){this->setMessage(msg);}
+    ~InvalidColumn() throw() override {}
+};
+
 } // namespace Materials
 
 #endif // MATERIAL_EXCEPTIONS_H

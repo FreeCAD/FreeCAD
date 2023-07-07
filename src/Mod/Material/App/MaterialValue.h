@@ -63,14 +63,14 @@ protected:
     void setType(ValueType type) { _valueType = type; }
 };
 
-class MaterialsExport Material2DArray : public MaterialValue
+class MaterialsExport Material2DArray : protected MaterialValue
 {
 public:
     Material2DArray();
     ~Material2DArray() override;
 
-    void setDefault(MaterialValue value) { _default = value; }
-    MaterialValue getDefault() const { return _default; }
+    void setDefault(MaterialValue value) { _value = value.getValue(); }
+    MaterialValue getDefault() const;
 
     const std::vector<QVariant> &getRow(int row);
     void addRow(std::vector<QVariant> *row);
@@ -81,7 +81,6 @@ public:
 
 protected:
     std::vector<std::vector<QVariant> *> _rows;
-    MaterialValue _default;
 };
 
 } // namespace Materials
