@@ -72,9 +72,10 @@ public:
     void setDefault(MaterialValue value) { _value = value.getValue(); }
     MaterialValue getDefault() const;
 
-    const std::vector<QVariant> &getRow(int row);
+    const std::vector<QVariant> &getRow(int row) const;
+    std::vector<QVariant> &getRow(int row);
     void addRow(std::vector<QVariant> *row);
-    std::vector<QVariant> *deleteRow(int row);
+    void deleteRow(int row);
 
     void setValue(int row, int column,  const QVariant &value);
     const QVariant &getValue(int row, int column);

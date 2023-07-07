@@ -59,7 +59,17 @@ MaterialValue Material2DArray::getDefault() const
     return ret;
 }
 
-const std::vector<QVariant> &Material2DArray::getRow(int row)
+const std::vector<QVariant> &Material2DArray::getRow(int row) const
+{
+    try {
+        return *(_rows.at(row));
+    } catch (std::out_of_range const &) {
+        throw InvalidRow();
+    }
+
+}
+
+std::vector<QVariant> &Material2DArray::getRow(int row)
 {
     try {
         return *(_rows.at(row));
@@ -74,9 +84,11 @@ void Material2DArray::addRow(std::vector<QVariant> *row)
     _rows.push_back(row);
 }
 
-std::vector<QVariant> *Material2DArray::deleteRow(int row)
+void Material2DArray::deleteRow(int row)
 {
-    return nullptr;
+    if (row >= _rows.size() || row < 0)
+        throw InvalidRow();
+    _rows.erase(_rows.begin() + row);
 }
 
 void Material2DArray::setValue(int row, int column,  const QVariant &value)

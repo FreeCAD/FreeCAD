@@ -28,6 +28,8 @@
 #include <QDir>
 #include <QString>
 
+#include "MaterialValue.h"
+
 namespace Materials {
 
 class MaterialsExport ModelLibrary : public Base::BaseClass
@@ -103,24 +105,7 @@ public:
     explicit ModelValueProperty(const ModelProperty &property);
     virtual ~ModelValueProperty();
 
-    enum ValueType {
-        None = 0,
-        String = 1,
-        Boolean = 2,
-        Int = 3,
-        Float = 4,
-        Quantity = 5,
-        Distribution = 6,
-        List = 7,
-        Array2D = 8,
-        Array3D = 9,
-        Color = 10,
-        Image = 11,
-        File = 12,
-        URL = 13
-    };
-
-    ValueType getType(void) const { return _valueType; }
+    MaterialValue::ValueType getType(void) const { return _valueType; }
 
     const QString& getModelUUID(void) const;
     const QString getValue(void) const;
@@ -151,13 +136,13 @@ public:
 
 protected:
     void setType(const QString& type);
-    void setType(ValueType type) { _valueType = type; }
+    void setType(MaterialValue::ValueType type) { _valueType = type; }
 
     void addColumn(ModelValueProperty &column) { _columns.push_back(column); }
 
 private:
     QString _modelUUID;
-    ValueType _valueType;
+    MaterialValue::ValueType _valueType;
     QString _valueString;
     bool _valueBoolean;
     int _valueInt;
