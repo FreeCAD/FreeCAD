@@ -54,6 +54,13 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import Arch_rc
         import Arch
 
+        # Load Reinforcement WB translations
+        try:
+            import RebarTools
+            RebarTools.load_translations()
+        except Exception:
+            pass
+
         from ArchStructure import _ArchStructureGroupCommand
         from ArchAxis import _ArchAxisGroupCommand
         from ArchPanel import CommandPanelGroup
