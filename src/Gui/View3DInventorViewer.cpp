@@ -52,6 +52,7 @@
 # include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoMotion3Event.h>
 # include <Inventor/manips/SoClipPlaneManip.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCallback.h>
 # include <Inventor/nodes/SoCube.h>
@@ -62,8 +63,10 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoSelection.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSphere.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoTranslation.h>
@@ -337,6 +340,7 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sh
     , framebuffer(nullptr)
     , axisCross(nullptr)
     , axisGroup(nullptr)
+    , rotationCenterGroup(nullptr)
     , editing(false)
     , redirected(false)
     , allowredir(false)
@@ -355,6 +359,7 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
     , framebuffer(nullptr)
     , axisCross(nullptr)
     , axisGroup(nullptr)
+    , rotationCenterGroup(nullptr)
     , editing(false)
     , redirected(false)
     , allowredir(false)
@@ -1266,6 +1271,65 @@ void View3DInventorViewer::setAxisCross(bool on)
 bool View3DInventorViewer::hasAxisCross()
 {
     return axisGroup;
+}
+
+void View3DInventorViewer::showRotationCenter(bool show)
+{
+    SoNode* scene = getSceneGraph();
+    auto sep = static_cast<SoSeparator*>(scene);
+
+    if (show) {
+        SbBool found;
+        SbVec3f center = navigation->getRotationCenter(found);
+
+        if (!found) {
+            return;
+        }
+
+        if (!rotationCenterGroup) {
+            rotationCenterGroup = new SoSkipBoundingGroup();
+
+            auto sphere = new SoSphere();
+
+            // There needs to be a non-transparent object to ensure the transparent sphere works when opening an new empty document
+            auto hidden = new SoSeparator();
+            auto hiddenScale = new SoScale();
+            hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
+            hidden->addChild(hiddenScale);
+            hidden->addChild(sphere);
+
+            auto complexity = new SoComplexity();
+            complexity->value = 1;
+
+            auto material = new SoMaterial();
+            material->emissiveColor = SbColor(1, 0, 0);
+            material->transparency = 0.8;
+
+            auto translation = new SoTranslation();
+            translation->translation.setValue(center);
+
+            auto annotation = new SoAnnotation();
+            annotation->addChild(complexity);
+            annotation->addChild(material);
+            annotation->addChild(sphere);
+
+            auto scaledSphere = new SoShapeScale();
+            scaledSphere->setPart("shape", annotation);
+            scaledSphere->scaleFactor = 4.0;
+
+            rotationCenterGroup->addChild(translation);
+            rotationCenterGroup->addChild(hidden);
+            rotationCenterGroup->addChild(scaledSphere);
+
+            sep->addChild(rotationCenterGroup);
+        }
+    }
+    else {
+        if (rotationCenterGroup) {
+            sep->removeChild(rotationCenterGroup);
+            rotationCenterGroup = nullptr;
+        }
+    }
 }
 
 void View3DInventorViewer::setNavigationType(Base::Type t)

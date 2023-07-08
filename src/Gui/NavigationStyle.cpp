@@ -862,10 +862,9 @@ void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& po
 
 }
 
-SbVec3f NavigationStyle::getRotationCenter(SbBool* ok) const
+SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
 {
-    if (ok)
-        *ok = PRIVATE(this)->rotationCenterFound;
+    found = PRIVATE(this)->rotationCenterFound;
     return PRIVATE(this)->rotationCenter;
 }
 
@@ -1412,12 +1411,14 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     case DRAGGING:
         // Set up initial projection point for the projector object when
         // first starting a drag operation.
+        viewer->showRotationCenter(true);
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
         break;
 
     case SPINNING:
+        viewer->showRotationCenter(true);
         this->interactiveCountInc();
         viewer->getSoRenderManager()->scheduleRedraw();
         break;
@@ -1442,6 +1443,8 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     switch (oldmode) {
     case SPINNING:
     case DRAGGING:
+        viewer->showRotationCenter(false);
+        [[fallthrough]];
     case PANNING:
     case ZOOMING:
     case BOXZOOM:
