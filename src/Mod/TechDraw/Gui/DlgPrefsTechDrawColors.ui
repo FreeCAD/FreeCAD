@@ -617,7 +617,7 @@
         <item row="10" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbMonochrome">
           <property name="toolTip">
-           <string>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
+           <string>If checked FreeCAD will use a single color for all text and lines. 
 
 </string>
           </property>

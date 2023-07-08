@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
       <translation>Пераўтварыць</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="254"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>Першапачаткова</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="253"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Аб'ект будзе зменены з ужываннем рэжыму, вызначанага ўнутры як найбольш прыдатны для дадзенага тыпу аб'екта</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>Transform</source>
       <translation>Пераўтварыць</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="258"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>Размяшчэнне аб'екту будзе даступна для змены з дапамогай каманды Std TransformManip</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>Cutting</source>
       <translation>Абрэзка</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="263"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Рэжым змены рэалізаваны як даступны, але ў цяперашні час, падобна, не ўжываецца ні адным аб'ектам</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="268"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>Колер асобных граняў аб'екта можна будзе мяняць з дапамогай каманды Part FaceColors</translation>
     </message>
@@ -4731,7 +4731,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Асноўны колер для ўсіх элементаў</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
@@ -6809,7 +6809,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2061"/>
       <source>Dimension</source>
       <translation>Вымярэнне</translation>
     </message>
@@ -6853,18 +6853,18 @@ Do you want to save your changes?</source>
       <translation>Пераключае ўбудаванае акно</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1852"/>
+      <location filename="../MainWindow.cpp" line="1944"/>
       <source>Unsaved document</source>
       <translation>Незахаваны дакумент</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Аб'ект, які экспартуецца, утрымлівае знешні спасылак. Калі ласка, захавайце дакумент хаця б адзін раз перад экспартаваннем.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Каб стварыць спасылак на знешнія аб'екты, дакумент павінен быць захаваны хаця б адзін раз.
@@ -7367,17 +7367,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Адчыніць файл %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>Файл не знойдзены</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Не атрымалася адчыніць файл '%1'.</translation>
     </message>
@@ -7385,22 +7385,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>адсутнічае</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Запусціць макрас %1 (&lt;Shift+пстрычка&gt; каб змяніць) спалучэнне клавіш: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>Файл не знойдзены</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Не атрымалася адчыніць файл '%1'.</translation>
     </message>
@@ -8232,8 +8232,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>Абраць варштат '%1'</translation>
     </message>
@@ -8556,8 +8555,8 @@ Do you want to specify another directory?</source>
       <translation>Экспарт у PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="692"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
+      <location filename="../MainWindow.cpp" line="692"/>
       <source>Unsaved document</source>
       <translation>Незахаваны дакумент</translation>
     </message>
@@ -10347,8 +10346,8 @@ the current copy will be lost.
       <translation>Стварыць новы пусты дакумент</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
+      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>
@@ -12621,17 +12620,17 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Панэль інструментаў</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>Левы кут</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>Правы кут</translation>
     </message>

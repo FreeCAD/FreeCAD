@@ -574,12 +574,12 @@ Seleccioneu una forma diferent, si us plau.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Desembolica la malla</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Trobeu una representació plana d'una malla.</translation>
     </message>
   </context>
   <context>
@@ -587,12 +587,12 @@ Seleccioneu una forma diferent, si us plau.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desembolica la cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Trobeu una representació plana d'una malla.</translation>
     </message>
   </context>
 </TS>

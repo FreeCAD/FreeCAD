@@ -82,7 +82,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Optioneel?</translation>
     </message>
   </context>
   <context>
@@ -448,7 +448,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(labels)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="125"/>
@@ -769,7 +769,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Gebruikt door</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
@@ -779,7 +779,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Update alle beschikbare</translation>
     </message>
   </context>
   <context>
@@ -900,7 +900,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Labels...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
@@ -1176,7 +1176,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Opstarten...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="268"/>
@@ -1244,17 +1244,17 @@ installed addons will be checked for available updates
       <location filename="../../AddonManager.py" line="691"/>
       <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>Zoeken naar updates...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
+      <translation>{} update(s) toepassen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Geen updates beschikbaar</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="861"/>
@@ -1269,18 +1269,18 @@ installed addons will be checked for available updates
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Beheerder</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1297,7 +1297,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="202"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>Bezig, even geduld...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="253"/>
@@ -1308,7 +1308,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Updaten...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
@@ -1345,7 +1345,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="75"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Bevestig verwijdering</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="87"/>
@@ -1362,7 +1362,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="96"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>{} wordt verwijderd</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
@@ -1384,17 +1384,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="187"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>Versie {version} geïnstalleerd op {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="192"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>Versie {version} geïnstalleerd</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="196"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Geïnstalleerd op {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="200"/>
@@ -1402,7 +1402,7 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="507"/>
       <location filename="../../package_list.py" line="822"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Geïnstalleerd</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="210"/>
@@ -1417,7 +1417,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="230"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>Er is een update beschikbaar</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="248"/>
@@ -1496,11 +1496,11 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Geslaagd</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="686"/>
@@ -1629,9 +1629,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1658,7 +1658,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="455"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="465"/>
@@ -1989,20 +1989,20 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="428"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>bijgewerkt</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="451"/>
       <location filename="../../package_list.py" line="511"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Up-to-date</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="453"/>
       <location filename="../../package_list.py" line="515"/>
       <location filename="../../package_list.py" line="832"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Update beschikbaar</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="456"/>
@@ -2014,7 +2014,7 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="463"/>
       <location filename="../../package_list.py" line="528"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>UITGESCHAKELD</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="479"/>
@@ -2024,12 +2024,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="487"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Onbekende versie</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Geïnstalleerd op</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="501"/>
@@ -2074,7 +2074,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="826"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Niet geïnstalleerd</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="836"/>
@@ -2130,7 +2130,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="266"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Lokale naam</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="272"/>
@@ -2142,7 +2142,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Lokaal bijgewerkt</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
@@ -2435,22 +2435,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Aan het installeren</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Geslaagd</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="79"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Mislukt</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="203"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Update werd geannuleerd</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="204"/>
@@ -2476,7 +2476,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="122"/>
       <source>Finished removing {}</source>
-      <translation type="unfinished">Finished removing {}</translation>
+      <translation>Verwijderen van {} voltooid</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="137"/>

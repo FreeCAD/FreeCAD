@@ -415,7 +415,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Expandir todos os posicionamentos para baixo na exibição em árvore</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Substituir um objeto na exibição em árvore. Por favor, selecione o objeto novo, antigo e objeto de origem</translation>
     </message>
   </context>
   <context>

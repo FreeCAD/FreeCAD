@@ -96,7 +96,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
       <source>Show scrollbars</source>
-      <translation type="unfinished">Show scrollbars</translation>
+      <translation>Прикажи траке за померање</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="211"/>
@@ -393,27 +393,27 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="http://forum.freecad.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако имаш недоумице, објави у општем одељку &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Ако по први пут објављујеш на форуму, као прво &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;прочитај смернице&lt;/a&gt;!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD такође одржава заједница &lt;a href="https://www.freecad.org/tracker"&gt;пратиоци грешака&lt;/a&gt; где свако може да пријави грешке и предложи нове функције. Да избегнеш сувишан посао и да са највећом вероватноћом твој проблем буде решен, прво прочитај &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;упутство о пријави грешке&lt;/a&gt; пре објављивања.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>Испод се налазе последње измене додате &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;изворном коду FreeCAD-а&lt;/a&gt;. Ове промене се можда још увек неће одразити на верзију FreeCAD-а коју тренутно користиш. Провери &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;доступне опције&lt;/a&gt; ако желиш да набавиш развојну верзију.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Најновије објаве на &lt;a href="https://forum.freecad.org"&gt;FreeCAD форуму&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

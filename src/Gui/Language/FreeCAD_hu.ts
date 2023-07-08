@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="254"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="253"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>A tárgy szerkesztése a belsőleg meghatározott, az tárgy típusnak legmegfelelőbb módban történik</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="258"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>A tárgy elhelyezése az Std TransformManip paranccsal lesz szerkeszthető</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>Cutting</source>
       <translation>Vágás</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="263"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Ez a szerkesztési mód elérhető, de jelenleg úgy tűnik, hogy egyetlen tárgy sem használja</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>Color</source>
       <translation>Szín</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="268"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>A tárgy egyes felületeinek színe a alkatrész FaceColors paranccsal lesz szerkeszthető</translation>
     </message>
@@ -676,7 +676,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../AboutApplication.ui" line="149"/>
       <source>Release date</source>
-      <translation>Megjelenés éve</translation>
+      <translation>Kiadás dátuma</translation>
     </message>
     <message>
       <location filename="../AboutApplication.ui" line="163"/>
@@ -4744,7 +4744,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Alapszín minden elemnek</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
@@ -6816,7 +6816,7 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2061"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
@@ -6860,18 +6860,18 @@ El akarja menteni a változásokat?</translation>
       <translation>Dokkolható ablak megjelenítése</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1852"/>
+      <location filename="../MainWindow.cpp" line="1944"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
@@ -7376,17 +7376,17 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Fájl megnyitása %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>A fájl nem található</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>A '%1' fájl nem nyitható meg.</translation>
     </message>
@@ -7394,22 +7394,22 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>egyik sem</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>A(z) %1 makró futtatása (Shift+kattintás a szerkesztéshez) billentyűparancs: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>A fájl nem található</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>A '%1' fájl nem nyitható meg.</translation>
     </message>
@@ -8238,8 +8238,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>'%1' munkafelület kiválasztása</translation>
     </message>
@@ -8562,8 +8561,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>PDF exportálása...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="692"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
+      <location filename="../MainWindow.cpp" line="692"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
@@ -10355,8 +10354,8 @@ az aktuális példány elveszik.
       <translation>Új üres munkalap létrehozása</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
+      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>
@@ -11243,7 +11242,7 @@ az aktuális példány elveszik.
     <message>
       <location filename="../CommandView.cpp" line="1489"/>
       <source>Fit all</source>
-      <translation>Összes megjelenítése</translation>
+      <translation>Összes igazítása</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1490"/>
@@ -11257,7 +11256,7 @@ az aktuális példány elveszik.
     <message>
       <location filename="../CommandView.cpp" line="1520"/>
       <source>Fit selection</source>
-      <translation>Kijelöltek képernyőre</translation>
+      <translation>Kijelöltek igazítása képernyőméretre</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1521"/>
@@ -12630,17 +12629,17 @@ a FreeCAD elindítása után</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Eszköztár</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>Bal sarok</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>Jobb sarok</translation>
     </message>

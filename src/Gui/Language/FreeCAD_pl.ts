@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="254"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>Domyślny</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="253"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Obiekt będzie edytowany przy użyciu trybu zdefiniowanego wewnętrznie, aby był najbardziej odpowiedni dla typu obiektu</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="258"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>Obiekt będzie miał umiejscowienie edytowalne za pomocą polecenia Std TransformManip</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>Cutting</source>
       <translation>Cięcie</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="263"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Ten tryb edycji jest zaimplementowany jako dostępny, ale obecnie nie wydaje się być używany przez żaden obiekt</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>Color</source>
       <translation>Kolor</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="268"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>Obiekt będzie miał kolor poszczególnych ścianek edytowalny za pomocą polecenia Part FaceColors</translation>
     </message>
@@ -2002,7 +2002,7 @@ gdzie zawsze będzie wpisywana kropka.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="479"/>
       <source>Revert...</source>
-      <translation>Przywróć ...</translation>
+      <translation>Przywróć …</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="271"/>
@@ -2339,7 +2339,7 @@ wyświetli ekran powitalny</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
       <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="372"/>
@@ -4532,7 +4532,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
@@ -4746,7 +4746,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Podstawowy kolor dla wszystkich elementów</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="244"/>
@@ -5893,7 +5893,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../Placement.ui" line="413"/>
       <source>Roll (around the x-axis)</source>
-      <translation>Obrót (wokół osi x)</translation>
+      <translation>Przechylenie (wokół osi x)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="451"/>
@@ -6802,7 +6802,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1146"/>
@@ -6819,7 +6819,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2061"/>
       <source>Dimension</source>
       <translation>Wymiar</translation>
     </message>
@@ -6863,18 +6863,18 @@ Do you want to save your changes?</source>
       <translation>Włącza/wyłącza to okno dokujące</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1852"/>
+      <location filename="../MainWindow.cpp" line="1944"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Wyeksportowany obiekt zawiera zewnętrzny odnośnik. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Aby powiązać z obiektami zewnętrznymi, dokument musi być zapisany co najmniej raz.
@@ -7376,17 +7376,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Otwórz plik %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>Nie znaleziono pliku</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Plik '%1' nie może zostać otwarty.</translation>
     </message>
@@ -7394,22 +7394,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>brak</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Uruchom makro %1 (Shift + kliknięcie, aby edytować) skrót klawiszowy: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>Nie znaleziono pliku</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Plik '%1' nie może zostać otwarty.</translation>
     </message>
@@ -8236,8 +8236,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>Wybierz Środowisko pracy '%1'</translation>
     </message>
@@ -8561,8 +8560,8 @@ Do you want to specify another directory?</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="692"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
+      <location filename="../MainWindow.cpp" line="692"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
@@ -8838,7 +8837,7 @@ Do you want to continue?</source>
       <location filename="../NotificationArea.cpp" line="553"/>
       <location filename="../NotificationArea.cpp" line="1021"/>
       <source>Notifier</source>
-      <translation>Notifier</translation>
+      <translation>Zgłoszenie od</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
@@ -8849,7 +8848,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="963"/>
       <source>Notifier: </source>
-      <translation>Zgłaszający: </translation>
+      <translation>Zgłoszenie od: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="965"/>
@@ -10290,7 +10289,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="3123"/>
       <source>Measure distance</source>
-      <translation>Wymiarowanie odległości</translation>
+      <translation>Pomiar odległości</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3124"/>
@@ -10304,7 +10303,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Pomiar odległości</translation>
+      <translation>Wymiarowanie odległości</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -10353,8 +10352,8 @@ bieżącej kopii zostaną utracone.
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
+      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -11591,7 +11590,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1607"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1608"/>
@@ -11829,7 +11828,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1670"/>
       <location filename="../CommandView.cpp" line="1672"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11837,7 +11836,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1639"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1640"/>
@@ -11851,7 +11850,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1811"/>
       <source>Save image...</source>
-      <translation>Zapisz obraz ...</translation>
+      <translation>Zapisz obraz …</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1812"/>
@@ -11871,7 +11870,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1579"/>
       <location filename="../CommandView.cpp" line="1581"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -12190,7 +12189,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="547"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="548"/>
@@ -12628,17 +12627,17 @@ po uruchomieniu FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Pasek narzędzi</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>Lewy narożnik</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>Prawy narożnik</translation>
     </message>
@@ -12729,7 +12728,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1092"/>
       <source>Movable navigation cube</source>
-      <translation>Ruchoma Kostka nawigacyjna</translation>
+      <translation>Ruchoma kostka nawigacyjna</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1093"/>

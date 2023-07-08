@@ -1439,7 +1439,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1482"/>
       <source>Chamfer...</source>
-      <translation>Abschrägung ...</translation>
+      <translation>Anfasen ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1483"/>
@@ -1654,7 +1654,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Formteil</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
@@ -1672,7 +1672,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1077"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
@@ -1803,12 +1803,12 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>Make face from wires</source>
-      <translation>Fläche aus Linienzug erstellen</translation>
+      <translation>Fläche aus Kantenzug erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Erstellt eine Fläche aus einem Linienzug (z.B. aus einer Skizze)</translation>
+      <translation>Erstellt eine Fläche aus einem Kantenzug (z.B. aus einer Skizze)</translation>
     </message>
   </context>
   <context>
@@ -4857,7 +4857,7 @@ nur die beschnittenen Objeke sichtbar</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="332"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Mindestens eine Kante oder Kantenzug ist erforderlich.</translation>
+      <translation>Mindestens eine Kante oder ein Kantenzug ist erforderlich.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="336"/>
@@ -5439,7 +5439,7 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Versetzen</translation>
+      <translation>Versatz</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5593,7 +5593,8 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
       <location filename="../../TaskSweep.cpp" line="488"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Fügen Sie ein oder mehrere Profile zum Sweep hinzu. Markieren Sie dann eine Kante oder einen Kantenzug in der 3D Ansicht als Sweep Pfad.</translation>
+      <translation>Ein oder mehrere Profile und dann eine Kante oder einen Kantenzug
+für den Austragungspfad in der 3D-Ansicht auswählen.</translation>
     </message>
   </context>
   <context>
@@ -5697,8 +5698,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -5789,20 +5790,20 @@ Do you want to continue?</source>
       <translation>Keine ausgewählten Referenzen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Kante</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Knoten</translation>
     </message>

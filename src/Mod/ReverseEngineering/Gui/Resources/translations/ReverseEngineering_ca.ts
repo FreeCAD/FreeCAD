@@ -412,12 +412,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentació de malla</translation>
+      <translation>Segmentació de la malla</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Suavitza de la malla</translation>
+      <translation>Suavitza la malla</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -485,7 +485,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation>Seleccioneu un triangle</translation>
+      <translation>Trieu un triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>Opcions de regió</translation>
+      <translation>Opcions de la regió</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecta només els triangles amb les normals enfront de la pantalla</translation>
+      <translation>Respecta només els triangles amb les normals mirant la pantalla</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>

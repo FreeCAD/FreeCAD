@@ -2345,7 +2345,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Перерізання</translation>
+      <translation>Переріз</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>

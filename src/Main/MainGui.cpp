@@ -159,9 +159,9 @@ int main( int argc, char ** argv )
     App::Application::Config()["StartWorkbench"] = "StartWorkbench";
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
-    App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
-    App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
-    App::Application::Config()["SplashInfoPosition" ] = "15.210";
+    App::Application::Config()["SplashTextColor" ] = "#8aadf4"; // light blue
+    App::Application::Config()["SplashInfoColor" ] = "#8aadf4"; // light blue 
+    App::Application::Config()["SplashInfoPosition" ] = "6,75";
 
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD.desktop"));
 

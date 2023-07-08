@@ -96,7 +96,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="455"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>刪除註解</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="456"/>

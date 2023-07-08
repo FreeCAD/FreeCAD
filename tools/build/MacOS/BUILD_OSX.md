@@ -222,7 +222,7 @@ cmake \
 -DBUILD_FEM=1 \
 -DBUILD_TECHDRAW=0 \
 -DFREECAD_USE_EXTERNAL_KDL=ON \
--DFREECAD_CREATE_MAC_APP=OFF 
+-DFREECAD_CREATE_MAC_APP=OFF \
 -DCMAKE_PREFIX_PATH="/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources;/usr/local/opt/vtk@8.2/lib/cmake;/usr/local;" .
 ```
 

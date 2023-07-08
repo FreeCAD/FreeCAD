@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Másolat létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Kúpszelet létrehozás</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -706,7 +706,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Ellipszisív létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -719,7 +719,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Hiperbolaív létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -732,7 +732,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Parabolaív létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -750,7 +750,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Létrehoz egy B-görbét ellenőrző ponttokkal a vázlaton.</translation>
     </message>
   </context>
   <context>
@@ -893,7 +893,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Létrehoz egy időszakos B-görbét ellenőrző ponttokkal a vázlaton.</translation>
     </message>
   </context>
   <context>
@@ -1096,7 +1096,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Külső geometria létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -1233,7 +1233,7 @@ mint tükörreferencia hivatkozás.</translation>
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Wrong selection</source>
-      <translation>Rossz kijelölés</translation>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="844"/>
@@ -2285,20 +2285,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Ne csatolja</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2424,6 +2412,15 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2439,6 +2436,9 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -2619,9 +2619,9 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>A kijelölt tárgyak száma nem 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -2786,7 +2786,7 @@ invalid constraints, degenerated geometry, etc.</source>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést. 
+      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést.
 
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
@@ -2831,7 +2831,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést. 
+      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést.
 
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
@@ -3030,9 +3030,9 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Határozza meg a B-görbe fokot 1 és %1 között:</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>CAD rendszermag hiba</translation>
     </message>
@@ -5935,7 +5935,7 @@ Az Eigen Sparse QR algoritmus ritka mátrixokra van optimalizálva; általában 
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Vázlatkészítő szerkesztő mód</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5965,7 +5965,7 @@ Az Eigen Sparse QR algoritmus ritka mátrixokra van optimalizálva; általában 
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Vázlatkészítő szerkesztő eszközök</translation>
     </message>
   </context>
   <context>
@@ -6102,7 +6102,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Rács automatikus térköze</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6117,7 +6117,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Két egymást követő rácsvonal közötti távolság.</translation>
     </message>
   </context>
   <context>
@@ -6140,39 +6140,39 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerArc.h" line="198"/>
       <location filename="../../DrawSketchHandlerArc.h" line="470"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -6192,9 +6192,6 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>A korlátozás érvénytelen indexinformációval rendelkezik, és rosszul formázott.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6202,6 +6199,9 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6245,8 +6245,8 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>B-görbe pólus létrehozás hiba</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
       <source>Error creating B-spline</source>
       <translation>Hiba a B-görbe létrehozásakor</translation>
     </message>
@@ -6343,9 +6343,9 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Sikertelen az él vágása</translation>
     </message>
     <message>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation>Értékhiba</translation>
     </message>
@@ -6410,7 +6410,7 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Szög lépés a 'Szög illesztés' funkciót használó eszközökhöz (például vonal). Tartsa lenyomva a CTRL billentyűt a 'Szög illesztés' engedélyezéséhez. A szög a vázlat pozitív X tengelyétől indul.</translation>
     </message>
   </context>
   <context>
@@ -6460,7 +6460,7 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Kapcsolja ki a rácsot a vázlatban. A menüben módosíthatja a rács beállításait.</translation>
     </message>
   </context>
   <context>
@@ -6473,7 +6473,7 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Az összes illesztés funkció átkapcsolása. A menüben egyénileg kapcsolhatja be a 'Rácshoz illeszt' és a 'Tárgyhoz illeszt' funkciót, valamint módosíthatja a további illesztés beállításokat.</translation>
     </message>
   </context>
   <context>
@@ -6481,12 +6481,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>B-görbe létrehozása csomópontokkal</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Hozzon létre egy B-görbét csomópontok által, azaz interpolációval a vázlatban.</translation>
     </message>
   </context>
   <context>
@@ -6494,12 +6494,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Időszakos B-görbe létrehozása csomópontok által</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Hozzon létre egy B-görbét csomópontokkal, azaz interpolációval a vázlatban.</translation>
     </message>
   </context>
 </TS>

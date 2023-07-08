@@ -1169,6 +1169,10 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         return;
     auto view = dynamic_cast<MDIView*>(w->widget());
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
+    d->activeView = view;
+    Application::Instance->viewActivated(view);
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1194,9 +1198,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
     updateActions(true);
 }
 
@@ -1752,11 +1753,14 @@ QPixmap MainWindow::splashImage() const
         fontExe.setPointSizeF(20.0);
         QFontMetrics metricExe(fontExe);
         int l = QtTools::horizontalAdvance(metricExe, title);
+        if (title == QLatin1String("FreeCAD")) {
+            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
+        }
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSizeF(12.0);
+        fontVer.setPointSizeF(14.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
@@ -1777,7 +1781,10 @@ QPixmap MainWindow::splashImage() const
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
-            painter.drawText(x, y, title);
+            if (title != QLatin1String("FreeCAD")) {
+                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
+                painter.drawText(x, y, title);
+            }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
             painter.end();

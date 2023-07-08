@@ -76,7 +76,6 @@
 #include "Rez.h"
 #include "ViewProviderPage.h"
 
-
 using namespace TechDrawGui;
 using namespace TechDraw;
 namespace bp = boost::placeholders;
@@ -194,6 +193,7 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
+        fixSceneDependencies();    // check QGraphicsScene item parenting
         return true;
     }
     else if (strcmp("Redo", pMsg) == 0) {
@@ -246,6 +246,14 @@ void MDIViewPage::setTabText(std::string tabText)
     }
 }
 
+// advise the page to check QGraphicsScene parent/child relationships after undo
+void MDIViewPage::fixSceneDependencies()
+{
+    if (getViewProviderPage()) {
+        getViewProviderPage()->fixSceneDependencies();
+    }
+}
+
 //**** printing routines
 
 void MDIViewPage::getPaperAttributes()
@@ -280,7 +288,9 @@ void MDIViewPage::printPdf()
 
     Gui::WaitCursor wc;
     std::string utf8Content = fn.toUtf8().constData();
+    m_scene->setExporting(true);
     printPdf(utf8Content);
+    m_scene->setExporting(false);
 }
 
 void MDIViewPage::printPdf(std::string file)
@@ -507,6 +517,8 @@ void MDIViewPage::printAllPdf(QPrinter* printer, App::Document* doc)
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     pdfWriter.setTitle(documentName);
     pdfWriter.setResolution(printer->resolution());
     QPainter painter(&pdfWriter);

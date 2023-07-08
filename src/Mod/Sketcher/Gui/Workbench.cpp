@@ -190,7 +190,6 @@ void Workbench::activated()
      * However, now that we are back (from another WB), we need to make the toolbars available.
      * These correspond to the last saved state.
      */
-    Base::Console().Log("Sketch WB: Activated\n");
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
         Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),

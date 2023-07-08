@@ -76,7 +76,7 @@
       <location filename="../../Command.cpp" line="159"/>
       <location filename="../../Command.cpp" line="160"/>
       <source>Stop loading</source>
-      <translation>Aturar la carrega</translation>
+      <translation>Atura la càrrega</translation>
     </message>
   </context>
   <context>
@@ -104,7 +104,7 @@
       <location filename="../../Command.cpp" line="218"/>
       <location filename="../../Command.cpp" line="219"/>
       <source>Zoom out</source>
-      <translation>Allunyar</translation>
+      <translation>Allunya</translation>
     </message>
   </context>
   <context>
@@ -122,14 +122,14 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Obre una pàgina web al FreeCAD</translation>
+      <translation>Obre un lloc web al FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="815"/>
       <location filename="../../AppWebGui.cpp" line="93"/>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>S'han produït errors en carregar el fitxer. Algunes dades es poden haver modificades o no s'han recuperat. Consulteu la vista d'informe per a obtenir informació més específica sobre els objectes implicats.</translation>
+      <translation>S'han produït errors en carregar el fitxer. Algunes dades es poden haver modificat o no s'han recuperat. Consulteu la vista d'informe per a obtenir informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="619"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="783"/>
       <source>Loading %1...</source>
-      <translation>Carregant 1%...</translation>
+      <translation>S'està carregant %1...</translation>
     </message>
   </context>
   <context>
