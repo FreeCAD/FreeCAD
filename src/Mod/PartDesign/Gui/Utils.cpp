@@ -89,10 +89,9 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if (activeBody != body) {
         parent = obj;
-        subname.clear();
     }
     else {
         parent = getParent(obj, subname);
