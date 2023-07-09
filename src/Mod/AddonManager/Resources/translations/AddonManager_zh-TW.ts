@@ -843,7 +843,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation type="unfinished">This is the only item in the Addon</translation>
+      <translation>這是附加元件中唯一的項目</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
@@ -1297,7 +1297,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="202"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>處理中，請稍候...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="253"/>
@@ -2489,7 +2489,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="197"/>
       <source>Finished updating the following addons</source>
-      <translation type="unfinished">Finished updating the following addons</translation>
+      <translation>已完成更新底下附加元件</translation>
     </message>
   </context>
   <context>

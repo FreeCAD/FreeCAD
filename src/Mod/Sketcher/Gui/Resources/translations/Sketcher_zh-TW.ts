@@ -408,7 +408,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1854"/>
       <source>Block the selected edge from moving</source>
-      <translation type="unfinished">Block the selected edge from moving</translation>
+      <translation>阻止選定邊的移動</translation>
     </message>
   </context>
   <context>

@@ -1744,7 +1744,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4866"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+      <translation>დამთხვევის+მხების ptp მხებთან მიმოცვლა</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4887"/>
@@ -5750,8 +5750,8 @@ BFGS ამომხსნელი იყენებს Broyden–Fletcher–G
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="199"/>
       <source>Threshold for squared error that is used
 to determine whether a solution converges or not</source>
-      <translation type="unfinished">Threshold for squared error that is used
-to determine whether a solution converges or not</translation>
+      <translation>ზღვარი კვადრტულობის შეცდომისთვის,
+რომელიც გამოიყენება იმისა განსაზღვისთვის, არის გადაწყვეტა კონვერტენტული, თუ არა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>

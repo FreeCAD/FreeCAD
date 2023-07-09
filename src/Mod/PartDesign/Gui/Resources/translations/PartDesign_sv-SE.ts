@@ -3791,7 +3791,7 @@ This may lead to unexpected results.</source>
       <translation>Yta</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3800,32 +3800,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Om du har ett utdaterat dokument med Part Design-objekt utan kropp, använd migrationsfunktionen i Part Design för att lägga till dem i en kropp.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>En aktiv kropp krävs</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>För att skapa ett nyttPart Design-objekt, måste det finnas en aktiv kropp i dokumentet. Vänligen gör en kropp aktiv (dubbelklick) eller skapa en ny kropp.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Funktionen är inte i en kropp</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>För att kunna använda denna funktion måste den tillhöra en kropp i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Funktionen är inte i en del</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>För att kunna använda denna funktion måste den tillhöra en del i dokumentet.</translation>
     </message>

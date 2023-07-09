@@ -6296,7 +6296,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="184"/>
       <source>Failed to create fillet</source>
-      <translation type="unfinished">Failed to create fillet</translation>
+      <translation>Yuvarlama oluşturma hatası</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="122"/>

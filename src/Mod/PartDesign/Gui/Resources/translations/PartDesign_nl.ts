@@ -3794,7 +3794,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3803,32 +3803,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebruik dan de overdrachtsfunctie in PartDesign om hen in een lichaam te zetten.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Actief lichaam benodigd</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Om een nieuw PartDesign object te maken moet er een actief lichaam object aanwezig zijn in het document. Maak een lichaam actief (dubbel klik) of maak een nieuw lichaam.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Functie is niet in een lichaam</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Om deze functie te gebruiken moet deze tot een onderdeel object behoren in het document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Functie is niet in een onderdeel</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Om deze functie te gebruiken moet deze tot een onderdeel object behoren in het document.</translation>
     </message>

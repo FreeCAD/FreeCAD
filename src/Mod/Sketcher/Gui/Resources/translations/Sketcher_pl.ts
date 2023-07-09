@@ -4766,7 +4766,7 @@ Nie znaleziono jednak żadnych powiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1736"/>
       <location filename="../../TaskSketcherElements.cpp" line="1737"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1610"/>

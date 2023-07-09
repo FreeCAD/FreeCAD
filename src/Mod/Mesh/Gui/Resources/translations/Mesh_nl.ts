@@ -2012,7 +2012,7 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Aantal facetten:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
@@ -2289,7 +2289,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Kleuren weergeven</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1570"/>

@@ -1750,7 +1750,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="345"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation type="unfinished">Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</translation>
+      <translation>Konnte die ausführbare Python-Datei nicht automatisch lokalisieren, oder der Pfad ist falsch gesetzt. Bitte den Pfad zu Python in den Einstellungen des Addon-Managers überprüfen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>

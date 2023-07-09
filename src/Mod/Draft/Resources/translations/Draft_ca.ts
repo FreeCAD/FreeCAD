@@ -3211,43 +3211,43 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Calat</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Convertint:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Conversió exitosa</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>No s'ha trobat el convertidor LibreDWG</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>No s'ha trobat el convertidor ODA</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>No s'ha trobat el convertidor QCAD</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3257,7 +3257,7 @@ Per favor, estableixi un manualment al menú Editar -&gt; Preferències -&gt; Im
 Per més informació veure: https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3856,7 +3856,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Selecciona grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>
@@ -3901,7 +3901,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Inverteix dimensió</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
@@ -4052,7 +4052,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="114"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="626"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Afegeix punt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="124"/>
@@ -4242,7 +4242,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_layer.py" line="145"/>
       <location filename="../../draftmake/make_layer.py" line="162"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Capa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
@@ -4252,7 +4252,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matriu de punts</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
@@ -4330,7 +4330,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="477"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Estira</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="129"/>
@@ -4350,18 +4350,18 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="92"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>Escull el punt inicial de la línia de simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="118"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="173"/>
       <location filename="../../draftguitools/gui_mirror.py" line="199"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>Escull el punt final de la línia de simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
@@ -4371,12 +4371,12 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Selecciona un objecte per clonar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>Canvia el pendent</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
@@ -4392,27 +4392,27 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="79"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Selecciona un objecte per fer l'equidistància</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="85"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>L'eina d'Equidistància només funciona amb un objecte a la vegada.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="95"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>No es pot fer l'Equidistància d'aquest tipus d'objecte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="126"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>L'Equidistància d'una corba de Bezier no és possible actualment</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Crea una vista 2D</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="77"/>
@@ -4454,14 +4454,14 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>Com a mínim s'ha de seleccionar un element.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>La selecció no és apta per a una matriu.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
@@ -4471,12 +4471,12 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Objecte:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>El nombre d'elements ha de ser 2 o més.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
@@ -4511,25 +4511,25 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Nombre d'elements:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
       <source>Polar angle:</source>
-      <translation type="unfinished">Polar angle:</translation>
+      <translation>Angle polar:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Centre de rotació:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Avortat:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="275"/>
@@ -4543,7 +4543,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>El nombre d'elements ha de ser almenys 1.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
@@ -4563,32 +4563,32 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
       <source>Number of X elements:</source>
-      <translation type="unfinished">Number of X elements:</translation>
+      <translation>Nombre d'elements X:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="378"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>Interval X:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Nombre d'elements Y:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="383"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>Interval Y:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
       <source>Number of Z elements:</source>
-      <translation type="unfinished">Number of Z elements:</translation>
+      <translation>Nombre d'elements Z:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="388"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>Interval Z:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
@@ -4612,47 +4612,47 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>El nombre de capes ha de ser 2 o més.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>La distància radial és zero. La matriu resultant pot no semblar correcta.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>La distància radial és negativa. Es converteix a positiva per poder continuar.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>La distància tangencial no pot ser zero.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>La distància tangencial és negativa. Es converteix a positiva per poder continuar.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>Distància radial:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>Distància tangencial:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Nombre de capes circulars:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>Paràmetre de simetria:</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
@@ -4732,7 +4732,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>No s'ha trobat cap forma</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="111"/>
@@ -4745,17 +4745,17 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_fillet.py" line="144"/>
       <location filename="../../draftmake/make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>llargada:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="132"/>
       <source>Two elements are needed.</source>
-      <translation type="unfinished">Two elements are needed.</translation>
+      <translation>Són necessaris dos elements.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>El radi és massa gran</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="143"/>
@@ -4767,13 +4767,13 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Eliminats els objectes originals.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="125"/>
       <location filename="../../draftmake/make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Punts:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="126"/>
@@ -4784,22 +4784,22 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Posicionament:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="139"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>Entrada incorrecta: tipus de posicionament incorrecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
+      <translation>Entrada incorrecta: tipus de punts incorrecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="159"/>
       <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
+      <translation>No es pot generar la forma:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="166"/>
@@ -4814,18 +4814,18 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>Crea un objecte primitiu</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="193"/>
       <location filename="../../draftmake/make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
-      <translation type="unfinished">Final placement:</translation>
+      <translation>Posicionament final:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="195"/>
       <source>Face: True</source>
-      <translation type="unfinished">Face: True</translation>
+      <translation>Cara: Cert</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="197"/>
@@ -4847,7 +4847,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_patharray.py" line="388"/>
       <location filename="../../draftmake/make_polararray.py" line="119"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="164"/>
@@ -4866,7 +4866,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_patharray.py" line="275"/>
       <location filename="../../draftmake/make_polararray.py" line="126"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Entrada incorrecta: ha de ser un vector.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
@@ -4887,7 +4887,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre o un vector.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="92"/>
@@ -4901,7 +4901,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_orthoarray.py" line="119"/>
       <location filename="../../draftmake/make_polararray.py" line="112"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre enter.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="123"/>
@@ -4913,7 +4913,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Matriu ortogonal en 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="424"/>
@@ -4923,25 +4923,25 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>Matriu rectangular en 2D</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="215"/>
       <location filename="../../draftmake/make_pointarray.py" line="130"/>
       <location filename="../../draftmake/make_text.py" line="107"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
+      <translation>Entrada incorrecta: ha de ser un posicionament, un vector o una rotació.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="316"/>
       <location filename="../../draftmake/make_label.py" line="230"/>
       <source>Wrong input: object must not be a list.</source>
-      <translation type="unfinished">Wrong input: object must not be a list.</translation>
+      <translation>Entrada incorrecta: l'objecte no ha de ser una llista.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="263"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>Entrada incorrecta: el subelement no està en l'objecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="272"/>
@@ -4951,7 +4951,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="277"/>
       <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+      <translation>Entrada incorrecta: label_type ha de ser una de les següents opcions: </translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="286"/>
@@ -4970,7 +4970,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="320"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de com a mínim dos vectors.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="353"/>
@@ -4980,28 +4980,28 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="380"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de dos elements. P. ex. [object, 'Edge1'].</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="118"/>
       <source>Wrong input: object has the wrong type.</source>
-      <translation type="unfinished">Wrong input: object has the wrong type.</translation>
+      <translation>Entrada incorrecta: l'objecte té el tipus equivocat.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Aquesta funció és obsoleta. No utilitzis aquesta funció directament.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="174"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>Utilitza 'make_linear_dimension' o bé 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="327"/>
       <location filename="../../draftmake/make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Entrada incorrecta: l'objecte no té una 'Forma' a mesurar.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="331"/>
@@ -5012,18 +5012,18 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_dimension.py" line="338"/>
       <location filename="../../draftmake/make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre enter.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="343"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: els valors menors de 1 no estan permesos; es canviarà per 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="347"/>
       <location filename="../../draftmake/make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>Entrada incorrecta: el vèrtex no està a l'objecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="359"/>
@@ -5060,17 +5060,17 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_dimension.py" line="579"/>
       <location filename="../../draftmake/make_dimension.py" line="586"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista amb dos angles.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="144"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre o quantitat.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Capes</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="157"/>
@@ -5094,17 +5094,17 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Entrada incorrecta: ha de ser un nombre entre 0 i 100.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="464"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Activa aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="470"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Selecciona el contingut de la capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="508"/>
@@ -5116,12 +5116,12 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftviewproviders/view_layer.py" line="514"/>
       <location filename="../../draftviewproviders/view_layer.py" line="570"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Afegeix una nova capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="555"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Reetiquetant la capa:</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="559"/>
@@ -5150,17 +5150,17 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>Trobat 1 bloc: descomposant-lo</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>Trobat 1 multi-sòlid compost: descomposant-lo</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>Trobat un objecte paramètric: trencant les seves dependències</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="261"/>
@@ -5170,7 +5170,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Trobades diverses cares: dividint-les</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="273"/>
@@ -5200,7 +5200,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>Els dos punts són coincidents</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="113"/>
@@ -5210,12 +5210,12 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>L'objecte ha de ser una forma tancada</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>No s'ha creat cap objecte sòlid</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="276"/>
@@ -5240,7 +5240,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="472"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>Trobats 2 objectes: fusionant-los</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="483"/>
@@ -5444,17 +5444,17 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="293"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>El nom ja existeix. El sobreescric?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Error: no es troba el mòdul json. No es pot carregar l'estil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Error: no es troba el mòdul json. No es pot desar l'estil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="91"/>
@@ -5470,7 +5470,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="332"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>La direcció d'equidistància no ha sigut definida. Per favor, mou el cursor a un costat o altre de l'objecte per indicar-ne la direcció</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
@@ -5494,27 +5494,27 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Factor X</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Factor Y</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="154"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Factor Z</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="155"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Escalat uniforme</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="156"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Orientació del pla de treball</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="157"/>
@@ -5584,7 +5584,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Color de cara</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5599,7 +5599,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Nova capa</translation>
     </message>
   </context>
   <context>
@@ -5612,7 +5612,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importOCA.py" line="461"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>exportat amb èxit</translation>
     </message>
   </context>
   <context>
@@ -5620,7 +5620,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importAirfoilDAT.py" line="164"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>No s'han trobat suficients coordenades</translation>
     </message>
   </context>
   <context>
@@ -5641,7 +5641,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
       <source>Select Plane</source>
-      <translation type="unfinished">Select Plane</translation>
+      <translation>Selecciona el Pla</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="67"/>
@@ -6112,7 +6112,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Afegeix punt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
@@ -6215,7 +6215,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="164"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Selecciona grup</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
@@ -6301,7 +6301,7 @@ El podeu utilitzar per a desar una posició de la càmera i els estats dels obje
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Inverteix dimensió</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
@@ -6535,7 +6535,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="67"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Capa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="70"/>
@@ -6550,7 +6550,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="67"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Matriu de punts</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
@@ -6677,7 +6677,7 @@ to turn it into a 'Draft Dimension' object.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Estira</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="67"/>
@@ -6707,7 +6707,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="66"/>
@@ -6786,7 +6786,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="70"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>Determina el pendent</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="73"/>
@@ -6795,11 +6795,10 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Estableix el pendent (tangent de l'angle) de la línia seleccionada canviant el valor en l'eix Z d'un dels seus punts. Si se selecciona una polilínia, s'aplicarà el canvi de pendent a tots els seus segments.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+El pendent sempre canviarà el valor Z, per tant aquesta ordre només funciona bé per a
+línies rectes dibuixades en el pla XY. Els objectes seleccionats que no siguin línies simples seran ignorats.</translation>
     </message>
   </context>
   <context>

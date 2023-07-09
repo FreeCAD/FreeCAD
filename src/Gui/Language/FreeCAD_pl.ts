@@ -106,7 +106,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3332"/>
       <source>Toggle measurement</source>
-      <translation>Przełącz widoczność wymiarów</translation>
+      <translation>Włącz / wyłącz widoczność pomiarów</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3333"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../Workbench.cpp" line="526"/>
       <source>Measure</source>
-      <translation>Wymiarowanie</translation>
+      <translation>Pomiary</translation>
     </message>
   </context>
   <context>
@@ -2339,7 +2339,7 @@ wyświetli ekran powitalny</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
       <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="372"/>
@@ -4532,7 +4532,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
@@ -6133,7 +6133,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../DlgObjectSelection.cpp" line="123"/>
       <source>Selections</source>
-      <translation>Zaznaczenia</translation>
+      <translation>Wybór:</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="130"/>
@@ -6802,7 +6802,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1146"/>
@@ -6819,7 +6819,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2061"/>
+      <location filename="../MainWindow.cpp" line="2062"/>
       <source>Dimension</source>
       <translation>Wymiar</translation>
     </message>
@@ -6849,32 +6849,32 @@ Do you want to save your changes?</source>
       <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Włącza/wyłącza ten pasek narzędzi</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Włącza/wyłącza to okno dokujące</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1852"/>
-      <location filename="../MainWindow.cpp" line="1944"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1854"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Wyeksportowany obiekt zawiera zewnętrzny odnośnik. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1946"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Aby powiązać z obiektami zewnętrznymi, dokument musi być zapisany co najmniej raz.
@@ -7470,7 +7470,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../FileDialog.cpp" line="852"/>
       <source>Open %1 as</source>
-      <translation>Otwórz %1 jako</translation>
+      <translation>Otwórz %1 za pomocą:</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="904"/>
@@ -9453,13 +9453,13 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="2694"/>
       <source>Box selection</source>
-      <translation>Zaznacz obszar</translation>
+      <translation>Zaznacz obszarem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2695"/>
       <location filename="../CommandView.cpp" line="2697"/>
       <source>Activate the box selection tool</source>
-      <translation>Aktywuj narzędzie zaznaczania obszaru</translation>
+      <translation>Aktywuje narzędzie zaznaczania obszaru</translation>
     </message>
   </context>
   <context>
@@ -10303,7 +10303,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Wymiarowanie odległości</translation>
+      <translation>Pomiar odległości</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -10353,7 +10353,7 @@ bieżącej kopii zostaną utracone.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2049"/>
+      <location filename="../MainWindow.cpp" line="2050"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -11590,7 +11590,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1607"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1608"/>
@@ -11828,7 +11828,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1670"/>
       <location filename="../CommandView.cpp" line="1672"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11836,7 +11836,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1639"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1640"/>
@@ -11870,7 +11870,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1579"/>
       <location filename="../CommandView.cpp" line="1581"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -12189,7 +12189,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="547"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="548"/>

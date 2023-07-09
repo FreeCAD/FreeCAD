@@ -203,7 +203,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Schema utan namn</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -299,7 +299,7 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="156"/>
       <source>Deletes the selected line</source>
-      <translation type="unfinished">Deletes the selected line</translation>
+      <translation>Tar bort den valda raden</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="159"/>
@@ -442,12 +442,12 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
       <source>List of files to be committed:</source>
-      <translation type="unfinished">List of files to be committed:</translation>
+      <translation>Lista över filer som ska lämnas in:</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="93"/>
       <source>Diff</source>
-      <translation type="unfinished">Diff</translation>
+      <translation>Diff</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
@@ -463,7 +463,7 @@ Lämna tomt för att använda alla objekt från dokumentet</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="120"/>
       <source>Commit message</source>
-      <translation type="unfinished">Commit message</translation>
+      <translation>Incheckningsmeddelande</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
@@ -1156,7 +1156,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>Antalet kärnor att använda (experimentiellt)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="157"/>
@@ -1194,7 +1194,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>Ett sammansatt element per våning</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="202"/>
@@ -1209,7 +1209,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>Ett sammansatt element för alla</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
@@ -1302,7 +1302,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation type="unfinished">Allow invalid shapes</translation>
+      <translation>Tillåt ogiltiga former</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
@@ -1522,17 +1522,17 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Standardmodell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Strukturell analys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Standard + strukturell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
@@ -1853,19 +1853,19 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Byt L/H</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Byt L/W</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="248"/>
       <location filename="../../ArchStructure.py" line="493"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>For&amp;tsättning</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
@@ -1892,17 +1892,17 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1185"/>
       <source>Reset nodes</source>
-      <translation type="unfinished">Reset nodes</translation>
+      <translation>Återställ noder</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1192"/>
       <source>Edit nodes</source>
-      <translation type="unfinished">Edit nodes</translation>
+      <translation>Redigera noder</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1198"/>
       <source>Extend nodes</source>
-      <translation type="unfinished">Extend nodes</translation>
+      <translation>Förläng noder</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1199"/>
@@ -1912,7 +1912,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1205"/>
       <source>Connect nodes</source>
-      <translation type="unfinished">Connect nodes</translation>
+      <translation>Anslut noder</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1206"/>
@@ -1938,7 +1938,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="1223"/>
       <location filename="../../ArchStructure.py" line="1357"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Välj verktyg...</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1224"/>
@@ -1979,7 +1979,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
-      <translation type="unfinished">Intersection found.
+      <translation>Gatukorsning hittades.
 </translation>
     </message>
     <message>
@@ -2011,7 +2011,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="205"/>
       <source>Create Equipment</source>
-      <translation type="unfinished">Create Equipment</translation>
+      <translation>Skapa utrustning</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="240"/>
@@ -2031,7 +2031,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="249"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>Den här åtgärden kan ta lång tid. Fortsätt?</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="256"/>
@@ -2041,7 +2041,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="257"/>
       <source>Create 3 views</source>
-      <translation type="unfinished">Create 3 views</translation>
+      <translation>Skapa 3 vyer</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
@@ -2052,12 +2052,12 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchBuildingPart.py" line="221"/>
       <location filename="../../ArchFloor.py" line="89"/>
       <source>Floor</source>
-      <translation type="unfinished">Floor</translation>
+      <translation>Våning</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="302"/>
       <source>Create BuildingPart</source>
-      <translation type="unfinished">Create BuildingPart</translation>
+      <translation>Skapa byggnadsdel</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
@@ -2103,17 +2103,17 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Skapa profil</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="148"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Inställningar för profilen</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="194"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>Skapa profil</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
@@ -2154,7 +2154,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="552"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation>Skapa sida</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="222"/>
@@ -2289,7 +2289,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="506"/>
       <source>Open reference</source>
-      <translation type="unfinished">Open reference</translation>
+      <translation>Öppna referens</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="758"/>
@@ -2299,12 +2299,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchFrame.py" line="61"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Ram</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="92"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Skapa ram</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="229"/>
@@ -2324,7 +2324,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="109"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>Ingen form hittades i den här filen</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="134"/>
@@ -2339,7 +2339,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="141"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Fel: Kunde inte hämta från:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="153"/>
@@ -2371,7 +2371,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="230"/>
       <location filename="../../ArchWindow.py" line="275"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Skapa fönster</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="246"/>
@@ -2396,7 +2396,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="367"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Fönsteralternativ</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="371"/>
@@ -2411,7 +2411,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1321"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Det här fönstret har ingen definierad öppning</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1598"/>
@@ -2423,12 +2423,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1747"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Kunde inte skapa komponent</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1785"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Fönsterelement</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
@@ -2483,7 +2483,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
       <source>Create/update component</source>
-      <translation type="unfinished">Create/update component</translation>
+      <translation>Skapa/uppdatera komponent</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1793"/>
@@ -2494,7 +2494,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1794"/>
       <location filename="../../ArchWindow.py" line="1799"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>Trådar</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1953"/>
@@ -2505,7 +2505,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
       <source>Create new component</source>
-      <translation type="unfinished">Create new component</translation>
+      <translation>Skapa ny komponent</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
@@ -2549,7 +2549,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1804"/>
       <location filename="../../ArchWindow.py" line="1806"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ standard</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1805"/>
@@ -2726,7 +2726,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Nytt lager</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
@@ -2736,7 +2736,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>beror på objektet</translation>
     </message>
     <message>
       <location filename="../../importGBXML.py" line="46"/>
@@ -2747,42 +2747,42 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>Fel: Utrymmet '%s' har ingen Zon. Avbryter.</translation>
     </message>
     <message>
       <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
-      <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
+      <translation>pycollada hittades inte, stödet för collada är inaktiverat.</translation>
     </message>
     <message>
       <location filename="../../importDAE.py" line="313"/>
       <source>file %s successfully created.</source>
-      <translation type="unfinished">file %s successfully created.</translation>
+      <translation>skapandet av filen %s lyckades.</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="77"/>
       <source>Create Grid</source>
-      <translation type="unfinished">Create Grid</translation>
+      <translation>Skapa rutnät</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="147"/>
       <source>Auto height is larger than height</source>
-      <translation type="unfinished">Auto height is larger than height</translation>
+      <translation>Automatisk höjd är större än höjd</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="156"/>
       <source>Total row size is larger than height</source>
-      <translation type="unfinished">Total row size is larger than height</translation>
+      <translation>Total radstorlek är större än höjd</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="178"/>
       <source>Auto width is larger than width</source>
-      <translation type="unfinished">Auto width is larger than width</translation>
+      <translation>Automatisk bredd är större än bredd</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="187"/>
       <source>Total column size is larger than width</source>
-      <translation type="unfinished">Total column size is larger than width</translation>
+      <translation>Total kolumnstorlek är större än bredd</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="56"/>
@@ -2793,12 +2793,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Bredd totalt</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="425"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Höjd totalt</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
@@ -2813,32 +2813,32 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
       <source>Add col</source>
-      <translation type="unfinished">Add col</translation>
+      <translation>Lägg till col</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="429"/>
       <source>Del col</source>
-      <translation type="unfinished">Del col</translation>
+      <translation>Ta bort col</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="430"/>
       <source>Create span</source>
-      <translation type="unfinished">Create span</translation>
+      <translation>Skapa spann</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="431"/>
       <source>Remove span</source>
-      <translation type="unfinished">Remove span</translation>
+      <translation>Ta bort spann</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Rader</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Kolumner</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1004"/>
@@ -2858,17 +2858,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Dent length</source>
-      <translation type="unfinished">Dent length</translation>
+      <translation>Bulans längd</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent width</source>
-      <translation type="unfinished">Dent width</translation>
+      <translation>Bulans bredd</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent height</source>
-      <translation type="unfinished">Dent height</translation>
+      <translation>Bulans höjd</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
@@ -2878,22 +2878,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Number of holes</source>
-      <translation type="unfinished">Number of holes</translation>
+      <translation>Antalet hål</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1012"/>
       <source>Major diameter of holes</source>
-      <translation type="unfinished">Major diameter of holes</translation>
+      <translation>Största diameter för hålen</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Minor diameter of holes</source>
-      <translation type="unfinished">Minor diameter of holes</translation>
+      <translation>Minsta diameter för hålen</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Spacing between holes</source>
-      <translation type="unfinished">Spacing between holes</translation>
+      <translation>Avstånd mellan hålen</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
@@ -2933,7 +2933,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
+      <translation>Trådarnas djup</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1407"/>
@@ -2948,12 +2948,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>Lägg till bula</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>Ta bort bula</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
@@ -2963,7 +2963,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nivå</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -2989,12 +2989,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="157"/>
       <location filename="../../ArchPanel.py" line="186"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Skapa panel</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="209"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Panelalternativ</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
@@ -3231,17 +3231,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="165"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Skapa våning</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Skapa vinklar</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="807"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Avstånd (mm) och vinklar (deg) mellan a symmetriaxlar</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
@@ -3267,17 +3267,17 @@ Floor creation aborted.</translation>
       <location filename="../../importOBJ.py" line="87"/>
       <location filename="../../importOBJ.py" line="98"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>Hittade en form som innehåller kurvor, triangulerar</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="359"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Importen lyckades</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="928"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>Fel uppstod vid beräkning av objektets form</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="949"/>
@@ -3287,7 +3287,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="956"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>har en ogiltig form</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="958"/>
@@ -3315,12 +3315,12 @@ Floor creation aborted.</translation>
       <location filename="../../ArchCommands.py" line="216"/>
       <location filename="../../ArchComponent.py" line="1944"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponent</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1947"/>
       <source>Components of this object</source>
-      <translation type="unfinished">Components of this object</translation>
+      <translation>Komponenter för det här objektet</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
@@ -3330,12 +3330,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1949"/>
       <source>Additions</source>
-      <translation type="unfinished">Additions</translation>
+      <translation>Extra</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1950"/>
       <source>Subtractions</source>
-      <translation type="unfinished">Subtractions</translation>
+      <translation>Subtraktioner</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
@@ -3360,12 +3360,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Edit IFC properties</source>
-      <translation type="unfinished">Edit IFC properties</translation>
+      <translation>Redigera IFC-egenskaper</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1958"/>
       <source>Edit standard code</source>
-      <translation type="unfinished">Edit standard code</translation>
+      <translation>Redigera standardkod</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
@@ -3375,7 +3375,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Lägg till egenskap...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2013"/>
@@ -3390,7 +3390,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>Ny egenskap</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2187"/>
@@ -3491,7 +3491,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>Storleksförändra</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1383"/>
@@ -3544,7 +3544,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuilding.py" line="257"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>Skapa byggnad</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
@@ -3554,7 +3554,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
       <source>Create Space</source>
-      <translation type="unfinished">Create Space</translation>
+      <translation>Skapa utrymme</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="782"/>
@@ -3569,7 +3569,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="111"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Vägg</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="118"/>
@@ -3581,7 +3581,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchWall.py" line="392"/>
       <location filename="../../ArchWall.py" line="622"/>
       <source>Create Wall</source>
-      <translation type="unfinished">Create Wall</translation>
+      <translation>Skapa vägg</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="353"/>
@@ -6026,92 +6026,92 @@ Building creation aborted.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation type="unfinished">Structure tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation type="unfinished">Axis tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation type="unfinished">Panel tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation type="unfinished">Material tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation type="unfinished">Pipe tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation type="unfinished">Arch tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation type="unfinished">Draft snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation type="unfinished">&amp;Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>Verktyg</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation type="unfinished">&amp;Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation type="unfinished">Creation</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Annotering</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation type="unfinished">Modification</translation>
     </message>
@@ -6119,12 +6119,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
@@ -6212,7 +6212,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Ram</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6546,7 +6546,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nivå</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6620,7 +6620,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="285"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Vägg</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="289"/>
@@ -6776,7 +6776,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1579"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponent</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1583"/>
@@ -6836,23 +6836,23 @@ Building creation aborted.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Båge</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Djupgående</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Importera/Exportera</translation>
     </message>

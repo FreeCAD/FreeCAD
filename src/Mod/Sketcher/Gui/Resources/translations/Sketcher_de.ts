@@ -5931,7 +5931,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation>Sketcher-Modus Bearbeitung</translation>
+      <translation>Sketcher-Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>

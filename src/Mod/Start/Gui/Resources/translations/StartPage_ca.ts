@@ -91,12 +91,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Mostra consells d'ajuda a la pestanya Documents del banc de treball Start</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
       <source>Show scrollbars</source>
-      <translation type="unfinished">Show scrollbars</translation>
+      <translation>Mostra les barres de desplaçament</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="211"/>
@@ -266,7 +266,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Si està marcat, tancarà automàticament la pàgina d'inici quan s'iniciï FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="673"/>
@@ -393,27 +393,27 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>El &lt;a href="http://forum.freecad.org"&gt;fòrum de FreeCAD&lt;/a&gt; és un lloc fantàstic per obtenir ajuda d'altres usuaris i desenvolupadors de FreeCAD. El fòrum té moltes seccions per a diferents tipus de qüestions i temes de discussió. En cas de dubte, publica a la secció més general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Ajuda per utilitzar FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Si és la primera vegada que publiques al fòrum, assegura't de llegir primer &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;les instruccions i normes&lt;/a&gt;!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD també manté un &lt;a href="https://www.freecad.org/tracker"&gt;seguidor d'errors&lt;/a&gt; públic on qualsevol persona pot enviar errors i proposar noves funcions. Per evitar que es produeixi treball addicional i donar les millors oportunitats de veure el vostre error resolt, assegura'ts de llegir la &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;guia d'enviament d'errors &lt;/a&gt; abans de publicar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>A continuació es mostren els darrers canvis afegits al &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;codi font de FreeCAD&lt;/a&gt;. És possible que aquests canvis encara no es reflecteixin a la versió de FreeCAD que estàs executant actualment. Comprova les &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;opcions disponibles&lt;/a&gt; si vols obtenir una versió en desenvolupament.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Els articles més recents al &lt;a href="https://forum.freecad.org"&gt;fòrum FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

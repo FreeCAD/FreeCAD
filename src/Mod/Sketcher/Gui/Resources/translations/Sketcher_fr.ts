@@ -749,7 +749,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation>Créer une B-spline par points de contrôle dans l'esquisse.</translation>
+      <translation>Créer une B-spline par des points de contrôle dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -892,7 +892,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation>Créer une B-spline périodique par points de contrôle dans l'esquisse.</translation>
+      <translation>Créer une B-spline périodique par des points de contrôle dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -6478,12 +6478,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation>Créer une B-spline par noeuds</translation>
+      <translation>Créer une B-spline par des noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation>Créer une B-spline par noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
+      <translation>Créer une B-spline par des noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
     </message>
   </context>
   <context>
@@ -6491,12 +6491,12 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation>Créer une B-spline périodique par noeuds</translation>
+      <translation>Créer une B-spline périodique par des noeuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation>Créer une B-spline périodique par noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
+      <translation>Créer une B-spline périodique par des noeuds, c'est-à-dire par interpolation, dans l'esquisse.</translation>
     </message>
   </context>
 </TS>

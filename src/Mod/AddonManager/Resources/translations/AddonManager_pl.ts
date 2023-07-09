@@ -100,7 +100,7 @@
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
       <translation>Ten dodatek ma następujące wymagane i opcjonalne zależności. Musisz je zainstalować, zanim ten dodatek będzie mógł być używany.
 
-Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quot;Ignoruj&quot; aby zainstalować dodatek bez instalowania zależności.</translation>
+Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zignoruj" aby zainstalować dodatek bez instalowania zależności.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
