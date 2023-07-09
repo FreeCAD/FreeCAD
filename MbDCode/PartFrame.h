@@ -69,6 +69,7 @@ namespace MbD {
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
 		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
@@ -82,7 +83,6 @@ namespace MbD {
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
 		void postPosIC() override;
-		void outputStates() override;
 		void preDyn() override;
 		void storeDynState() override;
 		void fillPosKineError(FColDsptr col) override;

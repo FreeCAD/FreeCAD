@@ -27,6 +27,7 @@ namespace MbD {
 		double maxMagnitude();
 		double length();
 		void equalSelfPlusFullVectortimes(std::shared_ptr<FullVector<T>> fullVec, T factor);
+		void magnifySelf(T factor);
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
@@ -140,6 +141,14 @@ namespace MbD {
 		for (int i = 0; i < this->size(); i++)
 		{
 			this->atiplusNumber(i, fullVec->at(i) * factor);
+		}
+	}
+	template<typename T>
+	inline void FullVector<T>::magnifySelf(T factor)
+	{
+		for (int i = 0; i < this->size(); i++)
+		{
+			this->atitimes(i, factor);
 		}
 	}
 	template<typename T>

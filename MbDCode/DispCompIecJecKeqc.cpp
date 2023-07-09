@@ -51,3 +51,8 @@ FMatDsptr DispCompIecJecKeqc::ppvaluepEKpEK()
 {
     return ppriIeJeKepEKpEK;
 }
+
+FRowDsptr MbD::DispCompIecJecKeqc::pvaluepEK()
+{
+	return priIeJeKepEK;
+}

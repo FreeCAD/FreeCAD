@@ -26,33 +26,33 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 	DispCompIeqcJecKeqc::calcPostDynCorrectorIteration();
 	auto frmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto prIeJeOpEJT = frmJqc->prOeOpE->transpose();
-	auto pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
+	auto& pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
 	for (int i = 0; i < 3; i++)
 	{
-		priIeJeKepXJ->at(i) = (aAjOKe->at(i));
+		priIeJeKepXJ->atiput(i, aAjOKe->at(i));
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		priIeJeKepEJ->at(i) = (aAjOKe->dot(prIeJeOpEJT->at(i)));
+		priIeJeKepEJ->atiput(i, aAjOKe->dot(prIeJeOpEJT->at(i)));
 	}
 	for (int i = 0; i < 3; i++)
 	{
 		auto& ppriIeJeKepXJipEK = ppriIeJeKepXJpEK->at(i);
 		for (int j = 0; j < 4; j++)
 		{
-			ppriIeJeKepXJipEK->at(j) = (pAjOKepEKT->at(j)->at(i));
+			ppriIeJeKepXJipEK->atiput(j, pAjOKepEKT->at(j)->at(i));
 		}
 	}
 	for (int i = 0; i < 4; i++)
 	{
 		auto& pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto& ppriIeJeKepEJipEJ = ppriIeJeKepEJpEJ->at(i);
-		ppriIeJeKepEJipEJ->at(i) = (aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
+		ppriIeJeKepEJipEJ->atiput(i, aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
 		for (int j = 0; j < 4; j++)
 		{
 			auto ppriIeJeKepEJipEJj = (aAjOKe->dot(pprIeJeOpEJipEJ->at(j)));
-			ppriIeJeKepEJipEJ->at(j) = ppriIeJeKepEJipEJj;
-			ppriIeJeKepEJpEJ->at(j)->at(i) = ppriIeJeKepEJipEJj;
+			ppriIeJeKepEJipEJ->atiput(j, ppriIeJeKepEJipEJj);
+			ppriIeJeKepEJpEJ->atijput(j, i, ppriIeJeKepEJipEJj);
 		}
 	}
 	for (int i = 0; i < 4; i++)
@@ -61,7 +61,7 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 		auto& ppriIeJeKepEJipEK = ppriIeJeKepEJpEK->at(i);
 		for (int j = 0; j < 4; j++)
 		{
-			ppriIeJeKepEJipEK->at(j) = (pAjOKepEKT->at(j)->dot(prIeJeOpEJTi));
+			ppriIeJeKepEJipEK->atiput(j, pAjOKepEKT->at(j)->dot(prIeJeOpEJTi));
 		}
 	}
 }

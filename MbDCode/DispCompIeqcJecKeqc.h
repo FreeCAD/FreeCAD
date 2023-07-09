@@ -9,15 +9,15 @@ namespace MbD {
     public:
         DispCompIeqcJecKeqc();
         DispCompIeqcJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
-        void initialize() override;
-        void calcPostDynCorrectorIteration() override;
 
-        FRowDsptr pvaluepXI();
-        FRowDsptr pvaluepEI();
-        FRowDsptr pvaluepEK();
-        FMatDsptr ppvaluepXIpEK();
-        FMatDsptr ppvaluepEIpEK();
-        FMatDsptr ppvaluepEIpEI();
+        void calcPostDynCorrectorIteration() override;
+        void initialize() override;
+        FRowDsptr pvaluepXI() override;
+        FRowDsptr pvaluepEI() override;
+        FMatDsptr ppvaluepXIpEK() override;
+        FMatDsptr ppvaluepEIpEK() override;
+        FMatDsptr ppvaluepEIpEI() override;
+
         FRowDsptr priIeJeKepXI;
         FRowDsptr priIeJeKepEI;
         FMatDsptr ppriIeJeKepXIpEK;

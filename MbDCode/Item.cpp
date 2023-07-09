@@ -24,16 +24,6 @@ void Item::initialize()
 {
 }
 
-void Item::setName(std::string& str)
-{
-	name = str;
-}
-
-const std::string& Item::getName() const
-{
-	return name;
-}
-
 std::ostream& Item::printOn(std::ostream& s) const
 {
 	std::string str = typeid(*this).name();
@@ -44,6 +34,30 @@ std::ostream& Item::printOn(std::ostream& s) const
 
 void Item::initializeLocally()
 {
+}
+
+bool MbD::Item::isJointForce()
+{
+	assert(false);
+	return false;
+}
+
+bool MbD::Item::isJointTorque()
+{
+	assert(false);
+	return false;
+}
+
+bool MbD::Item::isKinedotIJ()
+{
+	assert(false);
+	return false;
+}
+
+bool MbD::Item::isKineIJ()
+{
+	assert(false);
+	return false;
 }
 
 void Item::initializeGlobally()
@@ -60,12 +74,37 @@ void Item::calcPostDynCorrectorIteration()
 {
 }
 
+void MbD::Item::checkForCollisionDiscontinuityBetweenand(double impulsePrevious, double impulse)
+{
+	assert(false);
+}
+
 void Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
 {
 }
 
+void MbD::Item::setpqsumu(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::setpqsumuddot(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::setpqsumudot(FColDsptr col)
+{
+	assert(false);
+}
+
 void Item::reactivateRedundantConstraints()
 {
+}
+
+void MbD::Item::registerName()
+{
+	assert(false);
 }
 
 void Item::fillPosKineError(FColDsptr col)
@@ -76,15 +115,61 @@ void Item::fillPosKineJacob(SpMatDsptr mat)
 {
 }
 
+void MbD::Item::fillpqsumu(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::fillpqsumudot(FColDsptr col)
+{
+	assert(false);
+}
+
 void Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
+	assert(false);
+}
+
+void MbD::Item::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+{
+	assert(false);
+}
+
+void MbD::Item::fillpFpy(SpMatDsptr mat)
+{
+	assert(false);
+}
+
+void MbD::Item::fillpFpydot(SpMatDsptr mat)
+{
+	assert(false);
 }
 
 void Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 }
 
+void MbD::Item::fillStaticError(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::fillStaticJacob(FMatDsptr mat)
+{
+	assert(false);
+}
+
 void Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+	assert(false);
+}
+
+void MbD::Item::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+{
+	assert(false);
+}
+
+void MbD::Item::fillDynError(FColDsptr col)
 {
 	assert(false);
 }
@@ -97,6 +182,11 @@ void Item::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 }
 
+void MbD::Item::fillqsuWeightsSmall(FColDsptr col)
+{
+	assert(false);
+}
+
 void Item::fillqsulam(FColDsptr col)
 {
 }
@@ -105,12 +195,9 @@ void Item::setqsulam(FColDsptr col)
 {
 }
 
-void Item::outputStates()
+void MbD::Item::simUpdateAll()
 {
-	std::stringstream ss;
-	ss << classname() << " " << name;
-	auto str = ss.str();
-	this->logString(str);
+	assert(false);
 }
 
 void Item::preDyn()
@@ -123,6 +210,16 @@ void Item::preDyn()
 	//"Default is do nothing."
 }
 
+void MbD::Item::preDynCorrector()
+{
+	assert(false);
+}
+
+void MbD::Item::preDynCorrectorIteration()
+{
+	assert(false);
+}
+
 void Item::postDyn()
 {
 	//"Assume runDYNAMICS ended successfully."
@@ -131,6 +228,16 @@ void Item::postDyn()
 	//regardless of whether they are needed."
 	//"This is a subset of update."
 	//"Default is do nothing."
+}
+
+void MbD::Item::postDynCorrector()
+{
+	assert(false);
+}
+
+void MbD::Item::postDynCorrectorIteration()
+{
+	assert(false);
 }
 
 std::string Item::classname()
@@ -146,13 +253,38 @@ void Item::preDynFirstStep()
 	this->preDynStep();
 }
 
+void MbD::Item::preDynOutput()
+{
+	assert(false);
+}
+
+void MbD::Item::preDynPredictor()
+{
+	assert(false);
+}
+
 void Item::postDynFirstStep()
 {
 	this->postDynStep();
 }
 
+void MbD::Item::postDynOutput()
+{
+	assert(false);
+}
+
+void MbD::Item::postDynPredictor()
+{
+	assert(false);
+}
+
 void Item::preDynStep()
 {
+}
+
+void MbD::Item::preICRestart()
+{
+	assert(false);
 }
 
 void Item::postDynStep()
@@ -164,6 +296,23 @@ void Item::postDynStep()
 
 void Item::storeDynState()
 {
+}
+
+void MbD::Item::submitToSystem()
+{
+	assert(false);
+}
+
+double MbD::Item::suggestSmallerOrAcceptCollisionFirstStepSize(double hnew)
+{
+	assert(false);
+	return 0.0;
+}
+
+double MbD::Item::suggestSmallerOrAcceptCollisionStepSize(double hnew)
+{
+	assert(false);
+	return 0.0;
 }
 
 double Item::suggestSmallerOrAcceptDynFirstStepSize(double hnew)
@@ -198,6 +347,16 @@ void Item::fillqsudot(FColDsptr col)
 {
 }
 
+void MbD::Item::fillqsudotPlam(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::fillqsudotPlamDeriv(FColDsptr col)
+{
+	assert(false);
+}
+
 void Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 }
@@ -210,13 +369,58 @@ void Item::fillVelICJacob(SpMatDsptr mat)
 {
 }
 
+void MbD::Item::getString(std::string str)
+{
+	assert(false);
+}
+
 void Item::setqsudotlam(FColDsptr col)
 {
+}
+
+void MbD::Item::setqsudotPlam(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::setqsudotPlamDeriv(FColDsptr col)
+{
+	assert(false);
 }
 
 void Item::preAccIC()
 {
 	this->calcPostDynCorrectorIteration();
+}
+
+void MbD::Item::preCollision()
+{
+	assert(false);
+}
+
+void MbD::Item::preCollisionCorrector()
+{
+	assert(false);
+}
+
+void MbD::Item::preCollisionCorrectorIteration()
+{
+	assert(false);
+}
+
+void MbD::Item::preCollisionDerivativeIC()
+{
+	assert(false);
+}
+
+void MbD::Item::preCollisionPredictor()
+{
+	assert(false);
+}
+
+void MbD::Item::preCollisionStep()
+{
+	assert(false);
 }
 
 void Item::postAccIC()
@@ -225,6 +429,31 @@ void Item::postAccIC()
 
 void Item::postAccICIteration()
 {
+}
+
+void MbD::Item::postCollisionCorrector()
+{
+	assert(false);
+}
+
+void MbD::Item::postCollisionCorrectorIteration()
+{
+	assert(false);
+}
+
+void MbD::Item::postCollisionDerivativeIC()
+{
+	assert(false);
+}
+
+void MbD::Item::postCollisionPredictor()
+{
+	assert(false);
+}
+
+void MbD::Item::postCollisionStep()
+{
+	assert(false);
 }
 
 void Item::fillqsuddotlam(FColDsptr col)
@@ -237,6 +466,31 @@ void Item::fillAccICIterError(FColDsptr col)
 
 void Item::fillAccICIterJacob(SpMatDsptr mat)
 {
+}
+
+void MbD::Item::fillCollisionDerivativeICError(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::fillCollisionDerivativeICJacob(SpMatDsptr mat)
+{
+	assert(false);
+}
+
+void MbD::Item::fillCollisionError(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::Item::fillCollisionpFpy(SpMatDsptr mat)
+{
+	assert(false);
+}
+
+void MbD::Item::fillCollisionpFpydot(SpMatDsptr mat)
+{
+	assert(false);
 }
 
 void Item::setqsudot(FColDsptr col)
@@ -253,11 +507,21 @@ std::shared_ptr<StateData> Item::stateData()
 	return std::shared_ptr<StateData>();
 }
 
+void MbD::Item::storeCollisionState()
+{
+	assert(false);
+}
+
 void Item::discontinuityAtaddTypeTo(double t, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
 {
 }
 
-double Item::checkForDynDiscontinuityBetween(double tprev, double t)
+void MbD::Item::discontinuityAtICAddTo(std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
+{
+	assert(false);
+}
+
+double Item::checkForDynDiscontinuityBetweenand(double tprev, double t)
 {
 	//"Check for discontinuity in the last step defined by the interval (tprevious,t]."
 	//"Default is assume no discontinuity and return t."
@@ -288,6 +552,21 @@ void Item::logString(const char* chars)
 	this->logString(str);
 }
 
+void MbD::Item::logStringwithArgument(const char* chars, const char* chars1)
+{
+	assert(false);
+}
+
+void MbD::Item::logStringwithArguments(const char* chars, std::shared_ptr<std::vector<char*>> arrayOfChars)
+{
+	assert(false);
+}
+
+void MbD::Item::normalImpulse(double imp)
+{
+	assert(false);
+}
+
 void Item::prePosIC()
 {
 	//"Called once before solving for position initial conditions."
@@ -302,6 +581,11 @@ void Item::prePosKine()
 	this->prePosIC();
 }
 
+void MbD::Item::preStatic()
+{
+	assert(false);
+}
+
 void Item::postPosIC()
 {
 }
@@ -309,6 +593,16 @@ void Item::postPosIC()
 void Item::postPosICIteration()
 {
 	this->calcPostDynCorrectorIteration();
+}
+
+void MbD::Item::postStatic()
+{
+	assert(false);
+}
+
+void MbD::Item::postStaticIteration()
+{
+	assert(false);
 }
 
 void Item::fillPosICError(FColDsptr col)

@@ -59,6 +59,7 @@ namespace MbD {
 		std::shared_ptr<FullMatrix<T>> copy();
 		FullMatrix<T> operator+(const FullMatrix<T> fullMat);
 		std::shared_ptr<FullColumn<T>> transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
+		void magnifySelf(T factor);
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
@@ -241,6 +242,13 @@ namespace MbD {
 	{
 		auto sptr = std::make_shared<FullMatrix<T>>(*this);
 		return fullCol->transpose()->timesFullMatrix(sptr)->transpose();
+	}
+	template<typename T>
+	inline void FullMatrix<T>::magnifySelf(T factor)
+	{
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->magnifySelf(factor);
+		}
 	}
 	template<typename T>
 	inline std::ostream& FullMatrix<T>::printOn(std::ostream& s) const

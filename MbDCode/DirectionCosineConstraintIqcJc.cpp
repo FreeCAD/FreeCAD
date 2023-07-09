@@ -62,10 +62,6 @@ void DirectionCosineConstraintIqcJc::fillAccICIterError(FColDsptr col)
 	col->atiplusNumber(iG, sum);
 }
 
-void DirectionCosineConstraintIqcJc::addToJointForceI(FColDsptr col)
-{
-}
-
 void DirectionCosineConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto aBOIp = frmI->aBOp();

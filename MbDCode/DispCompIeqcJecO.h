@@ -9,8 +9,12 @@ namespace MbD {
     public:
         DispCompIeqcJecO();
         DispCompIeqcJecO(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
-        void initializeGlobally() override;
+
         void calcPostDynCorrectorIteration() override;
+        void initializeGlobally() override;
+        FMatDsptr ppvaluepEIpEI() override;
+        FRowDsptr pvaluepEI() override;
+        FRowDsptr pvaluepXI() override;
 
         FRowDsptr priIeJeOpXI;
         FRowDsptr priIeJeOpEI;

@@ -15,32 +15,7 @@ void DispCompIecJecO::calcPostDynCorrectorIteration()
 	riIeJeO = frmJ->riOeO(axis) - frmI->riOeO(axis);
 }
 
-FRowDsptr DispCompIecJecO::pvaluepXJ()
+double MbD::DispCompIecJecO::value()
 {
-	assert(false);
-	return FRowDsptr();
-}
-
-FRowDsptr DispCompIecJecO::pvaluepEJ()
-{
-	assert(false);
-	return FRowDsptr();
-}
-
-FMatDsptr DispCompIecJecO::ppvaluepXJpEK()
-{
-	assert(false);
-	return FMatDsptr();
-}
-
-FMatDsptr DispCompIecJecO::ppvaluepEJpEK()
-{
-	assert(false);
-	return FMatDsptr();
-}
-
-FMatDsptr DispCompIecJecO::ppvaluepEJpEJ()
-{
-	assert(false);
-	return FMatDsptr();
+	return riIeJeO;
 }

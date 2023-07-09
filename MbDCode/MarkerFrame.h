@@ -38,6 +38,7 @@ namespace MbD {
 		void endFramesDo(const std::function <void(std::shared_ptr<EndFramec>)>& f);
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
 		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;

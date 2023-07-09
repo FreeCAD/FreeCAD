@@ -4,9 +4,11 @@
 #include <memory>
 #include <ostream>
 
+#include "Math.h"
+
 namespace MbD {
 
-	class Symbolic
+	class Symbolic : public Math
 	{
 	public:
 		Symbolic();

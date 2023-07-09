@@ -26,7 +26,7 @@ void CADSystem::outputFor(AnalysisType type)
 	this->logString(str);
 	mbdSystem->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) {
 		std::cout << std::endl;
-		std::cout << item->classname() << " " << item->getName() << std::endl;
+		std::cout << item->classname() << " " << item->name << std::endl;
 		auto data = item->stateData();
 		std::cout << *data << std::endl;
 		});
@@ -49,8 +49,8 @@ void CADSystem::runOndselPiston()
 	auto& TheSystem = mbdSystem;
 	TheSystem->clear();
 	std::string name = "TheSystem";
-	TheSystem->setName(name);
-	std::cout << "TheSystem->getName() " << TheSystem->getName() << std::endl;
+	TheSystem->name = name;
+	std::cout << "TheSystem->name " << TheSystem->name << std::endl;
 	auto& systemSolver = TheSystem->systemSolver;
 	systemSolver->errorTolPosKine = 1.0e-6;
 	systemSolver->errorTolAccKine = 1.0e-6;
@@ -77,7 +77,7 @@ void CADSystem::runOndselPiston()
 	FRowDsptr fullRow;
 	//
 	auto assembly1 = CREATE<Part>::With("/Assembly1");
-	std::cout << "assembly1->getName() " << assembly1->getName() << std::endl;
+	std::cout << "assembly1->name " << assembly1->name << std::endl;
 	assembly1->m = 0.0;
 	assembly1->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
@@ -122,7 +122,7 @@ void CADSystem::runOndselPiston()
 	assembly1->asFixed();
 	//
 	auto crankPart1 = CREATE<Part>::With("/Assembly1/Part1");
-	std::cout << "crankPart1->getName() " << crankPart1->getName() << std::endl;
+	std::cout << "crankPart1->name " << crankPart1->name << std::endl;
 	crankPart1->m = 1.0;
 	crankPart1->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 1, 1, 1 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0.4, 0.0, -0.05 });
@@ -164,7 +164,7 @@ void CADSystem::runOndselPiston()
 	}
 	//
 	auto conrodPart2 = CREATE<Part>::With("/Assembly1/Part2");
-	std::cout << "conrodPart2->getName() " << conrodPart2->getName() << std::endl;
+	std::cout << "conrodPart2->name " << conrodPart2->name << std::endl;
 	conrodPart2->m = 1.0;
 	conrodPart2->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 1, 1, 1 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0.15, 0.1, 0.05 });
@@ -206,7 +206,7 @@ void CADSystem::runOndselPiston()
 	}
 	//
 	auto pistonPart3 = CREATE<Part>::With("/Assembly1/Part3");
-	std::cout << "pistonPart3->getName() " << pistonPart3->getName() << std::endl;
+	std::cout << "pistonPart3->name " << pistonPart3->name << std::endl;
 	pistonPart3->m = 1.0;
 	pistonPart3->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 1, 1, 1 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ -0.0, 1.5, 0.0 });
@@ -248,28 +248,28 @@ void CADSystem::runOndselPiston()
 	}
 	//
 	auto revJoint1 = CREATE<RevoluteJoint>::With("/Assembly1/Joint1");
-	std::cout << "revJoint1->getName() " << revJoint1->getName() << std::endl;
+	std::cout << "revJoint1->name " << revJoint1->name << std::endl;
 	revJoint1->connectsItoJ(assembly1->partFrame->endFrame("/Assembly1/Marker2"), crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker1"));
 	TheSystem->addJoint(revJoint1);
 
 	auto revJoint2 = CREATE<RevoluteJoint>::With("/Assembly1/Joint2");
-	std::cout << "revJoint2->getName() " << revJoint2->getName() << std::endl;
+	std::cout << "revJoint2->name " << revJoint2->name << std::endl;
 	revJoint2->connectsItoJ(crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker2"), conrodPart2->partFrame->endFrame("/Assembly1/Part2/Marker1"));
 	TheSystem->addJoint(revJoint2);
 
 	auto revJoint3 = CREATE<RevoluteJoint>::With("/Assembly1/Joint3");
-	std::cout << "revJoint3->getName() " << revJoint3->getName() << std::endl;
+	std::cout << "revJoint3->name " << revJoint3->name << std::endl;
 	revJoint3->connectsItoJ(conrodPart2->partFrame->endFrame("/Assembly1/Part2/Marker2"), pistonPart3->partFrame->endFrame("/Assembly1/Part3/Marker1"));
 	TheSystem->addJoint(revJoint3);
 
 	auto cylJoint4 = CREATE<CylindricalJoint>::With("/Assembly1/Joint4");
-	std::cout << "cylJoint4->getName() " << cylJoint4->getName() << std::endl;
+	std::cout << "cylJoint4->name " << cylJoint4->name << std::endl;
 	cylJoint4->connectsItoJ(pistonPart3->partFrame->endFrame("/Assembly1/Part3/Marker2"), assembly1->partFrame->endFrame("/Assembly1/Marker1"));
 	TheSystem->addJoint(cylJoint4);
 
 	auto rotMotion1 = CREATE<ZRotation>::With("/Assembly1/Motion1");
 	rotMotion1->connectsItoJ(assembly1->partFrame->endFrame("/Assembly1/Marker2"), crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker1"));
-	std::cout << "rotMotion1->getName() " << rotMotion1->getName() << std::endl;
+	std::cout << "rotMotion1->name " << rotMotion1->name << std::endl;
 	auto omega = std::make_shared<Constant>(6.2831853071796);
 	auto timeScale = std::make_shared<Constant>(1.0);
 	auto time = std::make_shared<Product>(timeScale, TheSystem->time);
@@ -286,8 +286,8 @@ void CADSystem::runPiston()
 	auto& TheSystem = mbdSystem;
 	TheSystem->clear();
 	std::string name = "TheSystem";
-	TheSystem->setName(name);
-	std::cout << "TheSystem->getName() " << TheSystem->getName() << std::endl;
+	TheSystem->name = name;
+	std::cout << "TheSystem->name " << TheSystem->name << std::endl;
 	auto& systemSolver = TheSystem->systemSolver;
 	systemSolver->errorTolPosKine = 1.0e-6;
 	systemSolver->errorTolAccKine = 1.0e-6;
@@ -314,7 +314,7 @@ void CADSystem::runPiston()
 	FRowDsptr fullRow;
 	//
 	auto assembly1 = CREATE<Part>::With("/Assembly1");
-	std::cout << "assembly1->getName() " << assembly1->getName() << std::endl;
+	std::cout << "assembly1->name " << assembly1->name << std::endl;
 	assembly1->m = 0.0;
 	assembly1->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
@@ -359,7 +359,7 @@ void CADSystem::runPiston()
 	assembly1->asFixed();
 	//
 	auto crankPart1 = CREATE<Part>::With("/Assembly1/Part1");
-	std::cout << "crankPart1->getName() " << crankPart1->getName() << std::endl;
+	std::cout << "crankPart1->name " << crankPart1->name << std::endl;
 	crankPart1->m = 0.045210530089461;
 	crankPart1->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 1.7381980042084e-4, 0.003511159968501, 0.0036154518487535 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423368514246, 2.6661567755108e-17, -0.048029210642807 });
@@ -401,7 +401,7 @@ void CADSystem::runPiston()
 	}
 	//
 	auto conrodPart2 = CREATE<Part>::With("/Assembly1/Part2");
-	std::cout << "conrodPart2->getName() " << conrodPart2->getName() << std::endl;
+	std::cout << "conrodPart2->name " << conrodPart2->name << std::endl;
 	conrodPart2->m = 0.067815795134192;
 	conrodPart2->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 2.6072970063126e-4, 0.011784982468533, 0.011941420288912 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ 0.38423368514246, 0.49215295678475, 0.048029210642807 });
@@ -443,7 +443,7 @@ void CADSystem::runPiston()
 	}
 	//
 	auto pistonPart3 = CREATE<Part>::With("/Assembly1/Part3");
-	std::cout << "pistonPart3->getName() " << pistonPart3->getName() << std::endl;
+	std::cout << "pistonPart3->name " << pistonPart3->name << std::endl;
 	pistonPart3->m = 1.730132083368;
 	pistonPart3->aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.19449049546716, 0.23028116340971, 0.23028116340971 });
 	qX = std::make_shared<FullColumn<double>>(ListD{ -1.283972762056e-18, 1.4645980199976, -4.7652385308244e-17 });
@@ -485,28 +485,28 @@ void CADSystem::runPiston()
 	}
 	//
 	auto revJoint1 = CREATE<RevoluteJoint>::With("/Assembly1/Joint1");
-	std::cout << "revJoint1->getName() " << revJoint1->getName() << std::endl;
+	std::cout << "revJoint1->name " << revJoint1->name << std::endl;
 	revJoint1->connectsItoJ(assembly1->partFrame->endFrame("/Assembly1/Marker2"), crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker1"));
 	TheSystem->addJoint(revJoint1);
 
 	auto revJoint2 = CREATE<RevoluteJoint>::With("/Assembly1/Joint2");
-	std::cout << "revJoint2->getName() " << revJoint2->getName() << std::endl;
+	std::cout << "revJoint2->name " << revJoint2->name << std::endl;
 	revJoint2->connectsItoJ(crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker2"), conrodPart2->partFrame->endFrame("/Assembly1/Part2/Marker1"));
 	TheSystem->addJoint(revJoint2);
 
 	auto revJoint3 = CREATE<RevoluteJoint>::With("/Assembly1/Joint3");
-	std::cout << "revJoint3->getName() " << revJoint3->getName() << std::endl;
+	std::cout << "revJoint3->name " << revJoint3->name << std::endl;
 	revJoint3->connectsItoJ(conrodPart2->partFrame->endFrame("/Assembly1/Part2/Marker2"), pistonPart3->partFrame->endFrame("/Assembly1/Part3/Marker1"));
 	TheSystem->addJoint(revJoint3);
 
 	auto cylJoint4 = CREATE<CylindricalJoint>::With("/Assembly1/Joint4");
-	std::cout << "cylJoint4->getName() " << cylJoint4->getName() << std::endl;
+	std::cout << "cylJoint4->name " << cylJoint4->name << std::endl;
 	cylJoint4->connectsItoJ(pistonPart3->partFrame->endFrame("/Assembly1/Part3/Marker2"), assembly1->partFrame->endFrame("/Assembly1/Marker1"));
 	TheSystem->addJoint(cylJoint4);
 
 	auto rotMotion1 = CREATE<ZRotation>::With("/Assembly1/Motion1");
 	rotMotion1->connectsItoJ(assembly1->partFrame->endFrame("/Assembly1/Marker2"), crankPart1->partFrame->endFrame("/Assembly1/Part1/Marker1"));
-	std::cout << "rotMotion1->getName() " << rotMotion1->getName() << std::endl;
+	std::cout << "rotMotion1->name " << rotMotion1->name << std::endl;
 	auto omega = std::make_shared<Constant>(6.2831853071796);
 	auto timeScale = std::make_shared<Constant>(0.04);
 	auto time = std::make_shared<Product>(timeScale, TheSystem->time);

@@ -15,6 +15,7 @@ namespace MbD {
         void fillY() override;
         void fillPyPx() override;
         void passRootToSystem() override;
+        void assignEquationNumbers() = 0;
 
         int nqsu = -1;
         std::shared_ptr<FullColumn<double>> qsuOld;

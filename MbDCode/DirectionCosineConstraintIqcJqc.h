@@ -8,14 +8,15 @@ namespace MbD {
         //pGpEJ ppGpEIpEJ ppGpEJpEJ iqEJ 
     public:
         DirectionCosineConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
-        void initaAijIeJe() override;
+
         void calcPostDynCorrectorIteration() override;
-        void useEquationNumbers() override;
+        void fillAccICIterError(FColDsptr col) override;
         void fillPosICError(FColDsptr col) override;
         void fillPosICJacob(SpMatDsptr mat) override;
         void fillPosKineJacob(SpMatDsptr mat) override;
         void fillVelICJacob(SpMatDsptr mat) override;
-        void fillAccICIterError(FColDsptr col) override;
+        void initaAijIeJe() override;
+        void useEquationNumbers() override;
 
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEIpEJ;

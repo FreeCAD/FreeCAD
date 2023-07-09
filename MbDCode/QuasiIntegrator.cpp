@@ -102,7 +102,7 @@ void QuasiIntegrator::checkForDiscontinuity()
 		epsilon = std::abs(t) * epsilon;
 		tstartNew = ((direction * t) + epsilon) / direction;
 	}
-	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { tstartNew = item->checkForDynDiscontinuityBetween(tprevious, tstartNew); });
+	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { tstartNew = item->checkForDynDiscontinuityBetweenand(tprevious, tstartNew); });
 	if ((direction * tstartNew) > (direction * t)) {
 		//"No discontinuity in step"
 			return;

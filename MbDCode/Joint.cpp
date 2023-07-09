@@ -61,8 +61,23 @@ void Joint::postInput()
 
 void Joint::addConstraint(std::shared_ptr<Constraint> con)
 {
-	con->setOwner(this);
+	con->owner = this;
 	constraints->push_back(con);
+}
+
+FColDsptr MbD::Joint::aFIeJtIe()
+{
+	//"aFIeJtIe is joint force on end frame Ie expresses in Ie components."
+	auto frmIqc = std::dynamic_pointer_cast<EndFrameqc>(frmI);
+	return frmIqc->aAeO()->timesFullColumn(this->aFIeJtO());
+}
+
+FColDsptr MbD::Joint::aFIeJtO()
+{
+	//"aFIeJtO is joint force on end frame Ie expresses in O components."
+	auto aFIeJtO = std::make_shared <FullColumn<double>>(3);
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->addToJointForceI(aFIeJtO); });
+	return aFIeJtO;
 }
 
 void Joint::prePosIC()
@@ -177,7 +192,7 @@ void Joint::constraintsReport()
 		}
 		});
 	if (redunCons->size() > 0) {
-		std::string str = "MbD: " + this->classname() + std::string(" ") + this->getName() + " has the following constraint(s) removed: ";
+		std::string str = "MbD: " + this->classname() + std::string(" ") + this->name + " has the following constraint(s) removed: ";
 		this->logString(str);
 		std::for_each(redunCons->begin(), redunCons->end(), [&](auto& con) {
 			str = "MbD: " + std::string("    ") + con->classname();
@@ -189,18 +204,6 @@ void Joint::constraintsReport()
 void Joint::postPosIC()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosIC(); });
-}
-
-void Joint::outputStates()
-{
-	Item::outputStates();
-	std::stringstream ss;
-	ss << "frmI = " << frmI->markerFrame->getName() << std::endl;
-	ss << "frmJ = " << frmJ->markerFrame->getName() << std::endl;
-	auto str = ss.str();
-	this->logString(str);
-
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->outputStates(); });
 }
 
 void Joint::preDyn()
@@ -216,6 +219,11 @@ void Joint::fillPosKineError(FColDsptr col)
 void Joint::fillPosKineJacob(SpMatDsptr mat)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillPosKineJacob(mat); });
+}
+
+void MbD::Joint::fillqsuddotlam(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillqsuddotlam(col); });
 }
 
 void Joint::preVelIC()
@@ -275,6 +283,20 @@ std::shared_ptr<StateData> Joint::stateData()
 FColDsptr Joint::aFX()
 {
 	return this->jointForceI();
+}
+
+FColDsptr MbD::Joint::aTIeJtIe()
+{
+	//"aTIeJtIe is torque on part containing end frame Ie expressed in Ie components."
+	return frmI->aAeO()->timesFullColumn(this->aTIeJtO());
+}
+
+FColDsptr MbD::Joint::aTIeJtO()
+{
+	//"aTIeJtO is torque on part containing end frame Ie expressed in O components."
+	auto aTIeJtO = std::make_shared <FullColumn<double>>(3);
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->addToJointTorqueI(aTIeJtO); });
+	return aTIeJtO;
 }
 
 FColDsptr Joint::jointForceI()

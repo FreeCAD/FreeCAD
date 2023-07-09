@@ -9,13 +9,9 @@ namespace MbD {
     public:
         DispCompIecJecKec();
         DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
-        FRowDsptr pvaluepXJ() override;
-        FRowDsptr pvaluepEJ() override;
-        FMatDsptr ppvaluepXJpEK() override;
-        FMatDsptr ppvaluepEJpEK() override;
-        FMatDsptr ppvaluepEJpEJ() override;
 
-        virtual double value();
+        double value() override;
+
         EndFrmcptr efrmK;
         int axisK;
         double riIeJeKe;

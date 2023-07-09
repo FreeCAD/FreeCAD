@@ -28,16 +28,6 @@ void Constraint::postInput()
 	Item::postInput();
 }
 
-void Constraint::setOwner(Item* x)
-{
-	owner = x;
-}
-
-Item* Constraint::getOwner()
-{
-	return owner;
-}
-
 void Constraint::prePosIC()
 {
 	lam = 0.0;
@@ -91,7 +81,7 @@ ConstraintType Constraint::type()
 
 void Constraint::fillqsulam(FColDsptr col)
 {
-	col->at(iG) = lam;
+	col->atiput(iG, lam);
 }
 
 void Constraint::setqsulam(FColDsptr col)
@@ -126,17 +116,6 @@ bool Constraint::isRedundant()
 	return false;
 }
 
-void Constraint::outputStates()
-{
-	Item::outputStates();
-	std::stringstream ss;
-	ss << "iG = " << iG << std::endl;
-	ss << "aG = " << aG << std::endl;
-	ss << "lam = " << lam << std::endl;
-	auto str = ss.str();
-	this->logString(str);
-}
-
 void Constraint::preDyn()
 {
 	mu = 0.0;
@@ -145,6 +124,11 @@ void Constraint::preDyn()
 void Constraint::fillPosKineError(FColDsptr col)
 {
 	col->atiplusNumber(iG, aG);
+}
+
+void Constraint::fillqsuddotlam(FColDsptr col)
+{
+	col->atiput(iG, lam);
 }
 
 void Constraint::preAccIC()

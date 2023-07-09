@@ -22,6 +22,10 @@ ConstraintType RedundantConstraint::type()
 	return redundant;
 }
 
+void MbD::RedundantConstraint::fillqsuddotlam(FColDsptr col)
+{
+}
+
 void RedundantConstraint::fillqsulam(FColDsptr col)
 {
 }

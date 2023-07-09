@@ -19,6 +19,8 @@ namespace MbD {
     public:
         EndFramec();
         EndFramec(const char* str);
+
+        FMatDsptr aAeO();
         System* root() override;
         void initialize() override;
         void setMarkerFrame(MarkerFrame* markerFrm);

@@ -438,6 +438,90 @@
     <ClCompile Include="ForceTorqueData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConstVelConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstVelConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstVelConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistanceConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistanceConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistanceConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistanceConstraintIqctJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIeqctJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AngleJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistancexyConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DispCompIecJecIe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistancexyConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DispCompIeqcJecIe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DispCompIeqcJeqcIe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DispCompIeqctJeqcIe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistancexyConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GearConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitAnglezIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitAnglezIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitAnglezIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Numeric.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AngleZIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AngleZIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AngleZIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -870,6 +954,90 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ForceTorqueData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstVelConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstVelConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstVelConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistanceConstraintIqctJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIeqcJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIeqctJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AngleJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistancexyConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DispCompIecJecIe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistancexyConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DispCompIeqcJecIe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DispCompIeqcJeqcIe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DispCompIeqctJeqcIe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistancexyConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GearConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitAnglezIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitAnglezIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitAnglezIeqcJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Numeric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AngleZIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AngleZIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AngleZIeqcJeqc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

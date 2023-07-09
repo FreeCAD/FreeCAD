@@ -18,7 +18,7 @@ namespace MbD {
 				int index;
 				T value;
 				for (auto& element : pair) {
-					if (i == 0) index = (int)std::round(element); ;
+					if (i == 0) index = (int)std::round(element);
 					if (i == 1) value = element;
 					i++;
 				}

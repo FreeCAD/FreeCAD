@@ -12,6 +12,11 @@ EndFramec::EndFramec() {
 EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
 }
 
+FMatDsptr MbD::EndFramec::aAeO()
+{
+	return aAOe->transpose();
+}
+
 System* EndFramec::root()
 {
 	return markerFrame->root();

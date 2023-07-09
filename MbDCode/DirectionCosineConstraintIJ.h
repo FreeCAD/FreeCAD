@@ -10,17 +10,19 @@ namespace MbD {
         //axisI axisJ aAijIeJe 
     public:
         DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
-        void initialize() override;
-        void initializeLocally() override;
-        void initializeGlobally() override;
-        virtual void initaAijIeJe();
-        void postInput() override;
+
         void calcPostDynCorrectorIteration() override;
-        void prePosIC() override;
+        virtual void initaAijIeJe();
+        void initialize() override;
+        void initializeGlobally() override;
+        void initializeLocally() override;
+        void postInput() override;
         void postPosICIteration() override;
-        ConstraintType type() override;
-        void preVelIC() override;
         void preAccIC() override;
+        void prePosIC() override;
+        void preVelIC() override;
+        void simUpdateAll() override;
+        ConstraintType type() override;
 
         int axisI, axisJ;
         std::shared_ptr<DirectionCosineIecJec> aAijIeJe;

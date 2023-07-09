@@ -34,7 +34,7 @@ void DirectionCosineConstraintIJ::initaAijIeJe()
 void DirectionCosineConstraintIJ::postInput()
 {
 	aAijIeJe->postInput();
-	Constraint::postInput();
+	ConstraintIJ::postInput();
 }
 
 void DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
@@ -45,7 +45,7 @@ void DirectionCosineConstraintIJ::calcPostDynCorrectorIteration()
 void DirectionCosineConstraintIJ::prePosIC()
 {
 	aAijIeJe->prePosIC();
-	Constraint::prePosIC();
+	ConstraintIJ::prePosIC();
 }
 
 void DirectionCosineConstraintIJ::postPosICIteration()
@@ -65,8 +65,14 @@ void DirectionCosineConstraintIJ::preVelIC()
 	Item::preVelIC();
 }
 
+void MbD::DirectionCosineConstraintIJ::simUpdateAll()
+{
+	aAijIeJe->simUpdateAll();
+	ConstraintIJ::simUpdateAll();
+}
+
 void DirectionCosineConstraintIJ::preAccIC()
 {
 	aAijIeJe->preAccIC();
-	Constraint::preAccIC();
+	ConstraintIJ::preAccIC();
 }

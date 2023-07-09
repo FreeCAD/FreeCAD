@@ -43,3 +43,9 @@ void PosICKineNewtonRaphson::assignEquationNumbers()
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
 }
+
+void MbD::PosICKineNewtonRaphson::preRun()
+{
+	system->Solver::logString("MbD: Solving for quasi kinematic position.");
+	PosNewtonRaphson::preRun();
+}

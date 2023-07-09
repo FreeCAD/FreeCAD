@@ -39,6 +39,11 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
+		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj) {
+			auto inst = std::make_shared<T>(frmi, frmj);
+			inst->initialize();
+			return inst;
+		}
 		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, int axis) {
 			auto inst = std::make_shared<T>(frmi, frmj, axis);
 			inst->initialize();

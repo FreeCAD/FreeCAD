@@ -28,8 +28,9 @@ void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void TranslationConstraintIqcJc::useEquationNumbers()
 {
-	iqXI = std::static_pointer_cast<EndFrameqc>(frmI)->iqX();
-	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	iqXI = frmIeqc->iqX();
+	iqEI = frmIeqc->iqE();
 }
 
 void TranslationConstraintIqcJc::fillPosICError(FColDsptr col)

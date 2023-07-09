@@ -22,32 +22,7 @@ void DirectionCosineIecJec::calcPostDynCorrectorIteration()
 	aAijIeJe = aAjOIe->dot(aAjOJe);
 }
 
-FRowDsptr DirectionCosineIecJec::pvaluepXJ()
+double MbD::DirectionCosineIecJec::value()
 {
-	assert(false);
-	return FRowDsptr();
-}
-
-FRowDsptr DirectionCosineIecJec::pvaluepEJ()
-{
-	assert(false);
-	return FRowDsptr();
-}
-
-FMatDsptr DirectionCosineIecJec::ppvaluepXJpEK()
-{
-	assert(false);
-	return FMatDsptr();
-}
-
-FMatDsptr DirectionCosineIecJec::ppvaluepEJpEK()
-{
-	assert(false);
-	return FMatDsptr();
-}
-
-FMatDsptr DirectionCosineIecJec::ppvaluepEJpEJ()
-{
-	assert(false);
-	return FMatDsptr();
+	return aAijIeJe;
 }

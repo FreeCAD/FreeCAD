@@ -103,6 +103,11 @@ void MarkerFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuWeights(diagMat); });
 }
 
+void MbD::MarkerFrame::fillqsuddotlam(FColDsptr col)
+{
+	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuddotlam(col); });
+}
+
 void MarkerFrame::fillqsulam(FColDsptr col)
 {
 	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });

@@ -266,6 +266,11 @@ void Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 	partFrame->fillqsuWeights(diagMat);
 }
 
+void MbD::Part::fillqsuddotlam(FColDsptr col)
+{
+	partFrame->fillqsuddotlam(col);
+}
+
 void Part::fillqsulam(FColDsptr col)
 {
 	partFrame->fillqsulam(col);
@@ -363,12 +368,6 @@ void Part::postPosIC()
 {
 	partFrame->postPosIC();
 	this->calcmE();
-}
-
-void Part::outputStates()
-{
-	Item::outputStates();
-	partFrame->outputStates();
 }
 
 void Part::preDyn()

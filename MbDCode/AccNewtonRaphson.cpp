@@ -56,7 +56,7 @@ void AccNewtonRaphson::fillY()
 	y->zeroSelf();
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) {
 		item->fillAccICIterError(y);
-		//std::cout << item->getName() << *y << std::endl;
+		//std::cout << item->name << *y << std::endl;
 		});
 	std::cout << *y << std::endl;
 }

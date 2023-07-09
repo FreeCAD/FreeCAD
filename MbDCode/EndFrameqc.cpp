@@ -30,7 +30,7 @@ void EndFrameqc::initializeGlobally()
 
 void EndFrameqc::initEndFrameqct()
 {
-	endFrameqct = CREATE<EndFrameqct>::With(this->getName().data());
+	endFrameqct = CREATE<EndFrameqct>::With(this->name.data());
 	endFrameqct->prOeOpE = prOeOpE;
 	endFrameqct->pprOeOpEpE = pprOeOpEpE;
 	endFrameqct->pAOepE = pAOepE;

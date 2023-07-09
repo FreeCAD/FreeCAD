@@ -17,6 +17,16 @@ void DispCompIeqctJeqcO::initializeGlobally()
 	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqct>(frmJ)->ppriOeOpEpE(axis);
 }
 
+FRowDsptr MbD::DispCompIeqctJeqcO::ppvaluepEIpt()
+{
+	return ppriIeJeOpEIpt;
+}
+
+double MbD::DispCompIeqctJeqcO::ppvalueptpt()
+{
+	return ppriIeJeOptpt;
+}
+
 void DispCompIeqctJeqcO::calcPostDynCorrectorIteration()
 {
 	//"ppriIeJeOpEIpEI is not a constant now."

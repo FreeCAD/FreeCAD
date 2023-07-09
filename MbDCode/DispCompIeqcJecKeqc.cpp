@@ -26,7 +26,7 @@ void DispCompIeqcJecKeqc::calcPostDynCorrectorIteration()
 	DispCompIecJecKeqc::calcPostDynCorrectorIteration();
 	auto frmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto mprIeJeOpEIT = frmIqc->prOeOpE->transpose();
-	auto mpprIeJeOpEIpEI = frmIqc->pprOeOpEpE;
+	auto& mpprIeJeOpEIpEI = frmIqc->pprOeOpEpE;
 	for (int i = 0; i < 3; i++)
 	{
 		priIeJeKepXI->at(i) = 0.0 - (aAjOKe->at(i));
@@ -74,11 +74,6 @@ FRowDsptr DispCompIeqcJecKeqc::pvaluepXI()
 FRowDsptr DispCompIeqcJecKeqc::pvaluepEI()
 {
 	return priIeJeKepEI;
-}
-
-FRowDsptr DispCompIeqcJecKeqc::pvaluepEK()
-{
-	return priIeJeKepEK;
 }
 
 FMatDsptr DispCompIeqcJecKeqc::ppvaluepXIpEK()

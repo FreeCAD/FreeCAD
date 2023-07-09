@@ -30,8 +30,9 @@ void AtPointConstraintIqcJqc::calcPostDynCorrectorIteration()
 void AtPointConstraintIqcJqc::useEquationNumbers()
 {
 	AtPointConstraintIqcJc::useEquationNumbers();
-	iqXJminusOnePlusAxis = std::static_pointer_cast<EndFrameqc>(frmJ)->iqX() + axis;
-	iqEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->iqE();
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	iqXJminusOnePlusAxis = frmJeqc->iqX() + axis;
+	iqEJ = frmJeqc->iqE();
 }
 
 void AtPointConstraintIqcJqc::fillPosICError(FColDsptr col)

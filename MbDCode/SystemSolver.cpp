@@ -96,11 +96,11 @@ bool SystemSolver::needToRedoPosIC()
 	auto newSet = std::make_shared<std::set<std::string>>();
 	for (auto& con : *allRedunCons) {
 		auto aaa = std::static_pointer_cast<RedundantConstraint>(con);
-		auto& bbb = aaa->constraint->getName();
+		auto& bbb = aaa->constraint->name;
 		newSet->insert(bbb);
 	}
 	//std::transform(allRedunCons->begin(), allRedunCons->end(), newSet->begin(), [](auto con) {
-	//	return std::static_pointer_cast<RedundantConstraint>(con)->constraint->getName();
+	//	return std::static_pointer_cast<RedundantConstraint>(con)->constraint->name;
 	//	});
 	if (newSet->empty()) return false;
 	auto itr = std::find_if(setsOfRedundantConstraints->begin(), setsOfRedundantConstraints->end(), [&](auto& set) {

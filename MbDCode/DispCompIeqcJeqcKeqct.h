@@ -9,17 +9,18 @@ namespace MbD {
     public:
         DispCompIeqcJeqcKeqct();
         DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
-        void initialize() override;
+
         void calcPostDynCorrectorIteration() override;
-        void preVelIC() override;
-        double pvaluept();
+        void initialize() override;
         FRowDsptr ppvaluepXIpt();
         FRowDsptr ppvaluepEIpt();
         FRowDsptr ppvaluepEKpt();
         FRowDsptr ppvaluepXJpt();
         FRowDsptr ppvaluepEJpt();
         double ppvalueptpt();
+        double pvaluept();
         void preAccIC() override;
+        void preVelIC() override;
 
         double priIeJeKept;
         FRowDsptr ppriIeJeKepXIpt;

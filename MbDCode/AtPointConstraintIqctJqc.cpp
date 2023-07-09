@@ -35,7 +35,7 @@ ConstraintType AtPointConstraintIqctJqc::type()
 
 void AtPointConstraintIqctJqc::preVelIC()
 {
-	AtPointConstraintIJ::preVelIC();
+	AtPointConstraintIqcJqc::preVelIC();
 	pGpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->priIeJeOpt;
 }
 
@@ -56,7 +56,7 @@ void AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 
 void AtPointConstraintIqctJqc::preAccIC()
 {
-	AtPointConstraintIJ::preAccIC();
+	AtPointConstraintIqcJqc::preAccIC();
 	ppGpEIpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOpEIpt;
 	ppGptpt = std::static_pointer_cast<DispCompIeqctJeqcO>(riIeJeO)->ppriIeJeOptpt;
 }

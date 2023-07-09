@@ -12,11 +12,6 @@ AbsConstraint::AbsConstraint(int i)
     axis = i;
 }
 
-void AbsConstraint::initialize()
-{
-    Constraint::initialize();
-}
-
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
     if (axis < 3) {

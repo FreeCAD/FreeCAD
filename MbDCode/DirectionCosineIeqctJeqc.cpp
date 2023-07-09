@@ -25,6 +25,21 @@ void DirectionCosineIeqctJeqc::initializeGlobally()
 	ppAjOJepEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppAjOepEpE(axisJ);
 }
 
+FRowDsptr MbD::DirectionCosineIeqctJeqc::ppvaluepEIpt()
+{
+	return ppAijIeJepEIpt;
+}
+
+FRowDsptr MbD::DirectionCosineIeqctJeqc::ppvaluepEJpt()
+{
+	return ppAijIeJepEJpt;
+}
+
+double MbD::DirectionCosineIeqctJeqc::ppvalueptpt()
+{
+	return ppAijIeJeptpt;
+}
+
 void DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
 {
 	//"ppAjOIepEIpEI is not longer constant and must be set before any calculation."

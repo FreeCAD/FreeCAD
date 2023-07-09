@@ -18,6 +18,21 @@ void DispCompIeqcJecO::initializeGlobally()
 	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppriOeOpEpE(axis)->negated();
 }
 
+FMatDsptr MbD::DispCompIeqcJecO::ppvaluepEIpEI()
+{
+	return ppriIeJeOpEIpEI;
+}
+
+FRowDsptr MbD::DispCompIeqcJecO::pvaluepEI()
+{
+	return priIeJeOpEI;
+}
+
+FRowDsptr MbD::DispCompIeqcJecO::pvaluepXI()
+{
+	return priIeJeOpXI;
+}
+
 void DispCompIeqcJecO::calcPostDynCorrectorIteration()
 {
 	DispCompIecJecO::calcPostDynCorrectorIteration();

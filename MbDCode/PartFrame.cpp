@@ -26,7 +26,7 @@ System* PartFrame::root()
 void PartFrame::initialize()
 {
 	aGeu = CREATE<EulerConstraint>::With();
-	aGeu->setOwner(this);
+	aGeu->owner = this;
 	aGabs = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	markerFrames = std::make_shared<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
@@ -116,7 +116,7 @@ void PartFrame::addMarkerFrame(std::shared_ptr<MarkerFrame> markerFrame)
 
 EndFrmcptr PartFrame::endFrame(std::string name)
 {
-	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->getName() == name; });
+	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
 	return (*match)->endFrames->at(0);
 }
 
@@ -170,7 +170,7 @@ void PartFrame::constraintsReport()
 		});
 	if (aGeu->isRedundant()) redunCons->push_back(aGeu);
 	if (redunCons->size() > 0) {
-		std::string str = "MbD: " + part->classname() + std::string(" ") + part->getName() + " has the following constraint(s) removed: ";
+		std::string str = "MbD: " + part->classname() + std::string(" ") + part->name + " has the following constraint(s) removed: ";
 		this->logString(str);
 		std::for_each(redunCons->begin(), redunCons->end(), [&](auto& con) {
 			str = "MbD: " + std::string("    ") + std::string(typeid(*con).name());
@@ -257,6 +257,15 @@ void PartFrame::fillqsu(FColDsptr col)
 void PartFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsuWeights(diagMat); });
+}
+
+void MbD::PartFrame::fillqsuddotlam(FColDsptr col)
+{
+	col->atiputFullColumn(iqX, qXddot);
+	col->atiputFullColumn(iqE, qEddot);
+	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsuddotlam(col); });
+	aGeu->fillqsuddotlam(col);
+	aGabsDo([&](std::shared_ptr<Constraint> con) { con->fillqsuddotlam(col); });
 }
 
 void PartFrame::fillqsulam(FColDsptr col)
@@ -348,20 +357,6 @@ void PartFrame::postPosIC()
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->postPosIC(); });
 	aGeu->postPosIC();
 	aGabsDo([](std::shared_ptr<Constraint> con) { con->postPosIC(); });
-}
-
-void PartFrame::outputStates()
-{
-	std::stringstream ss;
-	ss << "qX = ";
-	qX->printOn(ss);
-	ss << std::endl;
-	ss << "qE = ";
-	qE->printOn(ss);
-	auto str = ss.str();
-	this->logString(str);
-	aGeu->outputStates();
-	aGabsDo([](std::shared_ptr<Constraint> con) { con->outputStates(); });
 }
 
 void PartFrame::preDyn()
@@ -505,7 +500,7 @@ void PartFrame::asFixed()
 {
 	for (int i = 0; i < 6; i++) {
 		auto con = CREATE<AbsConstraint>::With(i);
-		con->setOwner(this);
+		con->owner = this;
 		aGabs->push_back(con);
 	}
 }

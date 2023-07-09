@@ -10,12 +10,38 @@ namespace MbD {
     public:
         KinematicIeJe();
         KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj);
-        virtual FRowDsptr pvaluepXJ() = 0;
-        virtual FRowDsptr pvaluepEJ() = 0;
-        virtual FMatDsptr ppvaluepXJpEK() = 0;
-        virtual FMatDsptr ppvaluepEJpEK() = 0;
-        virtual FMatDsptr ppvaluepEJpEJ() = 0;
 
+        bool isKineIJ() override;
+        virtual FRowDsptr pvaluepXI();
+        virtual FRowDsptr pvaluepEI();
+        virtual FMatDsptr ppvaluepXIpXI();
+        virtual FMatDsptr ppvaluepXIpEI();
+        virtual FMatDsptr ppvaluepEIpEI();
+        virtual FRowDsptr pvaluepXJ();
+        virtual FRowDsptr pvaluepEJ();
+        virtual FMatDsptr ppvaluepXIpXJ();
+        virtual FMatDsptr ppvaluepXIpEJ();
+        virtual FMatDsptr ppvaluepEIpXJ();
+        virtual FMatDsptr ppvaluepEIpEJ();
+        virtual FMatDsptr ppvaluepXJpXJ();
+        virtual FMatDsptr ppvaluepXJpEJ();
+        virtual FMatDsptr ppvaluepEJpEJ();
+        virtual FRowDsptr pvaluepXK();
+        virtual FRowDsptr pvaluepEK();
+        virtual FMatDsptr ppvaluepXIpEK();
+        virtual FMatDsptr ppvaluepEIpEK();
+        virtual FMatDsptr ppvaluepXJpEK();
+        virtual FMatDsptr ppvaluepEJpEK();
+        virtual FMatDsptr ppvaluepEKpEK();
+        virtual double pvaluept();
+        virtual double ppvalueptpt();
+        virtual FRowDsptr ppvaluepXIpt();
+        virtual FRowDsptr ppvaluepEIpt();
+        virtual FRowDsptr ppvaluepXJpt();
+        virtual FRowDsptr ppvaluepEJpt();
+        virtual FRowDsptr ppvaluepXKpt();
+        virtual FRowDsptr ppvaluepEKpt();
+        virtual double value();
 
         EndFrmcptr frmI, frmJ;
     };

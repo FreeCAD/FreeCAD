@@ -29,6 +29,7 @@ namespace MbD {
 		std::shared_ptr<FullColumn<T>> transpose();
 		std::shared_ptr<FullRow<T>> copy();
 		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
+		std::shared_ptr<FullMatrix<T>> transposeTimesFullRow(std::shared_ptr<FullRow<T>> fullRow);
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
@@ -123,6 +124,18 @@ namespace MbD {
 			auto j = j1 + jj;
 			this->at(j) += fullRow->at(jj);
 		}
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullRow<T>::transposeTimesFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	{
+		//"a*b = a(i)b(j)"
+		auto nrow = (int)this->size();
+		auto answer = std::make_shared<FullMatrix<double>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->atiput(i, fullRow->times(this->at(i)));
+		}
+		return answer;
 	}
 	template<typename T>
 	inline std::ostream& FullRow<T>::printOn(std::ostream& s) const

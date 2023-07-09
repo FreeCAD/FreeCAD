@@ -13,12 +13,9 @@ namespace MbD {
     public:
         DirectionCosineIecJec();
         DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+
         void calcPostDynCorrectorIteration() override;
-        FRowDsptr pvaluepXJ() override;
-        FRowDsptr pvaluepEJ() override;
-        FMatDsptr ppvaluepXJpEK() override;
-        FMatDsptr ppvaluepEJpEK() override;
-        FMatDsptr ppvaluepEJpEJ() override;
+        double value() override;
 
         int axisI, axisJ;   //0, 1, 2 = x, y, z
         double aAijIeJe;

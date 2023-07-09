@@ -24,6 +24,16 @@ void DirectionCosineIeqcJec::initializeGlobally()
 	ppAjOIepEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppAjOepEpE(axisI);
 }
 
+FMatDsptr MbD::DirectionCosineIeqcJec::ppvaluepEIpEI()
+{
+	return ppAijIeJepEIpEI;
+}
+
+FRowDsptr MbD::DirectionCosineIeqcJec::pvaluepEI()
+{
+	return pAijIeJepEI;
+}
+
 void DirectionCosineIeqcJec::calcPostDynCorrectorIteration()
 {
 	DirectionCosineIecJec::calcPostDynCorrectorIteration();
