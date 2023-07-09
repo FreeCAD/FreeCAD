@@ -1278,7 +1278,11 @@ void View3DInventorViewer::showRotationCenter(bool show)
     SoNode* scene = getSceneGraph();
     auto sep = static_cast<SoSeparator*>(scene);
 
-    if (show) {
+    bool showEnabled = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                           ->GetBool("ShowRotationCenter", true);
+
+    if (show && showEnabled) {
         SbBool found;
         SbVec3f center = navigation->getRotationCenter(found);
 
