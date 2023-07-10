@@ -260,6 +260,8 @@ private:
     void setCrosshairCursor(const QString& svgName);
     void setCrosshairCursor(const char* svgName);
 
+    Gui::View3DInventorViewer* getViewer();
+
 protected:
     /**
      * Returns constraints icons scaled to width.
