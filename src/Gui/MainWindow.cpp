@@ -1491,7 +1491,7 @@ void MainWindow::updateActions(bool delay)
         // the whole application in a weird state
         if (d->activityTimer->thread() != QThread::currentThread()) {
             QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int, 150));
+                Q_ARG(int, 150));
         }
         else {
             d->activityTimer->start(150);
