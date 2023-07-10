@@ -1278,6 +1278,11 @@ void ViewProviderPartExt::updateVisual()
     (void)numEdges;
 #   endif
     VisualTouched = false;
+
+    // The material has to be checked again
+    setHighlightedFaces(DiffuseColor.getValues());
+    setHighlightedEdges(LineColorArray.getValues());
+    setHighlightedPoints(PointColorArray.getValue());
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable) {
