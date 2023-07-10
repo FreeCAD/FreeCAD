@@ -201,7 +201,7 @@ find . -name "*.cmake" -type f -delete
 
 echo "\nCreating the appimage"
 chmod a+x ./AppDir/AppRun
-appimagetool-${arch}.AppImage --sign-key ${gpg_key} AppDir ${package_name}.AppImage
+appimagetool-${arch}.AppImage --sign --sign-key ${gpg_key} AppDir ${package_name}.AppImage
 
 echo "\nCreating hash"
 shasum -a 256 ${package_name}.AppImage > ${package_name}.AppImage-SHA256.txt
