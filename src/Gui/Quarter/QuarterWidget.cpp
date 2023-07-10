@@ -828,7 +828,7 @@ QuarterWidget::updateDevicePixelRatio() {
     }
     if(PRIVATE(this)->device_pixel_ratio != dev_pix_ratio) {
         PRIVATE(this)->device_pixel_ratio = dev_pix_ratio;
-        emit devicePixelRatioChanged(dev_pix_ratio);
+        Q_EMIT devicePixelRatioChanged(dev_pix_ratio);
         return true;
     }
     return false;
