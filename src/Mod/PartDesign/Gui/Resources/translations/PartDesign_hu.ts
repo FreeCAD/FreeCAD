@@ -3789,7 +3789,7 @@ Ez nem várt eredményekhez vezethet.</translation>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3798,32 +3798,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Ha van egy örökölt dokumentum AlkatrészTervezés objektummal Test nélkül, használja az áttelepítés funkciót az AlkatrészTervezésben ahhoz, hogy a Testbe helyezze azokat.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Aktív test szükséges</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Egy új AlkatrészTervezés objektum létrehozásához ott kell lennie egy aktív Test objektumnak a dokumentumban. Kérjük aktiváljon egyet (dupla kattintással), vagy hozzon létre egy új Testet.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Tulajdonság nem a testen van</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Funkció használatához szükséges, hogy az egy test objektumhoz tartozzon a dokumentumban.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Tulajdonság nem egy részben van</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Funkció használatához szükséges, hogy az egy alkatrész objektumhoz tartozzon a dokumentumban.</translation>
     </message>

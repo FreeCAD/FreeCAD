@@ -6813,7 +6813,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2061"/>
+      <location filename="../MainWindow.cpp" line="2062"/>
       <source>Dimension</source>
       <translation>Cota</translation>
     </message>
@@ -6843,32 +6843,32 @@ Desea guardar los cambios?</translation>
       <translation>Cerrar todo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Muestra u oculta la barra de herramientas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Alterna esta ventana acoplable</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1852"/>
-      <location filename="../MainWindow.cpp" line="1944"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1854"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>El objeto exportado contiene un vínculo externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1946"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Para vincular a objetos externos, el documento debe guardarse al menos una vez.
@@ -10347,7 +10347,7 @@ la copia actual se perderá.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2049"/>
+      <location filename="../MainWindow.cpp" line="2050"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>

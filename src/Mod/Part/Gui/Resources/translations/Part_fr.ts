@@ -1678,7 +1678,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Export CAD...</source>
-      <translation>Exportation CAO...</translation>
+      <translation>Exporter un fichier de CAO...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>

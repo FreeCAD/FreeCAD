@@ -1664,7 +1664,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Remalla per Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2024,7 +2024,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Info de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
@@ -2140,7 +2140,7 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -2206,7 +2206,7 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Format de fabricació 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
@@ -2281,7 +2281,7 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Mostra els colors</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1570"/>
@@ -2350,7 +2350,7 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modifica la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -2360,7 +2360,7 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Tall de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

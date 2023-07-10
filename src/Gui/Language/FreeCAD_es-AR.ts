@@ -85,7 +85,7 @@
       <location filename="../CommandTest.cpp" line="718"/>
       <location filename="../CommandTest.cpp" line="719"/>
       <source>Run test cases to verify console messages</source>
-      <translation>Ejecutar casos de prueba para verificar los mensajes de consola</translation>
+      <translation>Ejecutar tests de prueba para verificar los mensajes de la consola</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3303"/>
       <source>Clear all visible measurements</source>
-      <translation>Borrar todas las mediciones visibles</translation>
+      <translation>Suprimir todas las mediciones visibles</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../CommandView.cpp" line="924"/>
       <source>Toggle selectability</source>
-      <translation>Conmutar selectividad</translation>
+      <translation>Alternar seleccionabilidad</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="258"/>
@@ -772,7 +772,7 @@ mientras hace un clic izquierdo o derecho y mueve el mouse hacia arriba o hacia 
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
-      <translation>¿Deseas borrarlo ahora?</translation>
+      <translation>¿Quieres borrarlo ahora?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
@@ -1277,7 +1277,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
       <source>&amp;New shortcut:</source>
-      <translation>Nuevo atajo:</translation>
+      <translation>&amp;Nuevo acceso directo:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
@@ -1375,7 +1375,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="218"/>
       <source>Shortcut</source>
-      <translation>Atajo</translation>
+      <translation>Atajo de teclado</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="218"/>
@@ -1483,7 +1483,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbars.ui" line="334"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Los cambios se activarán la próxima vez que cargue el entorno apropiado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Los cambios se activarán la próxima vez que cargue el banco de trabajo apropiado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="86"/>
@@ -6811,7 +6811,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2061"/>
+      <location filename="../MainWindow.cpp" line="2062"/>
       <source>Dimension</source>
       <translation>Cota</translation>
     </message>
@@ -6841,32 +6841,32 @@ Desea guardar los cambios?</translation>
       <translation>Cerrar todo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Alterna esta barra de herramientas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Alterna esta ventana acoplable</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1852"/>
-      <location filename="../MainWindow.cpp" line="1944"/>
+      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1945"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1854"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>El objeto exportado contiene un vínculo externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1946"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Para vincular a objetos externos, el documento debe guardarse al menos una vez.
@@ -8464,7 +8464,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../resource.cpp" line="76"/>
       <source>Workbenches</source>
-      <translation>Entornos de trabajo</translation>
+      <translation>Bancos de trabajo</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="77"/>
@@ -10345,7 +10345,7 @@ la copia actual se perderá.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2049"/>
+      <location filename="../MainWindow.cpp" line="2050"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
@@ -10966,7 +10966,7 @@ la copia actual se perderá.
     <message>
       <location filename="../CommandView.cpp" line="902"/>
       <source>Toggle selectability</source>
-      <translation>Conmutar selectividad</translation>
+      <translation>Alternar seleccionabilidad</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
@@ -11568,7 +11568,7 @@ la copia actual se perderá.
     <message>
       <location filename="../CommandStd.cpp" line="72"/>
       <source>Workbench</source>
-      <translation>Entorno de trabajo</translation>
+      <translation>Banco de trabajo</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="73"/>
@@ -12106,7 +12106,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../Workbench.cpp" line="532"/>
       <source>Workbench</source>
-      <translation>Entorno de trabajo</translation>
+      <translation>Banco de trabajo</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="533"/>
@@ -12377,7 +12377,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="14"/>
       <source>Available Workbenches</source>
-      <translation>Entornos de trabajo disponibles</translation>
+      <translation>Bancos de trabajo disponibles</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="32"/>
@@ -12395,7 +12395,7 @@ Actualmente, su sistema tiene los siguientes bancos de trabajo:&lt;/p&gt;&lt;/bo
       <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Elige cuál entorno de trabajo se activará y mostrará al iniciar FreeCAD</translation>
+      <translation>Elige cuál banco de trabajo se activará y mostrará al iniciar FreeCAD</translation>
     </message>
     <message>
       <location filename="../DlgSettingsWorkbenches.ui" line="97"/>

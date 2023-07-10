@@ -1841,12 +1841,12 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Mirroring...</source>
-      <translation>Duplicar...</translation>
+      <translation>Reflejar...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1511"/>
       <source>Mirroring a selected shape</source>
-      <translation>Duplicación de una forma seleccionada</translation>
+      <translation>Reflejar una forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -5348,7 +5348,7 @@ Comprobación de operaciones booleanas individuales:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>%n invalid shapes.</source>
       <translation type="unfinished">
-        <numerusform>%n formas no válidas.</numerusform>
+        <numerusform>%n formas inválidas.</numerusform>
         <numerusform>%n invalid shapes.</numerusform>
       </translation>
     </message>

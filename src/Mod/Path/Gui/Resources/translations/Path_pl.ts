@@ -116,7 +116,10 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation>Wybierz szablon, który będzie używany dla zadania. W przypadku braku szablonów można je utworzyć za pomocą menu podręcznego istniejącego zadania. Nazwij plik job_*.json i umieść go w katalogu "makro" lub "path" (patrz preferencje), aby można go było wybrać z tej listy.</translation>
+      <translation>Wybierz szablon, który będzie używany dla zadania. W przypadku braku szablonów
+można je utworzyć za pomocą menu podręcznego istniejącego zadania. 
+Nazwij plik job_*.json i umieść go w katalogu "makro" lub "path" (patrz preferencje),
+aby można go było wybrać z tej listy.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -1957,7 +1960,7 @@ Przekroczenie wartości 100% powoduje, że dwa różne cykle nie nakładają si�
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="43"/>
@@ -2371,7 +2374,7 @@ Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, w
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Ścieżka</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="67"/>
@@ -2974,7 +2977,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
@@ -3359,7 +3362,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="123"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
@@ -3944,7 +3947,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1024"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1030"/>
@@ -4506,7 +4509,7 @@ Na przykład:
       <translation>Profiluj cały model, wybrane ściany lub wybrane krawędzie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
       <translation>Wybierz ścieżkę zadania</translation>
@@ -5286,7 +5289,7 @@ Na przykład:
       <translation>Lista wyłączonych funkcji</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>G-code do wstawienia</translation>
     </message>
@@ -7026,17 +7029,17 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Ukośnie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Wybrana krawędź (krawędzie) jest niedostępna. Jeśli jest ich wiele, zmiana kolejności wyboru może przynieść efekty.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Nie można utworzyć ścieżki dla powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Sprawdź wybór krawędzi i wymagania dotyczące głębokości końcowej dla profilowania otwartych krawędzi.</translation>
     </message>
@@ -7968,7 +7971,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="938"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1043"/>
@@ -8216,12 +8219,12 @@ Przerwanie procesu tworzenia</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Przetwarzanie końcowe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Przetwarzanie końcowe wybranego zadania</translation>
     </message>
@@ -8414,6 +8417,29 @@ Przerwanie procesu tworzenia</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s nie ma właściwości %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Plik</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation type="unfinished">Custom file %s could not be found.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation type="unfinished">Invalid Gcode line: %s</translation>
     </message>
   </context>
 </TS>

@@ -71,7 +71,7 @@ tzn. przeciwny do ruchu wskazówek zegara, poruszając się wzdłuż osi.</trans
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Jeśli wybrane, wynikiem będzie część wspólna profilu i istniejącej już zawartości.</translation>
+      <translation>Jeśli opcja jest wybrana, wynikiem będzie część wspólna profilu i istniejącej już zawartości.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
@@ -655,7 +655,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -673,7 +673,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -1641,7 +1641,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Dodaj</translation>
+      <translation>Wybierz</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1856,7 +1856,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -3054,7 +3054,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Dodaj</translation>
+      <translation>Wybierz</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
@@ -3796,7 +3796,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,32 +3805,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez obiektu Zawartości, użyj funkcji migracji w środowisku pracy Projekt Części, aby umieścić je w obiekcie Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Aby utworzyć nowy obiekt Projektu Części, w dokumencie musi być aktywny obiekt Zawartość. Uaktywnij jeden (podwójnym kliknięciem) lub utwórz nową Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Funkcja nie jest w korpusie</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Ta cecha musi przynależeć do zawartości w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Funkcja nie jest w części</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
@@ -4708,7 +4708,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Measure</source>
-      <translation>Wymiarowanie</translation>
+      <translation>Pomiary</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -4718,7 +4718,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Przełącz widok 3D</translation>
+      <translation>Włącz / wyłącz widok pomiarów 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

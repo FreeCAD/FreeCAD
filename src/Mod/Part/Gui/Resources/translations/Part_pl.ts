@@ -680,7 +680,7 @@
       <location filename="../../AttacherTexts.cpp" line="172"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Składanie</translation>
+      <translation>Składany</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
@@ -877,7 +877,7 @@
       <location filename="../../AttacherTexts.cpp" line="97"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Składanie</translation>
+      <translation>Składany</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2395"/>
       <location filename="../../Command.cpp" line="2397"/>
       <source>Box selection</source>
-      <translation>Zaznacz obszar</translation>
+      <translation>Zaznacz obszarem</translation>
     </message>
   </context>
   <context>
@@ -1208,7 +1208,7 @@
     <message>
       <location filename="../../Command.cpp" line="2206"/>
       <source>Measure Angular</source>
-      <translation>Wymiarowanie kątowe</translation>
+      <translation>Pomiar kątowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2207"/>
@@ -1244,7 +1244,7 @@
     <message>
       <location filename="../../Command.cpp" line="2175"/>
       <source>Measure Linear</source>
-      <translation>Wymiarowanie liniowe</translation>
+      <translation>Pomiar liniowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2176"/>
@@ -1266,7 +1266,7 @@ pomiędzy dwoma ich wierzchołkami.</translation>
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Refresh</source>
-      <translation>Odśwież</translation>
+      <translation>Odśwież pomiary</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -1286,13 +1286,13 @@ w przypadku przesunięcia punktów pomiarowych.</translation>
     <message>
       <location filename="../../Command.cpp" line="2331"/>
       <source>Toggle 3D</source>
-      <translation>Przełącz widok 3D</translation>
+      <translation>Włącz / wyłącz widok pomiarów 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2332"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation>Przełącz i wyłącz wszystkie wymiary bezpośrednie,
+      <translation>Włącza i wyłącza wszystkie pomiary bezpośrednie,
 w tym kątowe.</translation>
     </message>
   </context>
@@ -1306,13 +1306,13 @@ w tym kątowe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle All</source>
-      <translation>Przełącz widoczność wymiarów</translation>
+      <translation>Przełącz widoczność pomiarów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2295"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation>Przełącz i wyłącz wszystkie aktualnie widoczne wymiary,
+      <translation>Włącza i wyłącza wszystkie aktualnie widoczne pomiary,
 bezpośrednie, ortogonalne i kątowe.</translation>
     </message>
   </context>
@@ -1326,14 +1326,14 @@ bezpośrednie, ortogonalne i kątowe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2362"/>
       <source>Toggle Delta</source>
-      <translation>Przełącz Deltę</translation>
+      <translation>Włącz / wyłącz widok pomiarów przyrostowych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2363"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation>Przełącz i wyłącz wszystkie wymiary ortogonalne,
+      <translation>Włącza i wyłącza wszystkie pomiary ortogonalne,
 co oznacza, że wymiar bezpośredni zostanie podzielony
 na jego składowe X, Y i Z.</translation>
     </message>
@@ -1348,7 +1348,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1315"/>
       <source>Boolean...</source>
-      <translation>Logiczne ...</translation>
+      <translation>Operacja logiczna ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1316"/>
@@ -1678,7 +1678,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Export CAD...</source>
-      <translation>Eksport projektu do CAD...</translation>
+      <translation>Eksport projektu do CAD ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
@@ -1917,7 +1917,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation>Tworzenie obiektu punktów wybieralnych z zaznaczonego obiektu geometrycznego</translation>
+      <translation>Tworzy obiekt punktów wybrany z zaznaczonego obiektu geometrycznego</translation>
     </message>
   </context>
   <context>
@@ -2219,7 +2219,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation>Utwórz kopię nieparametryczną z przekształconym umiejscowieniem</translation>
+      <translation>Tworzy kopię nieparametryczną z przekształconym umiejscowieniem</translation>
     </message>
   </context>
   <context>
@@ -2407,7 +2407,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb mocowania:</translation>
+      <translation>Tryb dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -2926,7 +2926,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgExtrusion.cpp" line="204"/>
       <source>Selecting...</source>
-      <translation>Wybieranie...</translation>
+      <translation>Wybieranie ...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="452"/>
@@ -4214,7 +4214,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="20"/>
       <source>Measure</source>
-      <translation>Wymiarowanie</translation>
+      <translation>Pomiary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
@@ -4956,7 +4956,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb mocowania:</translation>
+      <translation>Tryb dołączenia:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -5057,7 +5057,7 @@ dołączanego obiektu.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
-      <translation>Nie dołączony</translation>
+      <translation>Nie dołączono</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="331"/>
@@ -5087,7 +5087,7 @@ dołączanego obiektu.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
-      <translation>Wybieranie...</translation>
+      <translation>Wybieranie ...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="715"/>
@@ -5131,7 +5131,7 @@ dołączanego obiektu.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip settings page</source>
-      <translation>Pomiń stronę ustawień</translation>
+      <translation>Pomiń ustawienia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
@@ -5417,7 +5417,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>Zaznacz obszar</translation>
+      <translation>Zaznacz obszarem</translation>
     </message>
   </context>
   <context>
@@ -5479,7 +5479,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>
@@ -6096,7 +6096,7 @@ Do you want to continue?</source>
       <location filename="../../TaskDimension.cpp" line="656"/>
       <location filename="../../TaskDimension.cpp" line="1792"/>
       <source>Selections</source>
-      <translation>Zaznaczenia</translation>
+      <translation>Wybór:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="663"/>
@@ -6245,7 +6245,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Wymiarowanie</translation>
+      <translation>Pomiary</translation>
     </message>
   </context>
   <context>
@@ -6380,7 +6380,9 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Wybierz co najmniej dwa obiekty bądź jeden lub więcej złożonych kształtów. Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe zostaną przecięte między sobą (w przeciwnym razie, kształt złożony z własnymi przecięciami jest nieprawidłowy).</translation>
+      <translation>Wybierz co najmniej dwa obiekty bądź jeden lub więcej złożonych kształtów. 
+Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe zostaną przecięte między sobą 
+(w przeciwnym razie, kształt złożony z własnymi przecięciami jest nieprawidłowy).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
@@ -6526,7 +6528,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
       <source>Selecting...</source>
-      <translation>Wybieranie...</translation>
+      <translation>Wybieranie ...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
@@ -6536,7 +6538,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
       <source>Not attached</source>
-      <translation>Nie dołączony</translation>
+      <translation>Nie dołączono</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
@@ -6716,16 +6718,16 @@ oryginalnych kształtów.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation>Rozbij na kształty złożone</translation>
+      <translation>Natnij na kształty złożenia</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Rozbij wybrany obiekt za pomocą innych obiektów jako narzędzia cięcia.
+      <translation>Rozbija wybrany obiekt za pomocą innych obiektów jako narzędzi cięcia.
 Wynikające z niego części będą przechowywane w złożeniu.
-Filtr złożeń może być użyty do wydobycia pojedynczych plastrów.</translation>
+Filtr złożeń może być użyty do wydobycia pojedynczych części.</translation>
     </message>
   </context>
   <context>
@@ -6733,7 +6735,7 @@ Filtr złożeń może być użyty do wydobycia pojedynczych plastrów.</translat
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation>Rozbij</translation>
+      <translation>Rozetnij</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>

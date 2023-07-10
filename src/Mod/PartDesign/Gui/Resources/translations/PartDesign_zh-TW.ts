@@ -3792,41 +3792,41 @@ This may lead to unexpected results.</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>要使用零件設計物體，文件中必須有一個啟用的實體物體. 請雙擊啟用一個實體，或建立一個新的實體.
-如果您使用舊版文件其零件設計物體沒有實體的話，使用零件設計中之遷移功能將他們搬到一個實體中.</translation>
+      <translation>要使用 PartDesign 物件，文件中必須有一個激活的實體物件。請雙擊激活一個實體，或建立一個新的實體。
+如果您使用舊版文件其 PartDesign 物件沒有實體的話，使用 PartDesign 中之遷移功能將他們搬到一個實體中。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>需要啟用的實體</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>要建立新的零件設計物體，文件中必須有一個啟用的實體物體.
 請雙擊啟用一個實體，或建立一個新的實體.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>特徵不在實體中</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>為了使用此特徵，它需要屬於文件中的實體物體.</translation>
+      <translation>為了使用此特徵，它需要屬於文件中的實體物件。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>特徵不在零件中</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>為了使用此特徵，它需要屬於文件中的一個零件物體.</translation>
     </message>
