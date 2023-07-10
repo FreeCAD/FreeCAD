@@ -38,6 +38,8 @@ set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(QtCore_MOC_EXECUTABLE ${Qt${FREECAD_QT_MAJOR_VERSION}Core_MOC_EXECUTABLE})
 
+add_definitions(-DQT_NO_KEYWORDS)
+
 message(STATUS "Set up to compile with Qt ${Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION}")
 
 # In Qt 5.15 they added more generic names for these functions: "backport" those new names
