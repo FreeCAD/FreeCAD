@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="30"
    height="30"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="background_freecad.svg"
-   viewBox="0 0 30 29.999999">
+   inkscape:version="1.2-beta (1b65182ce9, 2022-04-05)"
+   sodipodi:docname="checkbox_indeterminate_light.svg"
+   viewBox="0 0 30 29.999999"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.046715"
-     inkscape:cx="7.3268577"
-     inkscape:cy="11.793002"
+     inkscape:zoom="15.589382"
+     inkscape:cx="9.9105919"
+     inkscape:cy="19.019356"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -43,13 +43,15 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:snap-global="true"
-     inkscape:window-width="1680"
-     inkscape:window-height="939"
-     inkscape:window-x="0"
-     inkscape:window-y="23"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     inkscape:window-x="1913"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
      borderlayer="true"
-     units="px">
+     units="px"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid2242"
@@ -70,7 +72,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
             <dc:title>Pablo Gil</dc:title>
@@ -100,5 +101,14 @@
        d="m 1082.0663,341.59799 h 14"
        id="path7899"
        inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:128.504"
+       id="rect354"
+       width="28.138498"
+       height="27.761106"
+       x="1074.9971"
+       y="327.71744"
+       ry="3.878597"
+       rx="4.0960321" />
   </g>
 </svg>

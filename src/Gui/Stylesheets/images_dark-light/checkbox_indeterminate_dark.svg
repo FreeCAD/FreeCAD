@@ -25,9 +25,9 @@
      borderopacity="1"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.046715"
-     inkscape:cx="7.4160708"
-     inkscape:cy="11.815819"
+     inkscape:zoom="15.589382"
+     inkscape:cx="9.9105919"
+     inkscape:cy="19.019356"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -101,5 +101,14 @@
        d="m 1082.0663,341.59799 h 14"
        id="path7899"
        inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:128.504"
+       id="rect354"
+       width="28.138498"
+       height="27.761106"
+       x="1074.9971"
+       y="327.71744"
+       ry="3.878597"
+       rx="4.0960321" />
   </g>
 </svg>

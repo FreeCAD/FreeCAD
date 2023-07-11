@@ -275,7 +275,7 @@ QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
 
 QCheckBox::indicator:checked:disabled {
   background-color: #7F7F7F;
-  image: url(qss:images_dark-light/check_light.svg);
+  image: url(qss:images_dark-light/checkbox_checked_disabled.svg);
 }
 
 QCheckBox::indicator:indeterminate {
@@ -1645,7 +1645,7 @@ QSlider:disabled {
 }
 
 QSlider:focus {
-  border: 1px solid #920077 ;
+  /*border: 1px solid #920077 ;*/
 }
 
 QSlider::groove:horizontal {
@@ -1657,7 +1657,7 @@ QSlider::groove:horizontal {
 }
 
 QSlider::groove:vertical {
-  background: #bc1cc8;
+  background: #7F7F7F;
   border: 1px solid #696968;
   width: 4px;
   margin: 0px;
@@ -1678,7 +1678,7 @@ QSlider::add-page:vertical :disabled {
 
 QSlider::sub-page:horizontal {
   background: #bc1cc8;
-  border: 1px solid #0073ff;
+  border: 1px solid #696968;
   height: 4px;
   margin: 0px;
   border-radius: 1.9px;
@@ -1690,34 +1690,35 @@ QSlider::sub-page:horizontal:disabled {
 
 QSlider::handle:horizontal {
   background: #353535;
-  border: 1px solid #7F7F7F;
-  width: 8px;
+  border: 1px solid #696968;
+  width: 10px;
   height: 8px;
-  margin: -8px 0px;
-  border-radius: 1.9px;
+  margin: -4px 0px;
+  border-radius: 6px;
 }
 
 QSlider::handle:horizontal:hover {
   background: #bc1cc8;
-  border: 1px solid #bc1cc8;
+  border: 1px solid #696968;
 }
 
 QSlider::handle:horizontal:focus {
-  border: 1px solid #920077 ;
+  background: #920077;
+  border: 1px solid #920077;
 }
 
 QSlider::handle:vertical {
-  background: #c2c7cb;
+  background: #353535;
   border: 1px solid #696968;
-  width: 8px;
+  width: 10px;
   height: 8px;
-  margin: 0 -8px;
-  border-radius: 1.9px;
+  margin: 0px -4px;
+  border-radius: 6px;
 }
 
 QSlider::handle:vertical:hover {
   background: #bc1cc8;
-  border: 2px solid #bc1cc8;
+  border: 1px solid #696968;
 }
 
 QSlider::handle:vertical:focus {
