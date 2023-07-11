@@ -43,6 +43,7 @@ install_manifest.txt
 /conda/environment.yml
 OpenSCAD_rc.py
 tags
+Testing
 
 # crowdin file
 src/Tools/freecad.zip

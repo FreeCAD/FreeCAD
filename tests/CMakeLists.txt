@@ -44,3 +44,9 @@ add_executable(Sketcher_tests_run)
 add_subdirectory(src/Mod/Sketcher)
 target_include_directories(Sketcher_tests_run PUBLIC ${EIGEN3_INCLUDE_DIR} ${OCC_INCLUDE_DIR} ${Python3_INCLUDE_DIRS})
 target_link_libraries(Sketcher_tests_run gtest_main ${Google_Tests_LIBS} Sketcher)
+
+include(GoogleTest)
+# discovers tests by asking the compiled test executable to enumerate its tests
+set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
+gtest_discover_tests(Tests_run) 
+gtest_discover_tests(Sketcher_tests_run) 
