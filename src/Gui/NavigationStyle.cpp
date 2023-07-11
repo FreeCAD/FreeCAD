@@ -1031,6 +1031,11 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
 
+    // mode is WindowCenter
+    if (!PRIVATE(this)->rotationCenterMode) {
+        setRotationCenter(getFocalPoint());
+    }
+
     //Option to get point on model (slow) or always on focal plane (fast)
     //
     // mode is ScenePointAtCursor to get exact point if possible
