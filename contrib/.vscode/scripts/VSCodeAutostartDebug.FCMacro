@@ -1,0 +1,18 @@
+import debugpy
+from multiprocessing.connection import Listener
+from freecad.utils import get_python_exe
+
+# get_python_exe is needed because debugpy needs a python interpreter to work.
+# It does not have to be FC embedded interpreter.
+# By default it attempts to use Freecad's PID mistaking it for python.
+# https://github.com/microsoft/debugpy/issues/262
+debugpy.configure(python=get_python_exe())
+debugpy.listen(('localhost', 5678))
+
+# Turns out you cannot probe debugpy to see if it is up:
+# https://github.com/microsoft/debugpy/issues/974
+# Open another port that the script WaitForDebugpy can probe to see if 
+# debugpy is running
+listener = Listener(('localhost', 6000), backlog=10)
+
+debugpy.wait_for_client()
