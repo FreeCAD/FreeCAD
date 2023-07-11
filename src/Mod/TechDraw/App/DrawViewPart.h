@@ -197,25 +197,6 @@ public:
     void removeAllReferencesFromGeom();
     void resetReferenceVerts();
 
-    // routines related to cosmetic features
-    void clearCosmeticVertexes();
-    void refreshCVGeoms();
-    void addCosmeticVertexesToGeom();
-    int add1CVToGV(std::string tag);
-    int getCVIndex(std::string tag);
-
-    void clearCosmeticEdges();
-    void refreshCEGeoms();
-    void addCosmeticEdgesToGeom();
-    int add1CEToGE(std::string tag);
-
-    void clearCenterLines();
-    void refreshCLGeoms();
-    void addCenterLinesToGeom();
-    int add1CLToGE(std::string tag);
-
-    void clearGeomFormats();
-
     // routines related to multi-threading
     virtual void postHlrTasks(void);
     virtual void postFaceExtractionTasks(void);
