@@ -1,17 +1,36 @@
-{
+{  
+  // This disables vscode from adding lines to files.associations, 
+  // some files might not be recognized though.
+  // This is a vscode issue.
+  "C_Cpp.autoAddFileAssociations": false, 
   "files.associations": {
-    "__config": "cpp",
-    "iosfwd": "cpp",
-    "vector": "cpp",
-    "tuple": "cpp"
-  },
+    "*.c": "c",
+    "*.h": "cpp",
+    "*.cpp": "cpp",
+    "*.hpp": "cpp",
+    "*.cxx": "cpp",
+    "*.hxx": "cpp",
+    "*.py": "python",
+    "*.FCMacro": "python"
+  }, 
+
   "editor.formatOnType": true,
+  "files.autoSave": "afterDelay",
+  "debug.onTaskErrors": "abort", //to not launch the python debugger when waitforport.py fails
+
+  // Does not quick launch the debugger, forces to select debugger config every time
+  // Use the debug panel on the left instead
+  "debug.showInStatusBar": "never", 
+  
   "cmake.preferredGenerators": ["Ninja", "NMake Makefiles"],
-  "cmake.cmakePath": "${workspaceFolder}/.conda/freecad/bin/cmake",
-  "cmake.configureSettings": {
-    "BUILD_WITH_CONDA:BOOL": "ON",
-    "BUILD_FEM_NETGEN:BOOL": "ON",
-    "FREECAD_USE_PYBIND11:BOOL": "ON",
-    "FREECAD_USE_EXTERNAL_SMESH:BOOL": "ON"
+  "cmake.useProjectStatusView": false, // to enable settings below
+  "cmake.statusbar.advanced": {
+    "build": {"visibility": "default"},         // "default" labels the button and makes it larger   
+    "buildTarget": {"visibility": "hidden"},    // build ALL targets (default)
+    "debug": {"visibility": "hidden"},          // does not launch the proper debugger. Use vscode debugger with configurations from launch.json instead
+    "launch": {"visibility": "hidden"},         // launch using the debug configuration instead
+    "launchTarget": { "visibility": "hidden" }, // not used. If in doubt select [FreeCADMain]
+    "ctest": {"visibility": "hidden"}           // does not seem to work. use the test panel on the left instead
   }
+
 }

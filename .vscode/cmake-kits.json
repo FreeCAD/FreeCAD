@@ -1,18 +1,29 @@
 [
-  {
-    "name": "FreeCAD Linux",
-    "compilers": {
-      "C": "${workspaceFolder}/.conda/freecad/bin/cc",
-      "CXX": "${workspaceFolder}/.conda/freecad/bin/c++"
+    {
+      "name": "Conda Unix",
+      "environmentSetupScript": "${workspaceFolder}/.conda/freecad/bin/activate",
+      "cmakeSettings": {
+        "BUILD_WITH_CONDA:BOOL": "ON",
+        "BUILD_FEM_NETGEN:BOOL": "ON",
+        "FREECAD_USE_PYBIND11:BOOL": "ON",
+        "FREECAD_USE_EXTERNAL_SMESH:BOOL": "ON",
+        "FREECAD_USE_EXTERNAL_FMT:BOOL": "OFF"
+      }
     },
-    "environmentSetupScript": "${workspaceFolder}/.vscode/env.sh"
-  },
-  {
-    "name": "FreeCAD macOS",
-    "compilers": {
-      "C": "${workspaceFolder}/.conda/freecad/bin/clang",
-      "CXX": "${workspaceFolder}/.conda/freecad/bin/clang++"
-    },
-    "environmentSetupScript": "${workspaceFolder}/.vscode/env.sh"
-  }
-]
+    {
+      "name": "Conda Windows",
+      "environmentSetupScript": "${workspaceFolder}/.conda/freecad/condabin/activate.bat",
+      "cmakeSettings": {
+        "BUILD_WITH_CONDA:BOOL": "ON",
+        "BUILD_FEM_NETGEN:BOOL": "ON",
+        "FREECAD_USE_PYBIND11:BOOL": "ON",
+        "FREECAD_USE_EXTERNAL_SMESH:BOOL": "ON",
+        "FREECAD_USE_EXTERNAL_FMT:BOOL": "OFF",
+        "FREECAD_LIBPACK_USE:BOOL": "OFF",
+        "FREECAD_USE_CCACHE": "OFF",
+        "FREECAD_USE_PCH": "OFF",
+        "BUILD_TEST": "OFF",
+        "Boost_NO_BOOST_CMAKE": "OFF"
+      }
+    }
+  ]
