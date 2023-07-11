@@ -94,5 +94,4 @@ dependencies:
 - vtk
 - xerces-c
 - zlib
-- pip:
-  - ptvsd
+- debugpy

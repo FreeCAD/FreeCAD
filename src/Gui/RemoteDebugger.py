@@ -25,6 +25,7 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui
+from freecad.utils import get_python_exe
 
 class RemoteDebugger():
     def __init__(self, parent=None):
@@ -46,11 +47,17 @@ class RemoteDebugger():
             elif index == 1: # VS code
                 address = self.dialog.lineEditAddress.text()
                 port = self.dialog.spinBoxPort.value()
-                redirect = self.dialog.checkRedirectOutput.isChecked()
 
-                import ptvsd
-                ptvsd.enable_attach(address=(address, port), redirect_output=redirect)
-                ptvsd.wait_for_attach()
+                import debugpy
+
+                # get_python_exe is needed because debugpy needs a python interpreter to work.
+                # It does not have to be FC embedded interpreter.
+                # By default it attempts to use Freecad's PID mistaking it for python.
+                # https://github.com/microsoft/debugpy/issues/262
+                debugpy.configure(python=get_python_exe()) 
+                debugpy.listen((address, port))
+                debugpy.wait_for_client()
+
         except Exception as e:
             QtGui.QMessageBox.warning(self.dialog, "Failed to attach", str(e))
 
