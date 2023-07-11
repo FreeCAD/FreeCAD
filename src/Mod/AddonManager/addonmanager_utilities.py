@@ -342,40 +342,6 @@ def is_float(element: Any) -> bool:
         return False
 
 
-def get_python_exe() -> str:
-    """Find Python. In preference order
-    A) The value of the PythonExecutableForPip user preference
-    B) The executable located in the same bin directory as FreeCAD and called "python3"
-    C) The executable located in the same bin directory as FreeCAD and called "python"
-    D) The result of a shutil search for your system's "python3" executable
-    E) The result of a shutil search for your system's "python" executable"""
-    prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
-    fc_dir = fci.DataPaths().home_dir
-    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python3")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python3")
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python")
-
-    if not python_exe or not os.path.exists(python_exe):
-        return ""
-
-    python_exe = python_exe.replace("/", os.path.sep)
-    prefs.SetString("PythonExecutableForPip", python_exe)
-    return python_exe
-
-
 def get_pip_target_directory():
     # Get the default location to install new pip packages
     major, minor, _ = platform.python_version_tuple()
