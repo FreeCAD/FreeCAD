@@ -2,35 +2,65 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++: Linux: build and debug FreeCAD",
+      "name": "Debug C++ Tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/bin/FreeCAD",
-      "args": [],
-      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
-      "environment": [],
+      "program": "${command:cmake.buildDirectory}/tests/Tests_run", 
+      "args": [],
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb"
+      },
+      "osx": {
+        "MIMode": "lldb"
+      },
+      "windows": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "C:\\MinGw\\bin\\gdb.exe"
+      },
+      "stopAtEntry": false,
       "externalConsole": false,
-      "preLaunchTask": "CMake: build"
+      "preLaunchTask": "CMake: build",
+      "sourceFileMap": {
+        "${workspaceFolder}": "${workspaceFolder}"
+      }
     },
     {
-      "name": "C/C++: macOS: build and debug FreeCAD",
+      "name": "C/C++ debugger",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/bin/FreeCAD",
-      "args": [],
-      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
-      "environment": [],
+      "program": "${command:cmake.buildDirectory}/bin/FreeCAD", 
+      "args": ["${workspaceFolder}/.vscode/scripts/VSCodeAutostartDebug.FCMacro"],
+      "environment": [
+        {
+          "name": "PYDEVD_DISABLE_FILE_VALIDATION",
+          "value": "1"
+        }
+      ],
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb"
+      },
+      "osx": {
+        "MIMode": "lldb"
+      },
+      "windows": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "C:\\MinGw\\bin\\gdb.exe"
+      },
+      "stopAtEntry": false,
       "externalConsole": false,
-      "MIMode": "lldb",
-      "preLaunchTask": "CMake: build"
+      "presentation": {
+        "hidden": true,
+      }
     },
     {
-      "name": "Python: Remote Attach",
+      "name": "Python debugger",
       "type": "python",
       "request": "attach",
-      "preLaunchTask": "conda: activate environment",
+      "preLaunchTask": "WaitForDebugpy",
       "redirectOutput": true,
       "connect": {
         "host": "localhost",
@@ -38,11 +68,25 @@
       },
       "pathMappings": [
         {
-          "localRoot": "${workspaceFolder}",
-          "remoteRoot": "${workspaceFolder}"
+          "localRoot": "${workspaceFolder}/src",
+          "remoteRoot": "${workspaceFolder}/build"
         }
       ],
-      "justMyCode": false
+      "justMyCode": false,
+      "presentation": {
+        "hidden": true,
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug FreeCAD",
+      "configurations": ["C/C++ debugger", "Python debugger"],
+      "preLaunchTask": "CMake: build",
+      "stopAll": true,
+      "presentation": {
+        "order": 1
+      }
     }
   ]
 }
