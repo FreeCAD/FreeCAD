@@ -51,12 +51,22 @@ public:
     TechDraw::PropertyCenterLineList     CenterLines;
     TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 
+    virtual void            addCosmeticVertexesToGeom();
+    virtual void            refreshCVGeoms();
+    virtual int             add1CVToGV(std::string tag);
+    virtual int             getCVIndex(std::string tag);
+
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
     virtual CosmeticVertex* getCosmeticVertexBySelection(int i) const;
     virtual CosmeticVertex* getCosmeticVertex(std::string id) const;
     virtual void            removeCosmeticVertex(std::string tag);
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
+    virtual void            clearCosmeticVertexes();
+
+    virtual void refreshCEGeoms();
+    virtual void addCosmeticEdgesToGeom();
+    virtual int add1CEToGE(std::string tag);
 
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCosmeticEdge(TechDraw::BaseGeomPtr bg);
@@ -65,6 +75,11 @@ public:
     virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
+    virtual void            clearCosmeticEdges();
+
+    virtual void refreshCLGeoms();
+    virtual void addCenterLinesToGeom();
+    virtual int add1CLToGE(std::string tag);
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
@@ -74,13 +89,16 @@ public:
     virtual CenterLine*     getCenterLine(std::string tag) const;
     virtual void            removeCenterLine(std::string tag);
     virtual void            removeCenterLine(std::vector<std::string> delTags);
+    virtual void            clearCenterLines();
 
     virtual std::string     addGeomFormat(TechDraw::GeomFormat* gf);
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
     virtual GeomFormat*     getGeomFormat(std::string id) const;
     virtual void            removeGeomFormat(std::string tag);
+    virtual void            clearGeomFormats();
 
+    TechDraw::DrawViewPart* getOwner();
 
     PyObject* getExtensionPyObject() override;
 
