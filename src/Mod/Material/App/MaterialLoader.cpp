@@ -144,7 +144,7 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std
     }
 
     QString path = directory.absolutePath();
-    Base::Console().Log("\tPath '%s'\n", path.toStdString().c_str());
+    // Base::Console().Log("\tPath '%s'\n", path.toStdString().c_str());
     (*materialMap)[uuid] = finalModel;
     (*materialPathMap)[path] = finalModel;
 }
@@ -194,9 +194,9 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
         const std::string name = yamlroot["General"]["Name"].as<std::string>();
 
         model = new MaterialYamlEntry(library, QString::fromStdString(name), modelDir, QString::fromStdString(uuid), yamlroot);
-        showYaml(yamlroot);
+        // showYaml(yamlroot);
     } catch (YAML::Exception const &) {
-        Base::Console().Log("YAML parsing error: '%s'\n", path.toStdString().c_str());
+        Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
 
         // Perhaps try parsing the older format?
     }

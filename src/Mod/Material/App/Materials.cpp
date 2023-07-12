@@ -124,6 +124,9 @@ void MaterialProperty::setType(const QString& type)
     } else if (type == QString::fromStdString("Image"))
     {
         _valuePtr = new MaterialValue(MaterialValue::Image);
+    } else if (type == QString::fromStdString("List"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::List);
     } else if (type == QString::fromStdString("2DArray"))
     {
         _valuePtr = new Material2DArray();
@@ -133,6 +136,8 @@ void MaterialProperty::setType(const QString& type)
     } else {
         // Error. Throw something
         _valuePtr = new MaterialValue(MaterialValue::None);
+        std::string stringType = type.toStdString();
+        std::string name = getName().toStdString();
         throw UnknownValueType();
     }
 }
@@ -276,7 +281,17 @@ void Material::addPhysical(const QString &uuid)
             QString propertyName = it->first;
             ModelProperty property = it->second;
 
-            _physical[propertyName] = MaterialProperty(property);
+            try
+            {
+                _physical[propertyName] = MaterialProperty(property);
+            }
+            catch(const UnknownValueType &)
+            {
+                Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n", 
+                                    property.getName().toStdString().c_str(),
+                                    property.getPropertyType().toStdString().c_str());
+            }
+            
         }
     } catch (ModelNotFound const &) {
     }
