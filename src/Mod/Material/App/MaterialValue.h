@@ -34,7 +34,7 @@ public:
         None = 0,
         String = 1,
         Boolean = 2,
-        Int = 3,
+        Integer = 3,
         Float = 4,
         Quantity = 5,
         Distribution = 6,
@@ -63,7 +63,7 @@ protected:
     void setType(ValueType type) { _valueType = type; }
 };
 
-class MaterialsExport Material2DArray : protected MaterialValue
+class MaterialsExport Material2DArray : public MaterialValue
 {
 public:
     Material2DArray();

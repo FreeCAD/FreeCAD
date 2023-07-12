@@ -65,6 +65,62 @@ private:
     QString _description;
 };
 
+class MaterialsExport MaterialProperty : public ModelProperty
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    explicit MaterialProperty();
+    explicit MaterialProperty(const ModelProperty &property);
+    virtual ~MaterialProperty();
+
+    MaterialValue::ValueType getType(void) const { return _valuePtr->getType(); }
+
+    const QString& getModelUUID(void) const;
+    const QVariant getValue(void) const;
+    const QString& getString(void) const;
+    bool getBoolean(void) const;
+    int getInt(void) const;
+    double getFloat(void) const;
+    const Base::Quantity& getQuantity(void) const;
+    const QString& getURL(void) const;
+
+    MaterialProperty &getColumn(int column);
+
+    void setModelUUID(const QString& uuid);
+    void setPropertyType(const QString& type) override;
+    void setValue(const QString& value);
+    void setString(const QString& value);
+    void setBoolean(bool value);
+    void setBoolean(int value);
+    void setBoolean(const QString& value);
+    void setInt(int value);
+    void setInt(const QString& value);
+    void setFloat(double value);
+    void setFloat(const QString& value);
+    void setQuantity(const Base::Quantity& value);
+    void setQuantity(double value, const QString& units);
+    void setQuantity(const QString& value);
+    void setURL(const QString& value);
+
+protected:
+    void setType(const QString& type);
+    // void setType(MaterialValue::ValueType type) { _valueType = type; }
+
+    void addColumn(MaterialProperty &column) { _columns.push_back(column); }
+
+private:
+    QString _modelUUID;
+    MaterialValue* _valuePtr;
+    // MaterialValue::ValueType _valueType;
+    // QString _valueString;
+    // bool _valueBoolean;
+    // int _valueInt;
+    // double _valueFloat;
+    // Base::Quantity _valueQuantity;
+    std::vector<MaterialProperty> _columns;
+};
+
 class MaterialsExport Material : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
@@ -116,8 +172,8 @@ public:
 
     void setAppearanceValue(const QString& name, const QString &value);
 
-    ModelValueProperty &getPhysicalProperty(const QString &name);
-    ModelValueProperty &getAppearanceProperty(const QString &name);
+    MaterialProperty &getPhysicalProperty(const QString &name);
+    MaterialProperty &getAppearanceProperty(const QString &name);
     const QString getPhysicalValue(const QString &name) const;
     const QString getAppearanceValue(const QString &name) const;
     bool hasPhysicalProperty(const QString& name) const;
@@ -139,8 +195,8 @@ private:
     std::list<QString> _tags;
     std::vector<QString> _physicalUuids;
     std::vector<QString> _appearanceUuids;
-    std::map<QString, ModelValueProperty> _physical;
-    std::map<QString, ModelValueProperty> _appearance;
+    std::map<QString, MaterialProperty> _physical;
+    std::map<QString, MaterialProperty> _appearance;
 
 };
 

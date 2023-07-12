@@ -54,6 +54,185 @@ ModelData::~ModelData()
 
 }
 
+TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
+
+MaterialProperty::MaterialProperty()
+{
+    _valuePtr = new MaterialValue(MaterialValue::None);
+}
+
+MaterialProperty::MaterialProperty(const ModelProperty &property) :
+    ModelProperty(property), _valuePtr(nullptr)
+{
+    setType(getPropertyType());
+    for (auto it : property.columns()) {
+        MaterialProperty prop(it);
+        addColumn(prop);
+    }
+}
+
+MaterialProperty::~MaterialProperty()
+{
+
+}
+
+void MaterialProperty::setModelUUID(const QString& uuid)
+{
+    _modelUUID = uuid;
+}
+
+const QVariant MaterialProperty::getValue(void) const
+{
+    return _valuePtr->getValue();
+}
+
+void MaterialProperty::setPropertyType(const QString& type)
+{
+    ModelProperty::setPropertyType(type);
+    setType(type);
+}
+
+void MaterialProperty::setType(const QString& type)
+{
+    if (_valuePtr)
+        delete _valuePtr;
+
+    if (type == QString::fromStdString("String"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::String);
+    } else if (type == QString::fromStdString("Boolean"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Boolean);
+    } else if (type == QString::fromStdString("Integer"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Integer);
+    } else if (type == QString::fromStdString("Float"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Float);
+    } else if (type == QString::fromStdString("URL"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::URL);
+    } else if (type == QString::fromStdString("Quantity"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Quantity);
+    } else if (type == QString::fromStdString("Color"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Color);
+    } else if (type == QString::fromStdString("File"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::File);
+    } else if (type == QString::fromStdString("Image"))
+    {
+        _valuePtr = new MaterialValue(MaterialValue::Image);
+    } else if (type == QString::fromStdString("2DArray"))
+    {
+        _valuePtr = new Material2DArray();
+    } else if (type == QString::fromStdString("3DArray"))
+    {
+        _valuePtr = new Material2DArray();
+    } else {
+        // Error. Throw something
+        _valuePtr = new MaterialValue(MaterialValue::None);
+    }
+}
+
+MaterialProperty &MaterialProperty::getColumn(int column)
+{
+    try {
+        return _columns.at(column);
+    } catch (std::out_of_range const&) {
+        throw PropertyNotFound();
+    }
+}
+
+void MaterialProperty::setValue(const QString& value)
+{
+    if (_valuePtr->getType() == MaterialValue::Boolean)
+       setBoolean(value);
+    else if (_valuePtr->getType() == MaterialValue::Integer)
+       setInt(value);
+    else if (_valuePtr->getType() == MaterialValue::Float)
+       setFloat(value);
+    else if (_valuePtr->getType() == MaterialValue::URL)
+       setURL(value);
+    else
+       setString(value);
+}
+
+void MaterialProperty::setString(const QString& value)
+{
+    // _valueType = MaterialValue::String;
+    _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setBoolean(bool value)
+{
+    // _valueType = MaterialValue::Boolean;
+    _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setBoolean(int value)
+{
+    // _valueType = MaterialValue::Boolean;
+    _valuePtr->setValue(QVariant(value != 0));
+}
+
+void MaterialProperty::setBoolean(const QString& value)
+{
+    // _valueType = MaterialValue::Boolean;
+    bool boolean;
+    std::string val = value.toStdString();
+    if ((val == "true") || (val == "True"))
+       boolean = true;
+    else if ((val == "false") || (val == "False"))
+       boolean = false;
+    else
+        boolean = (std::stoi(val) != 0);
+
+    setBoolean(boolean);
+}
+
+void MaterialProperty::setInt(int value)
+{
+    _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setInt(const QString& value)
+{
+    _valuePtr->setValue(value.toInt());
+}
+
+void MaterialProperty::setFloat(double value)
+{
+    _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setFloat(const QString& value)
+{
+    _valuePtr->setValue(QVariant(value.toFloat()));
+}
+
+void MaterialProperty::setQuantity(const Base::Quantity& value)
+{
+    _valuePtr->setValue(QVariant(value.getUserString()));
+}
+
+void MaterialProperty::setQuantity(double value, const QString& units)
+{
+    setQuantity(Base::Quantity(value, units));
+}
+
+void MaterialProperty::setQuantity(const QString& value)
+{
+    setQuantity(Base::Quantity::parse(value));
+}
+
+void MaterialProperty::setURL(const QString& value)
+{
+    _valuePtr->setValue(QVariant(value));
+}
+
+
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
 Material::Material()
@@ -96,7 +275,7 @@ void Material::addPhysical(const QString &uuid)
             QString propertyName = it->first;
             ModelProperty property = it->second;
 
-            _physical[propertyName] = ModelValueProperty(property);
+            _physical[propertyName] = MaterialProperty(property);
         }
     } catch (ModelNotFound const &) {
     }
@@ -119,7 +298,7 @@ void Material::addAppearance(const QString &uuid)
             QString propertyName = it->first;
             ModelProperty property = it->second;
 
-            _appearance[propertyName] = ModelValueProperty(property);
+            _appearance[propertyName] = MaterialProperty(property);
         }
     } catch (ModelNotFound const &) {
     }
@@ -151,7 +330,7 @@ void Material::setAppearanceValue(const QString& name, const QString &value)
     _appearance[name].setValue(value); // may not be a string type
 }
 
-ModelValueProperty &Material::getPhysicalProperty(const QString &name)
+MaterialProperty &Material::getPhysicalProperty(const QString &name)
 {
     try {
         return _physical.at(name);
@@ -160,7 +339,7 @@ ModelValueProperty &Material::getPhysicalProperty(const QString &name)
     }
 }
 
-ModelValueProperty &Material::getAppearanceProperty(const QString &name)
+MaterialProperty &Material::getAppearanceProperty(const QString &name)
 {
     try {
         return _appearance.at(name);
@@ -172,7 +351,7 @@ ModelValueProperty &Material::getAppearanceProperty(const QString &name)
 const QString Material::getPhysicalValue(const QString &name) const
 {
     try {
-        return _physical.at(name).getValue();
+        return _physical.at(name).getValue().toString();
     } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
@@ -181,7 +360,7 @@ const QString Material::getPhysicalValue(const QString &name) const
 const QString Material::getAppearanceValue(const QString &name) const
 {
     try {
-        return _appearance.at(name).getValue();
+        return _appearance.at(name).getValue().toString();
     } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }

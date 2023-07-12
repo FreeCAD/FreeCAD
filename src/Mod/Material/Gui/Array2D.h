@@ -46,7 +46,7 @@ public:
 
 private:
     std::unique_ptr<Ui_Array2D> ui;
-    Materials::ModelValueProperty *_property;
+    Materials::MaterialProperty *_property;
 
     void setupDefault();
     void setHeaders(QStandardItemModel *model);
