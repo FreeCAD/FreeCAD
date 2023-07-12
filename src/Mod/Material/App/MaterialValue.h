@@ -84,9 +84,36 @@ protected:
     std::vector<std::vector<QVariant> *> _rows;
 };
 
+class MaterialsExport Material3DArray : public MaterialValue
+{
+public:
+    Material3DArray();
+    ~Material3DArray() override;
+
+    void setDefault(MaterialValue value) { _value = value.getValue(); }
+    MaterialValue getDefault() const;
+
+    const std::vector<QVariant> &getRow(const QString &depth, int row) const;
+    const std::vector<QVariant> &getRow(int row) const;
+    std::vector<QVariant> &getRow(const QString & depth, int row);
+    std::vector<QVariant> &getRow(int row);
+    void addRow(const QString & depth, std::vector<QVariant> *row);
+    void deleteRow(const QString & depth, int row);
+    void deleteRows(int depth);
+
+    void setValue(const QString & depth, int row, int column,  const QVariant &value);
+    void setValue(int row, int column,  const QVariant &value);
+    const QVariant &getValue(const QString & depth, int row, int column);
+    const QVariant &getValue(int row, int column);
+
+protected:
+    std::map<QString, std::vector<std::vector<QVariant> *>> _rowMap;
+};
+
 } // namespace Materials
 
 Q_DECLARE_METATYPE(Materials::MaterialValue)
 Q_DECLARE_METATYPE(Materials::Material2DArray)
+Q_DECLARE_METATYPE(Materials::Material3DArray)
 
 #endif // MATERIAL_MATERIALVALUE_H

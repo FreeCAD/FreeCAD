@@ -129,7 +129,7 @@ void MaterialProperty::setType(const QString& type)
         _valuePtr = new Material2DArray();
     } else if (type == QString::fromStdString("3DArray"))
     {
-        _valuePtr = new Material2DArray();
+        _valuePtr = new Material3DArray();
     } else {
         // Error. Throw something
         _valuePtr = new MaterialValue(MaterialValue::None);

@@ -66,7 +66,6 @@ const std::vector<QVariant> &Material2DArray::getRow(int row) const
     } catch (std::out_of_range const &) {
         throw InvalidRow();
     }
-
 }
 
 std::vector<QVariant> &Material2DArray::getRow(int row)
@@ -105,5 +104,91 @@ const QVariant &Material2DArray::getValue(int row, int column)
         throw InvalidColumn();
     }
 }
+
+//===
+
+Material3DArray::Material3DArray() :
+    MaterialValue(Array3D)
+{}
+
+Material3DArray::~Material3DArray()
+{}
+
+MaterialValue Material3DArray::getDefault() const
+{
+    MaterialValue ret(_valueType);
+    ret.setValue(_value);
+    return ret;
+}
+
+const std::vector<QVariant> &Material3DArray::getRow(const QString &depth, int row) const
+{
+    try {
+        return *(_rowMap.at(depth).at(row));
+    } catch (std::out_of_range const &) {
+        throw InvalidRow();
+    }
+}
+
+const std::vector<QVariant> &Material3DArray::getRow(int row) const
+{
+    return getRow(getDefault().getValue().toString(), row);
+}
+
+std::vector<QVariant> &Material3DArray::getRow(const QString & depth, int row)
+{
+    try {
+        return *(_rowMap.at(depth).at(row));
+    } catch (std::out_of_range const &) {
+        throw InvalidRow();
+    }
+}
+
+std::vector<QVariant> &Material3DArray::getRow(int row)
+{
+    return getRow(getDefault().getValue().toString(), row);
+}
+
+void Material3DArray::addRow(const QString & depth, std::vector<QVariant> *row)
+{
+
+}
+
+void Material3DArray::deleteRow(const QString & depth, int row)
+{
+
+}
+
+void Material3DArray::deleteRows(int depth)
+{
+
+}
+
+void Material3DArray::setValue(const QString & depth, int row, int column,  const QVariant &value)
+{
+
+}
+
+void Material3DArray::setValue(int row, int column,  const QVariant &value)
+{
+
+}
+
+const QVariant &Material3DArray::getValue(const QString & depth, int row, int column)
+{
+    auto val = getRow(depth, row);
+    try {
+        return val.at(column);
+    } catch (std::out_of_range const &) {
+        throw InvalidColumn();
+    }
+}
+
+const QVariant &Material3DArray::getValue(int row, int column)
+{
+    return getValue(getDefault().getValue().toString(), row, column);
+
+}
+
 
 #include "moc_MaterialValue.cpp"
