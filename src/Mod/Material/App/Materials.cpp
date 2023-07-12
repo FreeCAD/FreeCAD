@@ -133,6 +133,7 @@ void MaterialProperty::setType(const QString& type)
     } else {
         // Error. Throw something
         _valuePtr = new MaterialValue(MaterialValue::None);
+        throw UnknownValueType();
     }
 }
 

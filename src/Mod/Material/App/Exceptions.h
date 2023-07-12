@@ -77,6 +77,14 @@ public:
     ~InvalidColumn() throw() override {}
 };
 
+class UnknownValueType : public Base::Exception
+{
+public:
+    UnknownValueType(){}
+    explicit UnknownValueType(char* msg){this->setMessage(msg);}
+    ~UnknownValueType() throw() override {}
+};
+
 } // namespace Materials
 
 #endif // MATERIAL_EXCEPTIONS_H
