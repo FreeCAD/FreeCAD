@@ -79,6 +79,7 @@ private:
     void setupDefault();
     void setHeaders(QStandardItemModel *model);
     void setColumnWidths(QTableView *table);
+    void setColumnDelegates(QTableView *table);
     void setupArray();
 };
 

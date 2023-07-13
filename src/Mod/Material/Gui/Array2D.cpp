@@ -31,6 +31,7 @@
 #include <Mod/Material/App/Exceptions.h>
 #include "Array2D.h"
 #include "ui_Array2D.h"
+#include "ArrayDelegate.h"
 
 
 using namespace MatGui;
@@ -214,6 +215,15 @@ void Array2D::setColumnWidths(QTableView *table)
         table->setColumnWidth(i, 100);
 }
 
+void Array2D::setColumnDelegates(QTableView *table)
+{
+    int length = _property->columns().size();
+    for (int i = 0; i < length; i++) {
+        auto column = _property->getColumn(i);
+        table->setItemDelegateForColumn(i, new ArrayDelegate(column.getType(), column.getUnits(), this));
+    }
+}
+
 void Array2D::setupArray()
 {
     if (_property == nullptr)
@@ -224,10 +234,11 @@ void Array2D::setupArray()
     table->setModel(model);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     // table->horizontalHeader()->setModel(model);
-    table->horizontalHeader()->show();
+    // table->horizontalHeader()->show();
 
     // setHeaders(model);
     setColumnWidths(table);
+    setColumnDelegates(table);
 
     // Materials::Material2DArray *value = static_cast<Materials::Material2DArray *>(_property->getValue());
     // int length = _property->columns().size();
