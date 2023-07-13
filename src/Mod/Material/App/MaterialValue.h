@@ -74,6 +74,7 @@ public:
 
     const std::vector<QVariant> &getRow(int row) const;
     std::vector<QVariant> &getRow(int row);
+    int rows() const { return _rows.size(); }
     void addRow(std::vector<QVariant> *row);
     void deleteRow(int row);
 

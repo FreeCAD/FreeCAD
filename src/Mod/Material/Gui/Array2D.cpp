@@ -120,6 +120,20 @@ void Array2D::setupArray()
     setHeaders(model);
     setColumnWidths(table);
 
+    Materials::Material2DArray *value = static_cast<Materials::Material2DArray *>(_property->getValue());
+    int length = _property->columns().size();
+    for (int i = 0; i <= value->rows(); i++)
+    {
+        QList<QStandardItem*> items;
+
+        for (int j = 0; j < length; j++)
+        {
+            auto item = new QStandardItem();
+            items.append(item);
+        }
+
+        model->appendRow(items);
+    }
 }
 
 void Array2D::accept()

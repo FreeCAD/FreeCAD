@@ -78,6 +78,7 @@ public:
 
     const QString& getModelUUID(void) const;
     const QVariant getValue(void) const;
+    MaterialValue* getValue(void);
     const QString& getString(void) const;
     bool getBoolean(void) const;
     int getInt(void) const;
@@ -112,12 +113,6 @@ protected:
 private:
     QString _modelUUID;
     MaterialValue* _valuePtr;
-    // MaterialValue::ValueType _valueType;
-    // QString _valueString;
-    // bool _valueBoolean;
-    // int _valueInt;
-    // double _valueFloat;
-    // Base::Quantity _valueQuantity;
     std::vector<MaterialProperty> _columns;
 };
 
