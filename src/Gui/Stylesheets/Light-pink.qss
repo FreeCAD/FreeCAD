@@ -2190,7 +2190,7 @@ QColumnView {
 
 QTableView,
 QListView  {
-  background-color: rgba(0, 0, 0, 0.050);  /* background of a lot of stuff including spreadsheets.*/
+  background-color: rgba(229, 229, 229, 0.7);  /* background of a lot of stuff including spreadsheets.*/
 }
 
 

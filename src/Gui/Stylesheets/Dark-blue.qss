@@ -17,8 +17,8 @@ INSTALLATION WHEN NECESSARY
 
 ============================================================================================================
 TO MODIFY USE THESE COLORS:
- #f892ff
- #ffbff3
+ #4882ff
+ #3f7cff
 
 
 See Qt documentation:
@@ -2183,7 +2183,7 @@ QColumnView {
 
 QTableView,
 QListView  {
-background-color: rgba(0, 0, 0, 0.232);  /* background of a lot of stuff including spreadsheets.*/
+  background-color: rgba(31, 31, 31, 0.85);  /* background of a lot of stuff including spreadsheets.*/
 }
 
 
