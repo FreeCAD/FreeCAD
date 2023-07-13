@@ -288,9 +288,9 @@ void MDIViewPage::printPdf()
 
     Gui::WaitCursor wc;
     std::string utf8Content = fn.toUtf8().constData();
-    m_scene->setExporting(true);
+    m_scene->setExportingPdf(true);
     printPdf(utf8Content);
-    m_scene->setExporting(false);
+    m_scene->setExportingPdf(false);
 }
 
 void MDIViewPage::printPdf(std::string file)
