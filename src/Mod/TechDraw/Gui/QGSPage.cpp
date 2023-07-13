@@ -1051,7 +1051,7 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
     }
 }
 
-void QGSPage::setExporting(bool enable)
+void QGSPage::setExportingPdf(bool enable)
 {
     QList<QGraphicsItem*> sceneItems = items();
     std::vector<QGIViewPart*> dvps;
@@ -1063,11 +1063,24 @@ void QGSPage::setExporting(bool enable)
             dvps.push_back(qgiPart);
         }
         if (qgiRTA) {
-            qgiRTA->setExporting(enable);
+            qgiRTA->setExportingPdf(enable);
         }
     }
     for (auto& v : dvps) {
         v->draw();
+    }
+}
+
+// RichTextAnno needs to know when it is rendering an Svg as the font size
+// is handled differently in Svg compared to the screen or Pdf.
+void QGSPage::setExportingSvg(bool enable)
+{
+    QList<QGraphicsItem*> sceneItems = items();
+    for (auto& qgi : sceneItems) {
+        QGIRichAnno* qgiRTA = dynamic_cast<QGIRichAnno*>(qgi);
+        if (qgiRTA) {
+            qgiRTA->setExportingSvg(enable);
+        }
     }
 }
 
@@ -1106,7 +1119,7 @@ void QGSPage::saveSvg(QString filename)
     bool saveState = m_vpPage->getFrameState();
     m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
-    setExporting(true);
+    setExportingSvg(true);
 
     // Here we temporarily hide the page template, because Qt would otherwise convert the SVG template
     // texts into series of paths, making the later document edits practically unfeasible.
@@ -1119,7 +1132,6 @@ void QGSPage::saveSvg(QString filename)
     }
 
     refreshViews();
-    //    viewport()->repaint();
 
     double width = Rez::guiX(page->getPageWidth());
     double height = Rez::guiX(page->getPageHeight());
@@ -1135,13 +1147,12 @@ void QGSPage::saveSvg(QString filename)
 
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
-    setExporting(false);
+    setExportingSvg(false);
     if (templateVisible && svgTemplate) {
         svgTemplate->show();
     }
 
     refreshViews();
-    //    viewport()->repaint();
 
     temporaryFile.close();
     postProcessXml(temporaryFile, filename, pageName);

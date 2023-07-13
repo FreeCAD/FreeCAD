@@ -132,7 +132,8 @@ public:
 
     TechDraw::DrawPage* getDrawPage();
 
-    void setExporting(bool enable);
+    void setExportingPdf(bool enable);
+    void setExportingSvg(bool enable);
     virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
