@@ -37,6 +37,109 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
 
+Array2DModel::Array2DModel(Materials::MaterialProperty *property, Materials::Material2DArray *value, QObject *parent) :
+    QAbstractTableModel(parent),
+    _property(property),
+    _value(value)
+{}
+
+Array2DModel::~Array2DModel()
+{}
+
+int Array2DModel::rowCount(const QModelIndex& parent) const
+{
+    if (parent.isValid())
+        return 0; // No children
+
+    return _value->rows() + 5; // Will always have 1 empty row
+}
+
+int Array2DModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+
+    return _property->columns().size();
+}
+
+QVariant Array2DModel::data(const QModelIndex& index, int role) const
+{
+    if (role == Qt::DisplayRole)
+       return QString();
+
+    return QVariant();
+}
+
+QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
+                    int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        if (orientation == Qt::Horizontal)
+        {
+            auto column = _property->getColumn(section);
+            return QVariant(column.getName());
+        }
+
+        // Vertical header
+        if (section == (rowCount() - 1))
+            return QVariant(QString::fromStdString("*"));
+        return QVariant(section + 1);
+    }
+
+    return QVariant();
+}
+
+bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    Q_EMIT dataChanged(index, index);
+    return true;
+}
+
+Qt::ItemFlags Array2DModel::flags(const QModelIndex& index) const
+{
+    return (QAbstractTableModel::flags(index) | Qt::ItemIsEditable);
+}
+
+
+// Resizing functions
+bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+    beginInsertRows(parent, row, row + count);
+
+    endInsertRows();
+
+    return false;
+}
+
+bool Array2DModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    beginRemoveRows(parent, row, row + count);
+
+    endRemoveRows();
+
+    return false;
+}
+
+bool Array2DModel::insertColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
+
+bool Array2DModel::removeColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
+
+//===
+
 Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent)
   : QDialog(parent), ui(new Ui_Array2D)
 {
@@ -53,6 +156,10 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
     } else {
         _property = nullptr;
     }
+    if (_property)
+        _value = static_cast<Materials::Material2DArray *>(_property->getValue());
+    else
+        _value = nullptr;
 
     setupDefault();
     setupArray();
@@ -113,27 +220,29 @@ void Array2D::setupArray()
         return;
 
     auto table = ui->tableView;
-    auto model = new QStandardItemModel();
+    auto model = new Array2DModel(_property, _value, this);
     table->setModel(model);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    // table->horizontalHeader()->setModel(model);
+    table->horizontalHeader()->show();
 
-    setHeaders(model);
+    // setHeaders(model);
     setColumnWidths(table);
 
-    Materials::Material2DArray *value = static_cast<Materials::Material2DArray *>(_property->getValue());
-    int length = _property->columns().size();
-    for (int i = 0; i <= value->rows(); i++)
-    {
-        QList<QStandardItem*> items;
+    // Materials::Material2DArray *value = static_cast<Materials::Material2DArray *>(_property->getValue());
+    // int length = _property->columns().size();
+    // for (int i = 0; i <= value->rows(); i++)
+    // {
+    //     QList<QStandardItem*> items;
 
-        for (int j = 0; j < length; j++)
-        {
-            auto item = new QStandardItem();
-            items.append(item);
-        }
+    //     for (int j = 0; j < length; j++)
+    //     {
+    //         auto item = new QStandardItem();
+    //         items.append(item);
+    //     }
 
-        model->appendRow(items);
-    }
+    //     model->appendRow(items);
+    // }
 }
 
 void Array2D::accept()

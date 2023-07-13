@@ -26,12 +26,39 @@
 #include <QDialog>
 #include <QStandardItem>
 #include <QTableView>
+#include <QAbstractTableModel>
 
 #include <Mod/Material/App/Model.h>
 
 namespace MatGui {
 
 class Ui_Array2D;
+
+class Array2DModel : public QAbstractTableModel
+{
+public:
+    Array2DModel(Materials::MaterialProperty *property = nullptr, Materials::Material2DArray *value = nullptr, QObject *parent = nullptr);
+    ~Array2DModel() override;
+
+    // Overriden virtual functions
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+    // Resizing functions
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+private:
+    Materials::MaterialProperty *_property;
+    Materials::Material2DArray *_value;
+
+};
 
 class Array2D : public QDialog
 {
@@ -47,6 +74,7 @@ public:
 private:
     std::unique_ptr<Ui_Array2D> ui;
     Materials::MaterialProperty *_property;
+    Materials::Material2DArray *_value;
 
     void setupDefault();
     void setHeaders(QStandardItemModel *model);
