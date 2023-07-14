@@ -257,9 +257,9 @@ void ModelLoader::addToTree(ModelEntry *model, std::map<std::pair<QString, QStri
 
                     auto colProp = cols[colName];
                     auto colPropType = yamlValue(colProp, "Type", "");
-                    auto colPropUnits = yamlValue(yamlProp, "Units", "");
-                    auto colPropURL = yamlValue(yamlProp, "URL", "");
-                    auto colPropDescription = yamlValue(yamlProp, "Description", "");
+                    auto colPropUnits = yamlValue(colProp, "Units", "");
+                    auto colPropURL = yamlValue(colProp, "URL", "");
+                    auto colPropDescription = yamlValue(colProp, "Description", "");
                     ModelProperty colProperty(QString::fromStdString(colName), colPropType,
                                 colPropUnits, colPropURL,
                                 colPropDescription);
