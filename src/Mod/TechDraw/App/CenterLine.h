@@ -85,7 +85,7 @@ public:
 
     static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
                                          std::vector<std::string> subs,
-                                         int mode = 0,
+                                         int mode = CenterLine::VERTICAL,
                                          bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
 
@@ -137,8 +137,8 @@ public:
     std::vector<std::string> m_faces;
     std::vector<std::string> m_edges;
     std::vector<std::string> m_verts;
-    int m_type;          // 0 - face, 1 - 2 line, 2 - 2 point
-    int m_mode;          // 0 - vert/ 1 - horiz/ 2 - aligned
+    int m_type;  // CLTYPE enum
+    int m_mode;  // CLMODE enum
     double m_hShift;
     double m_vShift;
     double m_rotate;
