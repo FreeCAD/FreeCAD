@@ -52,7 +52,7 @@ int Array2DModel::rowCount(const QModelIndex& parent) const
     if (parent.isValid())
         return 0; // No children
 
-    return _value->rows() + 5; // Will always have 1 empty row
+    return _value->rows() + 1; // Will always have 1 empty row
 }
 
 int Array2DModel::columnCount(const QModelIndex& parent) const
@@ -65,7 +65,16 @@ int Array2DModel::columnCount(const QModelIndex& parent) const
 QVariant Array2DModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole)
-       return QString();
+    {
+        try
+        {
+            return _value->getValue(index.row(), index.column());
+        }
+        catch(const Base::Exception &)
+        {
+            return QString();
+        }
+    }
 
     return QVariant();
 }
@@ -79,12 +88,12 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
         {
             auto column = _property->getColumn(section);
             return QVariant(column.getName());
+        } else if (orientation == Qt::Vertical) {
+            // Vertical header
+            if (section == (rowCount() - 1))
+                return QVariant(QString::fromStdString("*"));
+            return QVariant(section + 1);
         }
-
-        // Vertical header
-        if (section == (rowCount() - 1))
-            return QVariant(QString::fromStdString("*"));
-        return QVariant(section + 1);
     }
 
     return QVariant();
@@ -92,6 +101,12 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
 
 bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+    if (index.row() == _value->rows())
+    {
+        insertRows(index.row(), 1);
+    }
+    _value->setValue(index.row(), index.column(), value);
+
     Q_EMIT dataChanged(index, index);
     return true;
 }
@@ -105,7 +120,19 @@ Qt::ItemFlags Array2DModel::flags(const QModelIndex& index) const
 // Resizing functions
 bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 {
-    beginInsertRows(parent, row, row + count);
+    beginInsertRows(parent, row, row + count - 1);
+
+    int columns = columnCount();
+    for (int i = 0; i < count; i++)
+    {
+        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
+        for (int j = 0; j < columns; j++)
+        {
+            rowPtr->push_back(QVariant(QString()));
+        }
+
+        _value->insertRow(row, rowPtr);
+    }
 
     endInsertRows();
 
@@ -114,7 +141,7 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 
 bool Array2DModel::removeRows(int row, int count, const QModelIndex& parent)
 {
-    beginRemoveRows(parent, row, row + count);
+    beginRemoveRows(parent, row, row + count - 1);
 
     endRemoveRows();
 
@@ -145,9 +172,6 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
   : QDialog(parent), ui(new Ui_Array2D)
 {
     ui->setupUi(this);
-
-    Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
-    Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
     if (material->hasPhysicalProperty(propertyName))
     {
@@ -232,28 +256,10 @@ void Array2D::setupArray()
     auto table = ui->tableView;
     auto model = new Array2DModel(_property, _value, this);
     table->setModel(model);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    // table->horizontalHeader()->setModel(model);
-    // table->horizontalHeader()->show();
+    table->setEditTriggers(QAbstractItemView::AllEditTriggers);
 
-    // setHeaders(model);
     setColumnWidths(table);
     setColumnDelegates(table);
-
-    // Materials::Material2DArray *value = static_cast<Materials::Material2DArray *>(_property->getValue());
-    // int length = _property->columns().size();
-    // for (int i = 0; i <= value->rows(); i++)
-    // {
-    //     QList<QStandardItem*> items;
-
-    //     for (int j = 0; j < length; j++)
-    //     {
-    //         auto item = new QStandardItem();
-    //         items.append(item);
-    //     }
-
-    //     model->appendRow(items);
-    // }
 }
 
 void Array2D::accept()

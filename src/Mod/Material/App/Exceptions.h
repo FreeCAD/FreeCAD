@@ -77,6 +77,14 @@ public:
     ~InvalidColumn() throw() override {}
 };
 
+class InvalidIndex : public Base::Exception
+{
+public:
+    InvalidIndex(){}
+    explicit InvalidIndex(char* msg){this->setMessage(msg);}
+    ~InvalidIndex() throw() override {}
+};
+
 class UnknownValueType : public Base::Exception
 {
 public:

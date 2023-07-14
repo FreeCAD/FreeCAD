@@ -51,7 +51,7 @@ public:
             const QStyleOptionViewItem &, const QModelIndex &index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 
-Q_SIGNALS:
+// Q_SIGNALS:
     /** Emits this signal when a property has changed */
     // void propertyChange(const QString &property, const QString value);
 

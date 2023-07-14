@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <App/Application.h>
+
 #include "MaterialValue.h"
 #include "Exceptions.h"
 
@@ -59,19 +61,19 @@ MaterialValue Material2DArray::getDefault() const
     return ret;
 }
 
-const std::vector<QVariant> &Material2DArray::getRow(int row) const
+const std::vector<QVariant> *Material2DArray::getRow(int row) const
 {
     try {
-        return *(_rows.at(row));
+        return _rows.at(row);
     } catch (std::out_of_range const &) {
         throw InvalidRow();
     }
 }
 
-std::vector<QVariant> &Material2DArray::getRow(int row)
+std::vector<QVariant> *Material2DArray::getRow(int row)
 {
     try {
-        return *(_rows.at(row));
+        return _rows.at(row);
     } catch (std::out_of_range const &) {
         throw InvalidRow();
     }
@@ -83,6 +85,11 @@ void Material2DArray::addRow(std::vector<QVariant> *row)
     _rows.push_back(row);
 }
 
+void Material2DArray::insertRow(int index, std::vector<QVariant> *row)
+{
+    _rows.insert(_rows.begin() + index, row);
+}
+
 void Material2DArray::deleteRow(int row)
 {
     if (row >= _rows.size() || row < 0)
@@ -92,16 +99,46 @@ void Material2DArray::deleteRow(int row)
 
 void Material2DArray::setValue(int row, int column,  const QVariant &value)
 {
-    auto val = getRow(row);
+    if (row >= rows())
+        throw InvalidIndex();
+
+    std::vector<QVariant> *val = getRow(row);
+    try
+    {
+        val->at(column) = value;
+    }
+    catch(const std::out_of_range&)
+    {
+        throw InvalidIndex();
+    }
 }
 
 const QVariant &Material2DArray::getValue(int row, int column)
 {
     auto val = getRow(row);
     try {
-        return val.at(column);
+        return val->at(column);
     } catch (std::out_of_range const &) {
         throw InvalidColumn();
+    }
+}
+
+void Material2DArray::dumpRow(const std::vector<QVariant> &row) const
+{
+    Base::Console().Log("row: ");
+    for (auto column: row)
+    {
+        Base::Console().Log("'%s' ", 
+            column.toString().toStdString().c_str());
+    }
+    Base::Console().Log("\n");
+}
+
+void Material2DArray::dump() const
+{
+    for (auto row: _rows)
+    {
+        dumpRow(*row);
     }
 }
 

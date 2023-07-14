@@ -72,10 +72,11 @@ public:
     void setDefault(MaterialValue value) { _value = value.getValue(); }
     MaterialValue getDefault() const;
 
-    const std::vector<QVariant> &getRow(int row) const;
-    std::vector<QVariant> &getRow(int row);
+    const std::vector<QVariant> *getRow(int row) const;
+    std::vector<QVariant> *getRow(int row);
     int rows() const { return _rows.size(); }
     void addRow(std::vector<QVariant> *row);
+    void insertRow(int index, std::vector<QVariant> *row);
     void deleteRow(int row);
 
     void setValue(int row, int column,  const QVariant &value);
@@ -83,6 +84,10 @@ public:
 
 protected:
     std::vector<std::vector<QVariant> *> _rows;
+
+private:
+    void dumpRow(const std::vector<QVariant>& row) const;
+    void dump() const;
 };
 
 class MaterialsExport Material3DArray : public MaterialValue

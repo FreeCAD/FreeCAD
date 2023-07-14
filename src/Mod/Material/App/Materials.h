@@ -34,37 +34,6 @@ namespace fs = boost::filesystem;
 
 namespace Materials {
 
-class MaterialsExport ModelData : public Base::BaseClass
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    explicit ModelData();
-    explicit ModelData(const QString& name, const QString& type,
-                           const QString& units, const QString& url,
-                           const QString& description);
-    virtual ~ModelData();
-
-    const QString &getName() const {  return _name; }
-    const QString &getType() const {  return _type; }
-    const QString &getUnits() const {  return _units; }
-    const QString &getURL() const {  return _url; }
-    const QString &getDescription() const {  return _description; }
-
-    void setName(const QString& name) { _name = name; }
-    void setType(const QString& type) { _type = type; }
-    void setUnits(const QString& units) { _units = units; }
-    void setURL(const QString& url) { _url = url; }
-    void setDescription(const QString& description) { _description = description; }
-
-private:
-    QString _name;
-    QString _type;
-    QString _units;
-    QString _url;
-    QString _description;
-};
-
 class MaterialsExport MaterialProperty : public ModelProperty
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();

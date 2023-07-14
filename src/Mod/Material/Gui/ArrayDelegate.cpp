@@ -71,11 +71,12 @@ void ArrayDelegate::setEditorData(QWidget* editor, const QModelIndex& index) con
     if (_type == Materials::MaterialValue::Quantity)
     {
         QAbstractItemModel *tableModel = const_cast<QAbstractItemModel *>(index.model());
-        // auto item = tableModel->data(index);
+        auto item = tableModel->data(index);
 
         Gui::InputField* input = static_cast<Gui::InputField*>(editor);
+        input->setText(item.toString());
         // item->setText(input->getQuantityString());
-        tableModel->setData(index, input->getQuantityString());
+        // tableModel->setData(index, input->getQuantityString());
     } else
     {
         QStyledItemDelegate::setEditorData(editor, index);
@@ -135,6 +136,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant &item) cons
         widget = combo;
     } else if (_type == Materials::MaterialValue::Quantity)
     {
+        Base::Console().Log("Units '%s'\n", _units.toStdString().c_str());
         Gui::InputField *input = new Gui::InputField();
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());

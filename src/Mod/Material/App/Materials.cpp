@@ -34,26 +34,6 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::ModelData, Base::BaseClass)
-
-ModelData::ModelData()
-{
-
-}
-
-ModelData::ModelData(const QString& name, const QString& type,
-                        const QString& units, const QString& url,
-                        const QString& description):
-    _name(name), _type(type), _units(units), _url(url), _description(description)
-{
-
-}
-
-ModelData::~ModelData()
-{
-
-}
-
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
 
 MaterialProperty::MaterialProperty()
