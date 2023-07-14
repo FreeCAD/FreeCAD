@@ -420,13 +420,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     double Ymid = Ymin + Yspan;
 
     Base::Vector3d p1, p2;
-    if (mode == 0) {                    //vertical
+    if (mode == CenterLine::VERTICAL) {                    //vertical
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
-    } else if (mode == 1) {            //horizontal
+    } else if (mode == CenterLine::HORIZONTAL) {            //horizontal
         p1 = Base::Vector3d(Xmin, Ymid, 0.0);
         p2 = Base::Vector3d(Xmax, Ymid, 0.0);
-    } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
+    } else {      //vert == CenterLine::ALIGNED //aligned, but aligned doesn't make sense for face(s) bbox
         Base::Console().Message("CL::calcEndPoints - aligned is not applicable to Face center lines\n");
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
@@ -538,13 +538,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     }
 
     //orientation
-    if (mode == 0 && !inhibitVertical) {           //Vertical
+    if (mode == CenterLine::VERTICAL && !inhibitVertical) {           //Vertical
         p1.x = mid.x;
         p2.x = mid.x;
-    } else if (mode == 1 && !inhibitHorizontal) {    //Horizontal
+    } else if (mode == CenterLine::HORIZONTAL && !inhibitHorizontal) {    //Horizontal
         p1.y = mid.y;
         p2.y = mid.y;
-    } else if (mode == 2) {    //Aligned
+    } else if (mode == CenterLine::ALIGNED) {    //Aligned
         // no op
     }
 
@@ -627,15 +627,15 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         inhibitVertical = true;
     }
 
-    if (mode == 0  && !inhibitVertical) {
+    if (mode == CenterLine::VERTICAL  && !inhibitVertical) {
             //Vertical
             v1.x = mid.x;
             v2.x = mid.x;
-    } else if (mode == 1 && !inhibitHorizontal) {
+    } else if (mode == CenterLine::HORIZONTAL && !inhibitHorizontal) {
             //Horizontal
             v1.y = mid.y;
             v2.y = mid.y;
-    } else if (mode == 2) {    //Aligned
+    } else if (mode == CenterLine::ALIGNED) {    //Aligned
         // no op
     }
 
