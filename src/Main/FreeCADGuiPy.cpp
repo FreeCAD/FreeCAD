@@ -305,6 +305,12 @@ QWidget* setupMainWindow()
             mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
         }
 
+        // set toolbar icon size
+        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("General");
+        int size = hGrp->GetInt("ToolbarIconSize", 0);
+        if (size >= 16) // must not be lower than this
+            mw->setIconSize(QSize(size,size));
+
         if (!SoDB::isInitialized()) {
             // init the Inventor subsystem
             SoDB::init();
