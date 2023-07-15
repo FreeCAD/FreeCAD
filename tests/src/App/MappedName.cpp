@@ -225,8 +225,11 @@ TEST(MappedName, fromRawData)
 
 TEST(MappedName, fromRawDataQByteArray)
 {
+    // Arrange
+    QByteArray testByteArray("TESTTEST", 10);
+
     // Act
-    Data::MappedName mappedName = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
+    Data::MappedName mappedName = Data::MappedName::fromRawData(testByteArray);
 
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
@@ -239,7 +242,8 @@ TEST(MappedName, fromRawDataQByteArray)
 TEST(MappedName, fromRawDataCopy)
 {
     // Arrange
-    Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 10));
+    QByteArray testByteArray("TESTTEST", 10);
+    Data::MappedName temp = Data::MappedName::fromRawData(testByteArray);
     temp.append("TESTPOSTFIX");
     temp.compact();// Always call compact before accessing data!
 
@@ -257,7 +261,8 @@ TEST(MappedName, fromRawDataCopy)
 TEST(MappedName, fromRawDataCopyStartposAndSize)
 {
     // Arrange
-    Data::MappedName temp = Data::MappedName::fromRawData(QByteArray("TESTTEST", 8));
+    QByteArray testByteArray("TESTTEST", 8);
+    Data::MappedName temp = Data::MappedName::fromRawData(testByteArray);
     temp.append("ABCDEFGHIJKLM");// postfix
     temp.compact();              // Always call compact before accessing data!
 
@@ -373,11 +378,12 @@ TEST(MappedName, additionOperators)
 {
     // Arrange
     Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    QByteArray post3("POST3");
 
     // Act
     mappedName += "POST1";
     mappedName += std::string("POST2");
-    mappedName += QByteArray("POST3");
+    mappedName += post3;
     mappedName += Data::MappedName("POST4");
 
     // Assert
@@ -389,12 +395,13 @@ TEST(MappedName, additionOperators)
 
     // Arrange
     mappedName = Data::MappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    QByteArray post8("POST8");
 
     // Act
     mappedName = mappedName + Data::MappedName("POST5");
     mappedName = mappedName + "POST6";
     mappedName = mappedName + std::string("POST7");
-    mappedName = mappedName + QByteArray("POST8");
+    mappedName = mappedName + post8;
 
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
