@@ -1,64 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="svg5821"
    height="64px"
    width="64px"
-   sodipodi:docname="shaftTolerance.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   inkscape:export-filename="/home/wile/Documents/FreeCAD/icons/shaftTolerance.png"
-   inkscape:export-xdpi="300"
-   inkscape:export-ydpi="300">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1358"
-     inkscape:window-height="710"
-     id="namedview966"
-     showgrid="true"
-     inkscape:zoom="8.40625"
-     inkscape:cx="37.805478"
-     inkscape:cy="28.677522"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg5821"
-     inkscape:snap-global="false"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid968" />
-    <sodipodi:guide
-       position="64,93.026022"
-       orientation="1,0"
-       id="guide1132"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="0.23791822,88.02974"
-       orientation="1,0"
-       id="guide1136"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="4.2825279,75.895911"
-       orientation="1,0"
-       id="guide1138"
-       inkscape:locked="false" />
-  </sodipodi:namedview>
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs5823">
     <linearGradient
@@ -227,7 +178,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>[WandererFan]</dc:title>
@@ -270,9 +221,7 @@
     <path
        id="path1103"
        style="fill:#babdb6;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 6.9064708,47.167743 C 5.3178473,45.513577 5.2530174,44.152162 4.4300019,41.339568 3.6069863,38.526974 5.0461549,34.656806 5.9956656,31.89359 7.7695001,26.731472 7.0807768,28.596114 7.5347837,25.845901 7.9601804,23.268997 6.3554129,20.045439 4.6003326,17.316387 L 58.002834,17.189135 c 1.75508,2.729053 1.845544,6.077919 0.793184,9.362227 -1.272147,3.970241 -0.710331,1.785223 -2.609751,5.571853 -1.139733,2.27214 -1.929606,4.986528 -1.089821,8.613265 0.348686,1.505853 3.504946,5.482559 4.736693,6.422971 z"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="czssccssscc" />
+       d="M 6.9064708,47.167743 C 5.3178473,45.513577 5.2530174,44.152162 4.4300019,41.339568 3.6069863,38.526974 5.0461549,34.656806 5.9956656,31.89359 7.7695001,26.731472 7.0807768,28.596114 7.5347837,25.845901 7.9601804,23.268997 6.3554129,20.045439 4.6003326,17.316387 L 58.002834,17.189135 c 1.75508,2.729053 1.845544,6.077919 0.793184,9.362227 -1.272147,3.970241 -0.710331,1.785223 -2.609751,5.571853 -1.139733,2.27214 -1.929606,4.986528 -1.089821,8.613265 0.348686,1.505853 3.504946,5.482559 4.736693,6.422971 z" />
     <g
        transform="translate(-74.700659,-2.0223058)"
        id="g1162">

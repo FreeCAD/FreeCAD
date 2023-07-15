@@ -2,127 +2,18 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="64"
    height="64"
    id="svg249"
-   inkscape:version="0.92.4 (unknown)"
-   sodipodi:docname="TechDraw_Dimension_HExtent.svg">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1358"
-     inkscape:window-height="703"
-     id="namedview91"
-     showgrid="true"
-     inkscape:snap-global="true"
-     inkscape:snap-bbox="true"
-     inkscape:snap-nodes="false"
-     inkscape:zoom="8.03125"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer2"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid3068"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-    <sodipodi:guide
-       position="30,50"
-       orientation="1,0"
-       id="guide661"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="2,30"
-       orientation="0,1"
-       id="guide663"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="-8,2"
-       orientation="0,1"
-       id="guide4832"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="30,62"
-       orientation="0,1"
-       id="guide4834"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="62,39"
-       orientation="1,0"
-       id="guide4836"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="2,45"
-       orientation="1,0"
-       id="guide4838"
-       inkscape:locked="false" />
-  </sodipodi:namedview>
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs3">
-    <inkscape:path-effect
-       effect="skeletal"
-       id="path-effect4816"
-       is_visible="true"
-       pattern="M 0,0 H 1"
-       copytype="repeated"
-       prop_scale="1"
-       scale_y_rel="false"
-       spacing="10"
-       normal_offset="0"
-       tang_offset="0"
-       prop_units="false"
-       vertical_pattern="false"
-       fuse_tolerance="0" />
-    <inkscape:path-effect
-       effect="skeletal"
-       id="path-effect4810"
-       is_visible="true"
-       pattern="M 0,0 H 1"
-       copytype="repeated_stretched"
-       prop_scale="1"
-       scale_y_rel="false"
-       spacing="10"
-       normal_offset="0"
-       tang_offset="0"
-       prop_units="false"
-       vertical_pattern="false"
-       fuse_tolerance="0" />
-    <inkscape:path-effect
-       effect="skeletal"
-       id="path-effect1103"
-       is_visible="true"
-       pattern="M 0,0 H 1"
-       copytype="repeated"
-       prop_scale="0"
-       scale_y_rel="false"
-       spacing="4"
-       normal_offset="-0.2"
-       tang_offset="0"
-       prop_units="false"
-       vertical_pattern="false"
-       fuse_tolerance="0" />
     <radialGradient
        cx="605.71429"
        cy="486.64789"
@@ -419,7 +310,6 @@
          offset="1" />
     </linearGradient>
     <radialGradient
-       inkscape:collect="always"
        xlink:href="#aigrd2-2"
        id="radialGradient2283-4"
        gradientUnits="userSpaceOnUse"
@@ -447,7 +337,6 @@
          offset="1.0000000" />
     </radialGradient>
     <radialGradient
-       inkscape:collect="always"
        xlink:href="#aigrd3-1"
        id="radialGradient2285-2"
        gradientUnits="userSpaceOnUse"
@@ -483,8 +372,7 @@
        gradientTransform="matrix(1.2992848,0,0,1.4315068,3.2140525,-64.437909)"
        gradientUnits="userSpaceOnUse"
        id="radialGradient15668-2"
-       xlink:href="#linearGradient15662-7"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient15662-7" />
     <linearGradient
        id="linearGradient15662-7">
       <stop
@@ -505,8 +393,7 @@
        gradientTransform="matrix(1.3214205,0,0,1.4752426,-2.0839021,-66.146883)"
        gradientUnits="userSpaceOnUse"
        id="radialGradient15658-4"
-       xlink:href="#linearGradient259-5"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient259-5" />
     <linearGradient
        id="linearGradient259-5">
       <stop
@@ -527,8 +414,7 @@
        gradientTransform="matrix(1.3321242,0,0,1.4633899,2.5298271,-65.230893)"
        gradientUnits="userSpaceOnUse"
        id="radialGradient15656-7"
-       xlink:href="#linearGradient269-1"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient269-1" />
     <linearGradient
        id="linearGradient269-1">
       <stop
@@ -541,7 +427,6 @@
          id="stop271-5" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient5048-7"
        id="linearGradient5027-1"
        gradientUnits="userSpaceOnUse"
@@ -566,7 +451,6 @@
          id="stop5052-9" />
     </linearGradient>
     <radialGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient5060-8"
        id="radialGradient5029-4"
        gradientUnits="userSpaceOnUse"
@@ -577,7 +461,6 @@
        fy="486.64789"
        r="117.14286" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient5060-8">
       <stop
          style="stop-color:black;stop-opacity:1;"
@@ -597,8 +480,7 @@
        gradientTransform="matrix(-2.774389,0,0,1.969706,112.7623,-872.8854)"
        gradientUnits="userSpaceOnUse"
        id="radialGradient3663"
-       xlink:href="#linearGradient5060-8"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient5060-8" />
     <radialGradient
        r="117.14286"
        fy="486.64789"
@@ -608,8 +490,7 @@
        gradientTransform="matrix(-2.774389,0,0,1.969706,112.7623,-872.8854)"
        gradientUnits="userSpaceOnUse"
        id="radialGradient4227"
-       xlink:href="#linearGradient5060-8"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient5060-8" />
   </defs>
   <metadata
      id="metadata4">
@@ -619,7 +500,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -670,13 +551,9 @@
      style="display:inline"
      transform="translate(0,16)" />
   <g
-     inkscape:groupmode="layer"
-     id="layer1"
-     inkscape:label="Shape" />
+     id="layer1" />
   <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Dim">
+     id="layer2">
     <g
        id="g5167">
       <g
@@ -686,21 +563,15 @@
         <path
            style="opacity:0.5;fill:#d3d7cf;fill-opacity:1;stroke:#042a2a;stroke-width:1.99999988;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
            d="M 14.75,45.144231 V 24.221153 l 18.307692,5.230771 V 50.375 Z"
-           id="path3185"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccccc" />
+           id="path3185" />
         <path
            style="opacity:0.5;fill:#d3d7cf;fill-opacity:1;stroke:#042a2a;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
            d="M 14.75,24.221153 30.442308,16.375 48.750001,21.605769 33.057692,29.451924 Z"
-           id="path3973"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccccc" />
+           id="path3973" />
         <path
            style="opacity:0.5;fill:#babdb6;fill-opacity:1;stroke:#042a2a;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
            d="M 33.057692,29.451924 V 50.375 L 48.750001,42.528847 V 21.605769 Z"
-           id="path3975"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccccc" />
+           id="path3975" />
       </g>
       <g
          transform="translate(-20.165215,0.3521777)"
@@ -711,34 +582,28 @@
           <path
              style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path4981"
-             inkscape:connector-curvature="0" />
+             id="path4981" />
           <path
-             inkscape:connector-curvature="0"
              id="path4983"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path4985"
-             inkscape:connector-curvature="0" />
+             id="path4985" />
         </g>
         <g
            transform="translate(0,3.8739547)"
            id="g5003">
           <path
-             inkscape:connector-curvature="0"
              id="path4997"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path4999"
-             inkscape:connector-curvature="0" />
+             id="path4999" />
           <path
-             inkscape:connector-curvature="0"
              id="path5001"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
@@ -749,34 +614,28 @@
           <path
              style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path5005"
-             inkscape:connector-curvature="0" />
+             id="path5005" />
           <path
-             inkscape:connector-curvature="0"
              id="path5007"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path5009"
-             inkscape:connector-curvature="0" />
+             id="path5009" />
         </g>
         <g
            transform="translate(0,34.513414)"
            id="g5019">
           <path
-             inkscape:connector-curvature="0"
              id="path5013"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path5015"
-             inkscape:connector-curvature="0" />
+             id="path5015" />
           <path
-             inkscape:connector-curvature="0"
              id="path5017"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
@@ -787,18 +646,15 @@
           <path
              style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path5021"
-             inkscape:connector-curvature="0" />
+             id="path5021" />
           <path
-             inkscape:connector-curvature="0"
              id="path5023"
              d="M 76.377432,2.0477945 V 8.2645913"
              style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="M 76.377432,2.0477945 V 8.2645913"
-             id="path5025"
-             inkscape:connector-curvature="0" />
+             id="path5025" />
         </g>
       </g>
       <g
@@ -813,34 +669,28 @@
             <path
                style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5051"
-               inkscape:connector-curvature="0" />
+               id="path5051" />
             <path
-               inkscape:connector-curvature="0"
                id="path5053"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
             <path
                style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5055"
-               inkscape:connector-curvature="0" />
+               id="path5055" />
           </g>
           <g
              transform="translate(0,3.8739547)"
              id="g5065">
             <path
-               inkscape:connector-curvature="0"
                id="path5059"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
             <path
                style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5061"
-               inkscape:connector-curvature="0" />
+               id="path5061" />
             <path
-               inkscape:connector-curvature="0"
                id="path5063"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
@@ -851,34 +701,28 @@
             <path
                style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5067"
-               inkscape:connector-curvature="0" />
+               id="path5067" />
             <path
-               inkscape:connector-curvature="0"
                id="path5069"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
             <path
                style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5071"
-               inkscape:connector-curvature="0" />
+               id="path5071" />
           </g>
           <g
              transform="translate(0,34.513414)"
              id="g5081">
             <path
-               inkscape:connector-curvature="0"
                id="path5075"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
             <path
                style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5077"
-               inkscape:connector-curvature="0" />
+               id="path5077" />
             <path
-               inkscape:connector-curvature="0"
                id="path5079"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
@@ -889,18 +733,15 @@
             <path
                style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5083"
-               inkscape:connector-curvature="0" />
+               id="path5083" />
             <path
-               inkscape:connector-curvature="0"
                id="path5085"
                d="M 76.377432,2.0477945 V 8.2645913"
                style="fill:none;fill-rule:evenodd;stroke:#c4a000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
             <path
                style="fill:none;fill-rule:evenodd;stroke:#fce94f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                d="M 76.377432,2.0477945 V 8.2645913"
-               id="path5087"
-               inkscape:connector-curvature="0" />
+               id="path5087" />
           </g>
         </g>
       </g>

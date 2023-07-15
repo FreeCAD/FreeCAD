@@ -2,76 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="64"
    height="64"
    id="svg2"
-   inkscape:version="0.92.4 (unknown)"
-   sodipodi:docname="section-down.svg">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1358"
-     inkscape:window-height="703"
-     id="namedview24"
-     showgrid="true"
-     inkscape:snap-bbox="false"
-     inkscape:snap-nodes="true"
-     inkscape:zoom="6.8343873"
-     inkscape:cx="49.140286"
-     inkscape:cy="27.785022"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g7108"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid3001"
-       units="px"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="1"
-       spacingy="1"
-       originx="0"
-       originy="0" />
-    <sodipodi:guide
-       position="26,34"
-       orientation="0,1"
-       id="guide329"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="-2,36"
-       orientation="0,1"
-       id="guide331"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="22,10"
-       orientation="0,1"
-       id="guide527"
-       inkscape:locked="false" />
-  </sodipodi:namedview>
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4">
     <marker
-       inkscape:stockid="TriangleOutS"
        orient="auto"
        refY="0.0"
        refX="0.0"
@@ -84,7 +27,6 @@
          transform="scale(0.2)" />
     </marker>
     <marker
-       inkscape:stockid="TriangleInS"
        orient="auto"
        refY="0.0"
        refX="0.0"
@@ -97,7 +39,6 @@
          transform="scale(-0.2)" />
     </marker>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3857">
       <stop
          style="stop-color:#ce5c00;stop-opacity:1"
@@ -193,7 +134,6 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
     </marker>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3857"
        id="linearGradient3863"
        x1="27.000002"
@@ -202,7 +142,6 @@
        y2="1036.3622"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4029"
        id="linearGradient10861-3"
        x1="28.000002"
@@ -212,8 +151,7 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(7e-7,1.64e-5)" />
     <linearGradient
-       id="linearGradient4029"
-       inkscape:collect="always">
+       id="linearGradient4029">
       <stop
          id="stop4031"
          offset="0"
@@ -224,7 +162,6 @@
          style="stop-color:#16d0d2;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3995"
        id="linearGradient3837-6"
        x1="24.000002"
@@ -234,7 +171,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(7e-7,1.64e-5)" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3995">
       <stop
          style="stop-color:#16d0d2;stop-opacity:1"
@@ -318,19 +254,15 @@
           <path
              d="m 16.000005,1042.3622 h 18 v 0 -43.99996 h -18"
              id="path3041-5"
-             style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:4, 8;stroke-dashoffset:10;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             sodipodi:nodetypes="ccccc" />
+             style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:4, 8;stroke-dashoffset:10;stroke-opacity:1;marker:none;enable-background:accumulate" />
           <path
              style="fill:#000000;stroke:none"
              d="m 19.000005,993.36224 v 9.99996 l -9,-4.99996 z"
-             id="path3018-6"
-             inkscape:connector-curvature="0" />
+             id="path3018-6" />
           <path
              style="fill:#000000;stroke:none"
              d="m 19.000005,1037.3622 v 10 l -8.99998,-5 z"
-             id="path3018-1-2"
-             inkscape:connector-curvature="0" />
+             id="path3018-1-2" />
         </g>
       </g>
     </g>

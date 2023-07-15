@@ -2,20 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
    width="64"
    height="64"
    id="svg2160"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="TechDraw_Pages.svg">
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -24,7 +20,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>[WandererFan]</dc:title>
@@ -61,42 +57,9 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     id="namedview6"
-     showgrid="true"
-     inkscape:zoom="9.6652832"
-     inkscape:cx="5.6225795"
-     inkscape:cy="35.794231"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2160"
-     inkscape:snap-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2985"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       units="px"
-       spacingx="1px"
-       spacingy="1px" />
-  </sodipodi:namedview>
   <defs
      id="defs2162">
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3775">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1;"
@@ -108,7 +71,6 @@
          id="stop3779" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3775"
        id="linearGradient3781"
        x1="37"
@@ -118,7 +80,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.86956527,0,0,0.86206888,13.173909,8.4138003)" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3775-6"
        id="linearGradient3781-3"
        x1="37"
@@ -128,7 +89,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.86956527,0,0,0.86206888,7.1739089,4.4137966)" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3775-6">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1;"
@@ -140,7 +100,6 @@
          id="stop3779-5" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3775-2"
        id="linearGradient3781-6"
        x1="37"
@@ -150,7 +109,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.86956527,0,0,0.86206888,1.173909,0.41379645)" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3775-2">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1;"
