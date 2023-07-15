@@ -2,21 +2,17 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Std_WindowNext.svg"
-   viewBox="0 0 64 64">
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4">
     <linearGradient
@@ -31,7 +27,6 @@
          style="stop-color:#06989a;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3842-62"
        id="linearGradient3039-0"
        gradientUnits="userSpaceOnUse"
@@ -41,7 +36,6 @@
        x2="48"
        y2="4" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3842-62">
       <stop
          style="stop-color:#204a87;stop-opacity:1"
@@ -53,7 +47,6 @@
          id="stop3846-8" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3830-9"
        id="linearGradient3041-7"
        gradientUnits="userSpaceOnUse"
@@ -63,7 +56,6 @@
        x2="43"
        y2="14" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3830-9">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1;"
@@ -82,8 +74,7 @@
        gradientTransform="matrix(1.4500001,0,0,1.4705882,-27.45,-31.058821)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3012"
-       xlink:href="#linearGradient3895"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3895" />
     <linearGradient
        id="linearGradient3895">
       <stop
@@ -103,10 +94,8 @@
        gradientTransform="matrix(1.4500001,0,0,1.4705882,-27.45,983.3034)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3087"
-       xlink:href="#linearGradient3138"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3138" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3138"
        id="linearGradient3148"
        gradientUnits="userSpaceOnUse"
@@ -116,34 +105,6 @@
        x2="41.689651"
        y2="43.559998" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="12.375"
-     inkscape:cx="30.78845"
-     inkscape:cy="27.351057"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:window-width="1598"
-     inkscape:window-height="836"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="0"
-     inkscape:snap-global="true"
-     borderlayer="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid11622"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -152,13 +113,11 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-988.36218)">
     <g
@@ -195,36 +154,23 @@
       <path
          style="fill:none;stroke:#204a87;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 65,1036.3622 41,0"
-         id="path3838-8"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cc" />
+         id="path3838-8" />
       <path
          style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 65,1031.3622 8,0"
-         id="path3840-9"
-         inkscape:connector-curvature="0" />
+         id="path3840-9" />
     </g>
     <g
        id="g3144"
        transform="matrix(-1,0,0,1,64,0)">
       <path
-         inkscape:export-ydpi="4.1683898"
-         inkscape:export-xdpi="4.1683898"
-         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-         sodipodi:nodetypes="cccccccc"
          id="path3343"
          d="m 37,1011.3622 0,12 -22,0 0,14 22,0 0,12 24,-19 z"
-         style="fill:url(#linearGradient3148);fill-opacity:1;fill-rule:evenodd;stroke:#042a2a;stroke-width:1.99999988000000006;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
-         inkscape:connector-curvature="0" />
+         style="fill:url(#linearGradient3148);fill-opacity:1;fill-rule:evenodd;stroke:#042a2a;stroke-width:1.99999988000000006;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
       <path
-         inkscape:export-ydpi="4.1683898"
-         inkscape:export-xdpi="4.1683898"
-         inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-         sodipodi:nodetypes="cccccccc"
          id="path3343-2"
          d="m 39,1015.4831 0,9.8791 -22,0 0,10 22,0 0,9.945 18.999994,-14.773 z"
-         style="fill:none;stroke:#34e0e2;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
-         inkscape:connector-curvature="0" />
+         style="fill:none;stroke:#34e0e2;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" />
     </g>
   </g>
 </svg>

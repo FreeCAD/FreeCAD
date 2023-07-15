@@ -2,27 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="button_invalid.svg"
-   inkscape:export-filename="/home/yorik/Sources/FreeCAD/src/Gui/Icons/button_invalid.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2987">
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3899"
        id="linearGradient3905"
        x1="145.72011"
@@ -31,7 +23,6 @@
        y2="117.97237"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3899">
       <stop
          style="stop-color:#a40000;stop-opacity:1"
@@ -43,7 +34,6 @@
          id="stop3903" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3899"
        id="linearGradient4039"
        gradientUnits="userSpaceOnUse"
@@ -52,7 +42,6 @@
        x2="127.68171"
        y2="117.97237" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3899"
        id="linearGradient3907"
        gradientUnits="userSpaceOnUse"
@@ -61,7 +50,6 @@
        x2="127.68171"
        y2="117.97237" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3891"
        id="linearGradient3897"
        x1="130.56519"
@@ -70,7 +58,6 @@
        y2="157.05659"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3891">
       <stop
          style="stop-color:#a40000;stop-opacity:1"
@@ -82,7 +69,6 @@
          id="stop3895" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3891"
        id="linearGradient4041"
        gradientUnits="userSpaceOnUse"
@@ -91,7 +77,6 @@
        x2="147.897"
        y2="157.05659" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3891"
        id="linearGradient4043"
        gradientUnits="userSpaceOnUse"
@@ -101,7 +86,6 @@
        y2="157.05659" />
     <linearGradient
        gradientTransform="translate(-56,-27.999996)"
-       inkscape:collect="always"
        xlink:href="#linearGradient3775"
        id="linearGradient3781"
        x1="14"
@@ -110,7 +94,6 @@
        y2="18"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3775">
       <stop
          style="stop-color:#16d0d2;stop-opacity:1"
@@ -123,7 +106,6 @@
     </linearGradient>
     <linearGradient
        gradientTransform="translate(-56,-27.999996)"
-       inkscape:collect="always"
        xlink:href="#linearGradient3783"
        id="linearGradient3789"
        x1="50"
@@ -132,7 +114,6 @@
        y2="24"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3783">
       <stop
          style="stop-color:#06989a;stop-opacity:1;"
@@ -144,33 +125,6 @@
          id="stop3787" />
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="15.696216"
-     inkscape:cx="38.830239"
-     inkscape:cy="48.280354"
-     inkscape:current-layer="g3879-5"
-     showgrid="true"
-     inkscape:grid-bbox="true"
-     inkscape:document-units="px"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2984"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-  </sodipodi:namedview>
   <metadata
      id="metadata2990">
     <rdf:RDF>
@@ -185,8 +139,6 @@
   </metadata>
   <g
      id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      transform="translate(0,48)">
     <g
        transform="matrix(1.2056452,0,0,1.2056452,-134.37903,-182.37904)"
@@ -196,10 +148,6 @@
          d="M 262,138 C 262,206.48331 206.48331,262 138,262 69.516691,262 14,206.48331 14,138 14,69.516691 69.516691,14 138,14 c 68.48331,0 124,55.516691 124,124 z"
          style="fill:none;stroke:#280000;stroke-width:38.15384674"
          transform="matrix(0.17391304,0,0,0.17391304,114,114)"
-         sodipodi:ry="124"
-         sodipodi:rx="124"
-         sodipodi:cy="138"
-         sodipodi:cx="138"
          id="circle3869"
          r="124"
          cy="138"
@@ -220,10 +168,6 @@
          d="M 262,138 C 262,206.48331 206.48331,262 138,262 69.516691,262 14,206.48331 14,138 14,69.516691 69.516691,14 138,14 c 68.48331,0 124,55.516691 124,124 z"
          style="fill:none;stroke:url(#linearGradient4041);stroke-width:19.07692146"
          transform="matrix(0.17391304,0,0,0.17391304,160.44816,97.411373)"
-         sodipodi:ry="124"
-         sodipodi:rx="124"
-         sodipodi:cy="138"
-         sodipodi:cx="138"
          id="circle3869-3"
          r="124"
          cy="138"
@@ -244,10 +188,6 @@
          d="M 262,138 C 262,206.48331 206.48331,262 138,262 69.516691,262 14,206.48331 14,138 14,69.516691 69.516691,14 138,14 c 68.48331,0 124,55.516691 124,124 z"
          style="fill:none;stroke:url(#linearGradient4039);stroke-width:9.18518734"
          transform="matrix(0.17391304,0,0,0.17391304,114,114)"
-         sodipodi:ry="124"
-         sodipodi:rx="124"
-         sodipodi:cy="138"
-         sodipodi:cx="138"
          id="circle3869-3-2"
          r="124"
          cy="138"

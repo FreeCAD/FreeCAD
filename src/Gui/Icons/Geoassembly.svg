@@ -1,40 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    version="1.1"
    viewBox="0 0 64 64"
    id="svg96"
-   sodipodi:docname="Geofeaturegroup.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1255"
-     inkscape:window-height="930"
-     id="namedview98"
-     showgrid="false"
-     inkscape:zoom="3.6875"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:window-x="67"
-     inkscape:window-y="23"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg96" />
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs26">
     <linearGradient
@@ -130,7 +106,6 @@
          id="stop23" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient69056"
        id="linearGradient920"
        gradientUnits="userSpaceOnUse"
@@ -140,7 +115,6 @@
        x2="17.243999"
        y2="27.587999" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4399"
        id="linearGradient922"
        gradientUnits="userSpaceOnUse"
@@ -188,27 +162,22 @@
     <path
        d="M 9,49 V 35 l 28,10 v 14 z"
        id="path30"
-       style="fill:url(#linearGradient69056);stroke:#302b00;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient69056);stroke:#302b00;stroke-linejoin:round" />
     <path
        d="M 37,59 V 45 L 55,28 v 13 z"
        id="path32"
-       style="fill:url(#linearGradient4399);stroke:#302b00;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient4399);stroke:#302b00;stroke-linejoin:round" />
     <path
        d="M 11.008,47.606 11,37.9997 l 24,8 0.0081,10.185 z"
        id="path34"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#fce94f" />
     <path
        d="M 39.005,54.168 39,45.9998 l 14,-13 0.0021,7.1768 z"
        id="path36"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#edd400" />
     <path
        d="M 23,40 42,23 55,28 37,45 Z"
        id="path38"
-       inkscape:connector-curvature="0"
        style="fill:#fce94f;stroke:#302b00;stroke-linejoin:round" />
   </g>
   <g
@@ -217,27 +186,22 @@
     <path
        d="m 91,33.5 -0.02739,-14.214 12.967,4.3352 v 14.5 z"
        id="path54"
-       style="fill:url(#linearGradient69709);stroke:#0b1521;stroke-width:2;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient69709);stroke:#0b1521;stroke-width:2;stroke-linejoin:round" />
     <path
        d="m 92.927,32.029 0.04731,-10.141 8.9272,3.29 0.0781,10.042 z"
        id="path56"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#729fcf;stroke-width:2" />
     <path
        d="m 103.94,38.121 v -14.5 l 11,-9 L 115,28 Z"
        id="path58"
-       style="fill:url(#linearGradient69717);stroke:#0b1521;stroke-width:2;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient69717);stroke:#0b1521;stroke-width:2;stroke-linejoin:round" />
     <path
        d="m 105.94,33.621 v -9 l 7,-6 -0.0122,8.5816 z"
        id="path60"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#729fcf;stroke-width:2" />
     <path
        d="M 90.973,19.286 102,9.9998 l 12.94,4.6214 -11,9 z"
        id="path62"
-       inkscape:connector-curvature="0"
        style="fill:#729fcf;stroke:#0b1521;stroke-width:2;stroke-linejoin:round" />
   </g>
   <g
@@ -299,45 +263,37 @@
        transform="translate(-40)"
        id="g48">
       <path
-         inkscape:connector-curvature="0"
          style="fill:url(#linearGradient4389)"
          id="path42"
          d="M 9,35 V 21 l 14,5 v 14 z" />
       <path
          style="fill:#8ae234"
-         inkscape:connector-curvature="0"
          id="path44"
          d="M 9,21 28.585,5.209 42,10.0001 l -19,16 z" />
       <path
-         inkscape:connector-curvature="0"
          style="fill:url(#linearGradient69042)"
          id="path46"
          d="M 23,40 V 26 l 7.9726,-6.7138 0.02739,13.714 z" />
     </g>
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient920);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round"
        id="path912"
        d="M -31,35 V 21 l 14,5 v 14 z" />
     <path
        style="fill:#fce94f;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
-       inkscape:connector-curvature="0"
        id="path914"
        d="M -31,21 -11.415,5.209 2,10.0001 l -19,16 z" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient922);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round"
        id="path916"
        d="M -17,40 V 26 l 7.9726,-6.7138 0.02739,13.714 z" />
     <path
        d="m -15,36 v -9 l 4,-3.5 v 9 z"
        id="path50"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#fce94f;stroke-width:2;stroke-opacity:1" />
     <path
        d="m -29.049,33.746 0.08695,-9.9796 9.9568,3.5229 -0.02105,9.9613 z"
        id="path52"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#fce94f;stroke-width:2;stroke-opacity:1" />
   </g>
 </svg>

@@ -1,40 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    version="1.1"
    viewBox="0 0 64 64"
    id="svg96"
-   sodipodi:docname="Geofeaturegroup.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1066"
-     inkscape:window-height="791"
-     id="namedview98"
-     showgrid="false"
-     inkscape:zoom="5"
-     inkscape:cx="32"
-     inkscape:cy="28"
-     inkscape:window-x="67"
-     inkscape:window-y="23"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg96" />
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs26">
     <linearGradient
@@ -130,7 +106,6 @@
          id="stop23" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient69056"
        id="linearGradient920"
        gradientUnits="userSpaceOnUse"
@@ -140,7 +115,6 @@
        x2="17.243999"
        y2="27.587999" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient73208"
        id="linearGradient69042-3"
        gradientUnits="userSpaceOnUse"
@@ -150,7 +124,6 @@
        x2="46.714352"
        y2="35.585785" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient73208">
       <stop
          style="stop-color:#c4a000;stop-opacity:1"
@@ -200,27 +173,22 @@
     <path
        d="M 9,49 V 35 l 28,10 v 14 z"
        id="path30"
-       style="fill:url(#linearGradient69056);stroke:#302b00;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient69056);stroke:#302b00;stroke-linejoin:round" />
     <path
        d="M 37,59 V 45 L 55,28 v 13 z"
        id="path32"
-       style="fill:url(#linearGradient4399);stroke:#302b00;stroke-linejoin:round"
-       inkscape:connector-curvature="0" />
+       style="fill:url(#linearGradient4399);stroke:#302b00;stroke-linejoin:round" />
     <path
        d="M 11.008,47.606 11,37.9997 l 24,8 0.0081,10.185 z"
        id="path34"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#fce94f" />
     <path
        d="M 39.005,54.168 39,45.9998 l 14,-13 0.0021,7.1768 z"
        id="path36"
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#edd400" />
     <path
        d="M 23,40 42,23 55,28 37,45 Z"
        id="path38"
-       inkscape:connector-curvature="0"
        style="fill:#fce94f;stroke:#302b00;stroke-linejoin:round" />
   </g>
   <g
@@ -277,27 +245,20 @@
   <path
      d="M 9,35 V 21 l 14,5 v 14 z"
      id="path912"
-     style="fill:url(#linearGradient920);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round"
-     inkscape:connector-curvature="0" />
+     style="fill:url(#linearGradient920);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round" />
   <path
      d="M 9,21 28.585,5.209 42,10.0001 l -19,16 z"
      id="path914"
-     inkscape:connector-curvature="0"
      style="fill:#fce94f;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
   <path
      style="fill:none;stroke:#fce94f;stroke-width:2;stroke-opacity:1"
-     inkscape:connector-curvature="0"
      id="path52"
      d="m 10.951,33.746 0.08695,-9.9796 9.9568,3.5229 -0.02105,9.9613 z" />
   <path
-     sodipodi:nodetypes="ccccc"
-     inkscape:connector-curvature="0"
      id="path69040"
      d="M 23,40 V 26 L 42,10 v 13 z"
      style="fill:url(#linearGradient69042-3);fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
   <path
-     sodipodi:nodetypes="ccccc"
-     inkscape:connector-curvature="0"
      id="path69044-6"
      d="M 25,36 V 27 L 40,14 v 8 z"
      style="fill:none;stroke:#edd400;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
