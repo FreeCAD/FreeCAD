@@ -4,37 +4,12 @@
    height="64px"
    id="svg3364"
    version="1.1"
-   sodipodi:docname="Sketcher_Snap.svg"
-   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview55"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     objecttolerance="10.0"
-     gridtolerance="10.0"
-     guidetolerance="10.0"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="11.765625"
-     inkscape:cx="39.861886"
-     inkscape:cy="27.580345"
-     inkscape:window-width="1725"
-     inkscape:window-height="1013"
-     inkscape:window-x="1213"
-     inkscape:window-y="293"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg3364" />
   <defs
      id="defs3366">
     <linearGradient
@@ -249,7 +224,6 @@
          id="stop3840-1-6-0-5-1-0-5-8" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3836-9-3-7-2-7-7-2-6"
        id="linearGradient898"
        gradientUnits="userSpaceOnUse"
@@ -375,12 +349,10 @@
     <path
        style="fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 108.96148,19.97344 c 4.28933,11.161025 8.9416,20.384136 14.87384,32.552457 l 5.94954,-11.134131 12.749,12.154051 c 3.39402,0.638464 5.31688,-1.489816 4.75963,-4.504649 l -13.00398,-11.814076 8.49933,-6.629483 z"
-       id="path1052"
-       sodipodi:nodetypes="cccccccc" />
+       id="path1052" />
     <path
        style="fill:#d3d7cf;fill-opacity:1;stroke:#ffffff;stroke-width:1.285;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 112.59215,23.233162 c 3.72959,10.062766 6.25342,13.924184 11.41153,24.895126 l 5.26419,-9.586262 13.8638,13.109482 c 1.42608,0.530564 2.84842,-0.286358 2.07091,-2.088013 l -13.80942,-12.277572 7.29489,-5.92068 z"
-       id="path1052-8"
-       sodipodi:nodetypes="cccccccc" />
+       id="path1052-8" />
   </g>
 </svg>
