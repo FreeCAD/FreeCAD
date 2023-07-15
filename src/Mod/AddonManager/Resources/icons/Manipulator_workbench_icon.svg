@@ -2,22 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64px"
    height="64px"
    id="svg2963"
-   sodipodi:version="0.32"
-   inkscape:version="0.92.0 r15299"
-   sodipodi:docname="Move-ylw2.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   version="1.1">
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2965">
     <linearGradient
@@ -31,13 +25,6 @@
          offset="1"
          id="stop3358" />
     </linearGradient>
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       id="perspective2971" />
     <linearGradient
        gradientTransform="matrix(0,-1.4500001,1.4705882,0,-15.05882,91.45)"
        y2="36.079998"
@@ -46,8 +33,7 @@
        x1="56.172409"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3036"
-       xlink:href="#linearGradient3895"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3895" />
     <linearGradient
        id="linearGradient3895">
       <stop
@@ -67,8 +53,7 @@
        gradientTransform="matrix(0,-0.58000003,0.58823527,0,13.176471,38.379999)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3918-3"
-       xlink:href="#linearGradient3895-6"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3895-6" />
     <linearGradient
        id="linearGradient3895-6">
       <stop
@@ -88,8 +73,7 @@
        gradientTransform="matrix(0.58000003,0,0,0.58823527,25.620001,13.176471)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3029-6"
-       xlink:href="#linearGradient3895-6-2"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3895-6-2" />
     <linearGradient
        id="linearGradient3895-6-2">
       <stop
@@ -109,8 +93,7 @@
        gradientTransform="matrix(0,-0.58000003,0.58823527,0,13.176471,38.379999)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3918-0"
-       xlink:href="#linearGradient3895-9"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3895-9" />
     <linearGradient
        id="linearGradient3895-9">
       <stop
@@ -123,7 +106,6 @@
          id="stop3899-6" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3154"
        gradientUnits="userSpaceOnUse"
@@ -133,7 +115,6 @@
        x2="-23.482759"
        y2="52.400002" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3156"
        gradientUnits="userSpaceOnUse"
@@ -143,7 +124,6 @@
        x2="-9.6896563"
        y2="66" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3158"
        gradientUnits="userSpaceOnUse"
@@ -153,7 +133,6 @@
        x2="31.689651"
        y2="66" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3160"
        gradientUnits="userSpaceOnUse"
@@ -163,7 +142,6 @@
        x2="45.482754"
        y2="52.400002" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3936"
        x1="20"
@@ -172,7 +150,6 @@
        y2="52"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3826"
        id="linearGradient3944"
        x1="20"
@@ -181,7 +158,6 @@
        y2="52"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3826">
       <stop
          style="stop-color:#c4a000;stop-opacity:1"
@@ -193,149 +169,57 @@
          id="stop3830" />
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="9.6875"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1536"
-     inkscape:window-height="801"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:snap-global="true"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid3009"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-    <inkscape:grid
-       type="xygrid"
-       id="grid3011"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="16"
-       spacingy="16"
-       empcolor="#ff0000"
-       empopacity="0.25098039"
-       color="#ff0000"
-       opacity="0.1254902"
-       originx="0"
-       originy="0" />
-  </sodipodi:namedview>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="layer1">
     <rect
        style="fill:url(#linearGradient3936);fill-opacity:1.0;stroke:none"
        id="rect3126"
        width="12"
        height="6"
        x="26"
-       y="29"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       y="29" />
     <rect
        style="fill:url(#linearGradient3944);fill-opacity:1.0;stroke:none"
        id="rect3126-2"
        width="6"
        height="11.999999"
        x="29"
-       y="26"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       y="26" />
     <g
        id="g4351"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/move.png"
-       inkscape:export-xdpi="6.5591564"
-       inkscape:export-ydpi="6.5591564"
        transform="matrix(0.1378133,0,0,0.1378133,-221.39699,-138.35275)" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient3154);fill-opacity:1.0;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 37,28 0,-15 6,0 -11,-10 -11,10 6,0 0,15"
-       id="path3343"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#ffe680;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="M 35,29 35,11 37.831259,11 32,5.7026937 26.168741,11 29,11 29,29"
-       id="path3343-2"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-2" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient3158);fill-opacity:1.0;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 37,37 14,0 0,6 10,-11 -10,-11 0,6 -14,0"
-       id="path3343-3"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-3" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#ffe680;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 35,35 18,0 0,2.831259 L 58.297306,32 53,26.168741 53,29 34,29"
-       id="path3343-2-5"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-2-5" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient3156);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 27,37 H 13 v 6 L 3,32 13,21 v 6 h 14"
-       id="path3343-3-2"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-3-2" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#ffe680;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="M 29,35 11,35 11,37.831259 5.702694,32 11,26.168741 11,29 30,29"
-       id="path3343-2-5-7"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-2-5-7" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:url(#linearGradient3160);fill-opacity:1.0;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 37,36 0,15 6,0 -11,10 -11,-10 6,0 0,-15"
-       id="path3343-0"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-0" />
     <path
-       inkscape:connector-curvature="0"
        style="fill:none;stroke:#ffe680;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 35,34 0,19 2.831259,0 L 32,58.297306 26.168741,53 29,53 29,34"
-       id="path3343-2-6"
-       sodipodi:nodetypes="ccccccc"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/changeprop.png"
-       inkscape:export-xdpi="51.200058"
-       inkscape:export-ydpi="51.200058" />
+       id="path3343-2-6" />
   </g>
   <metadata
      id="metadata5006">
@@ -345,7 +229,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <cc:license
            rdf:resource="" />
         <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>

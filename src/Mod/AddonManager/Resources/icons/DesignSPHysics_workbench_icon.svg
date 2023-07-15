@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    viewBox="0 0 16.933312 16.933312"
    version="1.1"
    id="svg50"
-   sodipodi:docname="DesignSPHysics_workbench_icon_new_64x64_2.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata54">
     <rdf:RDF>
@@ -23,35 +19,14 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1853"
-     inkscape:window-height="1019"
-     id="namedview52"
-     showgrid="false"
-     inkscape:zoom="2.6074562"
-     inkscape:cx="-45.759252"
-     inkscape:cy="61.417337"
-     inkscape:window-x="1433"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg50" />
   <defs
      id="defs32">
     <linearGradient
-       id="linearGradient1091"
-       inkscape:collect="always">
+       id="linearGradient1091">
       <stop
          id="stop1087"
          offset="0"
@@ -62,7 +37,6 @@
          style="stop-color:#2b6ab0;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient1075">
       <stop
          style="stop-color:#983176;stop-opacity:1"
@@ -159,7 +133,6 @@
          id="feComposite29" />
     </filter>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient1075"
        id="linearGradient1077"
        x1="12.879064"
@@ -168,7 +141,6 @@
        y2="78.355347"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient1091"
        id="linearGradient1085"
        x1="-20.224503"
@@ -182,14 +154,10 @@
      transform="matrix(0.10285649,0,0,0.10267995,1.0534131,-5.6318672)"
      style="stroke-width:0.59856778">
     <path
-       sodipodi:nodetypes="csczcc"
-       inkscape:connector-curvature="0"
        id="path1061"
        d="m 19.243778,189.86421 c 0,0 15.84417,-22.71955 9.352293,-54.45045 -5.996226,-29.30827 -20.8817476,-29.27105 -20.8817476,-29.27105 0,0 6.3886856,-26.330422 22.6624956,-19.823753 16.273809,6.506669 40.275125,77.872223 49.12365,119.176843 z"
        style="fill:url(#linearGradient1085);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.5745616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       sodipodi:nodetypes="ccscsc"
-       inkscape:connector-curvature="0"
        id="path871"
        d="m 33.57962,193.44157 73.18635,19.80337 c 0,0 -28.276859,-25.17999 -14.063259,-84.66656 7.749139,-32.431605 47.355879,-46.20786 47.355879,-46.20786 0,0 -25.23199,-34.985128 -48.419841,-13.860317 C 49.862564,106.56952 33.57962,193.44157 33.57962,193.44157 Z"
        style="fill:url(#linearGradient1077);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.5745616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />

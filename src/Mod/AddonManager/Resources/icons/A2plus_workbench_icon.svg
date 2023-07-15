@@ -2,26 +2,21 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    id="svg3559"
    version="1.1"
-   inkscape:version="0.92.3 (unknown)"
-   sodipodi:docname="a2p_workbench.svg"
-   viewBox="0 0 64 64">
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs3561">
     <linearGradient
-       id="linearGradient4383-3"
-       inkscape:collect="always">
+       id="linearGradient4383-3">
       <stop
          id="stop73188"
          offset="0"
@@ -32,7 +27,6 @@
          style="stop-color:#729fcf;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4383-3"
        id="linearGradient4389-0"
        x1="27.243532"
@@ -42,7 +36,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-1.243533,-2.588112)" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4393-9"
        id="linearGradient4399-7"
        x1="48.714352"
@@ -52,7 +45,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(1.2856487,1.4142136)" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient4393-9">
       <stop
          style="stop-color:#204a87;stop-opacity:1"
@@ -64,36 +56,6 @@
          id="stop4397-1" />
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="7.5864492"
-     inkscape:cx="31.232485"
-     inkscape:cy="34.418689"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1366"
-     inkscape:window-height="716"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:snap-global="false">
-    <inkscape:grid
-       type="xygrid"
-       id="grid3007"
-       empspacing="4"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="0.5"
-       spacingy="0.5" />
-  </sodipodi:namedview>
   <metadata
      id="metadata3564">
     <rdf:RDF>
@@ -102,7 +64,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:title>Path-Stock</dc:title>
         <dc:date>2015-07-04</dc:date>
         <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
@@ -127,9 +89,7 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="layer1">
     <g
        id="g1053"
        transform="translate(-1.6529283,2.4186886)">
@@ -149,9 +109,7 @@
            width="11.878788"
            height="37.878788"
            x="42.060604"
-           y="6.0606079"
-           inkscape:transform-center-x="45.326408"
-           inkscape:transform-center-y="-2.2242137" />
+           y="6.0606079" />
       </g>
       <g
          id="g1042">
