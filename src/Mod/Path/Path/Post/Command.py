@@ -242,7 +242,7 @@ def resolveFileName(job, subpartname, sequencenumber):
         requestedfile = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(), "Output File", fullPath
         )
-        if foo[0]:
+        if requestedfile[0]:
             fullPath = requestedfile[0]
         else:
             fullPath = None
