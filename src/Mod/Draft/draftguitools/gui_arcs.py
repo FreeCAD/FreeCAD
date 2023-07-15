@@ -392,7 +392,7 @@ class Arc(gui_base_original.Creator):
             except Exception:
                 _err("Draft: error delaying commit")
 
-        # Finalize full circle or cirular arc
+        # Finalize full circle or circular arc
         self.finish(cont=None)
 
     def numericInput(self, numx, numy, numz):
