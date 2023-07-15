@@ -25,7 +25,6 @@
 #ifndef APP_MAPPED_NAME_H
 #define APP_MAPPED_NAME_H
 
-
 #include <memory>
 #include <string>
 
