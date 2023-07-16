@@ -896,21 +896,21 @@ public:
             offset);
     }
 
-    /// Extract tag and other information from a encoded element name
+    /// Extract tagOut and other information from a encoded element name
     ///
-    /// \param tag: optional pointer to receive the extracted tag
-    /// \param len: optional pointer to receive the length field after the tag field.
+    /// \param tagOut: optional pointer to receive the extracted tagOut
+    /// \param lenOut: optional pointer to receive the length field after the tagOut field.
     ///             This gives the length of the previous hashed element name starting
     ///             from the beginning of the give element name.
-    /// \param postfix: optional pointer to receive the postfix starting at the found tag field.
-    /// \param type: optional pointer to receive the element type character
-    /// \param negative: return negative tag as it is. If disabled, then always return positive tag.
-    ///                  Negative tag is sometimes used for element disambiguation.
-    /// \param recursive: recursively find the last non-zero tag
+    /// \param postfixOut: optional pointer to receive the postfixOut starting at the found tagOut field.
+    /// \param typeOut: optional pointer to receive the element typeOut character
+    /// \param negative: return negative tagOut as it is. If disabled, then always return positive tagOut.
+    ///                  Negative tagOut is sometimes used for element disambiguation.
+    /// \param recursive: recursively find the last non-zero tagOut
     ///
-    /// \return Return the end position of the tag field, or return -1 if not found.
-    int findTagInElementName(long* tag = nullptr, int* len = nullptr, const char* postfix = nullptr,
-                             char* type = nullptr, bool negative = false,
+    /// \return Return the end position of the tagOut field, or return -1 if not found.
+    int findTagInElementName(long* tagOut = nullptr, int* lenOut = nullptr, std::string* postfixOut = nullptr,
+                             char* typeOut = nullptr, bool negative = false,
                              bool recursive = true) const;
 
     /// Get a hash for this MappedName
