@@ -85,7 +85,7 @@ public:
     /// Constructor
     ComplexGeoData();
     /// Destructor
-    ~ComplexGeoData() override;
+    virtual ~ComplexGeoData() = default;
 
     /** @name Sub-element management */
     //@{
