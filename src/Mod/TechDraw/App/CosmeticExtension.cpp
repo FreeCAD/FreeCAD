@@ -43,7 +43,7 @@ CosmeticExtension::CosmeticExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (nullptr), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "CenterLine Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
@@ -51,6 +51,8 @@ CosmeticExtension::CosmeticExtension()
 
 CosmeticExtension::~CosmeticExtension()
 {
+    // do not free memory here as the destruction of the properties will
+    // delete any entries.
 }
 
 TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
@@ -65,8 +67,13 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 //if you are creating a CV based on calculations of mirrored geometry, you need to
 //mirror again before creation.
 
+// this is never called!
 void CosmeticExtension::clearCosmeticVertexes()
 {
+    std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
+    for (auto& vert : cVerts) {
+        delete vert;
+    }
     std::vector<CosmeticVertex*> noVerts;
     CosmeticVertexes.setValues(noVerts);
 }
@@ -207,7 +214,9 @@ void CosmeticExtension::removeCosmeticVertex(std::string delTag)
     std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
     std::vector<CosmeticVertex*> newVerts;
     for (auto& cv: cVerts) {
-        if (cv->getTagAsString() != delTag)  {
+        if (cv->getTagAsString() == delTag)  {
+            delete cv;
+        } else {
             newVerts.push_back(cv);
         }
     }
@@ -223,8 +232,13 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 
 //********** Cosmetic Edge *****************************************************
 
+// this is never called!
 void CosmeticExtension::clearCosmeticEdges()
 {
+    std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    for (auto& edge : cEdges) {
+        delete edge;
+    }
     std::vector<CosmeticEdge*> noEdges;
     CosmeticEdges.setValues(noEdges);
 }
@@ -347,7 +361,9 @@ void CosmeticExtension::removeCosmeticEdge(std::string delTag)
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     std::vector<CosmeticEdge*> newEdges;
     for (auto& ce: cEdges) {
-        if (ce->getTagAsString() != delTag)  {
+        if (ce->getTagAsString() == delTag)  {
+            delete ce;
+        } else {
             newEdges.push_back(ce);
         }
     }
@@ -363,8 +379,13 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
 
 //********** Center Line *******************************************************
 
+// this is never called!
 void CosmeticExtension::clearCenterLines()
 {
+    std::vector<TechDraw::CenterLine*> cLines = CenterLines.getValues();
+    for (auto& line : cLines) {
+        delete line;
+    }
     std::vector<CenterLine*> noLines;
     CenterLines.setValues(noLines);
 }
@@ -497,7 +518,9 @@ void CosmeticExtension::removeCenterLine(std::string delTag)
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     std::vector<CenterLine*> newLines;
     for (auto& cl: cLines) {
-        if (cl->getTagAsString() != delTag)  {
+        if (cl->getTagAsString() == delTag)  {
+            delete cl;
+        } else {
             newLines.push_back(cl);
         }
     }
