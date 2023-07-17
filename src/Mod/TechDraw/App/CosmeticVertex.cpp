@@ -71,7 +71,7 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
     createNewTag();
 }
 
-CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
+CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
 {
     permaPoint = loc;
     linkGeom = -1;
@@ -87,12 +87,12 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 
 }
 
-void CosmeticVertex::move(Base::Vector3d newPos)
+void CosmeticVertex::move(const Base::Vector3d& newPos)
 {
     permaPoint = newPos;
 }
 
-void CosmeticVertex::moveRelative(Base::Vector3d movement)
+void CosmeticVertex::moveRelative(const Base::Vector3d& movement)
 {
     permaPoint += movement;
 }
@@ -172,7 +172,7 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     tag = u1;
 }
 
-Base::Vector3d CosmeticVertex::scaled(double factor)
+Base::Vector3d CosmeticVertex::scaled(const double factor)
 {
     return permaPoint * factor;
 }
@@ -202,7 +202,7 @@ void CosmeticVertex::createNewTag()
     tag = gen();
 }
 
-void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex * cv)
+void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex* cv)
 {
     if(cv->getTypeId() == this->getTypeId())
         this->tag = cv->tag;
@@ -233,7 +233,7 @@ PyObject* CosmeticVertex::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-
+// To do: make const
 void CosmeticVertex::dump(const char* title)
 {
     Base::Console().Message("CV::dump - %s \n", title);
