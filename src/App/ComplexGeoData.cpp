@@ -60,8 +60,6 @@ ComplexGeoData::ComplexGeoData()
 {
 }
 
-ComplexGeoData::~ComplexGeoData() = default;
-
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {
     int index = 0;
