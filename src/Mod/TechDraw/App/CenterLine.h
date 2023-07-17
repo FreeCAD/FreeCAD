@@ -54,20 +54,20 @@ public:
     };
 
     CenterLine();
-    CenterLine(CenterLine* cl);
+    CenterLine(const CenterLine* cl);
     //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeomPtr bg,
-               int m = CLMODE::VERTICAL,
-               double h = 0.0,
-               double v = 0.0,
-               double r = 0.0,
-               double x = 0.0);
-    CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m = CLMODE::VERTICAL,
-               double h = 0.0,
-               double v = 0.0,
-               double r = 0.0,
-               double x = 0.0);
+    CenterLine(const TechDraw::BaseGeomPtr& bg,
+               const int m = CLMODE::VERTICAL,
+               const double h = 0.0,
+               const double v = 0.0,
+               const double r = 0.0,
+               const double x = 0.0);
+    CenterLine(const Base::Vector3d& p1, const Base::Vector3d& p2,
+               const int m = CLMODE::VERTICAL,
+               const double h = 0.0,
+               const double v = 0.0,
+               const double r = 0.0,
+               const double x = 0.0);
     ~CenterLine() override;
 
     TechDraw::BaseGeomPtr BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
@@ -83,52 +83,61 @@ public:
 
     std::string toString() const;
 
-    static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
-                                         std::vector<std::string> subs,
-                                         int mode = CenterLine::VERTICAL,
-                                         bool flip = false);
-    TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
+    static CenterLine* CenterLineBuilder(const TechDraw::DrawViewPart* partFeat,
+                                         const std::vector<std::string>& subs,
+                                         const int mode = 0,
+                                         const bool flip = false);
+    TechDraw::BaseGeomPtr scaledGeometry(const TechDraw::DrawViewPart* partFeat);
 
     static std::tuple<Base::Vector3d, Base::Vector3d> rotatePointsAroundMid(
-                                          Base::Vector3d p1,
-                                          Base::Vector3d p2,
-                                          Base::Vector3d mid,
-                                          double rotate);
+                                          const Base::Vector3d& p1,
+                                          const Base::Vector3d& p2,
+                                          const Base::Vector3d& mid,
+                                          const double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPointsNoRef(
-                                                          Base::Vector3d start,
-                                                          Base::Vector3d end,
-                                                          double scale,
-                                                          double ext,
-                                                          double hShift, double vShift,
-                                                          double rotate);
+                                                          const Base::Vector3d& start,
+                                                          const Base::Vector3d& end,
+                                                          const double scale,
+                                                          const double ext,
+                                                          const double hShift,
+                                                          const double vShift,
+                                                          const double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int mode, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate);
+                                          const TechDraw::DrawViewPart* partFeat,
+                                          const std::vector<std::string>& faceNames,
+                                          const int mode,
+                                          const double ext,
+                                          const double m_hShift,
+                                          const double m_vShift,
+                                          const double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int vert, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate, bool flip);
+                                          const TechDraw::DrawViewPart* partFeat,
+                                          const std::vector<std::string>& faceNames,
+                                          const int vert,
+                                          const double ext,
+                                          const double m_hShift,
+                                          const double m_vShift,
+                                          const double rotate,
+                                          const bool flip);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Points(
-                                          TechDraw::DrawViewPart* partFeat,
-                                          std::vector<std::string> faceNames,
-                                          int vert, double ext,
-                                          double m_hShift, double m_vShift,
-                                          double rotate, bool flip);
+                                          const TechDraw::DrawViewPart* partFeat,
+                                          const std::vector<std::string>& faceNames,
+                                          const int vert,
+                                          const double ext,
+                                          const double m_hShift,
+                                          const double m_vShift,
+                                          const double rotate,
+                                          const bool flip);
     void dump(const char* title);
-    void setShifts(double h, double v);
-    double getHShift();
-    double getVShift();
-    void setRotate(double r);
-    double getRotate();
-    void setExtend(double e);
-    double getExtend();
-    void setFlip(bool f);
-    bool getFlip();
+    void setShifts(const double h, const double v);
+    double getHShift() const;
+    double getVShift() const;
+    void setRotate(const double r);
+    double getRotate() const;
+    void setExtend(const double e);
+    double getExtend() const;
+    void setFlip(const bool f);
+    bool getFlip() const;
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
