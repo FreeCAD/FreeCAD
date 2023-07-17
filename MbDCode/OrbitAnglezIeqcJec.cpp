@@ -1,8 +1,18 @@
-#include "OrbitAnglezIeqcJec.h"
+#include "OrbitAngleZIeqcJec.h"
+#include "CREATE.h"
+#include "DispCompIeqcJecIe.h"
 
 using namespace MbD;
 
-void MbD::OrbitAnglezIeqcJec::calc_ppthezpEIpEI()
+MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec()
+{
+}
+
+MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj) : OrbitAngleZIecJec(frmi, frmj)
+{
+}
+
+void MbD::OrbitAngleZIeqcJec::calc_ppthezpEIpEI()
 {
 	auto pxpEI = xIeJeIe->pvaluepEI();
 	auto pypEI = yIeJeIe->pvaluepEI();
@@ -29,7 +39,7 @@ void MbD::OrbitAnglezIeqcJec::calc_ppthezpEIpEI()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJec::calc_ppthezpXIpEI()
+void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpEI()
 {
 	auto pxpXI = xIeJeIe->pvaluepXI();
 	auto pypXI = yIeJeIe->pvaluepXI();
@@ -56,7 +66,7 @@ void MbD::OrbitAnglezIeqcJec::calc_ppthezpXIpEI()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJec::calc_ppthezpXIpXI()
+void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpXI()
 {
 	//ppxpXIpXI = 0
 	//ppypXIpXI = 0
@@ -79,7 +89,7 @@ void MbD::OrbitAnglezIeqcJec::calc_ppthezpXIpXI()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJec::calc_pthezpEI()
+void MbD::OrbitAngleZIeqcJec::calc_pthezpEI()
 {
 	auto pxpEI = xIeJeIe->pvaluepEI();
 	auto pypEI = yIeJeIe->pvaluepEI();
@@ -89,7 +99,7 @@ void MbD::OrbitAnglezIeqcJec::calc_pthezpEI()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJec::calc_pthezpXI()
+void MbD::OrbitAngleZIeqcJec::calc_pthezpXI()
 {
 	auto pxpXI = xIeJeIe->pvaluepXI();
 	auto pypXI = yIeJeIe->pvaluepXI();
@@ -99,9 +109,9 @@ void MbD::OrbitAnglezIeqcJec::calc_pthezpXI()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJec::calcPostDynCorrectorIteration()
+void MbD::OrbitAngleZIeqcJec::calcPostDynCorrectorIteration()
 {
-	OrbitAnglezIecJec::calcPostDynCorrectorIteration();
+	OrbitAngleZIecJec::calcPostDynCorrectorIteration();
 	this->calc_pthezpXI();
 	this->calc_pthezpEI();
 	this->calc_ppthezpXIpXI();
@@ -109,9 +119,15 @@ void MbD::OrbitAnglezIeqcJec::calcPostDynCorrectorIteration()
 	this->calc_ppthezpEIpEI();
 }
 
-void MbD::OrbitAnglezIeqcJec::initialize()
+void MbD::OrbitAngleZIeqcJec::init_xyIeJeIe()
 {
-	OrbitAnglezIecJec::initialize();
+	xIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 0);
+	yIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 1);
+}
+
+void MbD::OrbitAngleZIeqcJec::initialize()
+{
+	OrbitAngleZIecJec::initialize();
 	pthezpXI = std::make_shared<FullRow<double>>(3);
 	pthezpEI = std::make_shared<FullRow<double>>(4);
 	ppthezpXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
@@ -119,27 +135,27 @@ void MbD::OrbitAnglezIeqcJec::initialize()
 	ppthezpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJec::ppvaluepEIpEI()
+FMatDsptr MbD::OrbitAngleZIeqcJec::ppvaluepEIpEI()
 {
 	return ppthezpEIpEI;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJec::ppvaluepXIpEI()
+FMatDsptr MbD::OrbitAngleZIeqcJec::ppvaluepXIpEI()
 {
 	return ppthezpXIpEI;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJec::ppvaluepXIpXI()
+FMatDsptr MbD::OrbitAngleZIeqcJec::ppvaluepXIpXI()
 {
 	return ppthezpXIpXI;
 }
 
-FRowDsptr MbD::OrbitAnglezIeqcJec::pvaluepEI()
+FRowDsptr MbD::OrbitAngleZIeqcJec::pvaluepEI()
 {
 	return pthezpEI;
 }
 
-FRowDsptr MbD::OrbitAnglezIeqcJec::pvaluepXI()
+FRowDsptr MbD::OrbitAngleZIeqcJec::pvaluepXI()
 {
 	return pthezpXI;
 }

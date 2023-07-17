@@ -3,6 +3,8 @@
 #include "CREATE.h"
 #include "DistIeqcJec.h"
 
+using namespace MbD;
+
 MbD::DistanceConstraintIqcJc::DistanceConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : DistanceConstraintIJ(frmi, frmj)
 {
 }

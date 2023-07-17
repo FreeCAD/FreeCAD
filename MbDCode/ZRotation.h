@@ -1,4 +1,5 @@
 #pragma once
+
 #include "PrescribedMotion.h"
 
 namespace MbD {
@@ -9,7 +10,7 @@ namespace MbD {
 		ZRotation();
 		ZRotation(const char* str);
 		void initializeGlobally() override;
-		void initMotions();
+		void initMotions() override;
 	};
 }
 

@@ -4,10 +4,13 @@
 #include "DispCompIecJecIe.h"
 
 namespace MbD {
-    class OrbitAnglezIecJec : public KinematicIeJe
+    class OrbitAngleZIecJec : public KinematicIeJe
     {
         //thez xIeJeIe yIeJeIe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
     public:
+        OrbitAngleZIecJec();
+        OrbitAngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe() = 0;
         void initialize() override;

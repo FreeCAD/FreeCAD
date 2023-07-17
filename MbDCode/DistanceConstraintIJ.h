@@ -11,7 +11,7 @@ namespace MbD {
         DistanceConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
 
         void calcPostDynCorrectorIteration() override;
-        virtual void init_distIeJe() = 0;
+        virtual void init_distIeJe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;

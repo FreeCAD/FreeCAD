@@ -498,13 +498,13 @@
     <ClCompile Include="GearConstraintIJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIecJec.cpp">
+    <ClCompile Include="OrbitAngleZIecJec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIeqcJec.cpp">
+    <ClCompile Include="OrbitAngleZIeqcJec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIeqcJeqc.cpp">
+    <ClCompile Include="OrbitAngleZIeqcJeqc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Math.cpp">
@@ -520,6 +520,186 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AngleZIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GearConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GearConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RackPinConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RackPinConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RackPinConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrewConstraintIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrewConstraintIqcJc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrewConstraintIqcJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantVelocityJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CylSphJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GearJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointInLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlanarJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NoRotationJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParallelAxesJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PerpendicularJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FullMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orientation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Translation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZTranslation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RackPinJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrewJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RevCylJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphericalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphSphJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniversalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompoundJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistxyIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistxyIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistxyIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistxyIeqctJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AtPointJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TranslationalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTAssembly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRefPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRefCurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRefSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTKinematicIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTConstraintSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTForceTorque.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTConstantGravity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSimulationParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTAnimationParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTExtrusion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPrincipalMassMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRevoluteJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTCylindricalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRotationalMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTTranslationalMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTGeneralMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1016,13 +1196,13 @@
     <ClInclude Include="GearConstraintIJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIecJec.h">
+    <ClInclude Include="OrbitAngleZIecJec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIeqcJec.h">
+    <ClInclude Include="OrbitAngleZIeqcJec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIeqcJeqc.h">
+    <ClInclude Include="OrbitAngleZIeqcJeqc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
@@ -1040,10 +1220,193 @@
     <ClInclude Include="AngleZIeqcJeqc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GearConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GearConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RackPinConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RackPinConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RackPinConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrewConstraintIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrewConstraintIqcJc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrewConstraintIqcJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantVelocityJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CylSphJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GearJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointInLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LineInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlanarJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NoRotationJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelAxesJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerpendicularJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orientation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Translation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZTranslation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RackPinJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrewJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RevCylJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphericalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphSphJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniversalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompoundJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistxyIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistxyIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistxyIeqcJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistxyIeqctJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AtPointJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TranslationalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTAssembly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRefPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRefCurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRefSurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTKinematicIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTConstraintSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTForceTorque.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTConstantGravity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSimulationParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTAnimationParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTExtrusion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPrincipalMassMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRevoluteJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTCylindricalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRotationalMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTTranslationalMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTGeneralMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MbDCode.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

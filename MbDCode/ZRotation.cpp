@@ -25,7 +25,7 @@ void ZRotation::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		PrescribedMotion::initializeGlobally();
 	}
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Constraint.h"
 namespace MbD {
 	class AbsConstraint : public Constraint

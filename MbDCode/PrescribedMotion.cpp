@@ -28,6 +28,11 @@ void PrescribedMotion::initialize()
 	psiBlk = std::make_shared<Constant>(0.0);
 }
 
+void MbD::PrescribedMotion::initMotions()
+{
+	assert(false);
+}
+
 void PrescribedMotion::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 {
 	Joint::connectsItoJ(frmi, frmj);

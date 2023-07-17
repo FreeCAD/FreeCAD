@@ -9,20 +9,23 @@ namespace MbD {
         //riIeJeIe
     public:
         TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+
+        void calcPostDynCorrectorIteration() override;
         void initialize() override;
-        void initializeLocally() override;
         void initializeGlobally() override;
+        void initializeLocally() override;
         virtual void initriIeJeIe();
         void postInput() override;
-        void calcPostDynCorrectorIteration() override;
-        void prePosIC()override;
-        ConstraintType type() override;
         void postPosICIteration() override;
-        void preVelIC() override;
         void preAccIC() override;
+        void prePosIC()override;
+        void preVelIC() override;
+        void simUpdateAll() override;
+        ConstraintType type() override;
 
         int axisI;
         std::shared_ptr<DispCompIecJecKec> riIeJeIe;
+        //ToDo: Use DispCompIecJecIe instead of DispCompIecJecKec
     };
 }
 

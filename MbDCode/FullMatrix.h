@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 
 #include "RowTypeMatrix.h"
@@ -45,6 +46,7 @@ namespace MbD {
 		std::shared_ptr<FullMatrix<T>> times(double a);
 		std::shared_ptr<FullMatrix<T>> transposeTimesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> plusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
+		std::shared_ptr<FullMatrix<T>> minusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullMatrix<T>> transpose();
 		std::shared_ptr<FullMatrix<T>> negated();
 		void symLowerWithUpper();
@@ -121,6 +123,16 @@ namespace MbD {
 		auto answer = std::make_shared<FullMatrix<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i)->plusFullRow(fullMat->at(i));
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullMatrix<T>> FullMatrix<T>::minusFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	{
+		int n = (int)this->size();
+		auto answer = std::make_shared<FullMatrix<T>>(n);
+		for (int i = 0; i < n; i++) {
+			answer->at(i) = this->at(i)->minusFullRow(fullMat->at(i));
 		}
 		return answer;
 	}

@@ -10,6 +10,24 @@ namespace MbD {
 		DispCompIeqctJeqcIe();
 		DispCompIeqctJeqcIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
 
+		void calc_ppvaluepEIpt() override;
+		void calc_ppvaluepEJpt() override;
+		void calc_ppvalueptpt() override;
+		void calc_ppvaluepXIpt() override;
+		void calc_ppvaluepXJpt() override;
+		void calc_pvaluept() override;
+		void calcPostDynCorrectorIteration() override;
+		void initialize() override;
+		void initializeGlobally() override;
+		void preAccIC() override;
+		void preVelIC() override;
+		FRowDsptr ppvaluepEIpt() override;
+		FRowDsptr ppvaluepEJpt() override;
+		double ppvalueptpt() override;
+		FRowDsptr ppvaluepXIpt() override;
+		FRowDsptr ppvaluepXJpt() override;
+		double pvaluept() override;
+
 		double priIeJeIept, ppriIeJeIeptpt;
 		FRowDsptr ppriIeJeIepXIpt, ppriIeJeIepEIpt, ppriIeJeIepXJpt, ppriIeJeIepEJpt;
 	};

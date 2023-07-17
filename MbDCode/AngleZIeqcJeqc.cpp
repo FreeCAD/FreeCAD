@@ -4,6 +4,14 @@
 
 using namespace MbD;
 
+MbD::AngleZIeqcJeqc::AngleZIeqcJeqc()
+{
+}
+
+MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : AngleZIeqcJec(frmi, frmj)
+{
+}
+
 void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	AngleZIeqcJec::calcPostDynCorrectorIteration();

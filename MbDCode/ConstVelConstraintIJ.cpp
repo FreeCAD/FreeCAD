@@ -12,6 +12,16 @@ void ConstVelConstraintIJ::calcPostDynCorrectorIteration()
 	aG = aA01IeJe->aAijIeJe + aA10IeJe->aAijIeJe - aConstant;
 }
 
+void MbD::ConstVelConstraintIJ::initA01IeJe()
+{
+	assert(false);
+}
+
+void MbD::ConstVelConstraintIJ::initA10IeJe()
+{
+	assert(false);
+}
+
 void ConstVelConstraintIJ::initialize()
 {
 	this->initA01IeJe();
@@ -35,11 +45,6 @@ void ConstVelConstraintIJ::postInput()
 	aA01IeJe->postInput();
 	aA10IeJe->postInput();
 	Constraint::postInput();
-}
-
-ConstraintType ConstVelConstraintIJ::type()
-{
-	return ConstraintType();
 }
 
 void ConstVelConstraintIJ::postPosICIteration()

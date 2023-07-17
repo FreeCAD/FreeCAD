@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Joint.h"
 #include "Symbolic.h"
 
@@ -10,8 +11,10 @@ namespace MbD {
     public:
         PrescribedMotion();
         PrescribedMotion(const char* str);
-        void initialize() override;
+
         void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
+        void initialize() override;
+        virtual void initMotions();
 
         Symsptr xBlk;
         Symsptr yBlk;

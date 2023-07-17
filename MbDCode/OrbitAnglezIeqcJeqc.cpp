@@ -1,8 +1,18 @@
-#include "OrbitAnglezIeqcJeqc.h"
+#include "OrbitAngleZIeqcJeqc.h"
+#include "CREATE.h"
+#include "DispCompIeqcJeqcIe.h"
 
 using namespace MbD;
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEIpEJ()
+MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc()
+{
+}
+
+MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : OrbitAngleZIeqcJec(frmi, frmj)
+{
+}
+
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEIpEJ()
 {
 	auto pxpEI = xIeJeIe->pvaluepEI();
 	auto pypEI = yIeJeIe->pvaluepEI();
@@ -29,7 +39,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEIpEJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEIpXJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEIpXJ()
 {
 	//ppxpEIpXJ = 0
 	//ppypEIpXJ = 0
@@ -54,7 +64,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEIpXJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEJpEJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEJpEJ()
 {
 	auto pxpEJ = xIeJeIe->pvaluepEJ();
 	auto pypEJ = yIeJeIe->pvaluepEJ();
@@ -81,7 +91,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpEJpEJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXIpEJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXIpEJ()
 {
 	//ppxpXIpEJ = 0
 	//ppypXIpEJ = 0
@@ -106,7 +116,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXIpEJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXIpXJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXIpXJ()
 {
 	//ppxpXIpXJ = 0
 	//ppypXIpXJ = 0
@@ -131,7 +141,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXIpXJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXJpEJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXJpEJ()
 {
 	//ppxpXJpEJ = 0
 	//ppypXJpEJ = 0
@@ -156,7 +166,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXJpEJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXJpXJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXJpXJ()
 {
 	//ppxpXJpXJ = 0
 	//ppypXJpXJ = 0
@@ -179,7 +189,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_ppthezpXJpXJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_pthezpEJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_pthezpEJ()
 {
 	auto pxpEJ = xIeJeIe->pvaluepEJ();
 	auto pypEJ = yIeJeIe->pvaluepEJ();
@@ -189,7 +199,7 @@ void MbD::OrbitAnglezIeqcJeqc::calc_pthezpEJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calc_pthezpXJ()
+void MbD::OrbitAngleZIeqcJeqc::calc_pthezpXJ()
 {
 	auto pxpXJ = xIeJeIe->pvaluepXJ();
 	auto pypXJ = yIeJeIe->pvaluepXJ();
@@ -199,9 +209,9 @@ void MbD::OrbitAnglezIeqcJeqc::calc_pthezpXJ()
 	}
 }
 
-void MbD::OrbitAnglezIeqcJeqc::calcPostDynCorrectorIteration()
+void MbD::OrbitAngleZIeqcJeqc::calcPostDynCorrectorIteration()
 {
-	OrbitAnglezIeqcJec::calcPostDynCorrectorIteration();
+	OrbitAngleZIeqcJec::calcPostDynCorrectorIteration();
 	this->calc_pthezpXJ();
 	this->calc_pthezpEJ();
 	this->calc_ppthezpXIpXJ();
@@ -213,9 +223,15 @@ void MbD::OrbitAnglezIeqcJeqc::calcPostDynCorrectorIteration()
 	this->calc_ppthezpEJpEJ();
 }
 
-void MbD::OrbitAnglezIeqcJeqc::initialize()
+void MbD::OrbitAngleZIeqcJeqc::init_xyIeJeIe()
 {
-	OrbitAnglezIeqcJec::initialize();
+	xIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 0);
+	yIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 1);
+}
+
+void MbD::OrbitAngleZIeqcJeqc::initialize()
+{
+	OrbitAngleZIeqcJec::initialize();
 	pthezpXJ = std::make_shared<FullRow<double>>(3);
 	pthezpEJ = std::make_shared<FullRow<double>>(4);
 	ppthezpXIpXJ = std::make_shared<FullMatrix<double>>(3, 3);
@@ -227,47 +243,47 @@ void MbD::OrbitAnglezIeqcJeqc::initialize()
 	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepEIpEJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepEIpEJ()
 {
 	return ppthezpEIpEJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepEIpXJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepEIpXJ()
 {
 	return ppthezpEIpXJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepEJpEJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepEJpEJ()
 {
 	return ppthezpEJpEJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepXIpEJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepXIpEJ()
 {
 	return ppthezpXIpEJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepXIpXJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepXIpXJ()
 {
 	return ppthezpXIpXJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepXJpEJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepXJpEJ()
 {
 	return ppthezpXJpEJ;
 }
 
-FMatDsptr MbD::OrbitAnglezIeqcJeqc::ppvaluepXJpXJ()
+FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepXJpXJ()
 {
 	return ppthezpXJpXJ;
 }
 
-FRowDsptr MbD::OrbitAnglezIeqcJeqc::pvaluepEJ()
+FRowDsptr MbD::OrbitAngleZIeqcJeqc::pvaluepEJ()
 {
 	return pthezpEJ;
 }
 
-FRowDsptr MbD::OrbitAnglezIeqcJeqc::pvaluepXJ()
+FRowDsptr MbD::OrbitAngleZIeqcJeqc::pvaluepXJ()
 {
 	return pthezpXJ;
 }

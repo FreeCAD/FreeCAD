@@ -3,6 +3,8 @@
 
 #include "EndFramec.h"
 #include "MarkerFrame.h"
+#include "EndFrameqc.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -79,4 +81,11 @@ FColFMatDsptr EndFramec::pAOppE()
 FMatDsptr EndFramec::aBOp()
 {
 	return FMatDsptr();
+}
+
+std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
+{
+	auto frmIeqc = CREATE<EndFrameqc>::With();
+	markerFrame->addEndFrame(frmIeqc);
+	return frmIeqc;
 }

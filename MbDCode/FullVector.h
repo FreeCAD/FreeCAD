@@ -1,4 +1,5 @@
 #pragma once
+
 #include <ostream>
 
 #include "Array.h"
@@ -8,7 +9,7 @@ namespace MbD {
 	class FullVector : public Array<T>
 	{
 	public:
-		FullVector() {}
+		FullVector() : Array<T>() {}
 		FullVector(std::vector<T> vec) : Array<T>(vec) {}
 		FullVector(int count) : Array<T>(count) {}
 		FullVector(int count, const T& value) : Array<T>(count, value) {}

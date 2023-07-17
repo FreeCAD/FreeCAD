@@ -7,6 +7,9 @@ namespace MbD {
     {
         //pthezpEJ ppthezpEIpEJ ppthezpEJpEJ 
     public:
+        AngleZIeqcJeqc();
+        AngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj);
+        
         void calcPostDynCorrectorIteration() override;
         void init_aAijIeJe() override;
         void initialize() override;

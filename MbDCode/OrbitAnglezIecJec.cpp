@@ -1,11 +1,19 @@
 #include <corecrt_math_defines.h>
 
-#include "OrbitAnglezIecJec.h"
+#include "OrbitAngleZIecJec.h"
 #include "Numeric.h"
 
 using namespace MbD;
 
-void MbD::OrbitAnglezIecJec::calcPostDynCorrectorIteration()
+MbD::OrbitAngleZIecJec::OrbitAngleZIecJec()
+{
+}
+
+MbD::OrbitAngleZIecJec::OrbitAngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+{
+}
+
+void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
 {
 	auto x = xIeJeIe->value();
 	auto y = yIeJeIe->value();
@@ -20,25 +28,25 @@ void MbD::OrbitAnglezIecJec::calcPostDynCorrectorIteration()
 	dSqOverSSqSq = diffOfSquares / sumOfSquaresSquared;
 }
 
-void MbD::OrbitAnglezIecJec::initialize()
+void MbD::OrbitAngleZIecJec::initialize()
 {
 	KinematicIeJe::initialize();
 	this->init_xyIeJeIe();
 }
 
-void MbD::OrbitAnglezIecJec::initializeGlobally()
+void MbD::OrbitAngleZIecJec::initializeGlobally()
 {
 	xIeJeIe->initializeGlobally();
 	yIeJeIe->initializeGlobally();
 }
 
-void MbD::OrbitAnglezIecJec::initializeLocally()
+void MbD::OrbitAngleZIecJec::initializeLocally()
 {
 	xIeJeIe->initializeLocally();
 	yIeJeIe->initializeLocally();
 }
 
-void MbD::OrbitAnglezIecJec::postInput()
+void MbD::OrbitAngleZIecJec::postInput()
 {
 	xIeJeIe->postInput();
 	yIeJeIe->postInput();
@@ -53,14 +61,14 @@ void MbD::OrbitAnglezIecJec::postInput()
 	KinematicIeJe::postInput();
 }
 
-void MbD::OrbitAnglezIecJec::postPosICIteration()
+void MbD::OrbitAngleZIecJec::postPosICIteration()
 {
 	xIeJeIe->postPosICIteration();
 	yIeJeIe->postPosICIteration();
 	KinematicIeJe::postPosICIteration();
 }
 
-void MbD::OrbitAnglezIecJec::preAccIC()
+void MbD::OrbitAngleZIecJec::preAccIC()
 {
 	if (thez == 0.0) this->prePosIC();
 	xIeJeIe->preAccIC();
@@ -68,7 +76,7 @@ void MbD::OrbitAnglezIecJec::preAccIC()
 	KinematicIeJe::preAccIC();
 }
 
-void MbD::OrbitAnglezIecJec::prePosIC()
+void MbD::OrbitAngleZIecJec::prePosIC()
 {
 	xIeJeIe->prePosIC();
 	yIeJeIe->prePosIC();
@@ -83,21 +91,21 @@ void MbD::OrbitAnglezIecJec::prePosIC()
 	KinematicIeJe::prePosIC();
 }
 
-void MbD::OrbitAnglezIecJec::preVelIC()
+void MbD::OrbitAngleZIecJec::preVelIC()
 {
 	xIeJeIe->preVelIC();
 	yIeJeIe->preVelIC();
 	KinematicIeJe::preVelIC();
 }
 
-void MbD::OrbitAnglezIecJec::simUpdateAll()
+void MbD::OrbitAngleZIecJec::simUpdateAll()
 {
 	xIeJeIe->simUpdateAll();
 	yIeJeIe->simUpdateAll();
 	KinematicIeJe::simUpdateAll();
 }
 
-double MbD::OrbitAnglezIecJec::value()
+double MbD::OrbitAngleZIecJec::value()
 {
 	return thez;
 }

@@ -1,18 +1,22 @@
 #pragma once
 
-#include "OrbitAnglezIecJec.h"
+#include "OrbitAngleZIecJec.h"
 
 namespace MbD {
-	class OrbitAnglezIeqcJec : public OrbitAnglezIecJec
+	class OrbitAngleZIeqcJec : public OrbitAngleZIecJec
 	{
 		//pthezpXI pthezpEI ppthezpXIpXI ppthezpXIpEI ppthezpEIpEI 
 	public:
+		OrbitAngleZIeqcJec();
+		OrbitAngleZIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+
 		void calc_ppthezpEIpEI();
 		void calc_ppthezpXIpEI();
 		void calc_ppthezpXIpXI();
 		void calc_pthezpEI();
 		void calc_pthezpXI();
 		void calcPostDynCorrectorIteration() override;
+		void init_xyIeJeIe() override;
 		void initialize() override;
 		FMatDsptr ppvaluepEIpEI() override;
 		FMatDsptr ppvaluepXIpEI() override;

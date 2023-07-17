@@ -13,6 +13,7 @@ namespace MbD {
 		DiagonalMatrix(int count) : Array<T>(count) {}
 		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
+		void atiput(int i, T value);
 		void atiputDiagonalMatrix(int i, std::shared_ptr < DiagonalMatrix<T>> diagMat);
 		std::shared_ptr<DiagonalMatrix<T>> times(T factor);
 		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
@@ -29,6 +30,11 @@ namespace MbD {
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
+	template<typename T>
+	inline void DiagonalMatrix<T>::atiput(int i, T value)
+	{
+		this->at(i) = value;
+	}
 	template<typename T>
 	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
 	{
@@ -108,5 +114,6 @@ namespace MbD {
 		s << "]";
 		return s;
 	}
+	using DiagMatDsptr = std::shared_ptr<DiagonalMatrix<double>>;
 }
 

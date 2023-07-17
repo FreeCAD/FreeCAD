@@ -12,6 +12,37 @@ namespace MbD {
         KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj);
 
         bool isKineIJ() override;
+        virtual void calc_value();
+        virtual void calc_pvaluepXI();
+        virtual void calc_pvaluepEI();
+        virtual void calc_ppvaluepXIpXI();
+        virtual void calc_ppvaluepXIpEI();
+        virtual void calc_ppvaluepEIpEI();
+        virtual void calc_pvaluepXJ();
+        virtual void calc_pvaluepEJ();
+        virtual void calc_ppvaluepXIpXJ();
+        virtual void calc_ppvaluepXIpEJ();
+        virtual void calc_ppvaluepEIpXJ();
+        virtual void calc_ppvaluepEIpEJ();
+        virtual void calc_ppvaluepXJpXJ();
+        virtual void calc_ppvaluepXJpEJ();
+        virtual void calc_ppvaluepEJpEJ();
+        virtual void calc_pvaluepXK();
+        virtual void calc_pvaluepEK();
+        virtual void calc_ppvaluepXIpEK();
+        virtual void calc_ppvaluepEIpEK();
+        virtual void calc_ppvaluepXJpEK();
+        virtual void calc_ppvaluepEJpEK();
+        virtual void calc_ppvaluepEKpEK();
+        virtual void calc_pvaluept();
+        virtual void calc_ppvaluepXIpt();
+        virtual void calc_ppvaluepEIpt();
+        virtual void calc_ppvaluepXJpt();
+        virtual void calc_ppvaluepEJpt();
+        virtual void calc_ppvaluepXKpt();
+        virtual void calc_ppvaluepEKpt();
+        virtual void calc_ppvalueptpt();
+
         virtual FRowDsptr pvaluepXI();
         virtual FRowDsptr pvaluepEI();
         virtual FMatDsptr ppvaluepXIpXI();

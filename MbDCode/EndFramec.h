@@ -8,10 +8,7 @@
 
 namespace MbD {
     class MarkerFrame;
-    //template<typename T>
-    //class FullColumn;
-    //template<typename T>
-    //class FullMatrix;
+    class EndFrameqc;
 
     class EndFramec : public CartesianFrame
     {
@@ -34,6 +31,7 @@ namespace MbD {
         virtual FColDsptr rpep();
         virtual FColFMatDsptr pAOppE();
         virtual FMatDsptr aBOp();
+        std::shared_ptr<EndFrameqc> newCopyEndFrameqc();
 
         MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
         FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);

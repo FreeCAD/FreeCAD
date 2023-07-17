@@ -11,6 +11,7 @@ namespace MbD {
         ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
 
         void initialize() override;
+        void setConstant(double value) override;
 
         EndFrmcptr frmI, frmJ;
         double aConstant;

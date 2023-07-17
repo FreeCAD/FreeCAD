@@ -11,7 +11,7 @@ namespace MbD {
         DistancexyConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
 
         void calcPostDynCorrectorIteration() override;
-        virtual void init_xyIeJeIe() = 0;
+        virtual void init_xyIeJeIe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
@@ -26,6 +26,7 @@ namespace MbD {
 
 
         std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
+        //ToDo: Use DistxyIecJec instead of xIeJeIe, yIeJeIe
 
     };
 }

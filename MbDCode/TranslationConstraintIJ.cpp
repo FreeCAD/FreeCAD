@@ -63,6 +63,12 @@ void TranslationConstraintIJ::preVelIC()
     Item::preVelIC();
 }
 
+void MbD::TranslationConstraintIJ::simUpdateAll()
+{
+    riIeJeIe->simUpdateAll();
+    Constraint::simUpdateAll();
+}
+
 void TranslationConstraintIJ::preAccIC()
 {
     riIeJeIe->preAccIC();

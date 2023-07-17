@@ -1,6 +1,7 @@
 //This header file causes wierd problems in Visual Studio when included in subclasses of std::vector or std::map.
 
 #pragma once
+
 #include <memory>
 #include "EndFrameqct.h"
 #include "AtPointConstraintIqctJqc.h"

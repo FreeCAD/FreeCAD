@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <sstream> 
 
@@ -13,6 +14,7 @@ namespace MbD {
 	class FullColumn : public FullVector<T>
 	{
 	public:
+		FullColumn() : FullVector<T>() {}
 		FullColumn(std::vector<T> vec) : FullVector<T>(vec) {}
 		FullColumn(int count) : FullVector<T>(count) {}
 		FullColumn(int count, const T& value) : FullVector<T>(count, value) {}

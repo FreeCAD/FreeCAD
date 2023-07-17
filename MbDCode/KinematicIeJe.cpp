@@ -15,6 +15,156 @@ bool MbD::KinematicIeJe::isKineIJ()
     return true;
 }
 
+void MbD::KinematicIeJe::calc_pvaluepXI()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluepEI()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpXI()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpEI()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEIpEI()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluepXJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluepEJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpXJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpEJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEIpXJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEIpEJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXJpXJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXJpEJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEJpEJ()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluepXK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluepEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEIpEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXJpEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEJpEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEKpEK()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_pvaluept()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvalueptpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_value()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXIpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEIpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXJpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEJpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepXKpt()
+{
+    assert(false);
+}
+
+void MbD::KinematicIeJe::calc_ppvaluepEKpt()
+{
+    assert(false);
+}
+
 FRowDsptr MbD::KinematicIeJe::pvaluepXI()
 {
     assert(false);

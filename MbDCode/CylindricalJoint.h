@@ -1,8 +1,9 @@
 #pragma once
-#include "Joint.h"
+
+#include "InLineJoint.h"
 
 namespace MbD {
-    class CylindricalJoint : public Joint
+    class CylindricalJoint : public InLineJoint
     {
         //frmI frmJ constraints friction 
     public:

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 
 #include "enum.h"
@@ -33,6 +34,7 @@ namespace MbD {
 		void prePosKine() override;
 		void reactivateRedundantConstraints() override;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		virtual void setConstant(double value);
 		void setqsudotlam(FColDsptr col) override;
 		void setqsuddotlam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;

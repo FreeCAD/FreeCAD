@@ -11,6 +11,11 @@ void MbD::DistanceConstraintIJ::calcPostDynCorrectorIteration()
 aG = distIeJe->value() - aConstant;
 }
 
+void MbD::DistanceConstraintIJ::init_distIeJe()
+{
+	assert(false);
+}
+
 void MbD::DistanceConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();

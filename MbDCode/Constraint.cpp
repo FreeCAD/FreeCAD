@@ -105,6 +105,10 @@ void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> re
 	assert(false);
 }
 
+void MbD::Constraint::setConstant(double value)
+{
+}
+
 void Constraint::reactivateRedundantConstraints()
 {
 	//My owner should handle this.

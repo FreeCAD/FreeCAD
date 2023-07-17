@@ -12,8 +12,8 @@ namespace MbD {
         ConstVelConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
 
         void calcPostDynCorrectorIteration() override;
-        virtual void initA01IeJe() = 0;
-        virtual void initA10IeJe() = 0;
+        virtual void initA01IeJe();
+        virtual void initA10IeJe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
@@ -23,7 +23,6 @@ namespace MbD {
         void prePosIC() override;
         void preVelIC() override;
         void simUpdateAll() override;
-        ConstraintType type() override;
 
         std::shared_ptr<DirectionCosineIecJec> aA01IeJe, aA10IeJe;
     };

@@ -1,7 +1,9 @@
 #pragma once
-#include "Joint.h"
+
+#include "AtPointJoint.h"
+
 namespace MbD {
-    class RevoluteJoint : public Joint
+    class RevoluteJoint : public AtPointJoint
     {
         //
     public:

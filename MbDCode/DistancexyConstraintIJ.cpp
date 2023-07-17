@@ -13,6 +13,11 @@ void MbD::DistancexyConstraintIJ::calcPostDynCorrectorIteration()
 	aG = x * x + (y * y) - (aConstant * aConstant);
 }
 
+void MbD::DistancexyConstraintIJ::init_xyIeJeIe()
+{
+	assert(false);
+}
+
 void MbD::DistancexyConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
@@ -75,5 +80,5 @@ void MbD::DistancexyConstraintIJ::simUpdateAll()
 
 ConstraintType MbD::DistancexyConstraintIJ::type()
 {
-	return ConstraintType::displacement;
+	return displacement;
 }

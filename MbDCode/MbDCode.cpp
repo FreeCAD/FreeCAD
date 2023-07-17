@@ -5,29 +5,13 @@
  *********************************************************************/
 
 #include <iostream>	
-#include "System.h"
-#include "Constant.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
-#include "DiagonalMatrix.h"
-#include "Part.h"
-#include "Joint.h"
-#include "CylindricalJoint.h"
-#include "RevoluteJoint.h"
-#include "ZRotation.h"
-#include "PartFrame.h"
-#include "MarkerFrame.h"
-#include "EndFrameqc.h"
-#include "EndFrameqct.h"
-#include "Product.h"
-#include "Symbolic.h"
-#include "SystemSolver.h"
-#include "MbDCode.h"
-#include "Time.h"
-#include "CREATE.h"
-#include "GESpMatParPvMarkoFast.h"
-#include "GESpMatParPvPrecise.h"
+#include <fstream>	
+#include <filesystem>
+
 #include "CADSystem.h"
+#include "CREATE.h"
+#include "GESpMatParPvPrecise.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 //using namespace CAD;
@@ -35,10 +19,12 @@ void runSpMat();
 
 int main()
 {
+	//ASMTAssembly::runFile("C:\\Users\\askoh\\OneDrive\\askoh\\visualworks\\vw8.1\\askoh\\64bit\\CADSM\\current\\asm\\00piston.asmt");
+
 	auto externalSys = std::make_shared<CADSystem>();
 	externalSys->runOndselPiston();
 	externalSys->runPiston();
-	//runSpMat();
+	runSpMat();
 }
 
 void runSpMat() {

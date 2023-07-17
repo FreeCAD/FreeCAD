@@ -6,23 +6,24 @@
 
 using namespace MbD;
 
-CylindricalJoint::CylindricalJoint() {
+CylindricalJoint::CylindricalJoint() 
+{
 }
 
-CylindricalJoint::CylindricalJoint(const char* str) : Joint(str) {
+CylindricalJoint::CylindricalJoint(const char* str) : InLineJoint(str) 
+{
 }
 
 void CylindricalJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 0));
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 1));
+		createInLineConstraints();
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		InLineJoint::initializeGlobally();
 	}
 }

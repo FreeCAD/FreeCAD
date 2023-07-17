@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EulerArray.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"

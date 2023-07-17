@@ -1,5 +1,7 @@
 #include "DistIecJec.h"
 
+using namespace MbD;
+
 MbD::DistIecJec::DistIecJec()
 {
 }

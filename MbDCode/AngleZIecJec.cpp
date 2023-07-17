@@ -5,6 +5,14 @@
 
 using namespace MbD;
 
+MbD::AngleZIecJec::AngleZIecJec()
+{
+}
+
+MbD::AngleZIecJec::AngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+{
+}
+
 void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 {
 	auto cthez = aA00IeJe->value();

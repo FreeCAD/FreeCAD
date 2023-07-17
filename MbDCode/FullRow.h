@@ -1,4 +1,5 @@
 #pragma once
+
 #include "FullVector.h"
 //#include "FullColumn.h"
 
@@ -12,6 +13,7 @@ namespace MbD {
 	class FullRow : public FullVector<T>
 	{
 	public:
+		FullRow() : FullVector<T>() {}
 		FullRow(std::vector<T> vec) : FullVector<T>(vec) {}
 		FullRow(int count) : FullVector<T>(count) {}
 		FullRow(int count, const T& value) : FullVector<T>(count, value) {}
@@ -26,6 +28,7 @@ namespace MbD {
 		std::shared_ptr<FullRow<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		std::shared_ptr<FullRow<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		void equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor);
+		void equalFullRow(std::shared_ptr<FullRow<T>> fullRow);
 		std::shared_ptr<FullColumn<T>> transpose();
 		std::shared_ptr<FullRow<T>> copy();
 		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
@@ -99,6 +102,11 @@ namespace MbD {
 	inline void FullRow<T>::equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor)
 	{
 		this->equalSelfPlusFullVectortimes(fullRow, factor);
+	}
+	template<typename T>
+	inline void FullRow<T>::equalFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	{
+		this->equalArrayAt(fullRow, 0);
 	}
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullRow<T>::transpose()

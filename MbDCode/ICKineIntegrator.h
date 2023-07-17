@@ -1,4 +1,5 @@
 #pragma once
+
 #include "QuasiIntegrator.h"
 
 namespace MbD {

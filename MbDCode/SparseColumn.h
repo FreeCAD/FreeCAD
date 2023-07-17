@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SparseVector.h"
 
 namespace MbD {
