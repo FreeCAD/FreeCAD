@@ -153,7 +153,7 @@ int CosmeticExtension::getCVIndex(std::string tag)
 
 //returns unique CV id
 //only adds cv to cvlist property.  does not add to display geometry until dvp executes.
-std::string CosmeticExtension::addCosmeticVertex(Base::Vector3d pos)
+std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
 {
 //    Base::Console().Message("CEx::addCosmeticVertex(%s)\n",
  //                           DrawUtil::formatVector(pos).c_str());
@@ -167,13 +167,13 @@ std::string CosmeticExtension::addCosmeticVertex(Base::Vector3d pos)
 }
 
 //get CV by unique id
-TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(std::string tagString) const
+TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(const std::string& tag) const
 {
 //    Base::Console().Message("CEx::getCosmeticVertex(%s)\n", tagString.c_str());
     const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
     for (auto& cv: verts) {
         std::string cvTag = cv->getTagAsString();
-        if (cvTag == tagString) {
+        if (cvTag == tag) {
             return cv;
         }
     }
@@ -182,7 +182,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(std::string tagSt
 
 // find the cosmetic vertex corresponding to selection name (Vertex5)
 // used when selecting
-TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::string name) const
+TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const std::string& name) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%s)\n", name.c_str());
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
@@ -199,7 +199,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
 }
 
 //overload for index only
-TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(int i) const
+TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const int i) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%d)\n", i);
     std::stringstream ss;
@@ -208,7 +208,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(int i)
     return getCosmeticVertexBySelection(vName);
 }
 
-void CosmeticExtension::removeCosmeticVertex(std::string delTag)
+void CosmeticExtension::removeCosmeticVertex(const std::string& delTag)
 {
 //    Base::Console().Message("DVP::removeCV(%s)\n", delTag.c_str());
     std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
@@ -223,7 +223,7 @@ void CosmeticExtension::removeCosmeticVertex(std::string delTag)
     CosmeticVertexes.setValues(newVerts);
 }
 
-void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
+void CosmeticExtension::removeCosmeticVertex(const std::vector<std::string>& delTags)
 {
     for (auto& t: delTags) {
         removeCosmeticVertex(t);

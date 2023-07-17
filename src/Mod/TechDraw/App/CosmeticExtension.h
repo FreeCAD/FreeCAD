@@ -51,22 +51,17 @@ public:
     TechDraw::PropertyCenterLineList     CenterLines;
     TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 
-    virtual void            addCosmeticVertexesToGeom();
-    virtual void            refreshCVGeoms();
+    virtual CosmeticVertex* getCosmeticVertexBySelection(const int i) const;
+    virtual CosmeticVertex* getCosmeticVertexBySelection(const std::string& name) const;
+    virtual CosmeticVertex* getCosmeticVertex(const std::string& tag) const;
     virtual int             add1CVToGV(std::string tag);
     virtual int             getCVIndex(std::string tag);
-
-    virtual std::string     addCosmeticVertex(Base::Vector3d pos);
-    virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
-    virtual CosmeticVertex* getCosmeticVertexBySelection(int i) const;
-    virtual CosmeticVertex* getCosmeticVertex(std::string id) const;
-    virtual void            removeCosmeticVertex(std::string tag);
-    virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
+    virtual std::string     addCosmeticVertex(const Base::Vector3d& pos);
+    virtual void            addCosmeticVertexesToGeom();
     virtual void            clearCosmeticVertexes();
-
-    virtual void refreshCEGeoms();
-    virtual void addCosmeticEdgesToGeom();
-    virtual int add1CEToGE(std::string tag);
+    virtual void            refreshCVGeoms();
+    virtual void            removeCosmeticVertex(const std::string& tag);
+    virtual void            removeCosmeticVertex(const std::vector<std::string>& tags);
 
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCosmeticEdge(TechDraw::BaseGeomPtr bg);
@@ -76,11 +71,13 @@ public:
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
     virtual void            clearCosmeticEdges();
+    virtual int             add1CEToGE(std::string tag);
+    virtual void            addCosmeticEdgesToGeom();
+    virtual void            refreshCEGeoms();
 
     virtual void refreshCLGeoms();
     virtual void addCenterLinesToGeom();
     virtual int add1CLToGE(std::string tag);
-
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
     virtual std::string     addCenterLine(TechDraw::BaseGeomPtr bg);
