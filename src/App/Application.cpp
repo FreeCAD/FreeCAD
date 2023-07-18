@@ -3148,7 +3148,7 @@ std::tuple<QString, QString, QString> getCustomPaths()
 }
 
 /*!
- * \brief getCustomPaths
+ * \brief getStandardPaths
  * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
  * The method therefore reads the environment variables:
  * \list

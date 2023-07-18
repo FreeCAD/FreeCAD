@@ -500,15 +500,15 @@ Een waarde tussen 0,2 en 10.</translation>
       <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>Je hebt een vast lichaam geselecteerd zonder tip.
+Stel de punt van het vaste lichaam in of selecteer een andere vorm, alstublieft.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation type="unfinished">You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>Je hebt een vorm zonder vlakken geselecteerd.
+Selecteer een andere vorm alstublieft.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="267"/>
@@ -580,12 +580,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Mesh uitrollen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Zoek een platte representatie van een mesh.</translation>
     </message>
   </context>
   <context>
@@ -593,12 +593,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Vlak uitrollen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Zoek een platte representatie van een vlak.</translation>
     </message>
   </context>
 </TS>

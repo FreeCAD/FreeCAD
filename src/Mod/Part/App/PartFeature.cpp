@@ -270,6 +270,8 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         bool resolveLink, bool noElementMap, std::vector<App::DocumentObject*> &linkStack)
 
 {
+    (void) noElementMap;
+
     TopoShape shape;
 
     if(!obj)

@@ -74,25 +74,20 @@ public:
     virtual TechDraw::DrawRichAnno* getFeature(void);
     QPen rectPen() const;
 
-    void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting(void) { return m_isExporting; }
-
-
-public Q_SLOTS:
-/*    void textDragging(void);*/
-/*    void textDragFinished(void);*/
-/*    void hover(bool state);*/
-/*    void select(bool state);*/
+    void setExportingPdf(bool b) { m_isExportingPdf = b; }
+    bool getExportingPdf(void) { return m_isExportingPdf; }
+    void setExportingSvg(bool b) { m_isExportingSvg = b; }
+    bool getExportingSvg(void) { return m_isExportingSvg; }
 
 protected:
     virtual void draw() override;
     void setLineSpacing(int lineSpacing);
-    double prefPointSize(void);
     QFont prefFont(void);
 
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-    bool m_isExporting;
+    bool m_isExportingPdf;
+    bool m_isExportingSvg;
     QGCustomText* m_text;
     bool m_hasHover;
     QGCustomRect* m_rect;

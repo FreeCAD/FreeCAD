@@ -7,8 +7,7 @@
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Emmagatzema l'última tria de l'usuari sobre si aplicar la configuració de CopyOnChange (Copia al canviar) a tots els enllaços que fan referència al mateix objecte configurable</translation>
     </message>
   </context>
   <context>
@@ -24,32 +23,32 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../Origin.cpp" line="140"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Eix-X</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="141"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Eix-Y</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Eix-Z</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Pla-XY</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>Pla-XZ</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>Pla-YZ</translation>
     </message>
   </context>
   <context>

@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2395"/>
       <location filename="../../Command.cpp" line="2397"/>
       <source>Box selection</source>
-      <translation>Sélection par boîte</translation>
+      <translation>Sélectionner par une boîte</translation>
     </message>
   </context>
   <context>
@@ -1326,7 +1326,7 @@ directes, orthogonales et angulaires.</translation>
     <message>
       <location filename="../../Command.cpp" line="2362"/>
       <source>Toggle Delta</source>
-      <translation>Basculer Delta</translation>
+      <translation>Basculer en mode delta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2363"/>
@@ -1678,7 +1678,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Export CAD...</source>
-      <translation>Exportation CAO...</translation>
+      <translation>Exporter un fichier de CAO...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
@@ -1804,7 +1804,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>Make face from wires</source>
-      <translation>Créer une face à partir de fils</translation>
+      <translation>Créer une face à partir de polylignes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
@@ -1935,7 +1935,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Création de primitives géométriques paramétrées</translation>
+      <translation>Créer des primitives géométriques paramétrées</translation>
     </message>
   </context>
   <context>
@@ -2850,7 +2850,7 @@ la taille du fichier STEP résultant.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along:</source>
-      <translation>Le long de :</translation>
+      <translation>Extrusion primaire :</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
@@ -3395,17 +3395,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="92"/>
@@ -3592,7 +3592,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="105"/>
       <location filename="../../DlgPrimitives.cpp" line="1077"/>
       <source>Wedge</source>
-      <translation>Prisme</translation>
+      <translation>Pyramide tronquée</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
@@ -3796,12 +3796,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
       <source>Right-handed</source>
-      <translation>Main droite</translation>
+      <translation>Pas à droite</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1815"/>
       <source>Left-handed</source>
-      <translation>Main gauche</translation>
+      <translation>Pas à gauche</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
@@ -4047,7 +4047,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -5420,7 +5420,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>Sélection par boîte</translation>
+      <translation>Sélectionner par une boîte</translation>
     </message>
   </context>
   <context>
@@ -5710,8 +5710,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
@@ -5803,20 +5803,20 @@ Voulez-vous continuer ?</translation>
       <translation>Aucune référence sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>

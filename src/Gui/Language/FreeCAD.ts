@@ -194,8 +194,8 @@
     </message>
     <message>
         <location filename="../Transform.cpp" line="105"/>
-        <location filename="../ViewProviderDragger.cpp" line="222"/>
         <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+        <location filename="../ViewProviderDragger.cpp" line="222"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -421,42 +421,42 @@
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../Application.h" line="254"/>
+        <location filename="../Application.h" line="252"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="255"/>
+        <location filename="../Application.h" line="253"/>
         <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="259"/>
+        <location filename="../Application.h" line="257"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="260"/>
+        <location filename="../Application.h" line="258"/>
         <source>The object will have its placement editable with the Std TransformManip command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="264"/>
+        <location filename="../Application.h" line="262"/>
         <source>Cutting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="265"/>
+        <location filename="../Application.h" line="263"/>
         <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="269"/>
+        <location filename="../Application.h" line="267"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="270"/>
+        <location filename="../Application.h" line="268"/>
         <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6734,7 +6734,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
         <location filename="../MainWindow.cpp" line="166"/>
-        <location filename="../MainWindow.cpp" line="2055"/>
+        <location filename="../MainWindow.cpp" line="2062"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6764,32 +6764,32 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1263"/>
         <location filename="../MainWindow.cpp" line="1264"/>
         <location filename="../MainWindow.cpp" line="1265"/>
+        <location filename="../MainWindow.cpp" line="1266"/>
         <source>Toggles this toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1278"/>
         <location filename="../MainWindow.cpp" line="1279"/>
         <location filename="../MainWindow.cpp" line="1280"/>
+        <location filename="../MainWindow.cpp" line="1281"/>
         <source>Toggles this dockable window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1846"/>
-        <location filename="../MainWindow.cpp" line="1938"/>
+        <location filename="../MainWindow.cpp" line="1853"/>
+        <location filename="../MainWindow.cpp" line="1945"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1847"/>
+        <location filename="../MainWindow.cpp" line="1854"/>
         <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1939"/>
+        <location filename="../MainWindow.cpp" line="1946"/>
         <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
         <translation type="unfinished"></translation>
@@ -7287,17 +7287,17 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-        <location filename="../Action.cpp" line="980"/>
+        <location filename="../Action.cpp" line="857"/>
         <source>Open file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1024"/>
+        <location filename="../Action.cpp" line="901"/>
         <source>File not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1024"/>
+        <location filename="../Action.cpp" line="901"/>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7305,22 +7305,22 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-        <location filename="../Action.cpp" line="1147"/>
+        <location filename="../Action.cpp" line="1024"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1162"/>
+        <location filename="../Action.cpp" line="1039"/>
         <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1219"/>
+        <location filename="../Action.cpp" line="1097"/>
         <source>File not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1219"/>
+        <location filename="../Action.cpp" line="1097"/>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8147,8 +8147,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-        <location filename="../Action.cpp" line="794"/>
-        <location filename="../Action.cpp" line="862"/>
+        <location filename="../Action.cpp" line="722"/>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8471,8 +8470,8 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="692"/>
         <location filename="../CommandDoc.cpp" line="1189"/>
+        <location filename="../MainWindow.cpp" line="692"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10244,8 +10243,8 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="2043"/>
         <location filename="../DocumentRecovery.cpp" line="393"/>
+        <location filename="../MainWindow.cpp" line="2050"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12506,17 +12505,17 @@ after FreeCAD launches</source>
 <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
         <source>Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
         <source>Left corner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+        <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
         <source>Right corner</source>
         <translation type="unfinished"></translation>
     </message>

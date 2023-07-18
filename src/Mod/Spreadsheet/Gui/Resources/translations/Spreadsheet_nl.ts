@@ -491,7 +491,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Celbereik:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>

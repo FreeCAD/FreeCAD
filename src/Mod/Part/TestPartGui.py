@@ -43,6 +43,7 @@ def findDockWidget(name):
 # define the test cases to test the FreeCAD Part module
 #---------------------------------------------------------------------------
 """
+from parttests.ColorPerFaceTest import ColorPerFaceTest
 
 
 #class PartGuiTestCases(unittest.TestCase):

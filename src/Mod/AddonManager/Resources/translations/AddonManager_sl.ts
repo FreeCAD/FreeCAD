@@ -54,7 +54,7 @@
     <message>
       <location filename="../../compact_view.py" line="88"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Na voljo je nadgradnja</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
@@ -272,7 +272,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Zaustavi posodobitev predpomnilnika</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -465,7 +465,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Na voljo je nadgradnja</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -1176,23 +1176,23 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../AddonManager.py" line="229"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Pričenjanje ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="268"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Nalaganje podatkov o dodatku</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Delovni proces {} se predolgo zaustavlja ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
+      <translation>Predhodno predpomnenje je bilo prekinjeno, ponovni zagon ...
 </translation>
     </message>
     <message>
@@ -1269,18 +1269,18 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Vzdrževalec</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Avtor</translation>
     </message>
@@ -1442,7 +1442,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../package_details.py" line="276"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Samodejno preverjanje posodobitev onemogočeno</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="298"/>
@@ -1496,8 +1496,8 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1629,9 +1629,9 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -2361,7 +2361,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="765"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
+      <translation>Upravljalnik dodatkov: delovni proces je med pridobivanjem {name} spodletel</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="780"/>
@@ -2371,7 +2371,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Upravljalnik dodatkov: delovni proces se ni mogel zaustaviti ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="843"/>

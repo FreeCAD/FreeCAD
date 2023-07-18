@@ -314,17 +314,10 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
-    auto viewLeader = getViewObject()->getLeaders();
-    auto viewDimension = getViewObject()->getDimensions();
-    auto viewBalloon = getViewObject()->getBalloons();
 
-    if (!viewDimension.empty() ||
-             !viewBalloon.empty() ||
-             !viewSection.empty() ||
-             !viewDetail.empty() ||
-             !viewLeader.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has one or more dependent objects that would become broken.");
+            "You cannot delete this view because it has one or more dependent views that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);

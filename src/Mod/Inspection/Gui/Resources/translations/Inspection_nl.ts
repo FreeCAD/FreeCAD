@@ -116,18 +116,18 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="632"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>Afstand: &gt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="635"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>Afstand: &lt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="654"/>
       <location filename="../../ViewProviderInspection.cpp" line="670"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>Afstand: %1</translation>
     </message>
   </context>
 </TS>

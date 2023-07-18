@@ -97,8 +97,6 @@ public:
 
     TechDraw::DrawPage* getDrawPage();
 
-    void setExporting(bool enable);
-
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) { m_showGrid = state; }
     void updateViewport() { viewport()->repaint(); }

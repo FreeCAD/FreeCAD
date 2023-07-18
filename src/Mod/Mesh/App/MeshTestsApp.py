@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>

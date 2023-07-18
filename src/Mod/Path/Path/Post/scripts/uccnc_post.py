@@ -179,7 +179,7 @@ POSTAMBLE = POSTAMBLE_DEFAULT
 # MODAL possible values:
 #   bool       Repeat/suppress repeated command arguments.
 #    True        commands are suppressed if the same as previous line.
-#    False       commands are repeated ith the same as previout line.
+#    False       commands are repeated if the same as previous line.
 #                set with --modal
 MODAL = False
 

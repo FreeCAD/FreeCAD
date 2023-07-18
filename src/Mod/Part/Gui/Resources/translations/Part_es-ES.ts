@@ -1841,12 +1841,12 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Mirroring...</source>
-      <translation>Duplicar...</translation>
+      <translation>Reflejar...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1511"/>
       <source>Mirroring a selected shape</source>
-      <translation>Duplicación de una forma seleccionada</translation>
+      <translation>Reflejar una forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -5701,8 +5701,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -5794,20 +5794,20 @@ Do you want to continue?</source>
       <translation>Ninguna referencia seleccionada</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Arista</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Vértice</translation>
     </message>

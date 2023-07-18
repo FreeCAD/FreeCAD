@@ -1300,7 +1300,7 @@
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
       <source>No active document</source>
-      <translation>未選擇文件</translation>
+      <translation>無可用文件</translation>
     </message>
   </context>
   <context>

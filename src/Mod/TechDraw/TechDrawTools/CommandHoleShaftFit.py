@@ -43,7 +43,7 @@ class CommandHoleShaftFit:
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "Add hole or shaft fit"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "Add a hole or shaft fit to a dimension<br>\
                 - select one length dimension or diameter dimension<br>\
-                - click the tool button, a panel openes<br>\
+                - click the tool button, a panel opens<br>\
                 - select shaft fit / hole fit<br>\
                 - select the desired ISO 286 fit field using the combo box")}
 

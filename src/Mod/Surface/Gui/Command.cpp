@@ -209,38 +209,7 @@ bool CmdSurfaceCurveOnMesh::isActive()
 }
 
 //===========================================================================
-// CmdBlendSurface THIS IS THE BLEND SURFACE COMMAND
-//===========================================================================
-DEF_STD_CMD_A(CmdBlendSurface)
-
-CmdBlendSurface::CmdBlendSurface()
-    : Command("Surface_BlendSurface")
-{
-    sAppModule = "Surface";
-    sGroup = QT_TR_NOOP("Surface");
-    sMenuText = QT_TR_NOOP("Blend Surface");
-    sToolTipText = QT_TR_NOOP("This is the blend Surface feature");
-    sStatusTip = sToolTipText;
-    sWhatsThis = "BlendSurface";
-    sPixmap = "BlendSurface";
-}
-
-void CmdBlendSurface::activated(int)
-{
-
-}
-
-bool CmdBlendSurface::isActive()
-{
-    return true;
-}
-
-
-
-
-
-//===========================================================================
-// CmdBlendCurve THIS IS THE BLEND CURVE COMMAND
+// CmdBlendCurve : Blend Curve Command
 //===========================================================================
 DEF_STD_CMD_A(CmdBlendCurve)
 
@@ -253,43 +222,16 @@ CmdBlendCurve::CmdBlendCurve()
     sToolTipText = QT_TR_NOOP("Join two edges with high continuity");
     sStatusTip = sToolTipText;
     sWhatsThis = "BlendCurve";
-    sPixmap = "BlendCurve";
+    sPixmap = "Surface_BlendCurve";
 }
 
 void CmdBlendCurve::activated(int)
 {
-    // To do add pickpoints to parameters
     std::string docName = App::GetApplication().getActiveDocument()->getName();
     std::string objName[2];
     std::string edge[2];
     std::string featName = getUniqueObjectName("BlendCurve");
     std::vector<Gui::SelectionObject> sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
-    //std::vector<Base::Vector3d> pickedPoints = sel[0].getPickedPoints();
-    //App::DocumentObject *obj1 = sel[0].getObject();
-    //App::DocumentObject *obj2 = sel[1].getObject();
-    //std::vector<std::string> edge1SubName =  sel[0].getSubNames();
-    //std::vector<std::string> edge2SubName =  sel[1].getSubNames();
-
-    //TopoDS_Shape edge1 = static_cast<Part::Feature *>(obj1)
-    //                         ->Shape.getShape()
-    //                         .getSubShape(edge1SubName[0].c_str());
-    //if (edge1.IsNull() || edge1.ShapeType() != TopAbs_EDGE)
-    //    return;
-    //TopoDS_Shape edge2 = static_cast<Part::Feature *>(obj2)
-    //                         ->Shape.getShape()
-    //                         .getSubShape(edge2SubName[0].c_str());
-    //if (edge2.IsNull() || edge2.ShapeType() != TopAbs_EDGE)
-    //    return;
-
-    //const TopoDS_Edge &e1 = TopoDS::Edge(edge1);
-    //BRepAdaptor_Curve adapt1(e1);
-    //gp_Pnt pnt1(pickedPoints[0].x, pickedPoints[0].y, pickedPoints[0].z);
-
-    //GeomAdaptor_Curve geomCurve = adapt1.Curve();
-    //GeomAPI_ProjectPointOnCurve geomAPI(pnt1, geomCurve.Curve());
-    //double par = geomAPI.LowerDistanceParameter();
-
-    //edge2.Curve.closestParameter(vec, par)
 
     objName[0] = sel[0].getFeatName();
     edge[0] = sel[0].getSubNames()[0];
@@ -315,10 +257,6 @@ bool CmdBlendCurve::isActive()
     Gui::SelectionFilter edgeFilter("SELECT Part::Feature SUBELEMENT Edge COUNT 2");
     return edgeFilter.match();
 }
-
-
-
-
 
 DEF_STD_CMD_A(CmdSurfaceExtendFace)
 
@@ -403,5 +341,4 @@ void CreateSurfaceCommands()
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
-    rcCmdMgr.addCommand(new CmdBlendSurface());
 }

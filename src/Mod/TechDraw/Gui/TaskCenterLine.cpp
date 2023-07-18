@@ -192,8 +192,14 @@ void TaskCenterLine::setUiPrimary()
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
 
-    int orientation = checkPathologicalEdges(m_mode);
-    setUiOrientation(orientation);
+    if (m_type == 1) {
+       int orientation = checkPathologicalEdges(m_mode);
+       setUiOrientation(orientation);
+    }
+    if (m_type == 2) {
+       int orientation = checkPathologicalVertices(m_mode);
+       setUiOrientation(orientation);
+    }
 }
 
 void TaskCenterLine::setUiEdit()
@@ -238,6 +244,9 @@ void TaskCenterLine::setUiEdit()
 
 void TaskCenterLine::onOrientationChanged()
 {
+    if (!m_cl) {
+        return;
+    }
     if (ui->rbVertical->isChecked())
         m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
     else if (ui->rbHorizontal->isChecked())
@@ -254,30 +263,50 @@ void TaskCenterLine::onOrientationChanged()
 
 void TaskCenterLine::onShiftHorizChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_hShift = ui->qsbHorizShift->rawValue();
     m_partFeat->recomputeFeature();
 }
 
 void TaskCenterLine::onShiftVertChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_vShift = ui->qsbVertShift->rawValue();
     m_partFeat->recomputeFeature();
 }
 
 void TaskCenterLine::onRotationChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_rotate = ui->qsbRotate->rawValue();
     m_partFeat->recomputeFeature();
 }
 
 void TaskCenterLine::onExtendChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_partFeat->recomputeFeature();
 }
 
 void TaskCenterLine::onColorChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color());
@@ -286,12 +315,20 @@ void TaskCenterLine::onColorChanged()
 
 void TaskCenterLine::onWeightChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_partFeat->recomputeFeature();
 }
 
 void TaskCenterLine::onStyleChanged()
 {
+    if (!m_cl) {
+        return;
+    }
+
     m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
     m_partFeat->recomputeFeature();
 }
@@ -326,12 +363,47 @@ int TaskCenterLine::checkPathologicalEdges(int inMode)
     return inMode;
 }
 
+// check that we are not trying to create an impossible centerline (ex a vertical centerline
+// between 2 vertices aligned vertically)
+int TaskCenterLine::checkPathologicalVertices(int inMode)
+{
+    if (m_type != 2) {
+        // not a vertex based centerline, this doesn't apply
+        return inMode;
+    }
+
+    TechDraw::VertexPtr vert1 = m_partFeat->getVertex(m_subNames.front());
+    Base::Vector3d point1 = vert1->point();
+    TechDraw::VertexPtr vert2 = m_partFeat->getVertex(m_subNames.back());
+    Base::Vector3d point2 = vert2->point();
+
+    if (DU::fpCompare(point1.x, point2.x, EWTOLERANCE)) {
+        // points are aligned vertically, CL must be horizontal
+        return CenterLine::CLMODE::HORIZONTAL;
+    }
+
+    if (DU::fpCompare(point1.y, point2.y, EWTOLERANCE)) {
+        // points are aligned horizontally, CL must be vertical
+        return CenterLine::CLMODE::VERTICAL;
+    }
+
+    // not pathological case, just return the input mode
+    return inMode;
+}
+
 //******************************************************************************
 void TaskCenterLine::createCenterLine()
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 
-    m_mode = checkPathologicalEdges(m_mode);
+    // check for illogical parameters
+    if (m_type == 1) {
+        // between lines
+        m_mode = checkPathologicalEdges(m_mode);
+    } else if (m_type == 2) {
+        // between points
+        m_mode = checkPathologicalVertices(m_mode);
+    }
 
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, m_mode, false);
 
@@ -367,6 +439,7 @@ void TaskCenterLine::createCenterLine()
 
 void TaskCenterLine::updateOrientation()
 {
+//    Base::Console().Message("TCL::updateOrientation()\n");
     if (!m_cl) {
         return;
     }
@@ -375,10 +448,20 @@ void TaskCenterLine::updateOrientation()
     // https://forum.freecad.org/viewtopic.php?f=35&t=44255&start=20#p503220
     // The centerline creation can fail if m_type is edge and both selected edges are vertical or horizontal.
     int orientation = m_cl->m_mode;
-    if (!m_edgeName.empty() && !m_cl->m_edges.empty()) {
-         // we have an existing centerline, not a freshly created one, and it is a centerline between edges
-        m_subNames = m_cl->m_edges;
-        orientation = checkPathologicalEdges(orientation);
+    if (m_type == 1) {
+        // between lines
+        if (!m_edgeName.empty() && !m_cl->m_edges.empty()) {
+             // we have an existing centerline, not a freshly created one, and it is a centerline between edges
+            m_subNames = m_cl->m_edges;
+            orientation = checkPathologicalEdges(orientation);
+        }
+    } else if (m_type == 2) {
+        // between points
+        if (!m_edgeName.empty() && !m_cl->m_verts.empty()) {
+             // we have an existing centerline, not a freshly created one, and it is a centerline between points
+            m_subNames = m_cl->m_verts;
+            orientation = checkPathologicalVertices(orientation);
+        }
     }
 
     setUiOrientation(orientation);
