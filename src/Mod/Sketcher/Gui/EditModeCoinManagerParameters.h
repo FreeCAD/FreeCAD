@@ -67,8 +67,8 @@ struct DrawingParameters
     /** @name Rendering Heights - virtual height introduced in the scenegraph to determine what is
      * drawn on top of what*/
     //@{
-    const float zEdit = 0.001f;      // Height used by temporal edit curves
-    const float zCross = 0.001f;     // Height used by the Axes
+    const float zEdit = 0.002f;      // Height used by temporal edit curves
+    const float zCross = 0.002f;     // Height used by the Axes
     const float zInfo = 0.004f;      // Height used by the Overlay information layer
     const float zLowLines = 0.005f;  // Height used for bottom rendered lines
     const float zMidLines = 0.006f;  // Height used for in-the-middle rendered lines
