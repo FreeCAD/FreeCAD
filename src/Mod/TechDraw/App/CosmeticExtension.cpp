@@ -181,19 +181,19 @@ std::string CosmeticExtension::addCosmetic(BaseGeomPtr bg) {
     Cosmetics.addValue(cosmetic);
     return cosmetic->getTagAsString();
 }
-template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(BaseGeomPtr bg);
+template TechDrawExport std::string CosmeticExtension::addCosmetic<CosmeticEdge>(BaseGeomPtr bg);
 
 //only adds gf to gflist property.  does not add to display geometry until dvp repaints.
 template<typename T>
 std::string CosmeticExtension::addCosmetic(T* cosmetic) {
     static_assert(!std::is_pointer<T>::value, "Template argument must not be pointer!!!");
 
-    T* newCosmetic = new T(cosmetic);
-    Cosmetics.addValue(newCosmetic);
-    return newCosmetic->getTagAsString();
+    // T* newCosmetic = new T(cosmetic);    I believe this was a mistake introduced in the original GeomFormat code, as pointers passed to the function were always new ones GeomFormats made from old ones...
+    Cosmetics.addValue(cosmetic);
+    return cosmetic->getTagAsString();
 }
-template std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
-template std::string CosmeticExtension::addCosmetic<CenterLine>(CenterLine* cosmetic);
+template TechDrawExport std::string CosmeticExtension::addCosmetic<GeomFormat>(GeomFormat* cosmetic);
+template TechDrawExport std::string CosmeticExtension::addCosmetic<CenterLine>(CenterLine* cosmetic);
 
 void CosmeticExtension::removeCosmetic(std::string tag) {
     Cosmetics.removeValue(tag);
@@ -223,8 +223,8 @@ T CosmeticExtension::getCosmeticByName(int index) const
     }
     return Cosmetics.getValue<T>(base->getCosmeticTag());
 }
-template CenterLine* CosmeticExtension::getCosmeticByName(int i) const;
-template CosmeticEdge* CosmeticExtension::getCosmeticByName(int i) const;
+template TechDrawExport CenterLine* CosmeticExtension::getCosmeticByName(int i) const;
+template TechDrawExport CosmeticEdge* CosmeticExtension::getCosmeticByName(int i) const;
 
 
 // used when selecting
@@ -236,9 +236,9 @@ T CosmeticExtension::getCosmeticByName(std::string name) const
     int index = DrawUtil::getIndexFromName(name);
     return getCosmeticByName<T>(index);
 }
-template CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
-template Cosmetic* CosmeticExtension::getCosmeticByName(std::string name) const;
-template CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
+template TechDrawExport CenterLine* CosmeticExtension::getCosmeticByName(std::string name) const;
+template TechDrawExport Cosmetic* CosmeticExtension::getCosmeticByName(std::string name) const;
+template TechDrawExport CosmeticEdge* CosmeticExtension::getCosmeticByName(std::string name) const;
 
 //returns unique CE id
 //only adds ce to celist property.  does not add to display geometry until dvp executes.
@@ -251,8 +251,8 @@ std::string CosmeticExtension::addCosmetic(const Base::Vector3d& start, const Ba
     Cosmetics.addValue(newCosmetic);
     return newCosmetic->getTagAsString();  // What happens to newCosmetic??? Memory-leak???
 }
-template std::string CosmeticExtension::addCosmetic<CenterLine>(const Base::Vector3d& start, const Base::Vector3d& end);
-template std::string CosmeticExtension::addCosmetic<CosmeticEdge>(const Base::Vector3d& start, const Base::Vector3d& end);
+template TechDrawExport std::string CosmeticExtension::addCosmetic<CenterLine>(const Base::Vector3d& start, const Base::Vector3d& end);
+template TechDrawExport std::string CosmeticExtension::addCosmetic<CosmeticEdge>(const Base::Vector3d& start, const Base::Vector3d& end);
 
 
 //================================================================================

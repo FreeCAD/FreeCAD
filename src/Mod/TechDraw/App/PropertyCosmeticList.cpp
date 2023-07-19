@@ -235,9 +235,9 @@ void PropertyCosmeticList::clear() {
         _lValueList.end()
     );
 }
-template void PropertyCosmeticList::clear<CenterLine*>();
-template void PropertyCosmeticList::clear<CosmeticEdge*>();
-template void PropertyCosmeticList::clear<GeomFormat*>();
+template TechDrawExport void PropertyCosmeticList::clear<CenterLine*>();
+template TechDrawExport void PropertyCosmeticList::clear<CosmeticEdge*>();
+template TechDrawExport void PropertyCosmeticList::clear<GeomFormat*>();
 
 template<typename T>
 const T PropertyCosmeticList::getValue(std::string tag) const {
@@ -256,10 +256,10 @@ const T PropertyCosmeticList::getValue(std::string tag) const {
 }
 // Notice that const comes after the type when you have to make your own explicit template instantiation...
 // only took 1 hour to find out (https://stackoverflow.com/questions/1296907/function-template-specialization-with-reference-to-pointer)
-template CenterLine* const PropertyCosmeticList::getValue(std::string tag) const;
-template Cosmetic* const PropertyCosmeticList::getValue(std::string tag) const;
-template CosmeticEdge* const PropertyCosmeticList::getValue(std::string tag) const;
-template GeomFormat* const PropertyCosmeticList::getValue(std::string tag) const;
+template TechDrawExport CenterLine* const PropertyCosmeticList::getValue(std::string tag) const;
+template TechDrawExport Cosmetic* const PropertyCosmeticList::getValue(std::string tag) const;
+template TechDrawExport CosmeticEdge* const PropertyCosmeticList::getValue(std::string tag) const;
+template TechDrawExport GeomFormat* const PropertyCosmeticList::getValue(std::string tag) const;
 // Qualifier warnings????
 
 template<typename T>
@@ -276,9 +276,9 @@ const std::vector<T> PropertyCosmeticList::getValues() const {
     }
     return result;
 }
-template const std::vector<CenterLine*> PropertyCosmeticList::getValues<CenterLine*>() const;
-template const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
-template const std::vector<Cosmetic*> PropertyCosmeticList::getValues<Cosmetic*>() const;
-template const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
+template TechDrawExport const std::vector<CenterLine*> PropertyCosmeticList::getValues<CenterLine*>() const;
+template TechDrawExport const std::vector<CosmeticEdge*> PropertyCosmeticList::getValues<CosmeticEdge*>() const;
+template TechDrawExport const std::vector<Cosmetic*> PropertyCosmeticList::getValues<Cosmetic*>() const;
+template TechDrawExport const std::vector<GeomFormat*> PropertyCosmeticList::getValues<GeomFormat*>() const;
 
 // If you get linker errors, remember to do explicit template instantiation!!!
