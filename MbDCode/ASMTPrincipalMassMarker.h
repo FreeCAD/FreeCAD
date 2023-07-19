@@ -9,7 +9,6 @@ namespace MbD {
     public:
         void parseASMT(std::vector<std::string>& lines) override;
 
-		std::string name;
 		FColDsptr position3D;
 		FMatDsptr rotationMatrix;
 		double mass, density;

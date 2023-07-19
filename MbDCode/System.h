@@ -14,6 +14,7 @@
 
 #include "Item.h"
 #include "PrescribedMotion.h"
+#include "ExternalSystem.h"
 
 //using namespace CAD;
 
@@ -25,7 +26,6 @@ namespace MbD {
 	class Constraint;
 	class ForceTorqueItem;
 	//class CAD::CADSystem;
-	class CADSystem;
 
 	class System : public Item
 	{
@@ -63,8 +63,7 @@ namespace MbD {
 		double rotationLimit();
 		void outputFor(AnalysisType type);
 
-		//CAD::CADSystem* externalSystem;	//Use raw pointer to point backwards
-		CADSystem* externalSystem;	//Use raw pointer to point backwards
+		std::shared_ptr<ExternalSystem> externalSystem;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;

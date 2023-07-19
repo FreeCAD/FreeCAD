@@ -1,10 +1,10 @@
 #include <ostream>
 
-#include "DataPosVelAcc.h"
+#include "PosVelAccData.h"
 
 using namespace MbD;
 
-std::ostream& DataPosVelAcc::printOn(std::ostream& s) const
+std::ostream& PosVelAccData::printOn(std::ostream& s) const
 {
     s << "refData = " << *refData << std::endl;
     s << "rFfF = " << *rFfF << std::endl;

@@ -159,6 +159,8 @@
     <ClCompile Include="ASMTRevoluteJoint.cpp" />
     <ClCompile Include="ASMTRotationalMotion.cpp" />
     <ClCompile Include="ASMTSimulationParameters.cpp" />
+    <ClCompile Include="ASMTSpatialContainer.cpp" />
+    <ClCompile Include="ASMTSpatialItem.cpp" />
     <ClCompile Include="ASMTTranslationalMotion.cpp" />
     <ClCompile Include="AtPointConstraintIJ.cpp" />
     <ClCompile Include="AtPointConstraintIqcJc.cpp" />
@@ -181,7 +183,8 @@
     <ClCompile Include="CREATE.cpp" />
     <ClCompile Include="CylindricalJoint.cpp" />
     <ClCompile Include="CylSphJoint.cpp" />
-    <ClCompile Include="DataPosVelAcc.cpp" />
+    <ClCompile Include="ExternalSystem.cpp" />
+    <ClCompile Include="PosVelAccData.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
     <ClCompile Include="DirectionCosineConstraintIJ.cpp" />
@@ -390,6 +393,8 @@
     <ClInclude Include="ASMTRevoluteJoint.h" />
     <ClInclude Include="ASMTRotationalMotion.h" />
     <ClInclude Include="ASMTSimulationParameters.h" />
+    <ClInclude Include="ASMTSpatialContainer.h" />
+    <ClInclude Include="ASMTSpatialItem.h" />
     <ClInclude Include="ASMTTranslationalMotion.h" />
     <ClInclude Include="AtPointConstraintIJ.h" />
     <ClInclude Include="AtPointConstraintIqcJc.h" />
@@ -412,7 +417,8 @@
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="CylSphJoint.h" />
-    <ClInclude Include="DataPosVelAcc.h" />
+    <ClInclude Include="ExternalSystem.h" />
+    <ClInclude Include="PosVelAccData.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />
     <ClInclude Include="DirectionCosineConstraintIJ.h" />

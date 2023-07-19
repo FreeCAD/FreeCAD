@@ -23,8 +23,8 @@ int main()
 
 	auto externalSys = std::make_shared<CADSystem>();
 	externalSys->runOndselPiston();
-	externalSys->runPiston();
-	runSpMat();
+	//externalSys->runPiston();
+	//runSpMat();
 }
 
 void runSpMat() {

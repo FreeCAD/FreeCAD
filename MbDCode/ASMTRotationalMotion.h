@@ -8,8 +8,10 @@ namespace MbD {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
+        void readMotionJoint(std::vector<std::string>& lines);
+        void readRotationZ(std::vector<std::string>& lines);
 
-        std::string name, motionJoint, rotationZ;
+        std::string motionJoint, rotationZ;
     };
 }
 

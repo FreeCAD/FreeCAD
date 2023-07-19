@@ -1,7 +1,7 @@
 #pragma once
 #include <fstream>	
 
-#include "ASMTItem.h"
+#include "ASMTSpatialContainer.h"
 #include "ASMTRefPoint.h"
 #include "ASMTRefCurve.h"
 #include "ASMTRefSurface.h"
@@ -18,19 +18,36 @@
 #include "ASMTMotion.h"
 
 namespace MbD {
-    class ASMTAssembly : public ASMTItem
+    class ASMTAssembly : public ASMTSpatialContainer
     {
         //
     public:
         static void runFile(const char* chars);
         void parseASMT(std::vector<std::string>& lines) override;
+        void readNotes(std::vector<std::string>& lines);
+        void readParts(std::vector<std::string>& lines);
+        void readPart(std::vector<std::string>& lines);
+        void readKinematicIJs(std::vector<std::string>& lines);
+        void readKinematicIJ(std::vector<std::string>& lines);
+        void readConstraintSets(std::vector<std::string>& lines);
+        void readJoints(std::vector<std::string>& lines);
+        void readMotions(std::vector<std::string>& lines);
+        void readGeneralConstraintSets(std::vector<std::string>& lines);
+        void readForceTorques(std::vector<std::string>& lines);
+        void readConstantGravity(std::vector<std::string>& lines);
+        void readSimulationParameters(std::vector<std::string>& lines);
+        void readAnimationParameters(std::vector<std::string>& lines);
+        void readTimeSeries(std::vector<std::string>& lines);
+        void readTimes(std::vector<std::string>& lines);
+        void readAssemblySeries(std::vector<std::string>& lines);
+        void readPartSeriesMany(std::vector<std::string>& lines);
+        void readPartSeries(std::vector<std::string>& lines);
+        void readJointSeriesMany(std::vector<std::string>& lines);
+        void readJointSeries(std::vector<std::string>& lines);
+        void readMotionSeriesMany(std::vector<std::string>& lines);
+        void readMotionSeries(std::vector<std::string>& lines);
 
-        std::string notes, name;
-        FColDsptr position3D, velocity3D, omega3D;
-        FMatDsptr rotationMatrix;
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTRefSurface>>> refSurfaces;
+        std::string notes;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTKinematicIJ>>> kinematicIJs;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTConstraintSet>>> constraintSets;
@@ -40,6 +57,7 @@ namespace MbD {
         std::shared_ptr<ASMTConstantGravity> constantGravity;
         std::shared_ptr<ASMTSimulationParameters> simulationParameters;
         std::shared_ptr<ASMTAnimationParameters> animationParameters;
+        std::shared_ptr<std::vector<double>> times;
 
     };
 }

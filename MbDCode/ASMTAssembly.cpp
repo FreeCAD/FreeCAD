@@ -33,259 +33,334 @@ void MbD::ASMTAssembly::runFile(const char* chars)
 
 void MbD::ASMTAssembly::parseASMT(std::vector<std::string>& lines)
 {
-	size_t pos = lines[0].find_first_not_of("\t");
-	auto leadingTabs = lines[0].substr(0, pos);
-	while (!lines.empty()) {
-		if (lines[0] == (leadingTabs + "Notes")) {
-			lines.erase(lines.begin());
-			notes = lines[0];
-			lines.erase(lines.begin());
+	readNotes(lines);
+	readName(lines);
+	readPosition3D(lines);
+	readRotationMatrix(lines);
+	readVelocity3D(lines);
+	readOmega3D(lines);
+	readRefPoints(lines);
+	readRefCurves(lines);
+	readRefSurfaces(lines);
+	readParts(lines);
+	readKinematicIJs(lines);
+	readConstraintSets(lines);
+	readForceTorques(lines);
+	readConstantGravity(lines);
+	readSimulationParameters(lines);
+	readAnimationParameters(lines);
+	readTimeSeries(lines);
+	readAssemblySeries(lines);
+	readPartSeriesMany(lines);
+	readJointSeriesMany(lines);
+	readMotionSeriesMany(lines);
+}
+
+void MbD::ASMTAssembly::readNotes(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tNotes");
+	lines.erase(lines.begin());
+	notes = readString(lines[0]);
+	lines.erase(lines.begin());
+}
+
+void MbD::ASMTAssembly::readParts(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tParts");
+	lines.erase(lines.begin());
+	parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\tKinematicIJs");
+	std::vector<std::string> partsLines(lines.begin(), it);
+	while (!partsLines.empty()) {
+		readPart(partsLines);
+	}
+	lines.erase(lines.begin(), it);
+
+}
+
+void MbD::ASMTAssembly::readPart(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\t\tPart");
+	lines.erase(lines.begin());
+	auto part = CREATE<ASMTPart>::With();
+	part->parseASMT(lines);
+	parts->push_back(part);
+	part->owner = this;
+}
+
+void MbD::ASMTAssembly::readKinematicIJs(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tKinematicIJs");
+	lines.erase(lines.begin());
+	kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\tConstraintSets");
+	std::vector<std::string> kinematicIJsLines(lines.begin(), it);
+	while (!kinematicIJsLines.empty()) {
+		readKinematicIJ(kinematicIJsLines);
+	}
+	lines.erase(lines.begin(), it);
+
+}
+
+void MbD::ASMTAssembly::readKinematicIJ(std::vector<std::string>& lines)
+{
+	assert(false);
+}
+
+void MbD::ASMTAssembly::readConstraintSets(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tConstraintSets");
+	lines.erase(lines.begin());
+	readJoints(lines);
+	readMotions(lines);
+	readGeneralConstraintSets(lines);
+}
+
+void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\t\tJoints");
+	lines.erase(lines.begin());
+	joints = std::make_shared<std::vector<std::shared_ptr<ASMTJoint>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\t\tMotions");
+	std::vector<std::string> jointsLines(lines.begin(), it);
+	std::shared_ptr<ASMTJoint> joint;
+	while (!jointsLines.empty()) {
+		if (jointsLines[0] == "\t\t\tRevoluteJoint") {
+			joint = CREATE<ASMTRevoluteJoint>::With();
 		}
-		else if (lines[0] == (leadingTabs + "Name")) {
-			lines.erase(lines.begin());
-			name = lines[0];
-			lines.erase(lines.begin());
+		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
+			joint = CREATE<ASMTCylindricalJoint>::With();
 		}
-		else if (lines[0] == (leadingTabs + "Position3D")) {
-			lines.erase(lines.begin());
-			std::istringstream iss(lines[0]);
-			position3D = std::make_shared<FullColumn<double>>();
-			double d;
-			while (iss >> d) {
-				position3D->push_back(d);
-			}
-			lines.erase(lines.begin());
+		else {
+			assert(false);
 		}
-		else if (lines[0] == (leadingTabs + "RotationMatrix")) {
-			lines.erase(lines.begin());
-			rotationMatrix = std::make_shared<FullMatrix<double>>(3, 0);
-			for (int i = 0; i < 3; i++)
-			{
-				auto& row = rotationMatrix->at(i);
-				std::istringstream iss(lines[0]);
-				double d;
-				while (iss >> d) {
-					row->push_back(d);
-				}
-				lines.erase(lines.begin());
-			}
+		jointsLines.erase(jointsLines.begin());
+		joint->parseASMT(jointsLines);
+		joints->push_back(joint);
+		joint->owner = this;
+	}
+	lines.erase(lines.begin(), it);
+
+}
+
+void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\t\tMotions");
+	lines.erase(lines.begin());
+	motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
+	std::vector<std::string> motionsLines(lines.begin(), it);
+	std::shared_ptr<ASMTMotion> motion;
+	while (!motionsLines.empty()) {
+		if (motionsLines[0] == "\t\t\tRotationalMotion") {
+			motion = CREATE<ASMTRotationalMotion>::With();
 		}
-		else if (lines[0] == (leadingTabs + "Velocity3D")) {
-			lines.erase(lines.begin());
-			std::istringstream iss(lines[0]);
-			velocity3D = std::make_shared<FullColumn<double>>();
-			double d;
-			while (iss >> d) {
-				velocity3D->push_back(d);
-			}
-			lines.erase(lines.begin());
+		else if (motionsLines[0] == "\t\t\tTranslationalMotion") {
+			motion = CREATE<ASMTTranslationalMotion>::With();
 		}
-		else if (lines[0] == (leadingTabs + "Omega3D")) {
-			lines.erase(lines.begin());
-			std::istringstream iss(lines[0]);
-			omega3D = std::make_shared<FullColumn<double>>();
-			double d;
-			while (iss >> d) {
-				omega3D->push_back(d);
-			}
-			lines.erase(lines.begin());
+		else {
+			assert(false);
 		}
-		else if (lines[0] == (leadingTabs + "RefPoints")) {
-			lines.erase(lines.begin());
-			refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "RefCurves"));
-			std::vector<std::string> refPointsLines(lines.begin(), it);
-			while (!refPointsLines.empty()) {
-				if (refPointsLines[0] == (leadingTabs + "\tRefPoint")) {
-					refPointsLines.erase(refPointsLines.begin());
-					auto refPoint = CREATE<ASMTRefPoint>::With();
-					refPoint->parseASMT(refPointsLines);
-					refPoints->push_back(refPoint);
-					refPoint->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "RefCurves")) {
-			lines.erase(lines.begin());
-			refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "RefSurfaces"));
-			std::vector<std::string> refCurvesLines(lines.begin(), it);
-			while (!refCurvesLines.empty()) {
-				if (refCurvesLines[0] == (leadingTabs + "\tRefCurve")) {
-					refCurvesLines.erase(refCurvesLines.begin());
-					auto refCurve = CREATE<ASMTRefCurve>::With();
-					refCurve->parseASMT(refCurvesLines);
-					refCurves->push_back(refCurve);
-					refCurve->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "RefSurfaces")) {
-			lines.erase(lines.begin());
-			refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "Parts"));
-			std::vector<std::string> refSurfacesLines(lines.begin(), it);
-			while (!refSurfacesLines.empty()) {
-				if (refSurfacesLines[0] == (leadingTabs + "\tRefSurface")) {
-					refSurfacesLines.erase(refSurfacesLines.begin());
-					auto refSurface = CREATE<ASMTRefSurface>::With();
-					refSurface->parseASMT(refSurfacesLines);
-					refSurfaces->push_back(refSurface);
-					refSurface->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "Parts")) {
-			lines.erase(lines.begin());
-			parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "KinematicIJs"));
-			std::vector<std::string> partsLines(lines.begin(), it);
-			while (!partsLines.empty()) {
-				if (partsLines[0] == (leadingTabs + "\tPart")) {
-					partsLines.erase(partsLines.begin());
-					auto part = CREATE<ASMTPart>::With();
-					part->parseASMT(partsLines);
-					parts->push_back(part);
-					part->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "KinematicIJs")) {
-			lines.erase(lines.begin());
-			kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "ConstraintSets"));
-			std::vector<std::string> kinematicIJsLines(lines.begin(), it);
-			while (!kinematicIJsLines.empty()) {
-				if (kinematicIJsLines[0] == (leadingTabs + "\tKinematicIJ")) {
-					kinematicIJsLines.erase(kinematicIJsLines.begin());
-					auto kinematicIJ = CREATE<ASMTKinematicIJ>::With();
-					kinematicIJ->parseASMT(kinematicIJsLines);
-					kinematicIJs->push_back(kinematicIJ);
-					kinematicIJ->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "ConstraintSets")) {
-			lines.erase(lines.begin());
-			assert(lines[0] == (leadingTabs + "\tJoints"));
-			lines.erase(lines.begin());
-			joints = std::make_shared<std::vector<std::shared_ptr<ASMTJoint>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "\tMotions"));
-			std::vector<std::string> jointsLines(lines.begin(), it);
-			while (!jointsLines.empty()) {
-				if (jointsLines[0] == (leadingTabs + "\t\tRevoluteJoint")) {
-					jointsLines.erase(jointsLines.begin());
-					auto joint = CREATE<ASMTRevoluteJoint>::With();
-					joint->parseASMT(jointsLines);
-					joints->push_back(joint);
-					joint->owner = this;
-				}
-				else if (jointsLines[0] == (leadingTabs + "\t\tCylindricalJoint")) {
-					jointsLines.erase(jointsLines.begin());
-					auto joint = CREATE<ASMTCylindricalJoint>::With();
-					joint->parseASMT(jointsLines);
-					joints->push_back(joint);
-					joint->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-			assert(lines[0] == (leadingTabs + "\tMotions"));
-			lines.erase(lines.begin());
-			motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
-			it = std::find(lines.begin(), lines.end(), (leadingTabs + "\tGeneralConstraintSets"));
-			std::vector<std::string> motionsLines(lines.begin(), it);
-			while (!motionsLines.empty()) {
-				if (motionsLines[0] == (leadingTabs + "\t\tRotationalMotion")) {
-					motionsLines.erase(motionsLines.begin());
-					auto motion = CREATE<ASMTRotationalMotion>::With();
-					motion->parseASMT(motionsLines);
-					motions->push_back(motion);
-					motion->owner = this;
-				}
-				else if (motionsLines[0] == (leadingTabs + "\t\tTranslationalMotion")) {
-					motionsLines.erase(motionsLines.begin());
-					auto motion = CREATE<ASMTTranslationalMotion>::With();
-					motion->parseASMT(motionsLines);
-					motions->push_back(motion);
-					motion->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-			assert(lines[0] == (leadingTabs + "\tGeneralConstraintSets"));
-			lines.erase(lines.begin());
-			constraintSets = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
-			it = std::find(lines.begin(), lines.end(), (leadingTabs + "ForceTorques"));
-			std::vector<std::string> generalConstraintSetsLines(lines.begin(), it);
-			while (!generalConstraintSetsLines.empty()) {
-				assert(false);
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "ForceTorques")) {
-			lines.erase(lines.begin());
-			forceTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
-			auto it = std::find(lines.begin(), lines.end(), (leadingTabs + "ConstantGravity"));
-			std::vector<std::string> forceTorquesLines(lines.begin(), it);
-			while (!forceTorquesLines.empty()) {
-				if (forceTorquesLines[0] == (leadingTabs + "\tForceTorque")) {
-					forceTorquesLines.erase(forceTorquesLines.begin());
-					auto forceTorque = CREATE<ASMTForceTorque>::With();
-					forceTorque->parseASMT(forceTorquesLines);
-					forceTorques->push_back(forceTorque);
-					forceTorque->owner = this;
-				}
-				else {
-					assert(false);
-				}
-			}
-			lines.erase(lines.begin(), it);
-		}
-		else if (lines[0] == (leadingTabs + "ConstantGravity")) {
-			lines.erase(lines.begin());
-			constantGravity = CREATE<ASMTConstantGravity>::With();
-			constantGravity->parseASMT(lines);
-			constantGravity->owner = this;
-			}
-		else if (lines[0] == (leadingTabs + "SimulationParameters")) {
-			lines.erase(lines.begin());
-			simulationParameters = CREATE<ASMTSimulationParameters>::With();
-			simulationParameters->parseASMT(lines);
-			simulationParameters->owner = this;
-		}
-		else if (lines[0] == (leadingTabs + "AnimationParameters")) {
-			lines.erase(lines.begin());
-			animationParameters = CREATE<ASMTAnimationParameters>::With();
-			animationParameters->parseASMT(lines);
-			animationParameters->owner = this;
+		motionsLines.erase(motionsLines.begin());
+		motion->parseASMT(motionsLines);
+		motions->push_back(motion);
+		motion->owner = this;
+	}
+	lines.erase(lines.begin(), it);
+
+}
+
+void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\t\tGeneralConstraintSets");
+	lines.erase(lines.begin());
+	constraintSets = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\tForceTorques");
+	std::vector<std::string> generalConstraintSetsLines(lines.begin(), it);
+	while (!generalConstraintSetsLines.empty()) {
+		assert(false);
+	}
+	lines.erase(lines.begin(), it);
+}
+
+void MbD::ASMTAssembly::readForceTorques(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tForceTorques");
+	lines.erase(lines.begin());
+	forceTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
+	auto it = std::find(lines.begin(), lines.end(), "\tConstantGravity");
+	std::vector<std::string> forceTorquesLines(lines.begin(), it);
+	while (!forceTorquesLines.empty()) {
+		if (forceTorquesLines[0] == "\t\tForceTorque") {
+			forceTorquesLines.erase(forceTorquesLines.begin());
+			auto forceTorque = CREATE<ASMTForceTorque>::With();
+			forceTorque->parseASMT(forceTorquesLines);
+			forceTorques->push_back(forceTorque);
+			forceTorque->owner = this;
 		}
 		else {
 			assert(false);
 		}
 	}
+	lines.erase(lines.begin(), it);
 }
+
+void MbD::ASMTAssembly::readConstantGravity(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tConstantGravity");
+	lines.erase(lines.begin());
+	constantGravity = CREATE<ASMTConstantGravity>::With();
+	constantGravity->parseASMT(lines);
+	constantGravity->owner = this;
+}
+
+void MbD::ASMTAssembly::readSimulationParameters(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tSimulationParameters");
+	lines.erase(lines.begin());
+	simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->parseASMT(lines);
+	simulationParameters->owner = this;
+}
+
+void MbD::ASMTAssembly::readAnimationParameters(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "\tAnimationParameters");
+	lines.erase(lines.begin());
+	animationParameters = CREATE<ASMTAnimationParameters>::With();
+	animationParameters->parseASMT(lines);
+	animationParameters->owner = this;
+}
+
+void MbD::ASMTAssembly::readTimeSeries(std::vector<std::string>& lines)
+{
+	assert(lines[0] == "TimeSeries");
+	lines.erase(lines.begin());
+	assert(lines[0].find("Number\tInput") != std::string::npos);
+	lines.erase(lines.begin());
+	readTimes(lines);
+}
+
+void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
+{
+	std::string str = lines[0];
+	std::string substr = "Time\tInput";
+	auto pos = str.find(substr);
+	assert(pos != std::string::npos);
+	str.erase(0, pos + substr.length());
+	times = readRowOfDoubles(str);
+	times->insert(times->begin(), times->at(0));	//The first element is the input state.
+	lines.erase(lines.begin());
+}
+
+void MbD::ASMTAssembly::readPartSeriesMany(std::vector<std::string>& lines)
+{
+	assert(lines[0].find("PartSeries") != std::string::npos);
+	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
+		return s.find("JointSeries") != std::string::npos;
+		});
+	std::vector<std::string> partSeriesLines(lines.begin(), it);
+	while (!partSeriesLines.empty()) {
+		readPartSeries(partSeriesLines);
+	}
+	lines.erase(lines.begin(), it);
+}
+
+void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
+{
+	assert(lines[0].find("JointSeries") != std::string::npos);
+	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
+		return s.find("MotionSeries") != std::string::npos;
+		});
+	std::vector<std::string> jointSeriesLines(lines.begin(), it);
+	while (!jointSeriesLines.empty()) {
+		readJointSeries(jointSeriesLines);
+	}
+	lines.erase(lines.begin(), it);
+}
+
+void MbD::ASMTAssembly::readAssemblySeries(std::vector<std::string>& lines)
+{
+	std::string str = lines[0];
+	std::string substr = "AssemblySeries";
+	auto pos = str.find(substr);
+	assert(pos != std::string::npos);
+	str.erase(0, pos + substr.length());
+	auto seriesName = readString(str);
+	assert(fullName("") == seriesName);
+	lines.erase(lines.begin());
+	//xs, ys, zs, bryxs, bryys, bryzs
+	readXs(lines);
+	readYs(lines);
+	readZs(lines);
+	readBryantxs(lines);
+	readBryantys(lines);
+	readBryantzs(lines);
+	readVXs(lines);
+	readVYs(lines);
+	readVZs(lines);
+	readOmegaXs(lines);
+	readOmegaYs(lines);
+	readOmegaZs(lines);
+	readAXs(lines);
+	readAYs(lines);
+	readAZs(lines);
+	readAlphaXs(lines);
+	readAlphaYs(lines);
+	readAlphaZs(lines);
+}
+
+void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
+{
+	std::string str = lines[0];
+	std::string substr = "PartSeries";
+	auto pos = str.find(substr);
+	assert(pos != std::string::npos);
+	str.erase(0, pos + substr.length());
+	auto seriesName = readString(str);
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		return prt->fullName("") == seriesName;
+		});
+	auto part = *it;
+	part->readPartSeries(lines);
+}
+
+void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
+{
+	std::string str = lines[0];
+	std::string substr = "JointSeries";
+	auto pos = str.find(substr);
+	assert(pos != std::string::npos);
+	str.erase(0, pos + substr.length());
+	auto seriesName = readString(str);
+	auto it = std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
+		return jt->fullName("") == seriesName;
+		});
+	auto joint = *it;
+	joint->readJointSeries(lines);
+}
+
+void MbD::ASMTAssembly::readMotionSeriesMany(std::vector<std::string>& lines)
+{
+	assert(lines[0].find("MotionSeries") != std::string::npos);
+	while (!lines.empty()) {
+		readMotionSeries(lines);
+	}
+}
+
+void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
+{
+	std::string str = lines[0];
+	std::string substr = "MotionSeries";
+	auto pos = str.find(substr);
+	assert(pos != std::string::npos);
+	str.erase(0, pos + substr.length());
+	auto seriesName = readString(str);
+	auto it = std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& jt) {
+		return jt->fullName("") == seriesName;
+		});
+	auto motion = *it;
+	motion->readMotionSeries(lines);
+}
+
+

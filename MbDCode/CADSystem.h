@@ -15,7 +15,7 @@ namespace MbD {
 		//
 	public:
 		CADSystem() {
-			mbdSystem->externalSystem = this;
+			mbdSystem->externalSystem->cadSystem = this;
 		}
 
 		void outputFor(AnalysisType type);

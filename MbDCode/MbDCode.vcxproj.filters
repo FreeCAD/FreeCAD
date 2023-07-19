@@ -429,7 +429,7 @@
     <ClCompile Include="StateData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataPosVelAcc.cpp">
+    <ClCompile Include="PosVelAccData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CADSystem.cpp">
@@ -700,6 +700,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ASMTGeneralMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSpatialItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSpatialContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExternalSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1127,7 +1136,7 @@
     <ClInclude Include="StateData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataPosVelAcc.h">
+    <ClInclude Include="PosVelAccData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CADSystem.h">
@@ -1398,6 +1407,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ASMTGeneralMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSpatialItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSpatialContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternalSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

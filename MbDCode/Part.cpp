@@ -4,7 +4,7 @@
 #include "CREATE.h"
 #include "DiagonalMatrix.h"
 #include "EulerParameters.h"
-#include "DataPosVelAcc.h"
+#include "PosVelAccData.h"
 
 
 using namespace MbD;
@@ -538,7 +538,7 @@ std::shared_ptr<StateData> Part::stateData()
 	auto omeOpO = this->omeOpO();
 	auto aOpO = this->qXddot();
 	auto alpOpO = this->alpOpO();
-	auto answer = std::make_shared<DataPosVelAcc>();
+	auto answer = std::make_shared<PosVelAccData>();
 	answer->rFfF = rOpO;
 	answer->aAFf = aAOp;
 	answer->vFfF = vOpO;

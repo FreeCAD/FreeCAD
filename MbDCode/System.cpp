@@ -7,7 +7,7 @@
 #include "SystemSolver.h"
 #include "Time.h"
 #include "CREATE.h"
-#include "CADSystem.h"
+#include "ExternalSystem.h"
 
 using namespace MbD;
 
@@ -26,6 +26,7 @@ System* MbD::System::root()
 
 void System::initialize()
 {
+	externalSystem = std::make_shared<ExternalSystem>();
 	time = CREATE<Time>::With();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
@@ -53,6 +54,7 @@ void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
 
 void System::runKINEMATIC()
 {
+	externalSystem->preMbDrun();
 	while (true)
 	{
 		initializeLocally();
