@@ -254,7 +254,7 @@ e">
 	</g>
 
         <g id="binding hole">
-        <g stroke="black" stroke-width="0.5" fill="#BBBBBB" stroke="#666666" >
+        <g stroke-width="0.5" fill="#BBBBBB" stroke="#666666">
         <circle cx="10" cy="324.5" r="3" />
         <circle cx="10" cy="362.5" r="3" />
         <circle cx="10" cy="445.5" r="3" />

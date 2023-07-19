@@ -184,7 +184,7 @@
 	</g>
 
         <g id="binding hole">
-        <g stroke="black" stroke-width="0.5" fill="#BBBBBB" stroke="#666666" >
+        <g stroke-width="0.5" fill="#BBBBBB" stroke="#666666">
         <circle cx="10" cy="27.5" r="3" />
         <circle cx="10" cy="65.5" r="3" />
         <circle cx="10" cy="148.5" r="3" />
@@ -201,7 +201,7 @@
 
 	 <g id="titleblock-text-editable" style="font-size:5;text-anchor:start;text-align:center;strock:black;font-family:HYSWLongFangSong;" xml:space="preserve">
 	 <text freecad:editable="AUTHOR_NAME" x="229" y="275.5"><tspan dx="229" dy="275.5" text-anchor="left">设计人</tspan></text>
-        6<text freecad:editable="DRAWING_NAME" x="280.5" y="283"  style="font-size:5;text-anchor:start;text-align:center;fill:#000000;"><tspan>制图人</tspan></text>
+         <text freecad:editable="DRAWING_NAME" x="280.5" y="283"  style="font-size:5;text-anchor:start;text-align:center;fill:#000000;"><tspan>制图人</tspan></text>
          <text freecad:editable="CHECKED_NAME" x="240.5" y="283"  style="font-size:5;text-anchor:start;text-align:center;fill:#000000;"><tspan>审核人</tspan></text>
          <text freecad:editable="APPROVER_NAME" x="280.5" y="290"  style="font-size:5;text-anchor:start;text-align:center;fill:#000000;"><tspan>批准人</tspan></text>
          <text freecad:editable="CRAFTS_NAME" x="240.5" y="290"  style="font-size:5;text-anchor:start;text-align:center;fill:#000000;"><tspan>评审人</tspan></text>
