@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MATGUI_ARRAY2D_H
-#define MATGUI_ARRAY2D_H
+#ifndef MATGUI_ARRAYMODEL_H
+#define MATGUI_ARRAYMODEL_H
 
 #include <QDialog>
 #include <QStandardItem>
@@ -29,35 +29,45 @@
 #include <QAbstractTableModel>
 
 #include <Mod/Material/App/Model.h>
-#include "ArrayModel.h"
 
 namespace MatGui {
 
-class Ui_Array2D;
-
-class Array2D : public QDialog
+class AbstractArrayModel : public QAbstractTableModel
 {
-    Q_OBJECT
-
 public:
-    explicit Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
-    ~Array2D() override;
+    AbstractArrayModel(QObject *parent = nullptr);
+    ~AbstractArrayModel() override;
 
-    void accept() override;
-    void reject() override;
+    virtual bool newRow(const QModelIndex& index) const = 0;
+};
 
+class Array2DModel : public AbstractArrayModel
+{
+public:
+    Array2DModel(Materials::MaterialProperty *property = nullptr, Materials::Material2DArray *value = nullptr, QObject *parent = nullptr);
+    ~Array2DModel() override;
+
+    // Overriden virtual functions
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    bool newRow(const QModelIndex& index) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+    // Resizing functions
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 private:
-    std::unique_ptr<Ui_Array2D> ui;
     Materials::MaterialProperty *_property;
     Materials::Material2DArray *_value;
 
-    void setupDefault();
-    void setHeaders(QStandardItemModel *model);
-    void setColumnWidths(QTableView *table);
-    void setColumnDelegates(QTableView *table);
-    void setupArray();
 };
 
 } // namespace MatGui
 
-#endif // MATGUI_ARRAY2D_H
+#endif // MATGUI_ARRAYMODEL_H

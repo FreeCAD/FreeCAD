@@ -70,16 +70,18 @@ void ArrayDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
     if (_type == Materials::MaterialValue::Quantity)
     {
-        QAbstractItemModel *tableModel = const_cast<QAbstractItemModel *>(index.model());
-
+        const AbstractArrayModel *tableModel = reinterpret_cast<const AbstractArrayModel *>(index.model());
         painter->save();
 
-        QVariant item = tableModel->data(index);
-        Base::Quantity quantity = item.value<Base::Quantity>();
-        double factor;
-        // QString text = quantity.getUserString(factor, _units);
-        QString text = quantity.getUserString();
-        painter->drawText(option.rect, 0, text);
+        if (tableModel->newRow(index))
+        {
+            painter->drawText(option.rect, 0, QString());
+        } else {
+            QVariant item = tableModel->data(index);
+            Base::Quantity quantity = item.value<Base::Quantity>();
+            QString text = quantity.getUserString();
+            painter->drawText(option.rect, 0, text);
+        }
 
         painter->restore();
     } else {
@@ -159,17 +161,10 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant &item) cons
         widget = combo;
     } else if (_type == Materials::MaterialValue::Quantity)
     {
-        // Gui::InputField *input = new Gui::InputField();
-        // input->setMinimum(std::numeric_limits<double>::min());
-        // input->setMaximum(std::numeric_limits<double>::max());
-        // input->setUnitText(_units);
-        // input->setPrecision(6);
-        // input->setQuantityString(item.toString());
         Gui::QuantitySpinBox *input = new Gui::QuantitySpinBox();
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(_units);
-        // input->setPrecision(6);
         input->setValue(item.value<Base::Quantity>());
 
         widget = input;

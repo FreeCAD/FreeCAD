@@ -47,7 +47,7 @@ MaterialProperty::MaterialProperty(const ModelProperty &property) :
     ModelProperty(property), _valuePtr(nullptr)
 {
     setType(getPropertyType());
-    for (auto it : property.columns()) {
+    for (auto it : property.getColumns()) {
         MaterialProperty prop(it);
         addColumn(prop);
     }

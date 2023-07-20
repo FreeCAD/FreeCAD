@@ -84,7 +84,8 @@ public:
     void setInheritance(const QString &uuid) { _inheritance = uuid; }
 
     void addColumn(ModelProperty &column) { _columns.push_back(column); }
-    const std::vector<ModelProperty> &columns() const { return _columns; }
+    const std::vector<ModelProperty> &getColumns() const { return _columns; }
+    int columns() const { return _columns.size(); }
 
 private:
     QString _name;

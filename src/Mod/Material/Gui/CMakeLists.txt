@@ -57,6 +57,8 @@ SET(MatGui_SRCS
     Array3D.ui
     ArrayDelegate.cpp
     ArrayDelegate.h
+    ArrayModel.cpp
+    ArrayModel.h
     Command.cpp
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
