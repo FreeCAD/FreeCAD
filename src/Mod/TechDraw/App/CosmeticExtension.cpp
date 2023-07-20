@@ -34,6 +34,7 @@
 
 using namespace TechDraw;
 using namespace std;
+using DU = DrawUtil;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
@@ -81,25 +82,29 @@ void CosmeticExtension::clearCosmeticVertexes()
 //add the cosmetic verts to owner's geometry vertex list
 void CosmeticExtension::addCosmeticVertexesToGeom()
 {
-    //    Base::Console().Message("CE::addCosmeticVertexesToGeom()\n");
+//    Base::Console().Message("CE::addCosmeticVertexesToGeom()\n");
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
     for (auto& cv : cVerts) {
         double scale = getOwner()->getScale();
-        int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cv->scaled(scale), cv->getTagAsString());
+        double rotDegrees = getOwner()->Rotation.getValue();
+        Base::Vector3d cvPosition = cv->rotatedAndScaled(scale, rotDegrees);
+        int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cvPosition, cv->getTagAsString());
         cv->linkGeom = iGV;
     }
 }
 
 int CosmeticExtension::add1CVToGV(const std::string& tag)
 {
-    //    Base::Console().Message("CE::add1CVToGV(%s)\n", tag.c_str());
+//    Base::Console().Message("CE::add1CVToGV(%s)\n", tag.c_str());
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
     if (!cv) {
         Base::Console().Message("CE::add1CVToGV - cv %s not found\n", tag.c_str());
         return 0;
     }
     double scale = getOwner()->getScale();
-    int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cv->scaled(scale), cv->getTagAsString());
+    double rotDegrees = getOwner()->Rotation.getValue();
+    Base::Vector3d cvPosition = cv->rotatedAndScaled(scale, rotDegrees);
+    int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cvPosition, cv->getTagAsString());
     cv->linkGeom = iGV;
     return iGV;
 }
@@ -156,7 +161,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
 std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
 {
 //    Base::Console().Message("CEx::addCosmeticVertex(%s)\n",
- //                           DrawUtil::formatVector(pos).c_str());
+//                             DrawUtil::formatVector(pos).c_str());
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
     Base::Vector3d tempPos = DrawUtil::invertY(pos);
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);

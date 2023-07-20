@@ -35,9 +35,11 @@
 #include "CosmeticVertexPy.h"
 #include "LineGroup.h"
 #include "Preferences.h"
+#include "DrawUtil.h"
 
 using namespace TechDraw;
 using namespace std;
+using DU = DrawUtil;
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
 
@@ -73,6 +75,7 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
 
 CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
 {
+//    Base::Console().Message("CV::CV(%s)\n", DU::formatVector(loc).c_str());
     permaPoint = loc;
     linkGeom = -1;
     color = Preferences::vertexColor();
@@ -175,6 +178,18 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
 Base::Vector3d CosmeticVertex::scaled(const double factor)
 {
     return permaPoint * factor;
+}
+
+Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double rotDegrees)
+{
+    Base::Vector3d scaledPoint = scaled(scale);
+    if (rotDegrees != 0.0) {
+        // invert the Y coordinate so the rotation math works out
+        scaledPoint = DU::invertY(scaledPoint);
+        scaledPoint.RotateZ(rotDegrees * M_PI / 180.0);
+        scaledPoint = DU::invertY(scaledPoint);
+    }
+    return scaledPoint;
 }
 
 boost::uuids::uuid CosmeticVertex::getTag() const
