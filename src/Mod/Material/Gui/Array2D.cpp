@@ -116,6 +116,10 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
 bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     Q_UNUSED(role);
+
+    Base::Console().Log("Array2DModel::setData(%d, %d, %s)\n", index.row(),
+                            index.column(),
+                            value.value<Base::Quantity>().getUserString().toStdString().c_str());
     
     if (index.row() == _value->rows())
     {
@@ -144,7 +148,15 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
         std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
         for (int j = 0; j < columns; j++)
         {
-            rowPtr->push_back(QVariant(QString()));
+            // auto column = _property->getColumnType(j);
+            // if (column == Materials::MaterialValue::Quantity)
+            // {
+            //     Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(j));
+            //     rowPtr->push_back(QVariant::fromValue(q));
+            // }
+            // else
+            //     rowPtr->push_back(QVariant(QString()));
+            rowPtr->push_back(_property->getColumnNull(j));
         }
 
         _value->insertRow(row, rowPtr);

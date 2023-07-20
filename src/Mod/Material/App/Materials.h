@@ -58,6 +58,7 @@ public:
     MaterialProperty &getColumn(int column);
     MaterialValue::ValueType getColumnType(int column) const;
     QString getColumnUnits(int column) const;
+    QVariant getColumnNull(int column) const;
 
     void setModelUUID(const QString& uuid);
     void setPropertyType(const QString& type) override;

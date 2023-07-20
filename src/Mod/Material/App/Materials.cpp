@@ -24,7 +24,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMetaType>
 #include <App/Application.h>
+#include <Gui/MetaTypes.h>
 
 #include "Materials.h"
 #include "ModelManager.h"
@@ -152,6 +154,29 @@ QString MaterialProperty::getColumnUnits(int column) const
     } catch (std::out_of_range const&) {
         throw InvalidColumn();
     }
+}
+
+QVariant MaterialProperty::getColumnNull(int column) const
+{
+    MaterialValue::ValueType valueType = getColumnType(column);
+
+    switch (valueType)
+    {
+        case MaterialValue::Quantity:
+        {
+            Base::Quantity q = Base::Quantity(0, getColumnUnits(column));
+            return QVariant::fromValue(q);
+        }
+
+        case MaterialValue::Float:
+        case MaterialValue::Integer:
+            return QVariant(0);
+
+        default:
+            break;
+    }
+
+    return QVariant(QString());
 }
 
 void MaterialProperty::setValue(const QString& value)
