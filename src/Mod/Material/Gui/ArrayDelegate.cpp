@@ -64,6 +64,29 @@ ArrayDelegate::ArrayDelegate(Materials::MaterialValue::ValueType type, QString u
 {
 }
 
+void ArrayDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
+        const QModelIndex &index) const
+{
+
+    if (_type == Materials::MaterialValue::Quantity)
+    {
+        QAbstractItemModel *tableModel = const_cast<QAbstractItemModel *>(index.model());
+
+        painter->save();
+
+        QVariant item = tableModel->data(index);
+        Base::Quantity quantity = item.value<Base::Quantity>();
+        double factor;
+        // QString text = quantity.getUserString(factor, _units);
+        QString text = quantity.getUserString();
+        painter->drawText(option.rect, 0, text);
+
+        painter->restore();
+    } else {
+        QStyledItemDelegate::paint(painter, option, index);
+    }
+}
+
 void ArrayDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
     Base::Console().Log("ArrayDelegate::setEditorData()\n");
@@ -73,10 +96,10 @@ void ArrayDelegate::setEditorData(QWidget* editor, const QModelIndex& index) con
         QAbstractItemModel *tableModel = const_cast<QAbstractItemModel *>(index.model());
         auto item = tableModel->data(index);
 
-        Gui::InputField* input = static_cast<Gui::InputField*>(editor);
-        input->setText(item.toString());
-        // item->setText(input->getQuantityString());
-        // tableModel->setData(index, input->getQuantityString());
+        // Gui::InputField* input = static_cast<Gui::InputField*>(editor);
+        // input->setText(item.toString());
+        Gui::QuantitySpinBox *input = static_cast<Gui::QuantitySpinBox*>(editor);
+        input->setValue(item.value<Base::Quantity>());
     } else
     {
         QStyledItemDelegate::setEditorData(editor, index);
@@ -136,13 +159,18 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant &item) cons
         widget = combo;
     } else if (_type == Materials::MaterialValue::Quantity)
     {
-        Base::Console().Log("Units '%s'\n", _units.toStdString().c_str());
-        Gui::InputField *input = new Gui::InputField();
+        // Gui::InputField *input = new Gui::InputField();
+        // input->setMinimum(std::numeric_limits<double>::min());
+        // input->setMaximum(std::numeric_limits<double>::max());
+        // input->setUnitText(_units);
+        // input->setPrecision(6);
+        // input->setQuantityString(item.toString());
+        Gui::QuantitySpinBox *input = new Gui::QuantitySpinBox();
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(_units);
-        input->setPrecision(6);
-        input->setQuantityString(item.toString());
+        // input->setPrecision(6);
+        input->setValue(item.value<Base::Quantity>());
 
         widget = input;
     } else

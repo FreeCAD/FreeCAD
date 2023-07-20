@@ -70,10 +70,24 @@ QVariant Array2DModel::data(const QModelIndex& index, int role) const
         {
             return _value->getValue(index.row(), index.column());
         }
-        catch(const Base::Exception &)
+        catch(const Materials::InvalidIndex &)
         {
-            return QString();
         }
+
+        try
+        {
+            auto column = _property->getColumnType(index.column());
+            if (column == Materials::MaterialValue::Quantity)
+            {
+                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
+                return QVariant::fromValue(q);
+            }
+        }
+        catch(const Materials::InvalidColumn &)
+        {
+        }
+
+        return QString();
     }
 
     return QVariant();
@@ -101,6 +115,8 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation,
 
 bool Array2DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
+    Q_UNUSED(role);
+    
     if (index.row() == _value->rows())
     {
         insertRows(index.row(), 1);

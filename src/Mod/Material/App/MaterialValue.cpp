@@ -115,11 +115,18 @@ void Material2DArray::setValue(int row, int column,  const QVariant &value)
 
 const QVariant &Material2DArray::getValue(int row, int column)
 {
-    auto val = getRow(row);
-    try {
-        return val->at(column);
-    } catch (std::out_of_range const &) {
-        throw InvalidColumn();
+    try
+    {
+        auto val = getRow(row);
+        try {
+            return val->at(column);
+        } catch (std::out_of_range const &) {
+            throw InvalidIndex();
+        }
+    }
+    catch(const InvalidRow &)
+    {
+        throw InvalidIndex();
     }
 }
 

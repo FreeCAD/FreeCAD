@@ -132,7 +132,25 @@ MaterialProperty &MaterialProperty::getColumn(int column)
     try {
         return _columns.at(column);
     } catch (std::out_of_range const&) {
-        throw PropertyNotFound();
+        throw InvalidColumn();
+    }
+}
+    
+MaterialValue::ValueType MaterialProperty::getColumnType(int column) const
+{
+    try {
+        return _columns.at(column).getType();
+    } catch (std::out_of_range const&) {
+        throw InvalidColumn();
+    }
+}
+
+QString MaterialProperty::getColumnUnits(int column) const
+{
+    try {
+        return _columns.at(column).getUnits();
+    } catch (std::out_of_range const&) {
+        throw InvalidColumn();
     }
 }
 
