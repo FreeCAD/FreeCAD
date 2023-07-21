@@ -77,6 +77,7 @@ public:
     void initialize();
     TopoDS_Edge TopoDS_EdgeFromVectors(const Base::Vector3d& pt1, const Base::Vector3d& pt2);
     TechDraw::BaseGeomPtr scaledGeometry(const double scale);
+    TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
 
     std::string toString() const override;
     void dump(const char* title) const;

@@ -1074,7 +1074,6 @@ void execLine2Points(Gui::Command* cmd)
         return;
     }
 
-    double scale = baseFeat->getScale();
     std::vector<Base::Vector3d> points;
     std::vector<bool> is3d;
     //get the 2D points
@@ -1083,8 +1082,7 @@ void execLine2Points(Gui::Command* cmd)
             int idx = DrawUtil::getIndexFromName(v2d);
             TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
             if (v) {
-                Base::Vector3d p = DrawUtil::invertY(v->point());
-                points.push_back(p / scale);
+                points.push_back(v->point());
                 is3d.push_back(false);
             }
         }
