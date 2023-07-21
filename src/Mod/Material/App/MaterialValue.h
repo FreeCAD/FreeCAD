@@ -69,9 +69,10 @@ public:
     Material2DArray();
     ~Material2DArray() override;
 
-    void setDefault(MaterialValue value) { _value = value.getValue(); }
-    void setDefault(const QVariant &value) { _value = value; }
+    void setDefault(MaterialValue value) { _value = value.getValue(); _defaultSet = true; }
+    void setDefault(const QVariant &value) { _value = value; _defaultSet = true; }
     MaterialValue getDefault() const;
+    bool defaultSet() const { return _defaultSet; }
 
     const std::vector<QVariant> *getRow(int row) const;
     std::vector<QVariant> *getRow(int row);
@@ -85,6 +86,7 @@ public:
 
 protected:
     std::vector<std::vector<QVariant> *> _rows;
+    bool _defaultSet;
 
 private:
     void dumpRow(const std::vector<QVariant>& row) const;

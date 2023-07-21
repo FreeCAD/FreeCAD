@@ -51,6 +51,11 @@ MaterialProperty::MaterialProperty(const ModelProperty &property) :
         MaterialProperty prop(it);
         addColumn(prop);
     }
+
+    if (_valuePtr->getType() == MaterialValue::Array2D)
+    {
+        reinterpret_cast<Material2DArray *>(_valuePtr)->setDefault(getColumnNull(0));
+    }
 }
 
 MaterialProperty::~MaterialProperty()
@@ -248,7 +253,7 @@ void MaterialProperty::setFloat(const QString& value)
 
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
-    _valuePtr->setValue(QVariant(value.getUserString()));
+    _valuePtr->setValue(QVariant(QVariant::fromValue(value)));
 }
 
 void MaterialProperty::setQuantity(double value, const QString& units)

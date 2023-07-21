@@ -48,7 +48,8 @@ MaterialValue::~MaterialValue()
 //===
 
 Material2DArray::Material2DArray() :
-    MaterialValue(Array2D)
+    MaterialValue(Array2D),
+    _defaultSet(false)
 {}
 
 Material2DArray::~Material2DArray()
