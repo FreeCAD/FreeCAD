@@ -84,7 +84,13 @@ void Array2D::setupDefault()
         ui->labelDefault->setText(label);
         if (column1.getPropertyType() == QString::fromStdString("Quantity"))
         {
-            ui->inputDefault->setUnitText(column1.getUnits());
+            ui->inputDefault->setMinimum(std::numeric_limits<double>::min());
+            ui->inputDefault->setMaximum(std::numeric_limits<double>::max());
+            ui->inputDefault->setUnitText(_property->getColumnUnits(0));
+            ui->inputDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
+
+            connect(ui->inputDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
+                    this, &Array2D::defaultValueChanged);
         }
     }
     catch(const Materials::PropertyNotFound&)
@@ -131,6 +137,11 @@ void Array2D::setupArray()
 
     setColumnWidths(table);
     setColumnDelegates(table);
+}
+
+void Array2D::defaultValueChanged(const Base::Quantity &value)
+{
+    _value->setDefault(QVariant::fromValue(value));
 }
 
 void Array2D::accept()

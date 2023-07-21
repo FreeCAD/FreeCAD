@@ -70,6 +70,7 @@ public:
     ~Material2DArray() override;
 
     void setDefault(MaterialValue value) { _value = value.getValue(); }
+    void setDefault(const QVariant &value) { _value = value; }
     MaterialValue getDefault() const;
 
     const std::vector<QVariant> *getRow(int row) const;

@@ -43,6 +43,8 @@ public:
     explicit Array2D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
     ~Array2D() override;
 
+    void defaultValueChanged(const Base::Quantity &value);
+
     void accept() override;
     void reject() override;
 
