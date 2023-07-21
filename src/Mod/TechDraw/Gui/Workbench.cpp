@@ -85,6 +85,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_RadiusDimension";
     *dimensions << "TechDraw_DiameterDimension";
     *dimensions << "TechDraw_AngleDimension";
+    *dimensions << "TechDraw_3PtAngleDimension";
     *dimensions << "TechDraw_HorizontalExtentDimension";
     *dimensions << "TechDraw_VerticalExtentDimension";
     *dimensions << "TechDraw_LinkDimension";
@@ -175,6 +176,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_2LineCenterLine";
     *lines << "TechDraw_2PointCenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
+    *lines << "Separator";
+    *lines << "TechDraw_DecorateLine";
+    *lines << "TechDraw_ShowAll";
 
     // vertices
     Gui::MenuItem* vertices = new Gui::MenuItem;
@@ -183,57 +187,92 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *vertices << "TechDraw_Midpoints";
     *vertices << "TechDraw_Quadrants";
 
+    // pages
+    Gui::MenuItem* pages = new Gui::MenuItem;
+    pages->setCommand("Page");
+    *pages << "TechDraw_PageDefault";
+    *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_PrintAll";
+    *pages << "Separator";
+    *pages << "TechDraw_ExportPageSVG";
+    *pages << "TechDraw_ExportPageDXF";
+
+    // views
+    Gui::MenuItem* views = new Gui::MenuItem;
+    views->setCommand("TechDraw Views");
+    *views << "TechDraw_View";
+    *views << "TechDraw_SectionView";
+    *views << "TechDraw_ComplexSection";
+    *views << "TechDraw_DetailView";
+    *views << "TechDraw_ProjectionGroup";
+    *views << "Separator";
+    *views << "TechDraw_Symbol";
+    *views << "TechDraw_Image";
+    *views << "Separator";
+    *views << "TechDraw_MoveView";
+    *views << "TechDraw_ShareView";
+    *views << "Separator";
+    *views << "TechDraw_ToggleFrame";
+    *views << "Separator";
+    *views << "TechDraw_ProjectShape";
+
+    // views from other workbenches
+    Gui::MenuItem* other = new Gui::MenuItem;
+    other->setCommand("Views From Other Workbenches");
+    *other << "TechDraw_ActiveView";
+    *other << "TechDraw_DraftView";
+    *other << "TechDraw_ArchView";
+    *other << "TechDraw_SpreadsheetView";
+
+    // clip groups
+    Gui::MenuItem* clips = new Gui::MenuItem;
+    clips->setCommand("Clipped Views");
+    *clips << "TechDraw_ClipGroup";
+    *clips << "TechDraw_ClipGroupAdd";
+    *clips << "TechDraw_ClipGroupRemove";
+
+    // hatching
+    Gui::MenuItem* hatch = new Gui::MenuItem;
+    hatch->setCommand("Hatching");
+    *hatch << "TechDraw_Hatch";
+    *hatch << "TechDraw_GeometricHatch";
+
+    // symbols
+    Gui::MenuItem* symbols = new Gui::MenuItem;
+    symbols->setCommand("Symbols");
+    *symbols << "TechDraw_WeldSymbol";
+    *symbols << "TechDraw_SurfaceFinishSymbols";
+    *symbols << "TechDraw_HoleShaftFit";
+
     // main menu
     draw->setCommand("TechDraw");
-    *draw << "TechDraw_PageDefault";
-    *draw << "TechDraw_PageTemplate";
-    *draw << "TechDraw_RedrawPage";
-    *draw << "TechDraw_PrintAll";
+    *draw << pages;
     *draw << "Separator";
-    *draw << "TechDraw_View";
-    *draw << "TechDraw_ActiveView";
-    *draw << "TechDraw_ProjectionGroup";
-    *draw << "TechDraw_SectionView";
-    *draw << "TechDraw_ComplexSection";
-    *draw << "TechDraw_DetailView";
+    *draw << views;
     *draw << "Separator";
-    *draw << "TechDraw_DraftView";
-    *draw << "TechDraw_ArchView";
-    *draw << "TechDraw_SpreadsheetView";
+    *draw << other;
     *draw << "Separator";
-    *draw << "TechDraw_ClipGroup";
-    *draw << "TechDraw_ClipGroupAdd";
-    *draw << "TechDraw_ClipGroupRemove";
+    *draw << clips;
     *draw << "Separator";
-    *draw << "TechDraw_MoveView";
-    *draw << "TechDraw_ShareView";
+    *draw << dimensions;
+    *draw << "Separator";
+    *draw << hatch;
+    *draw << "Separator";
+    *draw << symbols;
     *draw << "Separator";
     *draw << stacking;
-    *draw << dimensions;
+    *draw << "Separator";
     *draw << toolattrib;
     *draw << toolcenter;
     *draw << tooldimensions;
     *draw << "Separator";
-    *draw << "TechDraw_ExportPageSVG";
-    *draw << "TechDraw_ExportPageDXF";
-    *draw << "Separator";
-    *draw << "TechDraw_Hatch";
-    *draw << "TechDraw_GeometricHatch";
-    *draw << "TechDraw_Symbol";
-    *draw << "TechDraw_Image";
-    *draw << "TechDraw_ToggleFrame";
-    *draw << "Separator";
     *draw << annotations;
     *draw << lines;
     *draw << vertices;
-    *draw << "TechDraw_CosmeticEraser";
-    *draw << "TechDraw_DecorateLine";
-    *draw << "TechDraw_ShowAll";
-    *draw << "TechDraw_WeldSymbol";
-    *draw << "TechDraw_SurfaceFinishSymbols";
-    *draw << "TechDraw_HoleShaftFit";
     *draw << "Separator";
-    *draw << "TechDraw_ProjectShape";
+    *draw << "TechDraw_CosmeticEraser";
+
     return root;
 }
 
