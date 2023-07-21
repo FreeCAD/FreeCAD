@@ -74,10 +74,10 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
 
     ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
 
-    connect(ui->standardButtons, &QDialogButtonBox::accepted,
-            this, &MaterialsEditor::accept);
-    connect(ui->standardButtons, &QDialogButtonBox::rejected,
-            this, &MaterialsEditor::reject);
+    connect(ui->standardButtons->button(QDialogButtonBox::Ok), &QPushButton::clicked,
+            this, &MaterialsEditor::onOk);
+    connect(ui->standardButtons->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
+            this, &MaterialsEditor::onCancel);
     connect(ui->standardButtons->button(QDialogButtonBox::Save), &QPushButton::clicked,
             this, &MaterialsEditor::onSave);
 
@@ -368,10 +368,24 @@ void MaterialsEditor::onFavourite(bool checked)
         addFavorite(selected);
 }
 
+void MaterialsEditor::onOk(bool checked)
+{
+    Q_UNUSED(checked)
+
+    accept();
+}
+
+void MaterialsEditor::onCancel(bool checked)
+{
+    Q_UNUSED(checked)
+
+    reject();
+}
+
 void MaterialsEditor::onSave(bool checked)
 {
     Q_UNUSED(checked)
-    
+
     MaterialSave dialog(this);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
