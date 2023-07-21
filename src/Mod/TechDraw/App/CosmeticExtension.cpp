@@ -56,6 +56,7 @@ CosmeticExtension::~CosmeticExtension()
     // delete any entries.
 }
 
+/// get a pointer to the parent view
 TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 {
     return static_cast<TechDraw::DrawViewPart*>(getExtendedObject());
@@ -69,6 +70,7 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 //mirror again before creation.
 
 // this is never called!
+/// remove all the cosmetic vertices in the property list
 void CosmeticExtension::clearCosmeticVertexes()
 {
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
@@ -79,7 +81,7 @@ void CosmeticExtension::clearCosmeticVertexes()
     CosmeticVertexes.setValues(noVerts);
 }
 
-//add the cosmetic verts to owner's geometry vertex list
+/// add the cosmetic verts in the property list to view's vertex geometry list
 void CosmeticExtension::addCosmeticVertexesToGeom()
 {
 //    Base::Console().Message("CE::addCosmeticVertexesToGeom()\n");
@@ -93,6 +95,7 @@ void CosmeticExtension::addCosmeticVertexesToGeom()
     }
 }
 
+/// add a single cosmetic vertex in the property list to the view's vertex geometry list
 int CosmeticExtension::add1CVToGV(const std::string& tag)
 {
 //    Base::Console().Message("CE::add1CVToGV(%s)\n", tag.c_str());
@@ -109,7 +112,7 @@ int CosmeticExtension::add1CVToGV(const std::string& tag)
     return iGV;
 }
 
-//update Vertex geometry with current CV's
+/// update the parent view's vertex geometry with all the cosmetic vertices in the list property
 void CosmeticExtension::refreshCVGeoms()
 {
     //    Base::Console().Message("CE::refreshCVGeoms()\n");
@@ -126,6 +129,7 @@ void CosmeticExtension::refreshCVGeoms()
 }
 
 //what is the CV's position in the big geometry q
+/// find the position of a cosmetic vertex with the given tag in the parent view's geometry list
 int CosmeticExtension::getCVIndex(const std::string& tag)
 {
     //    Base::Console().Message("CE::getCVIndex(%s)\n", tag.c_str());
@@ -156,8 +160,8 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
     return -1;
 }
 
-//returns unique CV id
-//only adds cv to cvlist property.  does not add to display geometry until dvp executes.
+/// adds a cosmetic vertex to the property list.  does not add to display geometry until dvp executes.
+/// returns unique CV id
 std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
 {
 //    Base::Console().Message("CEx::addCosmeticVertex(%s)\n",
@@ -171,22 +175,22 @@ std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
     return result;
 }
 
-//get CV by unique id
-TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(const std::string& tag) const
+/// retrieve a cosmetic vertex by unique id
+TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(const std::string& tagString) const
 {
 //    Base::Console().Message("CEx::getCosmeticVertex(%s)\n", tagString.c_str());
     const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
     for (auto& cv: verts) {
         std::string cvTag = cv->getTagAsString();
-        if (cvTag == tag) {
+        if (cvTag == tagString) {
             return cv;
         }
     }
     return nullptr;
 }
 
-// find the cosmetic vertex corresponding to selection name (Vertex5)
-// used when selecting
+/// retrieve a cosmetic vertex by selection name (Vertex5)
+/// used when selecting
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const std::string& name) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%s)\n", name.c_str());
@@ -203,7 +207,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
     return getCosmeticVertex(v->getCosmeticTag());
 }
 
-//overload for index only
+/// retrieve a cosmetic vertex by index (the 5 in Vertex5)
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const int i) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%d)\n", i);
@@ -213,6 +217,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
     return getCosmeticVertexBySelection(vName);
 }
 
+/// remove the cosmetic vertex with the given tag from the list property
 void CosmeticExtension::removeCosmeticVertex(const std::string& delTag)
 {
 //    Base::Console().Message("DVP::removeCV(%s)\n", delTag.c_str());
@@ -228,6 +233,7 @@ void CosmeticExtension::removeCosmeticVertex(const std::string& delTag)
     CosmeticVertexes.setValues(newVerts);
 }
 
+/// remove the cosmetic vertices with the given tags from the list property
 void CosmeticExtension::removeCosmeticVertex(const std::vector<std::string>& delTags)
 {
     for (auto& t: delTags) {
@@ -238,6 +244,7 @@ void CosmeticExtension::removeCosmeticVertex(const std::vector<std::string>& del
 //********** Cosmetic Edge *****************************************************
 
 // this is never called!
+/// remove all the cosmetic edges for this view
 void CosmeticExtension::clearCosmeticEdges()
 {
     std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
@@ -248,14 +255,15 @@ void CosmeticExtension::clearCosmeticEdges()
     CosmeticEdges.setValues(noEdges);
 }
 
-//add the cosmetic edges to geometry edge list
+/// add the cosmetic edges to geometry edge list
 void CosmeticExtension::addCosmeticEdgesToGeom()
 {
-    //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
+//    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce : cEdges) {
         double scale = getOwner()->getScale();
-        TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(scale);
+        double rotDegrees = getOwner()->Rotation.getValue();
+        TechDraw::BaseGeomPtr scaledGeom = ce->scaledAndRotatedGeometry(scale, rotDegrees);
         if (!scaledGeom)
             continue;
         //        int iGE =
@@ -263,6 +271,7 @@ void CosmeticExtension::addCosmeticEdgesToGeom()
     }
 }
 
+/// add a single cosmetic edge to the geometry edge list
 int CosmeticExtension::add1CEToGE(const std::string& tag)
 {
     //    Base::Console().Message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
@@ -271,13 +280,15 @@ int CosmeticExtension::add1CEToGE(const std::string& tag)
         Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
         return -1;
     }
-    TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getOwner()->getScale());
+    double scale = getOwner()->getScale();
+    double rotDegrees = getOwner()->Rotation.getValue();
+    TechDraw::BaseGeomPtr scaledGeom = ce->scaledAndRotatedGeometry(scale, rotDegrees);
     int iGE = getOwner()->getGeometryObject()->addCosmeticEdge(scaledGeom, tag);
 
     return iGE;
 }
 
-//update Edge geometry with current CE's
+/// update Edge geometry with current CE's
 void CosmeticExtension::refreshCEGeoms()
 {
     //    Base::Console().Message("CEx::refreshCEGeoms()\n");
@@ -292,8 +303,8 @@ void CosmeticExtension::refreshCEGeoms()
     addCosmeticEdgesToGeom();
 }
 
-//returns unique CE id
-//only adds ce to celist property.  does not add to display geometry until dvp executes.
+/// adds a new cosmetic edge to the list property.  does not add to display geometry until dvp executes.
+/// returns unique CE id
 std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
                                                Base::Vector3d end)
 {
@@ -305,6 +316,8 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return ce->getTagAsString();
 }
 
+/// adds a new cosmetic edge to the list property.  does not add to display geometry until dvp executes.
+/// returns unique CE id
 std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
 {
 //    Base::Console().Message("CEx::addCosmeticEdge(bg: %X)\n", bg);
@@ -315,7 +328,7 @@ std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
     return ce->getTagAsString();
 }
 
-//get CE by unique id
+/// retrieve a CE by unique id
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& tagString) const
 {
 //    Base::Console().Message("CEx::getCosmeticEdge(%s)\n", tagString.c_str());
@@ -332,8 +345,8 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& ta
     return nullptr;
 }
 
-// find the cosmetic edge corresponding to selection name (Edge5)
-// used when selecting
+/// find the cosmetic edge corresponding to selection name (Edge5)
+/// used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std::string& name) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
@@ -351,7 +364,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std:
     return getCosmeticEdge(base->getCosmeticTag());
 }
 
-//overload for index only
+/// find the cosmetic edge corresponding to the input parameter (the 5 in Edge5)
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
@@ -360,6 +373,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) con
     return getCosmeticEdgeBySelection(edgeName.str());
 }
 
+/// remove the cosmetic edge with the given tag from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 {
 //    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
@@ -375,6 +389,8 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
     CosmeticEdges.setValues(newEdges);
 }
 
+
+/// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
     for (auto& t: delTags) {
