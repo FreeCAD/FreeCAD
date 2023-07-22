@@ -66,6 +66,7 @@ class GuiExport ViewProviderPointMarker : public ViewProviderDocumentObject
 public:
     ViewProviderPointMarker();
     ~ViewProviderPointMarker() override;
+    bool isPartOfPhysicalObject() const override;
 
 protected:
     SoCoordinate3    * pCoords;
@@ -81,6 +82,7 @@ public:
     /// Constructor
     ViewProviderMeasureDistance();
     ~ViewProviderMeasureDistance() override;
+    bool isPartOfPhysicalObject() const override;
 
     // Display properties
     App::PropertyColor          TextColor;

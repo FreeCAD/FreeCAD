@@ -1078,8 +1078,9 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         if (!cam) // no camera
             return;
 
+        // Get the bounding box center of the physical object group
         SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
+        action.apply(viewer->objectGroup);
         SbBox3f boundingBox = action.getBoundingBox();
         SbVec3f boundingBoxCenter = boundingBox.getCenter();
         setRotationCenter(boundingBoxCenter);
