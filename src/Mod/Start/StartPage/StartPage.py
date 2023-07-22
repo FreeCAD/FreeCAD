@@ -151,7 +151,7 @@ def getInfo(filename):
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
                 try:
-                    doc = str(zfile.read(files[0]))
+                    doc = zfile.read(files[0]).decode('utf-8')
                 except OSError as e:
                     print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
                     return None
