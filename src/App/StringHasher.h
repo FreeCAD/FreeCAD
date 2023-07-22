@@ -23,6 +23,8 @@
 #ifndef APP_STRING_ID_H
 #define APP_STRING_ID_H
 
+#include <FCConfig.h>
+
 #include <bitset>
 #include <memory>
 
