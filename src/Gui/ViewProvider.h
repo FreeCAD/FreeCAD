@@ -142,6 +142,8 @@ public:
     virtual SoSeparator* getBackRoot() const;
     ///Indicate whether to be added to scene graph or not
     virtual bool canAddToSceneGraph() const {return true;}
+    // Indicate whether to be added to object group (true) or only to scene graph (false)
+    virtual bool isPartOfPhysicalObject() const {return true;}
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
