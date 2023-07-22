@@ -485,7 +485,10 @@ private:
     SoSeparator * foregroundroot;
     SoDirectionalLight* backlight;
 
+    // Scene graph root
     SoSeparator * pcViewProviderRoot;
+    // Child group in the scene graph that contains view providers related to the physical object
+    SoGroup* objectGroup;
 
     std::unique_ptr<View3DInventorSelection> inventorSelection;
 

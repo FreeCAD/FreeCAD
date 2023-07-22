@@ -335,6 +335,7 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sh
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget)
     , SelectionObserver(false, ResolveMode::NoResolve)
     , editViewProvider(nullptr)
+    , objectGroup(nullptr)
     , navigation(nullptr)
     , renderType(Native)
     , framebuffer(nullptr)
@@ -354,6 +355,7 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget)
     , SelectionObserver(false, ResolveMode::NoResolve)
     , editViewProvider(nullptr)
+    , objectGroup(nullptr)
     , navigation(nullptr)
     , renderType(Native)
     , framebuffer(nullptr)
@@ -482,6 +484,11 @@ void View3DInventorViewer::init()
     pcEditingRoot->addChild(pcEditingTransform);
     pcViewProviderRoot->addChild(pcEditingRoot);
 
+    // Create group for the physical object
+    objectGroup = new SoGroup();
+    objectGroup->ref();
+    pcViewProviderRoot->addChild(objectGroup);
+
     // Set our own render action which show a bounding box if
     // the SoFCSelection::BOX style is set
     //
@@ -569,6 +576,8 @@ View3DInventorViewer::~View3DInventorViewer()
     coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = nullptr;
+    this->objectGroup->unref();
+    this->objectGroup = nullptr;
     this->backlight->unref();
     this->backlight = nullptr;
 
@@ -759,8 +768,15 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        if(pcProvider->canAddToSceneGraph())
-            pcViewProviderRoot->addChild(root);
+        if (pcProvider->canAddToSceneGraph()) {
+            // Add to the physical object group if related to the physical object otherwise add to the scene graph
+            if (pcProvider->isPartOfPhysicalObject()) {
+                objectGroup->addChild(root);
+            }
+            else {
+                pcViewProviderRoot->addChild(root);
+            }
+        }
         _ViewProviderMap[root] = pcProvider;
     }
 
@@ -784,9 +800,15 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        int index = pcViewProviderRoot->findChild(root);
-        if(index>=0)
+        int index = objectGroup->findChild(root);
+        if (index >= 0) {
+            objectGroup->removeChild(index);
+        }
+
+        index = pcViewProviderRoot->findChild(root);
+        if (index >= 0) {
             pcViewProviderRoot->removeChild(index);
+        }
         _ViewProviderMap.erase(root);
     }
 
