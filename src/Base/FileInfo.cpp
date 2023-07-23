@@ -367,25 +367,21 @@ bool FileInfo::setPermissions(Permissions perms)
 
 bool FileInfo::isFile() const
 {
-#ifdef FC_OS_WIN32
     if (exists()) {
+#ifdef FC_OS_WIN32
+
         std::wstring wstr = toStdWString();
         FILE* fd = _wfopen(wstr.c_str(), L"rb");
         bool ok = (fd != 0);
         if (fd) fclose(fd);
         return ok;
-    }
 #else
-    if (exists()) {
-        // If we can open it must be an existing file, otherwise we assume it
-        // is a directory (which doesn't need to be true for any cases)
-        std::ifstream str(FileName.c_str(), std::ios::in | std::ios::binary);
-        if (!str)
+        struct stat st;
+        if(stat(FileName.c_str(), &st) != 0)
             return false;
-        str.close();
-        return true;
-    }
+        return S_ISREG(st.st_mode);
 #endif
+    }
 
     // TODO: Check for valid file name
     return true;
