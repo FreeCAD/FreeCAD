@@ -903,7 +903,11 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
+#if QT_VERSION < QT_VERSION_CHECK(6,3,0)
     hash.addData(filename.c_str(), filename.size());
+#else
+    hash.addData(QByteArrayView(filename.c_str(), filename.size()));
+#endif
     s << App::Application::getUserCachePath() << App::Application::getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
