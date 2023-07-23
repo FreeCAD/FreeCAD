@@ -22,19 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
+    #include <TopoDS_Shape.hxx>
+    #include <BRep_Tool.hxx>
+    #include <BRepAdaptor_Curve.hxx>
+    #include <BRepBuilderAPI_MakeVertex.hxx>
+    #include <TopExp.hxx>
 #endif
 
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <TopExp.hxx>
 
-#include <App/GeoFeature.h>
-#include <Base/Console.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 
 #include "DimensionReferences.h"
 #include "DrawUtil.h"

@@ -23,12 +23,6 @@
 #ifndef DrawComplexSection_h_
 #define DrawComplexSection_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
 
 #include "DrawViewSection.h"
 

@@ -33,12 +33,9 @@
 
 
 #include <Base/Console.h>
-#include <Base/Persistence.h>
 
-#include "CenterLine.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
 #include "CenterLinePy.h"
 

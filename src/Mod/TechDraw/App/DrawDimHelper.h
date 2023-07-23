@@ -23,14 +23,7 @@
 #ifndef DrawDimHelper_h_
 #define DrawDimHelper_h_
 
-#include <string>
-#include <vector>
-
-#include <gp_Pnt.hxx>
-#include <TopoDS_Edge.hxx>
-
 #include <Base/Vector3D.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DimensionReferences.h"
 

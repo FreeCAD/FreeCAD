@@ -23,9 +23,13 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
-#include <App/FeaturePython.h>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+    #include <CXX/Objects.hxx>
+#endif
+
+#include <App/Color.h>
 #include <Base/Persistence.h>
-#include <Base/Vector3D.h>
 
 #include "Geometry.h"
 

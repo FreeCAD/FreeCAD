@@ -23,9 +23,12 @@
 #ifndef ARROWENUMS_H_
 #define ARROWENUMS_H_
 
-#include <string>
-#include <vector>
-#include <QCoreApplication>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+    #include <string>
+    #include <vector>
+    #include <QCoreApplication>
+#endif
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

@@ -23,8 +23,6 @@
 #ifndef DIMENSIONFORMATTER_H
 #define DIMENSIONFORMATTER_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <DrawViewDimension.h>
 
 

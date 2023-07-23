@@ -20,19 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 
 #include "DrawParametricTemplate.h"
 #include "DrawParametricTemplatePy.h"
-#include "Geometry.h"
 
 
 using namespace TechDraw;

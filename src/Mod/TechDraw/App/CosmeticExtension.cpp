@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <Base/Console.h>
 
 #include "CenterLine.h"
-#include "CosmeticExtension.h"
 #include "CosmeticExtensionPy.h"
-#include "Cosmetic.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 

@@ -21,27 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#include <QRectF>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <sstream>
-#endif
-
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Part.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 #include "DrawPage.h"
-#include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroupPy.h"// generated from DrawProjGroupPy.xml
 #include "DrawUtil.h"

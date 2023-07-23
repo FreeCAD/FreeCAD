@@ -23,8 +23,6 @@
 #ifndef TechDraw_DrawRichAnno_h_
 #define TechDraw_DrawRichAnno_h_
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"

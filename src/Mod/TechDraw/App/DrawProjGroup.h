@@ -23,17 +23,21 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <string>
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QRectF>
+#endif
+
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DrawPage.h"
 #include "DrawViewCollection.h"
-
 
 class gp_Dir;
 class gp_Pnt;

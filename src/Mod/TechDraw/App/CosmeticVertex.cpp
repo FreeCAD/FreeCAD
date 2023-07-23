@@ -27,10 +27,6 @@
     #include <boost/uuid/uuid_io.hpp>
 #endif // _PreComp_
 
-#include <App/Application.h>
-#include <Base/Persistence.h>
-#include <Base/Vector3D.h>
-
 #include "CosmeticVertex.h"
 #include "CosmeticVertexPy.h"
 #include "LineGroup.h"

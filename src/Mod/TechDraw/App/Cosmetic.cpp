@@ -28,14 +28,11 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include <App/Application.h>
-#include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
 #include <Mod/TechDraw/App/GeomFormatPy.h>
 
-#include "Cosmetic.h"
 #include "DrawUtil.h"
-#include "DrawViewPart.h"
+#include "DrawViewPart.h" 
 #include "GeometryObject.h"
 #include "LineGroup.h"
 #include "Preferences.h"

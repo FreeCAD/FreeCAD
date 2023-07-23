@@ -23,7 +23,10 @@
 #ifndef TECHDRAW_DIMENSIONGEOMETRY_h_
 #define TECHDRAW_DIMENSIONGEOMETRY_h_
 
-#include <string>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+    #include <string>
+#endif
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>

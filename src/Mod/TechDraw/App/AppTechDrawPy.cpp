@@ -36,41 +36,27 @@
 
 #include <boost_regex.hpp>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
 #include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "DimensionGeometry.h"
 #include "DrawDimHelper.h"
 #include "DrawGeomHatch.h"
-#include "DrawPage.h"
 #include "DrawPagePy.h"
 #include "DrawProjectSplit.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-#include "DrawUtil.h"
 #include "DrawViewAnnotation.h"
 #include "DrawViewDimension.h"
-#include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
 #include "EdgeWalker.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
 #include "ProjectionAlgos.h"
 #include "TechDrawExport.h"
-
 
 namespace TechDraw {
 //module level static C++ functions go here

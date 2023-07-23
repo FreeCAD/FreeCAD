@@ -20,23 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-
-#include "DrawPage.h"
-#include "DrawView.h"
-#include "DrawViewPart.h"
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
 // inclusion of the generated files
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawPagePy.cpp>
 #include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
 #include <Mod/TechDraw/App/DrawViewAnnotationPy.h>
-#include <Mod/TechDraw/App/DrawViewPartPy.h>
-#include <Mod/TechDraw/App/DrawViewPy.h>
 
 
 using namespace TechDraw;

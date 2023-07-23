@@ -58,65 +58,24 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepGProp.hxx>
 #include <BRepLProp_SLProps.hxx>
-#include <BRepLib.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepTools.hxx>
-#include <BRep_Builder.hxx>
-#include <Bnd_Box.hxx>
-#include <Bnd_OBB.hxx>
 #include <GProp_GProps.hxx>
-#include <Geom_Plane.hxx>
 #include <HLRAlgo_Projector.hxx>
-#include <QFuture>
-#include <QFutureWatcher>
 #include <QtConcurrentRun>
-#include <ShapeExtend_WireData.hxx>
-#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
 #endif
 
 #define _USE_MATH_DEFINES
-#include <cmath>
-
-#include <chrono>
-#include <sstream>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
-
-#include <Mod/Part/App/PartFeature.h>
 
 #include "DrawComplexSection.h"
 #include "DrawUtil.h"

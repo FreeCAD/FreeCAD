@@ -25,8 +25,6 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include <Base/Console.h>
-
 #include "CenterLinePy.h"
 #include "DrawUtil.h"
 

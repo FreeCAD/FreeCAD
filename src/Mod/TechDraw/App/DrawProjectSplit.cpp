@@ -21,12 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <algorithm>
-# include <limits>
-# include <sstream>
-#include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_Common.hxx>
@@ -35,22 +30,11 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_CurveTool.hxx>
-#include <Geom_Curve.hxx>
 #include <GeomLib_Tool.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include "DrawProjectSplit.h"
-#include "DrawUtil.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
 
 

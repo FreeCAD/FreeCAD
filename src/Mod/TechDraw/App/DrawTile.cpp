@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "DrawTile.h"
 #include "DrawTilePy.h"  // generated from DrawTilePy.xml
 

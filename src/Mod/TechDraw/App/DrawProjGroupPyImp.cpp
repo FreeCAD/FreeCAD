@@ -20,13 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
 // inclusion of the generated files (generated out of DrawProjGroupPy.xml)
 #include <Mod/TechDraw/App/DrawProjGroupPy.h>
 #include <Mod/TechDraw/App/DrawProjGroupPy.cpp>

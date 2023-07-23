@@ -20,19 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <sstream>
-# include <gp_Ax2.hxx>
-#endif
-
-#include <App/DocumentObject.h>
 #include <Base/Console.h>
 
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroupItemPy.h" // generated from DrawProjGroupItemPy.xml
-#include "DrawPage.h"
 #include "DrawProjGroup.h"
 #include "DrawUtil.h"
 #include "GeometryObject.h"

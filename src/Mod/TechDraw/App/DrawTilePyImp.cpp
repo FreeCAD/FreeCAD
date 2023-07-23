@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "DrawTile.h"
 // inclusion of the generated files (generated out of DrawTilePy.xml)
 #include <Mod/TechDraw/App/DrawTilePy.h>

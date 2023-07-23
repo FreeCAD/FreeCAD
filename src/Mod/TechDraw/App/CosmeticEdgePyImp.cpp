@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <boost/uuid/uuid_io.hpp>
@@ -31,7 +30,6 @@
 #include "CosmeticEdgePy.cpp"
 #include "Cosmetic.h"
 #include "DrawUtil.h"
-#include "Geometry.h"
 
 
 using namespace TechDraw;

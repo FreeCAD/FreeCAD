@@ -23,7 +23,6 @@
 #ifndef TechDraw_DrawGeomHatch_h_
 #define TechDraw_DrawGeomHatch_h_
 
-#include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>

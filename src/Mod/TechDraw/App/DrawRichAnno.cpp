@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "DrawRichAnno.h"
 #include "DrawRichAnnoPy.h"  // generated from DrawRichAnnoPy.xml
 

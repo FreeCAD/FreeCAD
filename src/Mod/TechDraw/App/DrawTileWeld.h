@@ -23,8 +23,6 @@
 #ifndef TechDraw_DrawTileWeld_h_
 #define TechDraw_DrawTileWeld_h_
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

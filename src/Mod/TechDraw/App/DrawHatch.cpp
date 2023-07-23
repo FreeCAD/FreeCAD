@@ -20,19 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <iomanip>
-# include <sstream>
-#endif
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-
 #include "DrawHatch.h"
 #include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
 #include "DrawUtil.h"

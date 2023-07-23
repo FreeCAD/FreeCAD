@@ -23,11 +23,9 @@
 #ifndef TECHDRAW_COSMETIC_VERTEX_H
 #define TECHDRAW_COSMETIC_VERTEX_H
 
-#include "PreCompiled.h"
-
-#include <App/FeaturePython.h>
+#include <CXX/Objects.hxx>
+#include <App/Color.h>
 #include <Base/Persistence.h>
-#include <Base/Vector3D.h>
 
 #include "Geometry.h"
 

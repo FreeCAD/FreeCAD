@@ -23,10 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iomanip>
-# include <sstream>
-
-#include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepBndLib.hxx>
@@ -35,31 +31,15 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include <App/Application.h>
-#include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
 
 #include "DrawGeomHatch.h"
 #include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
 #include "DrawUtil.h"
-#include "DrawViewPart.h"
 #include "DrawViewSection.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
-#include "HatchLine.h"
 #include "Preferences.h"
 
 

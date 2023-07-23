@@ -20,15 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
-#include <Base/Console.h>
-
-#include "DrawTemplate.h"
 #include "DrawTemplatePy.h"
 #include "DrawPage.h"
 

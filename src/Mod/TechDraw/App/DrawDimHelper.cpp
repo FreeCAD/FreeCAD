@@ -23,33 +23,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cstdlib>
-# include <sstream>
-
-# include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <Geom_Line.hxx>
 # include <gp_Pln.hxx>
-# include <TopoDS_Edge.hxx>
 #endif
 
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Vector3D.h>
 
 #include "DrawDimHelper.h"
-#include "Cosmetic.h"
 #include "DrawPage.h"
-#include "DrawUtil.h"
-#include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
-#include "DrawViewPart.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
 
 

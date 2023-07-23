@@ -20,18 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 #include <App/Application.h>
-#include <App/Document.h>
 
 #include "DrawTileWeld.h"
 #include "DrawTileWeldPy.h"  // generated from DrawTileWeldPy.xml
-#include "DrawUtil.h"
 
 
 using namespace TechDraw;

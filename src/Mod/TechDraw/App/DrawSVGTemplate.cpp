@@ -29,16 +29,9 @@
 # include <QFile>
 #endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>     //TODO: should be in DrawTemplate.h??
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Quantity.h>
 #include <Base/Tools.h>
 
-#include "DrawPage.h"
-#include "DrawSVGTemplate.h"
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"

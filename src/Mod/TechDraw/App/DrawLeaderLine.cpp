@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 #include "DrawLeaderLine.h"
 #include "DrawLeaderLinePy.h"  // generated from DrawLeaderLinePy.xml
 #include "ArrowPropEnum.h"
-#include "DrawView.h"
 #include "Preferences.h"
 
 

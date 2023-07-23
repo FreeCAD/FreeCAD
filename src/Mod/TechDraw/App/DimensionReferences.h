@@ -23,16 +23,10 @@
 #ifndef TECHDRAW_DIMENSIONREFERENCES_H
 #define TECHDRAW_DIMENSIONREFERENCES_H
 
+#include <TopoDS_Shape.hxx>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <string>
-#include <vector>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-
-#include <Mod/Part/App/TopoShape.h>
 
 namespace App
 {
@@ -43,6 +37,9 @@ namespace Part
 {
 class TopoShape;
 }
+
+class TopoDS_Edge;
+class TopoDS_Vertex;
 
 namespace TechDraw
 {
