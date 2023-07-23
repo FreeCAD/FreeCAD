@@ -81,8 +81,12 @@ QGIFace::QGIFace(int index) :
 
     getParameters();
 
+    // set up style & colour defaults
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
+    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
+    setFillColor(temp.asValue<QColor>());
+    m_colDefFill = temp.asValue<QColor>();
 
     if (m_defClearFace) {
         setFillMode(NoFill);
@@ -90,7 +94,6 @@ QGIFace::QGIFace(int index) :
         setFill(Qt::transparent, m_styleDef);
     } else {
         setFillMode(PlainFill);
-        m_colDefFill = Qt::white;
         setFill(m_colDefFill, m_styleDef);
     }
 }
@@ -100,6 +103,7 @@ QGIFace::~QGIFace()
     //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
+/// redraw this face
 void QGIFace::draw()
 {
     setPath(m_outline);                         //Face boundary
@@ -152,6 +156,7 @@ void QGIFace::draw()
     show();
 }
 
+/// show the face style & colour in normal configuration
 void QGIFace::setPrettyNormal() {
 //    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
@@ -164,6 +169,7 @@ void QGIFace::setPrettyNormal() {
     QGIPrimPath::setPrettyNormal();
 }
 
+/// show the face style & colour in pre-select configuration
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
     m_fillStyleCurrent = Qt::SolidPattern;
@@ -171,6 +177,7 @@ void QGIFace::setPrettyPre() {
     QGIPrimPath::setPrettyPre();
 }
 
+/// show the face style & colour in selected configuration
 void QGIFace::setPrettySel() {
 //    Base::Console().Message("QGIF::setPrettySel()\n");
     m_fillStyleCurrent = Qt::SolidPattern;
@@ -178,6 +185,7 @@ void QGIFace::setPrettySel() {
     QGIPrimPath::setPrettySel();
 }
 
+/// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool b) {
     if (b) {
         setStyle(Qt::DashLine);
@@ -191,6 +199,7 @@ void QGIFace::setHatchFile(std::string fileSpec)
     m_fileSpec = fileSpec;
 }
 
+/// get the .svg file to use for hatching this face
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
@@ -224,22 +233,26 @@ void QGIFace::setFillMode(QGIFace::fillMode m)
     }
 }
 
+/// update the outline of this face
 void QGIFace::setOutline(const QPainterPath & path)
 {
     m_outline = path;
 }
 
+/// remove the PAT hatch lines
 void QGIFace::clearLineSets()
 {
     m_dashSpecs.clear();
     clearFillItems();
 }
 
+/// add PAT hatch line set
 void QGIFace::addLineSet(LineSet& ls)
 {
     m_lineSets.push_back(ls);
 }
 
+/// convert the PAT line set to QGraphicsPathItems
 void QGIFace::lineSetToFillItems(LineSet& ls)
 {
     m_segCount = 0;
@@ -284,6 +297,7 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
     }
 }
 
+/// create a PAT fill line from 2 points and a dash configuration
 QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
@@ -293,6 +307,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
+/// create a PAT fill line from geometry
 QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
@@ -348,7 +363,7 @@ QPen QGIFace::setGeomPen()
     return result;
 }
 
-//!convert from mm to scene units
+//! convert from mm to scene units
 std::vector<double> QGIFace::decodeDashSpec(DashSpec patDash)
 {
     double penWidth = Rez::guiX(m_geomWeight);
@@ -483,6 +498,7 @@ double QGIFace::getXForm()
     return 1.0;
 }
 
+/// remove the children that make up a PAT fill
 void QGIFace::clearFillItems()
 {
     for (auto& f: m_fillItems) {
@@ -492,6 +508,7 @@ void QGIFace::clearFillItems()
     }
 }
 
+/// debugging tool draws a mark at a position on this face
 void QGIFace::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
@@ -502,6 +519,7 @@ void QGIFace::makeMark(double x, double y)
     cmItem->setZValue(ZVALUE::VERTEX);
 }
 
+/// make an array of svg tiles to cover this face
 void QGIFace::buildSvgHatch()
 {
 //    Base::Console().Message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
@@ -552,6 +570,7 @@ void QGIFace::clearSvg()
     hideSvg(true);
 }
 
+/// make an array of bitmap tiles to cover this face
 void QGIFace::buildPixHatch()
 {
 //    Base::Console().Message("QGIF::buildPixHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
@@ -667,12 +686,17 @@ void QGIFace::setHatchScale(double s)
     m_fillScale = s;
 }
 
-//QtSvg does not handle clipping, so we must be able to turn the hatching on/off
+/// turn svg tiles on or off. QtSvg does not handle clipping,
+/// so we must be able to turn the hatching on/off when exporting a face with an
+/// svg hatch.  Otherwise the full tile pattern is shown in the export.
 void QGIFace::hideSvg(bool b)
 {
     m_hideSvgTiles = b;
 }
 
+
+/// create a QPixmap from a bitmap file.  The QPixmap will be used as a QBrush
+/// texture.
 QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
 {
     QPixmap pix;
@@ -701,9 +725,6 @@ void QGIFace::getParameters()
 {
     m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
     m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
-
-    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
-    setFillColor(temp.asValue<QColor>());
 
     m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
 }
