@@ -1050,7 +1050,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     // Raise a single warning no matter how many conflicts
     if (!existingCommands.isEmpty()) {
         auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
-        for (int index = 0; index < accel_col.count(); index++) {
+        for (int index = 0; index < accel_col.size(); index++) {
             msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }
         msgMain += QStringLiteral(" disabled because of conflicts with");

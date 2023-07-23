@@ -150,8 +150,10 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, &PythonEditor::onComment, QKeySequence(QString::fromLatin1("ALT+C")));
-        menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment, QKeySequence(QString::fromLatin1("ALT+U")));
+        QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
+        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
+        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());
