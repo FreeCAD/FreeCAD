@@ -84,15 +84,7 @@ QGIFace::QGIFace(int index) :
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
 
-    if (m_defClearFace) {
-        setFillMode(NoFill);
-        m_colDefFill = Qt::transparent;
-        setFill(Qt::transparent, m_styleDef);
-    } else {
-        setFillMode(PlainFill);
-        m_colDefFill = Qt::white;
-        setFill(m_colDefFill, m_styleDef);
-    }
+    setFill(getPrefFaceColor(), m_styleDef);
 }
 
 QGIFace::~QGIFace()
@@ -701,11 +693,13 @@ void QGIFace::getParameters()
 {
     m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
     m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
+}
 
+QColor QGIFace::getPrefFaceColor()
+{
     App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
-    setFillColor(temp.asValue<QColor>());
-
-    m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
+    return temp.asValue<QColor>();
+    // QColor(int(temp.r * 255.0f), int(temp.g * 255.0f), int(temp.b * 255.0f), int(temp.a * 255.0f));
 }
 
 QRectF QGIFace::boundingRect() const

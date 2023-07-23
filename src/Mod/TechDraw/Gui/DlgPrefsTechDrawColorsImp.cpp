@@ -54,7 +54,6 @@ void DlgPrefsTechDrawColorsImp::saveSettings()
     ui->pcb_Surface->onSave();
     ui->pcb_GeomHatch->onSave();
     ui->pcb_Face->onSave();
-    ui->pcb_PaintFaces->onSave();
     ui->pcbSectionLine->onSave();
     ui->pcbCenterColor->onSave();
     ui->pcbVertexColor->onSave();
@@ -79,7 +78,6 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcb_Surface->onRestore();
     ui->pcb_GeomHatch->onRestore();
     ui->pcb_Face->onRestore();
-    ui->pcb_PaintFaces->onRestore();
     ui->pcbSectionLine->onRestore();
     ui->pcbCenterColor->onRestore();
     ui->pcbVertexColor->onRestore();

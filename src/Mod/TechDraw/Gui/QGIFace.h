@@ -117,6 +117,7 @@ public:
 
     void setHatchOffset(Base::Vector3d offset) { m_hatchOffset = offset; }
     Base::Vector3d getHatchOffset() { return m_hatchOffset; }
+    QColor getPrefFaceColor();
 
 protected:
     void makeMark(double x, double y);
@@ -160,7 +161,6 @@ private:
 
     QColor m_geomColor;                        //color for crosshatch lines
     double m_geomWeight;                       //lineweight for crosshatch lines
-    bool m_defClearFace;
     QColor m_defFaceColor;
 
     double m_hatchRotation;
