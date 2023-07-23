@@ -128,7 +128,8 @@ TDragger::TDragger()
 
 TDragger::~TDragger()
 {
-
+    fieldSensor.setData(nullptr);
+    fieldSensor.detach();
 }
 
 void TDragger::buildFirstInstance()
@@ -216,9 +217,12 @@ void TDragger::fieldSensorCB(void *f, SoSensor *)
 {
     auto sudoThis = static_cast<TDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
-  sudoThis->workFieldsIntoTransform(matrix);
-  sudoThis->setMotionMatrix(matrix);
+    if(!f)
+      return;
+
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
+    sudoThis->workFieldsIntoTransform(matrix);
+    sudoThis->setMotionMatrix(matrix);
 }
 
 void TDragger::valueChangedCB(void *, SoDragger *d)
@@ -402,7 +406,8 @@ RDragger::RDragger()
 
 RDragger::~RDragger()
 {
-
+    fieldSensor.setData(nullptr);
+    fieldSensor.detach();
 }
 
 void RDragger::buildFirstInstance()
@@ -488,9 +493,12 @@ void RDragger::fieldSensorCB(void *f, SoSensor *)
 {
     auto sudoThis = static_cast<RDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
-  sudoThis->workFieldsIntoTransform(matrix);
-  sudoThis->setMotionMatrix(matrix);
+    if(!f)
+      return;
+
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
+    sudoThis->workFieldsIntoTransform(matrix);
+    sudoThis->setMotionMatrix(matrix);
 }
 
 void RDragger::valueChangedCB(void *, SoDragger *d)
