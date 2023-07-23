@@ -28,6 +28,8 @@
 #include <QByteArray>
 #include <QPixmap>
 
+#include <App/Material.h>
+
 #include <Mod/TechDraw/App/HatchLine.h>
 
 #include "QGIPrimPath.h"
