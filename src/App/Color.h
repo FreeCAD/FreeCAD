@@ -41,9 +41,9 @@ class AppExport Color
 public:
     /**
      * Defines the color as (R,G,B,A) whereas all values are in the range [0,1].
-     * \a A defines the transparency.
+     * @param A defines the transparency.
      */
-    explicit Color(float R=0.0,float G=0.0, float B=0.0, float A=0.0);
+    explicit Color(float R=0.0,float G=0.0, float B=0.0, float A=1.0);
 
     /**
      * Does basically the same as the constructor above unless that (R,G,B,A) is
@@ -60,7 +60,7 @@ public:
     bool operator!=(const Color& c) const;
     /**
      * Defines the color as (R,G,B,A) whereas all values are in the range [0,1].
-     * \a A defines the transparency, 0 means complete opaque and 1 invisible.
+     * \a A defines the transparency, 1 means complete opaque and 0 invisible.
      */
     void set(float R,float G, float B, float A=0.0);
     Color& operator=(const Color& c) = default;
@@ -112,7 +112,7 @@ public:
      */
     template <typename T>
     void setValue(const T& q) {
-        set(q.redF(),q.greenF(),q.blueF());
+        set(q.redF(), q.greenF(), q.blueF(), q.alphaF());
     }
     /**
      * returns a template type e.g. Qt color equivalent to FC color
@@ -120,7 +120,8 @@ public:
      */
     template <typename T>
     inline T asValue() const {
-        return(T(int(r*255.0f),int(g*255.0f),int(b*255.0f)));
+        // return(T(int(r*255.0f), int(g*255.0f), int(b*255.0f), int((1 - a) * 255.0f)));
+        return(T(int(r*255.0f), int(g*255.0f), int(b*255.0f), int(a*255.0f)));
     }
     /**
      * returns color as hex color "#RRGGBB"
