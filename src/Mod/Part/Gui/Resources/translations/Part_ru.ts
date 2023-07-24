@@ -3308,8 +3308,8 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
-      <source>Select this to not import any invisible objects.</source>
-      <translation>Выберите, чтобы не импортировать невидимые объекты.</translation>
+      <source>Select this to import invisible objects.</source>
+      <translation type="unfinished">Select this to import invisible objects.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

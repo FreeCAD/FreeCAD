@@ -2229,7 +2229,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Height (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation type="unfinished">Door</translation>
     </message>
@@ -2955,7 +2955,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>回転</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="83"/>

@@ -737,7 +737,7 @@
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Le placement est identique au Placement de l’objet lié.</translation>
+      <translation>Le placement est identique au placement de l’objet lié.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="61"/>
@@ -2323,7 +2323,7 @@ La vue caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
-      <translation>Modifier la pièce jointe</translation>
+      <translation>Modifier l'ancrage</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="419"/>
@@ -2424,7 +2424,7 @@ La vue caméra détermine la direction de la projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="190"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Note : Le placement est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
+      <translation>Remarque : le placement est exprimé localement par rapport à l'objet auquel il est ancré.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
@@ -2446,7 +2446,7 @@ La vue caméra détermine la direction de la projection.</translation>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation autour de l'axe x
-Remarque : le placement est exprimé localement par rapport à l'objet auquel il est rattaché.</translation>
+Remarque : le placement est exprimé localement par rapport à l'objet auquel il est ancré.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -2458,7 +2458,7 @@ Remarque : le placement est exprimé localement par rapport à l'objet auquel il
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation autour de l'axe y
-Remarque : le placement est exprimé localement par rapport à l'objet auquel il est rattaché.</translation>
+Remarque : le placement est exprimé localement par rapport à l'objet auquel il est ancré.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
@@ -2470,7 +2470,7 @@ Remarque : le placement est exprimé localement par rapport à l'objet auquel il
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
       <translation>Rotation autour de l'axe z
-Remarque : le placement est exprimé localement par rapport à l'objet auquel il est rattaché.</translation>
+Remarque : le placement est exprimé localement par rapport à l'objet auquel il est ancré.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -3305,8 +3305,8 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
-      <source>Select this to not import any invisible objects.</source>
-      <translation>Sélectionner cette option pour ne pas importer d'objets invisibles.</translation>
+      <source>Select this to import invisible objects.</source>
+      <translation type="unfinished">Select this to import invisible objects.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>
@@ -3395,17 +3395,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="92"/>
@@ -4047,7 +4047,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -5769,12 +5769,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Command.cpp" line="409"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Sélectionnez deux formes ou plus. Ou sélectionnez un composé contenant plusieurs formes à partir desquelles calculer l'intersection.</translation>
+      <translation>Sélectionnez deux formes ou plus, ou bien, sélectionnez un composé contenant deux formes ou plus pour calculer leur intersection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Sélectionnez deux formes ou plus. Ou sélectionnez un composé contenant plusieurs formes à partir desquelles calculer la fusion.</translation>
+      <translation>Sélectionnez deux formes ou plus, ou bien, sélectionnez un composé contenant deux formes ou plus pour calculer leur union.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="924"/>
@@ -6170,7 +6170,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
       <source>Attachment editor</source>
-      <translation>Éditeur de l'accrochage</translation>
+      <translation>Éditeur de l'ancrage</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
@@ -6218,7 +6218,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Opérations booléennes</translation>
+      <translation>Opérations booléennes de Part</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6411,7 +6411,7 @@ Si un deuxième objet est sélectionné, il sera utilisé comme référence, par
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Sélectionnez d'abord une forme qui est un composé. Si un deuxième objet est sélectionné (facultatif), il sera traité comme un gabarit.</translation>
+      <translation>Sélectionnez d'abord un composé. Si un deuxième objet est sélectionné (facultatif), il sera traité comme un modèle de forme.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
@@ -6565,7 +6565,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation>Ancrage</translation>
+      <translation>Ancrage...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>

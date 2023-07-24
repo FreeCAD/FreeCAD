@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2182"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation>在點之間建立重合約束，或在圓、圓弧和橢圓之間建立同心約束</translation>
+      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
     </message>
   </context>
   <context>
@@ -1207,7 +1207,7 @@ then call this command, then choose the desired sketch.</source>
     <message>
       <location filename="../../Command.cpp" line="968"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="969"/>
@@ -1232,7 +1232,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="844"/>
@@ -1555,7 +1555,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="802"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="803"/>
@@ -1849,7 +1849,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Create a new sketch</source>
-      <translation>建立一個新的草圖</translation>
+      <translation>建立一個新的sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="525"/>
@@ -2164,59 +2164,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>自動拘束錯誤: 套用對稱拘束後無法解出此草圖</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>無法猜測曲線交叉點。試著添加共點拘束在你要倒圓角的點及曲線間。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B 雲形線幾何索引 (GeoID) 超出範圍。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>您正在要求不要改變結點多重性</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>提供的幾何索引 (GeoId) 不是 B 雲形線曲線。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>結點索引超過範圍。請注意在 OCC 表示中，第一個結點的索引為 1 而不是 0。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>結點多重性不能比 B 雲形線之多項式次數高</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>多重性不能減少到超過零。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC 無法在最大容差範圍內降低多重性。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>結點之多重性不能為零。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>結點多重性不能比 B 雲形線之次數高。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>結點不能在 B 雲形線參數範圍外面插入</translation>
     </message>
@@ -2437,7 +2437,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="146"/>
@@ -2645,12 +2645,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2321"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>從草圖中選擇兩個或多個頂點作為重合約束，或兩個或多個圓、橢圓、圓弧或橢圓弧作為同心約束。</translation>
+      <translation type="unfinished">Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2406"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>從草圖中選擇兩個頂點作為重合約束，或選擇兩個圓、橢圓、圓弧或橢圓弧作為同心約束。</translation>
+      <translation type="unfinished">Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2521"/>
@@ -3064,7 +3064,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1215"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1287"/>
       <source>Selection is empty</source>
-      <translation>選擇為空</translation>
+      <translation>選擇為空。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1216"/>
@@ -3266,7 +3266,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="114"/>
       <source>Horizontal</source>
-      <translation>水平</translation>
+      <translation>水平的</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="115"/>
@@ -3361,12 +3361,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="133"/>
       <source>Selected constraints</source>
-      <translation>選定約束</translation>
+      <translation type="unfinished">Selected constraints</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="134"/>
       <source>Associated constraints</source>
-      <translation>關聯約束</translation>
+      <translation type="unfinished">Associated constraints</translation>
     </message>
   </context>
   <context>
@@ -3447,7 +3447,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="100"/>
       <source>Angle:</source>
-      <translation>角度:</translation>
+      <translation>角度：</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="105"/>
@@ -3527,7 +3527,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="243"/>
       <source>Internal</source>
-      <translation>內部</translation>
+      <translation type="unfinished">Internal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="244"/>
@@ -3537,7 +3537,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="245"/>
       <source>All types</source>
-      <translation>所有類型</translation>
+      <translation type="unfinished">All types</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="246"/>
@@ -3562,27 +3562,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="250"/>
       <source>Arc of circle</source>
-      <translation>圓弧</translation>
+      <translation type="unfinished">Arc of circle</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="251"/>
       <source>Arc of ellipse</source>
-      <translation>橢圓弧</translation>
+      <translation type="unfinished">Arc of ellipse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="252"/>
       <source>Arc of hyperbola</source>
-      <translation>曲線弧</translation>
+      <translation type="unfinished">Arc of hyperbola</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="253"/>
       <source>Arc of parabola</source>
-      <translation>拋物線弧</translation>
+      <translation type="unfinished">Arc of parabola</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="254"/>
       <source>B-Spline</source>
-      <translation>貝茲曲線</translation>
+      <translation type="unfinished">B-Spline</translation>
     </message>
   </context>
   <context>
@@ -3705,7 +3705,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="672"/>
       <source>Layer</source>
-      <translation>圖層</translation>
+      <translation type="unfinished">Layer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="682"/>
@@ -4353,7 +4353,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show coordinates beside cursor while editing</source>
-      <translation>編輯時在游標旁顯示座標</translation>
+      <translation type="unfinished">Show coordinates beside cursor while editing</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="275"/>
@@ -4601,22 +4601,22 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>檢查以切換篩選過濾器</translation>
+      <translation type="unfinished">Check to toggle filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation>點擊並顯示篩選選項</translation>
+      <translation type="unfinished">Click to show filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
       <source>Filters</source>
-      <translation>篩選條件</translation>
+      <translation type="unfinished">Filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
-      <translation>從 3D 視圖顯示/隱藏所有列出的約束。(與勾選/取消勾選下面列表中列出的所有約束相同)</translation>
+      <translation type="unfinished">Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -4680,17 +4680,17 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>檢查以切換篩選過濾器</translation>
+      <translation type="unfinished">Check to toggle filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation>點擊並顯示篩選選項</translation>
+      <translation type="unfinished">Click to show filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
       <source>Filters</source>
-      <translation>篩選條件</translation>
+      <translation type="unfinished">Filters</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
@@ -4736,7 +4736,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1648"/>
       <location filename="../../TaskSketcherElements.cpp" line="1654"/>
       <source>Internal</source>
-      <translation>內部</translation>
+      <translation type="unfinished">Internal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1596"/>
@@ -4752,7 +4752,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1736"/>
       <location filename="../../TaskSketcherElements.cpp" line="1737"/>
       <source>Arc</source>
-      <translation>圓弧</translation>
+      <translation>弧</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1610"/>
@@ -6109,17 +6109,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation type="unfinished">The Sketch has malformed constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
@@ -6441,7 +6441,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1218"/>
       <source>Toggle grid</source>
-      <translation>切換格線</translation>
+      <translation type="unfinished">Toggle grid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1220"/>

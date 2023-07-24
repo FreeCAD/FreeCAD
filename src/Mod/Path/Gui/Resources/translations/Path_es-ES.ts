@@ -8427,12 +8427,12 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>El archivo de personalización %s no se encontró.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>Línea %s de Gcode no es válida</translation>
     </message>
   </context>
 </TS>

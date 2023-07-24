@@ -6216,7 +6216,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
       <source>Solid</source>
-      <translation>Пуно тело</translation>
+      <translation>Пуно</translation>
     </message>
   </context>
   <context>

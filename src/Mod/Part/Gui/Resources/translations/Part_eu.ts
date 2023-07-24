@@ -3310,8 +3310,8 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
-      <source>Select this to not import any invisible objects.</source>
-      <translation>Hautatu hau objektu ikusezinak ez inportatzeko.</translation>
+      <source>Select this to import invisible objects.</source>
+      <translation type="unfinished">Select this to import invisible objects.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

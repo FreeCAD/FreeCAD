@@ -2216,7 +2216,7 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <translation>Altura (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porta</translation>
     </message>
@@ -3174,7 +3174,7 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Agendar</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
@@ -3205,12 +3205,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="165"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Criar chão</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Criar eixo</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="807"/>
@@ -3435,7 +3435,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>Rotação X</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1377"/>
@@ -3445,7 +3445,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>Rotação Y</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1379"/>
@@ -3455,7 +3455,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>Rotação Z</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1381"/>
@@ -6507,7 +6507,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Agendar</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>

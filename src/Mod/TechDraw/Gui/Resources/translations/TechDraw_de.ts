@@ -2164,7 +2164,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TechDraw Symbol voranstellen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -2174,7 +2174,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="191"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>TechDraw Symbol entfernen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="186"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw Kreismittellinien</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2294,7 +2294,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="415"/>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>TechDraw Außengewinde in Seitenansicht</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2304,7 +2304,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="467"/>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>TechDraw Innengewinde in Achsansicht</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
@@ -2314,7 +2314,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="519"/>
       <source>TechDraw Thread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
+      <translation>TechDraw Außengewinde in Achsansicht</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2324,7 +2324,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="765"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation type="unfinished">TechDraw Change Line Attributes</translation>
+      <translation>TechDraw Linienmerkmale ändern</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
@@ -2334,7 +2334,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="825"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">TechDraw Cosmetic Intersection Vertex(es)</translation>
+      <translation>TechDraw Hilfsschnittpunkt(e) hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
@@ -2344,7 +2344,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="872"/>
       <source>TechDraw Cosmetic Arc</source>
-      <translation type="unfinished">TechDraw Cosmetic Arc</translation>
+      <translation>TechDraw Hilfsbogen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
@@ -2354,7 +2354,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="937"/>
       <source>TechDraw Cosmetic Circle</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle</translation>
+      <translation>TechDraw Hilfskreis</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2364,7 +2364,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="999"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle 3 Points</translation>
+      <translation>TechDraw Hilfskreis durch 3 Punkte</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
@@ -2374,7 +2374,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1187"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">TechDraw Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>TechDraw Hilfslinie parallel/senkrecht</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2384,7 +2384,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1423"/>
       <source>TechDraw Lock/Unlock View</source>
-      <translation type="unfinished">TechDraw Lock/Unlock View</translation>
+      <translation>TechDraw Ansicht sperren/entsperren</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
@@ -2394,7 +2394,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1527"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation type="unfinished">TechDraw Extend/Shorten Line</translation>
+      <translation>TechDraw Linie verlängern/kürzen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
@@ -2404,7 +2404,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1791"/>
       <source>TechDraw calculate selected area</source>
-      <translation type="unfinished">TechDraw calculate selected area</translation>
+      <translation>TechDraw ausgewählte Fläche berechnen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -3438,7 +3438,7 @@
       <translation>Rich-Text Ersteller</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
       <source>Rich text editor</source>
@@ -3838,7 +3838,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="329"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektabhängigkeiten</translation>
@@ -3894,9 +3894,9 @@ it has a tile weld that would become broken.</source>
       <translation>Das Schweißsymbol kann nicht gelöscht werden, die Information würde dadurch verloren gehen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="326"/>
-      <source>You cannot delete this view because it has one or more dependent objects that would become broken.</source>
-      <translation>Diese Ansicht kann nicht gelöscht werden, da sie ein oder mehrere abhängige Objekte enthält, die beschädigt würden.</translation>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
     </message>
   </context>
   <context>
@@ -4855,7 +4855,7 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
       <source>If checked FreeCAD will use a single color for all text and lines. 
 
 </source>
-      <translation type="unfinished">If checked FreeCAD will use a single color for all text and lines. 
+      <translation>Wenn aktiviert, wird FreeCAD eine einzelne Farbe für alle Texte und Linien verwenden. 
 
 </translation>
     </message>
@@ -8626,11 +8626,11 @@ mit dem vorgegebenen X/Y-Abstand</translation>
                 - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <translation>Fügt einem Maß eine Bohrungs- oder Wellenpassung hinzu &lt;br&gt;
+                - Ein Längen- oder Durchmessermaß auswählen&lt;br&gt;
+                - Ein Klick auf die Werkzeugschaltfläche öffnet ein Dialogfenster&lt;br&gt;
+                - Wellen- oder Bohrungspassung auswählen&lt;br&gt;
+                - Die gewünschte Passungskombination nach ISO 286 in der Combo-Box auswählen</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>

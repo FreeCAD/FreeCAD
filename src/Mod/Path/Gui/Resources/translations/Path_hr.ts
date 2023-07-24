@@ -4334,7 +4334,7 @@ For example:
     <message>
       <location filename="../../../InitGui.py" line="284"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Upozorenje</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="286"/>
@@ -6437,7 +6437,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1598"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Upozorenje</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1599"/>
@@ -7049,7 +7049,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="68"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Ograničen okvir</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="69"/>
@@ -7434,7 +7434,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="449"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Osnovni Ograničen okvir</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
@@ -7746,7 +7746,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="102"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Osnovni Ograničen okvir</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="103"/>

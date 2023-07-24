@@ -8422,12 +8422,12 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>A %s egyéni fájl nem található.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>Érvénytelen G-kód sor: %s</translation>
     </message>
   </context>
 </TS>

@@ -4309,14 +4309,13 @@ For example:
     'Metric, Small Parts &amp; CNC'
     'US Customary'
     'Imperial Decimal'</source>
-      <translation>Le système d'unité sélectionné : 
-     "{}"
+      <translation>Le système d'unité sélectionné : "{}"
 n'utilise pas les "minutes" pour les valeurs de vitesse. 
  
-Les machines CNC exigent que la vitesse d'avance soit 
-exprimée en unité/minute. Pour garantir un G-code correct : 
-sélectionnez un système basé sur les minutes dans les 
-préférences. Par exemple :
+Les CNC exigent que la vitesse d'avance soit exprimée en unité/minute.
+Pour garantir un G-code correct, sélectionnez un système basé sur les
+minutes dans les préférences.
+Par exemple :
     "Métriques, petites pièces &amp; CNC"
     "Système US"
     "Décimales impériales"</translation>
@@ -8423,12 +8422,12 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>Le fichier personnalisé %s est introuvable.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>Ligne de G-gcode invalide : %s</translation>
     </message>
   </context>
 </TS>

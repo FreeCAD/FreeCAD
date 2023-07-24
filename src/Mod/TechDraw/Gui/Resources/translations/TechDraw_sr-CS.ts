@@ -894,7 +894,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1029"/>
       <location filename="../../CommandExtensionPack.cpp" line="1161"/>
       <source>Add Cosmetic Circle 3 Points</source>
-      <translation>Dodaj pomoćnu kružnicu sa 3 tačke</translation>
+      <translation>Dodaj pomoćnu kružnicu pomoću 3 tačke</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1030"/>
@@ -1379,12 +1379,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="809"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation>Dodaj pomoćnu tačku(e) na preseku</translation>
+      <translation>Dodaj Pomoćnu presečnu tačku(e)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="811"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj pomoćnu tačku(e) na presek(e) izabranih ivica:&lt;br&gt;- Izaberi dve ivice (linije, kružnice i/ili lukove)&lt;br&gt;- Klikni na ovu alatku</translation>
+      <translation>Dodaj pomoćnu presečnu tačku(e) izabranih ivica:&lt;br&gt;- Izaberi dve ivice (linije, kružnice i/ili lukove)&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
   </context>
   <context>
@@ -2164,7 +2164,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TechDraw Upiši prefiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -2174,7 +2174,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="191"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>TechDraw Ukloni prefiks</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="186"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw Simetrale kružnice</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2294,7 +2294,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="415"/>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>TechDraw Prikaz sa strane spoljašnjeg navoja</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2304,7 +2304,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="467"/>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>TechDraw Prikaz spreda (aksijalni) unutrašnjeg navoja</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
@@ -2314,7 +2314,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="519"/>
       <source>TechDraw Thread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
+      <translation>TechDraw Prikaz spreda spoljašnjeg navoja</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2324,7 +2324,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="765"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation type="unfinished">TechDraw Change Line Attributes</translation>
+      <translation>TechDraw Promeni svojstva linije</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
@@ -2334,17 +2334,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="825"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">TechDraw Cosmetic Intersection Vertex(es)</translation>
+      <translation>TechDraw Pomoćna presečna tačka(e)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation>Pomoćna tačka(e) na preseku</translation>
+      <translation>Pomoćna presečna tačka(e)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="872"/>
       <source>TechDraw Cosmetic Arc</source>
-      <translation type="unfinished">TechDraw Cosmetic Arc</translation>
+      <translation>TechDraw Pomoćni luk</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
@@ -2354,7 +2354,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="937"/>
       <source>TechDraw Cosmetic Circle</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle</translation>
+      <translation>TechDraw Pomoćna kružnica</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2364,17 +2364,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="999"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle 3 Points</translation>
+      <translation>TechDraw pomoćna kružnica pomoću 3 tačke</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
       <source>Cosmetic Circle 3 Points</source>
-      <translation>Pomoćna kružnica sa 3 tačke</translation>
+      <translation>Pomoćna kružnica pomoću 3 tačke</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1187"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">TechDraw Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>TechDraw Pomoćna linija paralelna/normalna</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2384,7 +2384,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1423"/>
       <source>TechDraw Lock/Unlock View</source>
-      <translation type="unfinished">TechDraw Lock/Unlock View</translation>
+      <translation>TechDraw Zaključaj/Otključaj pogled</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
@@ -2394,7 +2394,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1527"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation type="unfinished">TechDraw Extend/Shorten Line</translation>
+      <translation>TechDraw Produži/Skrati liniju</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
@@ -2404,7 +2404,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1791"/>
       <source>TechDraw calculate selected area</source>
-      <translation type="unfinished">TechDraw calculate selected area</translation>
+      <translation>TechDraw Izračunaj površinu izabrane stranice</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -3438,7 +3438,7 @@
       <translation>Tvorac formatiranog teksta</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
       <source>Rich text editor</source>
@@ -3839,7 +3839,7 @@ ima simbol zavarivanja koji bi se pokvario.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="329"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Međuzavisnosti objekata</translation>
@@ -3898,9 +3898,9 @@ it has a tile weld that would become broken.</source>
 it has a tile weld that would become broken.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="326"/>
-      <source>You cannot delete this view because it has one or more dependent objects that would become broken.</source>
-      <translation>Ne možeš obrisati ovaj pogled jer ima jedan ili više zavisnih objekata koji će postati neispravni.</translation>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
     </message>
   </context>
   <context>
@@ -4861,7 +4861,7 @@ when hatching a face with a PAT pattern</source>
       <source>If checked FreeCAD will use a single color for all text and lines. 
 
 </source>
-      <translation type="unfinished">If checked FreeCAD will use a single color for all text and lines. 
+      <translation>Ako je čekirano FreeCAD će koristiti istu boju za tekst i linije.
 
 </translation>
     </message>
@@ -7877,7 +7877,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="44"/>
       <source>Solid</source>
-      <translation>Puno telo</translation>
+      <translation>Puno</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
@@ -8634,11 +8634,11 @@ umesto dužine</translation>
                 - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <translation>Dodaj toleranciju na kotu&lt;br&gt;
+                - izaberi dužinsku kotu ili kotu prečnika&lt;br&gt;
+                - klikni na ovu alatku i otvoriće se panel&lt;br&gt;
+                - izaberi sistem naleganja (unutrašnja mera ili spoljašnja mera)&lt;br&gt;
+                - izaberi odgovarajuće tolerancijsko polje</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>

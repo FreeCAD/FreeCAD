@@ -8427,12 +8427,12 @@ Sortu?</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>Ezin izan da aurkitu %s fitxategi pertsonalizatua.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>G-code lerro baliogabea: %s</translation>
     </message>
   </context>
 </TS>

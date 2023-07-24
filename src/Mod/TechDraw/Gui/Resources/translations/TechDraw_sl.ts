@@ -139,7 +139,7 @@
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Vstavi pogled presečne ravnine iz delovnega okolja Arch</translation>
+      <translation>Vstavi pogled prerezne ravnine iz delovnega okolja Arhi (Arch)</translation>
     </message>
   </context>
   <context>
@@ -835,7 +835,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1064"/>
       <source>Add Cosmetic Circle</source>
-      <translation>Dodaj pomožni krog</translation>
+      <translation>Dodaj dopolnilni krog</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1065"/>
@@ -874,7 +874,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="965"/>
       <location filename="../../CommandExtensionPack.cpp" line="1141"/>
       <source>Add Cosmetic Circle</source>
-      <translation>Dodaj pomožni krog</translation>
+      <translation>Dodaj dopolnilni krog</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="966"/>
@@ -1328,7 +1328,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="488"/>
       <location filename="../../CommandExtensionPack.cpp" line="668"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>Dodaj spodnjemu ali zgornjemu pogledu na izvrtino navidezni navoj:&lt;br&gt; Določite lastnosti črte (neobvezno)&lt;br&gt; Izberite enega ali več krogov&lt;br&gt;- Kliknite to orodje</translation>
+      <translation>Dodaj spodnjemu ali zgornjemu pogledu na izvrtino dopolnilni navoj:&lt;br&gt; Določite lastnosti črte (neobvezno)&lt;br&gt; Izberite enega ali več krogov&lt;br&gt;- Kliknite to orodje</translation>
     </message>
   </context>
   <context>
@@ -1379,7 +1379,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="809"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation>Nodaj navidezna presečna oglišča</translation>
+      <translation>Dodaj navidezna presečna oglišča</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="811"/>
@@ -2164,7 +2164,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TehRisbe (TechDraw) Vstavi predpono</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -2174,7 +2174,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="191"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>TehRisbe (TechDraw) Odstrani predpono</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2264,7 +2264,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="97"/>
       <source>TechDraw Hole Circle</source>
-      <translation>TehRisbe (TechDaw) krog izvrtine</translation>
+      <translation>Krog izvrtine v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="117"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="186"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>Središčnice kroga v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2294,7 +2294,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="415"/>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>Stranski ris navoja svornika v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2304,7 +2304,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="467"/>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>Spodnji pogled navoja luknje v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
@@ -2314,7 +2314,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="519"/>
       <source>TechDraw Thread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
+      <translation>Spodnji pogled navoja svornika v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2324,7 +2324,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="765"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation type="unfinished">TechDraw Change Line Attributes</translation>
+      <translation>Spremeni črtine značilke v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
@@ -2334,7 +2334,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="825"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">TechDraw Cosmetic Intersection Vertex(es)</translation>
+      <translation>Pomožna presečna oglišča v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
@@ -2344,7 +2344,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="872"/>
       <source>TechDraw Cosmetic Arc</source>
-      <translation type="unfinished">TechDraw Cosmetic Arc</translation>
+      <translation>Dopolnilni lok v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
@@ -2354,7 +2354,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="937"/>
       <source>TechDraw Cosmetic Circle</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle</translation>
+      <translation>Dopolnilni krog v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2364,7 +2364,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="999"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle 3 Points</translation>
+      <translation>Dopolnilni krog s 3 točkami v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
@@ -2374,7 +2374,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1187"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">TechDraw Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>Vzporedna/pravokotna dopolnilna črta v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2384,7 +2384,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1423"/>
       <source>TechDraw Lock/Unlock View</source>
-      <translation type="unfinished">TechDraw Lock/Unlock View</translation>
+      <translation>Zakleni/odkleni pogled v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
@@ -2394,7 +2394,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1527"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation type="unfinished">TechDraw Extend/Shorten Line</translation>
+      <translation>Podaljšaj/skrajšaj črto v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
@@ -2404,7 +2404,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1791"/>
       <source>TechDraw calculate selected area</source>
-      <translation type="unfinished">TechDraw calculate selected area</translation>
+      <translation>Izračunaj izbrano površino v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -3438,7 +3438,7 @@
       <translation>Ustvarjalnik obogatenega besedila</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
       <source>Rich text editor</source>
@@ -3695,7 +3695,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="113"/>
       <source>TechDraw Hole Circle</source>
-      <translation>TehRisbe (TechDaw) krog izvrtine</translation>
+      <translation>Krog izvrtine v TehRisbe (TechDraw)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="114"/>
@@ -3839,7 +3839,7 @@ oznako za varjenje, ki bi postala okvarjena.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="329"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Odvisnosti predmetov</translation>
@@ -3898,9 +3898,9 @@ it has a tile weld that would become broken.</source>
 vsebuje zvarni znaki, ki bi postal okvarjen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="326"/>
-      <source>You cannot delete this view because it has one or more dependent objects that would become broken.</source>
-      <translation>Tega pogleda ne morete izbrisati, ker vsebuje enega ali več odvisnih predmetov, ki bi se tako pokvarili.</translation>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
     </message>
   </context>
   <context>
@@ -4861,7 +4861,7 @@ uporabi pri črtkanju ploskve z vzorcem PAT</translation>
       <source>If checked FreeCAD will use a single color for all text and lines. 
 
 </source>
-      <translation type="unfinished">If checked FreeCAD will use a single color for all text and lines. 
+      <translation>Če je označeno, bo FreeCAD uporabljal enotno barvo pri vseh napisih in črtah.
 
 </translation>
     </message>
@@ -8638,11 +8638,11 @@ s pomočjo podanih X/Y odmikov</translation>
                 - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <translation>Dodaj prileganje izvrtine ali gredi meram&lt;br&gt;
+                - izberite eno dolžinsko koto ali premer&lt;br&gt;
+                - kliknite gumb orodja, da se odpre plošča&lt;br&gt;
+                - izberite prileganje gredi oz. prileganje izvrtine&lt;br&gt;
+                - v kombiniranem polju izberite željeno področje prileganja po ISO 286</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
