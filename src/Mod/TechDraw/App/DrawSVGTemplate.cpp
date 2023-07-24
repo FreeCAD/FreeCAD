@@ -52,8 +52,7 @@ DrawSVGTemplate::DrawSVGTemplate()
 {
     static const char *group = "Template";
 
-    ADD_PROPERTY_TYPE(PageResult, (nullptr),  group, App::Prop_Output,    "Embedded SVG code for template. For system use.");   //n/a for users
-    ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_None, "Template file name.");
+    ADD_PROPERTY_TYPE(Filepath, (nullptr), group, App::Prop_Output, "Filename containing the SVG markup for the template");   //n/a for users
 
     // Width and Height properties shouldn't be set by the user
     Height.setStatus(App::Property::ReadOnly, true);
@@ -61,7 +60,7 @@ DrawSVGTemplate::DrawSVGTemplate()
     Orientation.setStatus(App::Property::ReadOnly, true);
 
     std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
-    Template.setFilter(svgFilter);
+    Filepath.setFilter(svgFilter);
 }
 
 DrawSVGTemplate::~DrawSVGTemplate()
@@ -79,13 +78,13 @@ PyObject *DrawSVGTemplate::getPyObject()
 
 void DrawSVGTemplate::onChanged(const App::Property* prop)
 {
-    if (prop == &Template && !isRestoring()) {
+    if (prop == &Filepath && !isRestoring()) {
         //if we are restoring an existing file we just want the properties set as they were save,
         //but if we are not restoring, we need to replace the embedded file and extract the new
         //EditableTexts.
         //We could try to find matching field names are preserve the values from
         //the old template, but there is no guarantee that the same fields will be present.
-        replaceFileIncluded(Template.getValue());
+        checkFilepath();
         EditableTexts.setValues(getEditableTextsFromTemplate());
     } else if (prop == &EditableTexts) {
         //handled by ViewProvider
@@ -105,16 +104,16 @@ QString DrawSVGTemplate::processTemplate()
         return QString();
     }
 
-    QFile templateFile(Base::Tools::fromStdString(PageResult.getValue()));
+    QFile templateFile(Base::Tools::fromStdString(Filepath.getValue()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", PageResult.getValue());
+        Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", Filepath.getValue());
         return QString();
     }
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
-            PageResult.getValue());
+            Filepath.getValue());
         return QString();
     }
 
@@ -181,17 +180,24 @@ double DrawSVGTemplate::getHeight() const
     return Height.getValue();
 }
 
-void DrawSVGTemplate::replaceFileIncluded(std::string newTemplateFileName)
+void DrawSVGTemplate::checkFilepath()
 {
-//    Base::Console().Message("DSVGT::replaceFileIncluded(%s)\n", newTemplateFileName.c_str());
-    if (newTemplateFileName.empty()) {
+    Base::Console().Message("DSVGT::checkFilepath(%s)\n", Filepath.getValue());
+    if (Filepath.getValue()) {
         return;
     }
 
-    Base::FileInfo tfi(newTemplateFileName);
-    if (tfi.isReadable()) {
-        PageResult.setValue(newTemplateFileName.c_str());
-    } else {
+    Base::FileInfo tfi(Filepath.getValue());
+    if (!tfi.isReadable()) {
+        // If there is an old absolute template file set use a redirect
+        const std::string newPath = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName();
+        tfi.setFile(newPath);
+        // Try the redirect
+        if (tfi.isReadable()) {
+            Filepath.setValue(newPath.c_str());
+            return;
+        }
+        Filepath.setValue(nullptr);// We don't want to use an invalid filepath further down the road
         throw Base::RuntimeError("Could not read the new template file");
     }
 }
@@ -201,32 +207,21 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
 //    Base::Console().Message("DSVGT::getEditableTextsFromTemplate()\n");
     std::map<std::string, std::string> editables;
 
-    std::string templateFilename = Template.getValue();
-    if (templateFilename.empty()) {
+    std::string templatePath = Filepath.getValue();
+    if (templatePath.empty()) {
         return editables;
     }
 
-    Base::FileInfo tfi(templateFilename);
-    if (!tfi.isReadable()) {
-        // if there is an old absolute template file set use a redirect
-        tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
-        // try the redirect
-        if (!tfi.isReadable()) {
-            Base::Console().Error("DrawSVGTemplate::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
-            return editables;
-        }
-    }
-
-    QFile templateFile(QString::fromUtf8(tfi.filePath().c_str()));
+    QFile templateFile(QString::fromUtf8(templatePath.c_str()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Error("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
+        Base::Console().Error("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Filepath.getValue());
         return editables;
     }
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
         Base::Console().Message("DrawSVGTemplate::getEditableTextsFromTemplate() - failed to parse file: %s\n",
-                                Template.getValue());
+                                Filepath.getValue());
         return editables;
     }
 

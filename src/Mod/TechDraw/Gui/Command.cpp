@@ -119,7 +119,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
                   TemplateName.c_str());
 
-        doCommand(Doc, "App.activeDocument().%s.Template = '%s'", TemplateName.c_str(),
+        doCommand(Doc, "App.activeDocument().%s.Filepath = '%s'", TemplateName.c_str(),
                   templateFileName.toStdString().c_str());
         doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
                   PageName.c_str(), TemplateName.c_str());
@@ -192,15 +192,11 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
                   TemplateName.c_str());
 
-        //why is "Template" property set twice? -wf
-        // once to set DrawSVGTemplate.Template to OS template file name
         templateFileName = Base::Tools::escapeEncodeFilename(templateFileName);
-        doCommand(Doc, "App.activeDocument().%s.Template = \"%s\"", TemplateName.c_str(),
+        doCommand(Doc, "App.activeDocument().%s.Filepath = \"%s\"", TemplateName.c_str(),
                   templateFileName.toUtf8().constData());
-        // once to set Page.Template to DrawSVGTemplate.Name
         doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
                   PageName.c_str(), TemplateName.c_str());
-        // consider renaming DrawSVGTemplate.Template property?
 
         updateActive();
         commitCommand();

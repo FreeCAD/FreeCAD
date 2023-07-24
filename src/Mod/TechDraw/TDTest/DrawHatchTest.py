@@ -24,7 +24,7 @@ class DrawHatchTest(unittest.TestCase):
         # make a page
         self.page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
         FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
-        FreeCAD.ActiveDocument.Template.Template = templateFileSpec
+        FreeCAD.ActiveDocument.Template.Filepath = templateFileSpec
         FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
         self.page.Scale = 5.0
         # page.ViewObject.show()  #unit tests run in console mode

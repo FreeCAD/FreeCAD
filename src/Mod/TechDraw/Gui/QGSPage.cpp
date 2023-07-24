@@ -1220,7 +1220,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
                 // Insert the template into a new group with id set to template name
                 QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
-                Base::FileInfo fi(drawTemplate->PageResult.getValue());
+                Base::FileInfo fi(drawTemplate->Filepath.getValue());
                 templateGroup.setAttribute(QString::fromUtf8("id"),
                                            QString::fromUtf8(fi.fileName().c_str()));
                 templateGroup.setAttribute(QString::fromUtf8("style"),

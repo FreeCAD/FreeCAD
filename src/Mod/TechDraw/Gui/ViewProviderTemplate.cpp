@@ -83,7 +83,7 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
     //This doesn't belong here.  Should be in a ViewProviderSvgTemplate?
     if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
-        if (prop == &(t->Template)) {
+        if (prop == &(t->Filepath)) {
             auto page = t->getParentPage();
             Gui::ViewProvider* vp =
                 Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);

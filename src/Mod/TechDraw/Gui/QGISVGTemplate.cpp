@@ -142,7 +142,7 @@ void QGISVGTemplate::createClickHandles()
         return;
     }
 
-    QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));
+    QString templateFilename(QString::fromUtf8(svgTemplate->Filepath.getValue()));
 
     if (templateFilename.isEmpty()) {
         return;
@@ -152,7 +152,7 @@ void QGISVGTemplate::createClickHandles()
     if (!file.open(QIODevice::ReadOnly)) {
         Base::Console().Error(
             "QGISVGTemplate::createClickHandles - error opening template file %s\n",
-            svgTemplate->PageResult.getValue());
+            svgTemplate->Filepath.getValue());
         return;
     }
 

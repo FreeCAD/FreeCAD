@@ -41,8 +41,7 @@ public:
     DrawSVGTemplate();
     ~DrawSVGTemplate() override;
 
-    App::PropertyFileIncluded PageResult;
-    App::PropertyFile Template;
+    App::PropertyFileIncluded Filepath;
 
     void onChanged(const App::Property* prop) override;
    /// returns the type name of the ViewProvider
@@ -58,7 +57,7 @@ public:
     QString processTemplate();
 
 protected:
-    void replaceFileIncluded(std::string newTemplateFileName);
+    void checkFilepath();
     std::map<std::string, std::string> getEditableTextsFromTemplate();
 
 };

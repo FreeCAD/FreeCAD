@@ -12,6 +12,6 @@ def createPageWithSVGTemplate(doc=None):
 
     page = doc.addObject("TechDraw::DrawPage", "Page")
     doc.addObject("TechDraw::DrawSVGTemplate", "Template")
-    doc.Template.Template = templateFileSpec
+    doc.Template.Filepath = templateFileSpec
     doc.Page.Template = doc.Template
     return page
