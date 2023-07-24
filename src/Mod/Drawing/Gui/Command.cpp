@@ -172,7 +172,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             a->setProperty("TemplateOrientation", orientation);
             a->setProperty("TemplateId", id);
             a->setProperty("TemplateInfo", info);
-            a->setProperty("Template", dir.absoluteFilePath(dir[i]));
+            a->setProperty("Filepath", dir.absoluteFilePath(dir[i]));
 
             if (id == 3) {
                 if (!defaultAction) {

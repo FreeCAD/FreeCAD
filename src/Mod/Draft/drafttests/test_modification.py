@@ -612,7 +612,7 @@ class DraftModification(unittest.TestCase):
         page = App.ActiveDocument.addObject("TechDraw::DrawPage")
         _msg("  page={}".format(page.TypeId))
         template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate")
-        template.Template = App.getResourceDir() \
+        template.Filepath = App.getResourceDir() \
                             + "Mod/TechDraw/Templates/A3_Landscape_blank.svg"
         page.Template = template
         _msg("  template={}".format(template.TypeId))

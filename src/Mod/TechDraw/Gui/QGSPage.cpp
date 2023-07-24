@@ -1213,9 +1213,8 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     if (svgTemplate) {
         DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
         if (drawTemplate) {
-            QString templateSvg = drawTemplate->processTemplate();
             QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
-            if (templateResultDoc.setContent(templateSvg)) {
+            if (templateResultDoc.setContent(drawTemplate->m_SVGMarkup)) {
                 QDomElement templateDocElem = templateResultDoc.documentElement();
 
                 // Insert the template into a new group with id set to template name

@@ -53,11 +53,12 @@ public:
 
     double getWidth() const override;
     double getHeight() const override;
+    QString m_SVGMarkup;
 
-    QString processTemplate();
 
 protected:
     void checkFilepath();
+    void processTemplate();
     std::map<std::string, std::string> getEditableTextsFromTemplate();
 
 };

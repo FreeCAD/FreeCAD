@@ -83,6 +83,7 @@ PyObject* DrawSVGTemplatePy::setEditFieldContent(PyObject* args)
     }
 
     getDrawSVGTemplatePtr()->EditableTexts.setValue(fieldName, newContent);
+    getDrawSVGTemplatePtr()->touch();
 
     Py_Return;
 }
