@@ -228,17 +228,8 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
     // get all supported formats by Coin3D
     int num = getNumWriteFiletypes();
     for (int i=0; i < num; i++) {
-#if   (COIN_MAJOR_VERSION < 2) // Coin3D <= 1.x
-        SbList<SbName> extlist;
-#elif (COIN_MAJOR_VERSION < 3) // Coin3D <= 2.x
-# if  (COIN_MINOR_VERSION < 3) // Coin3D <= 2.2.x
-        SbList<SbName> extlist;
-# else                         // Coin3D >= 2.3.x
+
         SbPList extlist;
-# endif
-#else                          // Coin3D >= 3.x
-        SbPList extlist;
-#endif
 
         SbString fullname, description;
         getWriteFiletypeInfo(i, extlist, fullname, description);
