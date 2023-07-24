@@ -2222,7 +2222,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Высота (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Дверь</translation>
     </message>

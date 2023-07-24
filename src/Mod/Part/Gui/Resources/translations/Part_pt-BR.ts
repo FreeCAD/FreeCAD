@@ -3301,8 +3301,8 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
-      <source>Select this to not import any invisible objects.</source>
-      <translation>Selecione esta opção para não importar objetos invisíveis.</translation>
+      <source>Select this to import invisible objects.</source>
+      <translation type="unfinished">Select this to import invisible objects.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

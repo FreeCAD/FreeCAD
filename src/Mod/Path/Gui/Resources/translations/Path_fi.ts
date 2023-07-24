@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Pinta-ala</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Luo ominaisuuden alueen valituista kohteista</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>Alueen työtaso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Valitse työtaso ominaisuusalueelle</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
-      <translation type="unfinished">From Shape</translation>
+      <translation>Muodosta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
-      <translation type="unfinished">Creates a path from a selected shape</translation>
+      <translation>Luo polun valitusta muodosta</translation>
     </message>
   </context>
   <context>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation type="unfinished">Create Path Area View</translation>
+      <translation>Luo Reitin Aluenäkymä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>

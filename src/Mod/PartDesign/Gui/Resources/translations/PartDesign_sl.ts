@@ -131,7 +131,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1430"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
@@ -149,7 +149,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
@@ -167,7 +167,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -185,7 +185,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -203,7 +203,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
@@ -221,7 +221,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -239,7 +239,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -257,7 +257,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
@@ -275,7 +275,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
@@ -293,7 +293,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -311,7 +311,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -329,7 +329,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -347,7 +347,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -365,7 +365,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -383,7 +383,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
@@ -401,7 +401,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
@@ -411,7 +411,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="314"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Preseli dokument v sodobni PartDesignov delotok</translation>
+      <translation>Preseli dokument v sodobni delotok Snovalnika delov (PartDesgin)</translation>
     </message>
   </context>
   <context>
@@ -419,7 +419,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
@@ -437,7 +437,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
@@ -455,7 +455,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
@@ -473,7 +473,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
@@ -491,7 +491,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
@@ -509,7 +509,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="503"/>
@@ -527,7 +527,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="991"/>
@@ -545,7 +545,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -563,7 +563,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -581,7 +581,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -599,7 +599,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -617,7 +617,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -635,7 +635,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
@@ -653,7 +653,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -671,7 +671,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -685,7 +685,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -703,7 +703,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -721,7 +721,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -739,7 +739,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
@@ -757,7 +757,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -811,7 +811,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -917,7 +917,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation>Preseli podedovane zmožnosti oblikovanja delov v Telesa</translation>
+      <translation>Preseli podedovane značilnosti snovalnika delov v Telesa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
@@ -927,7 +927,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
-      <translation>Podvoji predmet NačrtovanjeDela (PartDesign)</translation>
+      <translation>Podvoji predmet Snovalnika delov (PartDesign)</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="743"/>
@@ -1093,9 +1093,9 @@ da se izogne samosečnosti.</translation>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>Če želite ustvariti nov predmet v OblikovanjeDelov (PartDesign), mora biti v dokumentu dejavno telo.
+      <translation>Če želite ustvariti nov predmet v Snovalniku delov (PartDesign), mora biti v dokumentu dejavno telo.
 
-Izberite telo izmed spodnjih ali ustvarite novega.</translation>
+Izberite med spodnjimi telesi ali ustvarite novega.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -2634,12 +2634,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Usmerjenost preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2698,23 +2698,23 @@ merjena vzdolž določene smeri</translation>
       <translation>Odstrani rob</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Določilke cevi</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Nobenega dejavnega telesa</translation>
     </message>
@@ -2757,12 +2757,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Preoblikovanje preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -3613,7 +3613,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="116"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Telo ne more biti osnovano na PartDesign značilnosti.</translation>
+      <translation>Telo ne more biti osnovano na značilnosti Snovalnika delov.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="121"/>
@@ -3676,7 +3676,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>Ni bilo mogoče najti nobene značilnosti Oblikovanja delov (PartDesigna), ki ne bi pripadala telesu. Ni kaj seliti.</translation>
+      <translation>Ni bilo mogoče najti nobene značilnosti Snovalnika delov (PartDesign), ki ne bi pripadala telesu. Ni kaj seliti.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>
@@ -3700,7 +3700,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Izberi natanko eno PartDesign značilnost ali telo.</translation>
+      <translation>Izberi natanko eno značilnost Snovalnika delov (PartDesign) ali telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
@@ -3800,9 +3800,9 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Če želite uporabljati PartDesign, potrebujete v dokumentu dejavno Telo. Naredite enega dejavnega (dvoklik) ali ga ustvarite.
+      <translation>Če želite uporabljati Snovalnik delov (PartDesign), potrebujete dejavno Telo iz dokumenta. Naredite enega dejavnega (dvoklik) ali ga ustvarite.
 
-Če je vaš dokument podedovan in ima PartDesign predmete brez Teles, uporabitete PartDesighnovo zmožnost pretvorbe, da jih spremenite v Telo.</translation>
+Če je vaš dokument podedovan in ima predmete Snovalanika delov (PartDesign) brez Teles, uporabitete Snovalnikovo zmožnost pretvorbe, da jih spremenite v Telesa.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="186"/>
@@ -3812,7 +3812,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Če želite ustvariti nov PartDesign predmet, mora biti v dokumentu dejavno telo. Naredite enega dejavnega (dvoklik) ali ustvarite novega.</translation>
+      <translation>Če želite ustvariti nov predmet Snovalnika delov, mora biti v dokumentu dejavno telo. Naredite enega dejavnega (dvoklik) ali ustvarite novega.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="222"/>
@@ -3965,17 +3965,17 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="138"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Dokument "%1", ki ga urejate, je bil narejen v starejši različici delavnega okolja PartDesign.</translation>
+      <translation>Dokument "%1", ki ga urejate, je bil narejen v starejši različici delavnega okolja Snovalnik delov (PartDesign).</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="141"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Želite preseliti, da bi lahko uporabljali nove zmožnosti PartDesigna?</translation>
+      <translation>Želite preseliti, da bi lahko uporabljali zmožnosti novega Snovalnika delov?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Kaže, da je dokument "%1" bodisi sredi selitve iz podedovanega PartDesigna, bodisi ima malo pokvarjeno zasnovo.</translation>
+      <translation>Kaže, da je dokument "%1" bodisi sredi selitve iz podedovanega Snovalnika delova, bodisi ima malo okvarjeno zasnovo.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="148"/>
@@ -3988,8 +3988,8 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Opomba: Če se odločite za selitev, datoteke ne boste mogli več urejati s starejšimi različicami FreeCADa.
-Če zavrnete selitev, ne boste mogli uporabljati novih zmožnosti PartDesigna, kot so Telesa in Deli. Posledično, ne bo mogoče uporabljati vaših delov v sestavljalnem delavnem okolju.
-Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča kadarkoli.</translation>
+Če zavrnete selitev, ne boste mogli uporabljati zmožnosti Snovalnika delov (PartDesign), kot so Telesa in Deli. Posledično, ne bo mogoče uporabljati vaših delov v sestavljalnem delavnem okolju.
+Neglede na to je selitev v bodoče z "Snovanje delov -&gt; Preseli" mogoča kadarkoli.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
@@ -4663,7 +4663,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation>Oblikovanje &amp;delov</translation>
+      <translation>&amp;Snovanje delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4723,7 +4723,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation>Pomočnik za oblikovanje delov</translation>
+      <translation>Pomočnik za snovanje delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -4874,7 +4874,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../../App/Body.cpp" line="401"/>
       <source>Linked object is not a PartDesign feature</source>
-      <translation>Povezani predmet ni zmožnost Oblikovanja delov (PartDesign)</translation>
+      <translation>Povezani predmet ni značilnost v okolju Snovanje delov (PartDesign)</translation>
     </message>
     <message>
       <location filename="../../../App/Body.cpp" line="408"/>

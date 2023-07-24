@@ -2211,7 +2211,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <translation>Hauteur (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porte</translation>
     </message>
@@ -6027,7 +6027,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
-      <translation>Outils Arch</translation>
+      <translation>Outils de Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="170"/>

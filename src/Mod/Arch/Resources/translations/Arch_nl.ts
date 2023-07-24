@@ -269,7 +269,7 @@ Laat deze leeg om alle objecten uit het document te gebruiken</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="118"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Als dit is ingeschakeld worden er extra regels gevuld met elk overwogen object. Zo niet, dan alleen het totaal.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
@@ -279,7 +279,7 @@ Laat deze leeg om alle objecten uit het document te gebruiken</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="128"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Als dit is ingeschakeld worden het schema en het bijbehorende rekenblad bijgewerkt wanneer het document wordt herberekend.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
@@ -319,12 +319,12 @@ Laat deze leeg om alle objecten uit het document te gebruiken</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
       <source>Put selected objects into the 'Objects' column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the 'Objects' column of the selected row</translation>
+      <translation>Plaats de geselecteerde objecten in de kolom 'Objecten' van de geselecteerde rij</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
       <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
-      <translation type="unfinished">This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</translation>
+      <translation>Dit exporteert de resultaten naar een CSV- of Markdown-bestand. Opmerking voor de CSV-export: In Libreoffice kunt u dit CSV-bestand gekoppeld houden door met de rechtermuisknop te klikken op de tabbalk Bladen - Nieuw werkblad - Vanuit bestand - Link (Opmerking: vanaf LibreOffice v6.x is het juiste pad: Bladen - Werkblad invoegen... - Vanuit bestand - Bladeren...)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="187"/>
@@ -2238,7 +2238,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Hoogte (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation type="unfinished">Door</translation>
     </message>

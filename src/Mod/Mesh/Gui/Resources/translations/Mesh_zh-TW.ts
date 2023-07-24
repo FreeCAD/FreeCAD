@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
-      <translation>交錯</translation>
+      <translation>交集</translation>
     </message>
   </context>
   <context>
@@ -591,7 +591,7 @@
     <message>
       <location filename="../../Command.cpp" line="1606"/>
       <source>Split selected mesh into its components</source>
-      <translation>將選定的網格拆分為其組件</translation>
+      <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -689,47 +689,47 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Mesh VertexCurvature</source>
-      <translation>Mesh VertexCurvature</translation>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="183"/>
       <source>Mesh Smoothing</source>
-      <translation>Mesh Smoothing</translation>
+      <translation type="unfinished">Mesh Smoothing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Harmonize mesh normals</source>
-      <translation>Harmonize mesh normals</translation>
+      <translation type="unfinished">Harmonize mesh normals</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Flip mesh normals</source>
-      <translation>Flip mesh normals</translation>
+      <translation type="unfinished">Flip mesh normals</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1424"/>
       <source>Fill up holes</source>
-      <translation>Fill up holes</translation>
+      <translation type="unfinished">Fill up holes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1575"/>
       <source>Mesh merge</source>
-      <translation>合併網格</translation>
+      <translation type="unfinished">Mesh merge</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1618"/>
       <source>Mesh split</source>
-      <translation>分割網格</translation>
+      <translation type="unfinished">Mesh split</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1670"/>
       <source>Mesh scale</source>
-      <translation>縮放網格</translation>
+      <translation type="unfinished">Mesh scale</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="153"/>
       <source>Mesh Decimating</source>
-      <translation>Mesh Decimating</translation>
+      <translation type="unfinished">Mesh Decimating</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
@@ -739,47 +739,47 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
       <source>Remove non-manifolds</source>
-      <translation>Remove non-manifolds</translation>
+      <translation type="unfinished">Remove non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
       <source>Fix indices</source>
-      <translation>Fix indices</translation>
+      <translation type="unfinished">Fix indices</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>Remove degenerated faces</source>
-      <translation>Remove degenerated faces</translation>
+      <translation type="unfinished">Remove degenerated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="875"/>
       <source>Remove duplicated faces</source>
-      <translation>Remove duplicated faces</translation>
+      <translation type="unfinished">Remove duplicated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="940"/>
       <source>Remove duplicated points</source>
-      <translation>Remove duplicated points</translation>
+      <translation type="unfinished">Remove duplicated points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
       <source>Fix self-intersections</source>
-      <translation>Fix self-intersections</translation>
+      <translation type="unfinished">Fix self-intersections</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1097"/>
       <source>Remove folds</source>
-      <translation>Remove folds</translation>
+      <translation type="unfinished">Remove folds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1138"/>
       <source>Repair mesh</source>
-      <translation>Repair mesh</translation>
+      <translation type="unfinished">Repair mesh</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="159"/>
       <source>Delete selection</source>
-      <translation>Delete selection</translation>
+      <translation type="unfinished">Delete selection</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="916"/>
@@ -796,12 +796,12 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
-      <translation>分割</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Segment</source>
-      <translation>Segment</translation>
+      <translation type="unfinished">Segment</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1719"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1826"/>
       <source>Fill hole</source>
-      <translation>Fill hole</translation>
+      <translation type="unfinished">Fill hole</translation>
     </message>
   </context>
   <context>
@@ -819,12 +819,12 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decimating</translation>
+      <translation type="unfinished">Decimating</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>Reduction</translation>
+      <translation type="unfinished">Reduction</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -834,7 +834,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation>Full</translation>
+      <translation type="unfinished">Full</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
@@ -1159,17 +1159,17 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
       <source>Check for non-manifold points</source>
-      <translation>Check for non-manifold points</translation>
+      <translation type="unfinished">Check for non-manifold points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
       <source>Enable check for folds on surface</source>
-      <translation>Enable check for folds on surface</translation>
+      <translation type="unfinished">Enable check for folds on surface</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Only consider zero area faces as degenerated</translation>
+      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
     </message>
   </context>
   <context>
@@ -1318,7 +1318,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>Deviation of tessellation to the actual surface</translation>
+      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
@@ -1333,17 +1333,17 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation>Maximal deviation between mesh and object</translation>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation>ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
       <source>Export AMF files using compression</source>
-      <translation>Export AMF files using compression</translation>
+      <translation type="unfinished">Export AMF files using compression</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
@@ -1359,7 +1359,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>This parameter indicates whether ZIP compression
+      <translation type="unfinished">This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</translation>
     </message>
   </context>
@@ -1383,7 +1383,7 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="80"/>
       <source>Default color for new meshes</source>
-      <translation>Default color for new meshes</translation>
+      <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="116"/>
@@ -1398,7 +1398,7 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
-      <translation>Default line color for new meshes</translation>
+      <translation type="unfinished">Default line color for new meshes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="185"/>
@@ -1416,7 +1416,7 @@ is used when writing a file in AMF format</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation>The bottom side of surface will be rendered the same way than top side.
+      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</translation>
@@ -1429,7 +1429,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>A bounding box will be displayed</translation>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
@@ -1450,7 +1450,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation>If this option is set Phong shading is used, otherwise flat shading.
+      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
 Shading defines the appearance of surfaces.
 
 With flat shading the surface normals are not defined per vertex that leads
@@ -1484,7 +1484,7 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Crease angle is a threshold angle between two faces.
+      <translation type="unfinished">Crease angle is a threshold angle between two faces.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</translation>
@@ -1548,22 +1548,22 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
       <source>Adaptive</source>
-      <translation>Adaptive</translation>
+      <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Frontal</source>
-      <translation>Frontal</translation>
+      <translation type="unfinished">Frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Frontal Quad</source>
-      <translation>Frontal Quad</translation>
+      <translation type="unfinished">Frontal Quad</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Parallelograms</source>
-      <translation>Parallelograms</translation>
+      <translation type="unfinished">Parallelograms</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="189"/>
@@ -1574,12 +1574,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
       <source>Running gmsh...</source>
-      <translation>Running gmsh...</translation>
+      <translation type="unfinished">Running gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="256"/>
       <source>Failed to start</source>
-      <translation>Failed to start</translation>
+      <translation type="unfinished">Failed to start</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
@@ -1623,7 +1623,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
-      <translation>Surface fit</translation>
+      <translation type="unfinished">Surface fit</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
@@ -1653,7 +1653,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
-      <translation>計算</translation>
+      <translation type="unfinished">Compute</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1663,7 +1663,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>Before fitting the surface select an area.</translation>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
     </message>
   </context>
   <context>
@@ -1671,37 +1671,37 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation>Remesh by Gmsh</translation>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation>Remeshing Parameter</translation>
+      <translation type="unfinished">Remeshing Parameter</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation>Meshing:</translation>
+      <translation type="unfinished">Meshing:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation>Max element size (0.0 = Auto):</translation>
+      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation>Min element size (0.0 = Auto):</translation>
+      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>角度:</translation>
+      <translation>角度：</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation>Gmsh</translation>
+      <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1711,7 +1711,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation>Kill</translation>
+      <translation type="unfinished">Kill</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -1843,7 +1843,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="92"/>
       <location filename="../../Segmentation.ui" line="172"/>
       <source>Curvature</source>
-      <translation>Curvature</translation>
+      <translation type="unfinished">Curvature</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
@@ -1863,17 +1863,17 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
       <source>Freeform</source>
-      <translation>Freeform</translation>
+      <translation type="unfinished">Freeform</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Max. Curvature</translation>
+      <translation type="unfinished">Max. Curvature</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. Curvature</translation>
+      <translation type="unfinished">Min. Curvature</translation>
     </message>
   </context>
   <context>
@@ -1893,7 +1893,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
       <source>Parameters...</source>
-      <translation>參數...</translation>
+      <translation type="unfinished">Parameters...</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
@@ -1933,7 +1933,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>軸座標</translation>
+      <translation>軸</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
@@ -2011,33 +2011,33 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Number of facets:</source>
-      <translation>Number of facets:</translation>
+      <translation type="unfinished">Number of facets:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Minimum bound:</source>
-      <translation>Minimum bound:</translation>
+      <translation type="unfinished">Minimum bound:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="84"/>
       <source>Maximum bound:</source>
-      <translation>Maximum bound:</translation>
+      <translation type="unfinished">Maximum bound:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation>網格資訊框</translation>
+      <translation type="unfinished">Mesh info box</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation>網格資訊</translation>
+      <translation type="unfinished">Mesh info</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
       <location filename="../../Workbench.cpp" line="128"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation>X: %1	Y: %2	Z: %3</translation>
+      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2045,7 +2045,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>Boundings of %1:</source>
-      <translation>Boundings of %1:</translation>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -2065,7 +2065,7 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="205"/>
       <location filename="../../Command.cpp" line="276"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>Unknown error occurred while running OpenSCAD.</translation>
+      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="139"/>
@@ -2074,7 +2074,7 @@ to a smoother appearance.
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>於您的系統上未發現OpenSCAD
-請至http://www.openscad.org/index.html來安裝.</translation>
+請至http://www.openscad.org/index.html來安裝</translation>
     </message>
   </context>
   <context>
@@ -2136,7 +2136,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation>Inventor V2.1 ASCII</translation>
+      <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
@@ -2147,7 +2147,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>NASTRAN</source>
-      <translation>NASTRAN</translation>
+      <translation type="unfinished">NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -2163,7 +2163,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Simple Model Format</source>
-      <translation>Simple Model Format</translation>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
@@ -2178,12 +2178,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="379"/>
       <source>Compressed X3D</source>
-      <translation>Compressed X3D</translation>
+      <translation type="unfinished">Compressed X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>WebGL/X3D</source>
-      <translation>WebGL/X3D</translation>
+      <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
@@ -2208,12 +2208,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="386"/>
       <source>Asymptote Format</source>
-      <translation>Asymptote Format</translation>
+      <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>3D Manufacturing Format</source>
-      <translation>3D Manufacturing Format</translation>
+      <translation type="unfinished">3D Manufacturing Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
@@ -2233,12 +2233,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>網格'%1'不為實體.</translation>
+      <translation>網格'%1'不為實體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1188"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>網格'%1'為實體.</translation>
+      <translation>網格'%1'為實體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1190"/>
@@ -2263,12 +2263,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Scaling</source>
-      <translation>縮放</translation>
+      <translation type="unfinished">Scaling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1666"/>
       <source>Enter scaling factor:</source>
-      <translation>輸入縮放係數:</translation>
+      <translation type="unfinished">Enter scaling factor:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="75"/>
@@ -2283,7 +2283,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="782"/>
       <source>Display segments</source>
-      <translation>顯示片段</translation>
+      <translation type="unfinished">Display segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="788"/>
