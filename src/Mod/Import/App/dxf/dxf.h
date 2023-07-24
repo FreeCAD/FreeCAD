@@ -21,10 +21,6 @@
 #include <Mod/Import/ImportGlobal.h>
 
 
-//Following is required to be defined on Ubuntu with OCC 6.3.1
-#ifndef HAVE_IOSTREAM
-#define HAVE_IOSTREAM
-#endif
 
 typedef int ColorIndex_t; // DXF color index
 
