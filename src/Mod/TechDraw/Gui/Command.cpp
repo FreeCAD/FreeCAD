@@ -1370,6 +1370,11 @@ void CmdTechDrawDraftView::activated(int iMsg)
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end();
          ++it) {
+         if ((*it)->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
+            (*it)->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            // skip over TechDraw objects as they are not valid subjects for a DraftView
+            continue;
+        }
         std::string FeatName = getUniqueObjectName("DraftView");
         std::string SourceName = (*it)->getNameInDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
@@ -1420,6 +1425,11 @@ void CmdTechDrawArchView::activated(int iMsg)
     App::DocumentObject* archObject = nullptr;
     int archCount = 0;
     for (auto& obj : objects) {
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
+            obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            // skip over TechDraw objects as they are not valid subjects for a ArchView
+            continue;
+        }
         if (DrawGuiUtil::isArchSection(obj)) {
             archCount++;
             archObject = obj;
