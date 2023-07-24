@@ -2746,9 +2746,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbBox3f box = getBoundingBox();
 
-#if (COIN_MAJOR_VERSION >= 3)
     float aspectRatio = vp.getViewportAspectRatio();
-#endif
 
     if (box.isEmpty())
         return;
@@ -2768,12 +2766,10 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     if (cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
         isOrthographic = true;
         height = static_cast<SoOrthographicCamera*>(cam)->height.getValue();
-#if (COIN_MAJOR_VERSION >= 3)
         if (aspectRatio < 1.0f)
             diff = sphere.getRadius() * 2 - height * aspectRatio;
         else
-#endif
-        diff = sphere.getRadius() * 2 - height;
+	    diff = sphere.getRadius() * 2 - height;
         pos = (box.getCenter() - direction * sphere.getRadius());
     }
     else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())) {
