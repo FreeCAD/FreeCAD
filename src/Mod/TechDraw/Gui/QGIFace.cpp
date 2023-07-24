@@ -96,6 +96,8 @@ QGIFace::QGIFace(int index) :
         setFillMode(PlainFill);
         setFill(m_colDefFill, m_styleDef);
     }
+
+    m_sharedRender = new QSvgRenderer();
 }
 
 QGIFace::~QGIFace()
@@ -540,16 +542,19 @@ void QGIFace::buildSvgHatch()
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before, after);
+    if (!m_sharedRender->load(colorXML)) {
+        Base::Console().Message("QGIF::buildSvgHatch - failed to load svg string\n");
+        return;
+    }
     long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
             tile->setScale(m_fillScale);
-            if (tile->load(&colorXML)) {
-                tile->setParentItem(m_svgHatchArea);
-                tile->setPos(iw*wTile + getHatchOffset().x,
-                             -h + ih*hTile + getHatchOffset().y);
-            }
+            tile->setSharedRenderer(m_sharedRender);
+            tile->setParentItem(m_svgHatchArea);
+            tile->setPos(iw*wTile + getHatchOffset().x,
+                         -h + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
                 Base::Console().Warning("SVG tile count exceeded: %ld\n", tileCount);
