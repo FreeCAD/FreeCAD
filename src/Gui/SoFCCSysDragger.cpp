@@ -90,6 +90,10 @@ TDragger::TDragger()
 {
     SO_KIT_CONSTRUCTOR(TDragger);
 
+#if defined(Q_OS_MAC)
+    this->ref();
+#endif
+
     SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(translatorActive, SoSeparator, TRUE, translatorSwitch, "", TRUE);
@@ -374,6 +378,10 @@ void RDragger::initClass()
 RDragger::RDragger()
 {
     SO_KIT_CONSTRUCTOR(RDragger);
+
+#if defined(Q_OS_MAC)
+    this->ref();
+#endif
 
     SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
