@@ -120,12 +120,11 @@ TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate()
 
 void QGISVGTemplate::draw()
 {
-    TechDraw::DrawSVGTemplate* tmplte = getSVGTemplate();
-    if (!tmplte) {
+    TechDraw::DrawSVGTemplate* svgTemplate = getSVGTemplate();
+    if (!svgTemplate) {
         throw Base::RuntimeError("Template Feature not set for QGISVGTemplate");
     }
-    QString templateSvg = tmplte->processTemplate();
-    load(templateSvg.toUtf8());
+    load(svgTemplate->m_SVGMarkup.toUtf8());
 }
 
 void QGISVGTemplate::updateView(bool update)

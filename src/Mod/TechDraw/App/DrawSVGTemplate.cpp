@@ -85,6 +85,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         //We could try to find matching field names are preserve the values from
         //the old template, but there is no guarantee that the same fields will be present.
         checkFilepath();
+        processTemplate();
         EditableTexts.setValues(getEditableTextsFromTemplate());
     } else if (prop == &EditableTexts) {
         //handled by ViewProvider
@@ -95,26 +96,26 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
 
 //parse the Svg code, inserting current EditableTexts values, and return the result as a QString.
 //While parsing, note the Orientation, Width and Height values in the Svg code.
-QString DrawSVGTemplate::processTemplate()
+void DrawSVGTemplate::processTemplate()
 {
 //    Base::Console().Message("DSVGT::processTemplate() - isRestoring: %d\n", isRestoring());
     if (isRestoring()) {
         //until everything is fully restored, the embedded file is not available, so we
         //can't do anything
-        return QString();
+        return;
     }
 
     QFile templateFile(Base::Tools::fromStdString(Filepath.getValue()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", Filepath.getValue());
-        return QString();
+        return;
     }
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
             Filepath.getValue());
-        return QString();
+        return;
     }
 
     XMLQuery query(templateDocument);
@@ -167,7 +168,7 @@ QString DrawSVGTemplate::processTemplate()
     Orientation.setValue(isLandscape ? 1 : 0);
 
     //all Qt holds on files should be released on exit #4085
-    return templateDocument.toString();
+    m_SVGMarkup = templateDocument.toString();
 }
 
 double DrawSVGTemplate::getWidth() const

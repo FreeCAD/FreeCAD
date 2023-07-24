@@ -3819,7 +3819,7 @@ def exportPage(page, filename):
     filename : str
         The path of the new DXF file.
     """
-    if hasattr(page.Template, "Template"):  # techdraw
+    if hasattr(page.Template, "Filepath"):  # techdraw
         template = ""  # not supported for now...
         views = page.Views
     else:  # drawing
