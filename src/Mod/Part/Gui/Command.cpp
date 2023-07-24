@@ -316,6 +316,7 @@ void CmdPartCut::activated(int iMsg)
     }
 
     bool askUser = false;
+    std::vector<std::string> names;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         const TopoDS_Shape& shape = Part::Feature::getShape(obj);
@@ -327,34 +328,14 @@ void CmdPartCut::activated(int iMsg)
                 return;
             askUser = true;
         }
-    }
 
-    std::string FeatName = getUniqueObjectName("Cut");
+        names.push_back(Base::Tools::quoted(it->getFeatName()));
+    }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),Sel[0].getFeatName());
-    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
-
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = nullptr;
-    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
-
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", Sel[0].getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", Sel[0].getFeatName());
+    doCommand(Doc, "from BOPTools import BOPFeatures");
+    doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
+    doCommand(Doc, "bp.make_cut([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
     commitCommand();
 }
@@ -411,11 +392,7 @@ void CmdPartCommon::activated(int iMsg)
     }
 
     bool askUser = false;
-    std::string FeatName = getUniqueObjectName("Common");
-    std::stringstream str;
-    std::vector<Gui::SelectionObject> partObjects;
-
-    str << "App.activeDocument()." << FeatName << ".Shapes = [";
+    std::vector<std::string> names;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         const TopoDS_Shape& shape = Part::Feature::getShape(obj);
@@ -427,34 +404,14 @@ void CmdPartCommon::activated(int iMsg)
                 return;
             askUser = true;
         }
-        str << "App.activeDocument()." << it->getFeatName() << ",";
-        partObjects.push_back(*it);
+
+        names.push_back(Base::Tools::quoted(it->getFeatName()));
     }
-    str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Common"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
-    runCommand(Doc,str.str().c_str());
-
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = nullptr;
-    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
-
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
+    doCommand(Doc, "from BOPTools import BOPFeatures");
+    doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
+    doCommand(Doc, "bp.make_multi_common([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
     commitCommand();
 }
@@ -511,11 +468,7 @@ void CmdPartFuse::activated(int iMsg)
     }
 
     bool askUser = false;
-    std::string FeatName = getUniqueObjectName("Fusion");
-    std::stringstream str;
-    std::vector<Gui::SelectionObject> partObjects;
-
-    str << "App.activeDocument()." << FeatName << ".Shapes = [";
+    std::vector<std::string> names;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         const TopoDS_Shape& shape = Part::Feature::getShape(obj);
@@ -527,34 +480,14 @@ void CmdPartFuse::activated(int iMsg)
                 return;
             askUser = true;
         }
-        str << "App.activeDocument()." << it->getFeatName() << ",";
-        partObjects.push_back(*it);
+
+        names.push_back(Base::Tools::quoted(it->getFeatName()));
     }
-    str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Fusion"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
-    runCommand(Doc,str.str().c_str());
-
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = nullptr;
-    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
-
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
+    doCommand(Doc, "from BOPTools import BOPFeatures");
+    doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
+    doCommand(Doc, "bp.make_multi_fuse([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
     commitCommand();
 }
