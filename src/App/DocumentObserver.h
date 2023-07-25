@@ -454,7 +454,7 @@ private:
 };
 
 /**
- * The DocumentObserver class simplfies the step to write classes that listen
+ * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
  * This is very useful for classes that needs to be notified when an observed
  * object has changed.
