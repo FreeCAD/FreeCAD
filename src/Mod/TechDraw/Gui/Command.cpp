@@ -171,7 +171,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a Template File")), templateDir,
-        QString::fromUtf8(QT_TR_NOOP("Template (*.svg *.dxf)")));
+        QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
