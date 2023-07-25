@@ -102,7 +102,7 @@ QGIFace::QGIFace(int index) :
 
 QGIFace::~QGIFace()
 {
-    //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
+    delete m_sharedRender;
 }
 
 /// redraw this face
@@ -527,16 +527,16 @@ void QGIFace::buildSvgHatch()
 //    Base::Console().Message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
-    double w = m_outline.boundingRect().width();
-    double h = m_outline.boundingRect().height();
-    //make the hatch tiled area big enough to handle rotations
-    double hatchOverlaySize = 2.0 * std::max(w, h);
+    double faceWidth = m_outline.boundingRect().width();
+    double faceHeight = m_outline.boundingRect().height();
+    double faceOverlaySize = Preferences::svgHatchFactor() * std::max(faceWidth, faceHeight);
     QPointF faceCenter = m_outline.boundingRect().center();
-    double nw = ceil(hatchOverlaySize / wTile);
-    double nh = ceil(hatchOverlaySize / hTile);
-    w = nw * wTile;
-    h = nh * hTile;
-    m_svgHatchArea->setRect(0., 0., w,-h);
+    double tilesWide = ceil(faceOverlaySize / wTile);
+    double tilesHigh = ceil(faceOverlaySize / hTile);
+
+    double overlayWidth = tilesWide * wTile;
+    double overlayHeight = tilesHigh * hTile;
+    m_svgHatchArea->setRect(0., 0., overlayWidth,-overlayHeight);
     m_svgHatchArea->centerAt(faceCenter);
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
@@ -547,17 +547,17 @@ void QGIFace::buildSvgHatch()
         return;
     }
     long int tileCount = 0;
-    for (int iw = 0; iw < int(nw); iw++) {
-        for (int ih = 0; ih < int(nh); ih++) {
+    for (int iw = 0; iw < int(tilesWide); iw++) {
+        for (int ih = 0; ih < int(tilesHigh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
             tile->setScale(m_fillScale);
             tile->setSharedRenderer(m_sharedRender);
             tile->setParentItem(m_svgHatchArea);
             tile->setPos(iw*wTile + getHatchOffset().x,
-                         -h + ih*hTile + getHatchOffset().y);
+                         -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("SVG tile count exceeded: %ld\n", tileCount);
+                Base::Console().Warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -585,7 +585,7 @@ void QGIFace::buildPixHatch()
     double faceHeight = m_outline.boundingRect().height();
     QRectF faceRect = m_outline.boundingRect();
     QPointF faceCenter = faceRect.center();
-    double hatchOverlaySize = 2.0 * std::max(faceWidth, faceHeight);
+    double hatchOverlaySize = Preferences::svgHatchFactor() * std::max(faceWidth, faceHeight);
     double numberWide = ceil(hatchOverlaySize / wTile);
     double numberHigh = ceil(hatchOverlaySize / hTile);
     double overlayWidth = numberWide * wTile;
@@ -618,7 +618,7 @@ void QGIFace::buildPixHatch()
     pm  = QPixmap::fromImage(imageIn);
     pm = pm.scaled(wTile, hTile);
     if (pm.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - pm is null\n");
+        Base::Console().Error("QGIF::buildPixHatch - pixmap is null\n");
         return;
     }
 
@@ -626,7 +626,6 @@ void QGIFace::buildPixHatch()
     QImage tileField(overlayWidth, overlayHeight, QImage::Format_ARGB32);
     QPointF fieldCenter(overlayWidth / 2.0, overlayHeight / 2.0);
 
-    //do we have to rotate the field before we clip it??
     tileField.fill(Qt::transparent);
     QPainter painter2(&tileField);
     QPainter::RenderHints hints = painter2.renderHints();
@@ -646,7 +645,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld\n", tileCount);
+                Base::Console().Warning("Pixmap tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
