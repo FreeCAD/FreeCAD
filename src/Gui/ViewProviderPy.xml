@@ -256,7 +256,7 @@ view: View3DInventorPy\n    Default to active view. Optional.</UserDocu>
     </Attribute>
     <Attribute Name="DropPrefix" ReadOnly="true" >
       <Documentation>
-          <UserDocu>Subname referecing the sub-object for holding dropped object.</UserDocu>
+          <UserDocu>Subname referencing the sub-object for holding dropped object.</UserDocu>
       </Documentation>
       <Parameter Name="DropPrefix" Type="String" />
     </Attribute>
