@@ -24,9 +24,13 @@
 #ifndef _PreComp_
 # include <QContextMenuEvent>
 # include <QMenu>
+#include <QJsonValue>
+#include <QJsonArray>
+#include <QJsonDocument>
 #endif
 
 #include <cstring>
+#include <csignal>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -842,6 +846,121 @@ void PrefFontBox::savePreferences()
   QFont currFont = currentFont();
   QString currName = currFont.family();
   getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
+}
+
+
+// --------------------------------------------------------------------
+
+PrefTableWidget::PrefTableWidget(QWidget* parent) : QTableWidget(parent)
+{
+}
+
+
+void PrefTableWidget::restorePreferences()
+{
+    // Delete previous table data
+    setRowCount(0);
+
+    QByteArray rawData = QByteArray::fromStdString(getWindowParameter()->GetASCII(entryName()));
+    QJsonDocument json = QJsonDocument::fromJson(rawData);
+    QJsonArray jsonRows = json.array();
+
+    int numRow = rowCount();
+    // If one dimensional
+    for(const QJsonValue& jsonRow : jsonRows) {
+        insertRow(numRow);
+        // 1-dimensional data
+        if (jsonRow.isString()) {
+            setItem(
+                numRow,
+                0,
+                new QTableWidgetItem(jsonRow.toString())
+            );
+        }
+        else if (jsonRow.isArray()) {
+            QJsonArray jsonColumns = jsonRow.toArray();
+            int numColumn = 0;
+            for(const QJsonValue& jsonColumn : jsonColumns) {
+                if (!jsonColumn.isString()) {
+                    // Base::Console().Error(tr("Couldn't restore %1 preference: unknown data structure").arg(QString(entryName())).toStdString().c_str());
+                    // Base::Console().Error("Couldn't restore %s preference: unknown data structure", entryName());
+                }
+
+                // Insert a column if not exists
+                if (columnCount() < numColumn + 1) {
+                    insertColumn(numColumn);
+                }
+
+                setItem(
+                    numRow,
+                    numColumn,
+                    new QTableWidgetItem(jsonColumn.toString())
+                );
+                ++numColumn;
+            }
+        }
+        else {
+            // Base::Console().Error(tr("Couldn't restore %1 preference: unknown data structure").arg(QString(entryName())).toStdString().c_str());
+            // Base::Console().Error("Couldn't restore %s preference: unknown data structure", entryName());
+        }
+
+        ++numRow;
+    }
+    // restorePreferencesManually();
+}
+
+// void PrefTableWidget::restorePreferences
+
+void PrefTableWidget::savePreferences()
+{
+    if(getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
+
+    Base::Console().Message("json: %s\n", toStdString());
+    getWindowParameter()->SetASCII(entryName(), toStdString().c_str());
+}
+
+// Would QXMLSerilizer be suited for this? Could it cause a security exploit using QXMLQuery on foreign files?
+std::string PrefTableWidget::toStdString()
+{
+    QJsonArray rowContainer;
+    for(int row = 0; row < rowCount(); row++) {
+
+        // No reason to use 2-dimensional arrays, if only 1-dimensional data
+        if (columnCount() == 1) {
+            // Check if cell exists (empty cells might not have been initialized)
+            if(!item(row, 0)) {
+                // Skip completely empty row
+                continue;
+            }
+
+            QJsonValue cellContent(item(row, 0)->text());
+            rowContainer.push_back(cellContent);
+            continue;
+        }
+
+        QJsonArray columnContainer;
+        for (int column = 0; column < columnCount(); column++) {
+            QJsonValue cellContent;
+            // Check if cell exists (empty cell might not have been initilized)
+            if (item(row, column)) {
+                cellContent = QJsonValue(item(row, column)->text());
+            }
+            else {
+                // Need to save empty string if cell doesn't exist to satisfy data
+                // structure (skipping a cell in between other cells in a row would
+                // cause column count mismatch with other rows)
+                cellContent = QJsonValue(QString());
+            }
+            columnContainer.push_back(cellContent);
+        }
+        QJsonValue rowContent(columnContainer);
+        rowContainer.push_back(rowContent);
+    }
+
+    return QJsonDocument(rowContainer).toJson(QJsonDocument::Compact).toStdString();
 }
 
 #include "moc_PrefWidgets.cpp"

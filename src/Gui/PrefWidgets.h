@@ -27,6 +27,7 @@
 #include <QComboBox>
 #include <QFontComboBox>
 #include <QRadioButton>
+#include <QTableWidget>
 #include <QTextEdit>
 
 #include <Base/Parameter.h>
@@ -419,6 +420,26 @@ protected:
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
+};
+
+
+/** The PrefTableWidget class
+ * \author Benjamin Bræstrup Sayoc
+*/
+class GuiExport PrefTableWidget : public QTableWidget, public PrefWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QByteArray prefEntry READ entryName WRITE setEntryName)
+    Q_PROPERTY(QByteArray prefPath READ paramGrpPath WRITE setParamGrpPath)
+
+public:
+    PrefTableWidget(QWidget* parent = nullptr);
+    std::string toStdString();
+
+protected:
+    void restorePreferences() override;
+    void savePreferences() override;
 };
 
 } // namespace Gui
