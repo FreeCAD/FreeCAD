@@ -20,11 +20,6 @@ macro(InitializeFreeCADBuildOptions)
     else()
         option(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
     endif()
-    if (BUILD_WITH_CONDA AND WIN32)
-        option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" OFF)
-    else()
-        option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
-    endif()
 
     # == Win32 is default behaviour use the LibPack copied in Source tree ==========
     if(MSVC)
