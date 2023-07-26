@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
@@ -8558,8 +8558,8 @@ Wilt u een andere map opgeven?</translation>
       <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
@@ -10350,8 +10350,8 @@ the current copy will be lost.
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="393"/>
       <location filename="../MainWindow.cpp" line="2053"/>
+      <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>
