@@ -55,6 +55,8 @@ public:
     double getHeight() const override;
     QString m_SVGMarkup;
 
+    //! Fills the editable text fields with values from preferences
+    void fillEditableTexts();
 
 protected:
     void checkFilepath();

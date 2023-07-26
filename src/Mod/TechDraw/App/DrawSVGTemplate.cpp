@@ -27,6 +27,8 @@
 # include <sstream>
 # include <QDomDocument>
 # include <QFile>
+# include <QJsonDocument>
+# include <QJsonArray>
 #endif
 
 #include <App/Application.h>
@@ -42,7 +44,9 @@
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"
+#include "Preferences.h"
 
+#include <csignal>
 
 using namespace TechDraw;
 
@@ -86,6 +90,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         //the old template, but there is no guarantee that the same fields will be present.
         checkFilepath();
         processTemplate();
+        fillEditableTexts();
     } else if (prop == &EditableTexts) {
         // partially handled by ViewProvider
         processTemplate();
@@ -200,6 +205,21 @@ void DrawSVGTemplate::checkFilepath()
         }
         Filepath.setValue(nullptr);// We don't want to use an invalid filepath further down the road
         throw Base::RuntimeError("Could not read the new template file");
+    }
+}
+
+void DrawSVGTemplate::fillEditableTexts() { 
+    QByteArray rawPresetEntries = QByteArray::fromStdString( 
+        Preferences::getPreferenceGroup("Template")->GetASCII("EditableTextPresets") 
+    ); 
+    QJsonArray presetEntries = QJsonDocument::fromJson(rawPresetEntries).array();
+
+    EditableTexts.setStatus(App::Property::Busy, true);
+    for(const QJsonValue presetEntry : presetEntries) { 
+        std::string fieldName = presetEntry.toArray().at(0).toString().toStdString(); 
+        std::string value = presetEntry.toArray().at(1).toString().toStdString();
+        // Currently, everytime we set a single value, it will trigger processTemplate() :(
+        EditableTexts.setValue(fieldName, value);
     }
 }
 
