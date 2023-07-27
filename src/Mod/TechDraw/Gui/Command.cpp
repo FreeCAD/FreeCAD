@@ -804,13 +804,6 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup() : Command("TechDraw_Pro
 void CmdTechDrawProjectionGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-    //    auto inlist = page->getInListEx(true);
-    //    inlist.insert(page);
 
     //set projection direction from selected Face
     //use first object with a face selected
@@ -874,6 +867,12 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                              QObject::tr("No Shapes, Groups or Links in this selection"));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
@@ -1352,11 +1351,6 @@ CmdTechDrawDraftView::CmdTechDrawDraftView() : Command("TechDraw_DraftView")
 void CmdTechDrawDraftView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
     std::vector<App::DocumentObject*> objects =
         getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -1366,6 +1360,12 @@ void CmdTechDrawDraftView::activated(int iMsg)
                              QObject::tr("Select at least one object."));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end();
