@@ -317,6 +317,8 @@ SET(Gui_UIC_SRCS
     DlgRevertToBackupConfig.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
+    DlgSettingsFonts.ui
+    DlgSettingsFontsSystem.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsViewColor.ui
@@ -562,6 +564,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
     DlgSettingsCacheDirectory.cpp
+    DlgSettingsFonts.cpp
     DlgSettingsNavigation.cpp
     DlgSettingsSelection.cpp
     DlgSettingsViewColor.cpp
@@ -581,6 +584,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
     DlgSettingsCacheDirectory.h
+    DlgSettingsFonts.h
     DlgSettingsNavigation.h
     DlgSettingsSelection.h
     DlgSettingsViewColor.h
@@ -602,6 +606,8 @@ SET(Dialog_Settings_SRCS
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
+    DlgSettingsFonts.ui
+    DlgSettingsFontsSystem.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsViewColor.ui
