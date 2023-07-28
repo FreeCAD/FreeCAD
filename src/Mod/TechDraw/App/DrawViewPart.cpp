@@ -1664,7 +1664,7 @@ bool DrawViewPart::prefHardViz()
 
 bool DrawViewPart::prefSeamViz()
 {
-    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", true);
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", false);
 }
 
 bool DrawViewPart::prefSmoothViz()
