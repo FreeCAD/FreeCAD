@@ -58,7 +58,11 @@ void DlgPrefsTechDrawHLRImp::saveSettings()
 
 void DlgPrefsTechDrawHLRImp::loadSettings()
 {
+    // set defaults for HLR
+    bool visibleSeamDefault = false;
+    ui->pcbSeamViz->setChecked(visibleSeamDefault);
     ui->pcbSeamViz->onRestore();
+
     ui->pcbSmoothViz->onRestore();
     ui->pcbHardViz->onRestore();
     ui->pcbPolygon->onRestore();
