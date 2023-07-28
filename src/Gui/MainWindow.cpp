@@ -1170,9 +1170,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     auto view = dynamic_cast<MDIView*>(w->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
-
+    if (view)
+    {
+        d->activeView = view;
+        Application::Instance->viewActivated(view);
+    }
+    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
