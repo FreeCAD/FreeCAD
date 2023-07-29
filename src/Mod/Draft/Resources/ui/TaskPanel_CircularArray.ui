@@ -255,7 +255,7 @@ This only works if "Link array" is off.</string>
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
           </property>
           <property name="text">
-           <string>Link array</string>
+           <string>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</string>
           </property>
           <property name="checked">
            <bool>true</bool>

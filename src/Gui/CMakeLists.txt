@@ -1047,6 +1047,7 @@ SET(Widget_HPP_SRCS
     ProgressDialog.h
     QuantitySpinBox.h
     QuantitySpinBox_p.h
+    QFontComboBoxFC.h
     SpinBox.h
     Splashscreen.h
     PythonWrapper.h
