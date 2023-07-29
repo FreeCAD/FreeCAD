@@ -39,7 +39,7 @@ ContinuationIndentWidth: 4
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
-InsertBraces: false
+InsertBraces: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: None
