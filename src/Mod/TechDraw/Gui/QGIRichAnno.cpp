@@ -145,10 +145,13 @@ void QGIRichAnno::setTextItem()
 //    Base::Console().Message("QGIRA::setTextItem() - %s\n", getViewName());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
+    QRectF inRect = m_text->boundingRect();
+    double fontSize = m_text->font().pointSizeF();
 
     QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
     QRegularExpressionMatch match;
     double mmPerPoint = 0.353;                  // 25.4 mm/in / 72 points/inch
+    double cssPxPerPoint = 16.0 / 12.0;         // CSS says 12 pt text is 16 px high
     double sceneUnitsPerPoint = Rez::getRezFactor() * mmPerPoint;      // scene units per point: 3.53
     int pos = 0;
     QStringList findList;
@@ -159,15 +162,14 @@ void QGIRichAnno::setTextItem()
         QString qsOldSize = match.captured(1);
 
         QString repl = found;
-        double newSize = qsOldSize.toDouble();
-
+        double newSize = qsOldSize.toDouble();      // in points
         // The font size in the QGraphicsTextItem html is interpreted differently
-        // in svg rendering compared to the screen or pdf? The calculation for
-        // screen/pdf makes sense (scene units) and mm/point makes sense for svg
-        // but the requirement to divide by 2 is a mystery.
+        // in svg rendering compared to the screen or pdf?
         if (getExportingSvg()) {
-            newSize = newSize / ( 2.0 * mmPerPoint);
+            // scale point size to CSS pixels
+            newSize = newSize * cssPxPerPoint;
         } else {
+            // scale point size to scene units
             newSize = newSize * sceneUnitsPerPoint;
         }
         QString qsNewSize = QString::number(newSize, 'f', 2);
@@ -182,37 +184,80 @@ void QGIRichAnno::setTextItem()
         outHtml = outHtml.replace(findList[iRepl], replList[iRepl]);
     }
 
+    prepareGeometryChange();
+    double actualWidth = m_text->textWidth();
     m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
     m_text->setHtml(outHtml);
     if (getExportingSvg()) {
+        m_text->setTextWidth(actualWidth);
         // lines are correctly spaced on screen or in pdf, but svg needs this
         setLineSpacing(100);
     }
 
     if (annoFeat->ShowFrame.getValue()) {
-        QRectF r = m_text->boundingRect().adjusted(1, 1,-1, -1);
+        QRectF outRect = m_text->boundingRect().adjusted(1, 1,-1, -1);
         m_rect->setPen(rectPen());
         m_rect->setBrush(Qt::NoBrush);
-        m_rect->setRect(r);
+        m_rect->setRect(outRect);
+        if (getExportingSvg()) {
+            // the original text bounding rect is closer to the right size vs
+            // the bounding rect after the text size is changed
+            m_rect->setRect(inRect);
+        }
+        m_rect->centerAt(0.0, 0.0);
         m_rect->show();
     } else {
         m_rect->hide();
     }
 
     m_text->centerAt(0.0, 0.0);
-    m_rect->centerAt(0.0, 0.0);
+    if (getExportingSvg()) {
+        // m_text position will be wrong in svg, but m_rect will be correct, so
+        // we adjust the position of m_text
+        // double spaced default font size in px
+        double verticalAdjust = cssPxPerPoint * fontSize * 2.0;
+        QPointF textPos(m_rect->pos().x() + 1.0, m_rect->pos().y() + verticalAdjust);
+        m_text->setPos(textPos);
+    }
 }
 
+// attempt to space the lines correctly after the font sizes are changed to match
+// the Svg rendering of the QGraphicsTextItem.
 void QGIRichAnno::setLineSpacing(int lineSpacing)
 {
-    //this line spacing should be px, but seems to be %? in any event, it does
-    //space out the lines
+    // left to itself, Qt appears to space the lines according to this formula
+    // DeltaY(in mm) = (1 + 2*pointSize + margin) which vastly under spaces the
+    // lines
+    m_text->document()->setUseDesignMetrics(true);
+
     QTextBlock block = m_text->document()->begin();
     for (; block.isValid(); block = block.next()) {
         QTextCursor tc = QTextCursor(block);
-        QTextBlockFormat fmt = block.blockFormat();
-        fmt.setBottomMargin(lineSpacing);           //spaces out the lines!
-        tc.setBlockFormat(fmt);
+        QTextBlockFormat fmt = tc.blockFormat();
+        QTextCharFormat cFmt = tc.charFormat();
+        // this is already converted to pixels in setTextItem
+        //
+        double cssPixelSize = cFmt.font().pointSizeF();
+        // css Pixels are treated as if they were points in the conversion to Svg
+        double textHeightSU = Rez::guiX(cssPixelSize * 25.4 / 72.0);  // actual height of text in scene units
+        double pointSize = cssPixelSize * 72.0 / 96.0;
+        double deltaYSU = 1.0 + 2.0 * pointSize;    // how far Qt will space lines (based on samples)
+        double linegap = 0.4 * cssPixelSize;  // 20% gaps above and below
+        // margins will be included in Qt's calculation of spacing
+
+        double margin = linegap * pointSize / 10.0;
+        QTextBlockFormat spacerFmt = QTextBlockFormat();
+        if (block.previous().isValid()) {
+            // there is a block before this one, so add a top margin
+            spacerFmt.setTopMargin(margin);
+        }
+        if (block.next().isValid()) {
+            // there is another block after this, so add a bottom margin
+            spacerFmt.setBottomMargin(margin);
+        }
+        double requiredSpacing = (textHeightSU / (deltaYSU - 1.0)) * lineSpacing;
+        spacerFmt.setLineHeight(requiredSpacing, QTextBlockFormat::ProportionalHeight);
+        tc.mergeBlockFormat(spacerFmt);
     }
 }
 
