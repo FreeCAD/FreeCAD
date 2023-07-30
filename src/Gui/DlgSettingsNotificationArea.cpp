@@ -40,20 +40,12 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
 {
     ui->setupUi(this);
 
+    adaptUiToAreaEnabledState(ui->NotificationAreaEnabled->isChecked());
+
     connect(ui->NotificationAreaEnabled, &QCheckBox::stateChanged, [this](int state) {
         bool enabled = state == Qt::CheckState::Checked;
+        this->adaptUiToAreaEnabledState(enabled);
 
-        ui->NonIntrusiveNotificationsEnabled->setEnabled(enabled);
-        ui->maxDuration->setEnabled(enabled);
-        ui->maxDuration->setEnabled(enabled);
-        ui->minDuration->setEnabled(enabled);
-        ui->maxNotifications->setEnabled(enabled);
-        ui->maxWidgetMessages->setEnabled(enabled);
-        ui->autoRemoveUserNotifications->setEnabled(enabled);
-        ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(enabled);
-        ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(enabled);
-        ui->developerErrorSubscriptionEnabled->setEnabled(enabled);
-        ui->developerWarningSubscriptionEnabled->setEnabled(enabled);
         if (enabled) {
             QMessageBox::information(this,
                                      tr("Notification Area"),
@@ -98,6 +90,21 @@ void DlgSettingsNotificationArea::loadSettings()
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->onRestore();
     ui->developerErrorSubscriptionEnabled->onRestore();
     ui->developerWarningSubscriptionEnabled->onRestore();
+}
+
+void DlgSettingsNotificationArea::adaptUiToAreaEnabledState(bool enabled)
+{
+    ui->NonIntrusiveNotificationsEnabled->setEnabled(enabled);
+    ui->maxDuration->setEnabled(enabled);
+    ui->maxDuration->setEnabled(enabled);
+    ui->minDuration->setEnabled(enabled);
+    ui->maxNotifications->setEnabled(enabled);
+    ui->maxWidgetMessages->setEnabled(enabled);
+    ui->autoRemoveUserNotifications->setEnabled(enabled);
+    ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(enabled);
+    ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(enabled);
+    ui->developerErrorSubscriptionEnabled->setEnabled(enabled);
+    ui->developerWarningSubscriptionEnabled->setEnabled(enabled);
 }
 
 void DlgSettingsNotificationArea::changeEvent(QEvent* e)

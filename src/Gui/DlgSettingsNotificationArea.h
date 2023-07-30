@@ -50,6 +50,9 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
+    void adaptUiToAreaEnabledState(bool enabled);
+
+private:
     std::unique_ptr<Ui_DlgSettingsNotificationArea> ui;
 };
 
