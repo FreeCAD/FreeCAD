@@ -434,6 +434,17 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
 
+    // Remove the Themes.
+    std::vector<std::string> packsToRemove;
+    for (const auto& pack : packs) {
+        if (pack.second.metadata().type() == "Theme") {
+            packsToRemove.push_back(pack.first); // Store the keys to remove later
+        }
+    }
+    for (const auto& key : packsToRemove) {
+        packs.erase(key); // Remove the elements from the map
+    }
+
     ui->PreferencePacks->setRowCount(packs.size());
 
     int row = 0;
