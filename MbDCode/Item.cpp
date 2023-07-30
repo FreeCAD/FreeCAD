@@ -298,7 +298,7 @@ void Item::storeDynState()
 {
 }
 
-void MbD::Item::submitToSystem()
+void MbD::Item::submitToSystem(std::shared_ptr<Item> self)
 {
 	assert(false);
 }

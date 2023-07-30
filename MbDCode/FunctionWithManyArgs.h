@@ -2,6 +2,8 @@
 
 #include "Function.h"
 #include "Symbolic.h"
+#include "System.h"
+#include "Units.h"
 
 namespace MbD {
 
@@ -15,6 +17,7 @@ namespace MbD {
         FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr term2);
         FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms);
         std::shared_ptr<std::vector<Symsptr>> getTerms() override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
         std::shared_ptr<std::vector<Symsptr>> terms;
     };

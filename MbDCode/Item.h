@@ -133,7 +133,7 @@ namespace MbD {
 		virtual std::shared_ptr<StateData> stateData();
 		virtual void storeCollisionState();
 		virtual void storeDynState();
-		virtual void submitToSystem();
+		virtual void submitToSystem(std::shared_ptr<Item> self);
 		virtual double suggestSmallerOrAcceptCollisionFirstStepSize(double hnew);
 		virtual double suggestSmallerOrAcceptCollisionStepSize(double hnew);
 		virtual double suggestSmallerOrAcceptDynFirstStepSize(double hnew);

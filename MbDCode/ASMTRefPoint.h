@@ -1,20 +1,19 @@
 #pragma once
 
-#include "ASMTSpatialItem.h"
+#include "ASMTRefItem.h"
 #include <vector>
 #include <string>
-#include "ASMTMarker.h"
 
 namespace MbD {
-    class ASMTRefPoint : public ASMTSpatialItem
+    class ASMTRefPoint : public ASMTRefItem
     {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
-        void readMarkers(std::vector<std::string>& lines);
-        void readMarker(std::vector<std::string>& lines);
+        std::string fullName(std::string partialName) override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markers;
+    
     };
 }
 

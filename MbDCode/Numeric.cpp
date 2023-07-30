@@ -42,3 +42,8 @@ double MbD::Numeric::arcTan0to2piYoverX(double y, double x)
 		}
 	}
 }
+
+bool MbD::Numeric::equaltol(double x, double xx, double tol)
+{
+	return std::abs(x - xx) < tol;
+}

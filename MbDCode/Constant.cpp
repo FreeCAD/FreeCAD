@@ -1,4 +1,6 @@
 #include "Constant.h"
+#include "System.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -10,7 +12,7 @@ Constant::Constant(double val) : Variable(val)
 {
 }
 
-Symsptr Constant::differentiateWRT(Symsptr sptr, Symsptr var)
+Symsptr MbD::Constant::differentiateWRT(Symsptr var)
 {
 	return std::make_shared<Constant>(0.0);
 }
@@ -18,6 +20,36 @@ Symsptr Constant::differentiateWRT(Symsptr sptr, Symsptr var)
 bool Constant::isConstant()
 {
 	return true;
+}
+
+Symsptr MbD::Constant::expandUntil(std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return clonesptr();
+}
+
+Symsptr MbD::Constant::clonesptr()
+{
+	return std::make_shared<Constant>(*this);
+}
+
+bool MbD::Constant::isZero()
+{
+	return value == 0.0;
+}
+
+bool MbD::Constant::isOne()
+{
+	return value == 1.0;
+}
+
+void MbD::Constant::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	return;
+}
+
+double MbD::Constant::getValue()
+{
+	return value;
 }
 
 std::ostream& Constant::printOn(std::ostream& s) const

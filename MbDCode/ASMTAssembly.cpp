@@ -1,6 +1,8 @@
 #include <string>
 #include <cassert>
 #include <fstream>	
+#include <algorithm>
+#include <numeric>
 
 #include "ASMTAssembly.h"
 #include "CREATE.h"
@@ -8,16 +10,17 @@
 #include "ASMTCylindricalJoint.h"
 #include "ASMTRotationalMotion.h"
 #include "ASMTTranslationalMotion.h"
+#include "ASMTMarker.h"
+#include "Part.h"
 
 using namespace MbD;
 
 void MbD::ASMTAssembly::runFile(const char* chars)
 {
-	std::string str;
-	std::ifstream in(chars);
+	std::ifstream stream(chars);
 	std::string line;
 	std::vector<std::string> lines;
-	while (std::getline(in, line)) {
+	while (std::getline(stream, line)) {
 		lines.push_back(line);
 	}
 	assert(lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com");
@@ -27,8 +30,14 @@ void MbD::ASMTAssembly::runFile(const char* chars)
 		lines.erase(lines.begin());
 		auto assembly = CREATE<ASMTAssembly>::With();
 		assembly->parseASMT(lines);
+		assembly->runKINEMATIC();
 	}
 
+}
+
+ASMTAssembly* MbD::ASMTAssembly::root()
+{
+	return this;
 }
 
 void MbD::ASMTAssembly::parseASMT(std::vector<std::string>& lines)
@@ -39,13 +48,14 @@ void MbD::ASMTAssembly::parseASMT(std::vector<std::string>& lines)
 	readRotationMatrix(lines);
 	readVelocity3D(lines);
 	readOmega3D(lines);
+	initprincipalMassMarker();
 	readRefPoints(lines);
 	readRefCurves(lines);
 	readRefSurfaces(lines);
 	readParts(lines);
 	readKinematicIJs(lines);
 	readConstraintSets(lines);
-	readForceTorques(lines);
+	readForcesTorques(lines);
 	readConstantGravity(lines);
 	readSimulationParameters(lines);
 	readAnimationParameters(lines);
@@ -165,6 +175,7 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 		motion->parseASMT(motionsLines);
 		motions->push_back(motion);
 		motion->owner = this;
+		motion->initMarkers();
 	}
 	lines.erase(lines.begin(), it);
 
@@ -183,19 +194,19 @@ void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& line
 	lines.erase(lines.begin(), it);
 }
 
-void MbD::ASMTAssembly::readForceTorques(std::vector<std::string>& lines)
+void MbD::ASMTAssembly::readForcesTorques(std::vector<std::string>& lines)
 {
-	assert(lines[0] == "\tForceTorques");
+	assert(lines[0] == "\tForceTorques");	//Spelling is not consistent in asmt file.
 	lines.erase(lines.begin());
-	forceTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
+	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
 	auto it = std::find(lines.begin(), lines.end(), "\tConstantGravity");
-	std::vector<std::string> forceTorquesLines(lines.begin(), it);
-	while (!forceTorquesLines.empty()) {
-		if (forceTorquesLines[0] == "\t\tForceTorque") {
-			forceTorquesLines.erase(forceTorquesLines.begin());
+	std::vector<std::string> forcesTorquesLines(lines.begin(), it);
+	while (!forcesTorquesLines.empty()) {
+		if (forcesTorquesLines[0] == "\t\tForceTorque") {
+			forcesTorquesLines.erase(forcesTorquesLines.begin());
 			auto forceTorque = CREATE<ASMTForceTorque>::With();
-			forceTorque->parseASMT(forceTorquesLines);
-			forceTorques->push_back(forceTorque);
+			forceTorque->parseASMT(forcesTorquesLines);
+			forcesTorques->push_back(forceTorque);
 			forceTorque->owner = this;
 		}
 		else {
@@ -321,7 +332,7 @@ void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
 		return prt->fullName("") == seriesName;
 		});
-	auto part = *it;
+	auto& part = *it;
 	part->readPartSeries(lines);
 }
 
@@ -336,7 +347,7 @@ void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
 	auto it = std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
 		return jt->fullName("") == seriesName;
 		});
-	auto joint = *it;
+	auto& joint = *it;
 	joint->readJointSeries(lines);
 }
 
@@ -359,8 +370,275 @@ void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 	auto it = std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& jt) {
 		return jt->fullName("") == seriesName;
 		});
-	auto motion = *it;
+	auto& motion = *it;
 	motion->readMotionSeries(lines);
+}
+
+void MbD::ASMTAssembly::outputFor(AnalysisType type)
+{
+	assert(false);
+}
+
+void MbD::ASMTAssembly::logString(std::string& str)
+{
+	assert(false);
+}
+
+void MbD::ASMTAssembly::logString(double value)
+{
+	assert(false);
+}
+
+void MbD::ASMTAssembly::preMbDrun(std::shared_ptr<System> mbdSys)
+{
+	calcCharacteristicDimensions();
+	deleteMbD();
+	createMbD(mbdSys, mbdUnits);
+	std::static_pointer_cast<Part>(mbdObject)->asFixed();
+}
+
+void MbD::ASMTAssembly::postMbDrun()
+{
+	assert(false);
+}
+
+void MbD::ASMTAssembly::calcCharacteristicDimensions()
+{
+	auto unitTime = this->calcCharacteristicTime();
+	auto unitMass = this->calcCharacteristicMass();
+	auto unitLength = this->calcCharacteristicLength();
+	auto unitAngle = 1.0;
+	this->mbdUnits = std::make_shared<Units>(unitTime, unitMass, unitLength, unitAngle);
+}
+
+double MbD::ASMTAssembly::calcCharacteristicTime()
+{
+	return std::abs(simulationParameters->hout);
+}
+
+double MbD::ASMTAssembly::calcCharacteristicMass()
+{
+	auto n = parts->size();
+	double sumOfSquares = 0.0;
+	for (int i = 0; i < n; i++)
+	{
+		auto mass = parts->at(i)->principalMassMarker->mass;
+		sumOfSquares += mass * mass;
+	}
+	auto unitMass = std::sqrt(sumOfSquares / n);
+	if (unitMass <= 0) unitMass = 1.0;
+	return unitMass;
+}
+
+double MbD::ASMTAssembly::calcCharacteristicLength()
+{
+	auto markerMap = this->markerMap();
+	auto lengths = std::make_shared<std::vector<double>>();
+	auto connectorList = this->connectorList();
+	for (auto& connector : *connectorList) {
+		auto& mkrI = markerMap->at(connector->markerI);
+		lengths->push_back(mkrI->rpmp()->length());
+		auto& mkrJ = markerMap->at(connector->markerJ);
+		lengths->push_back(mkrJ->rpmp()->length());
+	}
+	auto n = lengths->size();
+	double sumOfSquares = std::accumulate(lengths->begin(), lengths->end(), 0.0, [](double sum, double l) { return sum + l * l; });
+	auto unitLength = std::sqrt(sumOfSquares / std::max((int)n, 1));
+	if (unitLength <= 0) unitLength = 1.0;
+	return unitLength;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::connectorList()
+{
+	auto list = std::make_shared<std::vector<std::shared_ptr<ASMTItemIJ>>>();
+	list->insert(list->end(), joints->begin(), joints->end());
+	list->insert(list->end(), motions->begin(), motions->end());
+	list->insert(list->end(), kinematicIJs->begin(), kinematicIJs->end());
+	list->insert(list->end(), forcesTorques->begin(), forcesTorques->end());
+	return list;
+}
+
+std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>> MbD::ASMTAssembly::markerMap()
+{
+	auto answer = std::make_shared<std::map<std::string, std::shared_ptr<ASMTMarker>>>();
+	for (auto& refPoint : *refPoints) {
+		for (auto& marker : *refPoint->markers) {
+			answer->insert(std::make_pair(marker->fullName(""), marker));
+		}
+	}
+	for (auto& part : *parts) {
+		for (auto& refPoint : *part->refPoints) {
+			for (auto& marker : *refPoint->markers) {
+				answer->insert(std::make_pair(marker->fullName(""), marker));
+			}
+		}
+	}
+	return answer;
+}
+
+void MbD::ASMTAssembly::deleteMbD()
+{
+	ASMTSpatialContainer::deleteMbD();
+	constantGravity->deleteMbD();
+	asmtTime->deleteMbD();
+	for (auto& part : *parts) { part->deleteMbD(); }
+	for (auto& joint : *joints) { joint->deleteMbD(); }
+	for (auto& motion : *motions) { motion->deleteMbD(); }
+	for (auto& forceTorque : *forcesTorques) { forceTorque->deleteMbD(); }
+
+
+}
+
+void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
+	constantGravity->createMbD(mbdSys, mbdUnits);
+	asmtTime->createMbD(mbdSys, mbdUnits);
+	for (auto& part : *parts) { part->createMbD(mbdSys, mbdUnits); }
+	for (auto& joint : *joints) { joint->createMbD(mbdSys, mbdUnits); }
+	for (auto& motion : *motions) { motion->createMbD(mbdSys, mbdUnits); }
+	for (auto& forceTorque : *forcesTorques) { forceTorque->createMbD(mbdSys, mbdUnits); }
+
+	auto mbdSysSolver = mbdSys->systemSolver;
+	mbdSysSolver->errorTolPosKine = simulationParameters->errorTolPosKine;
+	mbdSysSolver->errorTolAccKine = simulationParameters->errorTolAccKine;
+	mbdSysSolver->iterMaxPosKine = simulationParameters->iterMaxPosKine;
+	mbdSysSolver->iterMaxAccKine = simulationParameters->iterMaxAccKine;
+	mbdSysSolver->tstart = simulationParameters->tstart / mbdUnits->time;
+	mbdSysSolver->tend = simulationParameters->tend / mbdUnits->time;
+	mbdSysSolver->hmin = simulationParameters->hmin / mbdUnits->time;
+	mbdSysSolver->hmax = simulationParameters->hmax / mbdUnits->time;
+	mbdSysSolver->hout = simulationParameters->hout / mbdUnits->time;
+	mbdSysSolver->corAbsTol = simulationParameters->corAbsTol;
+	mbdSysSolver->corRelTol = simulationParameters->corRelTol;
+	mbdSysSolver->intAbsTol = simulationParameters->intAbsTol;
+	mbdSysSolver->intRelTol = simulationParameters->intRelTol;
+	mbdSysSolver->iterMaxDyn = simulationParameters->iterMaxDyn;
+	mbdSysSolver->orderMax = simulationParameters->orderMax;
+	mbdSysSolver->translationLimit = simulationParameters->translationLimit / mbdUnits->length;
+	mbdSysSolver->rotationLimit = simulationParameters->rotationLimit;
+	animationParameters = nullptr;
+}
+
+void MbD::ASMTAssembly::runKINEMATIC()
+{
+	auto mbdSystem = CREATE<System>::With();
+	mbdObject = mbdSystem;
+	mbdSystem->externalSystem->asmtAssembly = this;
+	mbdSystem->runKINEMATIC(mbdSystem);
+}
+//
+//void MbD::ASMTAssembly::initprincipalMassMarker()
+//{
+//	//Choose first refPoint as center of mass
+//	assert(!refPoints->empty());
+//	auto refPoint = refPoints->at(0);
+//	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+//	principalMassMarker->position3D = refPoint->position3D;
+//	principalMassMarker->rotationMatrix = refPoint->rotationMatrix;
+//}
+
+void MbD::ASMTAssembly::initprincipalMassMarker()
+{
+	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	principalMassMarker->mass = 0.0;
+	principalMassMarker->density = 0.0;
+	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
+	principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
+	principalMassMarker->rotationMatrix = std::make_shared<FullMatrix<double>>(3, 3);
+	principalMassMarker->rotationMatrix->identity();
+}
+
+std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)
+{
+	if ((self->fullName("")) == longname) return self;
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		return prt->fullName("") == longname;
+		});
+	auto& part = *it;
+	return part;
+}
+
+std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname)
+{
+	for (auto& refPoint : *refPoints) {
+		for (auto& marker : *refPoint->markers) {
+			if (marker->fullName("") == longname) return marker;
+		}
+	}
+	for (auto& part : *parts) {
+		for (auto& refPoint : *part->refPoints) {
+			for (auto& marker : *refPoint->markers) {
+				if (marker->fullName("") == longname) return marker;
+			}
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname)
+{
+	auto it = std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
+		return jt->fullName("") == longname;
+		});
+	auto& joint = *it;
+	return joint;
+}
+
+std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname)
+{
+	auto it = std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& mt) {
+		return mt->fullName("") == longname;
+		});
+	auto& motion = *it;
+	return motion;
+}
+
+std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname)
+{
+	auto it = std::find_if(forcesTorques->begin(), forcesTorques->end(), [&](const std::shared_ptr<ASMTForceTorque>& mt) {
+		return mt->fullName("") == longname;
+		});
+	auto& forceTorque = *it;
+	return forceTorque;
+}
+
+FColDsptr MbD::ASMTAssembly::vOcmO()
+{
+	return std::make_shared<FullColumn<double>>(3, 0.0);
+}
+
+FColDsptr MbD::ASMTAssembly::omeOpO()
+{
+	return std::make_shared<FullColumn<double>>(3, 0.0);
+}
+
+std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime()
+{
+	return asmtTime;
+}
+
+void MbD::ASMTAssembly::updateFromMbD()
+{
+	ASMTSpatialContainer::updateFromMbD();
+	auto geoTime = asmtTime->getValue();
+	auto it = std::find_if(times->begin(), times->end(), [&](double t) {
+		return Numeric::equaltol(t, geoTime, 1.0e-9);
+		});
+	assert(it != times->end());
+	for (auto& part : *parts) part->updateFromMbD();
+	for (auto& joint : *joints) joint->updateFromMbD();
+	for (auto& motion : *motions) motion->updateFromMbD();
+	for (auto& forceTorque : *forcesTorques) forceTorque->updateFromMbD();
+}
+
+void MbD::ASMTAssembly::compareResults(AnalysisType type)
+{
+	ASMTSpatialContainer::compareResults(type);
+	for (auto& part : *parts) part->compareResults(type);
+	for (auto& joint : *joints) joint->compareResults(type);
+	for (auto& motion : *motions) motion->compareResults(type);
+	for (auto& forceTorque : *forcesTorques) forceTorque->compareResults(type);
 }
 
 

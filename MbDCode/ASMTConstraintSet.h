@@ -1,23 +1,18 @@
 #pragma once
 
-#include "ASMTItem.h"
+#include "ASMTItemIJ.h"
 
 namespace MbD {
-    class ASMTConstraintSet : public ASMTItem
+    class Joint;
+
+    class ASMTConstraintSet : public ASMTItemIJ
     {
         //
     public:
-        void readMarkerI(std::vector<std::string>& lines);
-        void readMarkerJ(std::vector<std::string>& lines);
-        void readFXonIs(std::vector<std::string>& lines);
-        void readFYonIs(std::vector<std::string>& lines);
-        void readFZonIs(std::vector<std::string>& lines);
-        void readTXonIs(std::vector<std::string>& lines);
-        void readTYonIs(std::vector<std::string>& lines);
-        void readTZonIs(std::vector<std::string>& lines);
-
-        std::string markerI, markerJ;
-        FRowDsptr fxs, fys, fzs, txs, tys, tzs;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        virtual std::shared_ptr<Joint> mbdClassNew();
+        void updateFromMbD() override;
+        void compareResults(AnalysisType type) override;
 
     };
 }

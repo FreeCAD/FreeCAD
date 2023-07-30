@@ -1,7 +1,19 @@
 #include "ASMTItem.h"
 #include "CREATE.h"
+#include "ASMTSpatialContainer.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
+
+ASMTAssembly* MbD::ASMTItem::root()
+{
+	return owner->root();
+}
+
+std::shared_ptr<ASMTSpatialContainer> MbD::ASMTItem::part()
+{
+	return owner->part();
+}
 
 void MbD::ASMTItem::initialize()
 {
@@ -62,6 +74,7 @@ bool MbD::ASMTItem::readBool(std::string& line)
 	}
 	else {
 		assert(false);
+		return false;
 	}
 }
 
@@ -97,4 +110,32 @@ void MbD::ASMTItem::readDoublesInto(std::string& str, std::string label, FRowDsp
 	assert(pos != std::string::npos);
 	str.erase(0, pos + label.length());
 	row = readRowOfDoubles(str);
+}
+
+void MbD::ASMTItem::deleteMbD()
+{
+	mbdObject = nullptr;
+}
+
+void MbD::ASMTItem::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	assert(false);
+}
+
+void MbD::ASMTItem::updateFromMbD()
+{
+	assert(false);
+}
+
+void MbD::ASMTItem::compareResults(AnalysisType type)
+{
+	assert(false);
+}
+
+std::shared_ptr<Units> MbD::ASMTItem::mbdUnits()
+{
+	if (owner) {
+		return owner->mbdUnits();
+	}
+	return static_cast<ASMTAssembly*>(this)->mbdUnits;
 }

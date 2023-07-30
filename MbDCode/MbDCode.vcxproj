@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Abs.cpp" />
     <ClCompile Include="AbsConstraint.cpp" />
     <ClCompile Include="AccICKineNewtonRaphson.cpp" />
     <ClCompile Include="AccICNewtonRaphson.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="AngleZIeqcJec.cpp" />
     <ClCompile Include="AngleZIeqcJeqc.cpp" />
     <ClCompile Include="AnyPosICNewtonRaphson.cpp" />
+    <ClCompile Include="ArcTan.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="ASMTAnimationParameters.cpp" />
     <ClCompile Include="ASMTAssembly.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="ASMTForceTorque.cpp" />
     <ClCompile Include="ASMTGeneralMotion.cpp" />
     <ClCompile Include="ASMTItem.cpp" />
+    <ClCompile Include="ASMTItemIJ.cpp" />
     <ClCompile Include="ASMTJoint.cpp" />
     <ClCompile Include="ASMTKinematicIJ.cpp" />
     <ClCompile Include="ASMTMarker.cpp" />
@@ -154,6 +157,7 @@
     <ClCompile Include="ASMTPart.cpp" />
     <ClCompile Include="ASMTPrincipalMassMarker.cpp" />
     <ClCompile Include="ASMTRefCurve.cpp" />
+    <ClCompile Include="ASMTRefItem.cpp" />
     <ClCompile Include="ASMTRefPoint.cpp" />
     <ClCompile Include="ASMTRefSurface.cpp" />
     <ClCompile Include="ASMTRevoluteJoint.cpp" />
@@ -161,6 +165,7 @@
     <ClCompile Include="ASMTSimulationParameters.cpp" />
     <ClCompile Include="ASMTSpatialContainer.cpp" />
     <ClCompile Include="ASMTSpatialItem.cpp" />
+    <ClCompile Include="ASMTTime.cpp" />
     <ClCompile Include="ASMTTranslationalMotion.cpp" />
     <ClCompile Include="AtPointConstraintIJ.cpp" />
     <ClCompile Include="AtPointConstraintIqcJc.cpp" />
@@ -174,6 +179,7 @@
     <ClCompile Include="CartesianFrame.cpp" />
     <ClCompile Include="CompoundJoint.cpp" />
     <ClCompile Include="Constant.cpp" />
+    <ClCompile Include="ConstantGravity.cpp" />
     <ClCompile Include="ConstantVelocityJoint.cpp" />
     <ClCompile Include="Constraint.cpp" />
     <ClCompile Include="ConstraintIJ.cpp" />
@@ -183,7 +189,10 @@
     <ClCompile Include="CREATE.cpp" />
     <ClCompile Include="CylindricalJoint.cpp" />
     <ClCompile Include="CylSphJoint.cpp" />
+    <ClCompile Include="EulerAngles.cpp" />
     <ClCompile Include="ExternalSystem.cpp" />
+    <ClCompile Include="FunctionXY.cpp" />
+    <ClCompile Include="Ln.cpp" />
     <ClCompile Include="PosVelAccData.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
@@ -306,6 +315,7 @@
     <ClCompile Include="PosICNewtonRaphson.cpp" />
     <ClCompile Include="PosKineNewtonRaphson.cpp" />
     <ClCompile Include="PosNewtonRaphson.cpp" />
+    <ClCompile Include="Power.cpp" />
     <ClCompile Include="PrescribedMotion.cpp" />
     <ClCompile Include="Product.cpp" />
     <ClCompile Include="QuasiIntegrator.cpp" />
@@ -323,6 +333,7 @@
     <ClCompile Include="ScrewConstraintIqcJqc.cpp" />
     <ClCompile Include="ScrewJoint.cpp" />
     <ClCompile Include="SimulationStoppingError.cpp" />
+    <ClCompile Include="Sin.cpp" />
     <ClCompile Include="SingularMatrixError.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="SparseColumn.cpp" />
@@ -336,6 +347,8 @@
     <ClCompile Include="StateData.cpp" />
     <ClCompile Include="Sum.cpp" />
     <ClCompile Include="Symbolic.cpp" />
+    <ClCompile Include="SymbolicParser.cpp" />
+    <ClCompile Include="SyntaxError.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemNewtonRaphson.cpp" />
     <ClCompile Include="SystemSolver.cpp" />
@@ -348,6 +361,7 @@
     <ClCompile Include="TranslationConstraintIqcJc.cpp" />
     <ClCompile Include="TranslationConstraintIqcJqc.cpp" />
     <ClCompile Include="TranslationConstraintIqctJqc.cpp" />
+    <ClCompile Include="Units.cpp" />
     <ClCompile Include="UniversalJoint.cpp" />
     <ClCompile Include="UserFunction.cpp" />
     <ClCompile Include="Variable.cpp" />
@@ -361,6 +375,7 @@
     <ClCompile Include="ZTranslation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Abs.h" />
     <ClInclude Include="AbsConstraint.h" />
     <ClInclude Include="AccICKineNewtonRaphson.h" />
     <ClInclude Include="AccICNewtonRaphson.h" />
@@ -371,6 +386,7 @@
     <ClInclude Include="AngleZIeqcJec.h" />
     <ClInclude Include="AngleZIeqcJeqc.h" />
     <ClInclude Include="AnyPosICNewtonRaphson.h" />
+    <ClInclude Include="ArcTan.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="ASMTAnimationParameters.h" />
     <ClInclude Include="ASMTAssembly.h" />
@@ -381,6 +397,7 @@
     <ClInclude Include="ASMTForceTorque.h" />
     <ClInclude Include="ASMTGeneralMotion.h" />
     <ClInclude Include="ASMTItem.h" />
+    <ClInclude Include="ASMTItemIJ.h" />
     <ClInclude Include="ASMTJoint.h" />
     <ClInclude Include="ASMTKinematicIJ.h" />
     <ClInclude Include="ASMTMarker.h" />
@@ -388,6 +405,7 @@
     <ClInclude Include="ASMTPart.h" />
     <ClInclude Include="ASMTPrincipalMassMarker.h" />
     <ClInclude Include="ASMTRefCurve.h" />
+    <ClInclude Include="ASMTRefItem.h" />
     <ClInclude Include="ASMTRefPoint.h" />
     <ClInclude Include="ASMTRefSurface.h" />
     <ClInclude Include="ASMTRevoluteJoint.h" />
@@ -395,6 +413,7 @@
     <ClInclude Include="ASMTSimulationParameters.h" />
     <ClInclude Include="ASMTSpatialContainer.h" />
     <ClInclude Include="ASMTSpatialItem.h" />
+    <ClInclude Include="ASMTTime.h" />
     <ClInclude Include="ASMTTranslationalMotion.h" />
     <ClInclude Include="AtPointConstraintIJ.h" />
     <ClInclude Include="AtPointConstraintIqcJc.h" />
@@ -408,6 +427,7 @@
     <ClInclude Include="CartesianFrame.h" />
     <ClInclude Include="CompoundJoint.h" />
     <ClInclude Include="Constant.h" />
+    <ClInclude Include="ConstantGravity.h" />
     <ClInclude Include="ConstantVelocityJoint.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="ConstraintIJ.h" />
@@ -417,7 +437,10 @@
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="CylSphJoint.h" />
+    <ClInclude Include="EulerAngles.h" />
     <ClInclude Include="ExternalSystem.h" />
+    <ClInclude Include="FunctionXY.h" />
+    <ClInclude Include="Ln.h" />
     <ClInclude Include="PosVelAccData.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />
@@ -541,6 +564,7 @@
     <ClInclude Include="PosICNewtonRaphson.h" />
     <ClInclude Include="PosKineNewtonRaphson.h" />
     <ClInclude Include="PosNewtonRaphson.h" />
+    <ClInclude Include="Power.h" />
     <ClInclude Include="PrescribedMotion.h" />
     <ClInclude Include="Product.h" />
     <ClInclude Include="QuasiIntegrator.h" />
@@ -559,6 +583,7 @@
     <ClInclude Include="ScrewConstraintIqcJqc.h" />
     <ClInclude Include="ScrewJoint.h" />
     <ClInclude Include="SimulationStoppingError.h" />
+    <ClInclude Include="Sin.h" />
     <ClInclude Include="SingularMatrixError.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SparseColumn.h" />
@@ -572,6 +597,8 @@
     <ClInclude Include="StateData.h" />
     <ClInclude Include="Sum.h" />
     <ClInclude Include="Symbolic.h" />
+    <ClInclude Include="SymbolicParser.h" />
+    <ClInclude Include="SyntaxError.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemNewtonRaphson.h" />
     <ClInclude Include="SystemSolver.h" />
@@ -585,6 +612,7 @@
     <ClInclude Include="TranslationConstraintIqcJqc.h" />
     <ClInclude Include="TranslationConstraintIqctJqc.h" />
     <ClInclude Include="typedef.h" />
+    <ClInclude Include="Units.h" />
     <ClInclude Include="UniversalJoint.h" />
     <ClInclude Include="UserFunction.h" />
     <ClInclude Include="Variable.h" />
@@ -602,6 +630,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="piston.asmt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

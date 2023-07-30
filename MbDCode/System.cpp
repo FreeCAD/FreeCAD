@@ -12,11 +12,9 @@
 using namespace MbD;
 
 System::System() {
-	initialize();
 }
 
 System::System(const char* str) : Item(str) {
-	initialize();
 }
 
 System* MbD::System::root()
@@ -52,29 +50,27 @@ void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
 	jointsMotions->push_back(motion);
 }
 
-void System::runKINEMATIC()
+void MbD::System::addForceTorque(std::shared_ptr<ForceTorqueItem> forTor)
 {
-	externalSystem->preMbDrun();
+	forTor->owner = this;
+	forcesTorques->push_back(forTor);
+}
+
+void System::runKINEMATIC(std::shared_ptr<System> self)
+{
+	externalSystem->preMbDrun(self);
 	while (true)
 	{
 		initializeLocally();
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
-	partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postInput(); });
-	outputInput();
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	externalSystem->outputFor(INPUT);
 	systemSolver->runAllIC();
 	externalSystem->outputFor(INITIALCONDITION);
 	systemSolver->runBasicKinematic();
 	externalSystem->postMbDrun();
-}
-
-void System::outputInput()
-{
-}
-
-void System::outputTimeSeries()
-{
 }
 
 void System::initializeLocally()

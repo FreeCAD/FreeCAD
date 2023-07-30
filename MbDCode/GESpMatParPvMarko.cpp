@@ -62,7 +62,7 @@ void GESpMatParPvMarko::doPivoting(int p)
 		matrixA->swapElems(p, rowPivoti);
 		rightHandSideB->swapElems(p, rowPivoti);
 		rowScalings->swapElems(p, rowPivoti);
-		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
+		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at((size_t)markowitzPivotColCount - 1) = rowPivoti;
 	}
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }

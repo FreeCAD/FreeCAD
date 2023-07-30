@@ -9,6 +9,7 @@ namespace MbD {
         //
     public:
         void readMotionSeries(std::vector<std::string>& lines);
+        virtual void initMarkers();
 
         std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> motionSeries;
 

@@ -1,9 +1,11 @@
 #pragma once
+#include <memory>
 
 #include "Joint.h"
-#include "Symbolic.h"
+//#include "Symbolic.h"
 
 namespace MbD {
+    class Symbolic;
 
     class PrescribedMotion : public Joint
     {
@@ -16,12 +18,19 @@ namespace MbD {
         void initialize() override;
         virtual void initMotions();
 
-        Symsptr xBlk;
-        Symsptr yBlk;
-        Symsptr zBlk;
-        Symsptr phiBlk;
-        Symsptr theBlk;
-        Symsptr psiBlk;
+        //Why the following fails?
+        //Symsptr xBlk;
+        //Symsptr yBlk;
+        //Symsptr zBlk;
+        //Symsptr phiBlk;
+        //Symsptr theBlk;
+        //Symsptr psiBlk;
+        std::shared_ptr<Symbolic> xBlk;
+        std::shared_ptr<Symbolic> yBlk;
+        std::shared_ptr<Symbolic> zBlk;
+        std::shared_ptr<Symbolic> phiBlk;
+        std::shared_ptr<Symbolic> theBlk;
+        std::shared_ptr<Symbolic> psiBlk;
     };
 }
 

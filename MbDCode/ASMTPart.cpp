@@ -80,3 +80,17 @@ void MbD::ASMTPart::readPartSeries(std::vector<std::string>& lines)
 	readAlphaYs(lines);
 	readAlphaZs(lines);
 }
+
+FColDsptr MbD::ASMTPart::vOcmO()
+{
+	auto& rOPO = position3D;
+	auto& vOPO = velocity3D;
+	auto& omeOPO = omega3D;
+	auto rPcmO = rOcmO()->minusFullColumn(rOPO);
+	return vOPO->plusFullColumn(omeOPO->cross(rPcmO));
+}
+
+FColDsptr MbD::ASMTPart::omeOpO()
+{
+	return omega3D;
+}

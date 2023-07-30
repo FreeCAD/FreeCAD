@@ -7,7 +7,7 @@ namespace MbD {
     {
     public:
         IndependentVariable();
-        Symsptr differentiateWRT(Symsptr sptr, Symsptr var) override;
+        Symsptr differentiateWRT(Symsptr var) override;
     };
 }
 

@@ -58,7 +58,7 @@ void LDUSpMatParPvPrecise::doPivoting(int p)
 		rowScalings->swapElems(p, rowPivoti);
 		rowOrder->swapElems(p, rowPivoti);
 		matrixL->swapElems(p, rowPivoti);
-		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
+		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at((size_t)markowitzPivotColCount - 1) = rowPivoti;
 	}
 	pivotValues->at(p) = max;
 	if (max < singularPivotTolerance) throwSingularMatrixError("");

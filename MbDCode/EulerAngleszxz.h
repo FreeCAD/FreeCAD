@@ -10,6 +10,7 @@ namespace MbD {
 	class EulerAngleszxz : public EulerArray<T>
 	{
 		//phiA theA psiA aA 
+		//Used by EndFrameqct
 	public:
 		EulerAngleszxz() : EulerArray<T>(3) {}
 		void initialize() override;

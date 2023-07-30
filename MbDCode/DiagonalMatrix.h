@@ -13,28 +13,24 @@ namespace MbD {
 		DiagonalMatrix(int count) : Array<T>(count) {}
 		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiput(int i, T value);
 		void atiputDiagonalMatrix(int i, std::shared_ptr < DiagonalMatrix<T>> diagMat);
 		std::shared_ptr<DiagonalMatrix<T>> times(T factor);
 		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
 		std::shared_ptr<FullMatrix<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		int nrow() {
-			return (int) this->size();
+			return (int)this->size();
 		}
 		int ncol() {
-			return (int) this->size();
+			return (int)this->size();
 		}
 		double sumOfSquares() override;
 		int numberOfElements() override;
 		void zeroSelf() override;
+		double maxMagnitude() override;
+
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
-	template<typename T>
-	inline void DiagonalMatrix<T>::atiput(int i, T value)
-	{
-		this->at(i) = value;
-	}
 	template<typename T>
 	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
 	{
@@ -59,7 +55,7 @@ namespace MbD {
 	{
 		//"a*b = a(i,j)b(j) sum j."
 
-		auto nrow = (int) this->size();
+		auto nrow = (int)this->size();
 		auto answer = std::make_shared<FullColumn<T>>(nrow);
 		for (int i = 0; i < nrow; i++)
 		{
@@ -92,7 +88,7 @@ namespace MbD {
 	template<typename T>
 	inline int DiagonalMatrix<T>::numberOfElements()
 	{
-		auto n = (int) this->size();
+		auto n = (int)this->size();
 		return n * n;
 	}
 	template<>
@@ -101,6 +97,24 @@ namespace MbD {
 		for (int i = 0; i < this->size(); i++) {
 			this->at(i) = 0.0;
 		}
+	}
+	template<>
+	inline double DiagonalMatrix<double>::maxMagnitude()
+	{
+		auto max = 0.0;
+		for (int i = 0; i < this->size(); i++)
+		{
+			auto element = this->at(i);
+			if (element < 0.0) element = -element;
+			if (max < element) max = element;
+		}
+		return max;
+	}
+	template<typename T>
+	inline double DiagonalMatrix<T>::maxMagnitude()
+	{
+		assert(false);
+		return 0.0;
 	}
 	template<typename T>
 	inline std::ostream& DiagonalMatrix<T>::printOn(std::ostream& s) const

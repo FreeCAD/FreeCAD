@@ -65,6 +65,7 @@ namespace MbD {
 		void setqsulam(FColDsptr col) override;
 		std::shared_ptr<StateData> stateData() override;
 		void useEquationNumbers() override;
+		void submitToSystem(std::shared_ptr<Item> self) override;
 
 		EndFrmcptr frmI;
 		EndFrmcptr frmJ;

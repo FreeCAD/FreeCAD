@@ -19,12 +19,12 @@ void runSpMat();
 
 int main()
 {
-	//ASMTAssembly::runFile("C:\\Users\\askoh\\OneDrive\\askoh\\visualworks\\vw8.1\\askoh\\64bit\\CADSM\\current\\asm\\00piston.asmt");
+	ASMTAssembly::runFile("piston.asmt");
 
-	auto externalSys = std::make_shared<CADSystem>();
-	externalSys->runOndselPiston();
-	//externalSys->runPiston();
-	//runSpMat();
+	auto cadSystem = std::make_shared<CADSystem>();
+	//cadSystem->runOndselPiston();
+	cadSystem->runPiston();
+	runSpMat();
 }
 
 void runSpMat() {

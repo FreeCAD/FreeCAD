@@ -15,6 +15,7 @@ namespace MbD {
 		//
 	public:
 		CADSystem() {
+			mbdSystem->initialize();
 			mbdSystem->externalSystem->cadSystem = this;
 		}
 
@@ -23,7 +24,9 @@ namespace MbD {
 		void logString(double value);
 		void runOndselPiston();
 		void runPiston();
+		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
+		void updateFromMbD();
 
 		std::shared_ptr<System> mbdSystem = std::make_shared<System>();
 

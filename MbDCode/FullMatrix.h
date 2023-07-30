@@ -1,14 +1,18 @@
 #pragma once
 
+#include <corecrt_math_defines.h>
 #include <memory>
 
 #include "RowTypeMatrix.h"
+//#include "CREATE.h" //Use forward declaration. //Cannot use CREATE.h in subclasses of std::vector. Why?
 
 namespace MbD {
 	template<typename T>
 	class FullColumn;
 	template<typename T>
 	class FullRow;
+	template<typename T>
+	class EulerParameters;
 
 	template<typename T>
 	class FullMatrix : public RowTypeMatrix<std::shared_ptr<FullRow<T>>>
@@ -62,8 +66,12 @@ namespace MbD {
 		FullMatrix<T> operator+(const FullMatrix<T> fullMat);
 		std::shared_ptr<FullColumn<T>> transposeTimesFullColumn(const std::shared_ptr<FullColumn<T>> fullCol);
 		void magnifySelf(T factor);
-		std::ostream& printOn(std::ostream& s) const override;
+		std::shared_ptr<EulerParameters<T>> asEulerParameters();
+		T trace();
+		double maxMagnitude() override;
+		std::shared_ptr<FullColumn<T>> bryantAngles();
 
+		std::ostream& printOn(std::ostream& s) const override;
 	};
 	template<>
 	inline void FullMatrix<double>::identity() {
@@ -272,6 +280,124 @@ namespace MbD {
 		}
 		s << "]";
 		return s;
+	}
+	template<typename T>
+	inline std::shared_ptr<EulerParameters<T>> FullMatrix<T>::asEulerParameters()
+	{
+		//"Given [A], compute Euler parameter."
+
+		auto traceA = this->trace();
+		T dum = 0.0;
+		T dumSq = 0.0;
+		//auto qE = CREATE<EulerParameters<double>>::With(4); //Cannot use CREATE.h in subclasses of std::vector. Why?
+		auto qE = std::make_shared<EulerParameters<T>>(4);
+		qE->initialize();
+		auto OneMinusTraceDivFour = (1.0 - traceA) / 4.0;
+		for (int i = 0; i < 3; i++)
+		{
+			dumSq = this->at(i)->at(i) / 2.0 + OneMinusTraceDivFour;
+			dum = (dumSq > 0.0) ? std::sqrt(dumSq) : 0.0;
+			qE->atiput(i, dum);
+		}
+		dumSq = (1.0 + traceA) / 4.0;
+		dum = (dumSq > 0.0) ? std::sqrt(dumSq) : 0.0;
+		qE->atiput(3, dum);
+		T max = 0.0;
+		int maxE = -1;
+		for (int i = 0; i < 4; i++)
+		{
+			auto num = qE->at(i);
+			if (max < num) {
+				max = num;
+				maxE = i;
+			}
+		}
+
+		if (maxE == 0) {
+			auto FourE = 4.0 * qE->at(0);
+			qE->atiput(1, (this->at(0)->at(1) + this->at(1)->at(0)) / FourE);
+			qE->atiput(2, (this->at(0)->at(2) + this->at(2)->at(0)) / FourE);
+			qE->atiput(3, (this->at(2)->at(1) - this->at(1)->at(2)) / FourE);
+		}
+		else if (maxE == 1) {
+			auto FourE = 4.0 * qE->at(1);
+			qE->atiput(0, (this->at(0)->at(1) + this->at(1)->at(0)) / FourE);
+			qE->atiput(2, (this->at(1)->at(2) + this->at(2)->at(1)) / FourE);
+			qE->atiput(3, (this->at(0)->at(2) - this->at(2)->at(0)) / FourE);
+		}
+		else if (maxE == 2) {
+			auto FourE = 4.0 * qE->at(2);
+			qE->atiput(0, (this->at(0)->at(2) + this->at(2)->at(0)) / FourE);
+			qE->atiput(1, (this->at(1)->at(2) + this->at(2)->at(1)) / FourE);
+			qE->atiput(3, (this->at(1)->at(0) - this->at(0)->at(1)) / FourE);
+		}
+		else if (maxE == 3) {
+			auto FourE = 4.0 * qE->at(3);
+			qE->atiput(0, (this->at(2)->at(1) - this->at(1)->at(2)) / FourE);
+			qE->atiput(1, (this->at(0)->at(2) - this->at(2)->at(0)) / FourE);
+			qE->atiput(2, (this->at(1)->at(0) - this->at(0)->at(1)) / FourE);
+		}
+		qE->conditionSelf();
+		qE->calc();
+		return qE;
+	}
+	template<typename T>
+	inline T FullMatrix<T>::trace()
+	{
+		T trace = 0.0;
+		for (int i = 0; i < this->size(); i++)
+		{
+			trace += this->at(i)->at(i);
+		}
+		return trace;
+	}
+	template<typename T>
+	inline double FullMatrix<T>::maxMagnitude()
+	{
+		auto max = 0.0;
+		for (int i = 0; i < this->size(); i++)
+		{
+			auto element = this->at(i)->maxMagnitude();
+			if (max < element) max = element;
+		}
+		return max;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::bryantAngles()
+	{
+		auto answer = std::make_shared<FullColumn<T>>(3);
+		auto sthe1y = this->at(0)->at(2);
+		T the0x, the1y, the2z, cthe0x, sthe0x, y, x;
+		if (std::abs(sthe1y) > 0.9999) {
+			if (sthe1y > 0.0) {
+				the0x = std::atan2(this->at(1)->at(0), this->at(1)->at(1));
+				the1y = M_PI / 2.0;
+				the2z = 0.0;
+			}
+			else {
+				the0x = std::atan2(this->at(2)->at(1), this->at(2)->at(0));
+				the1y = M_PI / -2.0;
+				the2z = 0.0;
+			}
+		}
+		else {
+			the0x = std::atan2(-this->at(1)->at(2), this->at(2)->at(2));
+			cthe0x = std::cos(the0x);
+			sthe0x = std::sin(the0x);
+			y = sthe1y;
+			if (std::abs(cthe0x) > std::abs(sthe0x)) {
+				x = this->at(2)->at(2) / cthe0x;
+			}
+			else {
+				x = this->at(1)->at(2) / -sthe0x;
+			}
+			the1y = std::atan2(y, x);
+			the2z = std::atan2(-this->at(0)->at(1), this->at(0)->at(0));
+		}
+		answer->atiput(0, the0x);
+		answer->atiput(1, the1y);
+		answer->atiput(2, the2z);
+		return answer;
 	}
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)

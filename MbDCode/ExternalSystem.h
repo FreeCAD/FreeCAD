@@ -10,12 +10,13 @@
 namespace MbD {
 	class CADSystem;
 	class ASMTAssembly;
+	class System;
 
 	class ExternalSystem
 	{
 		//
 	public:
-		void preMbDrun();
+		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void outputFor(AnalysisType type);
 		void logString(std::string& str);
 		void logString(double value);

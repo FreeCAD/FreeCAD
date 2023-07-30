@@ -16,19 +16,20 @@ namespace MbD {
 		FullVector(std::vector<T>::iterator begin, std::vector<T>::iterator end) : Array<T>(begin, end) {}
 		FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
 		double dot(std::shared_ptr<FullVector<T>> vec);
-		void atiput(int i, T value);
 		void atiplusNumber(int i, T value);
 		void atiminusNumber(int i, T value);
 		double sumOfSquares() override;
 		int numberOfElements() override;
 		void zeroSelf() override;
-		void atitimes(int i, double factor);
 		void atiplusFullVector(int i, std::shared_ptr<FullVector<T>> fullVec);
 		void atiplusFullVectortimes(int i, std::shared_ptr<FullVector<T>> fullVec, T factor);
-		double maxMagnitude();
-		double length();
 		void equalSelfPlusFullVectortimes(std::shared_ptr<FullVector<T>> fullVec, T factor);
-		void magnifySelf(T factor);
+		double maxMagnitude() override;
+		void normalizeSelf();
+		double length();
+		virtual void conditionSelf();
+		virtual void conditionSelfWithTol(double tol);
+
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
@@ -41,11 +42,6 @@ namespace MbD {
 			answer += this->at(i) * vec->at(i);
 		}
 		return answer;
-	}
-	template<typename T>
-	inline void FullVector<T>::atiput(int i, T value)
-	{
-		this->at(i) = value;
 	}
 	template<typename T>
 	inline void FullVector<T>::atiplusNumber(int i, T value)
@@ -92,11 +88,6 @@ namespace MbD {
 		assert(false);
 	}
 	template<typename T>
-	inline void FullVector<T>::atitimes(int i, double factor)
-	{
-		this->at(i) *= factor;
-	}
-	template<typename T>
 	inline void FullVector<T>::atiplusFullVector(int i1, std::shared_ptr<FullVector<T>> fullVec)
 	{
 		for (int ii = 0; ii < fullVec->size(); ii++)
@@ -114,19 +105,41 @@ namespace MbD {
 			this->at(i) += fullVec->at(ii) * factor;
 		}
 	}
+	template<typename T>
+	inline void FullVector<T>::equalSelfPlusFullVectortimes(std::shared_ptr<FullVector<T>> fullVec, T factor)
+	{
+		for (int i = 0; i < this->size(); i++)
+		{
+			this->atiplusNumber(i, fullVec->at(i) * factor);
+		}
+	}
 	template<>
 	inline double FullVector<double>::maxMagnitude()
 	{
-		auto answer = 0.0;
+		auto max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto mag = std::abs(this->at(i));
-			if (answer < mag) answer = mag;
+			auto element = this->at(i);
+			if (element < 0.0) element = -element;
+			if (max < element) max = element;
 		}
-		return answer;
+		return max;
+	}
+	template<typename T>
+	inline double FullVector<T>::maxMagnitude()
+	{
+		assert(false);
+		return 0.0;
 	}
 	template<>
-	inline double FullVector<double>::length()
+	inline void FullVector<double>::normalizeSelf()
+	{
+		auto length = this->length();
+		if (length == 0.0) throw std::runtime_error("Cannot normalize a null vector.");
+		this->magnifySelf(1.0 / length);
+	}
+	template<typename T>
+	inline double FullVector<T>::length()
 	{
 		auto ssq = 0.0;
 		for (int i = 0; i < this->size(); i++)
@@ -137,20 +150,27 @@ namespace MbD {
 		return std::sqrt(ssq);
 	}
 	template<typename T>
-	inline void FullVector<T>::equalSelfPlusFullVectortimes(std::shared_ptr<FullVector<T>> fullVec, T factor)
+	inline void FullVector<T>::conditionSelf()
+	{
+		constexpr auto epsilon = std::numeric_limits<double>::epsilon();
+		auto tol = this->maxMagnitude() * epsilon;
+		this->conditionSelfWithTol(tol);
+	}
+	template<>
+	inline void FullVector<double>::conditionSelfWithTol(double tol)
 	{
 		for (int i = 0; i < this->size(); i++)
 		{
-			this->atiplusNumber(i, fullVec->at(i) * factor);
+			auto element = this->at(i);
+			if (element < 0.0) element = -element;
+			if (element < tol) this->atiput(i, 0.0);
 		}
 	}
 	template<typename T>
-	inline void FullVector<T>::magnifySelf(T factor)
+	inline void FullVector<T>::conditionSelfWithTol(double tol)
 	{
-		for (int i = 0; i < this->size(); i++)
-		{
-			this->atitimes(i, factor);
-		}
+		assert(false);
+		return;
 	}
 	template<typename T>
 	inline std::ostream& FullVector<T>::printOn(std::ostream& s) const

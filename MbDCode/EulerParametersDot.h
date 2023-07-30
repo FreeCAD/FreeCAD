@@ -4,6 +4,7 @@
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "EulerParameters.h"
+//#include "CREATE.h" //Cannot use CREATE.h in subclasses of std::vector. Why?
 
 namespace MbD {
 
@@ -32,8 +33,9 @@ namespace MbD {
 	template<typename T>
 	inline std::shared_ptr<EulerParametersDot<T>> EulerParametersDot<T>::FromqEOpAndOmegaOpO(std::shared_ptr<EulerParameters<T>> qEOp, FColDsptr omeOpO)
 	{
+		//auto answer = CREATE<EulerParametersDot<T>>::With(4);	//Cannot use CREATE.h in subclasses of std::vector. Why?
 		auto answer = std::make_shared<EulerParametersDot<T>>(4);
-		answer->initialize();	//Cannot use CREATE.h in subclasses of std::vector. Why?
+		answer->initialize();	
 		qEOp->calcABC();
 		auto aB = qEOp->aB;
 		answer->equalFullColumn(aB->transposeTimesFullColumn(omeOpO->times(0.5)));

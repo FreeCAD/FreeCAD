@@ -10,6 +10,9 @@ namespace MbD {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
+        FColDsptr rpmp();
+        FMatDsptr aApm();
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
     };
 }

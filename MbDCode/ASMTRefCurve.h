@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ASMTItem.h"
+#include "ASMTRefItem.h"
 
 namespace MbD {
-    class ASMTRefCurve : public ASMTItem
+    class ASMTRefCurve : public ASMTRefItem
     {
         //
     public:

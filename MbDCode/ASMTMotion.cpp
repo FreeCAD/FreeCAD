@@ -19,3 +19,7 @@ void MbD::ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 	readTYonIs(lines);
 	readTZonIs(lines);
 }
+
+void MbD::ASMTMotion::initMarkers()
+{
+}

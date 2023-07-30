@@ -8,6 +8,7 @@ namespace MbD {
         //
     public:
         static double arcTan0to2piYoverX(double y, double x);
+        static bool equaltol(double x, double xx, double tol);
 
 
     };

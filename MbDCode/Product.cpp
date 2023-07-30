@@ -7,7 +7,7 @@
 
 using namespace MbD;
 
-Symsptr Product::differentiateWRT(Symsptr sptr, Symsptr var)
+Symsptr MbD::Product::differentiateWRT(Symsptr var)
 {
 	//"Apply chain rule of differentiation."
 	//	"(xyz)' := x'yz + xy'z + xyz'."
@@ -16,7 +16,7 @@ Symsptr Product::differentiateWRT(Symsptr sptr, Symsptr var)
 	std::transform(terms->begin(),
 		terms->end(),
 		std::back_inserter(*derivatives),
-		[var](Symsptr term) { return term->differentiateWRT(term, var); }
+		[var](Symsptr term) { return term->differentiateWRT(var); }
 	);
 	auto derivativeTerms = std::make_shared<std::vector<Symsptr>>();
 	for (int i = 0; i < terms->size(); i++)
@@ -59,9 +59,9 @@ Symsptr Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Sy
 	factor->terms = productTerms;
 	auto sumOfProductsOfSums = std::make_shared<Sum>(std::make_shared<Constant>(1));
 	for (const auto& term : *sumTerms) {
-		sumOfProductsOfSums = std::static_pointer_cast<Sum>(sumOfProductsOfSums->timesSum(sumOfProductsOfSums, term));
+		sumOfProductsOfSums = std::static_pointer_cast<Sum>(Symbolic::times(sumOfProductsOfSums, term));
 	}
-	return factor->timesSum(factor, sumOfProductsOfSums);
+	return Symbolic::times(factor, sumOfProductsOfSums);
 }
 
 Symsptr Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -103,39 +103,6 @@ Symsptr Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<
 	}
 }
 
-Symsptr Product::timesSum(Symsptr sptr, Symsptr aSum)
-{
-	auto answer = std::make_shared<Sum>();
-	auto sumTERMs = aSum->getTerms();
-	for (const auto& sumTERM : *sumTERMs) {
-		Symsptr termTERM;
-		if (sumTERM->isProduct()) {
-			termTERM = sptr->timesProduct(sptr, sumTERM);
-		}
-		else {
-			termTERM = sptr->timesFunction(sptr, sumTERM);
-		}
-		answer->terms->push_back(termTERM);
-	}
-	return answer;
-}
-
-Symsptr Product::timesProduct(Symsptr sptr, Symsptr product)
-{
-	auto answer = std::make_shared<Product>(sptr->getTerms());
-	auto& answerTerms = answer->terms;
-	auto productTerms = product->getTerms();
-	answerTerms->insert(answerTerms->end(), productTerms->begin(), productTerms->end());
-	return answer;
-}
-
-Symsptr Product::timesFunction(Symsptr sptr, Symsptr function)
-{
-	auto answer = std::make_shared<Product>(sptr->getTerms());
-	answer->terms->push_back(function);
-	return answer;
-}
-
 std::ostream& Product::printOn(std::ostream& s) const
 {
 	s << "(";
@@ -158,4 +125,9 @@ double Product::getValue()
 	double answer = 1.0;
 	for (int i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();
 	return answer;
+}
+
+Symsptr MbD::Product::clonesptr()
+{
+	return std::make_shared<Product>(*this);
 }

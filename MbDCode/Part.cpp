@@ -559,3 +559,8 @@ void Part::postDynStep()
 {
 	partFrame->postDynStep();
 }
+
+void MbD::Part::submitToSystem(std::shared_ptr<Item> self)
+{
+	root()->parts->push_back(std::static_pointer_cast<Part>(self));
+}

@@ -64,7 +64,7 @@ void EndFrameqct::initprmemptBlks()
 	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& disp = rmemBlks->at(i);
-		auto var = disp->differentiateWRT(disp, mbdTime);
+		auto var = disp->differentiateWRT(mbdTime);
 		auto vel = var->simplified(var);
 		prmemptBlks->at(i) = vel;
 	}
@@ -76,7 +76,7 @@ void EndFrameqct::initpprmemptptBlks()
 	pprmemptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& vel = prmemptBlks->at(i);
-		auto var = vel->differentiateWRT(vel, mbdTime);
+		auto var = vel->differentiateWRT(mbdTime);
 		auto acc = var->simplified(var);
 		pprmemptptBlks->at(i) = acc;
 	}
@@ -88,7 +88,7 @@ void EndFrameqct::initpPhiThePsiptBlks()
 	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& angle = phiThePsiBlks->at(i);
-		auto var = angle->differentiateWRT(angle, mbdTime);
+		auto var = angle->differentiateWRT(mbdTime);
 		//std::cout << "var " << *var << std::endl;
 		auto vel = var->simplified(var);
 		//std::cout << "vel " << *vel << std::endl;
@@ -102,7 +102,7 @@ void EndFrameqct::initppPhiThePsiptptBlks()
 	ppPhiThePsiptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (int i = 0; i < 3; i++) {
 		auto& angleVel = pPhiThePsiptBlks->at(i);
-		auto var = angleVel->differentiateWRT(angleVel, mbdTime);
+		auto var = angleVel->differentiateWRT(mbdTime);
 		auto angleAcc = var->simplified(var);
 		ppPhiThePsiptptBlks->at(i) = angleAcc;
 	}

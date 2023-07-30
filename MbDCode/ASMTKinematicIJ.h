@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ASMTItem.h"
+#include "ASMTItemIJ.h"
 
 namespace MbD {
-    class ASMTKinematicIJ : public ASMTItem
+    class ASMTKinematicIJ : public ASMTItemIJ
     {
         //
     public:

@@ -26,6 +26,7 @@ namespace MbD {
 		void calc() override;
 		void calcABC();
 		void calcpApE();
+		void conditionSelf() override;
 
 		FMatDsptr aA;
 		FMatDsptr aB;
@@ -315,6 +316,12 @@ namespace MbD {
 		pAipEk->at(0) = m2E1;
 		pAipEk->at(1) = a2E0;
 		pAipEk->at(2) = a2E3;
+	}
+	template<typename T>
+	inline void EulerParameters<T>::conditionSelf()
+	{
+		EulerArray<T>::conditionSelf();
+		this->normalizeSelf();
 	}
 }
 

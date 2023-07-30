@@ -36,5 +36,5 @@ void MbD::PrescribedMotion::initMotions()
 void PrescribedMotion::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
 {
 	Joint::connectsItoJ(frmi, frmj);
-	frmI->initEndFrameqct();
+	std::static_pointer_cast<EndFrameqc>(frmI)->initEndFrameqct();
 }

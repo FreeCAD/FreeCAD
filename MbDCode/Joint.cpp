@@ -10,6 +10,7 @@
 #include "RedundantConstraint.h"
 #include "MarkerFrame.h"
 #include "ForceTorqueData.h"
+#include "System.h"
 
 using namespace MbD;
 
@@ -132,6 +133,11 @@ void Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
 void Joint::useEquationNumbers()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
+}
+
+void MbD::Joint::submitToSystem(std::shared_ptr<Item> self)
+{
+	root()->jointsMotions->push_back(std::static_pointer_cast<Joint>(self));
 }
 
 void Joint::setqsulam(FColDsptr col)

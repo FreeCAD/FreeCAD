@@ -7,6 +7,11 @@
 #include "DiagonalMatrix.h"
 
 namespace MbD {
+	//template<typename T>
+	//class SparseRow;
+	//template<typename T>
+	//class DiagonalMatrix;
+
 	template<typename T>
 	class SparseMatrix : public RowTypeMatrix<std::shared_ptr<SparseRow<T>>>
 	{
@@ -42,9 +47,10 @@ namespace MbD {
 		void atijplusNumber(int i, int j, double value);
 		void atijminusNumber(int i, int j, double value);
 		void atijput(int i, int j, T value);
+		double maxMagnitude() override;
+		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
 
 		std::ostream& printOn(std::ostream& s) const override;
-		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
 
 	};
 	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
@@ -150,6 +156,17 @@ namespace MbD {
 	inline void SparseMatrix<T>::atijput(int i, int j, T value)
 	{
 		this->at(i)->atiput(j, value);
+	}
+	template<typename T>
+	inline double SparseMatrix<T>::maxMagnitude()
+	{
+		auto max = 0.0;
+		for (int i = 0; i < this->size(); i++)
+		{
+			auto element = this->at(i)->maxMagnitude();
+			if (max < element) max = element;
+		}
+		return max;
 	}
 	template<typename T>
 	inline std::ostream& SparseMatrix<T>::printOn(std::ostream& s) const

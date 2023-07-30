@@ -7,7 +7,7 @@ IndependentVariable::IndependentVariable()
 {
 }
 
-Symsptr IndependentVariable::differentiateWRT(Symsptr sptr, Symsptr var)
+Symsptr MbD::IndependentVariable::differentiateWRT(Symsptr var)
 {
 	if (this == var.get()) {
 		return std::make_shared<Constant>(1.0);

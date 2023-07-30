@@ -1,4 +1,5 @@
 #include "ASMTRefPoint.h"
+#include "ASMTMarker.h"
 #include "CREATE.h"
 
 using namespace MbD;
@@ -10,27 +11,14 @@ void MbD::ASMTRefPoint::parseASMT(std::vector<std::string>& lines)
 	readMarkers(lines);
 }
 
-void MbD::ASMTRefPoint::readMarkers(std::vector<std::string>& lines)
+std::string MbD::ASMTRefPoint::fullName(std::string partialName)
 {
-	assert(lines[0].find("Markers") != std::string::npos);
-	lines.erase(lines.begin());
-	markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
-	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
-		return s.find("RefPoint") != std::string::npos;
-		});
-	std::vector<std::string> markersLines(lines.begin(), it);
-	while (!markersLines.empty()) {
-		readMarker(markersLines);
-	}
-	lines.erase(lines.begin(), it);
+	return owner->fullName(partialName);
 }
 
-void MbD::ASMTRefPoint::readMarker(std::vector<std::string>& lines)
+void MbD::ASMTRefPoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
-	assert(lines[0].find("Marker") != std::string::npos);
-	lines.erase(lines.begin());
-	auto marker = CREATE<ASMTMarker>::With();
-	marker->parseASMT(lines);
-	markers->push_back(marker);
-	marker->owner = this;
+	for (auto& marker : *markers) {
+		marker->createMbD(mbdSys, mbdUnits);
+	}
 }
