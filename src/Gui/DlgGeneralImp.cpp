@@ -66,6 +66,7 @@ using namespace Base;
 DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   : PreferencePage(parent)
   , localeIndex(0)
+  , themeChanged(false)
   , ui(new Ui_DlgGeneral)
 {
     ui->setupUi(this);
@@ -74,6 +75,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
+    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgGeneralImp::onThemeChanged);
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
     connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgGeneralImp::onManagePreferencePacksClicked);
@@ -246,9 +248,8 @@ void DlgGeneralImp::saveSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
-    QVariant sheet = ui->StyleSheets->itemData(ui->StyleSheets->currentIndex());
-    hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
-    Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
+    if (themeChanged)
+        saveThemes();
 }
 
 void DlgGeneralImp::loadSettings()
@@ -348,54 +349,55 @@ void DlgGeneralImp::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
-    // List all .qss/.css files
-    QMap<QString, QString> cssFiles;
-    QDir dir;
-    QStringList filter;
-    filter << QString::fromLatin1("*.qss");
-    filter << QString::fromLatin1("*.css");
+    loadThemes();
+}
 
-    // read from user, resource and built-in directory
-    QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
-    for (const auto & qssPath : qssPaths) {
-        dir.setPath(qssPath);
-        QFileInfoList fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (const auto & fileName : qAsConst(fileNames)) {
-            if (cssFiles.find(fileName.baseName()) == cssFiles.end()) {
-                cssFiles[fileName.baseName()] = fileName.fileName();
-            }
+void DlgGeneralImp::saveThemes()
+{
+    // First we save the name of the theme
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+    std::string theme = ui->themesCombobox->currentText().toStdString();
+    hGrp->SetASCII("Theme", theme);
+
+    // Then we apply the themepack.
+    Application::Instance->prefPackManager()->rescan();
+    auto packs = Application::Instance->prefPackManager()->preferencePacks();
+
+    for (const auto& pack : packs) {
+        if (pack.first == theme) {
+
+            Application::Instance->prefPackManager()->apply(pack.first);
+            break;
         }
     }
 
-    // now add all unique items
-    ui->StyleSheets->clear();
-    ui->StyleSheets->addItem(tr("No style sheet"), QString::fromLatin1(""));
-    for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
-        ui->StyleSheets->addItem(it.key(), it.value());
-    }
+    // Set the StyleSheet
+    QString sheet = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
+    bool tiledBackground = hGrp->GetBool("TiledBackground", false);
+    Application::Instance->setStyleSheet(sheet, tiledBackground);
+}
 
-    QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-    index = ui->StyleSheets->findData(selectedStyleSheet);
+void DlgGeneralImp::loadThemes()
+{
+    ui->themesCombobox->clear();
 
-    // might be an absolute path name
-    if (index < 0 && !selectedStyleSheet.isEmpty()) {
-        QFileInfo fi(selectedStyleSheet);
-        if (fi.isAbsolute()) {
-            QString path = fi.absolutePath();
-            if (qssPaths.indexOf(path) >= 0) {
-                selectedStyleSheet = fi.fileName();
-            }
-            else {
-                selectedStyleSheet = fi.absoluteFilePath();
-                ui->StyleSheets->addItem(fi.baseName(), selectedStyleSheet);
-            }
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
 
-            index = ui->StyleSheets->findData(selectedStyleSheet);
+    QString currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+
+    Application::Instance->prefPackManager()->rescan();
+    auto packs = Application::Instance->prefPackManager()->preferencePacks();
+    for (const auto& pack : packs) {
+        if (pack.second.metadata().type() == "Theme") {
+            ui->themesCombobox->addItem(QString::fromStdString(pack.first));
         }
     }
 
-    if (index > -1)
-        ui->StyleSheets->setCurrentIndex(index);
+    int index = ui->themesCombobox->findText(currentTheme);
+    if (index >= 0 && index < ui->themesCombobox->count()) {
+        ui->themesCombobox->setCurrentIndex(index);
+    }
 }
 
 void DlgGeneralImp::changeEvent(QEvent *event)
@@ -559,6 +561,11 @@ void DlgGeneralImp::onUnitSystemIndexChanged(int index)
         ui->comboBox_FracInch->setVisible(false);
         ui->fractionalInchLabel->setVisible(false);
     }
+}
+
+void DlgGeneralImp::onThemeChanged(int index) {
+    Q_UNUSED(index);
+    themeChanged = true;
 }
 
 #include "moc_DlgGeneralImp.cpp"
