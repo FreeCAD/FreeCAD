@@ -29,7 +29,7 @@
          <string>Enable Notification Area</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>NotificationAreaEnabled</cstring>

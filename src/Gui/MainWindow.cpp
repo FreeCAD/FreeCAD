@@ -394,7 +394,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
-    auto notificationAreaEnabled = hGrp->GetBool("NotificationAreaEnabled", true);
+    auto notificationAreaEnabled = hGrp->GetBool("NotificationAreaEnabled", false);
 
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
