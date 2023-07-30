@@ -41,18 +41,12 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
     ui->setupUi(this);
 
     adaptUiToAreaEnabledState(ui->NotificationAreaEnabled->isChecked());
-
     connect(ui->NotificationAreaEnabled, &QCheckBox::stateChanged, [this](int state) {
         bool enabled = state == Qt::CheckState::Checked;
         this->adaptUiToAreaEnabledState(enabled);
 
         if (enabled) {
-            QMessageBox::information(this,
-                                     tr("Notification Area"),
-                                     tr("Activation of the Notification Area only takes effect "
-                                        "after an application restart."));
-            // N.B: Deactivation is handled by the Notification Area itself, as it listens to all
-            // its configuration parameters.
+            this->requireRestart();
         }
     });
 }
