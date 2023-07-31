@@ -580,4 +580,3 @@ void DlgGeneralImp::onThemeChanged(int index) {
 }
 
 #include "moc_DlgSettingsGeneral.cpp"
-
