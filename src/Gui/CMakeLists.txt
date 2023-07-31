@@ -297,7 +297,7 @@ SET(Gui_UIC_SRCS
     DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
-    DlgEditor.ui
+    DlgSettingsEditor.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -556,7 +556,7 @@ SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
-    DlgEditorImp.cpp
+    DlgSettingsEditor.cpp
     DlgOnlineHelpImp.cpp
     DlgPreferencesImp.cpp
     DlgSettingsReportView.cpp
@@ -576,7 +576,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
-    DlgEditorImp.h
+    DlgSettingsEditor.h
     DlgSettingsGeneral.h
     DlgOnlineHelpImp.h
     DlgPreferencesImp.h
@@ -598,7 +598,7 @@ SET(Dialog_Settings_HPP_SRCS
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
-    DlgEditor.ui
+    DlgSettingsEditor.ui
     DlgOnlineHelp.ui
     DlgPreferences.ui
     DlgSettingsReportView.ui
