@@ -26,8 +26,8 @@
 # include <QFontDatabase>
 #endif
 
-#include "DlgEditorImp.h"
-#include "ui_DlgEditor.h"
+#include "DlgSettingsEditor.h"
+#include "ui_DlgSettingsEditor.h"
 #include "PythonEditor.h"
 #include "Tools.h"
 #include <App/Color.h>
@@ -83,7 +83,7 @@ QFont getMonospaceFont()
  */
 DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgEditorSettings)
+  , ui(new Ui_DlgSettingsEditor)
 {
     ui->setupUi(this);
     ui->EnableFolding->hide(); // Switch off until we have an editor with folding

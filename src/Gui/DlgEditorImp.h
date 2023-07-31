@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGEDITORSETTINGSIMP_H
-#define GUI_DIALOG_DLGEDITORSETTINGSIMP_H
+#ifndef GUI_DIALOG_DLGSETTINGSEDITOR_H
+#define GUI_DIALOG_DLGSETTINGSEDITOR_H
 
 #include "PropertyPage.h"
 #include <memory>
@@ -33,7 +33,7 @@ namespace Gui {
 class PythonSyntaxHighlighter;
 
 namespace Dialog {
-class Ui_DlgEditorSettings;
+class Ui_DlgSettingsEditor;
 
 /** This class implements a preferences page for the editor settings.
  *  Here you can change different color settings and font for editors.
@@ -64,7 +64,7 @@ protected:
     void setEditorTabWidth(int);
 
 private:
-    std::unique_ptr<Ui_DlgEditorSettings> ui;
+    std::unique_ptr<Ui_DlgSettingsEditor> ui;
     DlgSettingsEditorP* d;
     Gui::PythonSyntaxHighlighter* pythonSyntax;
 
@@ -75,4 +75,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGEDITORSETTINGSIMP_H
+#endif // GUI_DIALOG_DLGSETTINGSEDITOR_H

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Gui::Dialog::DlgEditorSettings</class>
- <widget class="QWidget" name="Gui::Dialog::DlgEditorSettings">
+ <class>Gui::Dialog::DlgSettingsEditor</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsEditor">
   <property name="geometry">
    <rect>
     <x>0</x>
