@@ -2431,7 +2431,9 @@ bool CDxfRead::ReadText()
                 {
                     const char* utfStr = (this->*stringToUTF8)(textPrefix.c_str());
                     OnReadText(c, height * 25.4 / 72.0, utfStr);
-                    delete utfStr;
+                    if (utfStr == m_str) {
+                        delete utfStr;
+                    }
                 }
                 return(true);
 
