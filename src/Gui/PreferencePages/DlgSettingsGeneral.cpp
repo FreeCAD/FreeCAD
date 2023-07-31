@@ -38,17 +38,18 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
+#include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/DlgCreateNewPreferencePackImp.h>
+#include <Gui/DlgPreferencesImp.h>
+#include <Gui/DlgPreferencePackManagementImp.h>
+#include <Gui/DlgRevertToBackupConfigImp.h>
+#include <Gui/MainWindow.h>
+#include <Gui/PreferencePackManager.h>
+#include <Gui/Language/Translator.h>
+
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
-#include "Action.h"
-#include "Application.h"
-#include "DlgCreateNewPreferencePackImp.h"
-#include "DlgPreferencesImp.h"
-#include "DlgPreferencePackManagementImp.h"
-#include "DlgRevertToBackupConfigImp.h"
-#include "MainWindow.h"
-#include "PreferencePackManager.h"
-#include "Language/Translator.h"
 
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
@@ -75,7 +76,7 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
 
     connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
-    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgGeneralImp::onThemeChanged);
+    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
     connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
@@ -352,7 +353,7 @@ void DlgSettingsGeneral::loadSettings()
     loadThemes();
 }
 
-void DlgGeneralImp::saveThemes()
+void DlgSettingsGeneral::saveThemes()
 {
     // First we save the name of the theme
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
@@ -378,7 +379,7 @@ void DlgGeneralImp::saveThemes()
     Application::Instance->setStyleSheet(sheet, tiledBackground);
 }
 
-void DlgGeneralImp::loadThemes()
+void DlgSettingsGeneral::loadThemes()
 {
     ui->themesCombobox->clear();
 
@@ -574,7 +575,7 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
     }
 }
 
-void DlgGeneralImp::onThemeChanged(int index) {
+void DlgSettingsGeneral::onThemeChanged(int index) {
     Q_UNUSED(index);
     themeChanged = true;
 }

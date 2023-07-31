@@ -165,4 +165,3 @@ void DlgSettingsViewColor::setGradientColorVisibility(bool val)
 }
 
 #include "moc_DlgSettingsViewColor.cpp"
-

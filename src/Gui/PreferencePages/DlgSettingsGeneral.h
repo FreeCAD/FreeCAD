@@ -26,7 +26,7 @@
 #ifndef GUI_DIALOG_DLGSETTINGSGENERAL_H
 #define GUI_DIALOG_DLGSETTINGSGENERAL_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
 #include <string>
 

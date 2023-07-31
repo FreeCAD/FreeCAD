@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,50 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
-#define GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+#ifndef GUI_DIALOG_DLGSETTINGSVIEWCOLOR_H
+#define GUI_DIALOG_DLGSETTINGSVIEWCOLOR_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsPythonConsole;
+class Ui_DlgSettingsViewColor;
 
 /**
- * The DlgSettingsPythonConsole class implements a preference page to change settings
- * for the Python console.
+ * The DlgSettingsViewColor class implements a preference page to change color settings
+ * for the Inventor viewer like background and selection.
  * @author Werner Mayer
  */
-class DlgSettingsPythonConsole : public PreferencePage
+class DlgSettingsViewColor : public PreferencePage
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit DlgSettingsPythonConsole(QWidget* parent = nullptr);
-    ~DlgSettingsPythonConsole() override;
+  explicit DlgSettingsViewColor(QWidget* parent = nullptr);
+  ~DlgSettingsViewColor() override;
 
-    void saveSettings() override;
-    void loadSettings() override;
+  void saveSettings() override;
+  void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+  void changeEvent(QEvent *e) override;
+
+protected Q_SLOTS:
+  void onSwitchGradientColorsPressed();
+  void onRadioButtonSimpleToggled(bool val);
+  void onRadioButtonGradientToggled(bool val);
+  void onRadioButtonRadialGradientToggled(bool val);
+  void onCheckMidColorToggled(bool val);
 
 private:
-    std::unique_ptr<Ui_DlgSettingsPythonConsole> ui;
+	void setGradientColorVisibility(bool val);
+
+private:
+  std::unique_ptr<Ui_DlgSettingsViewColor> ui;
 };
 
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+#endif // GUI_DIALOG_DLGSETTINGSVIEWCOLOR_H

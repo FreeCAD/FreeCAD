@@ -82,4 +82,3 @@ void DlgSettingsSelection::changeEvent(QEvent *e)
 }
 
 #include "moc_DlgSettingsSelection.cpp"
-

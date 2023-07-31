@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,39 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
-#define GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
+#ifndef GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
+#define GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsReportView;
+class Ui_DlgSettingsDocument;
 
-/** The DlgSettingsReportView class implements the available settings for the
- * Report View to change.
- * \author Werner Mayer
+/**
+ * The DlgSettingsDocumentImp class implements a preference page to change settings
+ * for the document.
+ * \author Jürgen Riegel
  */
-class DlgSettingsReportView : public PreferencePage
+class DlgSettingsDocumentImp : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsReportView( QWidget* parent = nullptr );
-    ~DlgSettingsReportView() override;
+    explicit DlgSettingsDocumentImp( QWidget* parent = nullptr );
+    ~DlgSettingsDocumentImp() override;
 
     void saveSettings() override;
     void loadSettings() override;
 
+protected Q_SLOTS:
+    void onLicenseTypeChanged(int index);
+
 protected:
     void changeEvent(QEvent *e) override;
+    void addLicenseTypes();
 
 private:
-    std::unique_ptr<Ui_DlgSettingsReportView> ui;
+    std::unique_ptr<Ui_DlgSettingsDocument> ui;
 };
 
 } // namespace Dialog
 } // namespace Gui
 
-#endif //GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
+#endif // GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H

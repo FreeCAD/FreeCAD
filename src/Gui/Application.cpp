@@ -65,7 +65,7 @@
 #include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
-#include "DlgSettingsCacheDirectory.h"
+#include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
