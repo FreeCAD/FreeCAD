@@ -60,6 +60,7 @@
 #include "DrawViewSection.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
+#include "ShapeUtils.h"
 
 
 using namespace TechDraw;
@@ -205,9 +206,6 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
     Base::Vector3d dirDetail = dvp->Direction.getValue();
     double radius = getFudgeRadius();
 
-    int solidCount = DrawUtil::countSubShapes(shape, TopAbs_SOLID);
-    int shellCount = DrawUtil::countSubShapes(shape, TopAbs_SHELL);
-
     //make a copy of the input shape so we don't inadvertently change it
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape copyShape = BuilderCopy.Shape();
@@ -230,11 +228,8 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
 
     m_viewAxis = dvp->getProjectionCS(shapeCenter);//save the CS for later
     Base::Vector3d anchor = AnchorPoint.getValue();//this is a 2D point in base view local coords
-    //    double baseRotationRad = dvp->Rotation.getValue() * M_PI / 180.0;
-    //    anchor.RotateZ(baseRotationRad);
 
     anchor = DrawUtil::toR3(m_viewAxis, anchor);//actual anchor coords in R3
-
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
@@ -280,105 +275,38 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
         }
     }
 
-    //for each solid and shell in the input shape, make a common with the tool and
-    //add the result to a compound.  This avoids issues with some geometry errors in the
-    //input shape.
-    BRep_Builder builder;
-    TopoDS_Compound pieces;
-    builder.MakeCompound(pieces);
-    if (solidCount > 0) {
-        TopExp_Explorer expl(copyShape, TopAbs_SOLID);
-        for (; expl.More(); expl.Next()) {
-            const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-
-            BRepAlgoAPI_Common mkCommon(s, tool);
-            if (!mkCommon.IsDone()) {
-                continue;
-            }
-            if (mkCommon.Shape().IsNull()) {
-                continue;
-            }
-            //this might be overkill for piecewise algo
-            //Did we get at least 1 solid?
-            TopExp_Explorer xp;
-            xp.Init(mkCommon.Shape(), TopAbs_SOLID);
-            if (xp.More() != Standard_True) {
-                continue;
-            }
-            builder.Add(pieces, mkCommon.Shape());
-        }
-    }
-
-    if (shellCount > 0) {
-        TopExp_Explorer expl(copyShape, TopAbs_SHELL);
-        for (; expl.More(); expl.Next()) {
-            const TopoDS_Shell& s = TopoDS::Shell(expl.Current());
-
-            BRepAlgoAPI_Common mkCommon(s, tool);
-            if (!mkCommon.IsDone()) {
-                continue;
-            }
-            if (mkCommon.Shape().IsNull()) {
-                continue;
-            }
-            //this might be overkill for piecewise algo
-            //Did we get at least 1 shell?
-            TopExp_Explorer xp;
-            xp.Init(mkCommon.Shape(), TopAbs_SHELL);
-            if (xp.More() != Standard_True) {
-                continue;
-            }
-            builder.Add(pieces, mkCommon.Shape());
-        }
+    BRepAlgoAPI_Common mkCommon(copyShape, tool);
+    if (!mkCommon.IsDone() || mkCommon.Shape().IsNull()) {
+        Base::Console().Warning("DVD::detailExec - %s - failed to create detail shape\n",
+                            getNameInDocument());
+        return;
     }
 
     // save the detail shape for further processing
-    m_detailShape = pieces;
+    m_detailShape = mkCommon.Shape();
 
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");     //debug
         BRepTools::Write(copyShape, "DVDCopy.brep");//debug
-        BRepTools::Write(pieces, "DVDCommon.brep"); //debug
+        BRepTools::Write(m_detailShape, "DVDCommon.brep"); //debug
     }
 
-    gp_Pnt inputCenter;
-    try {
-        //centroid of result
-        inputCenter = ShapeUtils::findCentroid(pieces, dirDetail);
-        Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
-        m_saveCentroid += centroid;//center of massaged shape
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_detailShape, dirDetail);
+    Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
+    m_saveCentroid += centroid;//center of massaged shape
+    //align shape with detail anchor
+    TopoDS_Shape centeredShape = ShapeUtils::moveShape(m_detailShape, anchor * -1.0);
+    m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
 
-        if ((solidCount > 0) || (shellCount > 0)) {
-            //align shape with detail anchor
-            TopoDS_Shape centeredShape = ShapeUtils::moveShape(pieces, anchor * -1.0);
-            m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
-            if (debugDetail()) {
-                BRepTools::Write(m_scaledShape, "DVDScaled.brep");//debug
-            }
-        }
-        else {
-            //no solids, no shells, do what you can with edges
-            TopoDS_Shape projectedEdges = projectEdgesOntoFace(copyShape, extrusionFace, gdir);
-            TopoDS_Shape centeredShape = ShapeUtils::moveShape(projectedEdges, anchor * -1.0);
-            if (debugDetail()) {
-                BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");//debug
-                BRepTools::Write(centeredShape, "DVDCenteredShape.brep");  //debug
-            }
-            m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
-        }
+    if (debugDetail()) {
+        BRepTools::Write(m_scaledShape, "DVDScaled.brep");//debug
+    }
 
-        Base::Vector3d stdOrg(0.0, 0.0, 0.0);
-        m_viewAxis = dvp->getProjectionCS(stdOrg);
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+    m_viewAxis = dvp->getProjectionCS(stdOrg);
 
-        if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-            m_scaledShape = ShapeUtils::rotateShape(m_scaledShape, m_viewAxis, Rotation.getValue());
-        }
-    }//end try block
-
-    catch (Standard_Failure& e1) {
-        Base::Console().Message("DVD::makeDetailShape - failed to create detail %s - %s **\n",
-                                getNameInDocument(), e1.GetMessageString());
-        return;
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+        m_scaledShape = ShapeUtils::rotateShape(m_scaledShape, m_viewAxis, Rotation.getValue());
     }
 
     showProgressMessage(getNameInDocument(), "has finished making detail shape");
