@@ -60,6 +60,8 @@ DlgSettingsTheme::~DlgSettingsTheme()
 void DlgSettingsTheme::saveSettings()
 {
     ui->ThemeSecondaryColor->onSave();
+    ui->ThemeHighlightColor->onSave();
+    ui->ThemeFocusColor->onSave();
 
     if (styleSheetChanged)
         saveStyleSheet();
@@ -68,6 +70,8 @@ void DlgSettingsTheme::saveSettings()
 void DlgSettingsTheme::loadSettings()
 {
     ui->ThemeSecondaryColor->onRestore();
+    ui->ThemeHighlightColor->onRestore();
+    ui->ThemeFocusColor->onRestore();
 
     loadStyleSheet();
 }
