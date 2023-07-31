@@ -23,7 +23,7 @@ if(BUILD_GUI)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
     endif()
 endif()
-if (BUILD_TEST)
+if (ENABLE_DEVELOPER_TESTS)
     list (APPEND FREECAD_QT_COMPONENTS Test)
 endif ()
 
