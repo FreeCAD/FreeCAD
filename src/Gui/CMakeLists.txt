@@ -297,7 +297,6 @@ SET(Gui_UIC_SRCS
     DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
-    DlgSettingsEditor.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -312,22 +311,23 @@ SET(Gui_UIC_SRCS
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
-    DlgSettingsReportView.ui
     DlgRevertToBackupConfig.ui
-    DlgSettingsGeneral.ui
-    DlgSettings3DView.ui
-    DlgSettingsCacheDirectory.ui
-    DlgSettingsNavigation.ui
-    DlgSettingsSelection.ui
-    DlgSettingsViewColor.ui
-    DlgSettingsTheme.ui
+    PreferencePages/DlgSettings3DView.ui
+    PreferencePages/DlgSettingsCacheDirectory.ui
     DlgSettingsColorGradient.ui
-    DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsEditor.ui
+    PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
-    DlgSettingsWorkbenches.ui
-    DlgSettingsMacro.ui
-    DlgSettingsNotificationArea.ui
-    DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsMacro.ui
+    PreferencePages/DlgSettingsNavigation.ui
+    PreferencePages/DlgSettingsNotificationArea.ui
+    PreferencePages/DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsReportView.ui
+    PreferencePages/DlgSettingsSelection.ui
+    DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsViewColor.ui
+    PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgTreeWidget.ui
@@ -556,66 +556,66 @@ SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
-    DlgSettingsEditor.cpp
     DlgOnlineHelpImp.cpp
     DlgPreferencesImp.cpp
-    DlgSettingsReportView.cpp
-    DlgSettingsGeneral.cpp
-    DlgSettings3DViewImp.cpp
-    DlgSettingsCacheDirectory.cpp
-    DlgSettingsNavigation.cpp
-    DlgSettingsSelection.cpp
-    DlgSettingsViewColor.cpp
-    DlgSettingsTheme.cpp
+    PreferencePages/DlgSettings3DViewImp.cpp
+    PreferencePages/DlgSettingsCacheDirectory.cpp
     DlgSettingsColorGradientImp.cpp
-    DlgSettingsDocumentImp.cpp
+    PreferencePages/DlgSettingsDocumentImp.cpp
+    PreferencePages/DlgSettingsEditor.cpp
+    PreferencePages/DlgSettingsGeneral.cpp
     DlgSettingsImageImp.cpp
-    DlgSettingsWorkbenchesImp.cpp
-    DlgSettingsMacroImp.cpp
-    DlgSettingsNotificationArea.cpp
-    DlgSettingsPythonConsole.cpp
+    PreferencePages/DlgSettingsMacroImp.cpp
+    PreferencePages/DlgSettingsNavigation.cpp
+    PreferencePages/DlgSettingsNotificationArea.cpp
+    PreferencePages/DlgSettingsPythonConsole.cpp
+    PreferencePages/DlgSettingsReportView.cpp
+    PreferencePages/DlgSettingsSelection.cpp
+    DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsViewColor.cpp
+    PreferencePages/DlgSettingsWorkbenchesImp.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
-    DlgSettingsEditor.h
-    DlgSettingsGeneral.h
     DlgOnlineHelpImp.h
     DlgPreferencesImp.h
-    DlgSettingsReportView.h
-    DlgSettings3DViewImp.h
-    DlgSettingsCacheDirectory.h
-    DlgSettingsNavigation.h
-    DlgSettingsSelection.h
-    DlgSettingsViewColor.h
-    DlgSettingsTheme.h
+    PreferencePages/DlgSettings3DViewImp.h
+    PreferencePages/DlgSettingsCacheDirectory.h
     DlgSettingsColorGradientImp.h
-    DlgSettingsDocumentImp.h
+    PreferencePages/DlgSettingsDocumentImp.h
+    PreferencePages/DlgSettingsEditor.h
+    PreferencePages/DlgSettingsGeneral.h
     DlgSettingsImageImp.h
-    DlgSettingsWorkbenchesImp.h
-    DlgSettingsMacroImp.h
-    DlgSettingsNotificationArea.h
-    DlgSettingsPythonConsole.h
+    PreferencePages/DlgSettingsMacroImp.h
+    PreferencePages/DlgSettingsNavigation.h
+    PreferencePages/DlgSettingsNotificationArea.h
+    PreferencePages/DlgSettingsPythonConsole.h
+    PreferencePages/DlgSettingsReportView.h
+    PreferencePages/DlgSettingsSelection.h
+    DlgSettingsTheme.h
+    PreferencePages/DlgSettingsViewColor.h
+    PreferencePages/DlgSettingsWorkbenchesImp.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
-    DlgSettingsEditor.ui
     DlgOnlineHelp.ui
     DlgPreferences.ui
-    DlgSettingsReportView.ui
-    DlgSettingsGeneral.ui
-    DlgSettings3DView.ui
-    DlgSettingsCacheDirectory.ui
-    DlgSettingsNavigation.ui
-    DlgSettingsSelection.ui
-    DlgSettingsViewColor.ui
-    DlgSettingsTheme.ui
+    PreferencePages/DlgSettings3DView.ui
+    PreferencePages/DlgSettingsCacheDirectory.ui
     DlgSettingsColorGradient.ui
-    DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsEditor.ui
+    PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
-    DlgSettingsWorkbenches.ui
-    DlgSettingsMacro.ui
-    DlgSettingsNotificationArea.ui
-    DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsMacro.ui
+    PreferencePages/DlgSettingsNavigation.ui
+    PreferencePages/DlgSettingsNotificationArea.ui
+    PreferencePages/DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsReportView.ui
+    PreferencePages/DlgSettingsSelection.ui
+    DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsViewColor.ui
+    PreferencePages/DlgSettingsWorkbenches.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 

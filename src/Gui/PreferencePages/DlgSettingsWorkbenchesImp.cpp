@@ -30,12 +30,13 @@
 #include <sstream>
 #endif
 
+#include <Gui/Application.h>
+#include <Gui/UserSettings.h>
+#include <Gui/Workbench.h>
+#include <Gui/WorkbenchManager.h>
+
 #include "DlgSettingsWorkbenchesImp.h"
 #include "ui_DlgSettingsWorkbenches.h"
-#include "Application.h"
-#include "UserSettings.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
 
 
 using namespace Gui::Dialog;

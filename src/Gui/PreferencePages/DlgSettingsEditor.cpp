@@ -26,11 +26,12 @@
 # include <QFontDatabase>
 #endif
 
+#include <App/Color.h>
+#include <Gui/PythonEditor.h>
+#include <Gui/Tools.h>
+
 #include "DlgSettingsEditor.h"
 #include "ui_DlgSettingsEditor.h"
-#include "PythonEditor.h"
-#include "Tools.h"
-#include <App/Color.h>
 
 
 using namespace Gui;
@@ -72,16 +73,16 @@ QFont getMonospaceFont()
 }
 }
 
-/* TRANSLATOR Gui::Dialog::DlgSettingsEditorImp */
+/* TRANSLATOR Gui::Dialog::DlgSettingsEditor */
 
 /**
- *  Constructs a DlgSettingsEditorImp which is a child of 'parent', with the
+ *  Constructs a DlgSettingsEditor which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
+DlgSettingsEditor::DlgSettingsEditor( QWidget* parent )
   : PreferencePage( parent )
   , ui(new Ui_DlgSettingsEditor)
 {
@@ -171,29 +172,29 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgSettingsEditorImp::~DlgSettingsEditorImp()
+DlgSettingsEditor::~DlgSettingsEditor()
 {
     // no need to delete child widgets, Qt does it all for us
     delete pythonSyntax;
     delete d;
 }
 
-void DlgSettingsEditorImp::setupConnections()
+void DlgSettingsEditor::setupConnections()
 {
     connect(ui->displayItems, &QTreeWidget::currentItemChanged,
-            this, &DlgSettingsEditorImp::onDisplayItemsCurrentItemChanged);
+            this, &DlgSettingsEditor::onDisplayItemsCurrentItemChanged);
     connect(ui->colorButton, &ColorButton::changed,
-            this, &DlgSettingsEditorImp::onColorButtonChanged);
+            this, &DlgSettingsEditor::onColorButtonChanged);
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     connect(ui->fontFamily, qOverload<const QString&>(&QComboBox::activated),
-            this, &DlgSettingsEditorImp::onFontFamilyActivated);
+            this, &DlgSettingsEditor::onFontFamilyActivated);
     connect(ui->fontSize, qOverload<const QString&>(&PrefSpinBox::valueChanged),
-            this, &DlgSettingsEditorImp::onFontSizeValueChanged);
+            this, &DlgSettingsEditor::onFontSizeValueChanged);
 #else
     connect(ui->fontFamily, &QComboBox::textActivated,
-            this, &DlgSettingsEditorImp::onFontFamilyActivated);
+            this, &DlgSettingsEditor::onFontFamilyActivated);
     connect(ui->fontSize, &PrefSpinBox::textChanged,
-            this, &DlgSettingsEditorImp::onFontSizeValueChanged);
+            this, &DlgSettingsEditor::onFontSizeValueChanged);
 #endif
 }
 
@@ -201,7 +202,7 @@ void DlgSettingsEditorImp::setupConnections()
  *   settings ColorMap and assigns it to the color button
  *  @see Gui::ColorButton
  */
-void DlgSettingsEditorImp::onDisplayItemsCurrentItemChanged(QTreeWidgetItem *item)
+void DlgSettingsEditor::onDisplayItemsCurrentItemChanged(QTreeWidgetItem *item)
 {
     int index = ui->displayItems->indexOfTopLevelItem(item);
     unsigned int col = d->colormap[index].second;
@@ -209,7 +210,7 @@ void DlgSettingsEditorImp::onDisplayItemsCurrentItemChanged(QTreeWidgetItem *ite
 }
 
 /** Updates the color map if a color was changed */
-void DlgSettingsEditorImp::onColorButtonChanged()
+void DlgSettingsEditor::onColorButtonChanged()
 {
     QColor col = ui->colorButton->color();
     unsigned int lcol = App::Color::asPackedRGB<QColor>(col);
@@ -219,7 +220,7 @@ void DlgSettingsEditorImp::onColorButtonChanged()
     pythonSyntax->setColor( d->colormap[index].first, col );
 }
 
-void DlgSettingsEditorImp::setEditorTabWidth(int tabWidth)
+void DlgSettingsEditor::setEditorTabWidth(int tabWidth)
 {
     QFontMetrics metric(font());
     int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
@@ -230,7 +231,7 @@ void DlgSettingsEditorImp::setEditorTabWidth(int tabWidth)
 #endif
 }
 
-void DlgSettingsEditorImp::saveSettings()
+void DlgSettingsEditor::saveSettings()
 {
     ui->EnableLineNumber->onSave();
     ui->EnableBlockCursor->onSave();
@@ -253,7 +254,7 @@ void DlgSettingsEditorImp::saveSettings()
     setEditorTabWidth(ui->tabSize->value());
 }
 
-void DlgSettingsEditorImp::loadSettings()
+void DlgSettingsEditor::loadSettings()
 {
     ui->EnableLineNumber->onRestore();
     ui->EnableBlockCursor->onRestore();
@@ -325,7 +326,7 @@ void DlgSettingsEditorImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsEditorImp::changeEvent(QEvent *e)
+void DlgSettingsEditor::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int index = 0;
@@ -337,16 +338,16 @@ void DlgSettingsEditorImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgSettingsEditorImp::onFontFamilyActivated(const QString& fontFamily)
+void DlgSettingsEditor::onFontFamilyActivated(const QString& fontFamily)
 {
     int fontSize = ui->fontSize->value();
     QFont ft(fontFamily, fontSize);
     ui->textEdit1->setFont(ft);
 }
 
-void DlgSettingsEditorImp::onFontSizeValueChanged(const QString&)
+void DlgSettingsEditor::onFontSizeValueChanged(const QString&)
 {
     onFontFamilyActivated(ui->fontFamily->currentText());
 }
 
-#include "moc_DlgEditorImp.cpp"
+#include "moc_DlgSettingsEditor.cpp"

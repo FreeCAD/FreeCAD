@@ -30,26 +30,27 @@
 // INCLUDE YOUR PREFERENCE PAGES HERE
 //
 #include "DlgPreferencesImp.h"
-#include "DlgSettings3DViewImp.h"
-#include "DlgSettingsNavigation.h"
-#include "DlgSettingsSelection.h"
-#include "DlgSettingsViewColor.h"
+#include "PreferencePages/DlgSettings3DViewImp.h"
+#include "PreferencePages/DlgSettingsCacheDirectory.h"
+#include "PreferencePages/DlgSettingsDocumentImp.h"
+#include "PreferencePages/DlgSettingsEditor.h"
+#include "PreferencePages/DlgSettingsGeneral.h"
+#include "PreferencePages/DlgSettingsMacroImp.h"
+#include "PreferencePages/DlgSettingsNavigation.h"
+#include "PreferencePages/DlgSettingsNotificationArea.h"
+#include "PreferencePages/DlgSettingsPythonConsole.h"
+#include "PreferencePages/DlgSettingsReportView.h"
+#include "PreferencePages/DlgSettingsSelection.h"
 #include "DlgSettingsTheme.h"
-#include "DlgSettingsGeneral.h"
-#include "DlgEditorImp.h"
-#include "DlgSettingsNotificationArea.h"
-#include "DlgSettingsPythonConsole.h"
-#include "DlgSettingsMacroImp.h"
-#include "DlgSettingsDocumentImp.h"
-#include "DlgSettingsReportView.h"
-#include "DlgSettingsWorkbenchesImp.h"
+#include "PreferencePages/DlgSettingsViewColor.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
+
 
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
 #include "DlgKeyboardImp.h"
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
-#include "DlgSettingsCacheDirectory.h"
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
@@ -78,7 +79,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
-    new PrefPageProducer<DlgSettingsEditorImp>        ( QT_TRANSLATE_NOOP("QObject", "Python"));
+    new PrefPageProducer<DlgSettingsEditor>           ( QT_TRANSLATE_NOOP("QObject", "Python"));
 
     // ADD YOUR CUSTOMIZE PAGES HERE
     //

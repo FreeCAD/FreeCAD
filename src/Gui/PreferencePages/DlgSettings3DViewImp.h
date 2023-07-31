@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,89 +21,46 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
-#define GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+#ifndef GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
+#define GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
+
+class QDoubleSpinBox;
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsCacheDirectory;
+class Ui_DlgSettings3DView;
 
 /**
- * The DlgSettingsCacheDirectory class implements a preference page to change settings
- * for the cache directory handling.
- * @author Werner Mayer
+ * The DlgSettings3DViewImp class implements a preference page to change settings
+ * for the Inventor viewer.
+ * \author Jürgen Riegel
  */
-class DlgSettingsCacheDirectory : public PreferencePage
+class DlgSettings3DViewImp : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsCacheDirectory(QWidget* parent = nullptr);
-    ~DlgSettingsCacheDirectory() override;
+    explicit DlgSettings3DViewImp(QWidget* parent = nullptr);
+    ~DlgSettings3DViewImp() override;
 
     void saveSettings() override;
     void loadSettings() override;
+
+private Q_SLOTS:
+    void onAliasingChanged(int);
 
 protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    void runCheck();
-    void openDirectory();
-    void setCurrentCacheSize(const QString&);
-
-private:
-    static QString currentSize;
-    std::unique_ptr<Ui_DlgSettingsCacheDirectory> ui;
-};
-
-class ApplicationCache : public QObject
-{
-    Q_OBJECT
-
-public:
-    enum class Period {
-        Always,
-        Daily,
-        Weekly,
-        Monthly,
-        Yearly,
-        Never
-    };
-
-    ApplicationCache();
-    void applyUserSettings();
-    void setPeriod(Period);
-    void setLimit(qint64);
-    bool periodicCheckOfSize() const;
-    qint64 size() const;
-    bool performAction(qint64);
-
-    static QString toString(qint64 size);
-    static qint64 toBytes(unsigned int);
-
-private:
-    void clearDirectory(const QString& path);
-    qint64 dirSize(QString dirPath) const;
-
-private:
-    qint64 limit;
-    int numDays;
-};
-
-class ApplicationCacheSettings
-{
-public:
-    static unsigned int getCacheSizeLimit();
-    static void setCacheSizeLimit(unsigned int);
-    static int getCheckPeriod();
-    static void setCheckPeriod(int);
+    std::unique_ptr<Ui_DlgSettings3DView> ui;
+    static bool showMsg;
 };
 
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+#endif // GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H

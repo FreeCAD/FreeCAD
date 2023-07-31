@@ -37,11 +37,11 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/DocumentRecovery.h>
+#include <Gui/MainWindow.h>
 
 #include "DlgSettingsCacheDirectory.h"
 #include "ui_DlgSettingsCacheDirectory.h"
-#include "DocumentRecovery.h"
-#include "MainWindow.h"
 
 
 using namespace Gui::Dialog;

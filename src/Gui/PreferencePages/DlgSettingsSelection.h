@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,27 +21,30 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSNOTIFICATIONAREA_H
-#define GUI_DIALOG_DLGSETTINGSNOTIFICATIONAREA_H
+#ifndef GUI_DIALOG_DLGSETTINGSSELECTION_H
+#define GUI_DIALOG_DLGSETTINGSSELECTION_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
+
+class QDoubleSpinBox;
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsNotificationArea;
+class Ui_DlgSettingsSelection;
 
 /**
- * The DlgSettingsNotificationArea class implements a preference page to change settings
- * for the Notification Area.
+ * The Ui_DlgSettingsSelection class implements a preference page to change settings
+ * for the selection.
+ * \author Werner Mayer
  */
-class DlgSettingsNotificationArea : public PreferencePage
+class DlgSettingsSelection : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsNotificationArea(QWidget* parent = nullptr);
-    ~DlgSettingsNotificationArea() override;
+    DlgSettingsSelection(QWidget* parent = nullptr);
+    ~DlgSettingsSelection() override;
 
     void saveSettings() override;
     void loadSettings() override;
@@ -50,13 +53,10 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    void adaptUiToAreaEnabledState(bool enabled);
-
-private:
-    std::unique_ptr<Ui_DlgSettingsNotificationArea> ui;
+    std::unique_ptr<Ui_DlgSettingsSelection> ui;
 };
 
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSNOTIFICATIONAREA_H
+#endif // GUI_DIALOG_DLGSETTINGSSELECTION_H

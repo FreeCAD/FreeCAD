@@ -48,7 +48,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
-#include "DlgSettingsWorkbenchesImp.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "FileDialog.h"

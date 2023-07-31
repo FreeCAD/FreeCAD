@@ -26,7 +26,7 @@
 #ifndef GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
 #define GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
 
 namespace Gui::Dialog {
