@@ -566,6 +566,24 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool inv
     return compOut;
 }
 
+// construct a compound shape from a list of shapes
+// this version needs a different name since edges/wires are shapes
+TopoDS_Shape DrawUtil::shapeVectorToCompound(std::vector<TopoDS_Shape> vecIn, bool invert)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        if (!v.IsNull()) {
+            builder.Add(compOut, v);
+        }
+    }
+    if (invert) {
+        return TechDraw::mirrorShape(compOut);
+    }
+    return compOut;
+}
+
 //constructs a list of edges from a shape
 std::vector<TopoDS_Edge> DrawUtil::shapeToVector(TopoDS_Shape shapeIn)
 {
