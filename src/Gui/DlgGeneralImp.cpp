@@ -38,8 +38,8 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
-#include "DlgGeneralImp.h"
-#include "ui_DlgGeneral.h"
+#include "DlgSettingsGeneral.h"
+#include "ui_DlgSettingsGeneral.h"
 #include "Action.h"
 #include "Application.h"
 #include "DlgCreateNewPreferencePackImp.h"
@@ -54,38 +54,38 @@ using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
 using namespace Base;
 
-/* TRANSLATOR Gui::Dialog::DlgGeneralImp */
+/* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */
 
 /**
- *  Constructs a DlgGeneralImp which is a child of 'parent', with the
+ *  Constructs a DlgSettingsGeneral which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgGeneralImp::DlgGeneralImp( QWidget* parent )
+DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
   : PreferencePage(parent)
   , localeIndex(0)
   , themeChanged(false)
-  , ui(new Ui_DlgGeneral)
+  , ui(new Ui_DlgSettingsGeneral)
 {
     ui->setupUi(this);
 
     recreatePreferencePackMenu();
 
-    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
-    connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
+    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
+    connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
     connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgGeneralImp::onThemeChanged);
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
-    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgGeneralImp::onManagePreferencePacksClicked);
+    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
     const auto & backups = Application::Instance->prefPackManager()->configBackups();
     ui->RevertToSavedConfig->setEnabled(backups.empty());
-    connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
+    connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::revertToSavedConfig);
 
-    connect(ui->comboBox_UnitSystem, qOverload<int>(&QComboBox::currentIndexChanged), this, &DlgGeneralImp::onUnitSystemIndexChanged);
+    connect(ui->comboBox_UnitSystem, qOverload<int>(&QComboBox::currentIndexChanged), this, &DlgSettingsGeneral::onUnitSystemIndexChanged);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
@@ -110,7 +110,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgGeneralImp::~DlgGeneralImp()
+DlgSettingsGeneral::~DlgSettingsGeneral()
 {
 }
 
@@ -118,7 +118,7 @@ DlgGeneralImp::~DlgGeneralImp()
  * @see RecentFilesAction
  * @see StdCmdRecentFiles
  */
-void DlgGeneralImp::setRecentFileSize()
+void DlgSettingsGeneral::setRecentFileSize()
 {
     auto recent = getMainWindow()->findChild<RecentFilesAction *>
         (QLatin1String("recentFiles"));
@@ -128,7 +128,7 @@ void DlgGeneralImp::setRecentFileSize()
     }
 }
 
-bool DlgGeneralImp::setLanguage()
+bool DlgSettingsGeneral::setLanguage()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale().language());
@@ -142,7 +142,7 @@ bool DlgGeneralImp::setLanguage()
     return false;
 }
 
-void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
+void DlgSettingsGeneral::setNumberLocale(bool force/* = false*/)
 {
     int localeFormat = ui->UseLocaleFormatting->currentIndex();
 
@@ -168,14 +168,14 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     localeIndex = localeFormat;
 }
 
-void DlgGeneralImp::setDecimalPointConversion(bool on)
+void DlgSettingsGeneral::setDecimalPointConversion(bool on)
 {
     if (Translator::instance()->isEnabledDecimalPointConversion() != on) {
         Translator::instance()->enableDecimalPointConversion(on);
     }
 }
 
-void DlgGeneralImp::saveSettings()
+void DlgSettingsGeneral::saveSettings()
 {
     // must be done as very first because we create a new instance of NavigatorStyle
     // where we set some attributes afterwards
@@ -252,7 +252,7 @@ void DlgGeneralImp::saveSettings()
         saveThemes();
 }
 
-void DlgGeneralImp::loadSettings()
+void DlgSettingsGeneral::loadSettings()
 {
     int FracInch;
     int cbIndex;
@@ -400,7 +400,7 @@ void DlgGeneralImp::loadThemes()
     }
 }
 
-void DlgGeneralImp::changeEvent(QEvent *event)
+void DlgSettingsGeneral::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
@@ -414,7 +414,7 @@ void DlgGeneralImp::changeEvent(QEvent *event)
     }
 }
 
-void DlgGeneralImp::recreatePreferencePackMenu()
+void DlgSettingsGeneral::recreatePreferencePackMenu()
 {
     ui->PreferencePacks->setRowCount(0); // Begin by clearing whatever is there
     ui->PreferencePacks->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
@@ -471,18 +471,18 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     }
 }
 
-void DlgGeneralImp::saveAsNewPreferencePack()
+void DlgSettingsGeneral::saveAsNewPreferencePack()
 {
     // Create and run a modal New PreferencePack dialog box
     auto packs = Application::Instance->prefPackManager()->preferencePackNames();
     newPreferencePackDialog = std::make_unique<DlgCreateNewPreferencePackImp>(this);
     newPreferencePackDialog->setPreferencePackTemplates(Application::Instance->prefPackManager()->templateFiles());
     newPreferencePackDialog->setPreferencePackNames(packs);
-    connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgGeneralImp::newPreferencePackDialogAccepted);
+    connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgSettingsGeneral::newPreferencePackDialogAccepted);
     newPreferencePackDialog->open();
 }
 
-void DlgGeneralImp::revertToSavedConfig()
+void DlgSettingsGeneral::revertToSavedConfig()
 {
     revertToBackupConfigDialog = std::make_unique<DlgRevertToBackupConfigImp>(this);
     connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, this, [this]() {
@@ -494,7 +494,7 @@ void DlgGeneralImp::revertToSavedConfig()
     revertToBackupConfigDialog->open();
 }
 
-void DlgGeneralImp::newPreferencePackDialogAccepted()
+void DlgSettingsGeneral::newPreferencePackDialogAccepted()
 {
     auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
     auto selection = newPreferencePackDialog->selectedTemplates();
@@ -512,17 +512,17 @@ void DlgGeneralImp::newPreferencePackDialogAccepted()
     recreatePreferencePackMenu();
 }
 
-void DlgGeneralImp::onManagePreferencePacksClicked()
+void DlgSettingsGeneral::onManagePreferencePacksClicked()
 {
     if (!this->preferencePackManagementDialog) {
         this->preferencePackManagementDialog = std::make_unique<DlgPreferencePackManagementImp>(this);
         connect(this->preferencePackManagementDialog.get(), &DlgPreferencePackManagementImp::packVisibilityChanged,
-            this, &DlgGeneralImp::recreatePreferencePackMenu);
+            this, &DlgSettingsGeneral::recreatePreferencePackMenu);
     }
     this->preferencePackManagementDialog->show();
 }
 
-void DlgGeneralImp::onImportConfigClicked()
+void DlgSettingsGeneral::onImportConfigClicked()
 {
     auto path = fs::path(QFileDialog::getOpenFileName(this,
         tr("Choose a FreeCAD config file to import"),
@@ -547,7 +547,7 @@ void DlgGeneralImp::onImportConfigClicked()
     }
 }
 
-void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
+void DlgSettingsGeneral::onLoadPreferencePackClicked(const std::string& packName)
 {
     if (Application::Instance->prefPackManager()->apply(packName)) {
         auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
@@ -556,7 +556,7 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
     }
 }
 
-void DlgGeneralImp::onUnitSystemIndexChanged(int index)
+void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
 {
     if (index < 0)
         return; // happens when clearing the combo box in retranslateUi()
@@ -579,4 +579,5 @@ void DlgGeneralImp::onThemeChanged(int index) {
     themeChanged = true;
 }
 
-#include "moc_DlgGeneralImp.cpp"
+#include "moc_DlgSettingsGeneral.cpp"
+
