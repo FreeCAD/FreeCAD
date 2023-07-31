@@ -35,7 +35,7 @@
 #include "DlgSettingsSelection.h"
 #include "DlgSettingsViewColor.h"
 #include "DlgSettingsTheme.h"
-#include "DlgGeneralImp.h"
+#include "DlgSettingsGeneral.h"
 #include "DlgEditorImp.h"
 #include "DlgSettingsNotificationArea.h"
 #include "DlgSettingsPythonConsole.h"
@@ -65,7 +65,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     // ADD YOUR PREFERENCE PAGES HERE
     //
     //
-    new PrefPageProducer<DlgGeneralImp>               ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsGeneral>               ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsDocumentImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsSelection>        ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsCacheDirectory>   ( QT_TRANSLATE_NOOP("QObject","General") );

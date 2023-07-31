@@ -298,7 +298,6 @@ SET(Gui_UIC_SRCS
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
     DlgEditor.ui
-    DlgGeneral.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -315,6 +314,7 @@ SET(Gui_UIC_SRCS
     DlgPropertyLink.ui
     DlgReportView.ui
     DlgRevertToBackupConfig.ui
+    DlgSettingsGeneral.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
@@ -557,10 +557,10 @@ SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
     DlgEditorImp.cpp
-    DlgGeneralImp.cpp
     DlgOnlineHelpImp.cpp
     DlgPreferencesImp.cpp
     DlgReportViewImp.cpp
+    DlgSettingsGeneral.cpp
     DlgSettings3DViewImp.cpp
     DlgSettingsCacheDirectory.cpp
     DlgSettingsNavigation.cpp
@@ -577,7 +577,7 @@ SET(Dialog_Settings_CPP_SRCS
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgEditorImp.h
-    DlgGeneralImp.h
+    DlgSettingsGeneral.h
     DlgOnlineHelpImp.h
     DlgPreferencesImp.h
     DlgReportViewImp.h
@@ -599,10 +599,10 @@ SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
     DlgEditor.ui
-    DlgGeneral.ui
     DlgOnlineHelp.ui
     DlgPreferences.ui
     DlgReportView.ui
+    DlgSettingsGeneral.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui

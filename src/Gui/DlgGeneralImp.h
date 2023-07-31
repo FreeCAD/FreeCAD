@@ -23,8 +23,8 @@
   ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGGENERALIMP_H
-#define GUI_DIALOG_DLGGENERALIMP_H
+#ifndef GUI_DIALOG_DLGSETTINGSGENERAL_H
+#define GUI_DIALOG_DLGSETTINGSGENERAL_H
 
 #include "PropertyPage.h"
 #include <memory>
@@ -34,7 +34,7 @@ class QTabWidget;
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgGeneral;
+class Ui_DlgSettingsGeneral;
 class DlgCreateNewPreferencePackImp;
 class DlgPreferencePackManagementImp;
 class DlgRevertToBackupConfigImp;
@@ -43,13 +43,13 @@ class DlgRevertToBackupConfigImp;
  *  You can change window style, size of pixmaps, size of recent file list and so on
  *  \author Werner Mayer
  */
-class DlgGeneralImp : public PreferencePage
+class DlgSettingsGeneral : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgGeneralImp( QWidget* parent = nullptr );
-    ~DlgGeneralImp() override;
+    explicit DlgSettingsGeneral( QWidget* parent = nullptr );
+    ~DlgSettingsGeneral() override;
 
     void saveSettings() override;
     void loadSettings() override;
@@ -82,7 +82,7 @@ private:
 private:
     int localeIndex;
     bool themeChanged;
-    std::unique_ptr<Ui_DlgGeneral> ui;
+    std::unique_ptr<Ui_DlgSettingsGeneral> ui;
     std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
     std::unique_ptr<DlgPreferencePackManagementImp> preferencePackManagementDialog;
     std::unique_ptr<DlgRevertToBackupConfigImp> revertToBackupConfigDialog;
@@ -91,4 +91,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGGENERALIMP_H
+#endif // GUI_DIALOG_DLGSETTINGSGENERAL_H
