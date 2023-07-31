@@ -22,24 +22,24 @@
 
 #include "PreCompiled.h"
 
-#include "DlgReportViewImp.h"
-#include "ui_DlgReportView.h"
+#include "DlgSettingsReportView.h"
+#include "ui_DlgSettingsReportView.h"
 
 
 using namespace Gui::Dialog;
 
-/* TRANSLATOR Gui::Dialog::DlgReportViewImp */
+/* TRANSLATOR Gui::Dialog::DlgSettingsReportView */
 
 /**
- *  Constructs a DlgReportViewImp which is a child of 'parent', with the
+ *  Constructs a DlgSettingsReportView which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgReportViewImp::DlgReportViewImp( QWidget* parent )
+DlgSettingsReportView::DlgSettingsReportView( QWidget* parent )
   : PreferencePage(parent)
-  , ui(new Ui_DlgReportView)
+  , ui(new Ui_DlgSettingsReportView)
 {
     ui->setupUi(this);
     ui->colorText->setColor(qApp->palette().windowText().color());
@@ -48,11 +48,11 @@ DlgReportViewImp::DlgReportViewImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgReportViewImp::~DlgReportViewImp()
+DlgSettingsReportView::~DlgSettingsReportView()
 {
 }
 
-void DlgReportViewImp::saveSettings()
+void DlgSettingsReportView::saveSettings()
 {
     ui->checkMessage->onSave();
     ui->checkLogging->onSave();
@@ -71,7 +71,7 @@ void DlgReportViewImp::saveSettings()
     ui->pythonError->onSave();
 }
 
-void DlgReportViewImp::loadSettings()
+void DlgSettingsReportView::loadSettings()
 {
     ui->checkMessage->onRestore();
     ui->checkLogging->onRestore();
@@ -97,7 +97,7 @@ void DlgReportViewImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgReportViewImp::changeEvent(QEvent *e)
+void DlgSettingsReportView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -107,4 +107,4 @@ void DlgReportViewImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgReportViewImp.cpp"
+#include "moc_DlgSettingsReportView.cpp"

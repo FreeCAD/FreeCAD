@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_REPORT_VIEW_IMP
-#define GUI_DIALOG_DLG_REPORT_VIEW_IMP
+#ifndef GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
+#define GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
 
 #include "PropertyPage.h"
 #include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgReportView;
+class Ui_DlgSettingsReportView;
 
-/** The DlgReportViewImp class implements the available settings for the
+/** The DlgSettingsReportView class implements the available settings for the
  * Report View to change.
  * \author Werner Mayer
  */
-class DlgReportViewImp : public PreferencePage
+class DlgSettingsReportView : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgReportViewImp( QWidget* parent = nullptr );
-    ~DlgReportViewImp() override;
+    explicit DlgSettingsReportView( QWidget* parent = nullptr );
+    ~DlgSettingsReportView() override;
 
     void saveSettings() override;
     void loadSettings() override;
@@ -50,10 +50,10 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    std::unique_ptr<Ui_DlgReportView> ui;
+    std::unique_ptr<Ui_DlgSettingsReportView> ui;
 };
 
 } // namespace Dialog
 } // namespace Gui
 
-#endif //GUI_DIALOG_DLG_REPORT_VIEW_IMP
+#endif //GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW

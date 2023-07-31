@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Gui::Dialog::DlgReportView</class>
- <widget class="QWidget" name="Gui::Dialog::DlgReportView">
+ <class>Gui::Dialog::DlgSettingsReportView</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsReportView">
   <property name="geometry">
    <rect>
     <x>0</x>
