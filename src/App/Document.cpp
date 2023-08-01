@@ -2826,8 +2826,16 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     FC_TIME_LOG(t,"Recompute total");
 
     if (!d->_RecomputeLog.empty()) {
-        if (!testStatus(Status::IgnoreErrorOnRecompute))
-            Base::Console().Error("Recompute failed!\n");
+        if (!testStatus(Status::IgnoreErrorOnRecompute)) {
+            for (auto it : topoSortedObjects) {
+                if (it->isError()) {
+                    const char* text = getErrorDescription(it);
+                    if (text) {
+                        Base::Console().Error("%s: %s\n", it->Label.getValue(), text);
+                    }
+                }
+            }
+        }
     }
 
     for (auto doc : GetApplication().getDocuments()) {
