@@ -189,7 +189,6 @@ class ObjectJob:
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
         )
-        #obj.setEditorMode("JobType", 2)  # Hide
 
         obj.addProperty(
             "App::PropertyBool",
@@ -542,7 +541,6 @@ class ObjectJob:
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "Select the type of Job"),
             )
-            obj.setEditorMode("JobType", 2)  # Hide
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
