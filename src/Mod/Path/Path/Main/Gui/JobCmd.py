@@ -64,23 +64,30 @@ class CommandJobCreate:
 
     def Activated(self):
         dialog = PathJobDlg.JobCreate()
+        dialog.setUpType()
         dialog.setupTemplate()
         dialog.setupModel()
         if dialog.exec_() == 1:
             models = dialog.getModels()
             if models:
-                self.Execute(models, dialog.getTemplate())
+                self.Execute(models, dialog.getTemplate(), dialog.getType())
                 FreeCAD.ActiveDocument.recompute()
 
     @classmethod
-    def Execute(cls, base, template):
+    def Execute(cls, base, template, jobType):
         FreeCADGui.addModule("Path.Main.Gui.Job")
         if template:
             template = "'%s'" % template
         else:
             template = "None"
+
+        if jobType:
+            jobType = "'%s'" % jobType
+        else:
+            jobType = "2D"
+            
         FreeCADGui.doCommand(
-            "Path.Main.Gui.Job.Create(%s, %s)" % ([o.Name for o in base], template)
+            "Path.Main.Gui.Job.Create(%s, %s, %s)" % ([o.Name for o in base], template, jobType)
         )
 
 
