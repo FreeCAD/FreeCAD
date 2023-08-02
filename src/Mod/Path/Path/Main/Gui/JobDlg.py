@@ -220,6 +220,12 @@ class JobCreate:
         self.index = index
         editor.valueChanged.connect(self.item1ValueChanged)
 
+    def setUpType(self):
+        """set up job type combo options"""
+        jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")['JobType']
+        for text, data in jobTypes:
+            self.dialog.jobType.addItem(text, data)
+
     def setupTemplate(self):
         templateFiles = []
         for path in Path.Preferences.searchPaths():
