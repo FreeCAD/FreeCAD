@@ -14,7 +14,7 @@
    <string>Job Edit</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <widget class="QWidget" name="tabGeneral">
    <attribute name="title">
@@ -31,14 +31,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>561</width>
-         <height>675</height>
+         <width>559</width>
+         <height>668</height>
         </rect>
        </property>
        <attribute name="label">
         <string>Job</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_17">
+       <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
          <widget class="QGroupBox" name="groupBox_6">
           <property name="title">
@@ -47,6 +47,18 @@
           <layout class="QVBoxLayout" name="verticalLayout_16">
            <item>
             <widget class="QLineEdit" name="jobLabel"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_9">
+          <property name="title">
+           <string>Job Type</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <item>
+            <widget class="QComboBox" name="jobType"/>
            </item>
           </layout>
          </widget>
@@ -110,8 +122,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -161,7 +173,7 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 %S ... Sequence Number
 
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-"/home/cnc/%d.g-code"
+&quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</string>
       </property>
      </widget>
@@ -443,8 +455,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>548</width>
-         <height>929</height>
+         <width>381</width>
+         <height>964</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1010,8 +1022,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>252</width>
-         <height>354</height>
+         <width>237</width>
+         <height>379</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1113,12 +1125,12 @@ Default: OpToolDiameter</string>
              <property name="toolTip">
               <string>Expression set as ClearanceHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</string>
+Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</string>
              </property>
             </widget>
            </item>
            <item row="1" column="3">
-            <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs">
+            <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs" native="true">
              <property name="toolTip">
               <string>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
@@ -1138,16 +1150,16 @@ Default: 3 mm</string>
              <property name="toolTip">
               <string>Expression set as SafeHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</string>
+Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</string>
              </property>
             </widget>
            </item>
            <item row="3" column="3">
-            <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs">
+            <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs" native="true">
              <property name="toolTip">
               <string>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Default: "5mm"</string>
+Default: &quot;5mm&quot;</string>
              </property>
             </widget>
            </item>
@@ -1207,8 +1219,8 @@ Default: "5mm"</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>561</width>
-         <height>675</height>
+         <width>292</width>
+         <height>143</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1311,8 +1323,8 @@ Default: "5mm"</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>151</width>
-         <height>119</height>
+         <width>136</width>
+         <height>114</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1336,7 +1348,7 @@ Default: "5mm"</string>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1356,7 +1368,7 @@ Default: "5mm"</string>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="Gui::QuantitySpinBox" name="setupRapidVertical">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidVertical" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                <horstretch>0</horstretch>

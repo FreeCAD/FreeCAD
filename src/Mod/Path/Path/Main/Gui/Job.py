@@ -663,7 +663,7 @@ class TaskPanel:
         )
 
         # Populate the other comboboxes with enums from the job class
-        comboToPropertyMap = [("orderBy", "OrderOutputBy")]
+        comboToPropertyMap = [("orderBy", "OrderOutputBy"), ("jobType", "JobType")]
         enumTups = PathJob.ObjectJob.propertyEnumerations(dataType="raw")
         self.populateCombobox(self.form, enumTups, comboToPropertyMap)
 
@@ -781,6 +781,8 @@ class TaskPanel:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
                 self.obj.OrderOutputBy = str(self.form.orderBy.currentData())
 
+                self.obj.JobType = str(self.form.jobType.currentData())
+
                 flist = []
                 for i in range(self.form.wcslist.count()):
                     if (
@@ -881,6 +883,9 @@ class TaskPanel:
             self.form.splitOutput.setChecked(self.obj.SplitOutput)
         if hasattr(self.obj, "OrderOutputBy"):
             self.selectComboBoxText(self.form.orderBy, self.obj.OrderOutputBy)
+
+        if hasattr(self.obj, "JobType"):
+            self.selectComboBoxText(self.form.jobType, self.obj.JobType)
 
         if hasattr(self.obj, "Fixtures"):
             for f in self.obj.Fixtures:
