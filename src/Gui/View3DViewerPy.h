@@ -72,6 +72,7 @@ public:
     Py::Object setBackgroundColor(const Py::Tuple& args);
     Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
     Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
+    Py::Object grabFramebuffer(const Py::Tuple& args);
 
     // NaviCube handling
     Py::Object setEnabledNaviCube(const Py::Tuple& args);
