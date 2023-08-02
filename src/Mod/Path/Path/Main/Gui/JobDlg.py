@@ -283,6 +283,10 @@ class JobCreate:
 
         return models
 
+    def getType(self):
+        """answer the job type to be assigned"""
+        return self.dialog.jobType.itemData(self.dialog.jobType.currentIndex())
+
     def getTemplate(self):
         """answer the file name of the template to be assigned"""
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
