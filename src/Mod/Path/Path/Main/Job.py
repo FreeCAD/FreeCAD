@@ -259,7 +259,7 @@ class ObjectJob:
             "JobType": [
                 (translate("Path_Job", "2D"), "2D"),
                 (translate("Path_Job", "2.5D"), "2.5D"),
-                (translate("Path_Job", "Lathe"), "Lathe"),
+                (translate("Path_Job", "Turning"), "Turning"),
                 (translate("Path_Job", "Multiaxis"), "Multiaxis"),
             ],
         }
