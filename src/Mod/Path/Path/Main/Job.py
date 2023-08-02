@@ -102,7 +102,7 @@ Notification = NotificationClass()
 
 
 class ObjectJob:
-    def __init__(self, obj, models, templateFile=None):
+    def __init__(self, obj, models, templateFile=None, jobType='2D'):
         self.obj = obj
         self.tooltip = None
         self.tooltipArgs = None
@@ -220,6 +220,7 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
+        obj.JobType = jobType
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
         obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
         defaultPostProcessor = Path.Preferences.defaultPostProcessor()
@@ -847,7 +848,7 @@ def Instances():
     return []
 
 
-def Create(name, base, templateFile=None):
+def Create(name, base, templateFile=None, jobType='2D'):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""
     if isinstance(base[0], str):
@@ -858,5 +859,5 @@ def Create(name, base, templateFile=None):
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.addExtension("App::GroupExtensionPython")
-    obj.Proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, templateFile, jobType)
     return obj

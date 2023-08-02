@@ -1634,13 +1634,13 @@ class TaskPanel:
         self.updateSelection()
 
 
-def Create(base, template=None, openTaskPanel=True):
+def Create(base, template=None, jobType="2D", openTaskPanel=True):
     """Create(base, template) ... creates a job instance for the given base object
     using template to configure it."""
     FreeCADGui.addModule("Path.Main.Job")
     FreeCAD.ActiveDocument.openTransaction("Create Job")
     try:
-        obj = PathJob.Create("Job", base, template)
+        obj = PathJob.Create("Job", base, template, jobType)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
         obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
