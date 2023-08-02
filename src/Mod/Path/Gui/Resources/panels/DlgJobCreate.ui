@@ -6,53 +6,66 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>616</height>
+    <width>500</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Create Job</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QWidget" name="widget_4">
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QGroupBox" name="templateGroup">
-        <property name="title">
-         <string>Template</string>
+    <widget class="QGroupBox" name="typeGroup">
+     <property name="title">
+      <string>Job Type</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QComboBox" name="jobType">
+        <property name="enabled">
+         <bool>true</bool>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QComboBox" name="jobTemplate">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="toolTip">
-            <string>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="toolTip">
+         <string>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</string>
+        </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="modelGroup">
-        <property name="title">
-         <string>Model</string>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="templateGroup">
+     <property name="title">
+      <string>Template</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QComboBox" name="jobTemplate">
+        <property name="enabled">
+         <bool>true</bool>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <widget class="QTreeView" name="modelTree">
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="tabKeyNavigation">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="toolTip">
+         <string>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="modelGroup">
+     <property name="title">
+      <string>Model</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QTreeView" name="modelTree">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
