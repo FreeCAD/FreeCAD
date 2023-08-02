@@ -189,7 +189,7 @@ class ObjectJob:
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
         )
-        obj.setEditorMode("JobType", 2)  # Hide
+        #obj.setEditorMode("JobType", 2)  # Hide
 
         obj.addProperty(
             "App::PropertyBool",
