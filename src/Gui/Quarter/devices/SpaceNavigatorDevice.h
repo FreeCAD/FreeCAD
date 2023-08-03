@@ -44,8 +44,8 @@ class QUARTER_DLL_API SpaceNavigatorDevice : public InputDevice {
  public:
   SpaceNavigatorDevice(QuarterWidget* quarter);
   SpaceNavigatorDevice();
-  virtual ~SpaceNavigatorDevice();
-  virtual const SoEvent * translateEvent(QEvent * event);
+  ~SpaceNavigatorDevice() override;
+  const SoEvent * translateEvent(QEvent * event) override;
 
  private:
   class SpaceNavigatorDeviceP * pimpl;
