@@ -1699,7 +1699,7 @@ CmdFemPostClipFilter::CmdFemPostClipFilter()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Region clip filter");
     sToolTipText =
-        QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
+        QT_TR_NOOP("Define/create a clip filter which uses functions to define the clipped region");
     sWhatsThis = "FEM_PostFilterClipRegion";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterClipRegion";

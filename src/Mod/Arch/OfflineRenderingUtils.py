@@ -456,7 +456,7 @@ def getCoinCamera(camerastring):
         for child in node.getChildren():
             if ("SoOrthographicCamera" in str(child)) or ("SoPerspectiveCamera" in str(child)):
                 return child
-    print("unnable to build a camera node from string:",camerastring)
+    print("unable to build a camera node from string:",camerastring)
     return None
 
 
