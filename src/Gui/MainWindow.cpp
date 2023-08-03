@@ -190,7 +190,7 @@ public:
         getWindowParameter()->Attach(this);
     }
 
-    ~DimensionWidget()
+    ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
     }
