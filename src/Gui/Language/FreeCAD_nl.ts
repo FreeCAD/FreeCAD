@@ -111,7 +111,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3333"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation type="unfinished">Turn on or off the display of all measurements</translation>
+      <translation>Weergave metingen uitzetten</translation>
     </message>
   </context>
   <context>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../CommandDoc.cpp" line="1848"/>
       <source>Paste expressions</source>
-      <translation>Paste expressions</translation>
+      <translation>Kleef expressies</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="140"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../CommandStd.cpp" line="784"/>
       <source>Insert measurement</source>
-      <translation>Insert measurement</translation>
+      <translation>Voeg meting in</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="815"/>
@@ -10293,7 +10293,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3124"/>
       <location filename="../CommandView.cpp" line="3126"/>
       <source>Activate the distance measurement tool</source>
-      <translation type="unfinished">Activate the distance measurement tool</translation>
+      <translation>Activeer de tool om afstanden te meten</translation>
     </message>
   </context>
   <context>
@@ -10572,7 +10572,7 @@ the current copy will be lost.
       <location filename="../CommandFeat.cpp" line="79"/>
       <location filename="../CommandFeat.cpp" line="81"/>
       <source>Set each selected object to a randomly-selected color</source>
-      <translation type="unfinished">Set each selected object to a randomly-selected color</translation>
+      <translation>Zet ieder geselecteerd item in een willekeurig kleur</translation>
     </message>
   </context>
   <context>
@@ -10922,7 +10922,7 @@ the current copy will be lost.
       <location filename="../CommandMacro.cpp" line="295"/>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Add or remove a breakpoint at this position</source>
-      <translation type="unfinished">Add or remove a breakpoint at this position</translation>
+      <translation>Invoegen of verwijderen van een breekpunt op deze plaats</translation>
     </message>
   </context>
   <context>
@@ -11630,13 +11630,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3748"/>
       <source>Recall working view</source>
-      <translation type="unfinished">Recall working view</translation>
+      <translation>Roep de werkweergave terug</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3749"/>
       <location filename="../CommandView.cpp" line="3750"/>
       <source>Recall previously stored temporary working view</source>
-      <translation type="unfinished">Recall previously stored temporary working view</translation>
+      <translation>Roep vooraf opgeslagen voorlopige werkweergave terug</translation>
     </message>
   </context>
   <context>
@@ -11644,7 +11644,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="3718"/>
       <source>Store working view</source>
-      <translation type="unfinished">Store working view</translation>
+      <translation>Sla werkweergave op</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3719"/>
@@ -11798,7 +11798,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2625"/>
       <location filename="../CommandView.cpp" line="2627"/>
       <source>Activate the box zoom tool</source>
-      <translation type="unfinished">Activate the box zoom tool</translation>
+      <translation>Activeer de box zoom tool</translation>
     </message>
   </context>
   <context>
@@ -11882,7 +11882,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2430"/>
       <location filename="../CommandView.cpp" line="2432"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Increase the zoom factor by a fixed amount</translation>
+      <translation>Vergroot zoom factor met een vaste waarde</translation>
     </message>
   </context>
   <context>
@@ -11896,7 +11896,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2459"/>
       <location filename="../CommandView.cpp" line="2461"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Decrease the zoom factor by a fixed amount</translation>
+      <translation>Verminder de zoom factor met een vaste waarde</translation>
     </message>
   </context>
   <context>
