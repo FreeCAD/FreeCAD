@@ -81,8 +81,8 @@ public:
 
     virtual ~ActionLabel() {}
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
     void init();
