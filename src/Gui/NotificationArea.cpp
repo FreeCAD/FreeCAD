@@ -380,7 +380,7 @@ public:
         : QWidgetAction(parent)
     {}
 
-    ~NotificationsAction()
+    ~NotificationsAction() override
     {
         for (auto* item : pushedItems) {
             if (item) {

@@ -333,11 +333,11 @@ public:
         tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
-    virtual ~RecoveryRunnable()
+    ~RecoveryRunnable() override
     {
         delete prop;
     }
-    virtual void run()
+    void run() override
     {
         prop->SaveDocFile(writer);
         writer.close();

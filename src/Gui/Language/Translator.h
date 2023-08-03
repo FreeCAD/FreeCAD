@@ -77,7 +77,7 @@ public:
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
     /** eventFilter used to convert decimal separator **/
-    bool eventFilter(QObject* obj, QEvent* ev);
+    bool eventFilter(QObject* obj, QEvent* ev) override;
     /** Enables/disables decimal separator conversion **/
     void enableDecimalPointConversion(bool on);
     /** Returns whether decimal separator conversion is enabled */
@@ -85,7 +85,7 @@ public:
 
 private:
     Translator();
-    ~Translator();
+    ~Translator() override;
     void removeTranslators();
     QStringList directories() const;
     void installQMFiles(const QDir& dir, const char* locale);
