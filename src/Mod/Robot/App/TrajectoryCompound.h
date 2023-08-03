@@ -33,20 +33,20 @@ namespace Robot
 
 class RobotExport TrajectoryCompound : public TrajectoryObject
 {
-    PROPERTY_HEADER(Robot::TrajectoryObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::TrajectoryObject);
 
 public:
     /// Constructor
-    TrajectoryCompound(void);
-    virtual ~TrajectoryCompound();
+    TrajectoryCompound();
+    ~TrajectoryCompound() override;
 
     App::PropertyLinkList     Source;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "RobotGui::ViewProviderTrajectoryCompound";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
 protected:
     /// get called by the container when a property has changed
