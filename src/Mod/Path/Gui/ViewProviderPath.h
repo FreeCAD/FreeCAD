@@ -28,6 +28,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Path/PathGlobal.h>
 
 
 class SoCoordinate3;
@@ -45,7 +46,7 @@ class PathSelectionObserver;
 
 class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(PathGui::ViewProviderPath);
+    PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPath);
     using inherited = ViewProviderGeometryObject;
 
 public:
@@ -53,7 +54,7 @@ public:
     ViewProviderPath();
 
     /// destructor.
-    ~ViewProviderPath();
+    ~ViewProviderPath() override;
 
     // Display properties
     App::PropertyInteger LineWidth;
@@ -67,29 +68,29 @@ public:
     App::PropertyIntegerConstraint ShowCount;
     App::PropertyIntegerConstraint::Constraints  ShowCountConstraints;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
     void recomputeBoundingBox();
-    virtual QIcon getIcon() const;
+    virtual QIcon getIcon() const override;
 
-    virtual bool useNewSelectionModel(void) const;
-    virtual std::string getElement(const SoDetail *) const;
-    SoDetail* getDetail(const char* subelement) const;
+    bool useNewSelectionModel() const override;
+    std::string getElement(const SoDetail *) const override;
+    SoDetail* getDetail(const char* subelement) const override;
 
     void updateShowConstraints();
     void updateVisual(bool rebuild = false);
     void hideSelection();
 
-    virtual void showBoundingBox(bool show);
+    void showBoundingBox(bool show) override;
 
     friend class PathSelectionObserver;
 
 protected:
 
-    virtual void onChanged(const App::Property* prop);
-    virtual unsigned long getBoundColor() const;
+    void onChanged(const App::Property* prop) override;
+    unsigned long getBoundColor() const override;
 
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
