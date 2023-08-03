@@ -24,7 +24,7 @@
 #define VISITOR_H
 
 #include <vector>
-#include <Mod/Mesh/MeshGlobal.h>
+#include "MeshKernel.h"
 
 
 namespace MeshCore {
