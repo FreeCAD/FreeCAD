@@ -39,6 +39,7 @@
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "DlgPrefsTechDrawHLRImp.h"
 #include "DlgPrefsTechDrawScaleImp.h"
+#include "DlgPrefsTechDrawTemplate.h"
 #include "MDIViewPage.h"
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderBalloon.h"
@@ -175,6 +176,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));    //Colors
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));       //HLR
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));  //Advanced
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawTemplate>(QT_TRANSLATE_NOOP("QObject", "TechDraw"));     //Template
 
     // add resources and reloads the translators
     loadTechDrawResource();

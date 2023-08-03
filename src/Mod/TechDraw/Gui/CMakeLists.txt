@@ -59,6 +59,7 @@ set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawHLR.ui
     DlgPrefsTechDrawScale.ui
+    DlgPrefsTechDrawTemplate.ui
     DlgTemplateField.ui
     mrichtextedit.ui
     TaskActiveView.ui
@@ -148,6 +149,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawHLR.ui
     DlgPrefsTechDrawHLRImp.cpp
     DlgPrefsTechDrawHLRImp.h
+    DlgPrefsTechDrawTemplate.cpp
+    DlgPrefsTechDrawTemplate.h
+    DlgPrefsTechDrawTemplate.ui
     DlgTemplateField.ui
     DlgTemplateField.cpp
     DlgTemplateField.h
