@@ -47,7 +47,7 @@ public:
         , EditCurve(5)
         , constructionMethod(constrMethod)
     {}
-    virtual ~DrawSketchHandlerBox()
+    ~DrawSketchHandlerBox() override
     {}
 
     /// mode table
@@ -377,7 +377,7 @@ public:
         , signY(1)
         , EditCurve(37)
     {}
-    virtual ~DrawSketchHandlerOblong()
+    ~DrawSketchHandlerOblong() override
     {}
     /// mode table
     enum BoxMode

@@ -43,7 +43,7 @@ public:
         , object(obj)
     {}
 
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override
     {
         Q_UNUSED(sSubName);
 
@@ -109,7 +109,7 @@ class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerCarbonCopy() = default;
-    virtual ~DrawSketchHandlerCarbonCopy()
+    ~DrawSketchHandlerCarbonCopy() override
     {
         Gui::Selection().rmvSelectionGate();
     }

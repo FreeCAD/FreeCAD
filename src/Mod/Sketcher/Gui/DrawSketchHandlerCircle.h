@@ -38,7 +38,7 @@ public:
         : Mode(STATUS_SEEK_First)
         , EditCurve(34)
     {}
-    virtual ~DrawSketchHandlerCircle()
+    ~DrawSketchHandlerCircle() override
     {}
     /// mode table
     enum SelectMode
@@ -188,7 +188,7 @@ public:
         , radius(1)
         , N(32.0)
     {}
-    virtual ~DrawSketchHandler3PointCircle()
+    ~DrawSketchHandler3PointCircle() override
     {}
     /// mode table
     enum SelectMode
