@@ -2478,6 +2478,7 @@ void Application::initConfig(int argc, char ** argv)
         App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
         App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
         App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
+        App::Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
@@ -2557,21 +2558,23 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n%s",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
     }
     LoadParameters();

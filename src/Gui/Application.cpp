@@ -2129,8 +2129,9 @@ void Application::runApplication()
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
         QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
         QString title =
-            QString::fromLatin1("%1 %2.%3.%4").arg(mainApp.applicationName(), major, minor, point);
+            QString::fromLatin1("%1 %2.%3.%4%5").arg(mainApp.applicationName(), major, minor, point, suffix);
         mw.setWindowTitle(title);
     }
     else {
