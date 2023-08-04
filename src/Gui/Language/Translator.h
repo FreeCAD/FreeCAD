@@ -55,9 +55,9 @@ public:
     /** @name singleton stuff */
     //@{
     /// Creates an instance
-    static Translator* instance(void);
+    static Translator* instance();
     /// Destroys the instance
-    static void destruct (void);
+    static void destruct ();
     //@}
 
     /** Activates the specified language \a lang if available. */

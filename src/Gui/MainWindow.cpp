@@ -214,7 +214,7 @@ public:
     }
 
 private:
-    void unitChanged(void)
+    void unitChanged()
     {
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
         auto actions = menu()->actions();
