@@ -47,7 +47,7 @@ public:
         , endAngle(0)
         , arcAngle(0)
     {}
-    virtual ~DrawSketchHandlerArc()
+    ~DrawSketchHandlerArc() override
     {}
     /// mode table
     enum SelectMode
@@ -278,7 +278,7 @@ public:
         , arcPos1(Sketcher::PointPos::none)
         , arcPos2(Sketcher::PointPos::none)
     {}
-    virtual ~DrawSketchHandler3PointArc()
+    ~DrawSketchHandler3PointArc() override
     {}
     /// mode table
     enum SelectMode
