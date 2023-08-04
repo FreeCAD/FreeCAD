@@ -297,7 +297,7 @@ public:
 protected:
     void activated(int iMsg) override;
     bool isActive() override;
-    Action * createAction(void) override;
+    Action * createAction() override;
     void languageChange() override;
 
 private:

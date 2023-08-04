@@ -1241,7 +1241,7 @@ ParameterManager * Application::GetParameterSet(const char* sName) const
 }
 
 const std::map<std::string,Base::Reference<ParameterManager>> &
-Application::GetParameterSetList(void) const
+Application::GetParameterSetList() const
 {
     return mpcPramManager;
 }

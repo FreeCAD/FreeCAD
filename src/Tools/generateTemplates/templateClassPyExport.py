@@ -371,20 +371,20 @@ PyMethodDef @self.export.Name@::Methods[] = {
     {"@i.Name@",
 + if i.Keyword:
 + if i.Class:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS|METH_CLASS,
 = elif i.Static:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS|METH_STATIC,
 = else:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
 -
 = elif i.Class:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_CLASS,
 = elif i.Static:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_STATIC,
 = else:
         reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),

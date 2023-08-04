@@ -63,7 +63,7 @@ void ViewProviderPlacement::onChanged(const App::Property* prop)
         ViewProviderGeometryObject::onChanged(prop);
 }
 
-std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPlacement::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
@@ -126,7 +126,7 @@ bool ViewProviderPlacement::getDetailPath(
     return true;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const
+bool ViewProviderPlacement::isSelectable() const
 {
     return true;
 }
