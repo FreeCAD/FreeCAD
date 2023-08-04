@@ -41,7 +41,7 @@ class TechDrawExport DrawComplexSection: public DrawViewSection
 
 public:
     DrawComplexSection();
-    ~DrawComplexSection() = default;
+    ~DrawComplexSection() override = default;
 
     App::PropertyLink CuttingToolWireObject;
     App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned

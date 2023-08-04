@@ -85,7 +85,7 @@ public:
     };
 
     QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent = nullptr);
-    ~QGVPage();
+    ~QGVPage() override;
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter* painter, const QRectF& rect) override;

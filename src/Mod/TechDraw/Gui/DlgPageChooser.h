@@ -37,11 +37,11 @@ public:
     DlgPageChooser(const std::vector<std::string> labels,
                    const std::vector<std::string> names,
                    QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPageChooser();
+    ~DlgPageChooser() override;
 
     std::string getSelection() const;
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 private Q_SLOTS:
 
