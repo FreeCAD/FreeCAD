@@ -54,21 +54,21 @@
   </g>
  </g>transform="translate(384,123)"&gt;
  <g id="titleblock-text-editable" font-family="osifont" font-size="5px">
-  <text id="text54" x="405" y="359" freecad:editable="AUTHOR_NAME"><tspan id="tspan52">AUTHOR NAME</tspan></text>
-  <text id="text58" x="465" y="359" freecad:editable="DRAWING_TITLE"><tspan id="tspan56">DRAWING TITLE</tspan></text>
-  <text id="text62" x="405" y="371" freecad:editable="SI-1"><tspan id="tspan60"/></text>
-  <text id="text66" x="405" y="378" freecad:editable="SI-2"><tspan id="tspan64"/></text>
-  <text id="text70" x="405" y="384" freecad:editable="FreeCAD_DRAWING"><tspan id="tspan68">FreeCAD DRAWING</tspan></text>
-  <text id="text74" x="405" y="390" freecad:editable="SI-4"><tspan id="tspan72"/></text>
-  <text id="text78" x="405" y="396" freecad:editable="SI-5"><tspan id="tspan76"/></text>
-  <text id="text82" x="405" y="402" freecad:editable="SI-6"><tspan id="tspan80"/></text>
-  <text id="text86" x="530" y="371" freecad:editable="FC-SI"><tspan id="tspan84">A2</tspan></text>
-  <text id="text90" x="548" y="371" freecad:editable="FC-SH"><tspan id="tspan88">X / Y</tspan></text>
-  <text id="text94" x="568" y="371" freecad:editable="FC-SC"><tspan id="tspan92">SCALE</tspan></text>
-  <text id="text98" x="525" y="383" freecad:editable="PN"><tspan id="tspan96">PN</tspan></text>
-  <text id="text102" x="525" y="395" freecad:editable="DN"><tspan id="tspan100">DN</tspan></text>
-  <text id="text106" x="525" y="407" freecad:editable="FC-DATE"><tspan id="tspan104">DD/MM/YYYY</tspan></text>
-  <text id="text110" x="567" y="407" freecad:editable="FC-REV"><tspan id="tspan108">REV A</tspan></text>
+  <text id="text54" x="405" y="359" freecad:editable="Author"><tspan id="tspan52">AUTHOR NAME</tspan></text>
+  <text id="text58" x="465" y="359" freecad:editable="Title"><tspan id="tspan56">DRAWING TITLE</tspan></text>
+  <text id="text62" x="405" y="371" freecad:editable="Description"><tspan id="tspan60"/></text>
+  <text id="text66" x="405" y="378" freecad:editable="Description2"><tspan id="tspan64"/></text>
+  <text id="text70" x="405" y="384" freecad:editable="Description3"><tspan id="tspan68">FreeCAD DRAWING</tspan></text>
+  <text id="text74" x="405" y="390" freecad:editable="Description4"><tspan id="tspan72"/></text>
+  <text id="text78" x="405" y="396" freecad:editable="Description5"><tspan id="tspan76"/></text>
+  <text id="text82" x="405" y="402" freecad:editable="Description6"><tspan id="tspan80"/></text>
+  <text id="text86" x="530" y="371" freecad:editable="Paper size"><tspan id="tspan84">A2</tspan></text>
+  <text id="text90" x="548" y="371" freecad:editable="Sheet"><tspan id="tspan88">X / Y</tspan></text>
+  <text id="text94" x="568" y="371" freecad:editable="Scale"><tspan id="tspan92">SCALE</tspan></text>
+  <text id="text98" x="525" y="383" freecad:editable="Part number"><tspan id="tspan96">PN</tspan></text>
+  <text id="text102" x="525" y="395" freecad:editable="Drawing number"><tspan id="tspan100">DN</tspan></text>
+  <text id="text106" x="525" y="407" freecad:editable="Date created"><tspan id="tspan104">DD/MM/YYYY</tspan></text>
+  <text id="text110" x="567" y="407" freecad:editable="Version"><tspan id="tspan108">REV A</tspan></text>
  </g>
  <!-- DrawingContent -->
 </svg>

@@ -107,23 +107,23 @@
   <text id="text1968" x="385.90332" y="277">Revision:</text>
  </g>
  <g id="titleblock-text-editable" font-family="tahoma" font-size="3px">
-  <text id="text1973" x="281" y="255" freecad:editable="AUTHOR_NAME"><tspan id="tspan1971">AUTHOR NAME</tspan></text>
-  <text id="text1977" x="281" y="259" freecad:editable="APPROVER_NAME"><tspan id="tspan1975">APPROVER NAME</tspan></text>
-  <text id="text1981" x="316" y="259" freecad:editable="OWNER_NAME"><tspan id="tspan1979">OWNER NAME</tspan></text>
-  <text id="text1985" x="271" y="268" freecad:editable="TITLELINE-1"><tspan id="tspan1983">FreeCAD</tspan></text>
-  <text id="text1989" x="271" y="272" freecad:editable="TITLELINE-2"><tspan id="tspan1987"/></text>
-  <text id="text1993" x="271" y="276" freecad:editable="TITLELINE-3"><tspan id="tspan1991"/></text>
-  <text id="text1997" x="294" y="281" font-family="tahoma" font-size="3px" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal" freecad:editable="DOCUMENT_TYPE"><tspan id="tspan2307">Mechanical assembly drawing</tspan></text>
-  <text id="text2001" x="396" y="255" freecad:editable="SHEET"><tspan id="tspan1999">99 of 99</tspan></text>
-  <text id="text2005" x="366" y="255" freecad:editable="SCALE"><tspan id="tspan2003">M x:x</tspan></text>
-  <text id="text2009" x="366" y="259" freecad:editable="TOLERANCE"><tspan id="tspan2007">+/- ?</tspan></text>
-  <text id="text2013" x="378" y="263" freecad:editable="PM"><tspan id="tspan2011">PM</tspan></text>
-  <text id="text2017" x="377" y="267" freecad:editable="PN"><tspan id="tspan2015">PN</tspan></text>
-  <text id="text2021" x="376" y="272" freecad:editable="DN"><tspan id="tspan2019">DN</tspan></text>
-  <text id="text2025" x="358" y="281" freecad:editable="DATE"><tspan id="tspan2023">YYYY-MM-DD</tspan></text>
-  <text id="text2029" x="386.60312" y="281" freecad:editable="REVISION"><tspan id="tspan2027">REV A</tspan></text>
-  <text id="text2033" x="396" y="259" freecad:editable="SIZE"><tspan id="tspan2031">A3</tspan></text>
-  <text id="text2037" x="270" y="285" freecad:editable="RIGHTS"><tspan id="tspan2035">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION!</tspan></text>
+  <text id="text1973" x="281" y="255" freecad:editable="Author"><tspan id="tspan1971">AUTHOR NAME</tspan></text>
+  <text id="text1977" x="281" y="259" freecad:editable="Supervisor"><tspan id="tspan1975">APPROVER NAME</tspan></text>
+  <text id="text1981" x="316" y="259" freecad:editable="Owner"><tspan id="tspan1979">OWNER NAME</tspan></text>
+  <text id="text1985" x="271" y="268" freecad:editable="Title"><tspan id="tspan1983">FreeCAD</tspan></text>
+  <text id="text1989" x="271" y="272" freecad:editable="Subtitle"><tspan id="tspan1987"/></text>
+  <text id="text1993" x="271" y="276" freecad:editable="Subtitle2"><tspan id="tspan1991"/></text>
+  <text id="text1997" x="294" y="281" font-family="tahoma" font-size="3px" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal" freecad:editable="Document type"><tspan id="tspan2307">Mechanical assembly drawing</tspan></text>
+  <text id="text2001" x="396" y="255" freecad:editable="Sheet"><tspan id="tspan1999">99 of 99</tspan></text>
+  <text id="text2005" x="366" y="255" freecad:editable="Scale"><tspan id="tspan2003">M x:x</tspan></text>
+  <text id="text2009" x="366" y="259" freecad:editable="Tolerance"><tspan id="tspan2007">+/- ?</tspan></text>
+  <text id="text2013" x="378" y="263" freecad:editable="Part material"><tspan id="tspan2011">PM</tspan></text>
+  <text id="text2017" x="377" y="267" freecad:editable="Part number"><tspan id="tspan2015">PN</tspan></text>
+  <text id="text2021" x="376" y="272" freecad:editable="Drawing number"><tspan id="tspan2019">DN</tspan></text>
+  <text id="text2025" x="358" y="281" freecad:editable="Date created"><tspan id="tspan2023">YYYY-MM-DD</tspan></text>
+  <text id="text2029" x="386.60312" y="281" freecad:editable="Version"><tspan id="tspan2027">REV A</tspan></text>
+  <text id="text2033" x="396" y="259" freecad:editable="Paper size"><tspan id="tspan2031">A3</tspan></text>
+  <text id="text2037" x="270" y="285" freecad:editable="Rights"><tspan id="tspan2035">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION!</tspan></text>
  </g>
  <!-- Set display:none to hide FreeCAD Logo or remove this and next 4 lines from this code -->
  <g id="freecad-logo" transform="translate(257,275)" fill="none" fill-rule="evenodd" stroke="#000" stroke-width=".35">

@@ -53,18 +53,18 @@
   </g>
  </g>
  <g id="titleblock-text-editable" font-family="osifont" font-size="5px">
-  <text id="text52" x="108" y="171" freecad:editable="AUTHOR_NAME"><tspan id="tspan50">AUTHOR NAME</tspan></text>
-  <text id="text56" x="168" y="171" freecad:editable="DRAWING_TITLE"><tspan id="tspan54">DRAWING TITLE</tspan></text>
-  <text id="text60" x="108" y="182" freecad:editable="SI-1"><tspan id="tspan58"/></text>
-  <text id="text64" x="108" y="189" freecad:editable="FreeCAD_DRAWING"><tspan id="tspan62">FreeCAD DRAWING</tspan></text>
-  <text id="text68" x="108" y="196" freecad:editable="SI-3"><tspan id="tspan66"/></text>
-  <text id="text72" x="233" y="171" freecad:editable="FC-SI"><tspan id="tspan70">A4</tspan></text>
-  <text id="text76" x="251" y="171" freecad:editable="FC-SH"><tspan id="tspan74">X / Y</tspan></text>
-  <text id="text80" x="271" y="171" freecad:editable="FC-SC"><tspan id="tspan78">SCALE</tspan></text>
-  <text id="text84" x="231" y="181" freecad:editable="PN"><tspan id="tspan82">PN</tspan></text>
-  <text id="text88" x="231" y="189" freecad:editable="DN"><tspan id="tspan86">DN</tspan></text>
-  <text id="text92" x="231" y="197" freecad:editable="FC-DATE"><tspan id="tspan90">DD/MM/YYYY</tspan></text>
-  <text id="text96" x="269" y="197" freecad:editable="FC-REV"><tspan id="tspan94">REV A</tspan></text>
+  <text id="text52" x="108" y="171" freecad:editable="Author"><tspan id="tspan50">AUTHOR NAME</tspan></text>
+  <text id="text56" x="168" y="171" freecad:editable="Title"><tspan id="tspan54">DRAWING TITLE</tspan></text>
+  <text id="text60" x="108" y="182" freecad:editable="Description"><tspan id="tspan58"/></text>
+  <text id="text64" x="108" y="189" freecad:editable="Description3"><tspan id="tspan62">FreeCAD DRAWING</tspan></text>
+  <text id="text68" x="108" y="196" freecad:editable="Description3"><tspan id="tspan66"/></text>
+  <text id="text72" x="233" y="171" freecad:editable="Paper size"><tspan id="tspan70">A4</tspan></text>
+  <text id="text76" x="251" y="171" freecad:editable="Sheet"><tspan id="tspan74">X / Y</tspan></text>
+  <text id="text80" x="271" y="171" freecad:editable="Scale"><tspan id="tspan78">SCALE</tspan></text>
+  <text id="text84" x="231" y="181" freecad:editable="Part number"><tspan id="tspan82">PN</tspan></text>
+  <text id="text88" x="231" y="189" freecad:editable="Drawing number"><tspan id="tspan86">DN</tspan></text>
+  <text id="text92" x="231" y="197" freecad:editable="Date created"><tspan id="tspan90">DD/MM/YYYY</tspan></text>
+  <text id="text96" x="269" y="197" freecad:editable="Version"><tspan id="tspan94">REV A</tspan></text>
  </g>
  <!-- DrawingContent -->
 </svg>

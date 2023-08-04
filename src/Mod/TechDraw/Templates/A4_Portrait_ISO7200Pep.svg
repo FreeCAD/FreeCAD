@@ -49,23 +49,23 @@
   <text id="text52" x="181" y="281">Revision:</text>
  </g>
  <g id="titleblock-text-editable" font-family="tahoma" font-size="3px">
-  <text id="text57" x="75" y="259" freecad:editable="AUTHOR_NAME"><tspan id="tspan55">AUTHOR NAME</tspan></text>
-  <text id="text61" x="75" y="263" freecad:editable="APPROVER_NAME"><tspan id="tspan59">APPROVER NAME</tspan></text>
-  <text id="text65" x="110" y="263" freecad:editable="OWNER_NAME"><tspan id="tspan63">OWNER NAME</tspan></text>
-  <text id="text69" x="65" y="272" freecad:editable="TITLELINE-1"><tspan id="tspan67">FreeCAD</tspan></text>
-  <text id="text73" x="65" y="276" freecad:editable="TITLELINE-2"><tspan id="tspan71"/></text>
-  <text id="text77" x="65" y="280" freecad:editable="TITLELINE-3"><tspan id="tspan75"/></text>
-  <text id="text81" x="87" y="285" freecad:editable="DOCUMENT_TYPE"><tspan id="tspan79">Mechanical assembly drawing</tspan></text>
-  <text id="text85" x="190" y="259" freecad:editable="SHEET"><tspan id="tspan83">99 of 99</tspan></text>
-  <text id="text89" x="160" y="259" freecad:editable="SCALE"><tspan id="tspan87">M x:x</tspan></text>
-  <text id="text93" x="160" y="263" freecad:editable="TOLERANCE"><tspan id="tspan91">+/- ?</tspan></text>
-  <text id="text97" x="170" y="267" freecad:editable="PM"><tspan id="tspan95">PM</tspan></text>
-  <text id="text101" x="170" y="271" freecad:editable="PN"><tspan id="tspan99">PN</tspan></text>
-  <text id="text105" x="170" y="276" freecad:editable="DN"><tspan id="tspan103">DN</tspan></text>
-  <text id="text109" x="152" y="285" freecad:editable="DATE"><tspan id="tspan107">YYYY-MM-DD</tspan></text>
-  <text id="text113" x="182" y="285" freecad:editable="REVISION"><tspan id="tspan111">REV A</tspan></text>
-  <text id="text117" x="190" y="263" freecad:editable="SIZE"><tspan id="tspan115">A4</tspan></text>
-  <text id="text121" x="64" y="289" freecad:editable="RIGHTS"><tspan id="tspan119">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION !</tspan></text>
+  <text id="text57" x="75" y="259" freecad:editable="Author"><tspan id="tspan55">AUTHOR NAME</tspan></text>
+  <text id="text61" x="75" y="263" freecad:editable="Supervisor"><tspan id="tspan59">APPROVER NAME</tspan></text>
+  <text id="text65" x="110" y="263" freecad:editable="Owner"><tspan id="tspan63">OWNER NAME</tspan></text>
+  <text id="text69" x="65" y="272" freecad:editable="Title"><tspan id="tspan67">FreeCAD</tspan></text>
+  <text id="text73" x="65" y="276" freecad:editable="Subtitle"><tspan id="tspan71"/></text>
+  <text id="text77" x="65" y="280" freecad:editable="Subtitle2"><tspan id="tspan75"/></text>
+  <text id="text81" x="87" y="285" freecad:editable="Document type"><tspan id="tspan79">Mechanical assembly drawing</tspan></text>
+  <text id="text85" x="190" y="259" freecad:editable="Sheet"><tspan id="tspan83">99 of 99</tspan></text>
+  <text id="text89" x="160" y="259" freecad:editable="Scale"><tspan id="tspan87">M x:x</tspan></text>
+  <text id="text93" x="160" y="263" freecad:editable="Tolerance"><tspan id="tspan91">+/- ?</tspan></text>
+  <text id="text97" x="170" y="267" freecad:editable="Part material"><tspan id="tspan95">PM</tspan></text>
+  <text id="text101" x="170" y="271" freecad:editable="Part number"><tspan id="tspan99">PN</tspan></text>
+  <text id="text105" x="170" y="276" freecad:editable="Drawing number"><tspan id="tspan103">DN</tspan></text>
+  <text id="text109" x="152" y="285" freecad:editable="Date created"><tspan id="tspan107">YYYY-MM-DD</tspan></text>
+  <text id="text113" x="182" y="285" freecad:editable="Version"><tspan id="tspan111">REV A</tspan></text>
+  <text id="text117" x="190" y="263" freecad:editable="Paper size"><tspan id="tspan115">A4</tspan></text>
+  <text id="text121" x="64" y="289" freecad:editable="Rights"><tspan id="tspan119">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION !</tspan></text>
  </g>
  <!-- Set display:none to hide FreeCAD Logo or remove this and next 4 lines from this code -->
  <g id="freecad-logo" transform="translate(51,279)" fill="none" fill-rule="evenodd" stroke="#000" stroke-width=".35">

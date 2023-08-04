@@ -145,30 +145,30 @@
 
   </g>
  <g id="titleblock-text-editable" font-family="HYSWLongFangSong" font-size="5" text-align="center" xml:space="preserve">
-                <text x="101" y="184" freecad:editable="AUTHOR_NAME"><tspan>设计人</tspan></text>
-                <text x="152.5" y="191" freecad:editable="DRAWING_NAME"><tspan>制图人</tspan></text>
+                <text x="101" y="184" freecad:editable="Author"><tspan>设计人</tspan></text>
+                <text x="152.5" y="191" freecad:editable="Title"><tspan>制图人</tspan></text>
                 <text x="112.5" y="191" freecad:editable="CHECKED_NAME"><tspan>审核人</tspan></text>
-                <text x="152.5" y="198" freecad:editable="APPROVER_NAME"><tspan>批准人</tspan></text>
+                <text x="152.5" y="198" freecad:editable="Supervisor"><tspan>批准人</tspan></text>
                 <text x="112.5" y="198" freecad:editable="CRAFTS_NAME"><tspan>评审人</tspan></text>
                 <text x="185" y="197" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
                 <text x="210" y="197" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
-                <text x="219" y="188" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
-                <text x="207" y="188" freecad:editable="WEIGHT"><tspan>重量</tspan></text>
+                <text x="219" y="188" freecad:editable="Scale"><tspan>M x:x</tspan></text>
+                <text x="207" y="188" freecad:editable="Weight"><tspan>重量</tspan></text>
   		<text x="185.25" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
   		<text x="191.75" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
   		<text x="198.25" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-B"><tspan/></text>
   		<text x="205.75" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-C"><tspan/></text>
                 <text x="167" y="183.5" fill="#000000" font-family="HYSWLongFangSong" font-size="3.5" text-align="center" freecad:editable="DATE-1"><tspan>YYYY-MM-DD</tspan></text>
                 <text x="127" y="183.5" fill="#000000" font-family="HYSWLongFangSong" font-size="3.5" text-align="center" freecad:editable="DATE-2"><tspan>YYYY-MM-DD</tspan></text>
-                <text x="230.5" y="148.5" freecad:editable="COMPANYNAME"><tspan>(单位名称/单位代号)</tspan></text>
-                <text x="230.5" y="153.5" freecad:editable="COMPANYADDR"><tspan>(单位地址)</tspan></text>
-                <text x="230.5" y="158.5" freecad:editable="COMPANYPHONE"><tspan>(单位电话/电邮)</tspan></text>
+                <text x="230.5" y="148.5" freecad:editable="Organization"><tspan>(单位名称/单位代号)</tspan></text>
+                <text x="230.5" y="153.5" freecad:editable="Organization address"><tspan>(单位地址)</tspan></text>
+                <text x="230.5" y="158.5" freecad:editable="Organization phone number"><tspan>(单位电话/电邮)</tspan></text>
                 <text x="209" y="164" font-size="10" text-anchor="middle" freecad:editable="MATERIALMARK"><tspan>(材料标记)</tspan></text>
-                <text x="230.5" y="163.5" freecad:editable="PROJECT_TITLE"><tspan>(项目标题)</tspan></text>
-                <text x="230.5" y="168.5" freecad:editable="SUBTITLE"><tspan>(子项目标题)</tspan></text>
+                <text x="230.5" y="163.5" freecad:editable="Project name"><tspan>(项目标题)</tspan></text>
+                <text x="230.5" y="168.5" freecad:editable="Subtitle"><tspan>(子项目标题)</tspan></text>
                 <text x="230.5" y="173.5" freecad:editable="PARTNAME"><tspan>(零件名称)</tspan></text>
-                <text x="230.5" y="178.5" freecad:editable="VERSION"><tspan>(版本号)</tspan></text>
-                <text x="260.5" y="185" fill="#000000" font-size="5" text-align="center" text-anchor="middle" freecad:editable="PART_CODE_NAME"><tspan>(图样代号)</tspan></text>
+                <text x="230.5" y="178.5" freecad:editable="Version"><tspan>(版本号)</tspan></text>
+                <text x="260.5" y="185" fill="#000000" font-size="5" text-align="center" text-anchor="middle" freecad:editable="Part number"><tspan>(图样代号)</tspan></text>
   </g>
  <g id="project mark" stroke="#000" stroke-width=".5">
   <!-- project mark begin -->

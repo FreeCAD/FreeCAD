@@ -47,8 +47,15 @@ void DlgTemplateField::changeEvent(QEvent *e)
 
 void DlgTemplateField::setFieldName(std::string name)
 {
-    QString qs = QString::fromUtf8(name.data(), name.size());
-    ui->lblName->setText(qs);
+    QString fieldNameLabel;
+    if (QString::fromUtf8(name.c_str()) == tr(name.c_str())) {
+        fieldNameLabel = QString::fromUtf8(name.c_str());
+    }
+    else {
+        // Only show internal referal ID if name is getting translated
+        fieldNameLabel = QString::fromUtf8("%1 (%2)").arg(tr(name.c_str()), QString::fromUtf8(name.c_str()));
+    }
+    ui->lblName->setText(fieldNameLabel);
 }
 
 void DlgTemplateField::setFieldContent(std::string content)
