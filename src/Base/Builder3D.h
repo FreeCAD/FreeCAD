@@ -26,6 +26,10 @@
 
 // Std. configurations
 
+#ifdef __GNUC__
+# include <cstdint>
+#endif
+
 #include <sstream>
 #include <vector>
 #include <Base/Tools3D.h>
