@@ -75,7 +75,7 @@ public:
     void helpRequested() override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const override
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

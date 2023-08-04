@@ -52,7 +52,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyCosmeticEdgeList() override;
+    ~PropertyCosmeticEdgeList() override;
 
     void setSize(int newSize) override;
     int getSize(void) const override;

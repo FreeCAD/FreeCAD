@@ -24,6 +24,7 @@
 #define APP_AUTOTRANSACTION_H
 
 #include <cstddef>
+#include <FCGlobal.h>
 
 namespace App {
 

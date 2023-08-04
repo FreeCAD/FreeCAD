@@ -48,7 +48,7 @@ class TaskDimRepair: public QWidget
 
 public:
     TaskDimRepair(TechDraw::DrawViewDimension* inDvd);
-    ~TaskDimRepair();
+    ~TaskDimRepair() override;
 
 public:
     virtual bool accept();
@@ -58,7 +58,7 @@ protected Q_SLOTS:
     void slotUseSelection();
 
 protected:
-    void changeEvent(QEvent* e);
+    void changeEvent(QEvent* e) override;
 
     void setUiPrimary();
     void replaceReferences();

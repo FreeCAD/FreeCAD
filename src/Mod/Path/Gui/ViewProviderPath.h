@@ -73,7 +73,7 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
     void recomputeBoundingBox();
-    virtual QIcon getIcon() const override;
+    QIcon getIcon() const override;
 
     bool useNewSelectionModel() const override;
     std::string getElement(const SoDetail *) const override;
