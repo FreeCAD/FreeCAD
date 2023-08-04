@@ -47,12 +47,12 @@ class TechDrawGuiExport QGISectionLine : public QGIDecoration
 {
 public:
     explicit QGISectionLine();
-    ~QGISectionLine() {}
+    ~QGISectionLine() override = default;
 
     enum {Type = QGraphicsItem::UserType + 172};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     void setEnds(Base::Vector3d l1, Base::Vector3d l2);
     void setBounds(double x1, double y1, double x2, double y2);
@@ -68,7 +68,7 @@ public:
     bool pathMode() { return m_pathMode; }
     void setChangePoints(TechDraw::ChangePointVector changePoints);
     void clearChangePoints();
-    virtual void draw();
+    void draw() override;
 
 protected:
     QColor getSectionColor();

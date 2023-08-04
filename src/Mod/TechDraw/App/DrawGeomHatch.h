@@ -54,7 +54,7 @@ class TechDrawExport DrawGeomHatch : public App::DocumentObject
 
 public:
     DrawGeomHatch();
-    ~DrawGeomHatch() = default;
+    ~DrawGeomHatch() override = default;
 
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
