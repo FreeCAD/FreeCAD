@@ -1892,7 +1892,17 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(Draft.get_svg(ob))
+        try:
+            svg.write(Draft.get_svg(ob))
+        except ValueError:
+            FreeCAD.Console.PrintLog('Draft:ImportSVG:Export - '
+                 'Edges not sorted error therefore trying to create a '
+                 'Shape2DView for export instead\n')
+            svTemp = Draft.make_shape2dview(ob, None)
+            FreeCAD.activeDocument().recompute(None,True,True)
+            svg.write(Draft.get_svg(svTemp))
+            FreeCAD.activeDocument().removeObject(svTemp.Name)
+            FreeCAD.activeDocument().recompute(None,True,True)
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")
