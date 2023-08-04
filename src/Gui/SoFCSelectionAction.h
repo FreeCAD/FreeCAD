@@ -123,7 +123,7 @@ class GuiExport SoFCEnableHighlightAction : public SoAction
 
 public:
     SoFCEnableHighlightAction (const SbBool& sel);
-    ~SoFCEnableHighlightAction();
+    ~SoFCEnableHighlightAction() override;
 
     SbBool highlight;
 

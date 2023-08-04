@@ -71,7 +71,7 @@ class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerTrimming() = default;
-    virtual ~DrawSketchHandlerTrimming()
+    ~DrawSketchHandlerTrimming() override
     {
         Gui::Selection().rmvSelectionGate();
     }

@@ -204,7 +204,7 @@ public:
         imp = new ViewProviderPythonFeatureImp(this,Proxy);
     }
     /// destructor.
-    virtual ~ViewProviderPythonFeatureT() override {
+    ~ViewProviderPythonFeatureT() override {
         delete imp;
     }
 
