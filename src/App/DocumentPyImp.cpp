@@ -614,7 +614,7 @@ PyObject* DocumentPy::getObject(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "a string or integer is required");
         return nullptr;
     }
-    while (0);
+    while (false);
 
     if (obj)
         return obj->getPyObject();

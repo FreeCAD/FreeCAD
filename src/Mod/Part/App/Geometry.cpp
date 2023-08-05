@@ -2598,7 +2598,7 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
         GC_MakeCircle mc(xdir, Radius);
         if (!mc.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
-        GC_MakeArcOfCircle ma(mc.Value()->Circ(), StartAngle, EndAngle, 1);
+        GC_MakeArcOfCircle ma(mc.Value()->Circ(), StartAngle, EndAngle, Standard_True);
         if (!ma.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
@@ -3123,7 +3123,7 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
         if (!mc.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
-        GC_MakeArcOfEllipse ma(mc.Value()->Elips(), StartAngle, EndAngle, 1);
+        GC_MakeArcOfEllipse ma(mc.Value()->Elips(), StartAngle, EndAngle, Standard_True);
         if (!ma.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
@@ -3549,7 +3549,7 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
         if (!mc.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
-        GC_MakeArcOfHyperbola ma(mc.Value()->Hypr(), StartAngle, EndAngle, 1);
+        GC_MakeArcOfHyperbola ma(mc.Value()->Hypr(), StartAngle, EndAngle, Standard_True);
         if (!ma.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
@@ -3901,7 +3901,7 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
         if (!mc.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
-        GC_MakeArcOfParabola ma(mc.Value(), StartAngle, EndAngle, 1);
+        GC_MakeArcOfParabola ma(mc.Value(), StartAngle, EndAngle, Standard_True);
         if (!ma.IsDone())
             THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 

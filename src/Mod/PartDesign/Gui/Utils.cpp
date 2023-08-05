@@ -279,7 +279,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         return; // Sketch is on a face of a solid, do nothing
 
     const App::Document* doc = sketch->getDocument();
-    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
+    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ false);
     if (!body) {
         throw Base::RuntimeError ("Couldn't find body for the sketch");
     }

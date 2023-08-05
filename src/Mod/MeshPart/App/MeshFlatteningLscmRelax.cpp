@@ -644,7 +644,7 @@ void LscmRelax::rotate_by_min_bound_area()
     double phi;
     double min_phi = 0;
     double  min_area = 0;
-    bool x_dominant = 0;
+    bool x_dominant = false;
     // rotate vector by 90 degree and find min area
     for (int i = 0; i < n + 1; i++ )
     {

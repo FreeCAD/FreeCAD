@@ -734,7 +734,7 @@ bool ViewProviderFemPostObject::setupPipeline()
     // Therefore the only way is the hack to filter only if the used Elmer CPU cores are > 1.
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
-    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", 1);
+    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", true);
     int UseNumberOfCores = hGrp->GetInt("UseNumberOfCores", 1);
     // filtering is only necessary for pipelines and warp filters
     if (FilterMultiCPUResults && (UseNumberOfCores > 1)

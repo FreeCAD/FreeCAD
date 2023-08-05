@@ -582,7 +582,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Float(v.toDouble());
         break;
     case QMetaType::Bool:
-        item = Py::Boolean(v.toBool() ? 1 : 0);
+        item = Py::Boolean(v.toBool());
         break;
     case QMetaType::UInt:
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));

@@ -100,7 +100,7 @@ void TaskLineDecor::getDefaults()
     m_style = LineFormat::getDefEdgeStyle();
     m_color = LineFormat::getDefEdgeColor();
     m_weight = LineFormat::getDefEdgeWidth();
-    m_visible = 1;
+    m_visible = true;
 
     //set defaults to format of 1st edge
     if (!m_edges.empty()) {
@@ -136,7 +136,7 @@ void TaskLineDecor::getDefaults()
                         m_weight = partVP->LineWidth.getValue();
                         m_style = Qt::SolidLine;                  // = 1
                         m_color = LineFormat::getDefEdgeColor();
-                        m_visible = 1;
+                        m_visible = true;
                     }
                 }
             }
