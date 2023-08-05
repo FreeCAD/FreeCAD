@@ -42,7 +42,7 @@ Chamfer::Chamfer()
 {
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute(void)
+App::DocumentObjectExecReturn *Chamfer::execute()
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)

@@ -39,7 +39,7 @@ public:
     /// destructor
     ~ViewProviderRuledSurface() override;
 
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
     bool onDelete(const std::vector<std::string> &) override;

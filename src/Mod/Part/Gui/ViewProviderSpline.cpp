@@ -68,7 +68,7 @@ ViewProviderSpline::~ViewProviderSpline()
 {
 }
 
-QIcon ViewProviderSpline::getIcon(void) const
+QIcon ViewProviderSpline::getIcon() const
 {
     return Gui::BitmapFactory().pixmap(sPixmap);
 }

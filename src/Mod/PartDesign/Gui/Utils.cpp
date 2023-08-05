@@ -180,7 +180,7 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
     return dynamic_cast<PartDesign::Body*>(body);
 }
 
-void needActiveBodyError(void)
+void needActiveBodyError()
 {
     QMessageBox::warning( Gui::getMainWindow(),
         QObject::tr("Active Body Required"),
