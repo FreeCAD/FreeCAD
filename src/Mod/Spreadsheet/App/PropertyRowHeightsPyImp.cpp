@@ -31,7 +31,7 @@
 using namespace Spreadsheet;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PropertyRowHeightsPy::representation(void) const
+std::string PropertyRowHeightsPy::representation() const
 {
     return std::string("<PropertyRowHeights object>");
 }
