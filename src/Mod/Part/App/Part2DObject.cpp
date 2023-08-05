@@ -68,7 +68,7 @@ Part2DObject::Part2DObject()
 }
 
 
-App::DocumentObjectExecReturn *Part2DObject::execute(void)
+App::DocumentObjectExecReturn *Part2DObject::execute()
 {
     return Feature::execute();
 }
@@ -83,7 +83,7 @@ void Part2DObject::transformPlacement(const Base::Placement &transform)
     }
 }
 
-int Part2DObject::getAxisCount(void) const
+int Part2DObject::getAxisCount() const
 {
     return 0;
 }
@@ -286,10 +286,10 @@ void Part2DObject::handleChangedPropertyName(Base::XMLReader &reader,
 namespace App {
 /// @cond DOXERR
   PROPERTY_SOURCE_TEMPLATE(Part::Part2DObjectPython, Part::Part2DObject)
-  template<> const char* Part::Part2DObjectPython::getViewProviderName(void) const {
+  template<> const char* Part::Part2DObjectPython::getViewProviderName() const {
     return "PartGui::ViewProvider2DObjectPython";
   }
-  template<> PyObject* Part::Part2DObjectPython::getPyObject(void) {
+  template<> PyObject* Part::Part2DObjectPython::getPyObject() {
         if (PythonObject.is(Py::_None())) {
             // ref counter is set to 1
             PythonObject = Py::Object(new FeaturePythonPyT<Part::Part2DObjectPy>(this),true);

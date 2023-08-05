@@ -57,7 +57,7 @@ namespace @self.export.Namespace.replace("::"," { namespace ")@
 class @self.export.Namespace.replace("::","_")@Export @self.export.Name@ : public @self.export.FatherNamespace@::@self.export.Father@
 {
 protected:
-    ~@self.export.Name@();
+    ~@self.export.Name@() override;
 
 public:
     static PyTypeObject   Type;
@@ -79,12 +79,12 @@ public:
     static int descriptorSetter(PyObject* self, PyObject* obj, PyObject* value);
 -
     static PyGetSetDef    GetterSetter[];
-    virtual PyTypeObject *GetType() {return &Type;}
+    PyTypeObject *GetType() override {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
-    virtual int PyInit(PyObject* args, PyObject*k);
+    int PyInit(PyObject* args, PyObject*k) override;
 
 + if (self.export.Initialization):
     int initialization();
@@ -93,7 +93,7 @@ public:
 
     using PointerType = @self.export.TwinPointer@*;
 
-    virtual PyObject *_repr();        // the representation
+    PyObject *_repr() override;        // the representation
     std::string representation() const;
 
     /** @name callbacks and implementers for the python object methods */
@@ -232,8 +232,8 @@ public:
     /// setter for special attributes (e.g. dynamic ones)
     /// Output: Success=1, Failure=-1, Ignore=0
     int setCustomAttributes(const char* attr, PyObject *obj);
-    PyObject *_getattr(const char *attr);              // __getattr__ function
-    int _setattr(const char *attr, PyObject *value);        // __setattr__ function
+    PyObject *_getattr(const char *attr) override;              // __getattr__ function
+    int _setattr(const char *attr, PyObject *value) override;   // __setattr__ function
 -
 
     /// getter for the object handled by this class
@@ -371,20 +371,20 @@ PyMethodDef @self.export.Name@::Methods[] = {
     {"@i.Name@",
 + if i.Keyword:
 + if i.Class:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS|METH_CLASS,
 = elif i.Static:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS|METH_STATIC,
 = else:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
 -
 = elif i.Class:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_CLASS,
 = elif i.Static:
-        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_STATIC,
 = else:
         reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
@@ -571,7 +571,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
 + if not i.Static and not i.Class:
 +   if (not i.Const):
-        if (ret != 0)
+        if (ret != nullptr)
             static_cast<@self.export.Name@*>(self)->startNotify();
 -
 -

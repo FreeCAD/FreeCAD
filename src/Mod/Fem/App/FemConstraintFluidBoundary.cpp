@@ -61,7 +61,7 @@ static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no he
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
-    /// momemtum boundary: pressure and velocity
+    /// momentum boundary: pressure and velocity
     ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);

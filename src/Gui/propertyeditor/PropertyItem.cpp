@@ -1044,7 +1044,7 @@ void PropertyFloatItem::setValue(const QVariant& value)
         if (!value.canConvert<double>())
             return;
         double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
+        QString data = QString::fromLatin1("%1").arg(val, 0, 'g', 16);
         setPropertyValue(data);
     }
 }
@@ -1113,7 +1113,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Default, 16);
         QString unit = Base::UnitsApi::toString(val, format);
         setPropertyValue(unit);
     }
@@ -1220,7 +1220,7 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
         if (!value.canConvert<double>())
             return;
         double val = value.toDouble();
-        QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
+        QString data = QString::fromLatin1("%1").arg(val, 0, 'g', 16);
         setPropertyValue(data);
     }
 }
@@ -1427,9 +1427,9 @@ void PropertyVectorItem::setValue(const QVariant& value)
         return;
     const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(val.x,0,'f',decimals())
-                    .arg(val.y,0,'f',decimals())
-                    .arg(val.z,0,'f',decimals());
+                    .arg(val.x,0,'g',16)
+                    .arg(val.y,0,'g',16)
+                    .arg(val.z,0,'g',16);
     setPropertyValue(data);
 }
 
@@ -1650,9 +1650,9 @@ void PropertyVectorListItem::setValue(const QVariant& value)
     str << "[";
     for (const auto& it : val) {
         str << QString::fromLatin1("(%1, %2, %3), ")
-                   .arg(it.x, 0, 'f', decimals())
-                   .arg(it.y, 0, 'f', decimals())
-                   .arg(it.z, 0, 'f', decimals());
+                   .arg(it.x, 0, 'g', 16)
+                   .arg(it.y, 0, 'g', 16)
+                   .arg(it.z, 0, 'g', 16);
     }
     str << "]";
     setPropertyValue(data);
@@ -1729,7 +1729,7 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, 16);
     QString data = QString::fromLatin1("(%1, %2, %3)")
                     .arg(Base::UnitsApi::toNumber(x, format),
                          Base::UnitsApi::toNumber(y, format),
@@ -1941,24 +1941,23 @@ void PropertyMatrixItem::setValue(const QVariant& value)
     if (hasExpression() || !value.canConvert<Base::Matrix4D>())
         return;
     const Base::Matrix4D& val = value.value<Base::Matrix4D>();
-    const int decimals=16;
     QString data = QString::fromLatin1("FreeCAD.Matrix(%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16)")
-        .arg(val[0][0],0, 'f', decimals)
-        .arg(val[0][1],0, 'f', decimals)
-        .arg(val[0][2],0, 'f', decimals)
-        .arg(val[0][3],0, 'f', decimals)
-        .arg(val[1][0],0, 'f', decimals)
-        .arg(val[1][1],0, 'f', decimals)
-        .arg(val[1][2],0, 'f', decimals)
-        .arg(val[1][3],0, 'f', decimals)
-        .arg(val[2][0],0, 'f', decimals)
-        .arg(val[2][1],0, 'f', decimals)
-        .arg(val[2][2],0, 'f', decimals)
-        .arg(val[2][3],0, 'f', decimals)
-        .arg(val[3][0],0, 'f', decimals)
-        .arg(val[3][1],0, 'f', decimals)
-        .arg(val[3][2],0, 'f', decimals)
-        .arg(val[3][3],0, 'f', decimals);
+        .arg(val[0][0],0, 'g', 16)
+        .arg(val[0][1],0, 'g', 16)
+        .arg(val[0][2],0, 'g', 16)
+        .arg(val[0][3],0, 'g', 16)
+        .arg(val[1][0],0, 'g', 16)
+        .arg(val[1][1],0, 'g', 16)
+        .arg(val[1][2],0, 'g', 16)
+        .arg(val[1][3],0, 'g', 16)
+        .arg(val[2][0],0, 'g', 16)
+        .arg(val[2][1],0, 'g', 16)
+        .arg(val[2][2],0, 'g', 16)
+        .arg(val[2][3],0, 'g', 16)
+        .arg(val[3][0],0, 'g', 16)
+        .arg(val[3][1],0, 'g', 16)
+        .arg(val[3][2],0, 'g', 16)
+        .arg(val[3][3],0, 'g', 16);
     setPropertyValue(data);
 }
 
@@ -2417,7 +2416,7 @@ void PropertyRotationItem::setValue(const QVariant& value)
     Base::Vector3d axis;
     double angle;
     h.getValue(axis, angle);
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, 16);
     QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
                     .arg(Base::UnitsApi::toNumber(axis.x, format),
                          Base::UnitsApi::toNumber(axis.y, format),
@@ -2726,7 +2725,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     double angle;
     h.getValue(axis, angle);
 
-    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Default, 16);
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")

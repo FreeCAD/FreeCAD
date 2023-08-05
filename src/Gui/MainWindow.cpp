@@ -190,7 +190,7 @@ public:
         getWindowParameter()->Attach(this);
     }
 
-    ~DimensionWidget()
+    ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
     }
@@ -214,7 +214,7 @@ public:
     }
 
 private:
-    void unitChanged(void)
+    void unitChanged()
     {
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
         auto actions = menu()->actions();
@@ -1170,9 +1170,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     auto view = dynamic_cast<MDIView*>(w->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
-
+    if (view)
+    {
+        d->activeView = view;
+        Application::Instance->viewActivated(view);
+    }
+    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1448,6 +1451,9 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    // TODO: Check for deprecated settings
+    Application::Instance->checkForDeprecatedSettings();
+
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
@@ -1491,7 +1497,7 @@ void MainWindow::updateActions(bool delay)
         // the whole application in a weird state
         if (d->activityTimer->thread() != QThread::currentThread()) {
             QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int, 150));
+                Q_ARG(int, 150));
         }
         else {
             d->activityTimer->start(150);
@@ -1685,6 +1691,32 @@ QPixmap MainWindow::aboutImage() const
     return about_image;
 }
 
+void MainWindow::RenderDevBuildWarning(QPainter &painter, int x, int y) const
+{
+    // Create a background box that fades out the artwork for better legibility
+    QColor fader (Qt::black);
+    const float halfDensity (0.5);
+    fader.setAlphaF(halfDensity);
+    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
+    painter.setBrush(fillBrush);
+
+    // Construct the lines of text and figure out how much space they need
+    auto devWarningLine1 = tr("WARNING: This is a development version.");
+    auto devWarningLine2 = tr("Please do not use in a production environment.");
+    QFontMetrics fontMetrics(painter.font());
+    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
+    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
+    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
+    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
+    int lineHeight = fontMetrics.lineSpacing();
+    int boxHeight = static_cast<int>(lineHeight*2.3);
+
+    // Draw the background rectangle and the text
+    painter.drawRect(x, y, boxWidth, boxHeight);
+    painter.drawText(x+padding, y+lineHeight, devWarningLine1);
+    painter.drawText(x+padding, y+2*lineHeight, devWarningLine2);
+}
+
 QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
@@ -1725,7 +1757,8 @@ QPixmap MainWindow::splashImage() const
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3").arg(major, minor, point);
+        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
@@ -1787,6 +1820,9 @@ QPixmap MainWindow::splashImage() const
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
+            if (suffix == QLatin1String("dev")) {
+                RenderDevBuildWarning(painter, x + l + 5, y + 10);
+            }
             painter.end();
         }
     }

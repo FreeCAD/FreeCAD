@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -405,7 +406,7 @@ void DlgBooleanOperation::accept()
         return;
     }
 
-    std::string type, objName;
+    std::string method;
     App::DocumentObject* obj1 = activeDoc->getObject(shapeOne.c_str());
     App::DocumentObject* obj2 = activeDoc->getObject(shapeTwo.c_str());
     if (!obj1 || !obj2) {
@@ -421,8 +422,7 @@ void DlgBooleanOperation::accept()
                 tr("Performing union on non-solids is not possible"));
             return;
         }
-        type = "Part::Fuse";
-        objName = activeDoc->getUniqueObjectName("Fusion");
+        method = "make_fuse";
     }
     else if (ui->interButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
@@ -430,8 +430,7 @@ void DlgBooleanOperation::accept()
                 tr("Performing intersection on non-solids is not possible"));
             return;
         }
-        type = "Part::Common";
-        objName = activeDoc->getUniqueObjectName("Common");
+        method = "make_common";
     }
     else if (ui->diffButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
@@ -439,55 +438,24 @@ void DlgBooleanOperation::accept()
                 tr("Performing difference on non-solids is not possible"));
             return;
         }
-        type = "Part::Cut";
-        objName = activeDoc->getUniqueObjectName("Cut");
+        method = "make_cut";
     }
     else if (ui->sectionButton->isChecked()) {
-        type = "Part::Section";
-        objName = activeDoc->getUniqueObjectName("Section");
+        method = "make_section";
     }
 
     try {
         Gui::WaitCursor wc;
         activeDoc->openTransaction("Boolean operation");
+        std::vector<std::string> names;
+        names.push_back(Base::Tools::quoted(shapeOne.c_str()));
+        names.push_back(Base::Tools::quoted(shapeTwo.c_str()));
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().addObject(\"%s\",\"%s\")",
-            type.c_str(), objName.c_str());
+            "from BOPTools import BOPFeatures");
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().%s.Base = App.activeDocument().%s",
-            objName.c_str(),shapeOne.c_str());
+            "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().%s.Tool = App.activeDocument().%s",
-            objName.c_str(),shapeTwo.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.activeDocument().hide(\"%s\")",shapeOne.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
-
-        // add/remove fromgroup if needed
-        App::DocumentObjectGroup* targetGroup = nullptr;
-
-        App::DocumentObjectGroup* group1 = obj1->getGroup();
-        if (group1) {
-            targetGroup = group1;
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group1->getNameInDocument(), obj1->getNameInDocument());
-        }
-
-        App::DocumentObjectGroup* group2 = obj2->getGroup();
-        if (group2) {
-            targetGroup = group2;
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group2->getNameInDocument(), obj2->getNameInDocument());
-        }
-
-        if (targetGroup) {
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                targetGroup->getNameInDocument(), objName.c_str());
-        }
-
-        Gui::Command::copyVisual(objName.c_str(), "ShapeColor", shapeOne.c_str());
-        Gui::Command::copyVisual(objName.c_str(), "DisplayMode", shapeOne.c_str());
+            "bp.%s([%s])", method.c_str(), Base::Tools::joinList(names).c_str());
         activeDoc->commitTransaction();
         activeDoc->recompute();
     }

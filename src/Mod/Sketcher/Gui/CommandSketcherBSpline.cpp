@@ -57,12 +57,14 @@ bool isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection)
+                if (!actsOnSelection) {
                     return true;
+                }
                 else if (Gui::Selection().countObjectsOfType(
                              Sketcher::SketchObject::getClassTypeId())
-                         > 0)
+                         > 0) {
                     return true;
+                }
             }
         }
     }
@@ -299,18 +301,24 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd;
 
-    if (iMsg == 0)
+    if (iMsg == 0) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
-    else if (iMsg == 2)
+    }
+    else if (iMsg == 2) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
-    else if (iMsg == 3)
+    }
+    else if (iMsg == 3) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
-    else if (iMsg == 4)
+    }
+    else if (iMsg == 4) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePoleWeight");
-    else
+    }
+    else {
         return;
+    }
 
     cmd->invoke(0);
 
@@ -356,8 +364,9 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -950,12 +959,15 @@ void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd;
 
-    if (iMsg == 0)
+    if (iMsg == 0) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineIncreaseKnotMultiplicity");
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDecreaseKnotMultiplicity");
-    else
+    }
+    else {
         return;
+    }
 
     cmd->invoke(0);
 
@@ -993,8 +1005,9 @@ void CmdSketcherCompModifyKnotMultiplicity::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -1132,10 +1145,12 @@ public:
             }
         }
 
-        if (applied)
+        if (applied) {
             Gui::Command::commitCommand();
-        else
+        }
+        else {
             Gui::Command::abortCommand();
+        }
 
         tryAutoRecomputeIfNotSolve(Obj);
 
@@ -1223,9 +1238,10 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     int GeoId = std::atoi(SubNames[0].substr(4, 4000).c_str()) - 1;
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
         ActivateBSplineHandler(getActiveGuiDocument(),
                                new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+    }
     else {
         Gui::TranslatedUserWarning(
             Obj,
@@ -1264,7 +1280,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1367,16 +1383,18 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         getSelection().clearSelection();
     }
 
-    if (applied)
+    if (applied) {
         Gui::Command::commitCommand();
-    else
+    }
+    else {
         Gui::Command::abortCommand();
+    }
 
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
 
-bool CmdSketcherJoinCurves::isActive(void)
+bool CmdSketcherJoinCurves::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }

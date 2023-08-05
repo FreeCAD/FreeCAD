@@ -29,13 +29,13 @@
     <message>
       <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
-      <translation>Curve on mesh...</translation>
+      <translation type="unfinished">Curve on mesh...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Creates an approximated curve on top of a mesh.
+      <translation type="unfinished">Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</translation>
     </message>
   </context>
@@ -99,12 +99,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
-      <translation>Trim with plane</translation>
+      <translation type="unfinished">Trim with plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
-      <translation>Section with plane</translation>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation>Connect edges if distance less than</translation>
+      <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="366"/>
       <source>Failure</source>
-      <translation>Failure</translation>
+      <translation type="unfinished">Failure</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Close wire</source>
-      <translation>Close wire</translation>
+      <translation type="unfinished">Close wire</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="368"/>
@@ -200,7 +200,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh picked</source>
-      <translation>Wrong mesh picked</translation>
+      <translation type="unfinished">Wrong mesh picked</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
@@ -213,14 +213,14 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on mesh</source>
-      <translation>Curve on mesh</translation>
+      <translation type="unfinished">Curve on mesh</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
     </message>
@@ -232,27 +232,27 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Snap tolerance to vertices</translation>
+      <translation type="unfinished">Snap tolerance to vertices</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation type="unfinished"> px</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Split threshold</translation>
+      <translation type="unfinished">Split threshold</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Spline Approximation</translation>
+      <translation type="unfinished">Spline Approximation</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation>Tolerance to mesh</translation>
+      <translation type="unfinished">Tolerance to mesh</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
@@ -262,12 +262,12 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation>Maximum curve degree</translation>
+      <translation type="unfinished">Maximum curve degree</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>起點</translation>
+      <translation type="unfinished">Start</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Use the standard mesher</translation>
+      <translation type="unfinished">Use the standard mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
@@ -300,53 +300,53 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation>Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation:</source>
-      <translation>Angular deviation:</translation>
+      <translation type="unfinished">Angular deviation:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Maximal angular deflection of a mesh section to the next section</translation>
+      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>The maximal linear deviation of a mesh segment will be the specified
+      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
       <source>Relative surface deviation</source>
-      <translation>Relative surface deviation</translation>
+      <translation type="unfinished">Relative surface deviation</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation>Mesh will get face colors of the object</translation>
+      <translation type="unfinished">Mesh will get face colors of the object</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Apply face colors to mesh</translation>
+      <translation type="unfinished">Apply face colors to mesh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Mesh segments will be grouped according to the color of the object faces.
+      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Define segments by face colors</translation>
+      <translation type="unfinished">Define segments by face colors</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -356,7 +356,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation>Use the Mefisto mesher</translation>
+      <translation type="unfinished">Use the Mefisto mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -367,13 +367,13 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation>If this number is smaller the mesh becomes finer.
+      <translation type="unfinished">If this number is smaller the mesh becomes finer.
 The smallest value is 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation>Estimate</translation>
+      <translation type="unfinished">Estimate</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="206"/>
@@ -383,7 +383,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation>Use the Netgen mesher</translation>
+      <translation type="unfinished">Use the Netgen mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -429,7 +429,7 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>If this parameter is smaller, the mesh becomes finer.
+      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</translation>
     </message>
     <message>
@@ -442,7 +442,7 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation>If this parameter is larger, the mesh becomes finer.
+      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</translation>
     </message>
     <message>
@@ -453,7 +453,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation>Whether optimization of surface shape will be done</translation>
+      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -463,7 +463,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation>Whether second order elements will be generated</translation>
+      <translation type="unfinished">Whether second order elements will be generated</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -473,7 +473,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -483,12 +483,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Leave panel open</translation>
+      <translation type="unfinished">Leave panel open</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation>Gmsh</translation>
+      <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="225"/>
@@ -500,20 +500,20 @@ A value in the range of 0.2-10.</translation>
       <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation>You have selected a body without tip.
+      <translation type="unfinished">You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation>You have selected a shape without faces.
+      <translation type="unfinished">You have selected a shape without faces.
 Select a different shape, please.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>請先選擇造型來產生網格.</translation>
+      <translation>請先選擇造型來產生網格</translation>
     </message>
   </context>
   <context>
@@ -526,7 +526,7 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation>Please select a plane at which you section the mesh.</translation>
+      <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
     </message>
   </context>
   <context>
@@ -539,32 +539,32 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>請選取一個您修剪網格的平面.</translation>
+      <translation>請選取一個您修剪網格的平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Trim by plane</source>
-      <translation>Trim by plane</translation>
+      <translation type="unfinished">Trim by plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Select the side you want to keep.</source>
-      <translation>Select the side you want to keep.</translation>
+      <translation type="unfinished">Select the side you want to keep.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Below</source>
-      <translation>Below</translation>
+      <translation type="unfinished">Below</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Above</source>
-      <translation>Above</translation>
+      <translation type="unfinished">Above</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Split</source>
-      <translation>分割</translation>
+      <translation type="unfinished">Split</translation>
     </message>
   </context>
   <context>
@@ -580,12 +580,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation>Unwrap Mesh</translation>
+      <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation>Find a flat representation of a mesh.</translation>
+      <translation type="unfinished">Find a flat representation of a mesh.</translation>
     </message>
   </context>
   <context>
@@ -593,7 +593,7 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation>Unwrap Face</translation>
+      <translation type="unfinished">Unwrap Face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>

@@ -96,7 +96,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
       <source>Show scrollbars</source>
-      <translation type="unfinished">Show scrollbars</translation>
+      <translation>Kaydırma çubuklarını göster</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="211"/>
@@ -398,7 +398,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Eğer bu, forumda yayınlayacağınız ilk gönderi ise, öncelikle &lt; A href="http://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264" &gt; yönergeleri okuyun! &lt; / a &gt;!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
@@ -413,7 +413,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; Sayfasındaki son gönderiler:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

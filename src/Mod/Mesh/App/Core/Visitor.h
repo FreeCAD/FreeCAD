@@ -24,7 +24,7 @@
 #define VISITOR_H
 
 #include <vector>
-#include <Mod/Mesh/MeshGlobal.h>
+#include "MeshKernel.h"
 
 
 namespace MeshCore {
@@ -123,10 +123,10 @@ class MeshExport MeshTopFacetVisitor : public MeshFacetVisitor
 {
 public:
     MeshTopFacetVisitor (std::vector<FacetIndex> &raulNB) : _raulNeighbours(raulNB) {}
-    ~MeshTopFacetVisitor () override {}
+    ~MeshTopFacetVisitor () override = default;
     /** Collects the facet indices. */
-    virtual bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                        FacetIndex ulFInd, unsigned long) override
+    bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
+                FacetIndex ulFInd, unsigned long) override
     {
         (void)rclFacet;
         (void)rclFrom;

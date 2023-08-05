@@ -31,24 +31,24 @@ namespace PathGui
 
 class PathGuiExport ViewProviderPathShape: public ViewProviderPath
 {
-    PROPERTY_HEADER(PathGui::ViewProviderPathShape);
+    PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPathShape);
 
 public:
 
     /// grouping handling
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual void updateData(const App::Property*);
-    virtual bool onDelete(const std::vector<std::string> &);
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    void updateData(const App::Property*) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// drag and drop
-    virtual bool canDragObjects() const;
-    virtual bool canDragObject(App::DocumentObject*) const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual bool canDropObject(App::DocumentObject*) const;
-    virtual void dropObject(App::DocumentObject*);
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject*) const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    bool canDropObject(App::DocumentObject*) const override;
+    void dropObject(App::DocumentObject*) override;
 
-    QIcon getIcon(void) const;
+    QIcon getIcon() const override;
 };
 
 } //namespace PathGui

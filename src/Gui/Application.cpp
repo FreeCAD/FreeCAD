@@ -1753,26 +1753,35 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    Q_UNUSED(context);
+    QByteArray output;
+    if (context.category && strcmp(context.category, "default") != 0) {
+        output.append('(');
+        output.append(context.category);
+        output.append(')');
+        output.append(' ');
+    }
+
+    output.append(msg.toUtf8());
+
     switch (type)
     {
     case QtInfoMsg:
     case QtDebugMsg:
 #ifdef FC_DEBUG
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().Message("%s\n", output.constData());
 #else
         // do not stress user with Qt internals but write to log file if enabled
-        Base::Console().Log("%s\n", msg.toUtf8().constData());
+        Base::Console().Log("%s\n", output.constData());
 #endif
         break;
     case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg.toUtf8().constData());
+        Base::Console().Warning("%s\n", output.constData());
         break;
     case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         break;
     case QtFatalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
@@ -2120,8 +2129,9 @@ void Application::runApplication()
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
         QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
         QString title =
-            QString::fromLatin1("%1 %2.%3.%4").arg(mainApp.applicationName(), major, minor, point);
+            QString::fromLatin1("%1 %2.%3.%4%5").arg(mainApp.applicationName(), major, minor, point, suffix);
         mw.setWindowTitle(title);
     }
     else {
@@ -2515,6 +2525,27 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     if (!d->startingUp) {
         if (mdi->style())
             mdi->style()->unpolish(qApp);
+    }
+}
+
+void Application::checkForDeprecatedSettings()
+{
+    // From 0.21, `FCBak` will be the intended default backup format
+    bool makeBackups = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                           ->GetBool("CreateBackupFiles", true);
+    if (makeBackups) {
+        bool useFCBakExtension =
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("UseFCBakExtension", true);
+        if (!useFCBakExtension) {
+            // TODO: This should be translated
+            Base::Console().Warning("The `.FCStd#` backup format is deprecated as of v0.21 and may "
+                                    "be removed in future versions.\n"
+                                    "To update, check the 'Preferences->General->Document->Use "
+                                    "date and FCBak extension' option.\n");
+        }
     }
 }
 

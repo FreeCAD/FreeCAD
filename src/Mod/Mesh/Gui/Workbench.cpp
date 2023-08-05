@@ -105,7 +105,7 @@ public:
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }
-    bool shouldShow(void) override
+    bool shouldShow() override
     {
         return true;
     }

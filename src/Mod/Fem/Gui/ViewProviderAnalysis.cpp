@@ -117,7 +117,7 @@ void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject *vie
     extension.highlightView(view);
 }
 
-bool ViewProviderFemAnalysis::doubleClicked(void)
+bool ViewProviderFemAnalysis::doubleClicked()
 {
     Gui::Command::assureWorkbench("FemWorkbench");
     Gui::Command::addModule(Gui::Command::Gui, "FemGui");
@@ -137,22 +137,22 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
     return true;
 }
 
-std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren(void) const
+std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren() const
 {
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
-std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes() const
 {
     return {"Analysis"};
 }
 
-void ViewProviderFemAnalysis::hide(void)
+void ViewProviderFemAnalysis::hide()
 {
     Gui::ViewProviderDocumentObjectGroup::hide();
 }
 
-void ViewProviderFemAnalysis::show(void)
+void ViewProviderFemAnalysis::show()
 {
     Gui::ViewProviderDocumentObjectGroup::show();
 }

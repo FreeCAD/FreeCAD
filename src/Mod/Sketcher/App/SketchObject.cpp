@@ -44,6 +44,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_Array1OfInteger.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -57,11 +58,16 @@
 #include <gp_Pln.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Expression.h>
 #include <App/ExpressionParser.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -73,6 +79,7 @@
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -236,6 +243,64 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     Shape.setValue(solvedSketch.toShape());
 
     return App::DocumentObject::StdReturn;
+}
+
+void SketchObject::buildShape()
+{
+    // Shape.setValue(solvedSketch.toShape());
+    // We use the following instead to map element names
+
+    std::vector<Part::TopoShape> shapes;
+    std::vector<Part::TopoShape> vertices;
+    int i=0;
+    for(auto geo : getInternalGeometry()) {
+        ++i;
+        if(GeometryFacade::getConstruction(geo))
+            continue;
+        if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+            vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
+            int idx = getVertexIndexGeoPos(i-1, PointPos::start);
+            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+            // vertices.back().setElementName(Data::IndexedName::fromConst("Vertex", 1),
+            //                                Data::MappedName::fromRawData(name.c_str()));
+        } else
+            shapes.push_back(getEdge(geo,convertSubName(
+                        Data::IndexedName::fromConst("Edge", i), false).c_str()));
+    }
+
+    // FIXME: Commented since ExternalGeometryFacade is not added
+    // for(i=2;i<ExternalGeo.getSize();++i) {
+    //     auto geo = ExternalGeo[i];
+    //     auto egf = ExternalGeometryFacade::getFacade(geo);
+    //     if(!egf->testFlag(ExternalGeometryExtension::Defining))
+    //         continue;
+    //     shapes.push_back(getEdge(geo, convertSubName(
+    //                     Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
+    // }
+    // if(shapes.empty() && vertices.empty())
+    //     Shape.setValue(Part::TopoShape());
+    // else if (vertices.empty()) {
+    //     // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
+    //     Shape.setValue(Part::TopoShape().makEWires(shapes,Part::OpCodes::Sketch));
+    // } else {
+    //     std::vector<Part::TopoShape> results;
+    //     if (!shapes.empty()) {
+    //         // This call of makEWires() does not have the op code, in order to
+    //         // avoid duplication. Because we'll going to make a compound (to
+    //         // include the vertices) below with the same op code.
+    //         //
+    //         // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
+    //         // geometry exposed through the Shape property, because
+    //         // SketchObject::getElementName() relies on this op code to
+    //         // differentiate geometries that are exposed with those in edit
+    //         // mode.
+    //         auto wires = Part::TopoShape().makEWires(shapes);
+    //         for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
+    //             results.push_back(wire);
+    //     }
+    //     results.insert(results.end(), vertices.begin(), vertices.end());
+    //     Shape.setValue(Part::TopoShape().makECompound(results, Part::OpCodes::Sketch));
+    // }
 }
 
 int SketchObject::hasConflicts() const
@@ -766,79 +831,79 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
     return lastSolverStatus;
 }
 
-Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
+Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (!(GeoId == H_Axis || GeoId == V_Axis
-          || (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount())))
-        throw Base::ValueError("SketchObject::getPoint. Invalid GeoId was supplied.");
-    const Part::Geometry* geo = getGeometry(GeoId);
     if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-        const Part::GeomPoint* p = static_cast<const Part::GeomPoint*>(geo);
+        const Part::GeomPoint *p = static_cast<const Part::GeomPoint*>(geo);
         if (PosId == PointPos::start || PosId == PointPos::mid || PosId == PointPos::end)
             return p->getPoint();
-    }
-    else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-        const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
+    } else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
         if (PosId == PointPos::start)
             return lineSeg->getStartPoint();
         else if (PosId == PointPos::end)
             return lineSeg->getEndPoint();
-    }
-    else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-        const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
-        if (PosId == PointPos::mid)
-            return circle->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-        const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
-        if (PosId == PointPos::mid)
-            return ellipse->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-        const Part::GeomArcOfCircle* aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
+    } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        const Part::GeomCircle *circle = static_cast<const Part::GeomCircle*>(geo);
+        auto pt = circle->getCenter();
+        if(PosId != PointPos::mid)
+             pt.x += circle->getRadius();
+        return pt;
+    } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse*>(geo);
+        auto pt = ellipse->getCenter();
+        if(PosId != PointPos::mid)
+            pt += ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
+        return pt;
+    } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
         if (PosId == PointPos::start)
             return aoc->getStartPoint(/*emulateCCW=*/true);
         else if (PosId == PointPos::end)
             return aoc->getEndPoint(/*emulateCCW=*/true);
         else if (PosId == PointPos::mid)
             return aoc->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-        const Part::GeomArcOfEllipse* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
+    } else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        const Part::GeomArcOfEllipse *aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
         if (PosId == PointPos::start)
             return aoc->getStartPoint(/*emulateCCW=*/true);
         else if (PosId == PointPos::end)
             return aoc->getEndPoint(/*emulateCCW=*/true);
         else if (PosId == PointPos::mid)
             return aoc->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-        const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+    } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
         if (PosId == PointPos::start)
             return aoh->getStartPoint();
         else if (PosId == PointPos::end)
             return aoh->getEndPoint();
         else if (PosId == PointPos::mid)
             return aoh->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-        const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+    } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola*>(geo);
         if (PosId == PointPos::start)
             return aop->getStartPoint();
         else if (PosId == PointPos::end)
             return aop->getEndPoint();
         else if (PosId == PointPos::mid)
             return aop->getCenter();
-    }
-    else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+    } else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
         if (PosId == PointPos::start)
             return bsp->getStartPoint();
         else if (PosId == PointPos::end)
             return bsp->getEndPoint();
     }
-
     return Base::Vector3d();
+}
+
+Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
+{
+    if (!(GeoId == H_Axis || GeoId == V_Axis
+          || (GeoId <= getHighestCurveIndex() && GeoId >= -getExternalGeometryCount())))
+        throw Base::ValueError("SketchObject::getPoint. Invalid GeoId was supplied.");
+    const Part::Geometry* geo = getGeometry(GeoId);
+    return getPoint(geo,PosId);
 }
 
 int SketchObject::getAxisCount() const
@@ -9260,6 +9325,115 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
         }
         solve();
     }
+}
+
+Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
+{
+    Part::TopoShape shape(geo->toShape());
+    // shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
+    //                      Data::MappedName::fromRawData(name));
+    TopTools_IndexedMapOfShape vmap;
+    TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
+    std::ostringstream ss;
+    for(int i=1;i<=vmap.Extent();++i) {
+        auto gpt = BRep_Tool::Pnt(TopoDS::Vertex(vmap(i)));
+        Base::Vector3d pt(gpt.X(),gpt.Y(),gpt.Z());
+        PointPos pos[] = {PointPos::start,PointPos::end};
+        for(size_t j=0;j<sizeof(pos)/sizeof(pos[0]);++j) {
+            if(getPoint(geo,pos[j]) == pt) {
+                ss.str("");
+                ss << name << 'v' << static_cast<int>(pos[j]);
+                // shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
+                //                      Data::MappedName::fromRawData(ss.str().c_str()));
+                break;
+            }
+        }
+    }
+    return shape;
+}
+
+Data::IndexedName SketchObject::checkSubName(const char *sub) const
+{
+    // FIXME: trivial implementation needs to be replaced with full logic
+    (void)sub;
+    return Data::IndexedName();
+}
+
+bool SketchObject::geoIdFromShapeType(const Data::IndexedName & indexedName,
+                                      int &geoId,
+                                      PointPos &posId) const
+{
+    posId = PointPos::none;
+    geoId = Sketcher::GeoEnum::GeoUndef;
+    if (!indexedName)
+        return false;
+    const char *shapetype = indexedName.getType();
+    if (boost::equals(shapetype,"Edge") ||
+        boost::equals(shapetype,"edge")) {
+        geoId = indexedName.getIndex() - 1;
+    } else if (boost::equals(shapetype,"ExternalEdge")) {
+        geoId = indexedName.getIndex() - 1;
+        geoId = Sketcher::GeoEnum::RefExt - geoId;
+    } else if (boost::equals(shapetype,"Vertex") ||
+               boost::equals(shapetype,"vertex")) {
+        int VtId = indexedName.getIndex() - 1;
+        getGeoVertexIndex(VtId,geoId,posId);
+        if (posId==PointPos::none) return false;
+    } else if (boost::equals(shapetype,"H_Axis")) {
+        geoId = Sketcher::GeoEnum::HAxis;
+    } else if (boost::equals(shapetype,"V_Axis")) {
+        geoId = Sketcher::GeoEnum::VAxis;
+    } else if (boost::equals(shapetype,"RootPoint")) {
+        geoId = Sketcher::GeoEnum::RtPnt;
+        posId = PointPos::start;
+    } else
+        return false;
+    return true;
+}
+
+std::string SketchObject::convertSubName(const Data::IndexedName & indexedName, bool postfix) const
+{
+    std::ostringstream ss;
+    int geoId;
+    PointPos posId;
+    if(!geoIdFromShapeType(indexedName,geoId,posId)) {
+        ss << indexedName;
+        return ss.str();
+    }
+    if(geoId == Sketcher::GeoEnum::HAxis ||
+       geoId == Sketcher::GeoEnum::VAxis ||
+       geoId == Sketcher::GeoEnum::RtPnt) {
+        if (postfix)
+            ss << Data::ELEMENT_MAP_PREFIX;
+        ss << indexedName;
+        if(postfix)
+           ss  << '.' << indexedName;
+        return ss.str();
+    }
+
+    auto geo = getGeometry(geoId);
+    if(!geo) {
+        std::string res = indexedName.toString();
+        return res;
+    }
+    if (postfix)
+        ss << Data::ELEMENT_MAP_PREFIX;
+    ss << (geoId>=0?'g':'e') << GeometryFacade::getFacade(geo)->getId();
+    if(posId!=PointPos::none)
+        ss << 'v' << static_cast<int>(posId);
+    if(postfix) {
+        // rename Edge to edge, and Vertex to vertex to avoid ambiguous of
+        // element mapping of the public shape and internal geometry.
+        if (indexedName.getIndex() <= 0)
+            ss << '.' << indexedName;
+        else if(boost::starts_with(indexedName.getType(),"Edge"))
+            ss << ".e" << (indexedName.getType()+1) << indexedName.getIndex();
+        else if(boost::starts_with(indexedName.getType(),"Vertex"))
+            ss << ".v" << (indexedName.getType()+1) << indexedName.getIndex();
+        else
+            ss << '.' << indexedName;
+    }
+    return ss.str();
 }
 
 int SketchObject::autoConstraint(double precision, double angleprecision, bool includeconstruction)

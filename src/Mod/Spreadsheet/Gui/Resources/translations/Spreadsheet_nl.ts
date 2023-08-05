@@ -491,7 +491,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Celbereik:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -925,7 +925,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Weergave-instellingen</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -1009,17 +1009,17 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Voeg %n rij(en) hierboven in</numerusform>
+        <numerusform>Voeg %n rij(en) hierboven in</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Voeg %n rij(en) hieronder in</numerusform>
+        <numerusform>Voeg %n rij(en) hieronder in</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1049,9 +1049,9 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Rechts %n kolom(men) invoegen</numerusform>
+        <numerusform>Rechts %n kolom(men) invoegen</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1092,7 +1092,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Configuratie tabel...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>

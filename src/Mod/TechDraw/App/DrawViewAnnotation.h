@@ -42,7 +42,7 @@ class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewAnnotation();
-    ~DrawViewAnnotation() = default;
+    ~DrawViewAnnotation() override = default;
 
     App::PropertyStringList   Text;
     App::PropertyFont         Font;

@@ -43,7 +43,7 @@ public:
         , object(obj)
     {}
 
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         if (pObj != this->object)
             return false;
@@ -90,7 +90,7 @@ public:
         , Mode(STATUS_SEEK_First)
         , firstCurve(0)
     {}
-    virtual ~DrawSketchHandlerFillet()
+    ~DrawSketchHandlerFillet() override
     {
         Gui::Selection().rmvSelectionGate();
     }

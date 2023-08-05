@@ -260,7 +260,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show Seam Lines</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SeamViz</cstring>

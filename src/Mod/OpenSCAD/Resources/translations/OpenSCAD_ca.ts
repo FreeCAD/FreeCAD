@@ -231,7 +231,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Open...</source>
-      <translation>Obrir...</translation>
+      <translation>Obre...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>

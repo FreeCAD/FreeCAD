@@ -345,12 +345,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="156"/>
       <source>Refine Shape Feature</source>
-      <translation>Udoskonalenie cechy kształtu</translation>
+      <translation>Udoskonal kształt cechy</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Stwórz udoskonaloną cechę kształtu</translation>
+      <translation>Tworzy udoskonaloną cechę kształtu</translation>
     </message>
   </context>
   <context>

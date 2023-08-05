@@ -196,7 +196,7 @@ void TaskDraftParameters::onButtonLine(bool checked)
     }
 }
 
-void TaskDraftParameters::onRefDeleted(void)
+void TaskDraftParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
@@ -230,7 +230,7 @@ void TaskDraftParameters::onAngleChanged(double angle)
     hideOnError();
 }
 
-double TaskDraftParameters::getAngle(void) const
+double TaskDraftParameters::getAngle() const
 {
     return ui->draftAngle->value().getValue();
 }
@@ -245,7 +245,7 @@ void TaskDraftParameters::onReversedChanged(const bool on) {
     hideOnError();
 }
 
-bool TaskDraftParameters::getReversed(void) const
+bool TaskDraftParameters::getReversed() const
 {
     return ui->checkReverse->isChecked();
 }

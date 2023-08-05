@@ -340,6 +340,9 @@ automatically run a file recovery when it is started.</string>
           <property name="toolTip">
            <string>A thumbnail will be stored when document is saved</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Save thumbnail into project file when saving document</string>
           </property>
@@ -510,6 +513,9 @@ Common sizes are 128, 256 and 512</string>
           <property name="toolTip">
            <string>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Use date and FCBak extension</string>

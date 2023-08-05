@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Zoekafstand</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -116,12 +116,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="632"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>Afstand: &gt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="635"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>Afstand: &lt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="654"/>

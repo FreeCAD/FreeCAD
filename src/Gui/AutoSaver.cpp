@@ -161,7 +161,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         // associated 3d view is not active
         Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document");
-        bool save = hGrp->GetBool("SaveThumbnail",false);
+        bool save = hGrp->GetBool("SaveThumbnail",true);
         hGrp->SetBool("SaveThumbnail",false);
 
         getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
@@ -333,11 +333,11 @@ public:
         tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
-    virtual ~RecoveryRunnable()
+    ~RecoveryRunnable() override
     {
         delete prop;
     }
-    virtual void run()
+    void run() override
     {
         prop->SaveDocFile(writer);
         writer.close();

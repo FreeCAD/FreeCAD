@@ -40,7 +40,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = Path.Log.thisModule()
 
-if False:
+debugmodule = False
+if debugmodule:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -238,11 +239,11 @@ def resolveFileName(job, subpartname, sequencenumber):
             fullPath = f"{fn}{n:03d}{ext}"
 
     if openDialog:
-        foo = QtGui.QFileDialog.getSaveFileName(
+        requestedfile = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(), "Output File", fullPath
         )
-        if foo[0]:
-            fullPath = foo[0]
+        if requestedfile[0]:
+            fullPath = requestedfile[0]
         else:
             fullPath = None
 
@@ -254,6 +255,33 @@ def resolveFileName(job, subpartname, sequencenumber):
         Path.Log.track(fullPath)
 
     return fullPath
+
+
+def fixtureSetup(order, fixture, job):
+    """Convert a Fixure setting to _TempObject instance with a G0 move to a
+    safe height every time the fixture coordinate system change.  Skip
+    the move for first fixture, to avoid moving before tool and tool
+    height compensation is enabled.
+
+    """
+
+    fobj = _TempObject()
+    c1 = Path.Command(fixture)
+    fobj.Path = Path.Path([c1])
+    # Avoid any tool move after G49 in preamble and before tool change
+    # and G43 in case tool height compensation is in use, to avoid
+    # dangerous move without tool compesation.
+    if order != 0:
+        c2 = Path.Command(
+            "G0 Z"
+            + str(
+                job.Stock.Shape.BoundBox.ZMax
+                + job.SetupSheet.ClearanceHeightOffset.Value
+            )
+        )
+        fobj.Path.addCommands(c2)
+    fobj.InList.append(job)
+    return fobj
 
 
 def buildPostList(job):
@@ -273,20 +301,7 @@ def buildPostList(job):
         currTool = None
         for index, f in enumerate(wcslist):
             # create an object to serve as the fixture path
-            fobj = _TempObject()
-            c1 = Path.Command(f)
-            fobj.Path = Path.Path([c1])
-            if index != 0:
-                c2 = Path.Command(
-                    "G0 Z"
-                    + str(
-                        job.Stock.Shape.BoundBox.ZMax
-                        + job.SetupSheet.ClearanceHeightOffset.Value
-                    )
-                )
-                fobj.Path.addCommands(c2)
-            fobj.InList.append(job)
-            sublist = [fobj]
+            sublist = [fixtureSetup(index, f, job)]
 
             # Now generate the gcode
             for obj in job.Operations.Group:
@@ -294,7 +309,7 @@ def buildPostList(job):
                 if tc is not None and PathUtil.opProperty(obj, "Active"):
                     if tc.ToolNumber != currTool:
                         sublist.append(tc)
-                        Path.Log.debug("Appending TC: {}".format(tc.Name))
+                        Path.Log.debug(f"Appending TC: {tc.Name}")
                         currTool = tc.ToolNumber
                 sublist.append(obj)
             postlist.append((f, sublist))
@@ -310,20 +325,9 @@ def buildPostList(job):
 
         # Build the fixture list
         fixturelist = []
-        for f in wcslist:
+        for index, f in enumerate(wcslist):
             # create an object to serve as the fixture path
-            fobj = _TempObject()
-            c1 = Path.Command(f)
-            c2 = Path.Command(
-                "G0 Z"
-                + str(
-                    job.Stock.Shape.BoundBox.ZMax
-                    + job.SetupSheet.ClearanceHeightOffset.Value
-                )
-            )
-            fobj.Path = Path.Path([c1, c2])
-            fobj.InList.append(job)
-            fixturelist.append(fobj)
+            fixturelist.append(fixtureSetup(index, f, job))
 
         # Now generate the gcode
         curlist = []  # list of ops for tool, will repeat for each fixture
@@ -378,7 +382,6 @@ def buildPostList(job):
         # Order by operation means ops are done in each fixture in
         # sequence.
         currTool = None
-        firstFixture = True
 
         # Now generate the gcode
         for obj in job.Operations.Group:
@@ -388,24 +391,10 @@ def buildPostList(job):
                 continue
 
             sublist = []
-            Path.Log.debug("obj: {}".format(obj.Name))
+            Path.Log.debug(f"obj: {obj.Name}")
 
-            for f in wcslist:
-                fobj = _TempObject()
-                c1 = Path.Command(f)
-                fobj.Path = Path.Path([c1])
-                if not firstFixture:
-                    c2 = Path.Command(
-                        "G0 Z"
-                        + str(
-                            job.Stock.Shape.BoundBox.ZMax
-                            + job.SetupSheet.ClearanceHeightOffset.Value
-                        )
-                    )
-                    fobj.Path.addCommands(c2)
-                fobj.InList.append(job)
-                sublist.append(fobj)
-                firstFixture = False
+            for index, f in enumerate(wcslist):
+                sublist.append(fixtureSetup(index, f, job))
                 tc = PathUtil.toolControllerForOp(obj)
                 if tc is not None:
                     if job.SplitOutput or (tc.ToolNumber != currTool):
@@ -417,16 +406,18 @@ def buildPostList(job):
     if job.SplitOutput:
         Path.Log.track()
         return postlist
-    else:
-        Path.Log.track()
-        finalpostlist = [
-            ("allitems", [item for slist in postlist for item in slist[1]])
-        ]
-        return finalpostlist
+
+    Path.Log.track()
+    finalpostlist = [
+        ("allitems", [item for slist in postlist for item in slist[1]])
+    ]
+    return finalpostlist
 
 
 class DlgSelectPostProcessor:
-    def __init__(self, parent=None):
+    """Provide user with list of available and active post processor
+    choices."""
+    def __init__(self):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
         firstItem = None
         for post in Path.Preferences.allEnabledPostProcessors():
@@ -511,7 +502,7 @@ class CommandPathPost:
             postArgs = ""
 
         if extraargs is not None:
-            postArgs += " {}".format(extraargs)
+            postArgs += f" {extraargs}"
 
         Path.Log.track(postArgs)
 
@@ -564,7 +555,7 @@ class CommandPathPost:
                 if hasattr(o, "Proxy"):
                     if isinstance(o.Proxy, PathJob.ObjectJob):
                         targetlist.append(o.Label)
-            Path.Log.debug("Possible post objects: {}".format(targetlist))
+            Path.Log.debug(f"Possible post objects: {targetlist}")
             if len(targetlist) > 1:
                 jobname, result = QtGui.QInputDialog.getItem(
                     None, translate("Path", "Choose a Path Job"), None, targetlist
@@ -576,7 +567,7 @@ class CommandPathPost:
                 jobname = targetlist[0]
             job = FreeCAD.ActiveDocument.getObject(jobname)
 
-        Path.Log.debug("about to postprocess job: {}".format(job.Name))
+        Path.Log.debug(f"about to postprocess job: {job.Name}")
 
         postlist = buildPostList(job)
         # filename = resolveFileName(job, "allitems", 0)

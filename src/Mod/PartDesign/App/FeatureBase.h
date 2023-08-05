@@ -48,6 +48,9 @@ public:
     void onChanged(const App::Property* prop) override;
     App::DocumentObjectExecReturn* execute() override;
     void onDocumentRestored() override;
+
+private:
+    void trySetBaseFeatureOfBody();
 };
 
 } //namespace PartDesign

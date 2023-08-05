@@ -120,7 +120,7 @@ macro(SetupShibokenAndPyside)
         option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" OFF)
     endif()
 
-    # Now try to import the shiboken Python module and print an error if it can't be loaded
+    # Now try to import the shiboken Python module and print a warning if it can't be loaded
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
         RESULT_VARIABLE FAILURE
@@ -128,7 +128,7 @@ macro(SetupShibokenAndPyside)
     )
 
     if(FAILURE)
-        message(FATAL_ERROR,
+        message(WARNING
                 "==================================\n"
                 "Shiboken${SHIBOKEN_MAJOR_VERSION} Python module not found.\n"
                 "==================================\n")
@@ -148,14 +148,14 @@ macro(SetupShibokenAndPyside)
         option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." OFF)
     endif()
 
-    # Independent of the build option PySide modules must be loaded at runtime. Print an error if it fails.
+    # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
     if(FAILURE)
-        message(FATAL_ERROR,
+        message(WARNING
                 "================================\n"
                 "PySide${PYSIDE_MAJOR_VERSION} Python module not found.\n"
                 "================================\n")

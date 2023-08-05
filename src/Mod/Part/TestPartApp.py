@@ -831,3 +831,43 @@ class PartTestShapeFix(unittest.TestCase):
         fix.fixGap3d(1, False)
         fix.fixGap2d(1, False)
         fix.fixTails()
+
+class PartBOPTestContainer(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument()
+
+    def testMakeFuse(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_multi_fuse([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def testMakeCut(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_cut([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def testMakeCommon(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        part.addObject(cyl)
+        from BOPTools import BOPFeatures
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        fuse = bp.make_multi_common([cyl.Name, box.Name])
+        self.assertEqual(part, fuse.getParent())
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
