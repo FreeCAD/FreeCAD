@@ -3165,7 +3165,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     }
     std::map<std::string, App::Color> ret;
     for(const auto &v : colors) {
-        const char *pos = 0;
+        const char *pos = nullptr;
         auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
         if(!sobj || !pos)
             continue;

@@ -63,12 +63,12 @@ PyObject* StringHasherPy::getID(PyObject *args)
 {
    long id = -1;
    int index = 0;
-   PyObject *value = 0;
+   PyObject *value = nullptr;
    PyObject *base64 = Py_False;
    if (!PyArg_ParseTuple(args, "l|i",&id,&index)) {
        PyErr_Clear();
        if (!PyArg_ParseTuple(args, "O|O",&value,&base64))
-           return NULL;    // NULL triggers exception
+           return nullptr;
    }
    if(id>0) {
        PY_TRY {
@@ -139,7 +139,7 @@ Py::Dict StringHasherPy::getTable() const {
 
 PyObject *StringHasherPy::getCustomAttributes(const char* /*attr*/) const
 {
-   return 0;
+   return nullptr;
 }
 
 int StringHasherPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

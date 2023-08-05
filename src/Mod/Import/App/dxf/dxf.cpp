@@ -1767,8 +1767,8 @@ CDxfRead::CDxfRead(const char* filepath)
     m_ifs->imbue(std::locale("C"));
 
     m_version = RUnknown;
-    m_CodePage = NULL;
-    m_encoding = NULL;
+    m_CodePage = nullptr;
+    m_encoding = nullptr;
     stringToUTF8 = &CDxfRead::UTF8ToUTF8;
 }
 
@@ -3323,7 +3323,7 @@ bool CDxfRead::ReadDWGCodePage()
 {
     get_line();
     get_line();
-    assert(m_CodePage == NULL); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
+    assert(m_CodePage == nullptr); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
     m_CodePage = new std::string(m_str);
 
     return ResolveEncoding();
@@ -3331,15 +3331,15 @@ bool CDxfRead::ReadDWGCodePage()
 
 bool CDxfRead::ResolveEncoding()
 {
-    if (m_encoding != NULL) {
+    if (m_encoding != nullptr) {
         delete m_encoding;
-        m_encoding = NULL;
+        m_encoding = nullptr;
     }
     if (m_version >= R2007) {   // Note this does not include RUnknown, but does include RLater
         m_encoding = new std::string("utf_8");
         stringToUTF8 = &CDxfRead::UTF8ToUTF8;
     }
-    else if (m_CodePage == NULL) {
+    else if (m_CodePage == nullptr) {
         // cp1252
         m_encoding = new std::string("cp1252");
         stringToUTF8 = &CDxfRead::GeneralToUTF8;
@@ -3362,10 +3362,10 @@ bool CDxfRead::ResolveEncoding()
         // and is just a direct c++ callable.
         Base::PyGILStateLocker lock;
         PyObject* pyDecoder = PyCodec_Decoder(m_encoding->c_str());
-        if (pyDecoder == NULL)
+        if (pyDecoder == nullptr)
             return false; // A key error exception will have been placed.
         PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
-        assert(pyUTF8Decoder != NULL);
+        assert(pyUTF8Decoder != nullptr);
         if (pyDecoder == pyUTF8Decoder)
             stringToUTF8 = &CDxfRead::UTF8ToUTF8;
         else
@@ -3373,7 +3373,7 @@ bool CDxfRead::ResolveEncoding()
         Py_DECREF(pyDecoder);
         Py_DECREF(pyUTF8Decoder);
     }
-    return m_encoding != NULL;
+    return m_encoding != nullptr;
 }
 
 const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
@@ -3385,15 +3385,15 @@ const char* CDxfRead::GeneralToUTF8(const char* encoded) const
 {
     Base::PyGILStateLocker lock;
     PyObject* decoded = PyUnicode_Decode(encoded, strlen(encoded), m_encoding->c_str(), "strict");
-    if (decoded == NULL)
-        return NULL;
+    if (decoded == nullptr)
+        return nullptr;
     Py_ssize_t len;
     const char* converted = PyUnicode_AsUTF8AndSize(decoded, &len);
-    char* result = NULL;
-    if (converted != NULL) {
+    char* result = nullptr;
+    if (converted != nullptr) {
         // converted only has lifetime of decoded so we must save a copy.
         result = (char *)malloc(len + 1);
-        if (result == NULL)
+        if (result == nullptr)
             PyErr_SetString(PyExc_MemoryError, "Out of memory");
         else
             memcpy(result, converted, len + 1);

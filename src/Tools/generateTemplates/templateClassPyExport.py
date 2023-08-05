@@ -571,7 +571,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
 + if not i.Static and not i.Class:
 +   if (not i.Const):
-        if (ret != 0)
+        if (ret != nullptr)
             static_cast<@self.export.Name@*>(self)->startNotify();
 -
 -
