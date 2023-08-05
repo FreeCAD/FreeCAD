@@ -286,7 +286,7 @@ PropertySheet::~PropertySheet()
     clear();
 }
 
-App::Property *PropertySheet::Copy(void) const
+App::Property *PropertySheet::Copy() const
 {
     return new PropertySheet(*this);
 }

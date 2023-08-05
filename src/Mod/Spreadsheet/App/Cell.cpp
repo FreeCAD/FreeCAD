@@ -1011,7 +1011,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
 }
 
 //roughly based on Spreadsheet/Gui/SheetModel.cpp
-std::string Cell::getFormattedQuantity(void)
+std::string Cell::getFormattedQuantity()
 {
     std::string result;
     QString qFormatted;
