@@ -294,7 +294,7 @@ void DrawSketchHandler::preActivated()
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }
 
-void DrawSketchHandler::quit(void)
+void DrawSketchHandler::quit()
 {
     assert(sketchgui);
 
@@ -307,12 +307,12 @@ void DrawSketchHandler::quit(void)
 //**************************************************************************
 // Helpers
 
-int DrawSketchHandler::getHighestVertexIndex(void)
+int DrawSketchHandler::getHighestVertexIndex()
 {
     return sketchgui->getSketchObject()->getHighestVertexIndex();
 }
 
-int DrawSketchHandler::getHighestCurveIndex(void)
+int DrawSketchHandler::getHighestCurveIndex()
 {
     return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
@@ -475,7 +475,7 @@ void DrawSketchHandler::updateCursor()
         setCrosshairCursor(cursorstring);
 }
 
-void DrawSketchHandler::applyCursor(void)
+void DrawSketchHandler::applyCursor()
 {
     applyCursor(actCursor);
 }
@@ -489,7 +489,7 @@ void DrawSketchHandler::applyCursor(QCursor& newCursor)
     }
 }
 
-void DrawSketchHandler::unsetCursor(void)
+void DrawSketchHandler::unsetCursor()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
@@ -995,7 +995,7 @@ void DrawSketchHandler::setPositionText(const Base::Vector2d& Pos)
     ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(*sketchgui, Pos);
 }
 
-void DrawSketchHandler::resetPositionText(void)
+void DrawSketchHandler::resetPositionText()
 {
     ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(*sketchgui);
 }
@@ -1061,17 +1061,17 @@ void DrawSketchHandler::preselectAtPoint(Base::Vector2d point)
     ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(*sketchgui, point);
 }
 
-int DrawSketchHandler::getPreselectPoint(void) const
+int DrawSketchHandler::getPreselectPoint() const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(*sketchgui);
 }
 
-int DrawSketchHandler::getPreselectCurve(void) const
+int DrawSketchHandler::getPreselectCurve() const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(*sketchgui);
 }
 
-int DrawSketchHandler::getPreselectCross(void) const
+int DrawSketchHandler::getPreselectCross() const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
 }

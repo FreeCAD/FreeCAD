@@ -94,7 +94,7 @@ public:
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const override
+    std::vector<std::string> getDisplayModes() const override
     {
         return std::vector<std::string>();
     }

@@ -1539,7 +1539,7 @@ void TaskSketcherElements::leaveEvent(QEvent* event)
     ui->listWidgetElements->clearFocus();
 }
 
-void TaskSketcherElements::slotElementsChanged(void)
+void TaskSketcherElements::slotElementsChanged()
 {
     assert(sketchView);
     // Build up ListView with the elements

@@ -62,7 +62,7 @@ class PathGuiExport ViewProviderAreaView : public PartGui::ViewProviderPlanePara
 public:
     ViewProviderAreaView();
     ~ViewProviderAreaView() override;
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
     bool onDelete(const std::vector<std::string> &) override;
 

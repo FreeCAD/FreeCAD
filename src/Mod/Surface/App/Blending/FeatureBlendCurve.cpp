@@ -127,7 +127,7 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub &link, App::Pro
     return bp;
 }
 
-App::DocumentObjectExecReturn *FeatureBlendCurve::execute(void)
+App::DocumentObjectExecReturn *FeatureBlendCurve::execute()
 {
     BlendPoint bp1 = GetBlendPoint(StartEdge, StartParameter, StartContinuity);
     BlendPoint bp2 = GetBlendPoint(EndEdge, EndParameter, EndContinuity);

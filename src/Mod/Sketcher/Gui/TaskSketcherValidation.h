@@ -86,7 +86,7 @@ class TaskSketcherValidation: public Gui::TaskView::TaskDialog
 public:
     explicit TaskSketcherValidation(Sketcher::SketchObject* Obj);
     ~TaskSketcherValidation() override;
-    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
         return QDialogButtonBox::Close;
     }
