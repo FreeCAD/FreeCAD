@@ -156,11 +156,11 @@ protected:
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
     void setDataDir(std::string s) { m_dataDir = s; }
-    std::string getHandle(void);
-    std::string getEntityHandle(void);
-    std::string getLayerHandle(void);
-    std::string getBlockHandle(void);
-    std::string getBlkRecordHandle(void);
+    std::string getHandle();
+    std::string getEntityHandle();
+    std::string getLayerHandle();
+    std::string getBlockHandle();
+    std::string getBlkRecordHandle();
 
     std::string m_optionSource;
     int m_version;
@@ -186,8 +186,8 @@ public:
     ImportExport CDxfWrite(const char* filepath);
     ImportExport ~CDxfWrite();
     
-    ImportExport void init(void);
-    ImportExport void endRun(void);
+    ImportExport void init();
+    ImportExport void endRun();
 
     ImportExport bool Failed(){return m_fail;}
 //    void setOptions(void);
@@ -237,19 +237,19 @@ public:
                          const char* dimText);
 
     ImportExport void writeDimBlockPreamble();
-    ImportExport void writeBlockTrailer(void);
+    ImportExport void writeBlockTrailer();
 
-    ImportExport void writeHeaderSection(void);
-    ImportExport void writeTablesSection(void);
-    ImportExport void writeBlocksSection(void);
-    ImportExport void writeEntitiesSection(void);
-    ImportExport void writeObjectsSection(void);
-    ImportExport void writeClassesSection(void);
+    ImportExport void writeHeaderSection();
+    ImportExport void writeTablesSection();
+    ImportExport void writeBlocksSection();
+    ImportExport void writeEntitiesSection();
+    ImportExport void writeObjectsSection();
+    ImportExport void writeClassesSection();
 
-    ImportExport void makeLayerTable(void);
-    ImportExport void makeBlockRecordTableHead(void);
-    ImportExport void makeBlockRecordTableBody(void);
-    ImportExport void makeBlockSectionHead(void);
+    ImportExport void makeLayerTable();
+    ImportExport void makeBlockRecordTableHead();
+    ImportExport void makeBlockRecordTableBody();
+    ImportExport void makeBlockSectionHead();
 };
 
 // derive a class from this and implement it's virtual functions

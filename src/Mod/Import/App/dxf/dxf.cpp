@@ -74,7 +74,7 @@ CDxfWrite::~CDxfWrite()
     delete m_ssLayer;
 }
 
-void CDxfWrite::init(void)
+void CDxfWrite::init()
 {
     writeHeaderSection();
     makeBlockRecordTableHead();
@@ -82,7 +82,7 @@ void CDxfWrite::init(void)
 }
 
 //! assemble pieces into output file
-void CDxfWrite::endRun(void)
+void CDxfWrite::endRun()
 {
     makeLayerTable();
     makeBlockRecordTableBody();
@@ -100,7 +100,7 @@ void CDxfWrite::endRun(void)
 //***************************
 //writeHeaderSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeHeaderSection(void)
+void CDxfWrite::writeHeaderSection()
 {
     std::stringstream ss;
     ss << "FreeCAD v"
@@ -125,7 +125,7 @@ void CDxfWrite::writeHeaderSection(void)
 //***************************
 //writeClassesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeClassesSection(void)
+void CDxfWrite::writeClassesSection()
 {
     if (m_version < 14) {
         return;
@@ -141,7 +141,7 @@ void CDxfWrite::writeClassesSection(void)
 //***************************
 //writeTablesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeTablesSection(void)
+void CDxfWrite::writeTablesSection()
 {
     //static tables section head end content
     std::stringstream ss;
@@ -170,7 +170,7 @@ void CDxfWrite::writeTablesSection(void)
 //***************************
 //makeLayerTable
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeLayerTable(void)
+void CDxfWrite::makeLayerTable()
 {
     std::string tablehash = getLayerHandle();
     (*m_ssLayer) << "  0"      << endl;
@@ -238,7 +238,7 @@ void CDxfWrite::makeLayerTable(void)
 //***************************
 //makeBlockRecordTableHead
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockRecordTableHead(void)
+void CDxfWrite::makeBlockRecordTableHead()
 {
     if (m_version < 14) {
         return;
@@ -294,7 +294,7 @@ void CDxfWrite::makeBlockRecordTableHead(void)
 //***************************
 //makeBlockRecordTableBody
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockRecordTableBody(void)
+void CDxfWrite::makeBlockRecordTableBody()
 {
     if (m_version < 14) {
         return;
@@ -323,7 +323,7 @@ void CDxfWrite::makeBlockRecordTableBody(void)
 //***************************
 //makeBlockSectionHead
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockSectionHead(void)
+void CDxfWrite::makeBlockSectionHead()
 {
     (*m_ssBlock) << "  0"          << endl;
     (*m_ssBlock) << "SECTION"      << endl;
@@ -451,7 +451,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     return outString.str();
 }
 
-std::string CDxfWrite::getHandle(void)
+std::string CDxfWrite::getHandle()
 {
     m_handle++;
     std::stringstream ss;
@@ -460,7 +460,7 @@ std::string CDxfWrite::getHandle(void)
     return ss.str();
 }
 
-std::string CDxfWrite::getEntityHandle(void)
+std::string CDxfWrite::getEntityHandle()
 {
     return getHandle();
 //    m_entityHandle++;
@@ -470,7 +470,7 @@ std::string CDxfWrite::getEntityHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getLayerHandle(void)
+std::string CDxfWrite::getLayerHandle()
 {
     return getHandle();
 //    m_layerHandle++;
@@ -480,7 +480,7 @@ std::string CDxfWrite::getLayerHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getBlockHandle(void)
+std::string CDxfWrite::getBlockHandle()
 {
     return getHandle();
 //    m_blockHandle++;
@@ -490,7 +490,7 @@ std::string CDxfWrite::getBlockHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getBlkRecordHandle(void)
+std::string CDxfWrite::getBlkRecordHandle()
 {
     return getHandle();
 //    m_blkRecordHandle++;
@@ -1378,7 +1378,7 @@ void CDxfWrite::writeDiametricDim(const double* textMidPoint,
 //***************************
 //writeDimBlockPreamble
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeDimBlockPreamble(void)
+void CDxfWrite::writeDimBlockPreamble()
 {
     if (m_version > 12) {
         std::string blockName("*");
@@ -1423,7 +1423,7 @@ void CDxfWrite::writeDimBlockPreamble(void)
 //***************************
 //writeBlockTrailer
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeBlockTrailer(void)
+void CDxfWrite::writeBlockTrailer()
 {
     (*m_ssBlock) << "  0"    << endl;
     (*m_ssBlock) << "ENDBLK" << endl;
@@ -1696,7 +1696,7 @@ void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint,
 //***************************
 //writeBlocksSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeBlocksSection(void)
+void CDxfWrite::writeBlocksSection()
 {
     if (m_version < 14) {
         std::stringstream ss;
@@ -1715,7 +1715,7 @@ void CDxfWrite::writeBlocksSection(void)
 //***************************
 //writeEntitiesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeEntitiesSection(void)
+void CDxfWrite::writeEntitiesSection()
 {
     std::stringstream ss;
     ss << "entities" << m_version << ".rub";
@@ -1733,7 +1733,7 @@ void CDxfWrite::writeEntitiesSection(void)
 //***************************
 //writeObjectsSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeObjectsSection(void)
+void CDxfWrite::writeObjectsSection()
 {
     if (m_version < 14) {
         return;

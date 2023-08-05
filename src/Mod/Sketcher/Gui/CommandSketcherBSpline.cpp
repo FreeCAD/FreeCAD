@@ -1376,7 +1376,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherJoinCurves::isActive(void)
+bool CmdSketcherJoinCurves::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
