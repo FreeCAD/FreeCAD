@@ -721,7 +721,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
     int retry = 0;
     std::string lastElem;  // used to recover in case of parse failure after ".".
     std::string trim;      // used to delete ._self added for another recovery path
-    while (1) {
+    while (true) {
         try {
             // this will not work for incomplete Tokens at the end
             // "Sketch." will fail to parse and complete.

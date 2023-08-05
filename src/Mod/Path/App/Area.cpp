@@ -2203,7 +2203,7 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient) 
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
-            while (1) {
+            while (true) {
                 if (fix_arc) {
                     double d = pt.Distance(pnext);
                     double rr = r * r;

@@ -1011,7 +1011,7 @@ void SelectionSingleton::selStackGoForward(int count) {
     }
     std::deque<SelStackItem> tmpStack;
     _SelStackForward.swap(tmpStack);
-    while(1) {
+    while(true) {
         bool found = false;
         for(auto &sobjT : _SelStackBack.back()) {
             if(sobjT.getSubObject()) {

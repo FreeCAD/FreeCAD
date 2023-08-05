@@ -122,8 +122,8 @@ public:
     }
     void init()
     {
-        page->m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
-        page->m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
+        page->m_atCursor = hGrp->GetBool("ZoomAtCursor", true);
+        page->m_invertZoom = hGrp->GetBool("InvertZoom", false);
         page->m_zoomIncrement = hGrp->GetFloat("ZoomStep", 0.02);
 
         page->m_reversePan = Preferences::getPreferenceGroup("General")->GetInt("KbPan", 1);

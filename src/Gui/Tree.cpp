@@ -5147,7 +5147,7 @@ App::DocumentObject* DocumentObjectItem::getRelativeParent(
     auto subname2 = str2.str();
     const char* sub = subname.c_str();
     const char* sub2 = subname2.c_str();
-    while (1) {
+    while (true) {
         const char* dot = strchr(sub, '.');
         if (!dot) {
             str.str("");

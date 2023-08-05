@@ -2806,7 +2806,7 @@ void VariableExpression::addComponent(Component *c) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
         }
-    }while(0);
+    }while(false);
 
     Expression::addComponent(c);
 }
