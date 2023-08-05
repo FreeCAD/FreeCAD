@@ -2167,59 +2167,59 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Niet in staat om het snijpunt van de bochten te raden. Probeer een samenvallende beperking toe te voegen tussen de vertexen van de curven die u wilt afronden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometrie Index (GeoID) buiten bereik.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>U vraagt geen verandering in de knoop multipliciteit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>De Geometrie Index (Geold) aangeleverd is geen B-spline lijn.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>De knoop-index is buiten de grenzen. Merk op dat volgens de OCC-notatie de eerste knoop index 1 heeft en niet nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>De multipliciteit mag niet groter zijn dan het aantal graden van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>De multipliciteit kan niet lager zijn dan nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC is niet in staat om de multipliciteit binnen de maximale tolerantie te verlagen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knooppunt kan geen multipliciteit van nul hebben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Knooppunt multipliciteit kan niet hoger zijn dan de graad van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knooppunt kan niet worden toegevoegd buiten de parameters van de B-spline.</translation>
     </message>
@@ -2285,8 +2285,20 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Niet bijvoegen</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2412,15 +2424,6 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2436,9 +2439,6 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
@@ -2619,9 +2619,9 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Het aantal geselecteerde objecten is niet gelijk aan 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
@@ -3030,9 +3030,9 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <translation>Definieer de B-Spline graad, tussen 1 en %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-kernelfout</translation>
     </message>
@@ -3901,7 +3901,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>Indien geselecteerd, elk element in de matrix wordt beperkt
+      <translation>Indien geselecteerd, elk element in de matrix wordt beperkt 
 ten opzichte van de anderen met behulp van constructielijnen</translation>
     </message>
     <message>
@@ -6126,56 +6126,56 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>De schets heeft ongeldige beperkingen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>De schets heeft deels overbodige beperkingen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolen zijn geconverteerd. Geconverteerde bestanden kunnen niet in vorige versies van FreeCAD worden geopend!!
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
@@ -6195,6 +6195,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">The constraint has invalid index information and is malformed.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6202,9 +6205,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6248,8 +6248,8 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation>Fout bij het maken van de B-spline pool</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <source>Error creating B-spline</source>
       <translation>Fout bij het maken van de B-spline</translation>
     </message>
@@ -6346,9 +6346,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">Failed to trim edge</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation>Fout in de waarde</translation>
     </message>

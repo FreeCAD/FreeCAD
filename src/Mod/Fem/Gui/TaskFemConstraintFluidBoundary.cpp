@@ -342,7 +342,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     updateUI();
 }
 
-const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver(void) const
+const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver() const
 {
     return pcSolver;
 }
@@ -535,7 +535,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
     }
 }
 
-void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
+void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -556,7 +556,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
     }
 }
 
-void TaskFemConstraintFluidBoundary::onSubtypeChanged(void)
+void TaskFemConstraintFluidBoundary::onSubtypeChanged()
 {
     updateSubtypeUI();// todo: change color for different kind of subtype,
                       // Fem::ConstraintFluidBoundary::onChanged() and viewProvider
@@ -566,7 +566,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
 {
     //left empty for future extension
 }
-void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged(void)
+void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -575,7 +575,7 @@ void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged(void)
     updateTurbulenceUI();
 }
 
-void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged(void)
+void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -668,23 +668,23 @@ void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
     pcConstraint->Reversed.setValue(pressed);
 }
 
-std::string TaskFemConstraintFluidBoundary::getBoundaryType(void) const
+std::string TaskFemConstraintFluidBoundary::getBoundaryType() const
 {
     return Base::Tools::toStdString(ui->comboBoundaryType->currentText());
 }
 
-std::string TaskFemConstraintFluidBoundary::getSubtype(void) const
+std::string TaskFemConstraintFluidBoundary::getSubtype() const
 {
     return Base::Tools::toStdString(ui->comboSubtype->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getBoundaryValue(void) const
+double TaskFemConstraintFluidBoundary::getBoundaryValue() const
 {
     return ui->spinBoundaryValue->value();
 }
 
 
-std::string TaskFemConstraintFluidBoundary::getTurbulenceModel(void) const
+std::string TaskFemConstraintFluidBoundary::getTurbulenceModel() const
 {
     if (pTurbulenceModel) {
         return pTurbulenceModel->getValueAsString();
@@ -694,22 +694,22 @@ std::string TaskFemConstraintFluidBoundary::getTurbulenceModel(void) const
     }
 }
 
-std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification(void) const
+std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification() const
 {
     return Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue(void) const
+double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue() const
 {
     return ui->spinTurbulentIntensityValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getTurbulentLengthValue(void) const
+double TaskFemConstraintFluidBoundary::getTurbulentLengthValue() const
 {
     return ui->spinTurbulentLengthValue->value();
 }
 
-bool TaskFemConstraintFluidBoundary::getHeatTransferring(void) const
+bool TaskFemConstraintFluidBoundary::getHeatTransferring() const
 {
     if (pHeatTransferring) {
         return pHeatTransferring->getValue();
@@ -719,22 +719,22 @@ bool TaskFemConstraintFluidBoundary::getHeatTransferring(void) const
     }
 }
 
-std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType(void) const
+std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType() const
 {
     return Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getTemperatureValue(void) const
+double TaskFemConstraintFluidBoundary::getTemperatureValue() const
 {
     return ui->spinTemperatureValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getHeatFluxValue(void) const
+double TaskFemConstraintFluidBoundary::getHeatFluxValue() const
 {
     return ui->spinHeatFluxValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getHTCoeffValue(void) const
+double TaskFemConstraintFluidBoundary::getHTCoeffValue() const
 {
     return ui->spinHTCoeffValue->value();
 }
@@ -749,7 +749,7 @@ const std::string TaskFemConstraintFluidBoundary::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintFluidBoundary::getDirectionName(void) const
+const std::string TaskFemConstraintFluidBoundary::getDirectionName() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -759,7 +759,7 @@ const std::string TaskFemConstraintFluidBoundary::getDirectionName(void) const
     return dir.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintFluidBoundary::getDirectionObject(void) const
+const std::string TaskFemConstraintFluidBoundary::getDirectionObject() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())

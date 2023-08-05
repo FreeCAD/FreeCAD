@@ -282,7 +282,7 @@ class ObjectDressup:
                 t = p0.sub(leadstart)
                 t = p0.add(t)
                 leadstart = t
-                offsetvector = self.multiply(offsetvector, -1)
+                offsetvector = offsetvector.multiply(-1)
         elif obj.StyleOn == "Tangent":
             # This is wrong.  please fix
             leadstart = (p0.add(off_v)).sub(offsetvector)
@@ -290,7 +290,7 @@ class ObjectDressup:
                 t = p0.sub(leadstart)
                 t = p0.add(t)
                 leadstart = t
-                offsetvector = self.multiply(offsetvector, -1)
+                offsetvector = offsetvector.multiply(-1)
         else:  # perpendicular
             leadstart = p0.add(off_v)
 

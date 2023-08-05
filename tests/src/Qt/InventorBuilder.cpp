@@ -23,8 +23,7 @@ public:
     testInventorBuilder()
         : builder(output)
     {}
-    ~testInventorBuilder()
-    {}
+    ~testInventorBuilder() override = default;
 
     SoNode* loadBuffer(const std::string& buffer)
     {

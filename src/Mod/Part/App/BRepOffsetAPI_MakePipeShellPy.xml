@@ -63,10 +63,6 @@
 					For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
 					If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
 
-					* OCC before 6.7
-					TypeOfContact = bool
-					True = keep Contact
-
 					* OCC >= 6.7
 					TypeOfContact = long
 					0: No contact

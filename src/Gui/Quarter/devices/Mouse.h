@@ -45,9 +45,9 @@ class QUARTER_DLL_API Mouse : public InputDevice {
 public:
   Mouse(QuarterWidget* quarter);
   Mouse();
-  virtual ~Mouse();
+  ~Mouse() override;
 
-  virtual const SoEvent * translateEvent(QEvent * event);
+  const SoEvent * translateEvent(QEvent * event) override;
 
 private:
   friend class MouseP;

@@ -291,6 +291,30 @@ std::string Base::Tools::escapeEncodeFilename(const std::string& s)
     return result;
 }
 
+std::string Base::Tools::quoted(const char* name)
+{
+    std::stringstream str;
+    str << "\"" << name << "\"";
+    return str.str();
+}
+
+std::string Base::Tools::quoted(const std::string& name)
+{
+    std::stringstream str;
+    str << "\"" << name << "\"";
+    return str.str();
+}
+
+std::string Base::Tools::joinList(const std::vector<std::string>& vec,
+                                  const std::string& sep)
+{
+    std::stringstream str;
+    for (const auto& it : vec) {
+        str << it << sep;
+    }
+    return str.str();
+}
+
 // ----------------------------------------------------------------------------
 
 using namespace Base;

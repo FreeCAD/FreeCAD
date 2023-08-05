@@ -235,7 +235,7 @@ void TaskBooleanParameters::onTypeChanged(int index)
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 }
 
-const std::vector<std::string> TaskBooleanParameters::getBodies(void) const
+const std::vector<std::string> TaskBooleanParameters::getBodies() const
 {
     std::vector<std::string> result;
     for (int i = 0; i < ui->listWidgetBodies->count(); i++)
@@ -243,12 +243,12 @@ const std::vector<std::string> TaskBooleanParameters::getBodies(void) const
     return result;
 }
 
-int TaskBooleanParameters::getType(void) const
+int TaskBooleanParameters::getType() const
 {
     return ui->comboType->currentIndex();
 }
 
-void TaskBooleanParameters::onBodyDeleted(void)
+void TaskBooleanParameters::onBodyDeleted()
 {
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();

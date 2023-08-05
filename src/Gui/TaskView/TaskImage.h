@@ -50,9 +50,9 @@ class InteractiveScale : public QObject
 
 public:
     explicit InteractiveScale(View3DInventorViewer* view, ViewProvider* vp, Base::Placement plc);
-    ~InteractiveScale();
+    ~InteractiveScale() override;
 
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
     void activate();
     void deactivate();
     bool isActive() const {

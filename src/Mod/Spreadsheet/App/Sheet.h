@@ -58,10 +58,10 @@ class SpreadsheetExport PropertySpreadsheetQuantity : public App::PropertyQuanti
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    PropertySpreadsheetQuantity(void){}
+    PropertySpreadsheetQuantity(){}
     ~PropertySpreadsheetQuantity() override{}
 
-    Property *Copy(void) const override;
+    Property *Copy() const override;
     void Paste(const Property &from) override;
 };
 
@@ -76,7 +76,7 @@ public:
     ~Sheet() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "SpreadsheetGui::ViewProviderSheet";
     }
 
@@ -177,9 +177,9 @@ public:
 
     void getPropertyNamedList(std::vector<std::pair<const char*,App::Property*> > &List) const override;
 
-    short mustExecute(void) const override;
+    short mustExecute() const override;
 
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
 
     bool getCellAddress(const App::Property *prop, App::CellAddress &address);
 

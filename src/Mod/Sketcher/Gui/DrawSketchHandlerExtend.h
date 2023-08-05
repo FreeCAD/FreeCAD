@@ -44,7 +44,7 @@ public:
         , disabled(false)
     {}
 
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         if (pObj != this->object)
             return false;
@@ -86,7 +86,7 @@ public:
         , Increment(0)
     {}
 
-    virtual ~DrawSketchHandlerExtend()
+    ~DrawSketchHandlerExtend() override
     {
         Gui::Selection().rmvSelectionGate();
     }

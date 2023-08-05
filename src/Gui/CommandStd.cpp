@@ -134,7 +134,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
   :Command("Std_RecentFiles")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Recent files");
+    sMenuText     = QT_TR_NOOP("Open Recent");
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");

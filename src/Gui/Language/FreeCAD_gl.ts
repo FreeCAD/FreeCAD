@@ -47,24 +47,24 @@
       <translation>&lt;baleiro&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2272"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2538"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2276"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2542"/>
       <source>Axis</source>
       <translation>Eixo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2547"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2786"/>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
     </message>
@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformar</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="252"/>
+      <location filename="../Application.h" line="254"/>
       <source>Default</source>
       <translation>Por defecto</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="253"/>
+      <location filename="../Application.h" line="255"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="257"/>
+      <location filename="../Application.h" line="259"/>
       <source>Transform</source>
       <translation>Transformar</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="258"/>
+      <location filename="../Application.h" line="260"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="262"/>
+      <location filename="../Application.h" line="264"/>
       <source>Cutting</source>
       <translation>Tallado</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="263"/>
+      <location filename="../Application.h" line="265"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="267"/>
+      <location filename="../Application.h" line="269"/>
       <source>Color</source>
       <translation>Cor</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="268"/>
+      <location filename="../Application.h" line="270"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
     </message>
@@ -2337,7 +2337,7 @@ display the splash screen</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>Macros</translation>
     </message>
@@ -2358,8 +2358,8 @@ display the splash screen</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>Ficheiro existente</translation>
     </message>
@@ -2437,53 +2437,53 @@ Note: your changes will be applied when you next switch workbenches
       <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>Renomear Arquivo Macro</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>Inserir novo nome:</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1'
  xa existe.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>Fallou o renomeado</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Fallo ao renomear o '%1'.
 Pode ser un erro do permiso do ficheiro?</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>Duplicar Macro</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>Duplicado Errado</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Erro ao duplicar a '%1'.
@@ -2865,42 +2865,42 @@ Por favor, especifique outro directorio.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>Limpar axustes de usuario</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Quere desbotar tódolos axustes de usuario?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Se acepta desbotaranse tódolos axustes feitos.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>Parámetro incorrecto</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation type="unfinished">Restart required</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="499"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
+      <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
@@ -4086,32 +4086,32 @@ get date suffix according to the specified format</source>
 get date suffix according to the specified format</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../DlgSettingsDocument.ui" line="518"/>
       <source>Use date and FCBak extension</source>
       <translation type="unfinished">Use date and FCBak extension</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../DlgSettingsDocument.ui" line="531"/>
       <source>Date format</source>
       <translation>Formato de data</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../DlgSettingsDocument.ui" line="556"/>
       <source>Document objects</source>
       <translation>Obxectos de documento</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
       <translation type="unfinished">Allow objects to have same label</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../DlgSettingsDocument.ui" line="565"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Permitir etiquetas de obxectos duplicadas nun documento</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../DlgSettingsDocument.ui" line="578"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4124,22 +4124,22 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
       <translation type="unfinished">Disable partial loading of external linked objects</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../DlgSettingsDocument.ui" line="601"/>
       <source>Authoring and License</source>
       <translation>Autoría e licenza</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../DlgSettingsDocument.ui" line="607"/>
       <source>Author name</source>
       <translation>Nome do autor</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../DlgSettingsDocument.ui" line="614"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4148,32 +4148,32 @@ Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../DlgSettingsDocument.ui" line="629"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation type="unfinished">The field 'Last modified by' will be set to specified author when saving the file</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../DlgSettingsDocument.ui" line="632"/>
       <source>Set on save</source>
       <translation>Establecer o gardar</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../DlgSettingsDocument.ui" line="645"/>
       <source>Company</source>
       <translation>Empresa</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../DlgSettingsDocument.ui" line="652"/>
       <source>Default company name to use for new files</source>
       <translation>Nome da empresa a se usar para novos documentos</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
       <translation>Licenza por defecto</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../DlgSettingsDocument.ui" line="675"/>
       <source>Default license for new documents</source>
       <translation>A licenza por defecto para os novos documentos</translation>
     </message>
@@ -4243,12 +4243,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Outros</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
       <translation>URL da licenza</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgSettingsDocument.ui" line="698"/>
       <source>URL describing more about the license</source>
       <translation>URL que describe máis sobre a licenza</translation>
     </message>
@@ -6824,7 +6824,7 @@ Quere gardar os cambios?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2061"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Acoutamento</translation>
     </message>
@@ -6854,32 +6854,32 @@ Quere gardar os cambios?</translation>
       <translation>Pechar todo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Amosa/agocha esta barra de ferramentas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Alterna esta xanela acoplable</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1852"/>
-      <location filename="../MainWindow.cpp" line="1944"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Documento non gardado</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
@@ -7119,17 +7119,17 @@ No lado dereito escolléronse %2.</translation>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>Faltan: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>A abortar</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Quere de verdade abortar a operación?</translation>
     </message>
@@ -7142,12 +7142,12 @@ No lado dereito escolléronse %2.</translation>
       <translation>Faltan: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>A abortar</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Quere de verdade abortar a operación?</translation>
     </message>
@@ -7155,7 +7155,7 @@ No lado dereito escolléronse %2.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4312"/>
       <source>Change the linked object</source>
       <translation>Trocar obxecto ligado</translation>
     </message>
@@ -7163,12 +7163,12 @@ No lado dereito escolléronse %2.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Object not found</source>
       <translation>Obxecto non atopado</translation>
     </message>
@@ -8571,8 +8571,8 @@ Quere especificar outro directorio?</translation>
       <translation>Exportando en PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Documento non gardado</translation>
     </message>
@@ -9210,12 +9210,12 @@ Por favor, abra un buscador e escriba: http://localhost:%1.</translation>
       <translation>A %1 non está baleira, eliminar o seu contido, así a todo?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="298"/>
       <source>Translation:</source>
       <translation>Tradución:</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="587"/>
       <source>Rotation:</source>
       <translation>Rotación:</translation>
     </message>
@@ -10362,8 +10362,8 @@ the current copy will be lost.
       <translation>Abrir un documento novo baleiro</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Sen nome</translation>
     </message>

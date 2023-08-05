@@ -23,6 +23,8 @@
 #ifndef APP_STRING_ID_H
 #define APP_STRING_ID_H
 
+#include <FCConfig.h>
+
 #include <bitset>
 #include <memory>
 
@@ -173,7 +175,7 @@ public:
     }
 
     /// Returns the data (prefix)
-    QByteArray data() const
+    const QByteArray& data() const
     {
         return _data;
     }
@@ -556,6 +558,7 @@ public:
 
     void toBytes(QByteArray& bytes) const
     {
+        // TODO: return the QByteArray instead of passing in by reference
         if (_sid) {
             bytes = _sid->dataToBytes(_index);
         }

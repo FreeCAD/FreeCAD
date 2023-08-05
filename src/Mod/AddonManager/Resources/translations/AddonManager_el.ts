@@ -1270,18 +1270,18 @@ installed addons will be checked for available updates
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Συντηρητής</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
       <translation>Συγγραφέας</translation>
     </message>
@@ -1497,8 +1497,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1630,9 +1630,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>

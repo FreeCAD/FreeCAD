@@ -192,6 +192,8 @@ public:
 
     /// true when the application shutting down
     bool isClosing();
+
+    void checkForDeprecatedSettings();
     void checkForPreviousCrashes();
 
     /** @name workbench handling */

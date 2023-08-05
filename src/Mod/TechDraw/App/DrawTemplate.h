@@ -63,7 +63,7 @@ public:
     }
 
     // from base class
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject(void) override;
 
 private:
     static const char* OrientationEnums[];

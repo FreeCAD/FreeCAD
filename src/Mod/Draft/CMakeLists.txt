@@ -53,6 +53,7 @@ SET(Draft_tests
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
     drafttests/test_pivy.py
+    drafttests/test_array.py
     drafttests/test_creation.py
     drafttests/test_modification.py
     drafttests/test_svg.py

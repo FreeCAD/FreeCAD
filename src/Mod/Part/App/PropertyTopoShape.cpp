@@ -75,7 +75,7 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh)
     hasSetValue();
 }
 
-const TopoDS_Shape& PropertyPartShape::getValue(void)const
+const TopoDS_Shape& PropertyPartShape::getValue() const
 {
     return _Shape.getShape();
 }
@@ -133,7 +133,7 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
     hasSetValue();
 }
 
-PyObject *PropertyPartShape::getPyObject(void)
+PyObject *PropertyPartShape::getPyObject()
 {
     Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
     if (prop)
@@ -154,7 +154,7 @@ void PropertyPartShape::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPartShape::Copy(void) const
+App::Property *PropertyPartShape::Copy() const
 {
     PropertyPartShape *prop = new PropertyPartShape();
     prop->_Shape = this->_Shape;
@@ -173,7 +173,7 @@ void PropertyPartShape::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPartShape::getMemSize (void) const
+unsigned int PropertyPartShape::getMemSize () const
 {
     return _Shape.getMemSize();
 }
@@ -435,7 +435,7 @@ void PropertyShapeHistory::setValues(const std::vector<ShapeHistory>& values)
     hasSetValue();
 }
 
-PyObject *PropertyShapeHistory::getPyObject(void)
+PyObject *PropertyShapeHistory::getPyObject()
 {
     return Py::new_reference_to(Py::None());
 }
@@ -460,7 +460,7 @@ void PropertyShapeHistory::RestoreDocFile(Base::Reader &)
 {
 }
 
-App::Property *PropertyShapeHistory::Copy(void) const
+App::Property *PropertyShapeHistory::Copy() const
 {
     PropertyShapeHistory *p= new PropertyShapeHistory();
     p->_lValueList = _lValueList;
@@ -503,7 +503,7 @@ void PropertyFilletEdges::setValues(const std::vector<FilletElement>& values)
     hasSetValue();
 }
 
-PyObject *PropertyFilletEdges::getPyObject(void)
+PyObject *PropertyFilletEdges::getPyObject()
 {
     Py::List list(getSize());
     std::vector<FilletElement>::const_iterator it;
@@ -576,7 +576,7 @@ void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyFilletEdges::Copy(void) const
+App::Property *PropertyFilletEdges::Copy() const
 {
     PropertyFilletEdges *p= new PropertyFilletEdges();
     p->_lValueList = _lValueList;

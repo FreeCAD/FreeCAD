@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="312"/>
       <location filename="../../Command.cpp" line="314"/>
       <source>Merge several point clouds into one</source>
-      <translation>Mehrere Punktwolken zu einer zusammenführen</translation>
+      <translation>Führt mehrere Punktwolken zu einer zusammen</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@
       <location filename="../../Command.cpp" line="373"/>
       <location filename="../../Command.cpp" line="375"/>
       <source>Convert points to structured point cloud</source>
-      <translation>Punkte in eine strukturierte Punktwolke umwandeln</translation>
+      <translation>Wandelt Punkte in eine strukturierte Punktwolke um</translation>
     </message>
   </context>
   <context>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
-      <translation>&amp;Punkte</translation>
+      <translation>&amp;Points</translation>
     </message>
   </context>
 </TS>

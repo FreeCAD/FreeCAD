@@ -16,7 +16,7 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramo</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>Extensões FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -144,7 +144,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Ramo primário</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
@@ -199,7 +199,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>LEIA-ME URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -1269,18 +1269,18 @@ installed addons will be checked for available updates
       <translation>Execução de macro falhou. Veja o console para detalhes de falha.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Mantenedor</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../addonmanager_devmode.py" line="117"/>
       <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1496,8 +1496,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1629,9 +1629,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -2112,7 +2112,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="193"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramo</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="179"/>

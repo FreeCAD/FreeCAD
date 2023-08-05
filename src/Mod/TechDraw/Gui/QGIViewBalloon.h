@@ -62,7 +62,7 @@ class QGIBalloonLabel: public QGraphicsObject
 
 public:
     QGIBalloonLabel();
-    ~QGIBalloonLabel() = default;
+    ~QGIBalloonLabel() override = default;
 
     enum
     {
@@ -174,7 +174,7 @@ public:
     };
 
     explicit QGIViewBalloon();
-    ~QGIViewBalloon() = default;
+    ~QGIViewBalloon() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat);
     int type() const override

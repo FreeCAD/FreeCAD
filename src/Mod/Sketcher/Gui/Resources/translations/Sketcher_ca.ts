@@ -71,7 +71,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Crea un calc</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1659"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="742"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Crea una cònica</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
@@ -707,7 +707,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Crea un arc d'el·lipse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
@@ -720,7 +720,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="681"/>
       <source>Create arc of hyperbola</source>
-      <translation type="unfinished">Create arc of hyperbola</translation>
+      <translation>Crea un arc d'hipèrbole</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
@@ -733,7 +733,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="709"/>
       <source>Create arc of parabola</source>
-      <translation type="unfinished">Create arc of parabola</translation>
+      <translation>Crea un arc de paràbola</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
@@ -751,7 +751,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="916"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by control points in the sketch.</translation>
+      <translation>Crear un B-spline mitjançant punts de control del croquis.</translation>
     </message>
   </context>
   <context>
@@ -894,7 +894,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="949"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by control points in the sketch.</translation>
+      <translation>Crea una B-spline periòdica mitjançant punts de control del croquis.</translation>
     </message>
   </context>
   <context>
@@ -1097,7 +1097,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation type="unfinished">Create external geometry</translation>
+      <translation>Crea una geometria externa</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -2166,59 +2166,59 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <translation>Error d'autorestricció: croquis irresoluble si s'apliquen restriccions d'igualtat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No es pot esbrinar la intersecció de corbes. Proveu d'afegir una restricció de coincidència entre els vèrtexs de les corbes que intenteu arrodonir.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>l'index de geometria BSpline (GeoID) esta fora de les restriccions.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Se us ha demanat que no canvieu la multiplicitat del nus.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L'índex de geometria (GeoId) proporcionada no és una corba de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L'índex del nus és fora dels límits. Tingueu en compte que d'acord amb la notació d'OCC, el primer nus té l'índex 1 i no zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicitat no pot augmentar més enllà del grau de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicitat no es pot reduir més enllà de zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC no pot reduir la multiplicitat dins de la tolerància màxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El node no pot tenir multiplicitat zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicitat de nodes no pot ser superior al grau de la BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>El node no es pot inserir fora de l'interval de paràmetres BSpline.</translation>
     </message>
@@ -2284,8 +2284,20 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <translation>No adjuntar</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2411,15 +2423,6 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2435,9 +2438,6 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -2618,9 +2618,9 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <translation type="unfinished">Number of selected objects is not 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -3025,9 +3025,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Definiu el grau B-Spline, entre 1 i %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>Error del nucli del CAD</translation>
     </message>
@@ -3705,7 +3705,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="672"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Capa</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="682"/>
@@ -5555,7 +5555,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="725"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation>No es pot mapar un croquis al suport:
+      <translation>No es pot mapar un croquis al suport: 
 %1</translation>
     </message>
   </context>
@@ -5592,7 +5592,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="431"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>El croquis amb una cara de suport no es pot reorientar.
+      <translation>El croquis amb una cara de suport no es pot reorientar. 
 Voleu separar-lo del suport?</translation>
     </message>
   </context>
@@ -5922,7 +5922,7 @@ L'algoritme Eigen Sparse QR està optimitzat per a matrius escasses; generalment
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation type="unfinished">Sketcher edit mode</translation>
+      <translation>Mode d'edició del croquis</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5952,7 +5952,7 @@ L'algoritme Eigen Sparse QR està optimitzat per a matrius escasses; generalment
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher edit tools</source>
-      <translation type="unfinished">Sketcher edit tools</translation>
+      <translation>Eines d'edició del croquis</translation>
     </message>
   </context>
   <context>
@@ -6089,7 +6089,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>Autoespaiat de la quadrícula</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6104,62 +6104,62 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>Distància entre dues línies de graella consecutives.</translation>
     </message>
   </context>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation type="unfinished">The Sketch has malformed constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -6179,6 +6179,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">The constraint has invalid index information and is malformed.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6186,9 +6189,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6232,8 +6232,8 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">Error creating B-spline pole</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <source>Error creating B-spline</source>
       <translation type="unfinished">Error creating B-spline</translation>
     </message>
@@ -6330,9 +6330,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">Failed to trim edge</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation type="unfinished">Value Error</translation>
     </message>
@@ -6397,7 +6397,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1373"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Salt angular per eines que usen 'Ajusta a l'angle' (p. ex. línia). Prem CTRL per activar 'Ajusta a l'angle'. L'angle comença des de l'eix X positiu del croquis.</translation>
     </message>
   </context>
   <context>
@@ -6447,7 +6447,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation type="unfinished">Toggle the grid in the sketch. In the menu you can change grid settings.</translation>
+      <translation>Commuta la graella del croquis. Pots canviar la configuració de la graella des del menú.</translation>
     </message>
   </context>
   <context>
@@ -6460,7 +6460,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>Commuta totes les funcions d'ajust. En el menú pots commutar individualment 'Ajusta a la graella' i 'Ajusta a objectes', i canviar altres configuracions d'ajust.</translation>
     </message>
   </context>
   <context>
@@ -6468,12 +6468,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>Crea una B-spline per nusos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="980"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Crea una B-spline per nusos, p. ex. per interpolació, en el croquis.</translation>
     </message>
   </context>
   <context>
@@ -6481,12 +6481,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1011"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Crea una B-spline periòdica per nusos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1013"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Crea una B-spline periòdica per nusos, p. ex. per interpolació, en el croquis.</translation>
     </message>
   </context>
 </TS>

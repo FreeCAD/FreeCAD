@@ -24,7 +24,6 @@
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QGenericReturnArgument>
 # include <QMessageBox>
 # include <QMetaObject>
 #endif
@@ -591,7 +590,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
-        QGenericReturnArgument(), Q_ARG(int,pipe->Mode.getValue()));
+        Q_ARG(int,pipe->Mode.getValue()));
     this->blockSelection(false);
 }
 
@@ -846,7 +845,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
-        QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
+        Q_ARG(int,pipe->Transformation.getValue()));
     this->blockSelection(false);
 }
 

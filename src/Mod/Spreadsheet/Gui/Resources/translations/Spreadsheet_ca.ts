@@ -391,32 +391,32 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Enllaça cel·les del full de càlcul</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Fins les cel·les:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Full:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Primera cel·la del rang</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Última cel·la del rang</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Enllaça cel·les:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>A quin full de càlcul s'ha de vincular</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -467,7 +467,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Desvincula</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -485,12 +485,12 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Configura la Taula de Configuració</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Rang de cel·les:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -537,7 +537,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Propietat:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -549,12 +549,12 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Grup:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Camp opcional pel nom del Grup de Propietats.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -885,7 +885,7 @@ Spreadsheet.my_alias_name enlloc de Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Vincula cel·les</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="198"/>
@@ -898,7 +898,7 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Enllaça cel·les del full de càlcul</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -910,7 +910,7 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Desvincula cel·les</translation>
     </message>
   </context>
   <context>
@@ -923,7 +923,7 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Mostra la configuració</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -951,7 +951,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>Configuració d'Importació/Exportació</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
@@ -994,7 +994,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Configura la taula de configuració</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
@@ -1007,65 +1007,65 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insereix %n fila/es a sobre</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insereix %n files a sobre</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insereix %n fila/es a sota</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insereix %n files a sota</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>Insereix %n fila no contingua</numerusform>
         <numerusform>Insereix %n files no contingues</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Remove row(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Elimina fila/es</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Elimina files</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insereix %n columna/es a l'esquerra</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insereix %n columnes a l'esquerra</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insereix %n columna/es a la dreta</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insereix %n columnes a la dreta</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insereix %n columnes no contingues</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insereix %n columnes no contingues</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Elimina columna/es</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Elimina les columnes</numerusform>
       </translation>
     </message>
     <message>
@@ -1078,19 +1078,19 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="181"/>
       <location filename="../../SheetTableView.cpp" line="614"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Recalcula</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
       <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Vincula...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Taula de configuració...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
@@ -1102,7 +1102,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Separa cel·les</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
@@ -1152,7 +1152,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1162,7 +1162,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Estils</translation>
     </message>
   </context>
   <context>

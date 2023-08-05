@@ -38,7 +38,7 @@ using namespace Spreadsheet;
 using namespace App;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SheetPy::representation(void) const
+std::string SheetPy::representation() const
 {
     return std::string("<Sheet object>");
 }

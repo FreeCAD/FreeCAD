@@ -11,16 +11,6 @@ body:
       options:
       - label: I have searched the existing issues
         required: true
-  - type: dropdown
-    id: version
-    attributes:
-      label: Version
-      description: What version of FreeCAD are you running?
-      options:
-        - 0.20 (Release)
-        - 0.21 (Development)
-    validations:
-      required: true
   - type: textarea
     id: full_version
     attributes:

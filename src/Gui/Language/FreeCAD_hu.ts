@@ -47,24 +47,24 @@
       <translation>&lt;üres&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2272"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2538"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2276"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2542"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2547"/>
       <source>Position</source>
       <translation>Pozíció</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2786"/>
       <source>Enum</source>
       <translation>Felsorolás</translation>
     </message>
@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="252"/>
+      <location filename="../Application.h" line="254"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="253"/>
+      <location filename="../Application.h" line="255"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>A tárgy szerkesztése a belsőleg meghatározott, az tárgy típusnak legmegfelelőbb módban történik</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="257"/>
+      <location filename="../Application.h" line="259"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="258"/>
+      <location filename="../Application.h" line="260"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>A tárgy elhelyezése az Std TransformManip paranccsal lesz szerkeszthető</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="262"/>
+      <location filename="../Application.h" line="264"/>
       <source>Cutting</source>
       <translation>Vágás</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="263"/>
+      <location filename="../Application.h" line="265"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Ez a szerkesztési mód elérhető, de jelenleg úgy tűnik, hogy egyetlen tárgy sem használja</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="267"/>
+      <location filename="../Application.h" line="269"/>
       <source>Color</source>
       <translation>Szín</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="268"/>
+      <location filename="../Application.h" line="270"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>A tárgy egyes felületeinek színe a alkatrész FaceColors paranccsal lesz szerkeszthető</translation>
     </message>
@@ -2334,7 +2334,7 @@ megjeleníti a kezdő képet</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>Makrók</translation>
     </message>
@@ -2355,8 +2355,8 @@ megjeleníti a kezdő képet</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>Létező fájl</translation>
     </message>
@@ -2434,51 +2434,51 @@ Megjegyzés: a módosítások csak a következő munkaasztal váltásakor érvé
       <translation>Útmutató utasítások: Kattintson a jobbra nyílra (-&gt;), majd a majd a Bezárás gombra.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Útmutató utasítások: Kattintson az Új, majd a jobbra nyíl (-&gt;) gombra, majd a Bezárás gombra.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>Makró fájl átnevezése</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>Adja meg az új nevet:</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1' már létezik.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>Átnevezés sikertelen</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Sikertelen átnevezés: '%1'. Talán fájl jogosultság hiba?</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>Makró másolat</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>Másolás meghiúsult</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>'%1' másolása meghiúsult.
@@ -2860,42 +2860,42 @@ Kérem válasszon másik könyvtárat.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>Törölje a felhasználói beállítások</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Szeretné törölni az összes felhasználói beállításait?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Ha elfogadja az összes beállítása törlődni fog.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>Hibás paraméter</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation>Újraindítás szükséges</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>A módosítások érvénybe léptetéséhez újra kell indítania a FreeCAD-et.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="499"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
       <translation>Újraindítás most</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
+      <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
       <translation>Újraindítás később</translation>
     </message>
@@ -4080,32 +4080,32 @@ get date suffix according to the specified format</source>
 dátumutótagot a megadott formátumnak megfelelően</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../DlgSettingsDocument.ui" line="518"/>
       <source>Use date and FCBak extension</source>
       <translation>Dátum és FCBak kiterjesztés használata</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../DlgSettingsDocument.ui" line="531"/>
       <source>Date format</source>
       <translation>Dátum formátum</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../DlgSettingsDocument.ui" line="556"/>
       <source>Document objects</source>
       <translation>Dokumentum objektumok</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
       <translation>Objektumok azonos címkéjének engedélyezése</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../DlgSettingsDocument.ui" line="565"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Engedélyezi, hogy egy dokumentumban duplikált objektumazonosítók legyenek </translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../DlgSettingsDocument.ui" line="578"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4118,22 +4118,22 @@ Egy részlegesen betöltött dokumentum nem szerkeszthető. Teljes betöltéséh
 kattintson a fa nézetben a dokumentum ikonra.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Külső csatolt objektumok részleges betöltésének letiltása</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../DlgSettingsDocument.ui" line="601"/>
       <source>Authoring and License</source>
       <translation>Szerző és a licenc</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../DlgSettingsDocument.ui" line="607"/>
       <source>Author name</source>
       <translation>Szerző neve</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../DlgSettingsDocument.ui" line="614"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4142,32 +4142,32 @@ Maradjon üresen, ha névtelen.
 Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../DlgSettingsDocument.ui" line="629"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>A 'Utoljára módosította' mező a fájl mentésekor megadott szerzőre lesz állítva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../DlgSettingsDocument.ui" line="632"/>
       <source>Set on save</source>
       <translation>Mentéskor beállítva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../DlgSettingsDocument.ui" line="645"/>
       <source>Company</source>
       <translation>Vállalat</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../DlgSettingsDocument.ui" line="652"/>
       <source>Default company name to use for new files</source>
       <translation>Az új fájlokhoz használandó alapértelmezett vállalatnév</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
       <translation>Alapértelmezett licenc</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../DlgSettingsDocument.ui" line="675"/>
       <source>Default license for new documents</source>
       <translation>Az új dokumentumok alapértelmezett licence</translation>
     </message>
@@ -4237,12 +4237,12 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
       <translation>Egyéb</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
       <translation>Licenc URL-címe</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgSettingsDocument.ui" line="698"/>
       <source>URL describing more about the license</source>
       <translation>A licenc részleteinek URL-je</translation>
     </message>
@@ -6816,7 +6816,7 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2061"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
@@ -6846,32 +6846,32 @@ El akarja menteni a változásokat?</translation>
       <translation>Minden bezárása</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Eszköztár megjelenítése</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Dokkolható ablak megjelenítése</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1852"/>
-      <location filename="../MainWindow.cpp" line="1944"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
@@ -7111,17 +7111,17 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>Maradt: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>Megszakítása</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Biztosan megszakítja a műveletet?</translation>
     </message>
@@ -7134,12 +7134,12 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
       <translation>Maradt: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>Megszakítása</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Biztosan megszakítja a műveletet?</translation>
     </message>
@@ -7147,7 +7147,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4312"/>
       <source>Change the linked object</source>
       <translation>Hivatkozott objektum megváltoztatása</translation>
     </message>
@@ -7155,12 +7155,12 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Object not found</source>
       <translation>Az objektum nem található</translation>
     </message>
@@ -8561,8 +8561,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>PDF exportálása...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
@@ -9202,12 +9202,12 @@ Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
       <translation>A %1 nem üres, törölheti annak tartalmát is?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="298"/>
       <source>Translation:</source>
       <translation>Fordítás:</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="587"/>
       <source>Rotation:</source>
       <translation>Elforgatás:</translation>
     </message>
@@ -10354,8 +10354,8 @@ az aktuális példány elveszik.
       <translation>Új üres munkalap létrehozása</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2049"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>

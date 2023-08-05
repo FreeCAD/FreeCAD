@@ -35,6 +35,7 @@ to execute the instructions stored in internal lists.
 # \brief Provides the ToDo static class to run commands with a time delay.
 
 import traceback
+import sys
 import PySide.QtCore as QtCore
 
 import FreeCAD as App

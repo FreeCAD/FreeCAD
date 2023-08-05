@@ -32,7 +32,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateReverseEngineeringCommands(void);
+void CreateReverseEngineeringCommands();
 
 void loadReverseEngineeringResource()
 {

@@ -362,7 +362,7 @@ void TaskDressUpParameters::showObject()
     }
 }
 
-Part::Feature* TaskDressUpParameters::getBase(void) const
+Part::Feature* TaskDressUpParameters::getBase() const
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     // Unlikely but this may throw an exception in case we are started to edit an object which base feature

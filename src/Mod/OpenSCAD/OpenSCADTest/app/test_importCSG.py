@@ -121,6 +121,10 @@ class TestImportCSG(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_text(self):
+        # This uses the DXF importer that may pop-up modal dialogs
+        # if not all 3rd party libraries are installed
+        if FreeCAD.GuiUp:
+            return
         try:
             doc = self.utility_create_scad("text(\"X\");","text") # Keep it short to keep the test fast-ish
             text = doc.getObject("text")

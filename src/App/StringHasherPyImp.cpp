@@ -30,7 +30,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string StringHasherPy::representation(void) const
+std::string StringHasherPy::representation() const
 {
    std::ostringstream str;
    str << "<StringHasher at " << getStringHasherPtr() << ">";
@@ -63,12 +63,12 @@ PyObject* StringHasherPy::getID(PyObject *args)
 {
    long id = -1;
    int index = 0;
-   PyObject *value = 0;
+   PyObject *value = nullptr;
    PyObject *base64 = Py_False;
    if (!PyArg_ParseTuple(args, "l|i",&id,&index)) {
        PyErr_Clear();
        if (!PyArg_ParseTuple(args, "O|O",&value,&base64))
-           return NULL;    // NULL triggers exception
+           return nullptr;
    }
    if(id>0) {
        PY_TRY {
@@ -106,15 +106,15 @@ PyObject* StringHasherPy::getID(PyObject *args)
    }PY_CATCH;
 }
 
-Py::Int StringHasherPy::getCount(void) const {
+Py::Int StringHasherPy::getCount() const {
    return Py::Int((long)getStringHasherPtr()->count());
 }
 
-Py::Int StringHasherPy::getSize(void) const {
+Py::Int StringHasherPy::getSize() const {
    return Py::Int((long)getStringHasherPtr()->size());
 }
 
-Py::Boolean StringHasherPy::getSaveAll(void) const {
+Py::Boolean StringHasherPy::getSaveAll() const {
    return Py::Boolean(getStringHasherPtr()->getSaveAll());
 }
 
@@ -122,7 +122,7 @@ void StringHasherPy::setSaveAll(Py::Boolean value) {
    getStringHasherPtr()->setSaveAll(value);
 }
 
-Py::Int StringHasherPy::getThreshold(void) const {
+Py::Int StringHasherPy::getThreshold() const {
    return Py::Int((long)getStringHasherPtr()->getThreshold());
 }
 
@@ -139,7 +139,7 @@ Py::Dict StringHasherPy::getTable() const {
 
 PyObject *StringHasherPy::getCustomAttributes(const char* /*attr*/) const
 {
-   return 0;
+   return nullptr;
 }
 
 int StringHasherPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
