@@ -86,7 +86,7 @@ void CmdPartCylinder::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartCylinder::isActive(void)
+bool CmdPartCylinder::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -128,7 +128,7 @@ void CmdPartBox::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartBox::isActive(void)
+bool CmdPartBox::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -170,7 +170,7 @@ void CmdPartSphere::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartSphere::isActive(void)
+bool CmdPartSphere::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -212,7 +212,7 @@ void CmdPartCone::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartCone::isActive(void)
+bool CmdPartCone::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -254,7 +254,7 @@ void CmdPartTorus::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartTorus::isActive(void)
+bool CmdPartTorus::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -265,7 +265,7 @@ bool CmdPartTorus::isActive(void)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateParamPartCommands(void)
+void CreateParamPartCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartCylinder());

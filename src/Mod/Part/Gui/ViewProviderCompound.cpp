@@ -46,7 +46,7 @@ ViewProviderCompound::~ViewProviderCompound()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {
     return static_cast<Part::Compound*>(getObject())->Links.getValues();
 }

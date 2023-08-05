@@ -42,7 +42,7 @@ public:
     void updateData(const App::Property*) override;
 
 protected:
-    QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool  setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;

@@ -402,7 +402,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     App::GetApplication().closeActiveTransaction(true);
 }
 
-std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
     std::vector<App::DocumentObject*> ret;
     auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
     if (self && self->ClaimChildren.getValue() && self->Support.getValue()) {

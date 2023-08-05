@@ -41,7 +41,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string LineSegmentPy::representation(void) const
+std::string LineSegmentPy::representation() const
 {
     std::stringstream str;
     Base::Vector3d start = getGeomLineSegmentPtr()->getStartPoint();
@@ -198,7 +198,7 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
     Py_Return;
 }
 
-Py::Object LineSegmentPy::getStartPoint(void) const
+Py::Object LineSegmentPy::getStartPoint() const
 {
     Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
         (this->getGeomLineSegmentPtr()->handle());
@@ -254,7 +254,7 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
     }
 }
 
-Py::Object LineSegmentPy::getEndPoint(void) const
+Py::Object LineSegmentPy::getEndPoint() const
 {
     Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
         (this->getGeomLineSegmentPtr()->handle());
