@@ -130,7 +130,6 @@ QWidget {
 }
 
 QWidget:disabled {
-  background-color: transparent;
   color: #c2c7cb;
   selection-background-color: #4882ff;
   selection-color: #c2c7cb;
@@ -248,7 +247,6 @@ QCheckBox:focus {
 }
 
 QCheckBox QWidget:disabled {
-  background-color: transparent;
   color: #c2c7cb;
 }
 

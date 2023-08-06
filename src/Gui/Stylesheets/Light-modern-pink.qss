@@ -130,7 +130,6 @@ QWidget {
 }
 
 QWidget:disabled {
-  background-color: transparent;
   color: #515151;
   selection-background-color: #e98ad8;
   selection-color: #515151;
