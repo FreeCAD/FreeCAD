@@ -40,7 +40,7 @@ namespace Coin3D {
 namespace Quarter {
 
 class SoQTQuarterAdaptor;
-typedef void SoQTQuarterAdaptorCB(void* data, SoQTQuarterAdaptor* viewer);
+using SoQTQuarterAdaptorCB = void (void* data, SoQTQuarterAdaptor* viewer);
 
 class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
 

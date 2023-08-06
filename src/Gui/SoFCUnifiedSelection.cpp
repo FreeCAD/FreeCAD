@@ -1030,11 +1030,11 @@ void SoFCSeparator::finish()
 // Thread local data for bounding box rendering
 //
 // The code is inspred by Coin SoLevelOfDetails.cpp.
-typedef struct {
+using SoFCBBoxRenderInfo = struct {
     SoGetBoundingBoxAction * bboxaction;
     SoCube *cube;
     SoColorPacker *packer;
-} SoFCBBoxRenderInfo;
+};
 
 static void so_bbox_construct_data(void * closure)
 {
