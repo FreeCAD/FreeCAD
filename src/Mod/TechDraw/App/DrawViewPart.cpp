@@ -1216,12 +1216,12 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
 
 bool DrawViewPart::handleFaces()
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", 1l);
+    return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
 bool DrawViewPart::newFaceFinder(void)
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", 0l);
+    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
 }
 
 //! remove features that are useless without this DVP
@@ -1699,7 +1699,7 @@ bool DrawViewPart::prefIsoHid()
 
 int DrawViewPart::prefIsoCount()
 {
-    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoCount", 0);
+    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoCount", false);
 }
 
 // Python Drawing feature ---------------------------------------------------------

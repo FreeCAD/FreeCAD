@@ -609,7 +609,7 @@ public:
             return false;
         auto geoGroup = pcLinked->getObject();
         auto sobj = geoGroup;
-        while(1) {
+        while(true) {
             std::string objname = std::string(nextsub,dot-nextsub+1);
             if(!geoGroup->getSubObject(objname.c_str())) {
                 // this object is not found under the geo group, abort.
@@ -1454,7 +1454,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
         if (subname[0]>='0' && subname[0]<='9') {
             idx = App::LinkBaseExtension::getArrayIndex(subname,&subname);
         } else {
-            while(1) {
+            while(true) {
                 const char *dot = strchr(subname,'.');
                 if(!dot)
                     break;
@@ -3077,7 +3077,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         // In case of multi-level linking, we recursively call into each level,
         // and merge the colors
         auto vp = this;
-        while(1) {
+        while(true) {
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
                 color.a = ShapeMaterial.getValue().transparency;

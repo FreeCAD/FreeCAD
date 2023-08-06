@@ -1260,9 +1260,9 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(true);
             ThreadDepth.setReadOnly(true);
             ThreadDepthType.setReadOnly(true);
-            Threaded.setValue(0);
-            ModelThread.setValue(0);
-            UseCustomThreadClearance.setValue(0);
+            Threaded.setValue(false);
+            ModelThread.setValue(false);
+            UseCustomThreadClearance.setValue(false);
         }
         else if (type == "ISOMetricProfile") {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
