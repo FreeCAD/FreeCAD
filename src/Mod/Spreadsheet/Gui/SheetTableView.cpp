@@ -370,7 +370,7 @@ void SheetTableView::removeRows()
     /* Make sure rows are sorted in descending order */
     for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
         sortedRows.push_back(it->row());
-    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
+    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<>());
 
     /* Remove rows */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
@@ -443,7 +443,7 @@ void SheetTableView::removeColumns()
     /* Make sure rows are sorted in descending order */
     for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
         sortedColumns.push_back(it->column());
-    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
+    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<>());
 
     /* Remove columns */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
