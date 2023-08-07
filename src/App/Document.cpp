@@ -921,7 +921,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
@@ -1072,11 +1072,11 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
-                        << App::Application::Config()["BuildVersionMajor"] << "."
-                        << App::Application::Config()["BuildVersionMinor"] << "R"
-                        << App::Application::Config()["BuildRevision"]
-                        << "\" FileVersion=\"1\">" << endl;
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
+                    << App::Application::Config()["BuildVersionMajor"] << "."
+                    << App::Application::Config()["BuildVersionMinor"] << "R"
+                    << App::Application::Config()["BuildRevision"]
+                    << R"(" FileVersion="1">)" << endl;
     // Add this block to have the same layout as for normal documents
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
