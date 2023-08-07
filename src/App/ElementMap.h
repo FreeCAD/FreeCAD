@@ -267,7 +267,7 @@ private:
 
     std::map<const char*, IndexedElements, CStringComp> indexedNames;
 
-    std::map<MappedName, IndexedName, std::less<MappedName>> mappedNames;
+    std::map<MappedName, IndexedName, std::less<>> mappedNames;
 
     struct ChildMapInfo
     {

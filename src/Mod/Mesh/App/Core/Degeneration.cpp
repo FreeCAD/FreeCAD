@@ -517,7 +517,7 @@ bool MeshRemoveNeedles::Fixup()
 
     std::priority_queue<FaceEdgePriority,
                         std::vector<FaceEdgePriority>,
-                        std::greater<FaceEdgePriority> > todo;
+                        std::greater<> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
         const MeshFacet& facet = rclFAry[index];
         MeshGeomFacet tria(_rclMesh.GetFacet(facet));
@@ -615,7 +615,7 @@ bool MeshFixCaps::Fixup()
 
     std::priority_queue<FaceVertexPriority,
                         std::vector<FaceVertexPriority>,
-                        std::greater<FaceVertexPriority> > todo;
+                        std::greater<> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
         for (int i=0; i<3; i++) {
             const MeshFacet& facet = rclFAry[index];
