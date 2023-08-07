@@ -818,7 +818,7 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
   , visibleItems(4)
   , maximumItems(20)
 {
-    _pimpl.reset(new Private(this, "User parameter:BaseApp/Preferences/RecentFiles"));
+    _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
 }
 

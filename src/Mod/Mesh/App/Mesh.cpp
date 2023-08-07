@@ -119,7 +119,7 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
         MeshSegment* segm = new MeshSegment();
         segm->mesh = new MeshObject(*this);
         const Segment& faces = getSegment(n);
-        segm->segment.reset(new Segment(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false));
+        segm->segment = std::make_unique<Segment>(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false);
         return segm;
     }
 

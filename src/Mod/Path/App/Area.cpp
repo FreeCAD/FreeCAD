@@ -188,7 +188,7 @@ Area::Area(const Area& other, bool deep_copy)
     if (!deep_copy || !other.isBuilt())
         return;
     if (other.myArea)
-        myArea.reset(new CArea(*other.myArea));
+        myArea = std::make_unique<CArea>(*other.myArea);
     myShapePlane = other.myShapePlane;
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
@@ -1637,8 +1637,8 @@ void Area::build() {
     getPlane(&trsf);
 
     try {
-        myArea.reset(new CArea());
-        myAreaOpen.reset(new CArea());
+        myArea = std::make_unique<CArea>();
+        myAreaOpen = std::make_unique<CArea>();
 
         CAreaConfig conf(myParams);
         CArea areaClip;

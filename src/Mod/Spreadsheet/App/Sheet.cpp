@@ -675,7 +675,7 @@ void Sheet::updateProperty(CellAddress key)
             std::string s;
 
             if (cell->getStringContent(s) && !s.empty())
-                output.reset(new StringExpression(this, s));
+                output = std::make_unique<StringExpression>(this, s);
             else {
                 this->removeDynamicProperty(key.toString().c_str());
                 return;

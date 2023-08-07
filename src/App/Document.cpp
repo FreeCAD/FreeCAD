@@ -2757,8 +2757,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         // maximum two passes to allow some form of dependency inversion
         for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
             std::unique_ptr<Base::SequencerLauncher> seq;
-            if(canAbort)
-                seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
+            if(canAbort) {
+                seq = std::make_unique<Base::SequencerLauncher>("Recompute...", topoSortedObjects.size());
+            }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
