@@ -413,6 +413,8 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross();
 
+    void showRotationCenter(bool show);
+
     void setEnabledFPSCounter(bool b);
     void setEnabledNaviCube(bool b);
     bool isEnabledNaviCube() const;
@@ -508,6 +510,8 @@ private:
     // big one in the middle
     SoShapeScale* axisCross;
     SoGroup* axisGroup;
+
+    SoGroup* rotationCenterGroup;
 
     //stuff needed to draw the fps counter
     bool fpsEnabled;

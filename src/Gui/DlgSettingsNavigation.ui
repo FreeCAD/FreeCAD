@@ -615,6 +615,25 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
        </widget>
       </item>
+      <item row="9" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowRotationCenter">
+        <property name="toolTip">
+         <string>Show the rotation center when dragging.</string>
+        </property>
+        <property name="text">
+         <string>Enable rotation center indication</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowRotationCenter</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
