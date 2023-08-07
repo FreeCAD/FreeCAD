@@ -373,7 +373,7 @@ void PropertySheet::Save(Base::Writer &writer) const
     }
 
     writer.Stream() << writer.ind() << "<Cells Count=\"" << count
-        << "\" xlink=\"1\">" << std::endl;
+        << R"(" xlink="1">)" << std::endl;
 
     writer.incInd();
 

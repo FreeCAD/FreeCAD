@@ -265,7 +265,7 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         writer.Stream() << "\">" << std::endl;
         writer.incInd();
     } else {
-        writer.Stream() << "\" xlink=\"1\">" << std::endl;
+        writer.Stream() << R"(" xlink="1">)" << std::endl;
         writer.incInd();
         PropertyExpressionContainer::Save(writer);
     }

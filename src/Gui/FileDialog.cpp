@@ -86,7 +86,7 @@ FileDialog::~FileDialog()
 
 void FileDialog::onSelectedFilter(const QString& /*filter*/)
 {
-    QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
+    QRegularExpression rx(QLatin1String(R"(\(\*.(\w+))"));
     QString suf = selectedNameFilter();
     auto match = rx.match(suf);
     if (match.hasMatch()) {
@@ -186,7 +186,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         }
 
         QRegularExpression rx;
-        rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
+        rx.setPattern(QLatin1String(R"(\s(\(\*\.\w{1,})\W)"));
         auto match = rx.match(*filterToSearch);
         if (match.hasMatch()) {
             int index = match.capturedStart();
@@ -498,7 +498,7 @@ void FileOptionsDialog::accept()
     else if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         QString ext = fi.completeSuffix();
-        QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
+        QRegularExpression rx(QLatin1String(R"(\(\*.(\w+))"));
         QString suf = selectedNameFilter();
         auto match = rx.match(suf);
         if (match.hasMatch())
@@ -869,7 +869,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
         QString module = it.value();
 
         // ignore file types in (...)
-        rx.setPattern(QLatin1String("\\s+\\([\\w\\*\\s\\.]+\\)$"));
+        rx.setPattern(QLatin1String(R"(\s+\([\w\*\s\.]+\)$)"));
         auto match = rx.match(filter);
         if (match.hasMatch()) {
             filter = filter.left(match.capturedStart());

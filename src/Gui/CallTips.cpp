@@ -707,7 +707,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
       argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
       if (argumentMatcher.match( callTip.description ).hasMatch())
       {

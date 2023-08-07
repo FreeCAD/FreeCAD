@@ -592,7 +592,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
                 << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
-                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << R"(" description="camera" fieldOfView="0.9">)"
                 << "</Viewpoint>\n";
         };
 

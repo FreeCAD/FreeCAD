@@ -204,7 +204,7 @@ public:
         }
         else {
             // ignore activation of commands
-            rx.setPattern(QLatin1String("^\\s*(\\+App::|Create|CmdC:|CmdG:|Act:)\\s*"));
+            rx.setPattern(QLatin1String(R"(^\s*(\+App::|Create|CmdC:|CmdG:|Act:)\s*)"));
             match = rx.match(msg);
             if (match.hasMatch() && match.capturedStart() == 0)
                 return;
