@@ -107,7 +107,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
     }
 
     Base::FileInfo file(filename);
-    if (file.hasExtension("JPG") || file.hasExtension("JPEG")) {
+    if (file.hasExtension({"JPG", "JPEG"})) {
         // writing comment in case of jpeg (Qt ignores setText() in case of jpeg)
         std::string com;
         if (strcmp(comment,"")==0)
@@ -194,7 +194,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!writeToFile(filename, file.extension().c_str()))
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("EPS") || file.hasExtension("PS")) {
+        else if (file.hasExtension({"EPS", "PS"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
@@ -206,7 +206,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!ok)
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("RGB") || file.hasExtension("SGI")) {
+        else if (file.hasExtension({"RGB", "SGI"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
