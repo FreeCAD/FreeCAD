@@ -9,7 +9,7 @@ namespace MbD {
     {
         //axis riIeJeO 
     public:
-        AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

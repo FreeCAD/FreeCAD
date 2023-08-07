@@ -2,13 +2,10 @@
 
 #include<memory>
 
+#include "ExternalSystem.h"
 #include "System.h"
 
-//using namespace MbD;
-
-//namespace CAD {
 namespace MbD {
-	//class System;
 
 	class CADSystem
 	{

@@ -7,8 +7,11 @@ namespace MbD {
     {
         //
     public:
+        Abs() = default;
+        Abs(Symsptr arg);
         double getValue() override;
 
+        std::ostream& printOn(std::ostream& s) const override;
 
     };
 }

@@ -8,7 +8,7 @@ namespace MbD {
         //priIeJeIepXJ priIeJeIepEJ ppriIeJeIepEIpXJ ppriIeJeIepEIpEJ ppriIeJeIepEJpEJ 
     public:
         DispCompIeqcJeqcIe();
-        DispCompIeqcJeqcIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
+        DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis);
 
         void calc_ppvaluepEIpEJ() override;
         void calc_ppvaluepEIpXJ() override;

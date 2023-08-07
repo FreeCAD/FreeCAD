@@ -10,7 +10,6 @@ namespace MbD {
 		ZRotation();
 		ZRotation(const char* str);
 		void initializeGlobally() override;
-		void initMotions() override;
 	};
 }
 

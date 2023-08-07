@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
+MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
 {
 }
 

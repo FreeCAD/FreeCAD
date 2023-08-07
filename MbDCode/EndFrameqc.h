@@ -17,6 +17,7 @@ namespace MbD {
         void initialize() override;
         void initializeGlobally() override;
         void initEndFrameqct() override;
+        void initEndFrameqct2() override;
         FMatFColDsptr ppAjOepEpE(int j);
         void calcPostDynCorrectorIteration() override;
         FMatDsptr pAjOepET(int j);
@@ -33,8 +34,8 @@ namespace MbD {
         FMatDsptr aBOp() override;
 
         FMatDsptr prOeOpE;
-        std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOeOpEpE;
-        std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOepE;
+        FMatFColDsptr pprOeOpEpE;
+        FColFMatDsptr pAOepE;
         FMatFMatDsptr ppAOepEpE;
         std::shared_ptr<EndFrameqct> endFrameqct;
     };

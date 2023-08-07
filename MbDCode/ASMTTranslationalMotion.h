@@ -12,6 +12,8 @@ namespace MbD {
         void initMarkers() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         std::shared_ptr<Joint> mbdClassNew() override;
+        void readMotionJoint(std::vector<std::string>& lines);
+        void readTranslationZ(std::vector<std::string>& lines);
 
         std::string motionJoint, translationZ;
 

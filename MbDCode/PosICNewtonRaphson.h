@@ -5,7 +5,9 @@
 namespace MbD {
     class PosICNewtonRaphson : public AnyPosICNewtonRaphson
     {
-        //pivotRowLimits
+      //IC with over, fully or under constrained system
+      //Perform redundant constraint removal for over constrained system
+      //pivotRowLimits
     public:
         PosICNewtonRaphson(){}
 

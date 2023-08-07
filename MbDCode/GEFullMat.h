@@ -16,7 +16,7 @@ namespace MbD {
         void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         double getmatrixArowimaxMagnitude(int i) override;
 
-        std::shared_ptr<FullMatrix<double>> matrixA;
+        FMatDsptr matrixA;
     };
 }
 

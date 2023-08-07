@@ -7,7 +7,7 @@ namespace MbD {
 	{
 		//pGpXI pGpEI ppGpXIpXI ppGpXIpEI ppGpEIpEI iqXI iqEI 
 	public:
-		DistancexyConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj);
+		DistancexyConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;

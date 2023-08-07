@@ -10,7 +10,7 @@ namespace MbD {
         ConstantVelocityJoint();
         ConstantVelocityJoint(const char* str);
         void initializeGlobally() override;
-        void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
+        void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
 
 
     };

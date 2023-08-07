@@ -47,6 +47,11 @@ void EndFramec::initEndFrameqct()
 	assert(false);
 }
 
+void MbD::EndFramec::initEndFrameqct2()
+{
+	assert(false);
+}
+
 void EndFramec::calcPostDynCorrectorIteration()
 {
 	rOeO = markerFrame->rOmO;

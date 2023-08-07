@@ -1,6 +1,7 @@
 #include "ASMTConstraintSet.h"
 #include "ASMTAssembly.h"
 #include "ASMTMarker.h"
+#include "Joint.h"
 
 using namespace MbD;
 

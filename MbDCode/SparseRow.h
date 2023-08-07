@@ -8,6 +8,12 @@
 
 namespace MbD {
 	template<typename T>
+	class SparseRow;
+	template<typename T>
+	using SpRowsptr = std::shared_ptr<SparseRow<T>>;
+	using SpRowDsptr = std::shared_ptr<SparseRow<double>>;
+
+	template<typename T>
 	class SparseRow : public SparseVector<T>
 	{
 	public:
@@ -15,17 +21,16 @@ namespace MbD {
 		SparseRow(int n) : SparseVector<T>(n) {}
 		SparseRow(std::initializer_list<std::pair<const int, T>> list) : SparseVector<T>{ list } {}
 		SparseRow(std::initializer_list<std::initializer_list<T>> list) : SparseVector<T>{ list } {}
-		std::shared_ptr<SparseRow<double>> timesconditionedWithTol(double scaling, double tol);
-		std::shared_ptr<SparseRow<double>> conditionedWithTol(double tol);
-		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
-		void atiminusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
-		void atiplusFullRowtimes(int j, std::shared_ptr<FullRow<T>> fullRow, double factor);
-		T timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+		SpRowDsptr timesconditionedWithTol(double scaling, double tol);
+		SpRowDsptr conditionedWithTol(double tol);
+		void atiplusFullRow(int j, FRowsptr<T> fullRow);
+		void atiminusFullRow(int j, FRowsptr<T> fullRow);
+		void atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor);
+		T timesFullColumn(FColsptr<T> fullCol);
 
 	};
-	using SpRowDsptr = std::shared_ptr<SparseRow<double>>;
 	template<>
-	inline std::shared_ptr<SparseRow<double>> SparseRow<double>::timesconditionedWithTol(double scaling, double tol)
+	inline SpRowDsptr SparseRow<double>::timesconditionedWithTol(double scaling, double tol)
 	{
 		auto answer = std::make_shared<SparseRow<double>>(this->numberOfElements());
 		for (auto const& keyValue : *this)
@@ -36,7 +41,7 @@ namespace MbD {
 		return answer;
 	}
 	template<>
-	inline std::shared_ptr<SparseRow<double>> SparseRow<double>::conditionedWithTol(double tol)
+	inline SpRowDsptr SparseRow<double>::conditionedWithTol(double tol)
 	{
 		auto answer = std::make_shared<SparseRow<double>>(this->numberOfElements());
 		for (auto const& keyValue : *this)
@@ -47,7 +52,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow)
+	inline void SparseRow<T>::atiplusFullRow(int j, FRowsptr<T> fullRow)
 	{
 		for (int jj = 0; jj < fullRow->size(); jj++)
 		{
@@ -55,7 +60,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiminusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow)
+	inline void SparseRow<T>::atiminusFullRow(int j, FRowsptr<T> fullRow)
 	{
 		for (int jj = 0; jj < fullRow->size(); jj++)
 		{
@@ -63,7 +68,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiplusFullRowtimes(int j, std::shared_ptr<FullRow<T>> fullRow, double factor)
+	inline void SparseRow<T>::atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor)
 	{
 		for (int jj = 0; jj < fullRow->size(); jj++)
 		{
@@ -71,7 +76,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline T SparseRow<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	inline T SparseRow<T>::timesFullColumn(FColsptr<T> fullCol)
 	{
 		T sum = 0.0;
 		for (auto const& keyValue : *this) {

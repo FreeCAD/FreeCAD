@@ -8,7 +8,7 @@ MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc()
 {
 }
 
-MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : OrbitAngleZIeqcJec(frmi, frmj)
+MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : OrbitAngleZIeqcJec(frmi, frmj)
 {
 }
 

@@ -16,6 +16,7 @@ namespace MbD {
 		void initialize();
 		void parseUserFunction(Symsptr userFunc);
 		void parseString(std::string expr);
+		bool commaExpression();
 		bool plusTerm();
 		bool minusTerm();
 		bool plainTerm();
@@ -42,6 +43,7 @@ namespace MbD {
 		void notify(std::string msg);
 		void notifyat(std::string msg, int mrk);
 		void combineStackTo(int pos);
+		bool isNextLineTag(char c);
 
 		ASMTItem* owner = nullptr;
 		std::shared_ptr<std::map<std::string, Symsptr>> variables;

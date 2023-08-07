@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-		ScrewConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpEJ();
 		void calc_pGpXJ();

@@ -6,7 +6,7 @@ MbD::DistxyIecJec::DistxyIecJec()
 {
 }
 
-MbD::DistxyIecJec::DistxyIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::DistxyIecJec::DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
 }
 

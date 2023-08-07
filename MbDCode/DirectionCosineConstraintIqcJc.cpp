@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
 	DirectionCosineConstraintIJ(frmi, frmj, axisi, axisj)
 {
 }

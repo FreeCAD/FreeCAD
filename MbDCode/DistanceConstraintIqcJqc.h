@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpXIpXJ ppGpEIpXJ ppGpXJpXJ ppGpXIpEJ ppGpEIpEJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-        DistanceConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistanceConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

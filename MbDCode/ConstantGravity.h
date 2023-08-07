@@ -7,7 +7,7 @@ namespace MbD {
     {
         //
     public:
-        void submitToSystem(std::shared_ptr<Item> self) override;
+        void fillAccICIterError(FColDsptr col) override;
 
         FColDsptr gXYZ;
     };

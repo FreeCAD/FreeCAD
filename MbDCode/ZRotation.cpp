@@ -28,11 +28,3 @@ void ZRotation::initializeGlobally()
 		PrescribedMotion::initializeGlobally();
 	}
 }
-
-void ZRotation::initMotions()
-{
-	auto xyzBlkList = std::initializer_list<Symsptr>{ xBlk, yBlk, zBlk };
-	std::static_pointer_cast<EndFrameqct>(frmI)->rmemBlks = (std::make_shared<FullColumn<Symsptr>>(xyzBlkList));
-	auto xyzRotBlkList = std::initializer_list<Symsptr>{ phiBlk, theBlk, psiBlk };
-	std::static_pointer_cast<EndFrameqct>(frmI)->phiThePsiBlks = (std::make_shared<FullColumn<Symsptr>>(xyzRotBlkList));
-}

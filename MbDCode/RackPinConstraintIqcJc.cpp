@@ -6,7 +6,7 @@
 
 using namespace MbD;
 
-MbD::RackPinConstraintIqcJc::RackPinConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : RackPinConstraintIJ(frmi, frmj)
+MbD::RackPinConstraintIqcJc::RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIJ(frmi, frmj)
 {
 }
 

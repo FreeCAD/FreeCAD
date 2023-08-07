@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
     public:
-		ScrewConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj);
+		ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;

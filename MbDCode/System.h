@@ -13,10 +13,6 @@
 #include <functional>
 
 #include "Item.h"
-#include "PrescribedMotion.h"
-#include "ExternalSystem.h"
-
-//using namespace CAD;
 
 namespace MbD {
 	class Part;
@@ -24,8 +20,9 @@ namespace MbD {
 	class SystemSolver;
 	class Time;
 	class Constraint;
+	class PrescribedMotion;
 	class ForceTorqueItem;
-	//class CAD::CADSystem;
+	class ExternalSystem;
 
 	class System : public Item
 	{
@@ -46,7 +43,7 @@ namespace MbD {
 		void logString(std::string& str) override;
 		double mbdTimeValue();
 		void mbdTimeValue(double t);
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();

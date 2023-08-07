@@ -8,7 +8,7 @@ namespace MbD {
 		//pdistxypXJ pdistxypEJ ppdistxypXIpXJ ppdistxypXIpEJ ppdistxypEIpXJ ppdistxypEIpEJ ppdistxypXJpXJ ppdistxypXJpEJ ppdistxypEJpEJ
 	public:
 		DistxyIeqcJeqc();
-		DistxyIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		DistxyIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_ppdistxypEIpEJ();
 		void calc_ppdistxypEIpXJ();

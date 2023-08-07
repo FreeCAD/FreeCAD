@@ -9,7 +9,7 @@ MbD::AngleZIecJec::AngleZIecJec()
 {
 }
 
-MbD::AngleZIecJec::AngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::AngleZIecJec::AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
 }
 

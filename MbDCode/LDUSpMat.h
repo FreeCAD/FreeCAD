@@ -16,8 +16,8 @@ namespace MbD {
         void forwardSubstituteIntoL() override;
         void backSubstituteIntoDU() override;
 
-        std::shared_ptr<SparseMatrix<double>> matrixA, matrixL, matrixU;
-        std::shared_ptr<DiagonalMatrix<double>> matrixD;
+        SpMatDsptr matrixA, matrixL, matrixU;
+        DiagMatDsptr matrixD;
         int markowitzPivotRowCount, markowitzPivotColCount;
         std::shared_ptr<std::vector<int>> rowPositionsOfNonZerosInPivotColumn;
     };

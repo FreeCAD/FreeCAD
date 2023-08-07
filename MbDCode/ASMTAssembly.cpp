@@ -12,6 +12,13 @@
 #include "ASMTTranslationalMotion.h"
 #include "ASMTMarker.h"
 #include "Part.h"
+#include "ASMTTranslationalJoint.h"
+#include "ASMTSphericalJoint.h"
+#include "ASMTFixedJoint.h"
+#include "ASMTGeneralMotion.h"
+#include "ASMTUniversalJoint.h"
+#include "ExternalSystem.h"
+#include "ASMTPointInPlaneJoint.h"
 
 using namespace MbD;
 
@@ -141,6 +148,21 @@ void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
 		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
 			joint = CREATE<ASMTCylindricalJoint>::With();
 		}
+		else if (jointsLines[0] == "\t\t\tTranslationalJoint") {
+			joint = CREATE<ASMTTranslationalJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tSphericalJoint") {
+			joint = CREATE<ASMTSphericalJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tFixedJoint") {
+			joint = CREATE<ASMTFixedJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tUniversalJoint") {
+			joint = CREATE<ASMTUniversalJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tPointInPlaneJoint") {
+			joint = CREATE<ASMTPointInPlaneJoint>::With();
+		}
 		else {
 			assert(false);
 		}
@@ -167,6 +189,9 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 		}
 		else if (motionsLines[0] == "\t\t\tTranslationalMotion") {
 			motion = CREATE<ASMTTranslationalMotion>::With();
+		}
+		else if (motionsLines[0] == "\t\t\tGeneralMotion") {
+			motion = CREATE<ASMTGeneralMotion>::With();
 		}
 		else {
 			assert(false);
@@ -353,8 +378,8 @@ void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readMotionSeriesMany(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MotionSeries") != std::string::npos);
 	while (!lines.empty()) {
+		assert(lines[0].find("MotionSeries") != std::string::npos);
 		readMotionSeries(lines);
 	}
 }
@@ -494,9 +519,14 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
 	constantGravity->createMbD(mbdSys, mbdUnits);
 	asmtTime->createMbD(mbdSys, mbdUnits);
+	std::sort(parts->begin(), parts->end(), [](std::shared_ptr<ASMTPart> a, std::shared_ptr<ASMTPart> b) { return a->name < b->name; });
+	auto jointsMotions = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
+	jointsMotions->insert(jointsMotions->end(), joints->begin(), joints->end());
+	jointsMotions->insert(jointsMotions->end(), motions->begin(), motions->end());
+	std::sort(jointsMotions->begin(), jointsMotions->end(), [](std::shared_ptr<ASMTConstraintSet> a, std::shared_ptr<ASMTConstraintSet> b) { return a->name < b->name; });
+	std::sort(forcesTorques->begin(), forcesTorques->end(), [](std::shared_ptr<ASMTForceTorque> a, std::shared_ptr<ASMTForceTorque> b) { return a->name < b->name; });
 	for (auto& part : *parts) { part->createMbD(mbdSys, mbdUnits); }
-	for (auto& joint : *joints) { joint->createMbD(mbdSys, mbdUnits); }
-	for (auto& motion : *motions) { motion->createMbD(mbdSys, mbdUnits); }
+	for (auto& joint : *jointsMotions) { joint->createMbD(mbdSys, mbdUnits); }
 	for (auto& forceTorque : *forcesTorques) { forceTorque->createMbD(mbdSys, mbdUnits); }
 
 	auto mbdSysSolver = mbdSys->systemSolver;

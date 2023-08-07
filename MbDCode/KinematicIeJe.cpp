@@ -1,4 +1,5 @@
 #include "KinematicIeJe.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -6,7 +7,7 @@ KinematicIeJe::KinematicIeJe()
 {
 }
 
-KinematicIeJe::KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
+KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj)
 {
 }
 

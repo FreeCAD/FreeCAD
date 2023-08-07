@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpEJ ppGpEIpEJ ppGpEJpEJ iqEJ 
     public:
-        ConstVelConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+        ConstVelConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

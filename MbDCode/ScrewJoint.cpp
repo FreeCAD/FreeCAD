@@ -28,7 +28,7 @@ void MbD::ScrewJoint::initializeGlobally()
 	}
 }
 
-void MbD::ScrewJoint::connectsItoJ(EndFrmcptr frmIe, EndFrmcptr frmJe)
+void MbD::ScrewJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
 {
 	//"Subsequent prescribed motions may make frmIe, frmJe become prescribed end frames."
 	//"Use newCopyEndFrameqc to prevent efrms from becoming EndFrameqct."

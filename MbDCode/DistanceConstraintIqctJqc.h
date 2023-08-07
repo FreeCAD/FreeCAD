@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
     public:
-        DistanceConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj);
         ConstraintType type() override;
 
         double pGpt, ppGptpt;

@@ -58,7 +58,7 @@ void AccNewtonRaphson::fillY()
 		item->fillAccICIterError(y);
 		//std::cout << item->name << *y << std::endl;
 		});
-	std::cout << *y << std::endl;
+	//std::cout << *y << std::endl;
 }
 
 void AccNewtonRaphson::incrementIterNo()

@@ -10,7 +10,6 @@ namespace MbD {
 		Orientation();
 		Orientation(const char* str);
 		void initializeGlobally() override;
-		void initMotions() override;
 
 	};
 }

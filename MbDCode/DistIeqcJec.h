@@ -8,7 +8,7 @@ namespace MbD {
         //prIeJepXI prIeJepEI pprIeJepXIpXI pprIeJepXIpEI pprIeJepEIpEI mprIeJeOpEIT 
     public:
         DistIeqcJec();
-        DistIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPrivate() override;
         void initialize() override;

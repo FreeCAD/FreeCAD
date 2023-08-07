@@ -8,7 +8,7 @@
 
 using namespace MbD;
 
-MbD::ScrewConstraintIqcJc::ScrewConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : ScrewConstraintIJ(frmi, frmj)
+MbD::ScrewConstraintIqcJc::ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIJ(frmi, frmj)
 {
 }
 

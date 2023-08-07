@@ -7,7 +7,7 @@ DispCompIeqcJeqcO::DispCompIeqcJeqcO()
 {
 }
 
-DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIeqcJecO(frmi, frmj, axis)
+DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIeqcJecO(frmi, frmj, axis)
 {
 }
 

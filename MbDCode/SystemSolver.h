@@ -51,7 +51,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
 		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();
 		//std::shared_ptr<std::vector<UHolder>> uHolders();
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();

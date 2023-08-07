@@ -1,4 +1,5 @@
 #include "DispCompIecJecIe.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -6,7 +7,7 @@ MbD::DispCompIecJecIe::DispCompIecJecIe()
 {
 }
 
-MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 

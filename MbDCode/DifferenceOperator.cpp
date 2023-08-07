@@ -8,7 +8,7 @@
 
 using namespace MbD;
 
-std::shared_ptr<FullRow<double>> DifferenceOperator::OneOverFactorials = []() {
+FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
 	for (int i = 0; i < oneOverFactorials->size(); i++)
 	{

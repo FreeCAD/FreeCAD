@@ -12,6 +12,12 @@ MbD::FullMotion::FullMotion(const char* str)
 {
 }
 
+void MbD::FullMotion::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	Joint::connectsItoJ(frmi, frmj);
+	std::static_pointer_cast<EndFrameqc>(frmI)->initEndFrameqct2();
+}
+
 void MbD::FullMotion::initializeGlobally()
 {
 	if (constraints->empty()) {
@@ -31,4 +37,7 @@ void MbD::FullMotion::initializeGlobally()
 
 void MbD::FullMotion::initMotions()
 {
+	auto efrmI = std::static_pointer_cast<EndFrameqct>(frmI);
+	efrmI->rmemBlks = frIJI;
+	efrmI->phiThePsiBlks = fangIJJ;
 }

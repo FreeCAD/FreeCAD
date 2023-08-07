@@ -18,6 +18,7 @@ namespace MbD {
         FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms);
         std::shared_ptr<std::vector<Symsptr>> getTerms() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void arguments(Symsptr args) override;
 
         std::shared_ptr<std::vector<Symsptr>> terms;
     };

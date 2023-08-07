@@ -8,7 +8,7 @@ namespace MbD {
 		//pthezpXJ pthezpEJ ppthezpXIpXJ ppthezpXIpEJ ppthezpEIpXJ ppthezpEIpEJ ppthezpXJpXJ ppthezpXJpEJ ppthezpEJpEJ 
 	public:
 		OrbitAngleZIeqcJeqc();
-		OrbitAngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_ppthezpEIpEJ();
 		void calc_ppthezpEIpXJ();

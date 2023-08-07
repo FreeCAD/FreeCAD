@@ -8,7 +8,7 @@ MbD::DistxyIeqcJec::DistxyIeqcJec()
 {
 }
 
-MbD::DistxyIeqcJec::DistxyIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj) : DistxyIecJec(frmi, frmj)
+MbD::DistxyIeqcJec::DistxyIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : DistxyIecJec(frmi, frmj)
 {
 }
 

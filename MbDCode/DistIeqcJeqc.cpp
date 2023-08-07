@@ -7,7 +7,7 @@ MbD::DistIeqcJeqc::DistIeqcJeqc()
 {
 }
 
-MbD::DistIeqcJeqc::DistIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : DistIeqcJec(frmi, frmj)
+MbD::DistIeqcJeqc::DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistIeqcJec(frmi, frmj)
 {
 }
 

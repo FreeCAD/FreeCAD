@@ -16,14 +16,11 @@ void MbD::ZTranslation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 0));
+		auto tranCon = CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 2);
+		addConstraint(tranCon);
 		this->root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();
 	}
-}
-
-void MbD::ZTranslation::initMotions()
-{
 }

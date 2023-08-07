@@ -8,7 +8,7 @@ MbD::AngleZIeqcJeqc::AngleZIeqcJeqc()
 {
 }
 
-MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : AngleZIeqcJec(frmi, frmj)
+MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIeqcJec(frmi, frmj)
 {
 }
 

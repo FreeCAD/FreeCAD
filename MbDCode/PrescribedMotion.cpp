@@ -30,10 +30,13 @@ void PrescribedMotion::initialize()
 
 void MbD::PrescribedMotion::initMotions()
 {
-	assert(false);
+	auto xyzBlkList = std::initializer_list<Symsptr>{ xBlk, yBlk, zBlk };
+	std::static_pointer_cast<EndFrameqct>(frmI)->rmemBlks = (std::make_shared<FullColumn<Symsptr>>(xyzBlkList));
+	auto xyzRotBlkList = std::initializer_list<Symsptr>{ phiBlk, theBlk, psiBlk };
+	std::static_pointer_cast<EndFrameqct>(frmI)->phiThePsiBlks = (std::make_shared<FullColumn<Symsptr>>(xyzRotBlkList));
 }
 
-void PrescribedMotion::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
+void PrescribedMotion::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	Joint::connectsItoJ(frmi, frmj);
 	std::static_pointer_cast<EndFrameqc>(frmI)->initEndFrameqct();

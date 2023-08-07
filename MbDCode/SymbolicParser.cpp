@@ -11,6 +11,11 @@
 #include "Power.h"
 #include "Abs.h"
 #include "ArcTan.h"
+#include "Sine.h"
+#include "Cosine.h"
+#include "Negative.h"
+#include "Reciprocal.h"
+#include "GeneralSpline.h"
 
 void MbD::SymbolicParser::initialize()
 {
@@ -45,6 +50,15 @@ void MbD::SymbolicParser::parseString(std::string expr)
 	if (stack->size() != 1) notify("Stack size error, compiler bug!");
 }
 
+bool MbD::SymbolicParser::commaExpression()
+{
+	if (peekForTypeNoPush(",")) {
+		if (expression()) return true;
+		expected("expression");
+	}
+	return false;
+}
+
 bool MbD::SymbolicParser::plusTerm()
 {
 	if (peekForTypeNoPush("+")) {
@@ -57,8 +71,15 @@ bool MbD::SymbolicParser::plusTerm()
 bool MbD::SymbolicParser::minusTerm()
 {
 	if (peekForTypeNoPush("-")) {
-		if (plainTerm()) return true;
-		expected("plainTerm");
+		if (term()) {
+			auto trm = stack->top();
+			stack->pop();
+			auto negativeTrm = std::make_shared<Negative>(trm);
+			auto sum = stack->top();
+			sum->addTerm(negativeTrm);
+			return true;
+		}
+		expected("term");
 	}
 	return false;
 }
@@ -123,8 +144,15 @@ bool MbD::SymbolicParser::timesFunction()
 bool MbD::SymbolicParser::divideByFunction()
 {
 	if (peekForTypeNoPush("/")) {
-		if (plainFunction()) return true;
-		expected("plainFunction");
+		if (symfunction()) {
+			auto trm = stack->top();
+			stack->pop();
+			auto reciprocalTrm = std::make_shared<Reciprocal>(trm);
+			auto product = stack->top();
+			product->addTerm(reciprocalTrm);
+			return true;
+		}
+		expected("function");
 	}
 	return false;
 }
@@ -144,7 +172,7 @@ std::string MbD::SymbolicParser::scanToken()
 {
 	prevEnd = (int)source->tellg();
 	prevEnd--;
-	while (std::isspace(hereChar)) {
+	while (std::isspace(hereChar) || isNextLineTag(hereChar)) {
 		hereChar = source->get();
 	}
 	if (hereChar == EOF) {
@@ -255,6 +283,7 @@ bool MbD::SymbolicParser::expression()
 		else {
 			notify("Compiler error!");
 		}
+		return true;
 	}
 	return false;
 }
@@ -304,22 +333,32 @@ bool MbD::SymbolicParser::intrinsic()
 	else if (peekForTypevalue("word", "arctan")) {
 		symfunc = std::make_shared<ArcTan>();
 	}
+	else if (peekForTypevalue("word", "cos")) {
+		symfunc = std::make_shared<Cosine>();
+	}
+	else if (peekForTypevalue("word", "sin")) {
+		symfunc = std::make_shared<Sine>();
+	}
+	else if (peekForTypevalue("word", "spline")) {
+		symfunc = std::make_shared<GeneralSpline>();
+	}
 	if (symfunc != nullptr) {
 		stack->push(symfunc);
 		if (peekForTypeNoPush("(")) {
 			auto startsize = stack->size();
-			while (expression() && peekForTypeNoPush(",")) {}
-			if (stack->size() > startsize) {
-				combineStackTo((int)startsize);
-				if (peekForTypeNoPush(")")) {
-					auto args = stack->top();
-					stack->pop();
-					auto func = stack->top();
-					func->arguments(args);
-					stack->pop();
-					return true;
+			if (expression()) {
+				while (commaExpression()) {}
+				if (stack->size() > startsize) {
+					combineStackTo((int)startsize);
+					if (peekForTypeNoPush(")")) {
+						auto args = stack->top();	//args is a Sum with "terms" containing the actual arguments
+						stack->pop();
+						auto func = std::static_pointer_cast<Function>(stack->top());
+						func->arguments(args);
+						return true;
+					}
+					expected(")");
 				}
-				expected(")");
 			}
 			expected("expression");
 		}
@@ -420,12 +459,38 @@ void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
 
 void MbD::SymbolicParser::combineStackTo(int pos)
 {
-	auto args = std::make_shared<Sum>();
+	auto args = std::make_shared<std::vector<Symsptr>>();
 	while (stack->size() > pos) {
 		auto arg = stack->top();
 		stack->pop();
-		args->addTerm(arg);
+		args->push_back(arg);
 	}
-	stack->push(args);
+	std::reverse(args->begin(), args->end());
+	auto sum = std::make_shared<Sum>();
+	sum->terms = args;
+	stack->push(sum);
+}
+
+bool MbD::SymbolicParser::isNextLineTag(char c)
+{
+	//Skip <n> tag in asmt file
+	auto pos = source->tellg();
+	char ch = c;
+	if (ch == '<') {
+		ch = source->get();
+		if (ch == 'n') {
+			ch = source->get();
+			if (ch == '>') {
+				return true;
+			}
+			else {
+				source->seekg(pos);
+			}
+		}
+		else {
+			source->seekg(pos);
+		}
+	}
+	return false;
 }
 

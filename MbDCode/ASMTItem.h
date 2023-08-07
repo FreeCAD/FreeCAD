@@ -29,6 +29,7 @@ namespace MbD {
 		virtual void updateFromMbD();
 		virtual void compareResults(AnalysisType type);
 		std::shared_ptr<Units> mbdUnits();
+		std::shared_ptr<Constant> sptrConstant(double value);
 
 		std::string name;
 		ASMTItem* owner;

@@ -18,6 +18,8 @@
 #include "AccICNewtonRaphson.h"
 #include "VelKineSolver.h"
 #include "AccKineNewtonRaphson.h"
+#include "VelICKineSolver.h"
+#include "AccICKineNewtonRaphson.h"
 
 using namespace MbD;
 
@@ -195,18 +197,16 @@ void SystemSolver::runPosICKine()
 
 void SystemSolver::runVelICKine()
 {
-	assert(false);
-	//icTypeSolver = CREATE<VelICKineSolver>::With();
-	//icTypeSolver->setSystem(this);
-	//icTypeSolver->run();
+	icTypeSolver = CREATE<VelICKineSolver>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
 void SystemSolver::runAccICKine()
 {
-	assert(false);
-	//icTypeSolver = CREATE<AccICKineNewtonRaphson>::With();
-	//icTypeSolver->setSystem(this);
-	//icTypeSolver->run();
+	icTypeSolver = CREATE<AccICKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
 }
 
 void SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f)
@@ -224,9 +224,9 @@ std::shared_ptr<std::vector<std::shared_ptr<Part>>> SystemSolver::parts()
 	return system->parts;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::essentialConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::essentialConstraints()
 {
-	return system->essentialConstraints2();
+	return system->essentialConstraints();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::displacementConstraints()

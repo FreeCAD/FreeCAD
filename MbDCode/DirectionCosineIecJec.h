@@ -13,14 +13,14 @@ namespace MbD {
         //aAijIeJe axisI axisJ aAjOIe aAjOJe 
     public:
         DirectionCosineIecJec();
-        DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         double value() override;
 
         int axisI, axisJ;   //0, 1, 2 = x, y, z
         double aAijIeJe;
-        std::shared_ptr<FullColumn<double>> aAjOIe, aAjOJe;
+        FColDsptr aAjOIe, aAjOJe;
     };
 }
 

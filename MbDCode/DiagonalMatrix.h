@@ -6,6 +6,12 @@
 
 namespace MbD {
 	template<typename T>
+	class DiagonalMatrix;
+	template<typename T>
+	using DiagMatsptr = std::shared_ptr<DiagonalMatrix<T>>;
+	using DiagMatDsptr = std::shared_ptr<DiagonalMatrix<double>>;
+
+	template<typename T>
 	class DiagonalMatrix : public Array<T>
 	{
 		//
@@ -14,9 +20,9 @@ namespace MbD {
 		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void atiputDiagonalMatrix(int i, std::shared_ptr < DiagonalMatrix<T>> diagMat);
-		std::shared_ptr<DiagonalMatrix<T>> times(T factor);
-		std::shared_ptr<FullColumn<T>> timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
-		std::shared_ptr<FullMatrix<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
+		DiagMatsptr<T> times(T factor);
+		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
+		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
 		int nrow() {
 			return (int)this->size();
 		}
@@ -32,18 +38,18 @@ namespace MbD {
 
 	};
 	template<typename T>
-	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
+	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat)
 	{
 		for (int ii = 0; ii < diagMat->size(); ii++)
 		{
 			this->at(i + ii) = diagMat->at(ii);
 		}
 	}
-	template<typename T>
-	inline std::shared_ptr<DiagonalMatrix<T>> DiagonalMatrix<T>::times(T factor)
+	template<>
+	inline DiagMatDsptr DiagonalMatrix<double>::times(double factor)
 	{
 		auto nrow = (int)this->size();
-		auto answer = std::make_shared<DiagonalMatrix<T>>(nrow);
+		auto answer = std::make_shared<DiagonalMatrix<double>>(nrow);
 		for (int i = 0; i < nrow; i++)
 		{
 			answer->at(i) = this->at(i) * factor;
@@ -51,7 +57,12 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullColumn<T>> DiagonalMatrix<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	inline DiagMatsptr<T> DiagonalMatrix<T>::times(T factor)
+	{
+		assert(false);
+	}
+	template<typename T>
+	inline FColsptr<T> DiagonalMatrix<T>::timesFullColumn(FColsptr<T> fullCol)
 	{
 		//"a*b = a(i,j)b(j) sum j."
 
@@ -64,7 +75,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullMatrix<T>> DiagonalMatrix<T>::timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	inline FMatsptr<T> DiagonalMatrix<T>::timesFullMatrix(FMatsptr<T> fullMat)
 	{
 		auto nrow = (int)this->size();
 		auto answer = std::make_shared<FullMatrix<T>>(nrow);
@@ -128,6 +139,5 @@ namespace MbD {
 		s << "]";
 		return s;
 	}
-	using DiagMatDsptr = std::shared_ptr<DiagonalMatrix<double>>;
 }
 

@@ -24,8 +24,8 @@ System* MarkerFrame::root()
 void MarkerFrame::initialize()
 {
 	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
-	pAOmpE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
-	endFrames = std::make_shared<std::vector<EndFrmcptr>>();
+	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
+	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
 	auto endFrm = CREATE<EndFrameqc>::With();
 	this->addEndFrame(endFrm);
 }
@@ -43,18 +43,18 @@ void MarkerFrame::initializeLocally()
 			}
 		}
 	}
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->initializeLocally(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->initializeLocally(); });
 }
 
 void MarkerFrame::initializeGlobally()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->initializeGlobally(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->initializeGlobally(); });
 }
 
 void MarkerFrame::postInput()
 {
 	Item::postInput();
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postInput(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postInput(); });
 }
 
 void MarkerFrame::calcPostDynCorrectorIteration()
@@ -75,7 +75,7 @@ void MarkerFrame::calcPostDynCorrectorIteration()
 void MarkerFrame::prePosIC()
 {
 	Item::prePosIC();
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->prePosIC(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->prePosIC(); });
 }
 
 int MarkerFrame::iqX()
@@ -88,97 +88,97 @@ int MarkerFrame::iqE()
 	return partFrame->iqE;
 }
 
-void MarkerFrame::endFramesDo(const std::function<void(std::shared_ptr<EndFramec>)>& f)
+void MarkerFrame::endFramesDo(const std::function<void(EndFrmsptr)>& f)
 {
 	std::for_each(endFrames->begin(), endFrames->end(), f);
 }
 
 void MarkerFrame::fillqsu(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsu(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsu(col); });
 }
 
-void MarkerFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void MarkerFrame::fillqsuWeights(DiagMatDsptr diagMat)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuWeights(diagMat); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsuWeights(diagMat); });
 }
 
 void MbD::MarkerFrame::fillqsuddotlam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsuddotlam(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsuddotlam(col); });
 }
 
 void MarkerFrame::fillqsulam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsulam(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsulam(col); });
 }
 
 void MarkerFrame::fillqsudot(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudot(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsudot(col); });
 }
 
-void MarkerFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void MarkerFrame::fillqsudotWeights(DiagMatDsptr diagMat)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->fillqsudotWeights(diagMat); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsudotWeights(diagMat); });
 }
 
 void MarkerFrame::setqsu(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsu(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsu(col); });
 }
 
 void MarkerFrame::setqsulam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsulam(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsulam(col); });
 }
 
 void MarkerFrame::setqsudot(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsudot(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsudot(col); });
 }
 
 void MarkerFrame::setqsudotlam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsudotlam(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsudotlam(col); });
 }
 
 void MarkerFrame::postPosICIteration()
 {
 	Item::postPosICIteration();
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosICIteration(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postPosICIteration(); });
 }
 
 void MarkerFrame::postPosIC()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postPosIC(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postPosIC(); });
 }
 
 void MarkerFrame::preDyn()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preDyn(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->preDyn(); });
 }
 
 void MarkerFrame::storeDynState()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->storeDynState(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->storeDynState(); });
 }
 
 void MarkerFrame::preVelIC()
 {
 	Item::preVelIC();
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preVelIC(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->preVelIC(); });
 }
 
 void MarkerFrame::postVelIC()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postVelIC(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postVelIC(); });
 }
 
 void MarkerFrame::preAccIC()
 {
 	Item::preAccIC();
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->preAccIC(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->preAccIC(); });
 }
 
 FColDsptr MarkerFrame::qXdot()
@@ -203,7 +203,7 @@ FColDsptr MarkerFrame::qEddot()
 
 void MarkerFrame::setqsuddotlam(FColDsptr col)
 {
-	endFramesDo([&](const std::shared_ptr<EndFramec>& endFrame) { endFrame->setqsuddotlam(col); });
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsuddotlam(col); });
 }
 
 FColFMatDsptr MarkerFrame::pAOppE()
@@ -218,7 +218,7 @@ FMatDsptr MarkerFrame::aBOp()
 
 void MarkerFrame::postDynStep()
 {
-	endFramesDo([](std::shared_ptr<EndFramec> endFrame) { endFrame->postDynStep(); });
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postDynStep(); });
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)
@@ -239,7 +239,7 @@ void MarkerFrame::setaApm(FMatDsptr x)
 {
 	aApm->copyFrom(x);
 }
-void MarkerFrame::addEndFrame(EndFrmcptr endFrm)
+void MarkerFrame::addEndFrame(EndFrmsptr endFrm)
 {
 	endFrm->setMarkerFrame(this);
 	endFrames->push_back(endFrm);

@@ -8,7 +8,7 @@ namespace MbD {
         //rIeJe rIeJeO uIeJeO muIeJeO 
     public:
         DistIecJec();
-        DistIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void calcPrivate();

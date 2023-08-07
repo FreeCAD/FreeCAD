@@ -9,7 +9,7 @@ namespace MbD {
         //thez xIeJeIe yIeJeIe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
     public:
         OrbitAngleZIecJec();
-        OrbitAngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe() = 0;

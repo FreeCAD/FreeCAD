@@ -6,8 +6,13 @@
 #include <cmath>
 #include <cassert>
 
+//#include "Symbolic.h"
 
 namespace MbD {
+	using ListD = std::initializer_list<double>;
+	using ListListD = std::initializer_list<std::initializer_list<double>>;
+	using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
+
 	template<typename T>
 	class Array : public std::vector<T>
 	{
@@ -167,7 +172,4 @@ namespace MbD {
 	{
 		this->at(i) *= factor;
 	}
-	using ListD = std::initializer_list<double>;
-	using ListListD = std::initializer_list<std::initializer_list<double>>;
-	using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
 }

@@ -5,10 +5,11 @@
 #include <functional>
 
 #include "Item.h"
-#include "EndFramec.h"
 
 namespace MbD {
 	class Constraint;
+	class EndFramec;
+	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
 	class Joint : public Item
 	{
@@ -24,7 +25,7 @@ namespace MbD {
 		FColDsptr aTIeJtIe();
 		FColDsptr aTIeJtO();
 		FColDsptr aTX();
-		virtual void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ);
+		virtual void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ);
 		void constraintsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void constraintsReport() override;
 		void fillAccICIterError(FColDsptr col) override;
@@ -40,7 +41,7 @@ namespace MbD {
 		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
-		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsudotWeights(DiagMatDsptr diagMat) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillVelICError(FColDsptr col) override;
 		void fillVelICJacob(SpMatDsptr mat) override;
@@ -65,10 +66,9 @@ namespace MbD {
 		void setqsulam(FColDsptr col) override;
 		std::shared_ptr<StateData> stateData() override;
 		void useEquationNumbers() override;
-		void submitToSystem(std::shared_ptr<Item> self) override;
 
-		EndFrmcptr frmI;
-		EndFrmcptr frmJ;
+		EndFrmsptr frmI;
+		EndFrmsptr frmJ;
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> constraints;
 
 	};

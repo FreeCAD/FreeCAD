@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIqcJqc::TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+TranslationConstraintIqcJqc::TranslationConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
 	TranslationConstraintIqcJc(frmi, frmj, axisi)
 {
 }

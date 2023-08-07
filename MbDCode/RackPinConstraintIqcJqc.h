@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-		RackPinConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpEJ();
 		void calc_pGpXJ();

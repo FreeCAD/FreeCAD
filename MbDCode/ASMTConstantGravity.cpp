@@ -1,7 +1,9 @@
 #include "ASMTConstantGravity.h"
+#include "ASMTAssembly.h"
 #include "Units.h"
 #include "ConstantGravity.h"
 #include "System.h"
+#include "Part.h"
 
 using namespace MbD;
 

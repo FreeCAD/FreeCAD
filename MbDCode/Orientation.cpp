@@ -25,7 +25,3 @@ void MbD::Orientation::initializeGlobally()
 		PrescribedMotion::initializeGlobally();
 	}
 }
-
-void MbD::Orientation::initMotions()
-{
-}

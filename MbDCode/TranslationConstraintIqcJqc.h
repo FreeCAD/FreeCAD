@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-        TranslationConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        TranslationConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initriIeJeIe() override;

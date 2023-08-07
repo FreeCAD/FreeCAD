@@ -27,7 +27,7 @@ void Joint::initialize()
 	constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 }
 
-void Joint::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
+void Joint::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	frmI = frmi;
 	frmJ = frmj;
@@ -126,18 +126,13 @@ void Joint::fillqsudot(FColDsptr col)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
 }
 
-void Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Joint::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 }
 
 void Joint::useEquationNumbers()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
-}
-
-void MbD::Joint::submitToSystem(std::shared_ptr<Item> self)
-{
-	root()->jointsMotions->push_back(std::static_pointer_cast<Joint>(self));
 }
 
 void Joint::setqsulam(FColDsptr col)

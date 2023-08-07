@@ -3,6 +3,7 @@
 
 #include "Sum.h"
 #include "Constant.h"
+#include <algorithm>
 
 using namespace MbD;
 
@@ -126,6 +127,18 @@ double Sum::getValue()
 Symsptr MbD::Sum::clonesptr()
 {
 	return std::make_shared<Sum>(*this);
+}
+
+Symsptr MbD::Sum::differentiateWRT(Symsptr var)
+{
+	auto derivatives = std::make_shared<std::vector<Symsptr>>();
+	std::transform(terms->begin(), terms->end(), 
+		std::back_inserter(*derivatives),
+		[var](Symsptr term) { return term->differentiateWRT(var); }
+	);
+	auto answer = std::make_shared<Sum>();
+	answer->terms = derivatives;
+	return answer;
 }
 
 std::ostream& Sum::printOn(std::ostream& s) const

@@ -9,7 +9,7 @@ namespace MbD {
 
 	public:
 		DistxyIeqcJec();
-		DistxyIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+		DistxyIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_ppdistxypEIpEI();
 		void calc_ppdistxypXIpEI();

@@ -2,6 +2,7 @@
 #include "CREATE.h"
 #include "ASMTSpatialContainer.h"
 #include "ASMTAssembly.h"
+#include "Constant.h"
 
 using namespace MbD;
 
@@ -138,4 +139,9 @@ std::shared_ptr<Units> MbD::ASMTItem::mbdUnits()
 		return owner->mbdUnits();
 	}
 	return static_cast<ASMTAssembly*>(this)->mbdUnits;
+}
+
+std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
+{
+	return std::make_shared<Constant>(value);
 }

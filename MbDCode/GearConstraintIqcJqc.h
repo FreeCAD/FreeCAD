@@ -7,7 +7,7 @@ namespace MbD {
 	{
 		//pGpXJ pGpEJ ppGpXIpXJ ppGpXIpEJ ppGpEIpXJ ppGpEIpEJ ppGpXJpXJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
 	public:
-		GearConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpEJ();
 		void calc_pGpXJ();

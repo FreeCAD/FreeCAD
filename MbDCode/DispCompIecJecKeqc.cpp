@@ -7,7 +7,7 @@ DispCompIecJecKeqc::DispCompIecJecKeqc()
 {
 }
 
-DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
+DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
 {
 }
 

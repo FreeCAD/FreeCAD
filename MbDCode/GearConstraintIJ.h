@@ -8,7 +8,7 @@ namespace MbD {
 	{
 		//orbitIeJe orbitJeIe radiusI radiusJ 
 	public:
-		GearConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+		GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calcPostDynCorrectorIteration() override;
 		void initialize() override;

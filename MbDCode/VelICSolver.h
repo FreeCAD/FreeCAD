@@ -5,7 +5,8 @@
 namespace MbD {
     class VelICSolver : public VelSolver
     {
-        //nqsu
+      //IC with fully or under constrained system
+      //nqsu
     public:
         void assignEquationNumbers() override;
         void run() override;

@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-MbD::GearConstraintIqcJqc::GearConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : GearConstraintIqcJc(frmi, frmj)
+MbD::GearConstraintIqcJqc::GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIqcJc(frmi, frmj)
 {
 }
 

@@ -9,7 +9,7 @@ namespace MbD {
     {
         //aA01IeJe aA10IeJe 
     public:
-        ConstVelConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void initA01IeJe();

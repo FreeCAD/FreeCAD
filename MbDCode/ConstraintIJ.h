@@ -1,19 +1,22 @@
 #pragma once
 
 #include "Constraint.h"
-#include "EndFramec.h"  //EndFrmcptr is defined
+//#include "EndFramec.h"  //EndFrmsptr is defined
 
 namespace MbD {
+    class EndFramec;
+    using EndFrmsptr = std::shared_ptr<EndFramec>;
+    
     class ConstraintIJ : public Constraint
     {
         //frmI frmJ aConstant 
     public:
-        ConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void initialize() override;
         void setConstant(double value) override;
 
-        EndFrmcptr frmI, frmJ;
+        EndFrmsptr frmI, frmJ;
         double aConstant;
     };
 }

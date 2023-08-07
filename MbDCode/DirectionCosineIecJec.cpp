@@ -2,6 +2,7 @@
 
 #include "DirectionCosineIecJec.h"
 #include "FullColumn.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -9,7 +10,7 @@ DirectionCosineIecJec::DirectionCosineIecJec()
 {
 }
 
-DirectionCosineIecJec::DirectionCosineIecJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineIecJec::DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
 	KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 

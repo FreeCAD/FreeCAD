@@ -23,7 +23,7 @@ namespace MbD {
 
         std::shared_ptr<MatrixSolver> matrixSolver;
         int n;
-        std::shared_ptr<FullColumn<double>> xold, x, dx, y;
+        FColDsptr xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };
 }

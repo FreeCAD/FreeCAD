@@ -137,8 +137,10 @@
     <ClCompile Include="AngleZIecJec.cpp" />
     <ClCompile Include="AngleZIeqcJec.cpp" />
     <ClCompile Include="AngleZIeqcJeqc.cpp" />
+    <ClCompile Include="AnyGeneralSpline.cpp" />
     <ClCompile Include="AnyPosICNewtonRaphson.cpp" />
     <ClCompile Include="ArcTan.cpp" />
+    <ClCompile Include="ArcTan2.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="ASMTAnimationParameters.cpp" />
     <ClCompile Include="ASMTAssembly.cpp" />
@@ -146,6 +148,7 @@
     <ClCompile Include="ASMTConstraintSet.cpp" />
     <ClCompile Include="ASMTCylindricalJoint.cpp" />
     <ClCompile Include="ASMTExtrusion.cpp" />
+    <ClCompile Include="ASMTFixedJoint.cpp" />
     <ClCompile Include="ASMTForceTorque.cpp" />
     <ClCompile Include="ASMTGeneralMotion.cpp" />
     <ClCompile Include="ASMTItem.cpp" />
@@ -155,6 +158,7 @@
     <ClCompile Include="ASMTMarker.cpp" />
     <ClCompile Include="ASMTMotion.cpp" />
     <ClCompile Include="ASMTPart.cpp" />
+    <ClCompile Include="ASMTPointInPlaneJoint.cpp" />
     <ClCompile Include="ASMTPrincipalMassMarker.cpp" />
     <ClCompile Include="ASMTRefCurve.cpp" />
     <ClCompile Include="ASMTRefItem.cpp" />
@@ -165,8 +169,11 @@
     <ClCompile Include="ASMTSimulationParameters.cpp" />
     <ClCompile Include="ASMTSpatialContainer.cpp" />
     <ClCompile Include="ASMTSpatialItem.cpp" />
+    <ClCompile Include="ASMTSphericalJoint.cpp" />
     <ClCompile Include="ASMTTime.cpp" />
     <ClCompile Include="ASMTTranslationalMotion.cpp" />
+    <ClCompile Include="ASMTTranslationalJoint.cpp" />
+    <ClCompile Include="ASMTUniversalJoint.cpp" />
     <ClCompile Include="AtPointConstraintIJ.cpp" />
     <ClCompile Include="AtPointConstraintIqcJc.cpp" />
     <ClCompile Include="AtPointConstraintIqcJqc.cpp" />
@@ -186,13 +193,25 @@
     <ClCompile Include="ConstVelConstraintIJ.cpp" />
     <ClCompile Include="ConstVelConstraintIqcJc.cpp" />
     <ClCompile Include="ConstVelConstraintIqcJqc.cpp" />
+    <ClCompile Include="Cosine.cpp" />
     <ClCompile Include="CREATE.cpp" />
     <ClCompile Include="CylindricalJoint.cpp" />
     <ClCompile Include="CylSphJoint.cpp" />
+    <ClCompile Include="DifferentiatedGeneralSpline.cpp" />
+    <ClCompile Include="EndFrameqct2.cpp" />
     <ClCompile Include="EulerAngles.cpp" />
+    <ClCompile Include="EulerAnglesDDot.cpp" />
+    <ClCompile Include="EulerAnglesDot.cpp" />
+    <ClCompile Include="Exponential.cpp" />
     <ClCompile Include="ExternalSystem.cpp" />
+    <ClCompile Include="FunctionFromData.cpp" />
+    <ClCompile Include="FunctionXcParameter.cpp" />
     <ClCompile Include="FunctionXY.cpp" />
+    <ClCompile Include="GeneralSpline.cpp" />
     <ClCompile Include="Ln.cpp" />
+    <ClCompile Include="Log10.cpp" />
+    <ClCompile Include="LogN.cpp" />
+    <ClCompile Include="Negative.cpp" />
     <ClCompile Include="PosVelAccData.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
@@ -323,6 +342,7 @@
     <ClCompile Include="RackPinConstraintIqcJc.cpp" />
     <ClCompile Include="RackPinConstraintIqcJqc.cpp" />
     <ClCompile Include="RackPinJoint.cpp" />
+    <ClCompile Include="Reciprocal.cpp" />
     <ClCompile Include="RedundantConstraint.cpp" />
     <ClCompile Include="RevCylJoint.cpp" />
     <ClCompile Include="RevoluteJoint.cpp" />
@@ -333,7 +353,7 @@
     <ClCompile Include="ScrewConstraintIqcJqc.cpp" />
     <ClCompile Include="ScrewJoint.cpp" />
     <ClCompile Include="SimulationStoppingError.cpp" />
-    <ClCompile Include="Sin.cpp" />
+    <ClCompile Include="Sine.cpp" />
     <ClCompile Include="SingularMatrixError.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="SparseColumn.cpp" />
@@ -385,8 +405,10 @@
     <ClInclude Include="AngleZIecJec.h" />
     <ClInclude Include="AngleZIeqcJec.h" />
     <ClInclude Include="AngleZIeqcJeqc.h" />
+    <ClInclude Include="AnyGeneralSpline.h" />
     <ClInclude Include="AnyPosICNewtonRaphson.h" />
     <ClInclude Include="ArcTan.h" />
+    <ClInclude Include="ArcTan2.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="ASMTAnimationParameters.h" />
     <ClInclude Include="ASMTAssembly.h" />
@@ -394,6 +416,7 @@
     <ClInclude Include="ASMTConstraintSet.h" />
     <ClInclude Include="ASMTCylindricalJoint.h" />
     <ClInclude Include="ASMTExtrusion.h" />
+    <ClInclude Include="ASMTFixedJoint.h" />
     <ClInclude Include="ASMTForceTorque.h" />
     <ClInclude Include="ASMTGeneralMotion.h" />
     <ClInclude Include="ASMTItem.h" />
@@ -403,6 +426,7 @@
     <ClInclude Include="ASMTMarker.h" />
     <ClInclude Include="ASMTMotion.h" />
     <ClInclude Include="ASMTPart.h" />
+    <ClInclude Include="ASMTPointInPlaneJoint.h" />
     <ClInclude Include="ASMTPrincipalMassMarker.h" />
     <ClInclude Include="ASMTRefCurve.h" />
     <ClInclude Include="ASMTRefItem.h" />
@@ -413,8 +437,11 @@
     <ClInclude Include="ASMTSimulationParameters.h" />
     <ClInclude Include="ASMTSpatialContainer.h" />
     <ClInclude Include="ASMTSpatialItem.h" />
+    <ClInclude Include="ASMTSphericalJoint.h" />
     <ClInclude Include="ASMTTime.h" />
     <ClInclude Include="ASMTTranslationalMotion.h" />
+    <ClInclude Include="ASMTTranslationalJoint.h" />
+    <ClInclude Include="ASMTUniversalJoint.h" />
     <ClInclude Include="AtPointConstraintIJ.h" />
     <ClInclude Include="AtPointConstraintIqcJc.h" />
     <ClInclude Include="AtPointConstraintIqcJqc.h" />
@@ -434,13 +461,25 @@
     <ClInclude Include="ConstVelConstraintIJ.h" />
     <ClInclude Include="ConstVelConstraintIqcJc.h" />
     <ClInclude Include="ConstVelConstraintIqcJqc.h" />
+    <ClInclude Include="Cosine.h" />
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="CylSphJoint.h" />
+    <ClInclude Include="DifferentiatedGeneralSpline.h" />
+    <ClInclude Include="EndFrameqct2.h" />
     <ClInclude Include="EulerAngles.h" />
+    <ClInclude Include="EulerAnglesDDot.h" />
+    <ClInclude Include="EulerAnglesDot.h" />
+    <ClInclude Include="Exponential.h" />
     <ClInclude Include="ExternalSystem.h" />
+    <ClInclude Include="FunctionFromData.h" />
+    <ClInclude Include="FunctionXcParameter.h" />
     <ClInclude Include="FunctionXY.h" />
+    <ClInclude Include="GeneralSpline.h" />
     <ClInclude Include="Ln.h" />
+    <ClInclude Include="Log10.h" />
+    <ClInclude Include="LogN.h" />
+    <ClInclude Include="Negative.h" />
     <ClInclude Include="PosVelAccData.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />
@@ -572,6 +611,7 @@
     <ClInclude Include="RackPinConstraintIqcJc.h" />
     <ClInclude Include="RackPinConstraintIqcJqc.h" />
     <ClInclude Include="RackPinJoint.h" />
+    <ClInclude Include="Reciprocal.h" />
     <ClInclude Include="RedundantConstraint.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RevCylJoint.h" />
@@ -583,7 +623,7 @@
     <ClInclude Include="ScrewConstraintIqcJqc.h" />
     <ClInclude Include="ScrewJoint.h" />
     <ClInclude Include="SimulationStoppingError.h" />
-    <ClInclude Include="Sin.h" />
+    <ClInclude Include="Sine.h" />
     <ClInclude Include="SingularMatrixError.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SparseColumn.h" />
@@ -611,7 +651,6 @@
     <ClInclude Include="TranslationConstraintIqcJc.h" />
     <ClInclude Include="TranslationConstraintIqcJqc.h" />
     <ClInclude Include="TranslationConstraintIqctJqc.h" />
-    <ClInclude Include="typedef.h" />
     <ClInclude Include="Units.h" />
     <ClInclude Include="UniversalJoint.h" />
     <ClInclude Include="UserFunction.h" />
@@ -629,8 +668,17 @@
     <ResourceCompile Include="MbDCode.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="00backhoe.asmt" />
+    <None Include="circular.asmt" />
+    <None Include="cirpendu.asmt" />
     <None Include="ClassDiagram.cd" />
+    <None Include="engine1.asmt" />
+    <None Include="fourbar.asmt" />
+    <None Include="fourbot.asmt" />
+    <None Include="gyro.asmt" />
     <None Include="piston.asmt" />
+    <None Include="robot.asmt" />
+    <None Include="wobpump.asmt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

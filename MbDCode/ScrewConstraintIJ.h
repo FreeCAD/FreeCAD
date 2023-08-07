@@ -9,7 +9,7 @@ namespace MbD {
     {
         //zIeJeIe thezIeJe pitch 
     public:
-        ScrewConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_zthez();

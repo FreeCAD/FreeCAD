@@ -9,8 +9,8 @@ namespace MbD {
     public:
         Power();
         Power(Symsptr base, Symsptr exp);
-        Symsptr differentiateWRTx();
-        Symsptr differentiateWRTy();
+        Symsptr differentiateWRTx() override;
+        Symsptr differentiateWRTy() override;
 
         Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         double getValue() override;

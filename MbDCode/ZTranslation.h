@@ -10,7 +10,6 @@ namespace MbD {
 		ZTranslation();
 		ZTranslation(const char* str);
 		void initializeGlobally() override;
-		void initMotions() override;
 
 	};
 }

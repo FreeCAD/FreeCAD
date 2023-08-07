@@ -8,7 +8,7 @@ namespace MbD {
     {
         //riIeJeIe
     public:
-        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

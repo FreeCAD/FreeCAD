@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-AtPointConstraintIqcJqc::AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+AtPointConstraintIqcJqc::AtPointConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
 	AtPointConstraintIqcJc(frmi, frmj, axisi)
 {
 }

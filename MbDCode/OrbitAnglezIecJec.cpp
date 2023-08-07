@@ -9,7 +9,7 @@ MbD::OrbitAngleZIecJec::OrbitAngleZIecJec()
 {
 }
 
-MbD::OrbitAngleZIecJec::OrbitAngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::OrbitAngleZIecJec::OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
 }
 

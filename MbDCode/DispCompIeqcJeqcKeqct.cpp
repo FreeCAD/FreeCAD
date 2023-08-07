@@ -8,7 +8,7 @@ DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
 {
 }
 
-DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
+DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
 {
 }
 
@@ -20,6 +20,11 @@ void DispCompIeqcJeqcKeqct::initialize()
 	ppriIeJeKepXJpt = std::make_shared<FullRow<double>>(3);
 	ppriIeJeKepEJpt = std::make_shared<FullRow<double>>(4);
 	ppriIeJeKepEKpt = std::make_shared<FullRow<double>>(4);
+}
+
+void MbD::DispCompIeqcJeqcKeqct::initializeGlobally()
+{
+	//Do nothing.
 }
 
 void DispCompIeqcJeqcKeqct::calcPostDynCorrectorIteration()

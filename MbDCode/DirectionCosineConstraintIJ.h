@@ -9,7 +9,7 @@ namespace MbD {
     {
         //axisI axisJ aAijIeJe 
     public:
-        DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void initaAijIeJe();

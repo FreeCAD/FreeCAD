@@ -22,7 +22,7 @@ namespace MbD {
         void forwardSubstituteIntoL() override;
         void backSubstituteIntoDU() override;
 
-        std::shared_ptr<FullMatrix<double>> matrixA;
+        FMatDsptr matrixA;
 
     };
 }

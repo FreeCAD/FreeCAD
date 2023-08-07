@@ -178,9 +178,9 @@ Symsptr MbD::Symbolic::clonesptr()
 	return std::make_shared<Symbolic>(*this);
 }
 
-void MbD::Symbolic::arguments(Symsptr args)
+std::shared_ptr<Constant> MbD::Symbolic::sptrConstant(double value)
 {
-	assert(false);
+	return std::make_shared<Constant>(value);
 }
 
 Symsptr MbD::Symbolic::raisedTo(Symsptr x, Symsptr y)

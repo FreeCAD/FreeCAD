@@ -11,7 +11,6 @@ namespace MbD {
         TranslationalJoint(const char* str);
         void initializeGlobally() override;
 
-
     };
 }
 

@@ -40,7 +40,7 @@ void PosICNewtonRaphson::assignEquationNumbers()
 	auto parts = system->parts();
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
-	auto essentialConstraints = system->essentialConstraints2();
+	auto essentialConstraints = system->essentialConstraints();
 	auto displacementConstraints = system->displacementConstraints();
 	auto perpendicularConstraints = system->perpendicularConstraints();
 	int eqnNo = 0;

@@ -9,7 +9,7 @@ namespace MbD {
 	{
 		//xIeJeIe thezIeJe pitchRadius 
 	public:
-        RackPinConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_xthez();

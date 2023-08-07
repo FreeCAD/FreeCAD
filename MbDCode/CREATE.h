@@ -45,22 +45,22 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj) {
+		static std::shared_ptr<T> With(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj) {
 			auto inst = std::make_shared<T>(frmi, frmj);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, int axis) {
+		static std::shared_ptr<T> With(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, int axis) {
 			auto inst = std::make_shared<T>(frmi, frmj, axis);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) {
+		static std::shared_ptr<T> With(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, std::shared_ptr<EndFramec> frmk, int axisk) {
 			auto inst = std::make_shared<T>(frmi, frmj, frmk, axisk);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, int axis) {
+		static std::shared_ptr<Constraint> ConstraintWith(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, int axis) {
 			std::shared_ptr<Constraint> inst;
 			std::string str = typeid(T(frmi, frmj, axis)).name();
 			if (str == "class MbD::AtPointConstraintIJ") {
@@ -82,12 +82,12 @@ namespace MbD {
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<T> With(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) {
+		static std::shared_ptr<T> With(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, int axisi, int axisj) {
 			auto inst = std::make_shared<T>(frmi, frmj, axisi, axisj);
 			inst->initialize();
 			return inst;
 		}
-		static std::shared_ptr<Constraint> ConstraintWith(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) {
+		static std::shared_ptr<Constraint> ConstraintWith(std::shared_ptr<EndFramec> frmi, std::shared_ptr<EndFramec> frmj, int axisi, int axisj) {
 			std::shared_ptr<Constraint> inst;
 			std::string str = typeid(T(frmi, frmj, axisi, axisj)).name();
 			if (str == "class MbD::DirectionCosineConstraintIJ") {

@@ -5,7 +5,7 @@
 namespace MbD {
     class VelICKineSolver : public VelICSolver
     {
-        //
+        //Kinematics with under constrained system
     public:
 
     };

@@ -8,7 +8,7 @@ namespace MbD {
     {
         //distIeJe
     public:
-        DistanceConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistanceConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_distIeJe();

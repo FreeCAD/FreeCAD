@@ -18,7 +18,6 @@
 #include "StateData.h"
 
 using namespace MbD;
-//using namespace CAD;
 
 void CADSystem::outputFor(AnalysisType type)
 {

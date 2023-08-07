@@ -18,7 +18,7 @@ namespace MbD {
         void basicSolveEquations() override;
         void handleSingularMatrix() override;
 
-        std::shared_ptr<SparseMatrix<double>> pypx;
+        SpMatDsptr pypx;
     };
 }
 

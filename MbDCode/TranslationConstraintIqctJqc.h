@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
     public:
-        TranslationConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        TranslationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void fillAccICIterError(FColDsptr col) override;
         void fillVelICError(FColDsptr col) override;

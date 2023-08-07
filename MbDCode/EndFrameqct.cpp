@@ -28,7 +28,7 @@ void EndFrameqct::initialize()
 	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);
 	pprOeOptpt = std::make_shared<FullColumn<double>>(3);
-	ppAOepEpt = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
+	ppAOepEpt = std::make_shared<FullColumn<FMatDsptr>>(4);
 	ppAOeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 }
 

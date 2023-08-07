@@ -9,7 +9,7 @@ namespace MbD {
 		//distxy xIeJeIe yIeJeIe
 	public:
         DistxyIecJec();
-        DistxyIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

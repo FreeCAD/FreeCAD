@@ -8,7 +8,7 @@ namespace MbD {
     {
         //xIeJeIe yIeJeIe 
     public:
-        DistancexyConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe();

@@ -22,6 +22,7 @@ namespace MbD {
         bool isSum() override;
         double getValue() override;
         Symsptr clonesptr() override;
+        Symsptr differentiateWRT(Symsptr var) override;
 
         std::ostream& printOn(std::ostream& s) const override;
     

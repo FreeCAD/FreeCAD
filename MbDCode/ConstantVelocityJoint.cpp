@@ -27,7 +27,7 @@ void MbD::ConstantVelocityJoint::initializeGlobally()
 	}
 }
 
-void MbD::ConstantVelocityJoint::connectsItoJ(EndFrmcptr frmIe, EndFrmcptr frmJe)
+void MbD::ConstantVelocityJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
 {
 	//"Subsequent prescribed motions may make frmIe, frmJe become prescribed end frames."
 	//"Use newCopyEndFrameqc to prevent efrms from becoming EndFrameqct."

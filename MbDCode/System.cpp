@@ -8,6 +8,7 @@
 #include "Time.h"
 #include "CREATE.h"
 #include "ExternalSystem.h"
+#include "PrescribedMotion.h"
 
 using namespace MbD;
 
@@ -133,7 +134,7 @@ void System::mbdTimeValue(double t)
 	time->setValue(t);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints()
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });

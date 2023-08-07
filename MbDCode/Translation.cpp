@@ -25,7 +25,3 @@ void MbD::Translation::initializeGlobally()
 		PrescribedMotion::initializeGlobally();
 	}
 }
-
-void MbD::Translation::initMotions()
-{
-}

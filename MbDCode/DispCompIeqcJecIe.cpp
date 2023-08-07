@@ -7,7 +7,7 @@ MbD::DispCompIeqcJecIe::DispCompIeqcJecIe()
 {
 }
 
-MbD::DispCompIeqcJecIe::DispCompIeqcJecIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIecJecIe(frmi, frmj, axis)
+MbD::DispCompIeqcJecIe::DispCompIeqcJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIecJecIe(frmi, frmj, axis)
 {
 }
 

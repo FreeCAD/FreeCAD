@@ -16,7 +16,9 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 	std::transform(terms->begin(),
 		terms->end(),
 		std::back_inserter(*derivatives),
-		[var](Symsptr term) { return term->differentiateWRT(var); }
+		[var](Symsptr term) { 
+			return term->differentiateWRT(var);
+		}
 	);
 	auto derivativeTerms = std::make_shared<std::vector<Symsptr>>();
 	for (int i = 0; i < terms->size(); i++)

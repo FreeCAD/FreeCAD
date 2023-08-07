@@ -1,9 +1,12 @@
 #include "ConstantGravity.h"
 #include "System.h"
+#include "Part.h"
 
 using namespace MbD;
 
-void MbD::ConstantGravity::submitToSystem(std::shared_ptr<Item> self)
+void MbD::ConstantGravity::fillAccICIterError(FColDsptr col)
 {
-	root()->forcesTorques->push_back(std::static_pointer_cast<ForceTorqueItem>(self));
+	for (auto& part : *(root()->parts)) {
+		col->atiplusFullColumn(part->iqX(), gXYZ->times(part->m));
+	}
 }

@@ -7,7 +7,7 @@ namespace MbD {
     {
         //pGpt ppGpEIpt ppGptpt 
     public:
-        AtPointConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

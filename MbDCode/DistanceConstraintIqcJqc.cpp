@@ -5,7 +5,7 @@
 
 using namespace MbD;
 
-MbD::DistanceConstraintIqcJqc::DistanceConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : DistanceConstraintIqcJc(frmi, frmj)
+MbD::DistanceConstraintIqcJqc::DistanceConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIqcJc(frmi, frmj)
 {
 }
 
