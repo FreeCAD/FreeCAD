@@ -5365,51 +5365,51 @@ std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s)
     std::unique_ptr<GeomSurface> geoSurf;
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
         Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
-        geoSurf.reset(new GeomToroid(hSurf));
+        geoSurf = std::make_unique<GeomToroid>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
         Handle(Geom_BezierSurface) hSurf = Handle(Geom_BezierSurface)::DownCast(s);
-        geoSurf.reset(new GeomBezierSurface(hSurf));
+        geoSurf = std::make_unique<GeomBezierSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
         Handle(Geom_BSplineSurface) hSurf = Handle(Geom_BSplineSurface)::DownCast(s);
-        geoSurf.reset(new GeomBSplineSurface(hSurf));
+        geoSurf = std::make_unique<GeomBSplineSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
         Handle(Geom_CylindricalSurface) hSurf = Handle(Geom_CylindricalSurface)::DownCast(s);
-        geoSurf.reset(new GeomCylinder(hSurf));
+        geoSurf = std::make_unique<GeomCylinder>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
         Handle(Geom_ConicalSurface) hSurf = Handle(Geom_ConicalSurface)::DownCast(s);
-        geoSurf.reset(new GeomCone(hSurf));
+        geoSurf = std::make_unique<GeomCone>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
         Handle(Geom_SphericalSurface) hSurf = Handle(Geom_SphericalSurface)::DownCast(s);
-        geoSurf.reset(new GeomSphere(hSurf));
+        geoSurf = std::make_unique<GeomSphere>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
         Handle(Geom_Plane) hSurf = Handle(Geom_Plane)::DownCast(s);
-        geoSurf.reset(new GeomPlane(hSurf));
+        geoSurf = std::make_unique<GeomPlane>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
         Handle(Geom_OffsetSurface) hSurf = Handle(Geom_OffsetSurface)::DownCast(s);
-        geoSurf.reset(new GeomOffsetSurface(hSurf));
+        geoSurf = std::make_unique<GeomOffsetSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
         Handle(GeomPlate_Surface) hSurf = Handle(GeomPlate_Surface)::DownCast(s);
-        geoSurf.reset(new GeomPlateSurface(hSurf));
+        geoSurf = std::make_unique<GeomPlateSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
         Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
-        geoSurf.reset(new GeomTrimmedSurface(hSurf));
+        geoSurf = std::make_unique<GeomTrimmedSurface>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
         Handle(Geom_SurfaceOfRevolution) hSurf = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
-        geoSurf.reset(new GeomSurfaceOfRevolution(hSurf));
+        geoSurf = std::make_unique<GeomSurfaceOfRevolution>(hSurf);
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
         Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
-        geoSurf.reset(new GeomSurfaceOfExtrusion(hSurf));
+        geoSurf = std::make_unique<GeomSurfaceOfExtrusion>(hSurf);
     }
     else {
         std::string err = "Unhandled surface type ";
@@ -5425,27 +5425,27 @@ std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)& c)
     std::unique_ptr<GeomCurve> geoCurve;
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
         Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
-        geoCurve.reset(new GeomCircle(circ));
+        geoCurve = std::make_unique<GeomCircle>(circ);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
         Handle(Geom_Ellipse) ell = Handle(Geom_Ellipse)::DownCast(c);
-        geoCurve.reset(new GeomEllipse(ell));
+        geoCurve = std::make_unique<GeomEllipse>(ell);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
         Handle(Geom_Hyperbola) hyp = Handle(Geom_Hyperbola)::DownCast(c);
-        geoCurve.reset(new GeomHyperbola(hyp));
+        geoCurve = std::make_unique<GeomHyperbola>(hyp);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
         Handle(Geom_Line) lin = Handle(Geom_Line)::DownCast(c);
-        geoCurve.reset(new GeomLine(lin));
+        geoCurve = std::make_unique<GeomLine>(lin);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
-        geoCurve.reset(new GeomOffsetCurve(oc));
+        geoCurve = std::make_unique<GeomOffsetCurve>(oc);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
         Handle(Geom_Parabola) par = Handle(Geom_Parabola)::DownCast(c);
-        geoCurve.reset(new GeomParabola(par));
+        geoCurve = std::make_unique<GeomParabola>(par);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
         return makeFromTrimmedCurve(c, c->FirstParameter(), c->LastParameter());
@@ -5456,11 +5456,11 @@ std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)& c)
     }*/
     else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
         Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c);
-        geoCurve.reset(new GeomBezierCurve(bezier));
+        geoCurve = std::make_unique<GeomBezierCurve>(bezier);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
         Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c);
-        geoCurve.reset(new GeomBSplineCurve(bspline));
+        geoCurve = std::make_unique<GeomBSplineCurve>(bspline);
     }
     else {
         std::string err = "Unhandled curve type ";
@@ -5567,7 +5567,7 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
     {
     case GeomAbs_Line:
         {
-            geoCurve.reset(new GeomLine());
+            geoCurve = std::make_unique<GeomLine>();
             Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
                 (geoCurve->handle());
             this_curv->SetLin(adapt.Line());
@@ -5575,7 +5575,7 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
         }
     case GeomAbs_Circle:
         {
-            geoCurve.reset(new GeomCircle());
+            geoCurve = std::make_unique<GeomCircle>();
             Handle(Geom_Circle) this_curv = Handle(Geom_Circle)::DownCast
                 (geoCurve->handle());
             this_curv->SetCirc(adapt.Circle());
@@ -5583,7 +5583,7 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
         }
     case GeomAbs_Ellipse:
         {
-            geoCurve.reset(new GeomEllipse());
+            geoCurve = std::make_unique<GeomEllipse>();
             Handle(Geom_Ellipse) this_curv = Handle(Geom_Ellipse)::DownCast
                 (geoCurve->handle());
             this_curv->SetElips(adapt.Ellipse());
@@ -5591,7 +5591,7 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
         }
     case GeomAbs_Hyperbola:
         {
-            geoCurve.reset(new GeomHyperbola());
+            geoCurve = std::make_unique<GeomHyperbola>();
             Handle(Geom_Hyperbola) this_curv = Handle(Geom_Hyperbola)::DownCast
                 (geoCurve->handle());
             this_curv->SetHypr(adapt.Hyperbola());
@@ -5599,7 +5599,7 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
         }
     case GeomAbs_Parabola:
         {
-            geoCurve.reset(new GeomParabola());
+            geoCurve = std::make_unique<GeomParabola>();
             Handle(Geom_Parabola) this_curv = Handle(Geom_Parabola)::DownCast
                 (geoCurve->handle());
             this_curv->SetParab(adapt.Parabola());
@@ -5607,17 +5607,17 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
         }
     case GeomAbs_BezierCurve:
         {
-            geoCurve.reset(new GeomBezierCurve(adapt.Bezier()));
+            geoCurve = std::make_unique<GeomBezierCurve>(adapt.Bezier());
             break;
         }
     case GeomAbs_BSplineCurve:
         {
-            geoCurve.reset(new GeomBSplineCurve(adapt.BSpline()));
+            geoCurve = std::make_unique<GeomBSplineCurve>(adapt.BSpline());
             break;
         }
     case GeomAbs_OffsetCurve:
         {
-            geoCurve.reset(new GeomOffsetCurve(adapt.OffsetCurve()));
+            geoCurve = std::make_unique<GeomOffsetCurve>(adapt.OffsetCurve());
             break;
         }
     case GeomAbs_OtherCurve:

@@ -99,10 +99,10 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             }
 #endif
 
-            ptr.reset(new GeomPlate_CurveConstraint(hCurve, order, nbPts, tolDist, tolAng, tolCurv));
+            ptr = std::make_unique<GeomPlate_CurveConstraint>(hCurve, order, nbPts, tolDist, tolAng, tolCurv);
         }
         else {
-            ptr.reset(new GeomPlate_CurveConstraint);
+            ptr = std::make_unique<GeomPlate_CurveConstraint>();
         }
 
         setTwinPointer(ptr.release());

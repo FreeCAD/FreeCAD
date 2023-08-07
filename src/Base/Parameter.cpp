@@ -1752,16 +1752,17 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             theOutput->setEncoding(gOutputEncoding);
 
             if (gUseFilter) {
-                myFilter.reset(new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
-                                                  DOMNodeFilter::SHOW_ATTRIBUTE |
-                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE |
-                                                  DOMNodeFilter::SHOW_TEXT
-                                                  ));
+                myFilter = std::make_unique<DOMPrintFilter>(
+                            DOMNodeFilter::SHOW_ELEMENT   |
+                            DOMNodeFilter::SHOW_ATTRIBUTE |
+                            DOMNodeFilter::SHOW_DOCUMENT_TYPE |
+                            DOMNodeFilter::SHOW_TEXT
+                           );
                 theSerializer->setFilter(myFilter.get());
             }
 
             // plug in user's own error handler
-            myErrorHandler.reset(new DOMPrintErrorHandler());
+            myErrorHandler = std::make_unique<DOMPrintErrorHandler>();
             DOMConfiguration* config = theSerializer->getDomConfig();
             config->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler.get());
 

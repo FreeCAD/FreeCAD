@@ -422,8 +422,9 @@ void Command::_invoke(int id, bool disablelog)
         getGuiApplication()->macroManager()->setModule(sAppModule);
 
         std::unique_ptr<LogDisabler> logdisabler;
-        if (disablelog)
-            logdisabler.reset(new LogDisabler);
+        if (disablelog) {
+            logdisabler = std::make_unique<LogDisabler>();
+        }
 
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {

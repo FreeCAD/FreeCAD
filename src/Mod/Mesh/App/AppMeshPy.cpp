@@ -257,14 +257,14 @@ private:
             meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
                           App::Application::Config()["BuildRevisionHash"];
 
-            exporter.reset( new ExporterAMF(outputFileName, meta, exportAmfCompressed) );
+            exporter = std::make_unique<ExporterAMF>(outputFileName, meta, exportAmfCompressed);
         }
         else if (exportFormat == MeshIO::ThreeMF) {
             Extension3MFFactory::initialize();
-            exporter.reset( new Exporter3MF(outputFileName, Extension3MFFactory::createExtensions()) );
+            exporter = std::make_unique<Exporter3MF>(outputFileName, Extension3MFFactory::createExtensions());
         }
         else if (exportFormat != MeshIO::Undefined) {
-            exporter.reset( new MergeExporter(outputFileName, exportFormat) );
+            exporter = std::make_unique<MergeExporter>(outputFileName, exportFormat);
         }
         else {
             std::string exStr("Can't determine mesh format from file name.\nPlease specify mesh format file extension: '");

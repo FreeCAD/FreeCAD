@@ -1977,22 +1977,22 @@ Py::Object FunctionExpression::evalAggregate(
 
     switch (f) {
     case SUM:
-        c.reset(new SumCollector);
+        c = std::make_unique<SumCollector>();
         break;
     case AVERAGE:
-        c.reset(new AverageCollector);
+        c = std::make_unique<AverageCollector>();
         break;
     case STDDEV:
-        c.reset(new StdDevCollector);
+        c = std::make_unique<StdDevCollector>();
         break;
     case COUNT:
-        c.reset(new CountCollector);
+        c = std::make_unique<CountCollector>();
         break;
     case MIN:
-        c.reset(new MinCollector);
+        c = std::make_unique<MinCollector>();
         break;
     case MAX:
-        c.reset(new MaxCollector);
+        c = std::make_unique<MaxCollector>();
         break;
     default:
         assert(false);

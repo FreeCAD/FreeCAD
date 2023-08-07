@@ -280,7 +280,7 @@ public:
 Exporter3MF::Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& ext)
 {
     throwIfNoPermission(fileName);
-    d.reset(new Private(fileName, ext));
+    d = std::make_unique<Private>(fileName, ext);
 }
 
 Exporter3MF::~Exporter3MF()
