@@ -59,7 +59,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
-
+// Hint: this is to prevent to re-format big parts of the file. Remove it later again.
+// clang-format off
 using namespace std;
 using namespace SketcherGui;
 using namespace Part;
@@ -83,7 +84,7 @@ public:
         this->setMessage(ErrMsg);
     }
 
-    ~ExceptionWrongInput() throw() override
+    ~ExceptionWrongInput() noexcept override
     {}
 
     QString ErrMsg;
@@ -1848,3 +1849,4 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdSketcherSnap());
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
+// clang-format on
