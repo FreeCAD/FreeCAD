@@ -132,6 +132,17 @@ QMdiArea {
     background-repeat: no-repeat;
 }
 
+/*==================================================================================================
+Style Links
+==================================================================================================*/
+QLabel[haslink="true"] {
+    color: #8bd1ff;
+}
+
+Gui--UrlLabel {
+    color: #8bd1ff;
+}
+
 
 /*==================================================================================================
 Sub windows
@@ -2052,6 +2063,14 @@ QToolBar > QToolButton:checked {
     background-color: rgba(124,171,249,60); /* transparency for #7cabf9 color */
 }
 
+QToolBar > QToolButton:checked:disabled {
+  background-color: #b65555;
+  color: #b8aba0;
+  border-radius: 1.9px;
+  padding: 0px;
+  outline: none;
+}
+
 QToolBar > QToolButton:checked:hover {
     border: 1px solid #7cabf9;
     background-color: rgba(124,171,249,80); /* transparency for #7cabf9 color */
@@ -2336,7 +2355,7 @@ Gui--StatefulLabel[state="redundant_constraints"] {
     color : rgba(255,69,0,255); /* Orange red */
 }
 Gui--StatefulLabel[state="partially_redundant_constraints"] {
-    color : rgba(65,105,225,255); /* Royal blue */
+    color : rgba(89, 142, 240, 255); /* a bit darker than Cornflower  blue */
 }
 Gui--StatefulLabel[state="solver_failed"] {
     color : rgba(255,0,0,255); /* Red */
@@ -2347,6 +2366,7 @@ Gui--StatefulLabel[state="fully_constrained"] {
     font-weight: bold;
 }
 Gui--UrlLabel {
-    color : rgba(0,91,255,255); /* Deep sky blue */
+    color : rgba(100, 149, 237, 255); /* Cornflower blue */
     text-decoration : underline;
 }
+
