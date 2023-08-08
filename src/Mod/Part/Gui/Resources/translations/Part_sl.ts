@@ -232,7 +232,7 @@
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Postavi osnovno točko sovpadno z drugim ogliščem.</translation>
+      <translation>Postavi sklicno točko sovpadno z drugim ogliščem.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="298"/>
@@ -1786,12 +1786,12 @@ na svoje X, Y in Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Loft...</source>
-      <translation>Ostreši...</translation>
+      <translation>Navleci …</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1540"/>
       <source>Utility to loft</source>
-      <translation>Pripomoček za ostrešenje</translation>
+      <translation>Pripomoček za navlačenje</translation>
     </message>
   </context>
   <context>
@@ -2149,12 +2149,12 @@ pogleda kamere.</translation>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Sweep...</source>
-      <translation>Povleči...</translation>
+      <translation>Vzdolži...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1569"/>
       <source>Utility to sweep</source>
-      <translation>Pripomoček za vlečenje</translation>
+      <translation>Pripomoček za vzdolženje</translation>
     </message>
   </context>
   <context>
@@ -2334,7 +2334,7 @@ pogleda kamere.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="203"/>
       <source>Loft</source>
-      <translation>Ostreši</translation>
+      <translation>Navleci</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="265"/>
@@ -2365,7 +2365,7 @@ pogleda kamere.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="369"/>
       <source>Sweep</source>
-      <translation>Povleči</translation>
+      <translation>Vzdolži</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="198"/>
@@ -4093,7 +4093,7 @@ združevalo v sestave (počasneje vendar z več podrobnostmi).</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Povezava na smerni rob izrivanja ni veljavna.
+      <translation>Povezava na os vrtenine ni veljavna.
 
 %1</translation>
     </message>
@@ -4522,7 +4522,7 @@ sicer bo uporabljena normala očrtne ravnine</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="245"/>
       <source>Loft</source>
-      <translation>Ostreši</translation>
+      <translation>Navleci</translation>
     </message>
   </context>
   <context>
@@ -4904,13 +4904,13 @@ bodo prikazane le prerezne ploskve</translation>
       <location filename="../../TaskSweep.cpp" line="438"/>
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Sweep path</source>
-      <translation>Pot vlečenja</translation>
+      <translation>Pot vzdolženja</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="438"/>
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Izbrana pot vlečenja je neveljavna.</translation>
+      <translation>Izbrana pot vzdolženja je neveljavna.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="458"/>
@@ -4920,7 +4920,7 @@ bodo prikazane le prerezne ploskve</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="459"/>
       <source>Sweep</source>
-      <translation>Povleči</translation>
+      <translation>Vzdolži</translation>
     </message>
   </context>
   <context>
@@ -5373,7 +5373,7 @@ Preverjanja posamezne logične operacije:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
-      <translation>Pogovorno okno osnovne mere: vhodna napaka</translation>
+      <translation>Pogovorno okno sklicnosti: vhodna napaka</translation>
     </message>
   </context>
   <context>
@@ -5429,7 +5429,7 @@ pravokotnika v 3D pogledu izberete več ploskev</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Ostreši</translation>
+      <translation>Navleci</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -5586,12 +5586,12 @@ pravokotnika v 3D pogledu izberete več ploskev</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Povleči</translation>
+      <translation>Vzdolži</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Pot vlečenja</translation>
+      <translation>Pot vzdolženja</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5607,8 +5607,7 @@ pravokotnika v 3D pogledu izberete več ploskev</translation>
       <location filename="../../TaskSweep.cpp" line="488"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Izberite enega ali več prerezov in rob ali črtovje
-v 3D pogledu za pot vlečenja.</translation>
+      <translation>Izberite v 3D pogledu enega ali več prerezov in rob ali črtovje za pot vzdolženja.</translation>
     </message>
   </context>
   <context>

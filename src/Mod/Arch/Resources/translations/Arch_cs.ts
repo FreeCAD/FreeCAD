@@ -254,7 +254,7 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</translation>
+      <translation>Vlastnost, kterou chcete načíst z každého objektu. Může být 'Počítat' pro počítání objektů, nebo názvy vlastností jako 'Délka' nebo 'Tvare.Volume' pro načtení určité vlastnosti.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="108"/>
@@ -319,12 +319,12 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
       <source>Put selected objects into the 'Objects' column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the 'Objects' column of the selected row</translation>
+      <translation>Vložte vybrané objekty do sloupce 'Objekty' vybraného řádku</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
       <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
-      <translation type="unfinished">This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</translation>
+      <translation>Toto exportuje výsledky do souboru CSV nebo Markdown. Poznámka pro export do CSV: V LibreOffice si můžete ponechat soubor CSV propojený pravým tlačítkem myši na panel Listů, Nový list, ze souboru, odkaz (poznámka: od LibreOffice v6. správnou cestu nyní je: List a vložte list..., Z souboru, Procházet...)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="187"/>
@@ -334,7 +334,7 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+      <translation>Volitelný středník (;) oddělený seznam vlastností:value filtrů. Přidejte před název vlastnosti k invertování efektu filtru (vyloučí objekty, které odpovídají filtru). Objekty, jejichž vlastnost obsahuje hodnotu, budou shodné. Příklady platných filtrů (vše je necitlivé na malá a velká písmena): Název:Zeď - Zohlední pouze objekty s 'stěna' jejich jménem (interní název); ! ame:Zeď - Zohlední pouze objekty, které DON'T mají 'zeď' ve svém jménu (interní název); Popis: Vyhraj - Zohlední pouze objekty s 'win' v jejich popisu; ! abel:Vyhraj - Zohlední pouze objekty, které NEPOUŽÍVEJTE ve svém štítku; IfcType:Zeď - Zohlední pouze objekty, které Ifc typ je 'ze'; ! ag:Zeď - Zohlední pouze objekty, které tag není 'zeď'. Pokud necháte toto pole prázdné, není použito filtrování</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="194"/>
@@ -1758,12 +1758,12 @@ bude pracovat při otevírání souboru.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="150"/>
       <source>StructuralSystem</source>
-      <translation type="unfinished">StructuralSystem</translation>
+      <translation>StrukturalSystém</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Vytvořit struktury z výběru</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="222"/>
@@ -1773,44 +1773,44 @@ bude pracovat při otevírání souboru.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="245"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Vytvořit strukturální systém</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Vyberte prosím alespoň objekt osy</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="301"/>
       <location filename="../../ArchStructure.py" line="345"/>
       <source>Create Structure</source>
-      <translation type="unfinished">Create Structure</translation>
+      <translation>Vytvořit strukturu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>První bod světla</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Základní bod sloupce</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
       <location filename="../../ArchWall.py" line="385"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Další bod</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="428"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Možnosti struktury</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Režim kreslení</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
@@ -1825,7 +1825,7 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchWindow.py" line="408"/>
       <location filename="../../ArchPanel.py" line="213"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Předvolba</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
@@ -1854,19 +1854,19 @@ bude pracovat při otevírání souboru.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Přepínač L/H</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Přepnout L/W</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="493"/>
       <location filename="../../ArchPanel.py" line="248"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>Pokračovat</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="775"/>
@@ -1877,69 +1877,69 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <location filename="../../ArchWall.py" line="960"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation>Tato síť netvoří platné těleso</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="865"/>
       <location filename="../../ArchPanel.py" line="525"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>Fakulta vrátila chybu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1180"/>
       <source>Node Tools</source>
-      <translation type="unfinished">Node Tools</translation>
+      <translation>Nástroje uzlu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1185"/>
       <source>Reset nodes</source>
-      <translation type="unfinished">Reset nodes</translation>
+      <translation>Reset nodes</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1192"/>
       <source>Edit nodes</source>
-      <translation type="unfinished">Edit nodes</translation>
+      <translation>Upravit uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1198"/>
       <source>Extend nodes</source>
-      <translation type="unfinished">Extend nodes</translation>
+      <translation>Rozšířit uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1199"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
-      <translation type="unfinished">Extends the nodes of this element to reach the nodes of another element</translation>
+      <translation>Rozšíří uzly tohoto prvku tak, aby se dostaly do uzlů jiného prvku</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1205"/>
       <source>Connect nodes</source>
-      <translation type="unfinished">Connect nodes</translation>
+      <translation>Připojit uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1206"/>
       <source>Connects nodes of this element with the nodes of another element</source>
-      <translation type="unfinished">Connects nodes of this element with the nodes of another element</translation>
+      <translation>Spojuje uzly tohoto prvku s uzly jiného prvku</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1212"/>
       <source>Toggle all nodes</source>
-      <translation type="unfinished">Toggle all nodes</translation>
+      <translation>Přepnout všechny uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1213"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
+      <translation>Zapnout/vypnout všechny strukturální uzly dokumentu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1218"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Nástroje pro extruzi</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1223"/>
       <location filename="../../ArchStructure.py" line="1357"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Vyberte nástroj...</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1224"/>
@@ -1950,43 +1950,43 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchStructure.py" line="1247"/>
       <location filename="../../ArchStructure.py" line="1279"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Vyberte jiný objekt struktury:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Zvolený objekt není struktura</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Zvolený objekt nemá žádné strukturální uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Jeden z těchto objektů má více než 2 uzly</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Nelze najít vhodný průsečík</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
-      <translation type="unfinished">Intersection found.
+      <translation>Křížová sekce nalezena.
 </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1300"/>
       <source>Intersection found.</source>
-      <translation type="unfinished">Intersection found.</translation>
+      <translation>Průsečík nalezen.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
@@ -1997,7 +1997,7 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchStructure.py" line="1441"/>
       <location filename="../../ArchPanel.py" line="757"/>
       <source>Couldn't compute a shape</source>
-      <translation type="unfinished">Couldn't compute a shape</translation>
+      <translation>Nelze vypočítat tvar</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
@@ -2053,7 +2053,7 @@ bude pracovat při otevírání souboru.</translation>
       <location filename="../../ArchBuildingPart.py" line="221"/>
       <location filename="../../ArchFloor.py" line="89"/>
       <source>Floor</source>
-      <translation type="unfinished">Floor</translation>
+      <translation>Podlaha</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="302"/>
@@ -2280,7 +2280,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchReference.py" line="64"/>
       <source>External Reference</source>
-      <translation type="unfinished">External Reference</translation>
+      <translation>Externí odkaz</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="498"/>
@@ -2550,7 +2550,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <location filename="../../ArchWindow.py" line="1804"/>
       <location filename="../../ArchWindow.py" line="1806"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ výchozí</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1805"/>
@@ -2565,7 +2565,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchWindow.py" line="1809"/>
       <source>Press to retrieve the selected edge</source>
-      <translation type="unfinished">Press to retrieve the selected edge</translation>
+      <translation>Stisknutím načíst vybraný okraj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1251"/>
@@ -2592,12 +2592,12 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchAxisSystem.py" line="88"/>
       <source>Create Axis System</source>
-      <translation type="unfinished">Create Axis System</translation>
+      <translation>Vytvořit soustavu osy</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="93"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Vyberte prosím alespoň jednu osu</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="371"/>
@@ -2605,12 +2605,12 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <location filename="../../ArchAxis.py" line="804"/>
       <location filename="../../ArchComponent.py" line="1952"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>Osy</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="374"/>
       <source>Axis system components</source>
-      <translation type="unfinished">Axis system components</translation>
+      <translation>Součásti systému osy</translation>
     </message>
     <message>
       <location filename="../../importJSON.py" line="61"/>
@@ -2629,7 +2629,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <location filename="../../ArchTruss.py" line="94"/>
       <location filename="../../ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Vyberte prosím pouze jeden základní objekt nebo žádný</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="98"/>
@@ -2640,7 +2640,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../importIFClegacy.py" line="113"/>
       <source>Couldn't locate IfcOpenShell</source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
+      <translation>Nelze najít IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="390"/>
@@ -2680,7 +2680,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
       <source>Railing</source>
-      <translation type="unfinished">Railing</translation>
+      <translation>Zábradlí</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="219"/>
@@ -3288,7 +3288,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="956"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>má neplatný tvar</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="128"/>

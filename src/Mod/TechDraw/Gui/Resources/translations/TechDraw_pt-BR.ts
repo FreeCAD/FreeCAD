@@ -1602,7 +1602,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Modelo (*.svg)</translation>
     </message>
   </context>
   <context>

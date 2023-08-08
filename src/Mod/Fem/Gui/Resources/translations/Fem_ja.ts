@@ -788,12 +788,12 @@
     <message>
       <location filename="../../Command.cpp" line="2274"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation type="unfinished">Create a cylinder function, defined by its center, axis and radius</translation>
+      <translation>中心点、軸、半径で定義された円筒関数を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2280"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation type="unfinished">Create a box function, defined by its center, length, width and height</translation>
+      <translation>中心、奥行き、幅、高さで定義された直方体関数を作成</translation>
     </message>
   </context>
   <context>
@@ -897,7 +897,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>使用するCPUの数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -1019,7 +1019,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="143"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルが存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="144"/>
@@ -1027,10 +1027,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>指定された実行可能ファイル 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ が存在しません!
+別のファイルを指定してください。</translation>
     </message>
   </context>
   <context>
@@ -1064,19 +1064,18 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
       <source>Multi-CPU core support:</source>
-      <translation type="unfinished">Multi-CPU core support:</translation>
+      <translation>マルチ CPU コアサポート:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
       <source>The mesh volume regions processed by each CPU core
 will be merged to make the volume boundaries invisible.</source>
-      <translation type="unfinished">The mesh volume regions processed by each CPU core
-will be merged to make the volume boundaries invisible.</translation>
+      <translation>各 CPU コアで処理されるメッシュ体積領域は体積境界を非表示にするためにマージされます。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
       <source>Filter results</source>
-      <translation type="unfinished">Filter results</translation>
+      <translation>フィルター結果</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1096,7 +1095,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;デフォルトのバイナリーファイルを使用する場合は空欄のままにします。&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;注意:&lt;/span&gt; マルチスレッドを使用するにはここで接尾辞 &amp;quot;_mpi&amp;quot; をつけた実行バリアントを指定する必要があります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
@@ -1106,22 +1105,22 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>マルチスレッド:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>使用する CPU コア:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;注意:&lt;/span&gt; メッシュの対称性上有利なため偶数のコア数を使用することを推奨します(8コア使用の方が9コアよりも早くなる可能性があります)。&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;注意:&lt;/span&gt;極端な場合にはコア数が多すぎると ElmerSolver が収束しないことがあります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルが存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1129,16 +1128,16 @@ will be merged to make the volume boundaries invisible.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>指定された実行可能ファイル 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ が存在しません!
+別のファイルを指定してください。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="118"/>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
-      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
+      <translation>FEM Elmer: マルチスレッドには適していません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="119"/>
@@ -1338,14 +1337,13 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>デフォルトのソルバー</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation type="unfinished">Default solver to be added when
-adding an analysis container</translation>
+      <translation>解析コンテナーが追加される時に追加されるデフォルトのソルバー</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1383,7 +1381,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルが存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1391,10 +1389,10 @@ adding an analysis container</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>指定された実行可能ファイル 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ が存在しません!
+別のファイルを指定してください。</translation>
     </message>
   </context>
   <context>
@@ -1569,7 +1567,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルが存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1577,10 +1575,10 @@ If unchecked, they will be sorted by their name.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>指定された実行可能ファイル 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ が存在しません!
+別のファイルを指定してください。</translation>
     </message>
   </context>
   <context>
@@ -1678,7 +1676,7 @@ that "MAXKOI" needs to be increased.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルが存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1695,17 +1693,17 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>ファイルが間違っています。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation type="unfinished">You must specify the path to the z88r.exe!</translation>
+      <translation>z88r.exe のパスを指定する必要があります!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
       <source>You must specify the path to the z88r!</source>
-      <translation type="unfinished">You must specify the path to the z88r!</translation>
+      <translation>z88r のパスを指定する必要があります!</translation>
     </message>
   </context>
   <context>
@@ -3066,7 +3064,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>体積発熱 (W/kg)</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3107,38 +3105,37 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="51"/>
       <source>Electric potential</source>
-      <translation type="unfinished">Electric potential</translation>
+      <translation>電位</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="88"/>
       <source>To define a vector field</source>
-      <translation type="unfinished">To define a vector field</translation>
+      <translation>ベクトル場を定義</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
       <source>Vector Field</source>
-      <translation type="unfinished">Vector Field</translation>
+      <translation>ベクトル場</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation type="unfinished">Imaginary part is only used for equations
-with a harmonic/oscillating driving force</translation>
+      <translation>虚部は調和/振動駆動力を持つ方程式でのみ使用されます。</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
       <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
-      <translation type="unfinished">Real</translation>
+      <translation>実部</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
       <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
-      <translation type="unfinished">Imaginary</translation>
+      <translation>虚部</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="140"/>
@@ -3148,12 +3145,12 @@ with a harmonic/oscillating driving force</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="156"/>
       <source>Potential as specified above</source>
-      <translation type="unfinished">Potential as specified above</translation>
+      <translation>上で指定されたポテンシャル</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="193"/>
       <source>Imaginary part of scalar potential</source>
-      <translation type="unfinished">Imaginary part of scalar potential</translation>
+      <translation>スカラーポテンシャルの虚部</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
@@ -3166,15 +3163,15 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル x 成分の実部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル x 成分の虚部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
@@ -3187,15 +3184,15 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル y 成分の実部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル y 成分の虚部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
@@ -3208,15 +3205,15 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル z 成分の実部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>ポテンシャル z 成分の虚部
+注意: ソリッドが選択されている場合は無効</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
@@ -3324,7 +3321,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>式</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
@@ -3397,12 +3394,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>圧力:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation type="unfinished">Current density:</translation>
+      <translation>現在の密度:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -3410,10 +3407,8 @@ Note: has no effect if a solid was selected</translation>
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation type="unfinished">Real part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</translation>
+      <translation>ポテンシャル x 成分の実部
+注意: 面が選択されている場合は面の法線方向の値となり y と z の設定は無視されます。</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="113"/>
@@ -3421,70 +3416,66 @@ Note: if a face was selected this will be the value
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation type="unfinished">Imaginary part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</translation>
+      <translation>ポテンシャル x 成分の虚部
+注意: 面が選択されている場合は面の法線方向の値となり y と z の設定は無視されます。</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="170"/>
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation type="unfinished">Real part of potential y-component
-Note: for 2D only setting for x is possible,
-          setting for y will be ignored</translation>
+      <translation>ポテンシャル y 成分の実部
+注意: 2D では x の設定のみ可能で、y の設定は無視されます。</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="216"/>
       <source>Imaginary part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation type="unfinished">Imaginary part of potential y-component
-Note: for 2D only setting for x is possible,
-          setting for y will be ignored</translation>
+      <translation>ポテンシャル y 成分の虚部
+注意: 2D では x の設定のみ可能で、y の設定は無視されます。</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="20"/>
       <source>Magnetization</source>
-      <translation type="unfinished">Magnetization</translation>
+      <translation>磁化</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of potential x-component</source>
-      <translation type="unfinished">Real part of potential x-component</translation>
+      <translation>ポテンシャル x 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="110"/>
       <source>Imaginary part of potential x-component</source>
-      <translation type="unfinished">Imaginary part of potential x-component</translation>
+      <translation>ポテンシャル x 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="164"/>
       <source>Real part of potential y-component</source>
-      <translation type="unfinished">Real part of potential y-component</translation>
+      <translation>ポテンシャル y 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="208"/>
       <source>Imaginary part of potential y-component</source>
-      <translation type="unfinished">Imaginary part of potential y-component</translation>
+      <translation>ポテンシャル y 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
-      <translation type="unfinished">Real part of potential z-component</translation>
+      <translation>ポテンシャル z 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
-      <translation type="unfinished">Imaginary part of potential z-component</translation>
+      <translation>ポテンシャル z 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
       <source>Normal to boundary</source>
-      <translation type="unfinished">Normal to boundary</translation>
+      <translation>境界の法線方向</translation>
     </message>
   </context>
   <context>
@@ -4392,15 +4383,14 @@ For possible variables, see the description box below.</source>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
-      <translation type="unfinished">Formulas are only valid
-for the Elmer solver</translation>
+      <translation>式は Elmer ソルバーでのみ有効</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>式</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
@@ -4803,14 +4793,13 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="109"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Elmer 用の剛性</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation type="unfinished">What stiffness should be
-used for the Elmer solver</translation>
+      <translation>Elmer ソルバーでどのような剛性を使用するか</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="81"/>
@@ -4960,7 +4949,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>座標</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
@@ -4980,12 +4969,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>点1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>点2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>
@@ -5378,13 +5367,13 @@ used for the Elmer solver</translation>
       <location filename="../../Workbench.cpp" line="51"/>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Electromagnetic Constraints</source>
-      <translation type="unfinished">Electromagnetic Constraints</translation>
+      <translation>電磁拘束</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Electromagnetic Constraints</source>
-      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
+      <translation>電磁拘束(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -5508,12 +5497,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="58"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>解析コンテナー</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="63"/>
       <source>Creates an analysis container with default solver</source>
-      <translation type="unfinished">Creates an analysis container with default solver</translation>
+      <translation>デフォルトのソルバーを使用して解析のコンテナーを作成</translation>
     </message>
   </context>
   <context>
@@ -5521,12 +5510,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="98"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>面上のクリッピング平面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="102"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>選択した面にクリッピング平面を追加</translation>
     </message>
   </context>
   <context>
@@ -5535,7 +5524,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="153"/>
       <location filename="../../../femcommands/commands.py" line="157"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>すべてのクリッピング平面を削除</translation>
     </message>
   </context>
   <context>
@@ -5548,7 +5537,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="183"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>標準値を上書きするためのFEM定数である真空誘電率を作成</translation>
     </message>
   </context>
   <context>
@@ -5556,12 +5545,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>体積発熱拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>体積発熱FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5569,12 +5558,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="215"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>遠心荷重拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="219"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>遠心荷重FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5582,12 +5571,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="250"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>静電ポテンシャル拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="254"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>静電ポテンシャルFEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5595,12 +5584,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="267"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>流速拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="271"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>流速FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5608,12 +5597,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>初期流速拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="288"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>初期流速FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5621,12 +5610,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Constraint initial pressure</source>
-      <translation type="unfinished">Constraint initial pressure</translation>
+      <translation>初期圧力拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates a FEM constraint initial pressure</source>
-      <translation type="unfinished">Creates a FEM constraint initial pressure</translation>
+      <translation>初期圧力FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5634,12 +5623,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="335"/>
       <source>Constraint sectionprint</source>
-      <translation type="unfinished">Constraint sectionprint</translation>
+      <translation>断面集計表示拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="339"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation type="unfinished">Creates a FEM constraint sectionprint</translation>
+      <translation>断面集計表示のFEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5647,12 +5636,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>自重拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>自重FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5660,12 +5649,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="369"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>結合拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="373"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>結合FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -5673,12 +5662,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="386"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>1次元流れのための流体セクション</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="390"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>1次元流れのためのFEM流体セクションを作成</translation>
     </message>
   </context>
   <context>
@@ -5686,12 +5675,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="403"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>ビーム断面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>FEMビーム断面を作成</translation>
     </message>
   </context>
   <context>
@@ -5699,12 +5688,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="420"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>シェルの板厚</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="424"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>FEMシェルの板厚を作成</translation>
     </message>
   </context>
   <context>
@@ -5712,12 +5701,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="437"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>ビーム回転</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="441"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>FEMビーム回転を作成</translation>
     </message>
   </context>
   <context>
@@ -5725,12 +5714,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="505"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>静電方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="509"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>静電のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -5738,14 +5727,13 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>弾性方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for
- elasticity (stress)</translation>
+      <translation>弾性のためのFEM方程式を作成 (応力)</translation>
     </message>
   </context>
   <context>
@@ -5753,12 +5741,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="522"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>流れ方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="526"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>流れのためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -5766,12 +5754,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="539"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>流束方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="543"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>流束のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -5784,7 +5772,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>電気力のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -5792,12 +5780,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>熱方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="560"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>熱のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -5806,7 +5794,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="608"/>
       <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>FEM サンプルを開く</translation>
     </message>
   </context>
   <context>
@@ -5814,12 +5802,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="629"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>材料エディター</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="633"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>FreeCAD 材料エディターを開く</translation>
     </message>
   </context>
   <context>
@@ -5827,12 +5815,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>流体用材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="653"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>流体のためのFEM材料を作成</translation>
     </message>
   </context>
   <context>
@@ -5840,12 +5828,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>非線形機械材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="670"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>非線形機械材料を作成</translation>
     </message>
   </context>
   <context>
@@ -5853,12 +5841,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>強化材料 (コンクリート)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>コンクリートなどの強化マトリックス材料のための材料を作成</translation>
     </message>
   </context>
   <context>
@@ -5866,12 +5854,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="754"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>固体用材料</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="759"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>固体のためのFEM材料を作成</translation>
     </message>
   </context>
   <context>
@@ -5879,12 +5867,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="772"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEMメッシュからメッシュへ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="776"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>FEMメッシュの表面をメッシュに変換</translation>
     </message>
   </context>
   <context>
@@ -5892,12 +5880,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="820"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEMメッシュ境界層</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="824"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>FEMメッシュ境界層を作成</translation>
     </message>
   </context>
   <context>
@@ -5905,12 +5893,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="837"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>FEMメッシュを削除</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="841"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>FEMメッシュオブジェクトのメッシュを削除</translation>
     </message>
   </context>
   <context>
@@ -5919,7 +5907,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="863"/>
       <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>FEMメッシュ情報を表示</translation>
     </message>
   </context>
   <context>
@@ -5927,12 +5915,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="893"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Gmshによる形状からのFEMメッシュ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Gmshメッシャーを使用して形状からFEMメッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -5940,12 +5928,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>FEMメッシュグループ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="943"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>FEMメッシュグループを作成</translation>
     </message>
   </context>
   <context>
@@ -5953,12 +5941,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="956"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Netgenによる形状からのFEMメッシュ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="960"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Netgen内部メッシャーを使用してソリッド、またはフェイス形状からFEMメッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -5966,12 +5954,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEMメッシュ領域</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>FEMメッシュ領域を作成</translation>
     </message>
   </context>
   <context>
@@ -5984,7 +5972,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>選択した結果データを表示、可視化</translation>
     </message>
   </context>
   <context>
@@ -5992,12 +5980,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1039"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>結果を消去</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>アクティブな解析からすべての結果を削除</translation>
     </message>
   </context>
   <context>
@@ -6005,12 +5993,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1061"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>ソルバー CalculiX 標準</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>標準FEMソルバーであるccxツール付属CalculiXを作成</translation>
     </message>
   </context>
   <context>
@@ -6018,12 +6006,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1123"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>ソルバー ジョブ制御</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1128"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>ソルバー属性を変更し、選択したソルバーのための計算を実行</translation>
     </message>
   </context>
   <context>
@@ -6031,12 +6019,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1140"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>ソルバー Elmer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1145"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>FEMソルバーElmerを作成</translation>
     </message>
   </context>
   <context>
@@ -6044,12 +6032,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>ソルバー Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1158"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>FEMソルバーMystranを作成</translation>
     </message>
   </context>
   <context>
@@ -6057,12 +6045,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1168"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>ソルバー計算の実行</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1173"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>選択したソルバーの計算を実行</translation>
     </message>
   </context>
   <context>
@@ -6070,12 +6058,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1188"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>ソルバー Z88</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1190"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>FEMソルバーZ88を作成</translation>
     </message>
   </context>
   <context>
@@ -6083,18 +6071,18 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>ソルバー制御</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>作業ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>書き込み</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -6107,7 +6095,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>経過時間:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
@@ -6119,17 +6107,17 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>再書き込み</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>再実行</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>中断</translation>
     </message>
   </context>
   <context>
@@ -6150,12 +6138,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>面/辺/頂点を選択</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="134"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>参照の追加: 3Dビューで選択し「追加」をクリック</translation>
     </message>
   </context>
   <context>
@@ -6163,7 +6151,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="149"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>ソリッドを選択</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="153"/>
@@ -6196,7 +6184,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>選択モード</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
@@ -6234,7 +6222,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
       <source>Max Shear Stress</source>
-      <translation type="unfinished">Max Shear Stress</translation>
+      <translation>最大せん断応力</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
@@ -6275,13 +6263,13 @@ used for the Elmer solver</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
       <source>No histogram available.
 Please select a result type first.</source>
-      <translation type="unfinished">No histogram available.
-Please select a result type first.</translation>
+      <translation>利用できるヒストグラムがありません。
+最初に結果タイプを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>{} のヒストグラム</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
@@ -6291,13 +6279,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
       <source>Empty result mesh</source>
-      <translation type="unfinished">Empty result mesh</translation>
+      <translation>結果メッシュがありません。</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
       <source>No result object</source>
-      <translation type="unfinished">No result object</translation>
+      <translation>結果オブジェクトがありません。</translation>
     </message>
   </context>
   <context>
@@ -6305,12 +6293,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="233"/>
       <source>Constraint current density</source>
-      <translation type="unfinished">Constraint current density</translation>
+      <translation>電流密度拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="237"/>
       <source>Creates a FEM constraint current density</source>
-      <translation type="unfinished">Creates a FEM constraint current density</translation>
+      <translation>電流密度FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -6318,14 +6306,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="590"/>
       <source>Magnetodynamic2D equation</source>
-      <translation type="unfinished">Magnetodynamic2D equation</translation>
+      <translation>2次元磁気力学方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="594"/>
       <source>Creates a FEM equation for
  2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for
- 2D magnetodynamic forces</translation>
+      <translation>2次元の磁気力学的な力のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -6339,7 +6326,7 @@ Please select a result type first.</translation>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../Command.cpp" line="1140"/>
       <source>Electromagnetic constraints</source>
-      <translation type="unfinished">Electromagnetic constraints</translation>
+      <translation>電磁拘束</translation>
     </message>
   </context>
   <context>
@@ -6347,12 +6334,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Constraint magnetization</source>
-      <translation type="unfinished">Constraint magnetization</translation>
+      <translation>磁化拘束</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a FEM constraint magnetization</source>
-      <translation type="unfinished">Creates a FEM constraint magnetization</translation>
+      <translation>磁化FEM拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -6360,14 +6347,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="573"/>
       <source>Magnetodynamic equation</source>
-      <translation type="unfinished">Magnetodynamic equation</translation>
+      <translation>磁気力学方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="577"/>
       <source>Creates a FEM equation for
  magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for
- magnetodynamic forces</translation>
+      <translation>磁気力学的な力のためのFEM方程式を作成</translation>
     </message>
   </context>
   <context>
@@ -6380,22 +6366,22 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
       <source>Vector:</source>
-      <translation type="unfinished">Vector:</translation>
+      <translation>ベクトル:</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="35"/>
       <source>Field:</source>
-      <translation type="unfinished">Field:</translation>
+      <translation>フィールド:</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="79"/>
       <source>Contour lines will not be colored</source>
-      <translation type="unfinished">Contour lines will not be colored</translation>
+      <translation>等高線は色付けされません。</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="82"/>
       <source>No color</source>
-      <translation type="unfinished">No color</translation>
+      <translation>無色</translation>
     </message>
   </context>
   <context>
@@ -6408,12 +6394,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1256"/>
       <source>Electromagnetic equations</source>
-      <translation type="unfinished">Electromagnetic equations</translation>
+      <translation>電磁方程式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Electromagnetic equations for the Elmer solver</source>
-      <translation type="unfinished">Electromagnetic equations for the Elmer solver</translation>
+      <translation>Elmer ソルバー用の電磁方程式</translation>
     </message>
   </context>
   <context>
@@ -6426,12 +6412,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="2039"/>
       <source>Contours filter</source>
-      <translation type="unfinished">Contours filter</translation>
+      <translation>等高線フィルター</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>Define/create a contours filter which displays iso contours</source>
-      <translation type="unfinished">Define/create a contours filter which displays iso contours</translation>
+      <translation>ISO 等高線を表示する等高線フィルターを定義/作成</translation>
     </message>
   </context>
   <context>
@@ -6439,7 +6425,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1401"/>
       <source>Contours filter options</source>
-      <translation type="unfinished">Contours filter options</translation>
+      <translation>等高線フィルターのオプション</translation>
     </message>
   </context>
   <context>
@@ -6447,14 +6433,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="454"/>
       <source>Deformation equation</source>
-      <translation type="unfinished">Deformation equation</translation>
+      <translation>変形方程式</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for
- deformation (nonlinear elasticity)</translation>
+      <translation>変形のためのFEM方程式を作成 (非線形弾性)</translation>
     </message>
   </context>
   <context>
@@ -6548,12 +6533,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Mechanical equations</source>
-      <translation type="unfinished">Mechanical equations</translation>
+      <translation>力学方程式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mechanical equations for the Elmer solver</source>
-      <translation type="unfinished">Mechanical equations for the Elmer solver</translation>
+      <translation>Elmer ソルバー用の力学方程式</translation>
     </message>
   </context>
   <context>
@@ -6561,12 +6546,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1104"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>ソルバー CalculiX (新しいフレームワーク)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1109"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>FEMソルバーCalculiXの新しいフレームワークを作成 (結果エラー処理が減少)</translation>
     </message>
   </context>
 </TS>
