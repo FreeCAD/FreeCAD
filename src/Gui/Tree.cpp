@@ -216,6 +216,7 @@ public:
     DocumentObjectData(DocumentItem* docItem, ViewProviderDocumentObject* vpd)
         : docItem(docItem), viewObject(vpd), rootItem(nullptr)
     {
+        //NOLINTBEGIN
         // Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
             std::bind(&DocumentObjectData::slotChangeIcon, this));
@@ -223,6 +224,7 @@ public:
             std::bind(&DocumentObjectData::slotChangeToolTip, this, sp::_1));
         connectStat = viewObject->signalChangeStatusTip.connect(
             std::bind(&DocumentObjectData::slotChangeStatusTip, this, sp::_1));
+        //NOLINTEND
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
@@ -462,6 +464,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
 
+    //NOLINTBEGIN
     // Setup connections
     connectNewDocument = Application::Instance->signalNewDocument.connect(std::bind(&TreeWidget::slotNewDocument, this, sp::_1, sp::_2));
     connectDelDocument = Application::Instance->signalDeleteDocument.connect(std::bind(&TreeWidget::slotDeleteDocument, this, sp::_1));
@@ -475,6 +478,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     // for
     connectChangedViewObj = Application::Instance->signalChangedObject.connect(
         std::bind(&TreeWidget::slotChangedViewObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
@@ -2562,10 +2566,12 @@ void TreeWidget::onUpdateStatus()
         auto doc = v.first->getDocument();
 
         if (!docItem->connectChgObject.connected()) {
+            //NOLINTBEGIN
             docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
                 std::bind(&TreeWidget::slotChangeObject, this, sp::_1, sp::_2));
             docItem->connectTouchedObject = doc->signalTouchedObject.connect(
                 std::bind(&TreeWidget::slotTouchedObject, this, sp::_1));
+            //NOLINTEND
         }
 
         if (doc->testStatus(App::Document::PartialDoc))
@@ -3214,6 +3220,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
 DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem* parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(const_cast<Gui::Document*>(doc))
 {
+    //NOLINTBEGIN
     // Setup connections
     connectNewObject = doc->signalNewObject.connect(std::bind(&DocumentItem::slotNewObject, this, sp::_1));
     connectDelObject = doc->signalDeletedObject.connect(
@@ -3235,6 +3242,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem* parent)
     connectRecomputed = adoc->signalRecomputed.connect(std::bind(&DocumentItem::slotRecomputed, this, sp::_1, sp::_2));
     connectRecomputedObj = adoc->signalRecomputedObject.connect(
         std::bind(&DocumentItem::slotRecomputedObject, this, sp::_1));
+    //NOLINTEND
 
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
 

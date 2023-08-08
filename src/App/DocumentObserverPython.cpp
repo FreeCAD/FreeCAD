@@ -78,6 +78,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     }\
     while(0);
 
+    //NOLINTBEGIN
 #define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
@@ -115,6 +116,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(ChangePropertyEditor, ChangePropertyEditor)
     FC_PY_ELEMENT_ARG2(BeforeAddingDynamicExtension, BeforeAddingDynamicExtension)
     FC_PY_ELEMENT_ARG2(AddedDynamicExtension, AddedDynamicExtension)
+    //NOLINTEND
 }
 
 DocumentObserverPython::~DocumentObserverPython() = default;

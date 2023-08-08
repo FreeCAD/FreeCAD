@@ -360,12 +360,14 @@ DocumentModel::DocumentModel(QObject* parent)
         ViewProviderIndex   ::init();
     }
 
+    //NOLINTBEGIN
     // Setup connections
     Application::Instance->signalNewDocument.connect(std::bind(&DocumentModel::slotNewDocument, this, sp::_1));
     Application::Instance->signalDeleteDocument.connect(std::bind(&DocumentModel::slotDeleteDocument, this, sp::_1));
     Application::Instance->signalRenameDocument.connect(std::bind(&DocumentModel::slotRenameDocument, this, sp::_1));
     Application::Instance->signalActiveDocument.connect(std::bind(&DocumentModel::slotActiveDocument, this, sp::_1));
     Application::Instance->signalRelabelDocument.connect(std::bind(&DocumentModel::slotRelabelDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 DocumentModel::~DocumentModel()
@@ -375,6 +377,7 @@ DocumentModel::~DocumentModel()
 
 void DocumentModel::slotNewDocument(const Gui::Document& Doc)
 {
+    //NOLINTBEGIN
     Doc.signalNewObject.connect(std::bind(&DocumentModel::slotNewObject, this, sp::_1));
     Doc.signalDeletedObject.connect(std::bind(&DocumentModel::slotDeleteObject, this, sp::_1));
     Doc.signalChangedObject.connect(std::bind(&DocumentModel::slotChangeObject, this, sp::_1, sp::_2));
@@ -382,6 +385,7 @@ void DocumentModel::slotNewDocument(const Gui::Document& Doc)
     Doc.signalActivatedObject.connect(std::bind(&DocumentModel::slotActiveObject, this, sp::_1));
     Doc.signalInEdit.connect(std::bind(&DocumentModel::slotInEdit, this, sp::_1));
     Doc.signalResetEdit.connect(std::bind(&DocumentModel::slotResetEdit, this, sp::_1));
+    //NOLINTEND
 
     QModelIndex parent = createIndex(0,0,d->rootItem);
     int count_docs = d->rootItem->childCount();

@@ -244,10 +244,12 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     Gui::Selection().addSelectionGate(d->selection);
 
     d->fillet = fillet;
+    //NOLINTBEGIN
     d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject
         .connect(std::bind(&DlgFilletEdges::onDeleteObject, this, sp::_1));
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
         .connect(std::bind(&DlgFilletEdges::onDeleteDocument, this, sp::_1));
+    //NOLINTEND
     // set tree view with three columns
     FilletRadiusModel* model = new FilletRadiusModel(this);
     connect(model, &FilletRadiusModel::toggleCheckState,

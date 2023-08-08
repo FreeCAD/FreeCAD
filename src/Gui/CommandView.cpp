@@ -657,7 +657,9 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
-    this->getGuiApplication()->signalActivateView.connect(std::bind(&StdCmdDrawStyle::updateIcon, this, sp::_1));
+    this->getGuiApplication()->signalActivateView.connect([this](auto view) {
+        this->updateIcon(view);
+    });
 }
 
 Gui::Action * StdCmdDrawStyle::createAction()

@@ -114,7 +114,9 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
 
+    //NOLINTBEGIN
     auto bnd = std::bind(&ViewProviderPage::onGuiRepaint, this, sp::_1);
+    //NOLINTEND
     TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);

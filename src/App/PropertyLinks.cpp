@@ -2661,6 +2661,7 @@ public:
         myPos = pos;
         myPath = myPos->first.toUtf8().constData();
         App::Application &app = App::GetApplication();
+        //NOLINTBEGIN
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
             std::bind(&DocInfo::slotFinishRestoreDocument,this,sp::_1));
         connPendingReloadDocument = app.signalPendingReloadDocument.connect(
@@ -2669,6 +2670,7 @@ public:
             std::bind(&DocInfo::slotDeleteDocument,this,sp::_1));
         connSaveDocument = app.signalSaveDocument.connect(
             std::bind(&DocInfo::slotSaveDocument,this,sp::_1));
+        //NOLINTEND
 
         QString fullpath(getFullPath());
         if(fullpath.isEmpty())

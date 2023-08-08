@@ -87,7 +87,9 @@ void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, std::bind(&ViewProviderBalloon::startDefaultEditMode, this));
+    func->trigger(act, [this]() {
+        this->startDefaultEditMode();
+    });
 
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }

@@ -94,7 +94,9 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
+            //NOLINTBEGIN
             App::GetApplication().signalDeleteDocument.connect(std::bind(slotDeleteDocument, sp::_1));
+            //NOLINTEND
         }
     }
 };

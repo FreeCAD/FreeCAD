@@ -45,10 +45,12 @@ namespace sp = std::placeholders;
 
 SheetModel::SheetModel(Sheet* _sheet, QObject* parent) : QAbstractTableModel(parent), sheet(_sheet)
 {
+    //NOLINTBEGIN
     cellUpdatedConnection =
         sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, sp::_1));
     rangeUpdatedConnection =
         sheet->rangeUpdated.connect(bind(&SheetModel::rangeUpdated, this, sp::_1));
+    //NOLINTEND
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet");

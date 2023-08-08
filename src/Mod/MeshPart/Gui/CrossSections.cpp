@@ -294,10 +294,12 @@ void CrossSections::apply()
 
         MeshCore::MeshFacetGrid grid(kernel);
 
+        //NOLINTBEGIN
         MeshCrossSection cs(kernel, grid, a, b, c, connectEdges, eps);
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
             (d, std::bind(&MeshCrossSection::section, &cs, sp::_1));
         future.waitForFinished();
+        //NOLINTEND
 
         TopoDS_Compound comp;
         BRep_Builder builder;

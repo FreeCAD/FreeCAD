@@ -250,8 +250,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadDepth->bind(pcHole->ThreadDepth);
     ui->CustomThreadClearance->bind(pcHole->CustomThreadClearance);
 
+    //NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
             std::bind(&TaskHoleParameters::changedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     this->groupLayout()->addWidget(proxy);
 }

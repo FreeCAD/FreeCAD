@@ -73,10 +73,12 @@ private:
 
 MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(nullptr), appdoc(doc)
 {
+    //NOLINTBEGIN
     connectExport = doc->signalExportObjects.connect
         (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
         (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     QCoreApplication* app = QCoreApplication::instance();
     if (app && app->inherits("QApplication")) {

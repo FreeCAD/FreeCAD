@@ -146,7 +146,9 @@ void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, co
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* action = menu->addAction(QObject::tr("Change image..."));
     action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
-    func->trigger(action, std::bind(&ViewProviderImagePlane::manipulateImage, this));
+    func->trigger(action, [this](){
+        this->manipulateImage();
+    });
 
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }

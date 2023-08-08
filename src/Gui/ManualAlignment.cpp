@@ -654,9 +654,11 @@ ManualAlignment* ManualAlignment::_instance = nullptr;
 ManualAlignment::ManualAlignment()
   : myViewer(nullptr), myDocument(nullptr), myPickPoints(3), d(new Private)
 {
+    //NOLINTBEGIN
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
         .connect(std::bind(&ManualAlignment::slotDeletedDocument, this, sp::_1));
+    //NOLINTEND
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -849,8 +851,10 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     // Connect to the document's signal as we want to be notified when something happens
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
+    //NOLINTBEGIN
     this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(std::bind
         (&ManualAlignment::slotDeletedObject, this, sp::_1));
+    //NOLINTEND
 
     continueAlignment();
 }

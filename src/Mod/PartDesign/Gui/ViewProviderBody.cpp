@@ -91,11 +91,13 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     assert ( adoc );
     assert ( gdoc );
 
+    //NOLINTBEGIN
     connectChangedObjectApp = adoc->signalChangedObject.connect (
             std::bind ( &ViewProviderBody::slotChangedObjectApp, this, sp::_1, sp::_2) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
             std::bind ( &ViewProviderBody::slotChangedObjectGui, this, sp::_1, sp::_2) );
+    //NOLINTEND
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -131,7 +133,9 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
-    func->trigger(act, std::bind(&ViewProviderBody::doubleClicked, this));
+    func->trigger(act, [this]() {
+        this->doubleClicked();
+    });
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }

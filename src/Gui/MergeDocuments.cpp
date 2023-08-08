@@ -76,11 +76,13 @@ private:
 
 MergeDocuments::MergeDocuments(App::Document* doc) : stream(nullptr), appdoc(doc)
 {
+    //NOLINTBEGIN
     connectExport = doc->signalExportObjects.connect
         (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
         (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     document = Gui::Application::Instance->getDocument(doc);
+    //NOLINTEND
 }
 
 MergeDocuments::~MergeDocuments()

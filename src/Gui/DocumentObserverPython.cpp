@@ -58,6 +58,7 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
+    //NOLINTBEGIN
 #define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
@@ -85,6 +86,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
     FC_PY_ELEMENT_ARG1(InEdit, InEdit)
     FC_PY_ELEMENT_ARG1(ResetEdit, ResetEdit)
+    //NOLINTEND
 }
 
 DocumentObserverPython::~DocumentObserverPython()

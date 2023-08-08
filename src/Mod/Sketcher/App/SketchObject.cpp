@@ -152,6 +152,7 @@ SketchObject::SketchObject()
 
     noRecomputes = false;
 
+    //NOLINTBEGIN
     ExpressionEngine.setValidator(
         std::bind(&Sketcher::SketchObject::validateExpression, this, sp::_1, sp::_2));
 
@@ -159,6 +160,7 @@ SketchObject::SketchObject()
         std::bind(&Sketcher::SketchObject::constraintsRemoved, this, sp::_1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(
         std::bind(&Sketcher::SketchObject::constraintsRenamed, this, sp::_1));
+    //NOLINTEND
 
     analyser = new SketchAnalysis(this);
 

@@ -181,12 +181,16 @@ void PropertyExpressionEngine::hasSetValue()
                         std::string key = objName + propName;
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
-                            if(!propName.empty())
+                            //NOLINTBEGIN
+                            if(!propName.empty()) {
                                 pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
                                             &PropertyExpressionEngine::slotChangedProperty,this,sp::_1,sp::_2)));
-                            else
+                            }
+                            else {
                                 pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
                                             &PropertyExpressionEngine::slotChangedObject,this,sp::_1,sp::_2)));
+                            }
+                            //NOLINTEND
                         }
                         propDeps.push_back(e.first);
                     }

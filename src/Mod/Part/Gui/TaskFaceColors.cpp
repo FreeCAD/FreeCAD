@@ -251,12 +251,14 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
+    //NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
         (&FaceColors::slotDeleteDocument, this, sp::_1));
     d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(std::bind
         (&FaceColors::slotDeleteObject, this, sp::_1));
     d->connectUndoDoc = d->doc->signalUndoDocument.connect(std::bind
         (&FaceColors::slotUndoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 FaceColors::~FaceColors()

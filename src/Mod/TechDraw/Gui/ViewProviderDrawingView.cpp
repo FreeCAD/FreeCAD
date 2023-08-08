@@ -79,8 +79,10 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
+    //NOLINTBEGIN
     auto bnd = std::bind(&ViewProviderDrawingView::onGuiRepaint, this, sp::_1);
     auto bndProgressMessage = std::bind(&ViewProviderDrawingView::onProgressMessage, this, sp::_1, sp::_2, sp::_3);
+    //NOLINTEND
     auto feature = getViewObject();
     if (feature) {
         const char* temp = feature->getNameInDocument();

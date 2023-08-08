@@ -1091,8 +1091,10 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     std::vector<int> columns(ulDim);
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);
+    //NOLINTBEGIN
     QFuture< std::vector<double> > future = QtConcurrent::mapped
         (columns, std::bind(&ScalarProduct::multiply, &scalar, sp::_1));
+    //NOLINTEND
     QFutureWatcher< std::vector<double> > watcher;
     watcher.setFuture(future);
     watcher.waitForFinished();

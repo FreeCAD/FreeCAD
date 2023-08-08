@@ -849,7 +849,7 @@ void PropertySheet::insertRows(int row, int count)
     boost::copy( data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2));
+    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2)); //NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
             CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
@@ -1047,7 +1047,7 @@ void PropertySheet::removeColumns(int col, int count)
     boost::copy(data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::colSortFunc, this, sp::_1, sp::_2));
+    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::colSortFunc, this, sp::_1, sp::_2)); //NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
             CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
@@ -1414,8 +1414,10 @@ void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App:
 }
 
 void PropertySheet::onAddDep(App::DocumentObject *obj) {
+    //NOLINTBEGIN
     depConnections[obj] = obj->signalChanged.connect(std::bind(
                 &PropertySheet::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 void PropertySheet::onRemoveDep(App::DocumentObject *obj) {

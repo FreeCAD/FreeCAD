@@ -55,9 +55,11 @@ TaskAppearance::TaskAppearance(QWidget *parent)
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
 
+    //NOLINTBEGIN
     this->connectChangedObject =
     Gui::Application::Instance->signalChangedObject.connect(std::bind
         (&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 TaskAppearance::~TaskAppearance()
