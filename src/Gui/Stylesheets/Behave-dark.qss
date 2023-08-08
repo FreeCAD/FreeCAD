@@ -2355,7 +2355,7 @@ Gui--StatefulLabel[state="redundant_constraints"] {
     color : rgba(255,69,0,255); /* Orange red */
 }
 Gui--StatefulLabel[state="partially_redundant_constraints"] {
-    color : rgba(89, 142, 240, 255); /* a bit darker than Cornflower  blue */
+    color : rgba(89, 142, 240, 255); /* a little darker than Cornflower blue */
 }
 Gui--StatefulLabel[state="solver_failed"] {
     color : rgba(255,0,0,255); /* Red */
