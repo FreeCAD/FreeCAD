@@ -45,7 +45,7 @@ FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
 using namespace App;
 using namespace Base;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -2662,13 +2662,13 @@ public:
         myPath = myPos->first.toUtf8().constData();
         App::Application &app = App::GetApplication();
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
-            boost::bind(&DocInfo::slotFinishRestoreDocument,this,bp::_1));
+            std::bind(&DocInfo::slotFinishRestoreDocument,this,sp::_1));
         connPendingReloadDocument = app.signalPendingReloadDocument.connect(
-            boost::bind(&DocInfo::slotFinishRestoreDocument,this,bp::_1));
+            std::bind(&DocInfo::slotFinishRestoreDocument,this,sp::_1));
         connDeleteDocument = app.signalDeleteDocument.connect(
-            boost::bind(&DocInfo::slotDeleteDocument,this,bp::_1));
+            std::bind(&DocInfo::slotDeleteDocument,this,sp::_1));
         connSaveDocument = app.signalSaveDocument.connect(
-            boost::bind(&DocInfo::slotSaveDocument,this,bp::_1));
+            std::bind(&DocInfo::slotSaveDocument,this,sp::_1));
 
         QString fullpath(getFullPath());
         if(fullpath.isEmpty())

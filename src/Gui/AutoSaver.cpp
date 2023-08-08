@@ -50,15 +50,15 @@
 FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 AutoSaver* AutoSaver::self = nullptr;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)
 {
-    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, bp::_1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, bp::_1));
+    App::GetApplication().signalNewDocument.connect(std::bind(&AutoSaver::slotCreateDocument, this, sp::_1));
+    App::GetApplication().signalDeleteDocument.connect(std::bind(&AutoSaver::slotDeleteDocument, this, sp::_1));
 }
 
 AutoSaver::~AutoSaver()
@@ -244,9 +244,9 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
     documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
-        (boost::bind(&AutoSaveProperty::slotNewObject, this, bp::_1));
+        (std::bind(&AutoSaveProperty::slotNewObject, this, sp::_1));
     documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
-        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, bp::_2));
+        (std::bind(&AutoSaveProperty::slotChangePropertyData, this, sp::_2));
 }
 
 AutoSaveProperty::~AutoSaveProperty()

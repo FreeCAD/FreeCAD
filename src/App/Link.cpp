@@ -47,7 +47,7 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
 using namespace Base;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 using CharRange = boost::iterator_range<const char*>;
 
@@ -1540,7 +1540,7 @@ void LinkBaseExtension::updateGroup() {
                 FC_LOG("new group connection " << getExtendedObject()->getFullName()
                         << " -> " << group->getFullName());
                 conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
+                        std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
             }
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
@@ -1554,7 +1554,7 @@ void LinkBaseExtension::updateGroup() {
                     FC_LOG("new group connection " << getExtendedObject()->getFullName()
                             << " -> " << child->getFullName());
                     conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
+                            std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
                 }
             }
         }

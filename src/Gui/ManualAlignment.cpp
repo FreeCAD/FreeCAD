@@ -62,7 +62,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 AlignmentGroup::AlignmentGroup()
 {
@@ -656,7 +656,7 @@ ManualAlignment::ManualAlignment()
 {
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
-        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, bp::_1));
+        .connect(std::bind(&ManualAlignment::slotDeletedDocument, this, sp::_1));
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -849,8 +849,8 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     // Connect to the document's signal as we want to be notified when something happens
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
-    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(boost::bind
-        (&ManualAlignment::slotDeletedObject, this, bp::_1));
+    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(std::bind
+        (&ManualAlignment::slotDeletedObject, this, sp::_1));
 
     continueAlignment();
 }

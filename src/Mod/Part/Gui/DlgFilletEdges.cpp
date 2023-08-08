@@ -72,7 +72,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
@@ -245,9 +245,9 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->fillet = fillet;
     d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject
-        .connect(boost::bind(&DlgFilletEdges::onDeleteObject, this, bp::_1));
+        .connect(std::bind(&DlgFilletEdges::onDeleteObject, this, sp::_1));
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
-        .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, bp::_1));
+        .connect(std::bind(&DlgFilletEdges::onDeleteDocument, this, sp::_1));
     // set tree view with three columns
     FilletRadiusModel* model = new FilletRadiusModel(this);
     connect(model, &FilletRadiusModel::toggleCheckState,

@@ -53,6 +53,7 @@
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherElements.h"
 
+// clang-format off
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
@@ -1070,7 +1071,7 @@ void TaskSketcherElements::connectSignals()
         ui->filterButton, &QToolButton::clicked, ui->filterButton, &QToolButton::showMenu);
 
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
-        boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+        std::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
 }
 
 /* filter functions --------------------------------------------------- */
@@ -1823,3 +1824,4 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
 
 #include "TaskSketcherElements.moc"// For Delegate as it is QOBJECT
 #include "moc_TaskSketcherElements.cpp"
+// clang-format on

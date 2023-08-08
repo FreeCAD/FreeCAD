@@ -79,7 +79,7 @@
 #include "TaskDimension.h"
 
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 static bool _MeasureInfoInited;
 
@@ -94,7 +94,7 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
-            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, bp::_1));
+            App::GetApplication().signalDeleteDocument.connect(std::bind(slotDeleteDocument, sp::_1));
         }
     }
 };

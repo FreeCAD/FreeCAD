@@ -56,9 +56,10 @@
 #include "ui_TaskSketcherConstraints.h"
 
 
+// clang-format off
 using namespace SketcherGui;
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 // Translation block for context menu: do not remove
 #if 0
@@ -944,7 +945,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
                      &TaskSketcherConstraints::onFilterListItemChanged);
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
-        boost::bind(&SketcherGui::TaskSketcherConstraints::slotConstraintsChanged, this));
+        std::bind(&SketcherGui::TaskSketcherConstraints::slotConstraintsChanged, this));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -954,7 +955,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(
-        boost::bind(&TaskSketcherConstraints::onChangedSketchView, this, bp::_1, bp::_2));
+        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
 
     slotConstraintsChanged();// Populate constraints list
     // Initialize special filters
@@ -1781,3 +1782,4 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
 
 
 #include "moc_TaskSketcherConstraints.cpp"
+// clang-format on

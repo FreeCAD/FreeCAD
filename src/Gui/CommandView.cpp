@@ -86,7 +86,7 @@
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace {
 // A helper class to open a transaction when changing properties of view providers.
@@ -657,7 +657,7 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
-    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, bp::_1));
+    this->getGuiApplication()->signalActivateView.connect(std::bind(&StdCmdDrawStyle::updateIcon, this, sp::_1));
 }
 
 Gui::Action * StdCmdDrawStyle::createAction()

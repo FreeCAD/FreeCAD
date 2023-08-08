@@ -51,7 +51,7 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 #endif
 
 using namespace PartDesign;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 // ============================================================================
 
@@ -257,8 +257,8 @@ void ShapeBinder::onSettingDocument()
 {
     App::Document* document = getDocument();
     if (document) {
-        this->connectDocumentChangedObject = document->signalChangedObject.connect(boost::bind
-            (&ShapeBinder::slotChangedObject, this, bp::_1, bp::_2));
+        this->connectDocumentChangedObject = document->signalChangedObject.connect(std::bind
+            (&ShapeBinder::slotChangedObject, this, sp::_1, sp::_2));
     }
 }
 
@@ -835,7 +835,7 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
         {
             contextDoc = Context.getValue()->getDocument();
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
-                boost::bind(&SubShapeBinder::slotRecomputedObject, this, bp::_1));
+                std::bind(&SubShapeBinder::slotRecomputedObject, this, sp::_1));
         }
     }
     else if (!isRestoring()) {
