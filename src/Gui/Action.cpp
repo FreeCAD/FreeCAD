@@ -695,7 +695,7 @@ void WorkbenchGroup::addTo(QWidget *widget)
 
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
+    QStringList enabled_wbs_list = WorkbenchList::getEnabledWorkbenches();
 
     // Clear the actions.
     for (QAction* action : actions()) {

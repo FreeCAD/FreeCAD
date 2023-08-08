@@ -27,6 +27,7 @@
 #define GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
 
 #include <Gui/PropertyPage.h>
+#include <Gui/ListWidgetDragBugFix.h>
 #include <memory>
 
 namespace Gui::Dialog {
@@ -48,14 +49,9 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
-    static QStringList getEnabledWorkbenches();
-    static QStringList getDisabledWorkbenches();
-
 protected Q_SLOTS:
-    void wbToggled(const QString& wbName, bool enabled);
     void wbItemMoved();
     void onWbSelectorChanged(int index);
-    void onStartWbChanged(int index);
     void onWbByTabToggled(bool val);
 
 protected:
@@ -63,7 +59,6 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    void addWorkbench(const QString& it, bool enabled);
 
     void setStartWorkbenchComboItems();
 
@@ -71,12 +66,41 @@ private:
     void loadWorkbenchSelector();
 
 
-    std::vector<std::string> _backgroundAutoloadedModules;
     std::string _startupModule;
 
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
 };
 
-} // namespace Gui::Dialog
+class WorkbenchList : public ListWidgetDragBugFix
+{
+    Q_OBJECT
+
+public:
+    explicit WorkbenchList(QWidget* parent = nullptr);
+
+    void saveSettings();
+    void loadSettings();
+
+    static QStringList getEnabledWorkbenches();
+    static QStringList getDisabledWorkbenches();
+    void setStartupWorkbench(QString workbenchName);
+
+protected Q_SLOTS:
+    void onWbToggled(const QString& wbName, bool enabled);
+
+Q_SIGNALS:
+    void wbToggled(const QString& wbName, bool enabled);
+
+protected:
+    void buildWorkbenchList();
+    // std::string _startupModule;
+    std::vector<std::string> _backgroundAutoloadedModules;
+
+private:
+    void addWorkbench(const QString& it, bool enabled);
+};
+
+
+}// namespace Gui::Dialog
 
 #endif // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

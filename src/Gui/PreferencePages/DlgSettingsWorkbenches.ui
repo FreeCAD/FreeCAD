@@ -38,7 +38,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="ListWidgetDragBugFix" name="wbList"/>
+    <widget class="WorkbenchList" name="wbList"/>
    </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout">
@@ -135,9 +135,9 @@ after FreeCAD launches</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>ListWidgetDragBugFix</class>
+   <class>WorkbenchList</class>
    <extends>QListWidget</extends>
-   <header>ListWidgetDragBugFix.h</header>
+   <header>Gui/PreferencePages/DlgSettingsWorkbenchesImp.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>

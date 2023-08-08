@@ -237,20 +237,19 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
-    connect(ui->AutoloadModuleCombo, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
+    connect(ui->AutoloadModuleCombo, qOverload<int>(&QComboBox::activated),
+        [this](int index) {
+            QVariant data = this->ui->AutoloadModuleCombo->itemData(index);
+            QString workbenchName = data.toString();
+            this->ui->wbList->setStartupWorkbench(workbenchName);
+    });
     connect(ui->WorkbenchSelectorPosition, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
     connect(ui->CheckBox_WbByTab, &QCheckBox::toggled, this, &DlgSettingsWorkbenchesImp::onWbByTabToggled);
-}
-
-/**
- *  Destroys the object and frees any allocated resources
- */
-DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
-{
+    connect(ui->wbList, &WorkbenchList::wbToggled, this, &DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems);
 }
 
 
-void DlgSettingsWorkbenchesImp::saveSettings()
+void WorkbenchList::saveSettings()
 {
     std::ostringstream orderedStr, disabledStr, autoloadStr;
 
@@ -263,8 +262,8 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         }
     };
 
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+    for (int i = 0; i < count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(itemWidget(item(i)));
         if (!wbItem)
             continue;
         std::string wbName = wbItem->objectName().toStdString();
@@ -299,7 +298,22 @@ void DlgSettingsWorkbenchesImp::saveSettings()
 
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
+}
 
+
+
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
+{
+}
+
+
+void DlgSettingsWorkbenchesImp::saveSettings()
+{
+    ui->wbList->saveSettings();
     saveWorkbenchSelector();
 
     int index = ui->AutoloadModuleCombo->currentIndex();
@@ -315,10 +329,29 @@ void DlgSettingsWorkbenchesImp::loadSettings()
 {
     loadWorkbenchSelector();
 
+    ui->wbList->loadSettings();
+
+    //We set the startup setting after building the list so that we can put only the enabled wb.
+    setStartWorkbenchComboItems();
+    // ui->wbList->setStartupWorkbench(_startupModule);
+
+    {
+        QSignalBlocker sigblk(ui->CheckBox_WbByTab);
+        ui->CheckBox_WbByTab->onRestore();
+    }
+}
+
+WorkbenchList::WorkbenchList(QWidget* parent) : ListWidgetDragBugFix(parent)
+{
+
+}
+
+void WorkbenchList::loadSettings()
+{
     // There are two different "autoload" settings: the first, in FreeCAD since 2004,
     // controls the module the user sees first when starting FreeCAD, and defaults to the Start workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    _startupModule = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+    std::string _startupModule = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         GetASCII("AutoloadModule", start.c_str());
 
     // The second autoload setting does a background autoload of any number of other modules
@@ -333,22 +366,15 @@ void DlgSettingsWorkbenchesImp::loadSettings()
         _backgroundAutoloadedModules.push_back(workbench);
 
     buildWorkbenchList();
-
-    //We set the startup setting after building the list so that we can put only the enabled wb.
-    setStartWorkbenchComboItems();
-
-    {
-        QSignalBlocker sigblk(ui->CheckBox_WbByTab);
-        ui->CheckBox_WbByTab->onRestore();
-    }
+    setStartupWorkbench(QString::fromStdString(_startupModule));
 }
 
 /**
 Build the list of unloaded workbenches.
 */
-void DlgSettingsWorkbenchesImp::buildWorkbenchList()
+void WorkbenchList::buildWorkbenchList()
 {
-    QSignalBlocker sigblk(ui->wbList);
+    QSignalBlocker sigblk(this);
 
     QStringList enabledWbs = getEnabledWorkbenches();
     QStringList disabledWbs = getDisabledWorkbenches();
@@ -365,20 +391,20 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
     }
 }
 
-void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
+void WorkbenchList::addWorkbench(const QString& wbName, bool enabled)
 {
-    bool isStartupWb = wbName.toStdString() == _startupModule;
+    bool isStartupWb = false;// wbName.toStdString() == _startupModule;
     bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
         wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
-    connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
+    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, count(), this);
+    connect(widget, &wbListItem::wbToggled, this, &WorkbenchList::onWbToggled);
     auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
-    ui->wbList->addItem(wItem);
-    ui->wbList->setItemWidget(wItem, widget);
+    addItem(wItem);
+    setItemWidget(wItem, widget);
 }
 
-QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
+QStringList WorkbenchList::getEnabledWorkbenches()
 {
     QStringList disabled_wbs_list = getDisabledWorkbenches();
     QStringList enabled_wbs_list;
@@ -416,7 +442,7 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
     return enabled_wbs_list;
 }
 
-QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
+QStringList WorkbenchList::getDisabledWorkbenches()
 {
     QString disabled_wbs;
     QStringList unfiltered_disabled_wbs_list;
@@ -479,23 +505,22 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 
-void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
+void WorkbenchList::onWbToggled(const QString& wbName, bool enabled)
 {
-    setStartWorkbenchComboItems();
 
     //reorder the list of items.
     int wbIndex = 0;
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+    for (int i = 0; i < count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(itemWidget(item(i)));
         if (wbItem && wbItem->objectName() == wbName) {
             wbIndex = i;
         }
     }
 
-    int destinationIndex = ui->wbList->count();
+    int destinationIndex = count();
 
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+    for (int i = 0; i < count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(itemWidget(item(i)));
         if (wbItem && !wbItem->isEnabled() && (enabled || ((wbItem->objectName()).toStdString() > wbName.toStdString()))) {
             //If the wb was enabled, then it was in the disabled wbs. So it moves to the row of the currently first disabled wb
             //If the wb was disabled. Then it goes to the disabled wb where it belongs alphabetically.
@@ -503,8 +528,9 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
             break;
         }
     }
-    ui->wbList->model()->moveRow(QModelIndex(), wbIndex, QModelIndex(), destinationIndex);
+    model()->moveRow(QModelIndex(), wbIndex, QModelIndex(), destinationIndex);
 
+    Q_EMIT wbToggled(wbName, enabled);
 }
 
 void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
@@ -548,6 +574,9 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
         }
     }
 
+    std::string start = App::Application::Config()["StartWorkbench"];
+    _startupModule = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("AutoloadModule", start.c_str());
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(QString::fromStdString(_startupModule)));
 }
 
@@ -561,18 +590,13 @@ void DlgSettingsWorkbenchesImp::wbItemMoved()
     }
 }
 
-void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
+void WorkbenchList::setStartupWorkbench(QString workbenchName)
 {
-    //Update _startupModule
-    QVariant data = ui->AutoloadModuleCombo->itemData(index);
-    QString wbName = data.toString();
-    _startupModule = wbName.toStdString();
-
     //Change wb that user can't deactivate.
-    for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+    for (int i = 0; i < count(); i++) {
+        wbListItem* wbItem = dynamic_cast<wbListItem*>(itemWidget(item(i)));
         if (wbItem) {
-            wbItem->setStartupWb(wbItem->objectName() == wbName);
+            wbItem->setStartupWb(wbItem->objectName() == workbenchName);
         }
     }
 }
