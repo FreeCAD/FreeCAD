@@ -314,11 +314,6 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
 void CmdTechDrawView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
     //set projection direction from selected Face
     //use first object with a face selected
@@ -385,6 +380,12 @@ void CmdTechDrawView::activated(int iMsg)
                              QObject::tr("No Shapes, Groups or Links in this selection"));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     Base::Vector3d projDir;
 
@@ -601,11 +602,6 @@ bool CmdTechDrawSectionView::isActive()
 
 void execSimpleSection(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
     std::vector<App::DocumentObject*> baseObj =
         cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (baseObj.empty()) {
@@ -613,6 +609,12 @@ void execSimpleSection(Gui::Command* cmd)
                              QObject::tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
     Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
@@ -656,12 +658,6 @@ bool CmdTechDrawComplexSection::isActive() { return DrawGuiUtil::needPage(this);
 //for the dialog is more involved that simple section
 void execComplexSection(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
     TechDraw::DrawViewPart* baseView(nullptr);
     std::vector<App::DocumentObject*> shapes;
     std::vector<App::DocumentObject*> xShapes;
@@ -743,6 +739,11 @@ void execComplexSection(Gui::Command* cmd)
         return;
     }
 
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
     Gui::Control().showDialog(
         new TaskDlgComplexSection(page, baseView, shapes, xShapes, profileObject, profileSubs));
 }
@@ -767,10 +768,6 @@ CmdTechDrawDetailView::CmdTechDrawDetailView() : Command("TechDraw_DetailView")
 void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
 
     std::vector<App::DocumentObject*> baseObj =
         getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
@@ -1428,12 +1425,6 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 void CmdTechDrawArchView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
 
     const std::vector<App::DocumentObject*> objects =
         getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -1461,6 +1452,12 @@ void CmdTechDrawArchView::activated(int iMsg)
                              QObject::tr("No Arch Sections in selection."));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("ArchView");
     std::string SourceName = archObject->getNameInDocument();
