@@ -406,6 +406,7 @@ SET(Dialog_CPP_SRCS
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
     DlgDisplayPropertiesImp.cpp
+    DlgFirstStart.cpp
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
     DlgRunExternal.cpp
@@ -446,6 +447,7 @@ SET(Dialog_HPP_SRCS
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
     DlgDisplayPropertiesImp.h
+    DlgFirstStart.h
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
     DlgRunExternal.h

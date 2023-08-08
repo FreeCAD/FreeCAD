@@ -78,6 +78,7 @@
 #include "BitmapFactory.h"
 #include "ComboView.h"
 #include "Command.h"
+#include "DlgFirstStart.h"
 #include "DockWindowManager.h"
 #include "DownloadManager.h"
 #include "FileDialog.h"
@@ -1464,6 +1465,21 @@ void MainWindow::delayedStartup()
 
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
+    }
+
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    #pragma message ( "CHANGE BEFORE COMMIT" )
+    if (hGrp->GetBool("FirstStart", true) || true) {
+        hGrp->SetBool("FirstStart", false);
+        QWizard* firstStartWizard = new Gui::Dialog::FirstStartWizard(this);
+        firstStartWizard->show();
     }
 }
 
