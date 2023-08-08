@@ -156,7 +156,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     Base::PyGILStateLocker lock;
     try {
         std::string buffer = str;
-        boost::regex pickle("S'(\\w+)'.+S'(\\w+)'\\n");
+        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
         boost::match_results<std::string::const_iterator> what;
         std::string::const_iterator start, end;
         start = buffer.begin();
@@ -271,7 +271,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
         std::string val = /*encodeValue*/(repr);
         writer.Stream() << writer.ind() << "<Python value=\"" << val
-                        << "\" encoded=\"yes\"";
+                        << R"(" encoded="yes")";
 
         Base::PyGILStateLocker lock;
         try {
@@ -324,7 +324,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 
         Base::PyGILStateLocker lock;
         try {
-            boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
+            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
             boost::match_results<std::string::const_iterator> what;
             std::string::const_iterator start, end;
             start = buffer.begin();

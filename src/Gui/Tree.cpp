@@ -515,9 +515,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     setupText();
     if (!documentPixmap) {
-        documentPixmap.reset(new QPixmap(Gui::BitmapFactory().pixmap("Document")));
+        documentPixmap = std::make_unique<QPixmap>(Gui::BitmapFactory().pixmap("Document"));
         QIcon icon(*documentPixmap);
-        documentPartialPixmap.reset(new QPixmap(icon.pixmap(documentPixmap->size(), QIcon::Disabled)));
+        documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
     header()->setVisible(!TreeParams::getHideColumn());

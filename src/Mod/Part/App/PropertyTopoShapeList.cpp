@@ -189,7 +189,7 @@ App::Property *PropertyTopoShapeList::Copy() const
     for (auto& shape : _lValueList) {
         BRepBuilderAPI_Copy copy(shape.getShape());
         TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-        copiedShapes.push_back(*newShape);
+        copiedShapes.emplace_back(*newShape);
     }
     p->setValues(copiedShapes);
     return p;

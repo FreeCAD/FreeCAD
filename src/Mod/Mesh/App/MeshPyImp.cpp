@@ -267,7 +267,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
         std::unique_ptr<MeshCore::Material> mat;
         if (List) {
-            mat.reset(new MeshCore::Material);
+            mat = std::make_unique<MeshCore::Material>();
             Py::Sequence list(List);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);

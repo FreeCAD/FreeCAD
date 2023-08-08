@@ -48,7 +48,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
-#include "DlgSettingsWorkbenchesImp.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "FileDialog.h"
@@ -818,7 +818,7 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
   , visibleItems(4)
   , maximumItems(20)
 {
-    _pimpl.reset(new Private(this, "User parameter:BaseApp/Preferences/RecentFiles"));
+    _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
 }
 

@@ -84,7 +84,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
     if(!Axis) {
-        Axis.reset(new AxisOrigin);
+        Axis = std::make_unique<AxisOrigin>();
         std::map<std::string,std::string> labels;
         labels["O"] = "Origin";
         labels["X"] = "X-Axis";

@@ -465,7 +465,7 @@ class ExceptionCancel : public Base::Exception
 public:
     ExceptionCancel(){}
     explicit ExceptionCancel(char* msg){this->setMessage(msg);}
-    ~ExceptionCancel() throw() override {}
+    ~ExceptionCancel() noexcept override {}
 };
 
 } // namespace Attacher

@@ -44,8 +44,17 @@
        d="m 1081.0663,345.09799 3.9999,4 12.0001,-12"
        style="opacity:1;vector-effect:none;fill:none;fill-opacity:0.60093898;stroke:#1b0909;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.11764706" />
     <path
-       style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:0.60093898;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 1081.0663,342.59799 3.9999,4 12.0001,-12"
        id="path7899" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:128.504"
+       id="rect354"
+       width="28.138498"
+       height="27.761106"
+       x="1075.0909"
+       y="327.7049"
+       ry="3.878597"
+       rx="4.0960321" />
   </g>
 </svg>

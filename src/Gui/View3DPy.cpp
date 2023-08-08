@@ -945,7 +945,7 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
 
     std::unique_ptr<SoVectorizeAction> vo;
     Base::FileInfo fi(filename);
-    if (fi.hasExtension("ps") || fi.hasExtension("eps")) {
+    if (fi.hasExtension({"ps", "eps"})) {
         vo = std::unique_ptr<SoVectorizeAction>(new SoVectorizePSAction());
         //vo->setGouraudThreshold(0.0f);
     }

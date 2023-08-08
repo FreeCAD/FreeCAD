@@ -1043,12 +1043,12 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 
         std::unique_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
-            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
-                Base::asBoolean(periodic), tol3d));
+            aBSplineInterpolation = std::make_unique<GeomAPI_Interpolate>(interpolationPoints,
+                Base::asBoolean(periodic), tol3d);
         }
         else {
-            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints, parameters,
-                Base::asBoolean(periodic), tol3d));
+            aBSplineInterpolation = std::make_unique<GeomAPI_Interpolate>(interpolationPoints, parameters,
+                Base::asBoolean(periodic), tol3d);
         }
 
         if (t1 && t2) {

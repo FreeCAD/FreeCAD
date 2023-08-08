@@ -2500,7 +2500,7 @@ public:
             return;
         }
 
-        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        currentSelectionHandler = std::make_unique<SelectionCallbackHandler>();
         if (viewer)
         {
             currentSelectionHandler->userData = ud;

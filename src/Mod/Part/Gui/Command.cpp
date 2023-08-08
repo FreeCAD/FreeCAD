@@ -1323,7 +1323,7 @@ void CmdPartMakeFace::activated(int iMsg)
         App::DocumentT doc(sketches.front()->getDocument());
         std::stringstream str;
         str << doc.getDocumentPython()
-            << ".addObject(\"Part::Face\", \"Face\").Sources = (";
+            << R"(.addObject("Part::Face", "Face").Sources = ()";
         for (auto &obj : sketches) {
             str << App::DocumentObjectT(obj).getObjectPython() << ", ";
         }

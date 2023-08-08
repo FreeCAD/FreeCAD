@@ -94,7 +94,7 @@ void StdCmdWorkbench::activated(int i)
         QString msg(QLatin1String(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
         QRegularExpression rx;
-        rx.setPattern(QLatin1String("^\\s*<type 'exceptions.\\w*'>:\\s*"));
+        rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));
         auto match = rx.match(msg);
         if (match.hasMatch())
             msg = msg.mid(match.capturedLength());

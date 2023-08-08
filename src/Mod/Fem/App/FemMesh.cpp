@@ -1911,7 +1911,7 @@ void FemMesh::read(const char *FileName)
         readNastran(File.filePath());
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu") || File.hasExtension("pvtu")) {
+    else if (File.hasExtension({"vtk", "vtu", "pvtu"})) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
@@ -2406,7 +2406,7 @@ void FemMesh::write(const char *FileName) const
         writeABAQUS(File.filePath(), elemParam, groupParam);
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+    else if (File.hasExtension({"vtk", "vtu"})) {
         Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);

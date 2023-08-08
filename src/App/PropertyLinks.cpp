@@ -4623,7 +4623,7 @@ void PropertyXLinkContainer::Save (Base::Writer &writer) const {
 void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     reader.readElement("XLinks");
     auto count = reader.getAttributeAsUnsigned("count");
-    _XLinkRestores.reset(new std::vector<RestoreInfo>(count));
+    _XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
 
     if(reader.hasAttribute("hidden")) {
         std::istringstream iss(reader.getAttribute("hidden"));
