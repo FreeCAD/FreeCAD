@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel">
      <property name="text">
-      <string>This page let you customize your current theme. The offered settings are optional for theme developpers so they may or may not have an effect in your current theme.</string>
+      <string>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
