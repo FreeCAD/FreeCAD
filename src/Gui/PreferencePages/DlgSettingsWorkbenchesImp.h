@@ -32,6 +32,7 @@
 
 namespace Gui::Dialog {
 class Ui_DlgSettingsWorkbenches;
+class wbListItem;
 
 /**
  * The DlgSettingsWorkbenchesImp class implements a pseudo-preference page explain why
@@ -76,7 +77,7 @@ class WorkbenchList : public ListWidgetDragBugFix
     Q_OBJECT
 
 public:
-    explicit WorkbenchList(QWidget* parent = nullptr);
+    explicit WorkbenchList(bool onlyShowEnabledCheckBox = true, QWidget* parent = nullptr);
 
     void saveSettings();
     void loadSettings();
@@ -84,6 +85,9 @@ public:
     static QStringList getEnabledWorkbenches();
     static QStringList getDisabledWorkbenches();
     void setStartupWorkbench(QString workbenchName);
+    void disableWorkbenches();
+    void enableWorkbenches();
+    void enableWorkbenches(QStringList workbenchNames);
 
 protected Q_SLOTS:
     void onWbToggled(const QString& wbName, bool enabled);
@@ -95,9 +99,9 @@ protected:
     void buildWorkbenchList();
     // std::string _startupModule;
     std::vector<std::string> _backgroundAutoloadedModules;
-
-private:
     void addWorkbench(const QString& it, bool enabled);
+    bool m_onlyShowEnabledCheckBox;
+    QList<wbListItem*> getAllItems();
 };
 
 
