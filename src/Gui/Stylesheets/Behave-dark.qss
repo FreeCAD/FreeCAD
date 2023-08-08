@@ -1857,12 +1857,6 @@ QTreeView::indicator:indeterminate {
 /*==================================================================================================
 Slider
 ==================================================================================================*/
-QSlider,
-QSlider:active,
-QSlider:!active {
-    border: none;
-    background-color: transparent;
-}
 
 QSlider:horizontal {
     padding: 0px 10px;
@@ -1872,58 +1866,82 @@ QSlider:vertical {
     padding: 10px 0px;
 }
 
-QSlider::groove {
-    background-color: rgba(0,0,0,30);
-    border: 1px solid rgba(0,0,0,40);
-    border-radius: 5px;
-    margin: 4px 0px;
-}
-
 QSlider::groove:horizontal {
-    height: 8px;
+border: 1px solid #bbb;
+background: white;
+height: 8px;
+border-radius: 4px;
 }
 
 QSlider::groove:vertical {
-    width: 8px;
+border: 1px solid #bbb;
+background: white;
+width: 8px;
+border-radius: 4px;
 }
 
-QSlider::groove:horizontal:disabled,
-QSlider::groove:vertical:disabled {
-    border-color:  #232932;
-    background-color: #232932;
+QSlider::sub-page:vertical,
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #0059ff, stop: 1 #6495ED);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #6495ED, stop: 1 #0059ff);
+border: 1px solid #232932;
+width: 10px;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::add-page:vertical,
+QSlider::add-page:horizontal {
+background: #232932;
+border: 1px solid #232932;
+width: 10px;
+height: 10px;
+border-radius: 4px;
 }
 
 QSlider::handle:horizontal,
 QSlider::handle:vertical {
-    background-color: #434D5B;
-    border: 1px solid #434D5B;
-    width: 14px;
-    height: 14px;
-    border-radius: 8px;
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #0059ff, stop:1 #6495ED);
+border: 1px solid #232932;
+width: 13px;
+margin-top: -2px;
+margin-bottom: -2px;
+border-radius: 4px;
 }
 
-QSlider::handle:horizontal {
-    margin: -4px 0;
-}
-
-QSlider::handle:vertical {
-    margin: 0 -4px;
-}
-
+QSlider::handle:horizontal:focus,
+QSlider::handle:vertical:focus,
 QSlider::handle:horizontal:hover,
 QSlider::handle:vertical:hover,
 QSlider::handle:horizontal:pressed,
 QSlider::handle:vertical:pressed {
-    border-color: #65A2E5;
-    background-color: #65A2E5;
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #a9bfe7, stop:1 #6495ED);
+border: 1px solid #444;
+border-radius: 4px;
 }
 
-QSlider::handle:horizontal:disabled,
-QSlider::handle:vertical:disabled {
-    border-color: #232932;
-    background-color: #232932;
+QSlider::sub-page:vertical:disabled,
+QSlider::sub-page:horizontal:disabled {
+background: #232932;
+border-color: #232932;
 }
 
+QSlider::add-page:vertical:disabled,
+QSlider::add-page:horizontal:disabled {
+background: #232932;
+border-color: #232932;
+}
+
+QSlider::handle:vertical:disabled,
+QSlider::handle:horizontal:disabled {
+background: #232932;
+border: 1px solid #232932;
+border-radius: 4px;
+}
 
 /*==================================================================================================
 Toolbar buttons
