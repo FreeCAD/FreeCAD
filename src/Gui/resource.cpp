@@ -41,7 +41,7 @@
 #include "PreferencePages/DlgSettingsPythonConsole.h"
 #include "PreferencePages/DlgSettingsReportView.h"
 #include "PreferencePages/DlgSettingsSelection.h"
-#include "DlgSettingsTheme.h"
+#include "PreferencePages/DlgSettingsTheme.h"
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 
