@@ -28,6 +28,7 @@
 #include "PropertyPage.h"
 #include <QDialog>
 
+class QComboBox;
 class QDoubleSpinBox;
 
 namespace Gui {
@@ -49,6 +50,8 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    static void setupNavigationSelector(QComboBox* navigationSelector);
+    static void setNavigation(QComboBox* navigationSelector);
 
 private:
     void onMouseButtonClicked();
