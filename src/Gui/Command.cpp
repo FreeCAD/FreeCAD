@@ -1264,7 +1264,7 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
-        boost::bind(&PythonCommand::onActionInit, this));
+        std::bind(&PythonCommand::onActionInit, this));
 }
 
 PythonCommand::~PythonCommand()
@@ -1495,7 +1495,7 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
-        boost::bind(&PythonGroupCommand::onActionInit, this));
+        std::bind(&PythonGroupCommand::onActionInit, this));
 }
 
 PythonGroupCommand::~PythonGroupCommand()

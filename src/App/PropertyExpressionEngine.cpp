@@ -39,7 +39,7 @@ FC_LOG_LEVEL_INIT("App", true);
 using namespace App;
 using namespace Base;
 using namespace boost;
-using namespace boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer)
 
@@ -182,11 +182,11 @@ void PropertyExpressionEngine::hasSetValue()
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
                             if(!propName.empty())
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
+                                            &PropertyExpressionEngine::slotChangedProperty,this,sp::_1,sp::_2)));
                             else
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
+                                            &PropertyExpressionEngine::slotChangedObject,this,sp::_1,sp::_2)));
                         }
                         propDeps.push_back(e.first);
                     }

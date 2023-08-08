@@ -55,7 +55,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {

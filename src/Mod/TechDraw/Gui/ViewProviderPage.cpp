@@ -65,7 +65,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 #define _SHOWDRAWING 10
 #define _TOGGLEUPDATE 11
@@ -114,7 +114,7 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
+    auto bnd = std::bind(&ViewProviderPage::onGuiRepaint, this, sp::_1);
     TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);

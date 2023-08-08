@@ -47,7 +47,7 @@
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 class ElementColors::Private: public Gui::SelectionGate
 {
@@ -332,10 +332,10 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
-    d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ElementColors::slotDeleteDocument, this, bp::_1));
-    d->connectDelObj = Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ElementColors::slotDeleteObject, this, bp::_1));
+    d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(std::bind
+        (&ElementColors::slotDeleteDocument, this, sp::_1));
+    d->connectDelObj = Application::Instance->signalDeletedObject.connect(std::bind
+        (&ElementColors::slotDeleteObject, this, sp::_1));
 
     d->populate();
 }

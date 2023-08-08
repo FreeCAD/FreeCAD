@@ -56,7 +56,7 @@
 using Base::Console;
 using Base::Sequencer;
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 //===========================================================================
@@ -876,7 +876,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
     sPixmap       = "Std_UserEditModeDefault";
     eType         = ForEdit;
 
-    this->getGuiApplication()->signalUserEditModeChanged.connect(boost::bind(&StdCmdUserEditMode::updateIcon, this, bp::_1));
+    this->getGuiApplication()->signalUserEditModeChanged.connect(std::bind(&StdCmdUserEditMode::updateIcon, this, sp::_1));
 }
 
 Gui::Action * StdCmdUserEditMode::createAction()

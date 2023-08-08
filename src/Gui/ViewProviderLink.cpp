@@ -195,7 +195,7 @@ public:
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
         connChangeIcon = vp->signalChangeIcon.connect(
-                boost::bind(&LinkInfo::slotChangeIcon,this));
+                std::bind(&LinkInfo::slotChangeIcon,this));
         vp->forceUpdate(true);
         sensor.setFunction(sensorCB);
         sensor.setData(this);

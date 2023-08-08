@@ -35,7 +35,7 @@
 
 
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR Gui::TaskView::TaskAppearance */
 
@@ -56,8 +56,8 @@ TaskAppearance::TaskAppearance(QWidget *parent)
     Gui::Selection().Attach(this);
 
     this->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&TaskAppearance::slotChangedObject, this, bp::_1, bp::_2));
+    Gui::Application::Instance->signalChangedObject.connect(std::bind
+        (&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
 }
 
 TaskAppearance::~TaskAppearance()

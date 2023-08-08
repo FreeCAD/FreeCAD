@@ -66,7 +66,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /**
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
@@ -644,7 +644,7 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 {
     refreshWorkbenchList();
 
-    Application::Instance->signalRefreshWorkbenches.connect(boost::bind(&WorkbenchGroup::refreshWorkbenchList, this));
+    Application::Instance->signalRefreshWorkbenches.connect(std::bind(&WorkbenchGroup::refreshWorkbenchList, this));
 
     connect(getMainWindow(), &MainWindow::workbenchActivated,
         this, &WorkbenchGroup::onWorkbenchActivated);

@@ -34,7 +34,7 @@
 
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace App {
 
@@ -74,9 +74,9 @@ private:
 MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(nullptr), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
 
     QCoreApplication* app = QCoreApplication::instance();
     if (app && app->inherits("QApplication")) {

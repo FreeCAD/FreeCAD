@@ -55,7 +55,7 @@
 
 
 using namespace PartDesignGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",nullptr};
 
@@ -92,10 +92,10 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     assert ( gdoc );
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, bp::_1, bp::_2) );
+            std::bind ( &ViewProviderBody::slotChangedObjectApp, this, sp::_1, sp::_2) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, bp::_1, bp::_2) );
+            std::bind ( &ViewProviderBody::slotChangedObjectGui, this, sp::_1, sp::_2) );
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)

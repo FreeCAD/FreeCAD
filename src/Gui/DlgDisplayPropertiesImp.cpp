@@ -43,7 +43,7 @@
 
 using namespace Gui::Dialog;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
@@ -157,8 +157,8 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
     Gui::Selection().Attach(this);
 
     d->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
+    Gui::Application::Instance->signalChangedObject.connect(std::bind
+        (&DlgDisplayPropertiesImp::slotChangedObject, this, sp::_1, sp::_2));
 }
 
 /**

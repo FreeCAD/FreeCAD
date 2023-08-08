@@ -48,7 +48,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace PartGui {
     class BooleanOperationItem : public QTreeWidgetItem
@@ -93,10 +93,10 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
             this, &DlgBooleanOperation::currentItemChanged);
     connect(ui->secondShape, &QTreeWidget::currentItemChanged,
             this, &DlgBooleanOperation::currentItemChanged);
-    this->connectNewObject = App::GetApplication().signalNewObject.connect(boost::bind
-        (&DlgBooleanOperation::slotCreatedObject, this, bp::_1));
-    this->connectModObject = App::GetApplication().signalChangedObject.connect(boost::bind
-        (&DlgBooleanOperation::slotChangedObject, this, bp::_1, bp::_2));
+    this->connectNewObject = App::GetApplication().signalNewObject.connect(std::bind
+        (&DlgBooleanOperation::slotCreatedObject, this, sp::_1));
+    this->connectModObject = App::GetApplication().signalChangedObject.connect(std::bind
+        (&DlgBooleanOperation::slotChangedObject, this, sp::_1, sp::_2));
     findShapes();
 }
 

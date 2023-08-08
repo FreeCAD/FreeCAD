@@ -37,7 +37,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -77,9 +77,9 @@ private:
 MergeDocuments::MergeDocuments(App::Document* doc) : stream(nullptr), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     document = Gui::Application::Instance->getDocument(doc);
 }
 
