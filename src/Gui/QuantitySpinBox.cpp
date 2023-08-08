@@ -170,6 +170,9 @@ public:
         if (locale.positiveSign() != plus)
             copy.replace(locale.positiveSign(), plus);
 
+        QString reverseUnitStr = unitStr;
+        std::reverse(reverseUnitStr.begin(), reverseUnitStr.end());
+
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
         QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
@@ -202,12 +205,12 @@ public:
             }
 
             //Add default units to string if none are present
-            if (!copyChunk.contains(unitStr)){ // Fast check
+            if (!copyChunk.contains(reverseUnitStr)){ // Fast check
                 QRegularExpression unitsRe(QString::fromStdString("(?<=\\b|[^a-zA-Z])("+regexUnits+")(?=\\b|[^a-zA-Z])|°|″|′|\"|'|\\p{L}\\.\\p{L}|\\[\\p{L}"));
 
                 QRegularExpressionMatch match = unitsRe.match(copyChunk);
                 if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
-                    copyChunk.prepend(QString::fromUtf8(")")+unitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
+                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
             }
 
             std::reverse(copyChunk.begin(), copyChunk.end());
