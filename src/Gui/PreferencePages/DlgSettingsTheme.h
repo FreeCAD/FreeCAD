@@ -24,7 +24,7 @@
 #ifndef GUI_DIALOG_DLGSETTINGSTHEME_H
 #define GUI_DIALOG_DLGSETTINGSTHEME_H
 
-#include "PropertyPage.h"
+#include <Gui/PropertyPage.h>
 #include <memory>
 
 namespace Gui {

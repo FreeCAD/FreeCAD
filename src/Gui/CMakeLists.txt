@@ -325,7 +325,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsTheme.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
@@ -571,7 +571,7 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.cpp
     PreferencePages/DlgSettingsReportView.cpp
     PreferencePages/DlgSettingsSelection.cpp
-    DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsTheme.cpp
     PreferencePages/DlgSettingsViewColor.cpp
     PreferencePages/DlgSettingsWorkbenchesImp.cpp
 )
@@ -591,7 +591,7 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.h
     PreferencePages/DlgSettingsReportView.h
     PreferencePages/DlgSettingsSelection.h
-    DlgSettingsTheme.h
+    PreferencePages/DlgSettingsTheme.h
     PreferencePages/DlgSettingsViewColor.h
     PreferencePages/DlgSettingsWorkbenchesImp.h
 )
@@ -613,7 +613,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsTheme.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
 )

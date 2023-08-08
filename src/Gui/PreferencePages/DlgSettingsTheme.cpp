@@ -25,10 +25,10 @@
 # include <QPushButton>
 #endif
 
+#include <Gui/Application.h>
+
 #include "DlgSettingsTheme.h"
 #include "ui_DlgSettingsTheme.h"
-#include "Application.h"
-#include "PreferencePackManager.h"
 
 
 using namespace Gui::Dialog;
