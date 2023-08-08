@@ -43,67 +43,74 @@ PyObject *StringHasherPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 }
 
 // constructor method
-int StringHasherPy::PyInit(PyObject* , PyObject* )
+int StringHasherPy::PyInit(PyObject* args, PyObject* kwds)
 {
-   return 0;
+    char* kw[] = {nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "", kw)) {
+        return -1;
+    }
+
+    return 0;
 }
 
 
 PyObject* StringHasherPy::isSame(PyObject *args)
 {
    PyObject *other;
-   if (!PyArg_ParseTuple(args, "O!", &StringHasherPy::Type, &other)){     // convert args: Python->C
-       return Py::new_reference_to(Py::False());
+   if (!PyArg_ParseTuple(args, "O!", &StringHasherPy::Type, &other)) {
+       return nullptr;
    }
    auto otherHasher = static_cast<StringHasherPy*>(other)->getStringHasherPtr();
-   return Py::new_reference_to(Py::Boolean(getStringHasherPtr() == otherHasher));
+   bool same = getStringHasherPtr() == otherHasher;
+
+   return PyBool_FromLong(same ? 1 : 0);
 }
 
 PyObject* StringHasherPy::getID(PyObject *args)
 {
-   long id = -1;
-   int index = 0;
-   PyObject *value = nullptr;
-   PyObject *base64 = Py_False;
-   if (!PyArg_ParseTuple(args, "l|i",&id,&index)) {
-       PyErr_Clear();
-       if (!PyArg_ParseTuple(args, "O|O",&value,&base64))
-           return nullptr;
-   }
-   if(id>0) {
-       PY_TRY {
-           auto sid = getStringHasherPtr()->getID(id, index);
-           if(!sid) Py_Return;
-           return sid.getPyObject();
-       }PY_CATCH;
-   }
-   std::string txt;
-#if PY_MAJOR_VERSION >= 3
-   if (PyUnicode_Check(value)) {
-       txt = PyUnicode_AsUTF8(value);
-   }
-#else
-   if (PyUnicode_Check(value)) {
-       PyObject* unicode = PyUnicode_AsLatin1String(value);
-       txt = PyString_AsString(unicode);
-       Py_DECREF(unicode);
-   }
-   else if (PyString_Check(value)) {
-       txt = PyString_AsString(value);
-   }
-#endif
-   else
-       throw Py::TypeError("expect argument of type string");
-   PY_TRY {
-       QByteArray data;
-       StringIDRef sid;
-       if(PyObject_IsTrue(base64)) {
-           data = QByteArray::fromBase64(QByteArray::fromRawData(txt.c_str(),txt.size()));
-           sid = getStringHasherPtr()->getID(data,true);
-       }else
-           sid = getStringHasherPtr()->getID(txt.c_str(),txt.size());
-       return sid.getPyObject();
-   }PY_CATCH;
+    long id;
+    int index = 0;
+    if (PyArg_ParseTuple(args, "l|i", &id, &index)) {
+        if (id > 0) {
+            PY_TRY {
+                auto sid = getStringHasherPtr()->getID(id, index);
+                if (!sid) {
+                    Py_Return;
+                }
+                return sid.getPyObject();
+            }
+            PY_CATCH;
+        }
+        else {
+            PyErr_SetString(PyExc_ValueError, "Id must be positive integer");
+            return nullptr;
+        }
+    }
+
+    PyErr_Clear();
+    PyObject *value = nullptr;
+    PyObject *base64 = Py_False;
+    if (PyArg_ParseTuple(args, "O!|O!", &PyUnicode_Type, &value, &PyBool_Type, &base64)) {
+        PY_TRY {
+            std::string txt = PyUnicode_AsUTF8(value);
+            QByteArray data;
+            StringIDRef sid;
+            if (PyObject_IsTrue(base64)) {
+               data = QByteArray::fromBase64(QByteArray::fromRawData(txt.c_str(),txt.size()));
+               sid = getStringHasherPtr()->getID(data,true);
+            }
+            else {
+                sid = getStringHasherPtr()->getID(txt.c_str(),txt.size());
+            }
+
+            return sid.getPyObject();
+        }
+        PY_CATCH;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Positive integer and optional integer or "
+        "string and optional boolean is required");
+    return nullptr;
 }
 
 Py::Int StringHasherPy::getCount() const {

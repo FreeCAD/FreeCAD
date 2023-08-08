@@ -38,13 +38,15 @@ std::string StringIDPy::representation() const
 PyObject* StringIDPy::isSame(PyObject *args)
 {
    PyObject *other = nullptr;
-   if (PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other) == 0) { // convert args: Python->C
-       return Py::new_reference_to(Py::False());
+   if (!PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other)) {
+       return nullptr;
    }
+
    auto *otherPy = static_cast<StringIDPy*>(other);
-   return Py::new_reference_to(Py::Boolean(
-       otherPy->getStringIDPtr() == this->getStringIDPtr()
-       && otherPy->_index == this->_index));
+   bool same = (otherPy->getStringIDPtr() == this->getStringIDPtr())
+               && (otherPy->_index == this->_index);
+
+   return PyBool_FromLong(same ? 1 : 0);
 }
 
 Py::Int StringIDPy::getValue() const {
