@@ -32,14 +32,14 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string StringHasherPy::representation() const
 {
-   std::ostringstream str;
-   str << "<StringHasher at " << getStringHasherPtr() << ">";
-   return str.str();
+    std::ostringstream str;
+    str << "<StringHasher at " << getStringHasherPtr() << ">";
+    return str.str();
 }
 
 PyObject *StringHasherPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-   return new StringHasherPy(new StringHasher);
+    return new StringHasherPy(new StringHasher);
 }
 
 // constructor method
@@ -56,14 +56,15 @@ int StringHasherPy::PyInit(PyObject* args, PyObject* kwds)
 
 PyObject* StringHasherPy::isSame(PyObject *args)
 {
-   PyObject *other;
-   if (!PyArg_ParseTuple(args, "O!", &StringHasherPy::Type, &other)) {
-       return nullptr;
-   }
-   auto otherHasher = static_cast<StringHasherPy*>(other)->getStringHasherPtr();
-   bool same = getStringHasherPtr() == otherHasher;
+    PyObject *other;
+    if (!PyArg_ParseTuple(args, "O!", &StringHasherPy::Type, &other)) {
+        return nullptr;
+    }
 
-   return PyBool_FromLong(same ? 1 : 0);
+    auto otherHasher = static_cast<StringHasherPy*>(other)->getStringHasherPtr();
+    bool same = getStringHasherPtr() == otherHasher;
+
+    return  PyBool_FromLong(same ? 1 : 0);
 }
 
 PyObject* StringHasherPy::getID(PyObject *args)
@@ -77,6 +78,7 @@ PyObject* StringHasherPy::getID(PyObject *args)
                 if (!sid) {
                     Py_Return;
                 }
+
                 return sid.getPyObject();
             }
             PY_CATCH;
@@ -96,8 +98,8 @@ PyObject* StringHasherPy::getID(PyObject *args)
             QByteArray data;
             StringIDRef sid;
             if (PyObject_IsTrue(base64)) {
-               data = QByteArray::fromBase64(QByteArray::fromRawData(txt.c_str(),txt.size()));
-               sid = getStringHasherPtr()->getID(data,true);
+                data = QByteArray::fromBase64(QByteArray::fromRawData(txt.c_str(),txt.size()));
+                sid = getStringHasherPtr()->getID(data,true);
             }
             else {
                 sid = getStringHasherPtr()->getID(txt.c_str(),txt.size());
@@ -113,43 +115,52 @@ PyObject* StringHasherPy::getID(PyObject *args)
     return nullptr;
 }
 
-Py::Int StringHasherPy::getCount() const {
-   return Py::Int((long)getStringHasherPtr()->count());
+Py::Long StringHasherPy::getCount() const
+{
+    return Py::Long(PyLong_FromSize_t(getStringHasherPtr()->count()), true);
 }
 
-Py::Int StringHasherPy::getSize() const {
-   return Py::Int((long)getStringHasherPtr()->size());
+Py::Long StringHasherPy::getSize() const
+{
+    return Py::Long(PyLong_FromSize_t(getStringHasherPtr()->size()), true);
 }
 
-Py::Boolean StringHasherPy::getSaveAll() const {
-   return Py::Boolean(getStringHasherPtr()->getSaveAll());
+Py::Boolean StringHasherPy::getSaveAll() const
+{
+    return Py::Boolean(getStringHasherPtr()->getSaveAll());
 }
 
-void StringHasherPy::setSaveAll(Py::Boolean value) {
-   getStringHasherPtr()->setSaveAll(value);
+void StringHasherPy::setSaveAll(Py::Boolean value)
+{
+    getStringHasherPtr()->setSaveAll(value);
 }
 
-Py::Int StringHasherPy::getThreshold() const {
-   return Py::Int((long)getStringHasherPtr()->getThreshold());
+Py::Long StringHasherPy::getThreshold() const
+{
+    return Py::Long(getStringHasherPtr()->getThreshold());
 }
 
-void StringHasherPy::setThreshold(Py::Int value) {
-   getStringHasherPtr()->setThreshold(value);
+void StringHasherPy::setThreshold(Py::Long value)
+{
+    getStringHasherPtr()->setThreshold(value);
 }
 
-Py::Dict StringHasherPy::getTable() const {
-   Py::Dict dict;
-   for(auto &v : getStringHasherPtr()->getIDMap())
-       dict.setItem(Py::Int(v.first),Py::String(v.second.dataToText()));
-   return dict;
+Py::Dict StringHasherPy::getTable() const
+{
+    Py::Dict dict;
+    for (const auto &v : getStringHasherPtr()->getIDMap()) {
+        dict.setItem(Py::Long(v.first), Py::String(v.second.dataToText()));
+    }
+
+    return dict;
 }
 
 PyObject *StringHasherPy::getCustomAttributes(const char* /*attr*/) const
 {
-   return nullptr;
+    return nullptr;
 }
 
 int StringHasherPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-   return 0;
+    return 0;
 }
