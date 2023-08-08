@@ -31,6 +31,7 @@
 #include <string>
 
 class QTabWidget;
+class QComboBox;
 
 namespace Gui {
 namespace Dialog {
@@ -53,6 +54,14 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    static void setupIconSizeSelector(QComboBox* iconSizeSelector);
+    static void setupLanguageSelector(QComboBox* languageSelector);
+    static void setupSchemaSelector(QComboBox* schemaSelector);
+    static void setupStyleSheetSelector(QComboBox* languageSelector);
+    static void setIconSize(QComboBox* iconSizeSelector);
+    static bool setLanguage(QComboBox* languageSelector); //Returns true if language has been changed
+    static void setSchema(QComboBox* schemaSelector);
+    static void setStyleSheet(QComboBox* styleSheetSelector);
 
     void saveThemes();
     void loadThemes();
@@ -75,7 +84,6 @@ private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
     void revertToSavedConfig();
-    bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
 
