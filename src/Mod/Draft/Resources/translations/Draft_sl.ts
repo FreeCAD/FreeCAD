@@ -2355,7 +2355,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="485"/>
       <source>Grid size</source>
-      <translation>Velikost mreže</translation>
+      <translation>Korak mreže</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="505"/>
