@@ -207,12 +207,14 @@ struct ShapeCache {
         if(inited)
             return;
         inited = true;
+        //NOLINTBEGIN
         App::GetApplication().signalDeleteDocument.connect(
                 std::bind(&ShapeCache::slotDeleteDocument, this, sp::_1));
         App::GetApplication().signalDeletedObject.connect(
                 std::bind(&ShapeCache::slotClear, this, sp::_1));
         App::GetApplication().signalChangedObject.connect(
                 std::bind(&ShapeCache::slotChanged, this, sp::_1,sp::_2));
+        //NOLINTEND
     }
 
     void slotDeleteDocument(const App::Document &doc) {

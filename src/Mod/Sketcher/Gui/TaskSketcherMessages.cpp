@@ -52,8 +52,10 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
+    //NOLINTBEGIN
     connectionSetUp = sketchView->signalSetUp.connect(std::bind(
         &SketcherGui::TaskSketcherMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
+    //NOLINTEND
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
 

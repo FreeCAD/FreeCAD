@@ -97,11 +97,13 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
     assert ( adoc );
     assert ( gdoc );
 
+    //NOLINTBEGIN
     connectChangedObjectApp = adoc->signalChangedObject.connect (
             std::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, sp::_1) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
             std::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, sp::_1) );
+    //NOLINTEND
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {

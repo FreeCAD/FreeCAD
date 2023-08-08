@@ -49,7 +49,11 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     this->groupLayout()->addWidget(proxy);
     ui->labelTransformationStatus->setText(transformedView->getMessage());
 
-    connectionDiagnosis = transformedView->signalDiagnosis.connect(std::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, sp::_1));
+    //NOLINTBEGIN
+    connectionDiagnosis = transformedView->signalDiagnosis.connect(
+        std::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, sp::_1)
+    );
+    //NOLINTEND
 }
 
 TaskTransformedMessages::~TaskTransformedMessages()

@@ -67,9 +67,11 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
 
     if (pcDocument)
     {
+      //NOLINTBEGIN
       connectDelObject = pcDocument->signalDeletedObject.connect
         (std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
       assert(connectDelObject.connected());
+      //NOLINTEND
     }
 }
 

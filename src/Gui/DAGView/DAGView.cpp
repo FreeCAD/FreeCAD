@@ -50,8 +50,10 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
+  //NOLINTBEGIN
   conActive = Application::Instance->signalActiveDocument.connect(std::bind(&View::slotActiveDocument, this, sp::_1));
   conDelete = Application::Instance->signalDeleteDocument.connect(std::bind(&View::slotDeleteDocument, this, sp::_1));
+  //NOLINTEND
 
   //just update the dagview when the gui process is idle.
   connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::awake,

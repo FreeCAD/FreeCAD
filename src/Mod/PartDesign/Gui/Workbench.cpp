@@ -442,11 +442,13 @@ void Workbench::activated()
     if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToTask", true))
         Gui::Control().showTaskView();
 
+    //NOLINTBEGIN
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
     activeDoc = Gui::Application::Instance->signalActiveDocument.connect(std::bind(&Workbench::slotActiveDocument, this, sp::_1));
     createDoc = App::GetApplication().signalNewDocument.connect(std::bind(&Workbench::slotNewDocument, this, sp::_1));
     finishDoc = App::GetApplication().signalFinishRestoreDocument.connect(std::bind(&Workbench::slotFinishRestoreDocument, this, sp::_1));
     deleteDoc = App::GetApplication().signalDeleteDocument.connect(std::bind(&Workbench::slotDeleteDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 void Workbench::deactivated()

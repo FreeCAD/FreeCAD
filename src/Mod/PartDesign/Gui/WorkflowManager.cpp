@@ -48,12 +48,14 @@ WorkflowManager::WorkflowManager() {
         slotFinishRestoreDocument ( *doc );
    }
 
+    //NOLINTBEGIN
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
             std::bind( &WorkflowManager::slotNewDocument, this, sp::_1 ) );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
             std::bind( &WorkflowManager::slotFinishRestoreDocument, this, sp::_1 ) );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
             std::bind( &WorkflowManager::slotDeleteDocument, this, sp::_1 ) );
+    //NOLINTEND
 }
 
 WorkflowManager::~WorkflowManager() {

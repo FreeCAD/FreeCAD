@@ -98,8 +98,10 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cellAlias, &ExpressionLineEdit::editingFinished, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
+    //NOLINTBEGIN
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, sp::_1, sp::_2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     connect( model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
 

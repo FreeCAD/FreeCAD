@@ -111,9 +111,11 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
     if (docObj) {
+        //NOLINTBEGIN
         expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(std::bind(&ExpressionBinding::expressionChange, this, sp::_1));
         App::Document* doc = docObj->getDocument();
         objectdeleted = doc->signalDeletedObject.connect(std::bind(&ExpressionBinding::objectDeleted, this, sp::_1));
+        //NOLINTEND
     }
 }
 

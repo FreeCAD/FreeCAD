@@ -79,8 +79,10 @@ void MeshCurvature::ComputePerFace(bool parallel)
         }
     }
     else {
+        //NOLINTBEGIN
         QFuture<CurvatureInfo> future = QtConcurrent::mapped
             (mySegment, std::bind(&FacetCurvature::Compute, &face, sp::_1));
+        //NOLINTEND
         QFutureWatcher<CurvatureInfo> watcher;
         watcher.setFuture(future);
         watcher.waitForFinished();

@@ -644,7 +644,9 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 {
     refreshWorkbenchList();
 
+    //NOLINTBEGIN
     Application::Instance->signalRefreshWorkbenches.connect(std::bind(&WorkbenchGroup::refreshWorkbenchList, this));
+    //NOLINTEND
 
     connect(getMainWindow(), &MainWindow::workbenchActivated,
         this, &WorkbenchGroup::onWorkbenchActivated);

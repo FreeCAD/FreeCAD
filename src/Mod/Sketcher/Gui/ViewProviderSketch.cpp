@@ -3232,10 +3232,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // a draw(true) via ViewProvider::UpdateData.
     getSketchObject()->solve(true);
 
+    //NOLINTBEGIN
     connectUndoDocument = getDocument()->signalUndoDocument.connect(
         std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
         std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
+    //NOLINTEND
 
     // Enable solver initial solution update while dragging.
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(

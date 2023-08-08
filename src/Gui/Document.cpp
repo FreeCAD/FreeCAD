@@ -160,6 +160,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_editingViewer = nullptr;
     d->_editMode = 0;
 
+    //NOLINTBEGIN
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
         (std::bind(&Gui::Document::slotNewObject, this, sp::_1));
@@ -214,6 +215,7 @@ Document::Document(App::Document* pcDocument,Application * app)
         (std::bind(&Gui::Document::slotTransactionAppend, this, sp::_1, sp::_2));
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
         (std::bind(&Gui::Document::slotTransactionRemove, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we

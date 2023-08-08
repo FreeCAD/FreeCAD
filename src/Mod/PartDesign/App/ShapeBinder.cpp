@@ -257,8 +257,10 @@ void ShapeBinder::onSettingDocument()
 {
     App::Document* document = getDocument();
     if (document) {
+        //NOLINTBEGIN
         this->connectDocumentChangedObject = document->signalChangedObject.connect(std::bind
             (&ShapeBinder::slotChangedObject, this, sp::_1, sp::_2));
+        //NOLINTEND
     }
 }
 
@@ -833,9 +835,11 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
         else if (contextDoc != Context.getValue()->getDocument()
             || !connRecomputedObj.connected())
         {
+            //NOLINTBEGIN
             contextDoc = Context.getValue()->getDocument();
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
                 std::bind(&SubShapeBinder::slotRecomputedObject, this, sp::_1));
+            //NOLINTEND
         }
     }
     else if (!isRestoring()) {

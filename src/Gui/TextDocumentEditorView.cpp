@@ -107,10 +107,12 @@ void TextDocumentEditorView::setupEditor()
 
 void TextDocumentEditorView::setupConnection()
 {
+    //NOLINTBEGIN
     textConnection = textDocument->connectText(
             std::bind(&TextDocumentEditorView::sourceChanged, this));
     labelConnection = textDocument->connectLabel(
             std::bind(&TextDocumentEditorView::labelChanged, this));
+    //NOLINTEND
 }
 
 void TextDocumentEditorView::sourceChanged()

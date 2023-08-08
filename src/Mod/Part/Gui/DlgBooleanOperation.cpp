@@ -93,10 +93,12 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
             this, &DlgBooleanOperation::currentItemChanged);
     connect(ui->secondShape, &QTreeWidget::currentItemChanged,
             this, &DlgBooleanOperation::currentItemChanged);
+    //NOLINTBEGIN
     this->connectNewObject = App::GetApplication().signalNewObject.connect(std::bind
         (&DlgBooleanOperation::slotCreatedObject, this, sp::_1));
     this->connectModObject = App::GetApplication().signalChangedObject.connect(std::bind
         (&DlgBooleanOperation::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
     findShapes();
 }
 

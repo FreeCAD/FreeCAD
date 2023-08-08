@@ -101,6 +101,7 @@ PropertyView::PropertyView(QWidget *parent)
     // connect after adding all tabs, so adding doesn't thrash the parameter
     connect(tabs, &QTabWidget::currentChanged, this, &PropertyView::tabChanged);
 
+    //NOLINTBEGIN
     this->connectPropData =
     App::GetApplication().signalChangedObject.connect(std::bind
         (&PropertyView::slotChangePropertyData, this, sp::_2));
@@ -136,6 +137,7 @@ PropertyView::PropertyView(QWidget *parent)
                 std::bind(&PropertyView::slotDeletedObject, this, sp::_1));
     this->connectChangedDocument = App::GetApplication().signalChangedDocument.connect(
             std::bind(&PropertyView::slotChangePropertyData, this, sp::_2));
+    //NOLINTEND
 }
 
 PropertyView::~PropertyView()

@@ -944,8 +944,10 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
                      this,
                      &TaskSketcherConstraints::onFilterListItemChanged);
 
+    //NOLINTBEGIN
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         std::bind(&SketcherGui::TaskSketcherConstraints::slotConstraintsChanged, this));
+    //NOLINTEND
 
     this->groupLayout()->addWidget(proxy);
 
@@ -953,9 +955,11 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
 
+    //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(
         std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     slotConstraintsChanged();// Populate constraints list
     // Initialize special filters

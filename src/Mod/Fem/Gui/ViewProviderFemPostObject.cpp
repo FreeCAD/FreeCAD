@@ -111,8 +111,10 @@ public:
 
 private:
     FemPostObjectSelectionObserver() {
+        //NOLINTBEGIN
         this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
             std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+        //NOLINTEND
     }
 
     ~FemPostObjectSelectionObserver() = default;

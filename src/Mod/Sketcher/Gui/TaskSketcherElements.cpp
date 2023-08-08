@@ -1070,8 +1070,10 @@ void TaskSketcherElements::connectSignals()
     QObject::connect(
         ui->filterButton, &QToolButton::clicked, ui->filterButton, &QToolButton::showMenu);
 
+    //NOLINTBEGIN
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
         std::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+    //NOLINTEND
 }
 
 /* filter functions --------------------------------------------------- */

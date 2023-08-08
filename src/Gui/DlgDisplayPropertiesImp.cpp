@@ -156,9 +156,11 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     Gui::Selection().Attach(this);
 
+    //NOLINTBEGIN
     d->connectChangedObject =
     Gui::Application::Instance->signalChangedObject.connect(std::bind
         (&DlgDisplayPropertiesImp::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 /**

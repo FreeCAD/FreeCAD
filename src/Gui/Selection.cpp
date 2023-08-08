@@ -131,8 +131,10 @@ void SelectionObserver::attachSelection()
         auto &signal = newStyle ? Selection().signalSelectionChanged3 :
                        oldStyle ? Selection().signalSelectionChanged2 :
                                   Selection().signalSelectionChanged  ;
+        //NOLINTBEGIN
         connectSelection = signal.connect(std::bind
             (&SelectionObserver::_onSelectionChanged, this, sp::_1));
+        //NOLINTEND
 
         if (!filterDocName.empty()) {
             Selection().addSelectionGate(
@@ -1613,8 +1615,10 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = nullptr;
     gateResolve = ResolveMode::OldStyleElement;
+    //NOLINTBEGIN
     App::GetApplication().signalDeletedObject.connect(std::bind(&Gui::SelectionSingleton::slotDeletedObject, this, sp::_1));
     signalSelectionChanged.connect(std::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, sp::_1));
+    //NOLINTEND
 }
 
 /**

@@ -1539,8 +1539,10 @@ void LinkBaseExtension::updateGroup() {
             if(!conn.connected()) {
                 FC_LOG("new group connection " << getExtendedObject()->getFullName()
                         << " -> " << group->getFullName());
+                //NOLINTBEGIN
                 conn = group->signalChanged.connect(
                         std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
+                //NOLINTEND
             }
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
@@ -1553,8 +1555,10 @@ void LinkBaseExtension::updateGroup() {
                 if(!conn.connected()) {
                     FC_LOG("new group connection " << getExtendedObject()->getFullName()
                             << " -> " << child->getFullName());
+                    //NOLINTBEGIN
                     conn = child->signalChanged.connect(
                             std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
+                    //NOLINTEND
                 }
             }
         }

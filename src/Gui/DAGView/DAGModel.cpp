@@ -137,11 +137,13 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   connect(this->editingFinishedAction, &QAction::triggered,
           this, &Model::editingFinishedSlot);
 
+  //NOLINTBEGIN
   connectNewObject = documentIn.signalNewObject.connect(std::bind(&Model::slotNewObject, this, sp::_1));
   connectDelObject = documentIn.signalDeletedObject.connect(std::bind(&Model::slotDeleteObject, this, sp::_1));
   connectChgObject = documentIn.signalChangedObject.connect(std::bind(&Model::slotChangeObject, this, sp::_1, sp::_2));
   connectEdtObject = documentIn.signalInEdit.connect(std::bind(&Model::slotInEdit, this, sp::_1));
   connectResObject = documentIn.signalResetEdit.connect(std::bind(&Model::slotResetEdit, this, sp::_1));
+  //NOLINTEND
 
   for (auto obj : documentIn.getDocument()->getObjects()) {
     auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
@@ -248,9 +250,11 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   (*theGraph)[virginVertex].text->setFont(this->font());
+  //NOLINTBEGIN
   (*theGraph)[virginVertex].connChangeIcon =
       const_cast<Gui::ViewProviderDocumentObject&>(VPDObjectIn).signalChangeIcon.connect(
           std::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
+  //NOLINTEND
 
   graphDirty = true;
   lastAddedVertex = Graph::null_vertex();

@@ -876,7 +876,9 @@ StdCmdUserEditMode::StdCmdUserEditMode()
     sPixmap       = "Std_UserEditModeDefault";
     eType         = ForEdit;
 
-    this->getGuiApplication()->signalUserEditModeChanged.connect(std::bind(&StdCmdUserEditMode::updateIcon, this, sp::_1));
+    this->getGuiApplication()->signalUserEditModeChanged.connect([this](int mode) {
+        this->updateIcon(mode);
+    });
 }
 
 Gui::Action * StdCmdUserEditMode::createAction()

@@ -393,8 +393,10 @@ void Placement::setupSignalMapper()
 
 void Placement::setupDocument()
 {
+    //NOLINTBEGIN
     connectAct = Application::Instance->signalActiveDocument.connect
         (std::bind(&Placement::slotActiveDocument, this, sp::_1));
+    //NOLINTEND
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) {
         handler.appendDocument(activeDoc->getName());

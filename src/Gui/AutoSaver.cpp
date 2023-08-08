@@ -57,8 +57,10 @@ AutoSaver* AutoSaver::self = nullptr;
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)
 {
+    //NOLINTBEGIN
     App::GetApplication().signalNewDocument.connect(std::bind(&AutoSaver::slotCreateDocument, this, sp::_1));
     App::GetApplication().signalDeleteDocument.connect(std::bind(&AutoSaver::slotDeleteDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 AutoSaver::~AutoSaver()
@@ -243,10 +245,12 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
+    //NOLINTBEGIN
     documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
         (std::bind(&AutoSaveProperty::slotNewObject, this, sp::_1));
     documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
         (std::bind(&AutoSaveProperty::slotChangePropertyData, this, sp::_2));
+    //NOLINTEND
 }
 
 AutoSaveProperty::~AutoSaveProperty()

@@ -240,8 +240,10 @@ class DocumentWeakPtrT::Private {
 public:
     Private(Gui::Document* doc) : _document(doc) {
         if (doc) {
+            //NOLINTBEGIN
             connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(std::bind
                 (&Private::deletedDocument, this, sp::_1));
+            //NOLINTEND
         }
     }
 
@@ -323,6 +325,7 @@ public:
         object = obj;
         try {
             if (obj) {
+                //NOLINTBEGIN
                 Gui::Document* doc = obj->getDocument();
                 indocument = true;
                 connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(std::bind
@@ -331,6 +334,7 @@ public:
                     (&Private::createdObject, this, sp::_1));
                 connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
                     (&Private::deletedObject, this, sp::_1));
+                //NOLINTEND
             }
         }
         catch (const Base::RuntimeError&) {
@@ -425,6 +429,7 @@ void DocumentObserver::attachDocument(Document* doc)
     if (!doc)
         return;
 
+    //NOLINTBEGIN
     this->connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind
         (&DocumentObserver::slotCreatedObject, this, sp::_1));
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
@@ -445,6 +450,7 @@ void DocumentObserver::attachDocument(Document* doc)
         (&DocumentObserver::slotRedoDocument, this, sp::_1));
     this->connectDocumentDelete = doc->signalDeleteDocument.connect(std::bind
         (&DocumentObserver::slotDeleteDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 void DocumentObserver::detachDocument()

@@ -114,10 +114,12 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     tabText += QString::fromUtf8("[*]");
     setWindowTitle(tabText);
 
+    //NOLINTBEGIN
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
     auto bnd = std::bind(&MDIViewPage::onDeleteObject, this, sp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+    //NOLINTEND
 }
 
 MDIViewPage::~MDIViewPage() { connectDeletedObject.disconnect(); }

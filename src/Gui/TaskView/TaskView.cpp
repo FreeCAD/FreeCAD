@@ -293,7 +293,8 @@ TaskView::TaskView(QWidget *parent)
 
     Gui::Selection().Attach(this);
 
-    connectApplicationActiveDocument = 
+    //NOLINTBEGIN
+    connectApplicationActiveDocument =
     App::GetApplication().signalActiveDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
     connectApplicationDeleteDocument = 
@@ -305,6 +306,7 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 TaskView::~TaskView()
@@ -401,7 +403,9 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             func->setAutoDelete(true);
             Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
             if (doc) {
-                func->setFunction(std::bind(&Document::resetEdit, doc));
+                func->setFunction([doc](){
+                    doc->resetEdit();
+                });
                 func->singleShot(0);
             }
         }

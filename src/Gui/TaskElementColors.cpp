@@ -332,10 +332,12 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
+    //NOLINTBEGIN
     d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(std::bind
         (&ElementColors::slotDeleteDocument, this, sp::_1));
     d->connectDelObj = Application::Instance->signalDeletedObject.connect(std::bind
         (&ElementColors::slotDeleteObject, this, sp::_1));
+    //NOLINTEND
 
     d->populate();
 }
