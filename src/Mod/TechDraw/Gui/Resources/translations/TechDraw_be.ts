@@ -8631,11 +8631,11 @@ using the given X/Y Spacing</source>
                 - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <translation>Дадае пасадку адтуліны ці вала ў вымярэнні&lt;br&gt;
+ - абярыце адно вымярэнне даўжыні ці дыяметра&lt;br&gt;
+ - націсніце кнопку інструмента, адчыніцца панэль&lt;br&gt;
+ - абярыце пасадку вала / адтуліны&lt;br&gt;
+ - абярыце патрэбнае поле адпаведнасці стандарту ISO 286, пры ўжыванні поля з спісам</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>

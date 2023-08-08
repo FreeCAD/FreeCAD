@@ -1636,7 +1636,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Szablon (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -6484,7 +6484,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
       <source>Centerline</source>
-      <translation>Linia środkowa</translation>
+      <translation>Linie środka</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="593"/>
@@ -7649,7 +7649,7 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="56"/>
       <source>Cosmetic</source>
-      <translation>Kosmetycznie</translation>
+      <translation>Kosmetyczne</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="73"/>

@@ -2118,7 +2118,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>značka, mostiček (povezovalni ostanke pri CNC izrezovanju)</translation>
+      <translation>značka, mostiček (povezovalni ostanek pri CNC izrezovanju)</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>

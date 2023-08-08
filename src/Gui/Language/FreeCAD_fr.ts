@@ -5845,7 +5845,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="237"/>
       <source>Euler angles (zy'x'')</source>
-      <translation>Angle d'Euler (zy'x'')</translation>
+      <translation>Angles d'Euler (zy'x'')</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="290"/>
@@ -5890,7 +5890,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="451"/>
       <source>Apply incremental changes</source>
-      <translation>Appliquer les modifications incrémentielles</translation>
+      <translation>Appliquer des modifications incrémentielles</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="471"/>

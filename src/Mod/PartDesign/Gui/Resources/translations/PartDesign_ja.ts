@@ -3660,7 +3660,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="197"/>
       <source>Body</source>
-      <translation>ボディ|体</translation>
+      <translation>Body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="343"/>
