@@ -4897,17 +4897,17 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="65"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation type="unfinished">BaseFeature must be a Part::Feature</translation>
+      <translation>BaznaZnačajka mora biti Komponenta::Značajka</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature has an empty shape</source>
-      <translation type="unfinished">BaseFeature has an empty shape</translation>
+      <translation>BaznaZnačajka ima prazan oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="78"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation type="unfinished">Cannot do boolean cut without BaseFeature</translation>
+      <translation>Ne može se izvršiti rez bulovom operacijom bez BaznaZnačajka</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
@@ -5252,8 +5252,8 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>Nije moguće napraviti površinu pomoću skice.
+Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu utora do plohe.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
@@ -5273,159 +5273,160 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="135"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>Izvuci profil: Potreban je barem jedna presjek.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="140"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
+      <translation>Izvučeni oblik presjeka: Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="153"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
+      <translation>Izvučeni oblik presjeka: Kada koristite točke za profil/odjeljake, skica bi trebala imati samo jednu točku.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <translation>Izvučeni oblik presjeka: Svi dijelovi moraju biti dio značajke.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
+      <translation>Izvučeni oblik presjeka: Nije moguće dobiti odjeljak profila</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
+      <translation>Izvučeni oblik presjeka: Odjeljak ne sadrži niti jednu žicu niti je pojedinačna tjemena točka.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Izvučeni oblik presjeka: Samo profili i zadnje sjecište mogu biti vrhovi</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Izvučeni oblik presjeka: Za zatvorene izvučene djelove samo profil može biti vrh.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Izvučeni oblik presjeka: svi presjeci izvučenog djela trebaju imati isti broj poveznih žica</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>Izvučeni oblik presjeka ne može se napraviti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Izvučeni oblik presjeka: Rezultat nije volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Izvučeni oblik presjeka:  nema ničega za oduzimanje od</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Izvučeni oblik presjeka: Dodaj izvučeni oblik nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Izvučeni oblik presjeka: Oduzmi izvučeni oblik nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Izvučeni oblik presjeka: Došlo je do fatalne pogreške pri izradi izvučenog oblika</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="125"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>
+izvlačenje: Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora skice.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="136"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>Izvlačenje: Pravljenje površine iz skice nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="200"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>Izvlačenje: Dobijeni oblik je prazan</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="211"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>Izvlačenje: Spajanje sa baznom značajkom nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="243"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>Nije moguće napraviti površinu pomoću skice.
+Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Izvlačenje po putanji: Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
       <source>No spine linked</source>
-      <translation type="unfinished">No spine linked</translation>
+      <translation>Vodilna krivulja nije povezana</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="190"/>
       <source>No auxiliary spine linked.</source>
-      <translation type="unfinished">No auxiliary spine linked.</translation>
+      <translation>Pomoćna vodilna krivulja nije povezana</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation type="unfinished">Pipe: Only one isolated point is needed if using a sketch with isolated points for section</translation>
+      <translation>Izvlačenje po putanji: Samo jedna izolirana točka je potrebna ako koristite skicu sa izoliranim točkama za sjecište</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="217"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation type="unfinished">Pipe: At least one section is needed when using a single point for profile</translation>
+      <translation>Izvlačenje po putanji: Ako koristite tačku za profil onda vam je potreban barem još jedan presjek</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation type="unfinished">Pipe: All sections need to be part features</translation>
+      <translation>Izvlačenje po putanji:  Svi dijelovi moraju biti dio značajke.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation type="unfinished">Pipe: Could not obtain section shape</translation>
+      <translation>Izvlačenje po putanji: Nije moguće dobiti oblik po presjeku</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="246"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation type="unfinished">Pipe: Only the profile and last section can be vertices</translation>
+      <translation>Izvlačenje po putanji:  Samo profili i zadnje sjecište mogu biti vrhovi</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>Višesjeci moraju imati isti broj unutarnjih žica kao osnovni odjeljak.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Path must not be a null shape</source>
-      <translation type="unfinished">Path must not be a null shape</translation>
+      <translation>Putanja vodilja ne smije da bude bez elemenata</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="317"/>
       <source>Pipe could not be built</source>
-      <translation type="unfinished">Pipe could not be built</translation>
+      <translation>Izvlačenje po putanji se ne može napraviti</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="363"/>
@@ -5435,7 +5436,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="378"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation type="unfinished">Pipe: There is nothing to subtract from</translation>
+      <translation>Izvlačenje po putanji: nema ničega za oduzimanje od</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="389"/>
@@ -5455,22 +5456,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="558"/>
       <source>Invalid element in spine.</source>
-      <translation type="unfinished">Invalid element in spine.</translation>
+      <translation>Neispravni element u Vodilnoj krivulji</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="561"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Element in spine is neither an edge nor a wire.</translation>
+      <translation>Element u Vodilnoj krivulji nije ni rub ni žica</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="574"/>
       <source>Spine is not connected.</source>
-      <translation type="unfinished">Spine is not connected.</translation>
+      <translation>Vodilna krivulja nije povezana.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="578"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Spine is neither an edge nor a wire.</translation>
+      <translation>Vodilna krivulja nije ni rub ni žica</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="582"/>
@@ -5480,27 +5481,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="132"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Utor: Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora skice.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="143"/>
       <source>Pocket: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
+      <translation>Utor: Pravljenje površine iz skice nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="149"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
-      <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
+      <translation>Utor:  Izduženje do plohe je samo moguće ako je skica smještena na plohi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="184"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
+      <translation>Utor: Do površine: Nije moguće dobiti podoblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="208"/>
       <source>Pocket: Resulting shape is empty</source>
-      <translation type="unfinished">Pocket: Resulting shape is empty</translation>
+      <translation>Utor: Dobijeni oblik je prazan</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="217"/>
@@ -5566,7 +5567,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="359"/>
       <source>The radii for cones must not be equal</source>
-      <translation type="unfinished">The radii for cones must not be equal</translation>
+      <translation>Polumjeri stošca ne smiju biti isti</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="361"/>
@@ -5593,7 +5594,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
-      <translation type="unfinished">Circumradius of the polygon, of the prism, is too small</translation>
+      <translation>Polumjer opsega višekutnika prizme je premali</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>

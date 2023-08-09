@@ -56,7 +56,7 @@ using namespace Gui;
 
 using Connection = boost::signals2::connection;
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 class NotificationAreaObserver;
 
@@ -825,11 +825,13 @@ NotificationArea::NotificationArea(QWidget* parent)
     });
 
 
+    //NOLINTBEGIN
     // Connection to the finish restore signal to rearm Critical messages modal mode when action is
     // user initiated
     pImp->finishRestoreDocumentConnection =
         App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind(&Gui::NotificationArea::slotRestoreFinished, this, bp::_1));
+            std::bind(&Gui::NotificationArea::slotRestoreFinished, this, sp::_1));
+    //NOLINTEND
 
     // Initialisation of the timer to inhibit continuous updates of the notification system in case
     // clusters of messages arrive (so as to delay the actual notification until the whole cluster

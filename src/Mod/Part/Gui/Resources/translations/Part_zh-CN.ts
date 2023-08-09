@@ -3306,7 +3306,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to import invisible objects.</source>
-      <translation type="unfinished">Select this to import invisible objects.</translation>
+      <translation>选择此选项以导入不可见对象。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

@@ -3527,7 +3527,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="243"/>
       <source>Internal</source>
-      <translation type="unfinished">Internal</translation>
+      <translation>內部</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="244"/>
@@ -4606,12 +4606,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>點選以顯示過濾器</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>過濾器</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
@@ -4685,12 +4685,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>點選以顯示過濾器</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>過濾器</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
@@ -4736,7 +4736,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1648"/>
       <location filename="../../TaskSketcherElements.cpp" line="1654"/>
       <source>Internal</source>
-      <translation type="unfinished">Internal</translation>
+      <translation>內部</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1596"/>
@@ -4836,12 +4836,12 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="139"/>
       <source>Click to select the conflicting constraints.</source>
-      <translation type="unfinished">Click to select the conflicting constraints.</translation>
+      <translation>點擊以選擇相衝突拘束。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="141"/>
       <source>Click to select the redundant constraints.</source>
-      <translation type="unfinished">Click to select the redundant constraints.</translation>
+      <translation>點擊以選擇冗餘拘束。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="144"/>
@@ -5978,7 +5978,7 @@ Eigen Sparse QR 算法針對稀疏矩陣進行了優化；通常更快</translat
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid settings</source>
-      <translation type="unfinished">Grid settings</translation>
+      <translation>網格設定</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
@@ -5993,7 +5993,7 @@ Eigen Sparse QR 算法針對稀疏矩陣進行了優化；通常更快</translat
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <translation>網格自動間距</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="73"/>
@@ -6088,7 +6088,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>網格自動間距</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -6098,7 +6098,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1122"/>
       <source>Spacing</source>
-      <translation type="unfinished">Spacing</translation>
+      <translation>間距</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1123"/>

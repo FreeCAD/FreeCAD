@@ -2209,12 +2209,12 @@ la pantalla de bienvenida</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="454"/>
       <source>Apply the %1 preference pack</source>
-      <translation>Aplicar el paquete de preferencias %1</translation>
+      <translation>Aplicar el %1 paquete de preferencias</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="515"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation>Elija un archivo de configuración de FreeCAD para importar</translation>
+      <translation>Elige un archivo de configuración de FreeCAD para importar</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="526"/>
@@ -2386,7 +2386,7 @@ Este archivo ya existe.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="447"/>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>¿Realmente quiere borrar la macro '%1'?</translation>
+      <translation>¿Realmente desea eliminar la macro '%1'?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="476"/>

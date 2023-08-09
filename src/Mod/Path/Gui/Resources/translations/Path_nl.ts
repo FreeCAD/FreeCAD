@@ -5024,7 +5024,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Stock.py" line="170"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Een materiaal voor dit object</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="242"/>

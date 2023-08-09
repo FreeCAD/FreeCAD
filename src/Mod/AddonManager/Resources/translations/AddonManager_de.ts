@@ -1982,7 +1982,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>Tags</translation>
+      <translation>Schlagwörter</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2116,7 +2116,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>Markierung</translation>
+      <translation>Schlagwort</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>

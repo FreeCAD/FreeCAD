@@ -50,7 +50,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView)
 
@@ -67,9 +67,11 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
 
     if (pcDocument)
     {
+      //NOLINTBEGIN
       connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, bp::_1));
+        (std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
       assert(connectDelObject.connected());
+      //NOLINTEND
     }
 }
 

@@ -477,6 +477,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     DocMap[name] = doc;
     _pActiveDoc = doc;
 
+    //NOLINTBEGIN
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
@@ -497,6 +498,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     // make sure that the active document is set in case no GUI is up
     {

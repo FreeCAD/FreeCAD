@@ -392,7 +392,7 @@
       <location filename="../../AttacherTexts.cpp" line="235"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>副法向量</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -1284,7 +1284,7 @@ if the measured points have moved.</source>
     <message>
       <location filename="../../Command.cpp" line="2264"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>切換 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2265"/>
@@ -3297,7 +3297,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to import invisible objects.</source>
-      <translation type="unfinished">Select this to import invisible objects.</translation>
+      <translation>選擇此選項以匯入不可視物件。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

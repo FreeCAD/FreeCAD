@@ -5560,7 +5560,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="179"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Přípustnost konstantního vakuu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="183"/>
