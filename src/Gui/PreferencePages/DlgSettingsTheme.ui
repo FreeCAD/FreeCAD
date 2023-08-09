@@ -184,61 +184,7 @@
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
-  <customwidget>
-   <class>Gui::PrefRadioButton</class>
-   <extends>QRadioButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>checkBoxPreselection</tabstop>
-  <tabstop>HighlightColor</tabstop>
-  <tabstop>checkBoxSelection</tabstop>
-  <tabstop>SelectionColor</tabstop>
-  <tabstop>SelectionColor_Background</tabstop>
-  <tabstop>backgroundColorFrom</tabstop>
-  <tabstop>backgroundColorTo</tabstop>
-  <tabstop>checkMidColor</tabstop>
-  <tabstop>backgroundColorMid</tabstop>
- </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>checkBoxPreselection</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>HighlightColor</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>70</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>310</x>
-     <y>54</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxSelection</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>SelectionColor</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>158</x>
-     <y>76</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>75</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
