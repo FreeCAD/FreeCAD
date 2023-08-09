@@ -81,7 +81,7 @@ class SimpleParser:
         gvFile = open(fileName,'w')
 
         gvFile.write('digraph G {\n  node [fontname=Verdana,fontsize=12]\n  node [style=filled]\n  node [fillcolor="#EEEEEE"]\n  node [color="#EEEEEE"]\n  edge [color="#31CEF0"]\n')
-        for i in list(self._p21loader._instances_definition.keys()):
+        for i in list(self._p21loader._instances_definition):
             entityStr = '#'+repr(i)
             nameStr   = self._p21loader._instances_definition[i][0].lower()
             sttrStr   = repr(self._p21loader._instances_definition[i][1]).replace('"','').replace("'",'').replace(" ",'')
@@ -105,7 +105,7 @@ class SimpleParser:
         if self.schemaModule:
             self.schemaClasses = dict(inspect.getmembers(self.schemaModule))
 
-        for i in list(self._p21loader._instances_definition.keys()):
+        for i in list(self._p21loader._instances_definition):
             #print i
             if i not in self.instanceMape:
                 self._create_entity_instance(i)
