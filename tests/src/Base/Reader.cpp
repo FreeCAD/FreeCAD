@@ -9,7 +9,12 @@
 #include <fmt/format.h>
 #include <fstream>
 
+#ifdef _MSC_VER
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
 namespace fs = boost::filesystem;
+#endif
 
 class ReaderTest: public ::testing::Test
 {
