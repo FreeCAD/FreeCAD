@@ -3321,7 +3321,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to import invisible objects.</source>
-      <translation type="unfinished">Select this to import invisible objects.</translation>
+      <translation>Odaberite ovo da uvezete nevidljive objekte.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

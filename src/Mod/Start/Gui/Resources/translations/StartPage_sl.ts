@@ -323,7 +323,7 @@ Z ločevanjem poti z znaki ";;", lahko dodate več map</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Prilagodi število tukaj prikazanih nedavnih datotek v meniju Uredi -&gt; Prednastavitve -&gt; Splošne nastavitve -&gt; Velikost seznama nedavnih datotek</translation>
+      <translation>Število tukaj prikazanih nedavnih datotek lahko prilagodite v meniju Uredi -&gt; Prednastavitve -&gt; Splošne nastavitve -&gt; Velikost seznama nedavnih datotek</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>

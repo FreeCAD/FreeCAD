@@ -4220,7 +4220,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 inch</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
@@ -4716,7 +4716,7 @@ boven de 90: groter gat straal aan de onderkant</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>3D aan/uit</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

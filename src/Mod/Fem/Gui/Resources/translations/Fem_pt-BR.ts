@@ -3273,7 +3273,7 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam section parameter</source>
-      <translation type="unfinished">Beam section parameter</translation>
+      <translation>Parâmetro da seção da viga</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
@@ -3284,18 +3284,18 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="71"/>
       <source>Width:   </source>
-      <translation type="unfinished">Width:   </translation>
+      <translation>Largura:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="115"/>
       <source>Height:     </source>
-      <translation type="unfinished">Height:     </translation>
+      <translation>Altura:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
       <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Diameter:   </source>
-      <translation type="unfinished">Diameter:   </translation>
+      <translation>Diâmetro:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
@@ -3305,12 +3305,12 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Parâmetro da espessura da casca</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
       <source>Thickness:     </source>
-      <translation type="unfinished">Thickness:     </translation>
+      <translation>Espessura:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
@@ -3320,12 +3320,12 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
       <source>0 degree</source>
-      <translation type="unfinished">0 degree</translation>
+      <translation>0 graus</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation:     </source>
-      <translation type="unfinished">Rotation:     </translation>
+      <translation>Rotação:     </translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
@@ -3335,7 +3335,7 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>fórmula</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
@@ -3363,7 +3363,7 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="37"/>
       <source>Max Layers</source>
-      <translation type="unfinished">Max Layers</translation>
+      <translation>Máx. de camadas</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
@@ -3373,17 +3373,17 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation type="unfinished">Growth ratio</translation>
+      <translation>Taxa de crescimento</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh group</source>
-      <translation type="unfinished">Mesh group</translation>
+      <translation>Grupo de malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier used for mesh export</source>
-      <translation type="unfinished">Identifier used for mesh export</translation>
+      <translation>Identificador usado para exportação de malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3398,7 +3398,7 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh region</source>
-      <translation type="unfinished">Mesh region</translation>
+      <translation>Região de malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
@@ -3408,7 +3408,7 @@ Nota: não surge efeito se um sólido foi selecionado</translation>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>Pressão:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>

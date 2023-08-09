@@ -132,6 +132,17 @@ QMdiArea {
     background-repeat: no-repeat;
 }
 
+/*==================================================================================================
+Style Links
+==================================================================================================*/
+QLabel[haslink="true"] {
+    color: #8bd1ff;
+}
+
+Gui--UrlLabel {
+    color: #8bd1ff;
+}
+
 
 /*==================================================================================================
 Sub windows
@@ -1846,12 +1857,6 @@ QTreeView::indicator:indeterminate {
 /*==================================================================================================
 Slider
 ==================================================================================================*/
-QSlider,
-QSlider:active,
-QSlider:!active {
-    border: none;
-    background-color: transparent;
-}
 
 QSlider:horizontal {
     padding: 0px 10px;
@@ -1861,58 +1866,82 @@ QSlider:vertical {
     padding: 10px 0px;
 }
 
-QSlider::groove {
-    background-color: rgba(0,0,0,30);
-    border: 1px solid rgba(0,0,0,40);
-    border-radius: 5px;
-    margin: 4px 0px;
-}
-
 QSlider::groove:horizontal {
-    height: 8px;
+border: 1px solid #bbb;
+background: white;
+height: 8px;
+border-radius: 4px;
 }
 
 QSlider::groove:vertical {
-    width: 8px;
+border: 1px solid #bbb;
+background: white;
+width: 8px;
+border-radius: 4px;
 }
 
-QSlider::groove:horizontal:disabled,
-QSlider::groove:vertical:disabled {
-    border-color:  #232932;
-    background-color: #232932;
+QSlider::sub-page:vertical,
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #0059ff, stop: 1 #6495ED);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #6495ED, stop: 1 #0059ff);
+border: 1px solid #232932;
+width: 10px;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::add-page:vertical,
+QSlider::add-page:horizontal {
+background: #232932;
+border: 1px solid #232932;
+width: 10px;
+height: 10px;
+border-radius: 4px;
 }
 
 QSlider::handle:horizontal,
 QSlider::handle:vertical {
-    background-color: #434D5B;
-    border: 1px solid #434D5B;
-    width: 14px;
-    height: 14px;
-    border-radius: 8px;
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #0059ff, stop:1 #6495ED);
+border: 1px solid #232932;
+width: 13px;
+margin-top: -2px;
+margin-bottom: -2px;
+border-radius: 4px;
 }
 
-QSlider::handle:horizontal {
-    margin: -4px 0;
-}
-
-QSlider::handle:vertical {
-    margin: 0 -4px;
-}
-
+QSlider::handle:horizontal:focus,
+QSlider::handle:vertical:focus,
 QSlider::handle:horizontal:hover,
 QSlider::handle:vertical:hover,
 QSlider::handle:horizontal:pressed,
 QSlider::handle:vertical:pressed {
-    border-color: #65A2E5;
-    background-color: #65A2E5;
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #a9bfe7, stop:1 #6495ED);
+border: 1px solid #444;
+border-radius: 4px;
 }
 
-QSlider::handle:horizontal:disabled,
-QSlider::handle:vertical:disabled {
-    border-color: #232932;
-    background-color: #232932;
+QSlider::sub-page:vertical:disabled,
+QSlider::sub-page:horizontal:disabled {
+background: #232932;
+border-color: #232932;
 }
 
+QSlider::add-page:vertical:disabled,
+QSlider::add-page:horizontal:disabled {
+background: #232932;
+border-color: #232932;
+}
+
+QSlider::handle:vertical:disabled,
+QSlider::handle:horizontal:disabled {
+background: #232932;
+border: 1px solid #232932;
+border-radius: 4px;
+}
 
 /*==================================================================================================
 Toolbar buttons
@@ -2050,6 +2079,14 @@ QToolBar > QToolButton::menu-arrow:open {
 QToolBar > QToolButton:checked {
     border: 1px solid #7cabf9;
     background-color: rgba(124,171,249,60); /* transparency for #7cabf9 color */
+}
+
+QToolBar > QToolButton:checked:disabled {
+  background-color: #b65555;
+  color: #b8aba0;
+  border-radius: 1.9px;
+  padding: 0px;
+  outline: none;
 }
 
 QToolBar > QToolButton:checked:hover {
@@ -2336,7 +2373,7 @@ Gui--StatefulLabel[state="redundant_constraints"] {
     color : rgba(255,69,0,255); /* Orange red */
 }
 Gui--StatefulLabel[state="partially_redundant_constraints"] {
-    color : rgba(65,105,225,255); /* Royal blue */
+    color : rgba(89, 142, 240, 255); /* a little darker than Cornflower blue */
 }
 Gui--StatefulLabel[state="solver_failed"] {
     color : rgba(255,0,0,255); /* Red */
@@ -2347,6 +2384,7 @@ Gui--StatefulLabel[state="fully_constrained"] {
     font-weight: bold;
 }
 Gui--UrlLabel {
-    color : rgba(0,91,255,255); /* Deep sky blue */
+    color : rgba(100, 149, 237, 255); /* Cornflower blue */
     text-decoration : underline;
 }
+

@@ -3138,7 +3138,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце пажаданы стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце патрэбны стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -5329,7 +5329,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="125"/>
       <source>The desired width of the chamfer</source>
-      <translation>Жаданая шырыня фаскі</translation>
+      <translation>Патрэбная шырыня фаскі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="131"/>
@@ -6586,7 +6586,7 @@ For example:
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;Заўвага&lt;/b&gt;: У дыялогавым акне паказваюцца каманды вызначэння шляху ў асноўных адзінках FreeCAD (мм/с).
-Значэнні будуць пераўтвораныя ў пажаданыя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
+Значэнні будуць пераўтвораныя ў патрэбныя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="268"/>
@@ -8469,12 +8469,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>Карыстальніцкі файл %s не знойдзены.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>Хібны радок gcode: %s</translation>
     </message>
   </context>
 </TS>

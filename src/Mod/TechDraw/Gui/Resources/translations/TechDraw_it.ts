@@ -1604,7 +1604,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Modello (*.svg)</translation>
     </message>
   </context>
   <context>

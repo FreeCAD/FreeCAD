@@ -7564,7 +7564,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>此物件所在位置</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>

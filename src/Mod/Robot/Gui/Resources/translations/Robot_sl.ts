@@ -332,7 +332,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="380"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Ustvari izpopolnitveni predmet, ki preglasi nekatere vidike poti</translation>
+      <translation>Ustvari dodelovalni predmet, ki preglasi nekatere lastnosti poti</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="407"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Izberite pot, ki jo želite prilagoditi.</translation>
+      <translation>Izberite pot, ki jo želite dodelati.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="149"/>

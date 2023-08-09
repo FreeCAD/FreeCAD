@@ -1114,7 +1114,7 @@ odprl v zunanjem brskalniku</translation>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation>Prikaže v plošči poročevalnega pogleda podrobni izpis sporočila
+      <translation>Prikaže v poročilem podoknu podrobni izpis sporočila
 o razhroščevanju med uvozom in izvozom datotek IFC</translation>
     </message>
     <message>
@@ -2990,7 +2990,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="157"/>
       <location filename="../../ArchPanel.py" line="186"/>
       <source>Create Panel</source>
-      <translation>Ustvari panel</translation>
+      <translation>Ustvari ploščo</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="209"/>
@@ -3005,12 +3005,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
       <source>Create Panel Cut</source>
-      <translation>Ustvari razrez panela</translation>
+      <translation>Ustvari ploščno kosovnico</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="359"/>
       <source>Create Panel Sheet</source>
-      <translation>Ustvari kosovnico panela</translation>
+      <translation>Ustvari polo plošč</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="729"/>
@@ -6436,7 +6436,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Ploščni razrez</translation>
+      <translation>Ploščna kosovnica</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6454,7 +6454,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation>Ustvari dvorazsežno polo na kateri so razrezi plošč</translation>
+      <translation>Ustvari dvorazsežno polo na kateri so kosovnice plošč</translation>
     </message>
   </context>
   <context>

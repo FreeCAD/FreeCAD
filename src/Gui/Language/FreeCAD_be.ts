@@ -12713,7 +12713,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="450"/>
       <source>Enter desired distance between the points</source>
-      <translation>Увядзіце жаданую адлегласць паміж кропкамі</translation>
+      <translation>Увядзіце патрэбную адлегласць паміж кропкамі</translation>
     </message>
   </context>
   <context>

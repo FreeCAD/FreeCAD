@@ -159,7 +159,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Ostreši izbran prerez preko ostalih prerezov</translation>
+      <translation>Navleci izbrani prerez preko ostalih prerezov</translation>
     </message>
   </context>
   <context>
@@ -177,7 +177,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Povleči izbrano skico vzdolž poti ali do drugih prerezov</translation>
+      <translation>Vzdolži izbrani očrt ob poti ali do drugih prerezov</translation>
     </message>
   </context>
   <context>
@@ -708,12 +708,12 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
       <source>Subtractive loft</source>
-      <translation>Odvzemno ostrešje</translation>
+      <translation>Odvzemni navleček</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Ostreši izbran prerez preko drugih prerezov in ga odstrani iz telesa</translation>
+      <translation>Navleci izbran prerez preko drugih prerezov in ga odstrani iz telesa</translation>
     </message>
   </context>
   <context>
@@ -2126,7 +2126,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2189,12 +2189,12 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Dodaj Prerez</translation>
+      <translation>Dodaj presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Odstrani Prerez</translation>
+      <translation>Odstrani presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
@@ -2685,7 +2685,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Pot vzdolž katere povleči</translation>
+      <translation>Pot ob kateri se vzdolži</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2744,12 +2744,12 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Dodaj Prerez</translation>
+      <translation>Dodaj presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Odstrani Prerez</translation>
+      <translation>Odstrani presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
@@ -2840,7 +2840,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -3211,12 +3211,12 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="116"/>
       <source>Datum Line parameters</source>
-      <translation>Določilke osnovne črte</translation>
+      <translation>Določilke sklicne črte</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <source>Datum Point parameters</source>
-      <translation>Določilke osnovne točke</translation>
+      <translation>Določilke sklicne točke</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
@@ -3878,7 +3878,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
-      <translation>Uredi osnovne mere</translation>
+      <translation>Uredi sklicnost</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="74"/>
@@ -3905,7 +3905,7 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="70"/>
       <source>Edit loft</source>
-      <translation>Uredi ostrešje</translation>
+      <translation>Uredi navleček</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="48"/>
@@ -4668,7 +4668,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Create a datum</source>
-      <translation>Ustvari sklicni predmet</translation>
+      <translation>Ustvari sklicnost</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -5278,7 +5278,7 @@ Sekanje enot očrta ali več ploskev v očrtu ni dopustno pri izdelavi ugreza v 
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation>Navleček: vsi prerezi morajo biti značilnosti dela</translation>
+      <translation>Navleček: vsi preseki morajo biti značilnosti dela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
@@ -5288,84 +5288,84 @@ Sekanje enot očrta ali več ploskev v očrtu ni dopustno pri izdelavi ugreza v 
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation>Navleček: Presek ne vsebuje črtovja, niti posamičnega oglišča</translation>
+      <translation>Navleček: presek ne vsebuje črtovja, niti posamičnega oglišča</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Navleček: le prvi in zadnji presek sta lahko oglišči</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Navleček: pri zaprtih navlečkih more le presek biti oglišče</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Navleček: vsi preseki navlečka morajo imeti enako število notranjih črtovij</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>Navlečka ni bilo mogoče narediti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Navleček: dobljeno ni telo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Navleček: od ničesar ni mogoče odvzeti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Navleček: dodajanje navlečka spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Navleček: odvzemanje navlečka spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Navleček: pri navlačenju je prišlo do usodne napake</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="125"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Izboklina: ustvarjanje je spodletelo, ker je smer pravokotna na normalo očrta</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="136"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>Izboklina: ustvarjanje ploskve iz očrta spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="200"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>Izboklina: dobljena oblika je prazna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="211"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>Izboklina: združitev z izhodiščno značilnostjo spodletela</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="243"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
+Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Cev: oblike preseka ni mogoče pridobiti</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
@@ -5593,42 +5593,42 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="652"/>
       <source>delta x of wedge too small</source>
-      <translation type="unfinished">delta x of wedge too small</translation>
+      <translation>sprememba x-a klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
       <source>delta y of wedge too small</source>
-      <translation type="unfinished">delta y of wedge too small</translation>
+      <translation>sprememba y-a klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
       <source>delta z of wedge too small</source>
-      <translation type="unfinished">delta z of wedge too small</translation>
+      <translation>sprememba z-ja klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
       <source>delta z2 of wedge is negative</source>
-      <translation type="unfinished">delta z2 of wedge is negative</translation>
+      <translation>sprememba klinovega z-ja 2 je negativna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>delta x2 of wedge is negative</source>
-      <translation type="unfinished">delta x2 of wedge is negative</translation>
+      <translation>sprememba klinovega x-a 2 je negativna</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
       <source>Angle of revolution too large</source>
-      <translation type="unfinished">Angle of revolution too large</translation>
+      <translation>Kot zvrtenja prevelik</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
       <source>Angle of revolution too small</source>
-      <translation type="unfinished">Angle of revolution too small</translation>
+      <translation>Kot zvrtenja premajhen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
       <source>Fusion with base feature failed</source>
-      <translation type="unfinished">Fusion with base feature failed</translation>
+      <translation>Združitev z izhodiščno značilnostjo spodletela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
@@ -5638,27 +5638,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>Nobenega na preoblikovano značilnost vezanega izvirnika ni.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>Neveljavne podporne oblike ni mogoče preoblikovati</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
       <source>Transformation failed</source>
-      <translation type="unfinished">Transformation failed</translation>
+      <translation>Preoblikovanje spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Oblika dodajne/odvzemne značilnosti je prazna</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation type="unfinished">Only additive and subtractive features can be transformed</translation>
+      <translation>Preoblikovati je mogoče le dodajne in odvzemne značilnosti</translation>
     </message>
   </context>
 </TS>
