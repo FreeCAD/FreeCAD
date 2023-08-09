@@ -476,8 +476,10 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     //viewer->setRedirectToSceneGraph(true);
     viewer->addEventCallback(SoEvent::getClassTypeId(),
         MeshFillHole::fileHoleCallback, this);
+    //NOLINTBEGIN
     myConnection = App::GetApplication().signalChangedObject.connect(
         std::bind(&MeshFillHole::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
     myBoundariesRoot->addChild(viewer->getHeadlight());

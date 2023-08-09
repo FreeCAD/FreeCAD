@@ -127,6 +127,9 @@ void View3DInventorPy::init_type()
     add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection() --> tuple of floats\n"
         "returns the direction vector the view is currently pointing at as tuple with xyz values\n"
     );
+    add_varargs_method("getUpDirection",&View3DInventorPy::getUpDirection,"getUpDirection() --> tuple of integers\n"
+        "Returns the up direction vector\n"
+    );
     add_varargs_method("setViewDirection",&View3DInventorPy::setViewDirection,"setViewDirection(tuple) --> None\n"
         "Sets the direction the view is pointing at. The direction must be given as tuple with\n"
         "three coordinates xyz"
@@ -1029,6 +1032,26 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
         throw Py::Exception();
     try {
         SbVec3f dvec = getView3DIventorPtr()->getViewer()->getViewDirection();
+        return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+
+Py::Object View3DInventorPy::getUpDirection(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    try {
+        SbVec3f dvec = getView3DIventorPtr()->getViewer()->getUpDirection();
         return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
     }
     catch (const Base::Exception& e) {

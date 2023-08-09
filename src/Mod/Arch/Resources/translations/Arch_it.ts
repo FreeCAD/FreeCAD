@@ -11,7 +11,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation>Scegliere una scheda preimpostata</translation>
+      <translation>Scegliere una scheda predefinita</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
-      <translation>Url</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="236"/>
@@ -384,7 +384,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation>Editor di proprietà IFC</translation>
+      <translation>Editore di proprietà IFC</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
@@ -468,7 +468,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation>Repository remoti</translation>
+      <translation>Repository remote</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
@@ -558,7 +558,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation>Aggiungi la selezione</translation>
+      <translation>Aggiungi selezionato</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
@@ -701,12 +701,12 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Imposta la proprietà "Sposta con l'host" su True, per impostazione predefinita</translation>
+      <translation>Imposta la proprietà "Sposta con l'host" su vero come impostazione predefinita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation>Imposta la proprietà "Sposta base" su vero, per impostazione predefinita</translation>
+      <translation>Imposta la proprietà "Sposta base" su vero come impostazione predefinita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
@@ -3429,7 +3429,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>Aggiungi la selezione</translation>
+      <translation>Aggiungi selezionato</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -5046,7 +5046,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="536"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Tipo della lastra</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="539"/>
@@ -5248,7 +5248,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1136"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>Un elenco di possibili rotazioni per il nido</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1285"/>
@@ -5448,7 +5448,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Se abilitato, il programma e il foglio di calcolo associato vengono aggiornati ogni volta che il documento viene ricalcolato</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>

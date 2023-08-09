@@ -61,7 +61,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace PartGui {
     class FaceSelection : public Gui::SelectionFilterGate
@@ -251,12 +251,14 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
-    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&FaceColors::slotDeleteDocument, this, bp::_1));
-    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&FaceColors::slotDeleteObject, this, bp::_1));
-    d->connectUndoDoc = d->doc->signalUndoDocument.connect(boost::bind
-        (&FaceColors::slotUndoDocument, this, bp::_1));
+    //NOLINTBEGIN
+    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
+        (&FaceColors::slotDeleteDocument, this, sp::_1));
+    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(std::bind
+        (&FaceColors::slotDeleteObject, this, sp::_1));
+    d->connectUndoDoc = d->doc->signalUndoDocument.connect(std::bind
+        (&FaceColors::slotUndoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 FaceColors::~FaceColors()

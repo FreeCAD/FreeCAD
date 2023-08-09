@@ -82,6 +82,7 @@ public:
     Py::Object saveVectorGraphic(const Py::Tuple&);
     Py::Object getCamera(const Py::Tuple&);
     Py::Object getViewDirection(const Py::Tuple&);
+    Py::Object getUpDirection(const Py::Tuple&);
     Py::Object setViewDirection(const Py::Tuple&);
     Py::Object setCamera(const Py::Tuple&);
     Py::Object setCameraOrientation(const Py::Tuple&);

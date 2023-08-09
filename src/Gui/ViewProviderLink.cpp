@@ -194,8 +194,10 @@ public:
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
+        //NOLINTBEGIN
         connChangeIcon = vp->signalChangeIcon.connect(
-                boost::bind(&LinkInfo::slotChangeIcon,this));
+                std::bind(&LinkInfo::slotChangeIcon,this));
+        //NOLINTEND
         vp->forceUpdate(true);
         sensor.setFunction(sensorCB);
         sensor.setData(this);

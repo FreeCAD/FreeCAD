@@ -2646,7 +2646,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="48"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Materiaal kaart</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="56"/>
@@ -2703,7 +2703,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="213"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Mechanische eigenschappen</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="224"/>
@@ -2743,7 +2743,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
       <source>Thermal Conductivity:</source>
-      <translation type="unfinished">Thermal Conductivity:</translation>
+      <translation>Warmte geleiding:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="425"/>
@@ -2753,7 +2753,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="450"/>
       <source>Expansion Coefficient:</source>
-      <translation type="unfinished">Expansion Coefficient:</translation>
+      <translation>Expansie Coëfficiënt:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="472"/>
@@ -2764,7 +2764,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="497"/>
       <source>Specific Heat:</source>
-      <translation type="unfinished">Specific Heat:</translation>
+      <translation>Specifieke Heat:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -3415,7 +3415,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation type="unfinished">Current density:</translation>
+      <translation>Huidige dichtheid:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -5112,7 +5112,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
       <source>Coloring</source>
-      <translation type="unfinished">Coloring</translation>
+      <translation>Kleuren</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
@@ -5147,7 +5147,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="156"/>
       <source>Styling</source>
-      <translation type="unfinished">Styling</translation>
+      <translation>Opmaak</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>
@@ -6111,7 +6111,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Schrijven</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -6136,17 +6136,17 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Herschrijven</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Herstarten</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Afbreken</translation>
     </message>
   </context>
   <context>
@@ -6167,7 +6167,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Selecteer vlakken/randen/hoekpunten</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="134"/>
@@ -6213,7 +6213,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="294"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Selectiemodus</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
@@ -6298,7 +6298,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>Histogram van {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>

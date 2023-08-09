@@ -1602,7 +1602,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Sjabloon (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -3832,7 +3832,7 @@ een Lassymbool heeft dat kapot zou gaan.</translation>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="319"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has one or more dependent views that would become broken.</translation>
+      <translation>U kunt deze weergave niet verwijderen omdat deze een of meerdere afhankelijke weergave(s) heeft, die dan beschadigd raken.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="322"/>

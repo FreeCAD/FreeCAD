@@ -39,7 +39,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
     // forward declaration
@@ -360,12 +360,14 @@ DocumentModel::DocumentModel(QObject* parent)
         ViewProviderIndex   ::init();
     }
 
+    //NOLINTBEGIN
     // Setup connections
-    Application::Instance->signalNewDocument.connect(boost::bind(&DocumentModel::slotNewDocument, this, bp::_1));
-    Application::Instance->signalDeleteDocument.connect(boost::bind(&DocumentModel::slotDeleteDocument, this, bp::_1));
-    Application::Instance->signalRenameDocument.connect(boost::bind(&DocumentModel::slotRenameDocument, this, bp::_1));
-    Application::Instance->signalActiveDocument.connect(boost::bind(&DocumentModel::slotActiveDocument, this, bp::_1));
-    Application::Instance->signalRelabelDocument.connect(boost::bind(&DocumentModel::slotRelabelDocument, this, bp::_1));
+    Application::Instance->signalNewDocument.connect(std::bind(&DocumentModel::slotNewDocument, this, sp::_1));
+    Application::Instance->signalDeleteDocument.connect(std::bind(&DocumentModel::slotDeleteDocument, this, sp::_1));
+    Application::Instance->signalRenameDocument.connect(std::bind(&DocumentModel::slotRenameDocument, this, sp::_1));
+    Application::Instance->signalActiveDocument.connect(std::bind(&DocumentModel::slotActiveDocument, this, sp::_1));
+    Application::Instance->signalRelabelDocument.connect(std::bind(&DocumentModel::slotRelabelDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 DocumentModel::~DocumentModel()
@@ -375,13 +377,15 @@ DocumentModel::~DocumentModel()
 
 void DocumentModel::slotNewDocument(const Gui::Document& Doc)
 {
-    Doc.signalNewObject.connect(boost::bind(&DocumentModel::slotNewObject, this, bp::_1));
-    Doc.signalDeletedObject.connect(boost::bind(&DocumentModel::slotDeleteObject, this, bp::_1));
-    Doc.signalChangedObject.connect(boost::bind(&DocumentModel::slotChangeObject, this, bp::_1, bp::_2));
-    Doc.signalRelabelObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, bp::_1));
-    Doc.signalActivatedObject.connect(boost::bind(&DocumentModel::slotActiveObject, this, bp::_1));
-    Doc.signalInEdit.connect(boost::bind(&DocumentModel::slotInEdit, this, bp::_1));
-    Doc.signalResetEdit.connect(boost::bind(&DocumentModel::slotResetEdit, this, bp::_1));
+    //NOLINTBEGIN
+    Doc.signalNewObject.connect(std::bind(&DocumentModel::slotNewObject, this, sp::_1));
+    Doc.signalDeletedObject.connect(std::bind(&DocumentModel::slotDeleteObject, this, sp::_1));
+    Doc.signalChangedObject.connect(std::bind(&DocumentModel::slotChangeObject, this, sp::_1, sp::_2));
+    Doc.signalRelabelObject.connect(std::bind(&DocumentModel::slotRenameObject, this, sp::_1));
+    Doc.signalActivatedObject.connect(std::bind(&DocumentModel::slotActiveObject, this, sp::_1));
+    Doc.signalInEdit.connect(std::bind(&DocumentModel::slotInEdit, this, sp::_1));
+    Doc.signalResetEdit.connect(std::bind(&DocumentModel::slotResetEdit, this, sp::_1));
+    //NOLINTEND
 
     QModelIndex parent = createIndex(0,0,d->rootItem);
     int count_docs = d->rootItem->childCount();

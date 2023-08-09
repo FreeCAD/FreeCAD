@@ -1602,7 +1602,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Plantilla (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -2954,7 +2954,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="235"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
-      <translation>El borde seleccionado es una BSpline, así un radio no se puede calcular.</translation>
+      <translation>El borde seleccionado es una BSpline y el radio no se puede calcular.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="314"/>
@@ -2979,7 +2979,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="361"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
-      <translation>El borde seleccionado es una BSpline, así un diámetro no se puede calcular.</translation>
+      <translation>El borde seleccionado es una BSpline y no se puede calcular el diámetro.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="441"/>
@@ -3796,7 +3796,7 @@
     <message>
       <location filename="../../TaskDimRepair.cpp" line="127"/>
       <source>Can not use references from a different View</source>
-      <translation>No se pueden usar referencias de una vista diferente</translation>
+      <translation>No se pueden utilizar referencias de una vista diferente</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="139"/>
@@ -3832,7 +3832,7 @@ tiene un símbolo de soldadura que se rompería.</translation>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="319"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
-      <translation>No se puede borrar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
+      <translation>No puede eliminar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="322"/>
@@ -4020,8 +4020,8 @@ tiene un cuadro de soldadura que se rompería.</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="42"/>
       <source>Text above arrow side symbol
 Angle, surface finish, root</source>
-      <translation>Texto sobre el símbolo de la flecha de lado
-Ángulo, acabado de la superficie, raíz</translation>
+      <translation>Texto sobre el símbolo de flecha
+ángulo, acabado superficial, raíz</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="50"/>
@@ -4654,7 +4654,7 @@ al rayar una cara con un patrón PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="851"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
-      <translation>Mostrar u ocultar las marcas en los cambios de dirección en las líneas ComplexSection. </translation>
+      <translation>Mostrar u ocultar las marcas en los cambios de dirección en las líneas ComplexSection.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="854"/>
@@ -5960,7 +5960,7 @@ Do you want to continue?</source>
       <location filename="../../TaskComplexSection.ui" line="51"/>
       <location filename="../../TaskComplexSection.ui" line="79"/>
       <source>Use Selection</source>
-      <translation>Usar Selección</translation>
+      <translation>Usar selección</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="58"/>
@@ -8385,7 +8385,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Tool Attributes</source>
-      <translation>Atributos de herramienta TechDraw</translation>
+      <translation>Atributos de herramienta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -8438,7 +8438,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation>Seleccionar desde la página.</translation>
+      <translation>Seleccionar desde Página.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="104"/>
@@ -8449,7 +8449,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
       <source>Select To Page.</source>
-      <translation>Seleccionar a página.</translation>
+      <translation>Seleccionar a Página.</translation>
     </message>
   </context>
   <context>
@@ -8487,7 +8487,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation>Seleccionar desde la página.</translation>
+      <translation>Seleccionar desde Página.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="104"/>
@@ -8498,7 +8498,7 @@ usando el espacio X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
       <source>Select To Page.</source>
-      <translation>Seleccionar a página.</translation>
+      <translation>Seleccionar a Página.</translation>
     </message>
   </context>
   <context>
@@ -8767,12 +8767,13 @@ usando el espacio X/Y dado</translation>
       <location filename="../../ViewProviderBalloon.cpp" line="181"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
-      <translation>No se puede borrar esta viñeta ahora porque hay un diálogo de tareas abierto.</translation>
+      <translation>No puede eliminar este globo ahora porque
+hay un diálogo de tareas abiertas.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBalloon.cpp" line="184"/>
       <source>Can Not Delete</source>
-      <translation>No se puede borrar</translation>
+      <translation>No se puede eliminar</translation>
     </message>
   </context>
 </TS>
