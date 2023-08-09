@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "FixedJoint.h"
 #include "System.h"
 #include "CREATE.h"

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistancexyConstraintIqcJc.h"
 #include "EndFramec.h"
 #include "CREATE.h"

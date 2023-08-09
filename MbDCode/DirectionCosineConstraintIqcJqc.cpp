@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DirectionCosineConstraintIqcJqc.h"
 #include "DirectionCosineIeqcJeqc.h"
 #include "EndFrameqc.h"
