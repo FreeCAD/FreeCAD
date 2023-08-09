@@ -612,7 +612,7 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
     }
 }
 
-void DlgGeneralImp::on_checkBox_projectUnitSystemIgnore_stateChanged(int state)
+void DlgSettingsGeneral::on_checkBox_projectUnitSystemIgnore_stateChanged(int state)
 {
     if (state < 0)
         return; // happens when clearing the combo box in retranslateUi()
