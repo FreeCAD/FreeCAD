@@ -176,7 +176,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>Mezera řádků pro vícevrstvé texty a popisky (vzhledem k velikosti písma)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
@@ -247,7 +247,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation type="unfinished">The distance between the dimension text and the dimension line</translation>
+      <translation>Vzdálenost mezi textem kótování a kótovací čárou</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>Podrobnosti o rozměrech</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
@@ -3237,43 +3237,43 @@ Není k dispozici, pokud je povolena možnost předvolby návrhu „Použít zá
       <translation>Ponor</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Konverze:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Konverze úspěšná</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>Převaděč LibreDWG nebyl nalezen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>Převodník ODA nebyl nalezen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>Převaděč QCAD nebyl nalezen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3284,7 +3284,7 @@ Další informace viz:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3354,7 +3354,7 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3375,7 +3375,7 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3397,37 +3397,37 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Žádné grafické rozhraní</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nelze vložit nový objekt do upravené součásti</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbol není implementován. Použití výchozího symbolu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Viditelnost vypnuta; odstraněno ze seznamu:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>obrázek je Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>název_souboru neexistuje v systému ani v souboru prostředků</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>nelze načíst texturu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nemá 'ViewObject.RootNode'.</translation>
     </message>
@@ -5173,53 +5173,53 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Zploštit</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Upgrade: Neznámá metoda síly:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Nalezen 1 blok: exploduje</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Nalezena 1 sloučenina s více pevnými látkami: exploduje</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Nalezen 1 parametrický objekt: prolomení jeho závislostí</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Nalezeny 2 objekty: jejich odečtení</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Bylo nalezeno několik tváří: rozdělit je</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Našel několik objektů: odečtem je od prvního</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Nalezen 1 obličej: vytahování jeho drátů</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Nalezeny pouze dráty: vytahování jejich okrajů</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Již není možný downgrade</translation>
     </message>

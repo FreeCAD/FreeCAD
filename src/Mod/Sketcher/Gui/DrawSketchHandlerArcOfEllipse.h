@@ -46,7 +46,7 @@ public:
         , arcAngle_t(0)
     {}
 
-    virtual ~DrawSketchHandlerArcOfEllipse() = default;
+    ~DrawSketchHandlerArcOfEllipse() override = default;
 
     /// mode table
     enum SelectMode

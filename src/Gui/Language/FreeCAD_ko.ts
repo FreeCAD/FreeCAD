@@ -48,24 +48,24 @@
       <translation>&lt;비어 있음&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2272"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2538"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2276"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2542"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2547"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2786"/>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
     </message>
@@ -86,7 +86,7 @@
       <location filename="../CommandTest.cpp" line="718"/>
       <location filename="../CommandTest.cpp" line="719"/>
       <source>Run test cases to verify console messages</source>
-      <translation type="unfinished">Run test cases to verify console messages</translation>
+      <translation>시험삼아 콘솔 메시지를 확인해보기 위해 테스용 샘플을 실행 해 보세요</translation>
     </message>
   </context>
   <context>
@@ -2335,7 +2335,7 @@ display the splash screen</source>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>매크로</translation>
     </message>
@@ -2356,8 +2356,8 @@ display the splash screen</source>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>존재하는 파일</translation>
     </message>
@@ -2433,53 +2433,53 @@ Note: your changes will be applied when you next switch workbenches
       <translation>워크스루 지침: 새로 만들기를 클릭한 다음, 오른쪽 화살표(-&gt;) 버튼을 클릭하고 닫기를 클릭합니다.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>워크스루 지침: 새로 만들기를 클릭한 다음, 오른쪽 화살표(-&gt;) 버튼을 클릭하고 닫기를 클릭합니다.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>매크로 파일 이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>새 이름 입력하기:</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1'
  이미 존재합니다.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>이름 바꾸기 실패함</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>'%1'(으)로 이름을 바꾸지 못했습니다.
 어쩌면 파일권한 오류일까요?</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>매크로 복제하기</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>복제 실패함</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>'%1'(으)로 복제하지 못했습니다.
@@ -2859,42 +2859,42 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>사용자 지정 설정 지우기</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>모든 사용자 설정을 지우기 원하나요?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>동의하면 모든 사용자 설정이 지워집니다.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>잘못 된 파라미터</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation>재시작 필요</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="499"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
+      <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
@@ -4076,32 +4076,32 @@ get date suffix according to the specified format</source>
 지정된 형식에 따라 날짜 접미사가 붙습니다</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../DlgSettingsDocument.ui" line="518"/>
       <source>Use date and FCBak extension</source>
       <translation>날짜 및 FCBak 확장 사용</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../DlgSettingsDocument.ui" line="531"/>
       <source>Date format</source>
       <translation>날짜 형식</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../DlgSettingsDocument.ui" line="556"/>
       <source>Document objects</source>
       <translation>문서 객체</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
       <translation>객체가 동일한 레이블을 갖도록 허용하기</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../DlgSettingsDocument.ui" line="565"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>하나의 문서에 복제된 객체 레이블 허용하기</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../DlgSettingsDocument.ui" line="578"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4114,22 +4114,22 @@ icon in the tree view to fully reload it.</source>
 두 번 눌러 문서를 완전히 다시 불러옵니다.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>외부 링크된 객체의 부분 불러오기 비활성화</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../DlgSettingsDocument.ui" line="601"/>
       <source>Authoring and License</source>
       <translation>저작 및 라이선스</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../DlgSettingsDocument.ui" line="607"/>
       <source>Author name</source>
       <translation>저작자</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../DlgSettingsDocument.ui" line="614"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4138,32 +4138,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
 다음 양식을 사용할 수도 있습니다. Gilong Hong &lt;hong@gildong.com&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../DlgSettingsDocument.ui" line="629"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>파일을 저장할 때 '마지막 수정자' 필드가 지정된 작성자로 설정됩니다</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../DlgSettingsDocument.ui" line="632"/>
       <source>Set on save</source>
       <translation>저장 시 설정하기</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../DlgSettingsDocument.ui" line="645"/>
       <source>Company</source>
       <translation>회사</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../DlgSettingsDocument.ui" line="652"/>
       <source>Default company name to use for new files</source>
       <translation>새 파일에 사용할 기본 회사 이름</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
       <translation>기본 라이선스</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../DlgSettingsDocument.ui" line="675"/>
       <source>Default license for new documents</source>
       <translation>새 문서에 대한 기본 라이선스</translation>
     </message>
@@ -4233,12 +4233,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>기타</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
       <translation>라이선스 URL</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgSettingsDocument.ui" line="698"/>
       <source>URL describing more about the license</source>
       <translation>라이선스에 대해 자세히 설명하는 URL</translation>
     </message>
@@ -5118,13 +5118,13 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgSettingsViewColor.ui" line="329"/>
       <location filename="../DlgSettingsViewColor.cpp" line="148"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>상단:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="356"/>
       <location filename="../DlgSettingsViewColor.cpp" line="149"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>중앙:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="315"/>
@@ -5150,7 +5150,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgSettingsViewColor.ui" line="399"/>
       <location filename="../DlgSettingsViewColor.cpp" line="150"/>
       <source>Bottom:</source>
-      <translation type="unfinished">Bottom:</translation>
+      <translation>하단:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="433"/>
@@ -5185,7 +5185,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="157"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>중간:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.cpp" line="158"/>
@@ -6813,7 +6813,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>치수</translation>
     </message>
@@ -6843,32 +6843,32 @@ Do you want to save your changes?</source>
       <translation>모두 닫기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>이 도구 모음 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>이 도킹 가능 창 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>저장하지 않은 문서</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>내보낸 객체에 외부 링크가 포함되어 있습니다. 내보내기 전에 문서를 한 번 이상 저장하십시오.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>외부 객체에 링크하려면, 문서를 한 번 이상 저장해야 합니다.
@@ -6962,7 +6962,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1135"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>포인트_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1237"/>
@@ -6982,12 +6982,12 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1262"/>
       <source>&amp;Align</source>
-      <translation type="unfinished">&amp;Align</translation>
+      <translation>정렬하기(&amp;A)</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1263"/>
       <source>&amp;Remove last point</source>
-      <translation type="unfinished">&amp;Remove last point</translation>
+      <translation>마지막 포인트 제거(&amp;R)</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1265"/>
@@ -7106,17 +7106,17 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>남은 시간: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>중단</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>작업을 중단 하시겠습니까?</translation>
     </message>
@@ -7129,12 +7129,12 @@ How do you want to proceed?</source>
       <translation>남은 시간: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>중단</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>작업을 중단 하시겠습니까?</translation>
     </message>
@@ -7142,7 +7142,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4312"/>
       <source>Change the linked object</source>
       <translation>링크된 객체 변경하기</translation>
     </message>
@@ -7150,12 +7150,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Error</source>
       <translation>에러</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Object not found</source>
       <translation>객체를 찾을 수 없습니다</translation>
     </message>
@@ -7370,17 +7370,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>파일 열기 %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>'%1' 파일을 열 수 없습니다.</translation>
     </message>
@@ -7388,22 +7388,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>매크로 %1 실행(편집하려면 Shift+클릭) 키보드 단축키: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>'%1' 파일을 열 수 없습니다.</translation>
     </message>
@@ -8036,7 +8036,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="906"/>
       <source>Tree settings</source>
-      <translation type="unfinished">Tree settings</translation>
+      <translation>트리 설정</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="910"/>
@@ -8234,8 +8234,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>'%1' 워크벤치 선택하기</translation>
     </message>
@@ -8837,7 +8836,7 @@ Do you want to continue?</source>
       <location filename="../NotificationArea.cpp" line="553"/>
       <location filename="../NotificationArea.cpp" line="1021"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>알림이</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
@@ -8848,7 +8847,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="963"/>
       <source>Notifier: </source>
-      <translation type="unfinished">Notifier: </translation>
+      <translation>알림이: </translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="965"/>
@@ -9198,12 +9197,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>%1이 비어 있지 않습니다. 내용도 삭제하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="298"/>
       <source>Translation:</source>
       <translation>이동:</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="587"/>
       <source>Rotation:</source>
       <translation>회전:</translation>
     </message>
@@ -10347,7 +10346,7 @@ the current copy will be lost.
       <translation>비어 있는 새 문서 만들기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
@@ -12545,7 +12544,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>이미지의 두 포인트 사이의 길이를 설정하여 서로 작용하게 이미지 크기를 조정합니다.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="250"/>
@@ -12619,17 +12618,17 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>도구 모음</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>왼쪽 모서리</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>오른쪽 모서리</translation>
     </message>
@@ -12712,7 +12711,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="450"/>
       <source>Enter desired distance between the points</source>
-      <translation type="unfinished">Enter desired distance between the points</translation>
+      <translation>포인트 사이의 원하는 거리를 입력합니다</translation>
     </message>
   </context>
   <context>

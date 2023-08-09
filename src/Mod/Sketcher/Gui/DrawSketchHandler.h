@@ -56,7 +56,7 @@ class CurveConverter final: public ParameterGrp::ObserverType
 public:
     CurveConverter();
 
-    ~CurveConverter();
+    ~CurveConverter() override;
 
     std::vector<Base::Vector2d> toVector2D(const Part::Geometry* geometry);
 

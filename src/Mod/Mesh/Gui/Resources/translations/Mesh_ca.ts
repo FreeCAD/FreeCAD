@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Boundings info...</source>
-      <translation>Informació de límits...</translation>
+      <translation>Informació dels vincles...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Mostra els límits de la malla seleccionada</translation>
+      <translation>Mostra els vincles de la malla seleccionada</translation>
     </message>
   </context>
   <context>
@@ -1541,7 +1541,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
       <source>Adaptive</source>
-      <translation>Adaptable</translation>
+      <translation>Adaptatiu</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
@@ -1567,7 +1567,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
       <source>Running gmsh...</source>
-      <translation>S'està executant gmsh...</translation>
+      <translation>S'està executant el Gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="256"/>
@@ -1664,7 +1664,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Remalla per Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -1756,7 +1756,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick triangle</source>
-      <translation>Seleccioneu un triangle</translation>
+      <translation>Trieu un triangle</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1781,7 +1781,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region options</source>
-      <translation>Opcions de regió</translation>
+      <translation>Opcions de la regió</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
@@ -1791,7 +1791,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecta només els triangles amb les normals enfront de la pantalla</translation>
+      <translation>Respecta només els triangles amb les normals mirant la pantalla</translation>
     </message>
   </context>
   <context>
@@ -1799,12 +1799,12 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentació de malla</translation>
+      <translation>Segmentació de la malla</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Suavitza de la malla</translation>
+      <translation>Suavitza la malla</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -1836,7 +1836,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
       <location filename="../../Segmentation.ui" line="92"/>
       <location filename="../../Segmentation.ui" line="172"/>
       <source>Curvature</source>
-      <translation>Corbat</translation>
+      <translation>Curvatura</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
@@ -1861,12 +1861,12 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Màxim corbat</translation>
+      <translation>Curvatura màxima</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Mínim corbat</translation>
+      <translation>Curvatura mínima</translation>
     </message>
   </context>
   <context>
@@ -1874,7 +1874,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentació de malla</translation>
+      <translation>Segmentació de la malla</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
@@ -1966,7 +1966,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecta només els triangles amb les normals enfront de la pantalla</translation>
+      <translation>Respecta només els triangles amb les normals mirant la pantalla</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="83"/>
@@ -2024,7 +2024,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Info de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
@@ -2066,7 +2066,8 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
       <location filename="../../Command.cpp" line="281"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>L'OpenSCAD no s'ha pogut trobar al vostre sistema. Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
+      <translation>No s'ha trobat l'OpenSCAD al sistema.
+Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
     </message>
   </context>
   <context>
@@ -2139,7 +2140,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -2200,12 +2201,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="386"/>
       <source>Asymptote Format</source>
-      <translation>Format Asymptote</translation>
+      <translation>Format de l'asímptota</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Format de fabricació 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
@@ -2215,22 +2216,22 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Meshing Tolerance</source>
-      <translation>Tolerància de mallat</translation>
+      <translation>Tolerància del mallat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="437"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Introdueix la tolerància per a la goemetria de mallat:</translation>
+      <translation>Introdueix la tolerància per a la geometria de mallat:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>La malla '%1' no és un sòlid.</translation>
+      <translation>La malla «%1» no és un sòlid.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1188"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>La malla '%1' és un sòlid.</translation>
+      <translation>La malla «%1» és un sòlid.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1190"/>
@@ -2240,22 +2241,22 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Boundings</source>
-      <translation>Límits envoltants</translation>
+      <translation>Vincles</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1420"/>
       <source>Fill holes</source>
-      <translation>Ompli els forats</translation>
+      <translation>Emplena els forats</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1421"/>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Ompli els forats amb un nombre màxim de vores:</translation>
+      <translation>Emplena els forats amb un nombre màxim d'arestes:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Scaling</source>
-      <translation>Escalant</translation>
+      <translation>Escalat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1666"/>
@@ -2280,13 +2281,13 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="788"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Mostra els colors</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1570"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
-      <translation>Ix del mode info</translation>
+      <translation>Surt del mode d'informació</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1629"/>
@@ -2296,12 +2297,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1652"/>
       <source>Leave hole-filling mode</source>
-      <translation>Ix del mode d'emplenament de forats</translation>
+      <translation>Surt del mode d'emplenament de forats</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1698"/>
       <source>Leave removal mode</source>
-      <translation>Ix del mode de supressió</translation>
+      <translation>Surt del mode de supressió</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1699"/>
@@ -2349,7 +2350,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modifica la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -2359,12 +2360,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>Tall de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentació de malla</translation>
+      <translation>Segmentació de la malla</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

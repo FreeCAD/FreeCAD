@@ -83,17 +83,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
       <source>Number of gear teeth</source>
-      <translation type="unfinished">Number of gear teeth</translation>
+      <translation>Número de dentes da engrenagem</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Modules of the gear</source>
-      <translation type="unfinished">Modules of the gear</translation>
+      <translation>Módulos da engrenagem</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation type="unfinished">Pressure angle of gear teeth</translation>
+      <translation>Ângulo de pressão dos dentes da engrenagem</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
@@ -1736,7 +1736,7 @@ clique novamente para terminar a seleção</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="370"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Direção personalizada</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="894"/>
@@ -2446,12 +2446,12 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Direção personalizada</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>Mostrar direção</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2541,7 +2541,7 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Selecionar face</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -2632,12 +2632,12 @@ medido ao longo da direção especificada</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Orientação de secção</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
@@ -2696,23 +2696,23 @@ medido ao longo da direção especificada</translation>
       <translation>Remover aresta</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Parâmetros do tubo</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Erro de entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Nenhum corpo ativo</translation>
     </message>
@@ -2755,12 +2755,12 @@ medido ao longo da direção especificada</translation>
       <translation>Lista pode ser reordenada arrastando</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Transformação da secção</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
@@ -3790,7 +3790,7 @@ This may lead to unexpected results.</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3799,32 +3799,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Se você tiver um documento antigo com objetos do PartDesign sem corpo, use a função de migração do PartDesign para colocá-los em um corpo.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Corpo ativo necessário</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Para criar um novo objeto de PartDesign, deve haver um corpo ativo no documento. Por favor, ative (duplo clique) ou crie um novo corpo.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>O objeto não está num corpo</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Para utilizar este objeto ele precisa pertencer a um corpo do documento.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>O objeto não está numa peça</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Para utilizar este objeto ele precisa pertencer a uma peça do documento.</translation>
     </message>

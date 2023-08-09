@@ -47,12 +47,12 @@ class TechDrawGuiExport QGITile : public QGIDecoration
 {
 public:
     explicit QGITile(TechDraw::DrawTileWeld*);
-    ~QGITile(void);
+    ~QGITile() override;
 
     enum {Type = QGraphicsItem::UserType + 325};
-    int type(void) const { return Type;}
+    int type(void) const override { return Type;}
 
-    virtual QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
     void setTileTextLeft(std::string s);
     void setTileTextRight(std::string s);
@@ -64,8 +64,8 @@ public:
     void setTileScale(double s);
     void setTailRight(bool b) { m_tailRight = b; }
     void setAltWeld(bool b) { m_altWeld = b; }
-    bool isTailRight(void);
-    virtual void draw(void);
+    bool isTailRight();
+    void draw() override;
 
 protected:
     QColor getTileColor(void) const;

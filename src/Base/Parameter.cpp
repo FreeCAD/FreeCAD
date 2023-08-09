@@ -473,7 +473,7 @@ bool ParameterGrp::HasGroup(const char* Name) const
     if (_GroupMap.find(Name) != _GroupMap.end())
         return true;
 
-    if (_pGroupNode && FindElement(_pGroupNode,"FCParamGroup",Name) != 0)
+    if (_pGroupNode && FindElement(_pGroupNode,"FCParamGroup",Name) != nullptr)
         return true;
 
     return false;
@@ -1239,7 +1239,7 @@ void ParameterGrp::Clear(bool notify)
 
     // Remove the rest of non-group nodes;
     std::vector<std::pair<ParamType, std::string>> params;
-    for (DOMNode *child = _pGroupNode->getFirstChild(), *next = child; child != 0;  child = next) {
+    for (DOMNode *child = _pGroupNode->getFirstChild(), *next = child; child != nullptr;  child = next) {
         next = next->getNextSibling();
         ParamType type = TypeValue(StrX(child->getNodeName()).c_str());
         if (type != ParamType::FCInvalid && type != ParamType::FCGroup)
@@ -1347,7 +1347,7 @@ ParameterGrp::GetParameterNames(const char * sFilter) const
     std::string Name;
 
     for (DOMNode *clChild = _pGroupNode->getFirstChild();
-            clChild != 0;  clChild = clChild->getNextSibling()) {
+            clChild != nullptr;  clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             StrX type(clChild->getNodeName());
             ParamType Type = TypeValue(type.c_str());
@@ -1745,16 +1745,17 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             theOutput->setEncoding(gOutputEncoding);
 
             if (gUseFilter) {
-                myFilter.reset(new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
-                                                  DOMNodeFilter::SHOW_ATTRIBUTE |
-                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE |
-                                                  DOMNodeFilter::SHOW_TEXT
-                                                  ));
+                myFilter = std::make_unique<DOMPrintFilter>(
+                            DOMNodeFilter::SHOW_ELEMENT   |
+                            DOMNodeFilter::SHOW_ATTRIBUTE |
+                            DOMNodeFilter::SHOW_DOCUMENT_TYPE |
+                            DOMNodeFilter::SHOW_TEXT
+                           );
                 theSerializer->setFilter(myFilter.get());
             }
 
             // plug in user's own error handler
-            myErrorHandler.reset(new DOMPrintErrorHandler());
+            myErrorHandler = std::make_unique<DOMPrintErrorHandler>();
             DOMConfiguration* config = theSerializer->getDomConfig();
             config->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler.get());
 

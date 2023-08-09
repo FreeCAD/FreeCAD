@@ -453,7 +453,7 @@
     <message>
       <location filename="../../Command.cpp" line="2279"/>
       <source>Box</source>
-      <translation>Sześcian</translation>
+      <translation>Prostopadłościan</translation>
     </message>
   </context>
   <context>
@@ -792,7 +792,7 @@
     <message>
       <location filename="../../Command.cpp" line="2280"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation>Utwórz funkcję prostopadłościanu, zdefiniowanego przez jego środek, długość, szerokość i wysokość</translation>
+      <translation>Utwórz cechę prostopadłościanu, zdefiniowanego przez jego środek, długość, szerokość i wysokość</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1230,7 @@ constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Katalog roboczy do przeprowadzania analiz i tworzenia siatki gmsh</translation>
+      <translation>Katalog roboczy do przeprowadzania analiz i tworzenia siatki Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1966,7 +1966,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="357"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="368"/>
       <source>Selection error</source>
-      <translation>Błąd zaznaczenia</translation>
+      <translation>Błąd selekcji</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
@@ -2027,7 +2027,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="384"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
@@ -2214,7 +2214,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="202"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
       <source>Selection error</source>
-      <translation>Błąd wyboru</translation>
+      <translation>Błąd selekcji</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="131"/>
@@ -2252,7 +2252,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
       <source>Selection error</source>
-      <translation>Błąd w zaznaczeniu</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
@@ -2280,7 +2280,7 @@ Wybierz inny plik.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="297"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd w zaznaczeniu</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
@@ -4154,7 +4154,7 @@ Aby uzyskać możliwe zmienne, zobacz pole opisu poniżej.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Sześcian</translation>
+      <translation>Prostopadłościan</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -5372,117 +5372,119 @@ użyta przez solver Elmer</translation>
       <translation>Wiązania &amp;elektrostatyczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>Fluid Constraints</source>
       <translation>Wiązania płynu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Fluid Constraints</source>
       <translation>Wiązania &amp;płynu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Electromagnetic Constraints</source>
       <translation>Wiązania elektromagnetyczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Electromagnetic Constraints</source>
       <translation>&amp;Wiązania elektromagnetyczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Geometrical Constraints</source>
       <translation>Wiązania geometryczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>Wiązania &amp;geometryczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Mechanical Constraints</source>
       <translation>Wiązania mechaniczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>Wiązania &amp;mechaniczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Thermal Constraints</source>
       <translation>Wiązania termiczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Thermal Constraints</source>
       <translation>Wiązania &amp;termiczne</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Constraints without solver</source>
       <translation>Wiązania bez solvera</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Constraints without solver</source>
       <translation>&amp;Wiązania bez solvera</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Overwrite Constants</source>
       <translation>Nadpisz stałe</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>&amp;Overwrite Constants</source>
       <translation>&amp;Nadpisz stałe</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="66"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>M&amp;esh</source>
       <translation>&amp;Siatka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="69"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Solve</source>
       <translation>Rozwiąż</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>&amp;Solve</source>
       <translation>&amp;Rozwiąż</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Results</source>
       <translation>Wyniki</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Results</source>
       <translation>&amp;Wyniki</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Filter functions</source>
       <translation>Funkcje filtrów</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>&amp;Filter functions</source>
       <translation>&amp;Funkcje filtra</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="79"/>
       <source>Utilities</source>
       <translation>&amp;Narzędzia</translation>
     </message>

@@ -279,7 +279,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
                 pcolor[preselectpointmfid.fieldIndex] = drawingParameters.PreselectColor;
 
-                raisePoint(pverts[preselectpointmfid.fieldIndex], drawingParameters.zHighlight);
+                raisePoint(pverts[preselectpointmfid.fieldIndex], viewOrientationFactor * drawingParameters.zHighlight);
             }
         }
 
@@ -292,7 +292,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
              layerId = l,
              &coinMapping = coinMapping,
              drawingParameters = this->drawingParameters,
-             raisePoint](const int i) {
+             raisePoint,
+             viewOrientationFactor](const int i) {
                 auto pointindex = coinMapping.getIndexLayer(i);
                 if (layerId == pointindex.layerId && pointindex.fieldIndex >= 0
                     && pointindex.fieldIndex < PtNum) {
@@ -300,7 +301,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                         ? drawingParameters.PreselectSelectedColor
                         : drawingParameters.SelectColor;
 
-                    raisePoint(pverts[pointindex.fieldIndex], drawingParameters.zHighlight);
+                    raisePoint(pverts[pointindex.fieldIndex], viewOrientationFactor * drawingParameters.zHighlight);
                 }
             });
 

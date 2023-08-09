@@ -3245,43 +3245,43 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Tervrajz</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Átalakítás:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Átalakítás sikeres</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>LibreDWG átalakító nem található</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>ODA átalakító nem található</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>QCAD átalakító nem található</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3292,7 +3292,7 @@ További információkért lásd:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3362,7 +3362,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3383,7 +3383,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3405,37 +3405,37 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Nincs grafikus interfész</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nem lehet új tárgyat beszúrni egy méretezett alkatrészbe</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>A szimbólum nincs megvalósítva. Alapértelmezett szimbólum használata.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Láthatóság kikapcsolva; eltávolítva a listáról: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>a kép üres</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>a fájlnév nem létezik a rendszeren vagy a forrásfájlban</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>anyagminta betöltése sikertelen</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nincs 'ViewObject.RootNode'.</translation>
     </message>
@@ -5181,53 +5181,53 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Laposítás</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Frissítés: Ismeretlen erőltető módszer:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Talált 1 blokkot: szétrobbantom</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Találtam 1 összetett multi-szilárd testet: robbantom</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Talált 1 parametrikus tárgyat: függőségeket felosztja</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Két tárgyat talált: kivonja egymásból</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Több felület talált: felosztja</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Több tárgyat talált: kivonja az elsőből</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Talált 1 felületet: drótvázzá bontja</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Csak vonalak találhatók: éleiket kibontja</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Nem lehet több visszaminősítést végezni</translation>
     </message>

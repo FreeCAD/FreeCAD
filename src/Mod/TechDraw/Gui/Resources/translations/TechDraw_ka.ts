@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Insert Arch Workbench Object</source>
       <translation>არქიტექტურული სამუშაო მაგიდის ობიექტის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Arch სამუშაო მაგიდიდან სიბრტყის კვეთის ხედის ჩასმა</translation>
     </message>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>File</source>
       <translation>ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Export Page as DXF</source>
       <translation>გვერდის DXF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Save DXF file</source>
       <translation>DXF ფაილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>File</source>
       <translation>ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1537"/>
       <source>Export Page as SVG</source>
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
@@ -1601,8 +1601,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
-      <source>Template (*.svg *.dxf)</source>
-      <translation>შაბლონი (*.svg *.dxf)</translation>
+      <source>Template (*.svg)</source>
+      <translation>შაბლონი (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -1621,12 +1621,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Project shape...</source>
       <translation>ფიგურის პროექცია...</translation>
     </message>
@@ -1753,17 +1753,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Insert Spreadsheet View</source>
       <translation>ელცხრილის ხედის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1476"/>
       <source>Insert View to a spreadsheet</source>
       <translation>ელცხრილზე ხედის ჩამატება</translation>
     </message>
@@ -1999,23 +1999,23 @@
       <translation>სიმბოლოს შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Create DraftView</source>
       <translation>DraftView-ის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1442"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>Create ArchView</source>
       <translation>ArchView-ის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Create spreadsheet view</source>
       <translation>ელცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../MDIViewPage.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Save page to dxf</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation>აქტიური ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="332"/>
+      <location filename="../../TaskCenterLine.cpp" line="397"/>
       <source>Create CenterLine</source>
       <translation>ცენტრალურ ხაზის შექმნა</translation>
     </message>
@@ -2162,9 +2162,19 @@
       <translation>დამხმარე წვეროს დამატება</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="105"/>
+      <source>TechDraw Insert Prefix</source>
+      <translation>TechDraw პრეფიქსის ჩასმა</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
       <source>Insert Prefix</source>
       <translation>პრეფიქსის ჩასმა</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <source>TechDraw Remove Prefix</source>
+      <translation>TechDraw პრეფიქსის წაშლა</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2252,9 +2262,19 @@
       <translation>რკალის სიგრძის ზომის შექმნა</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="97"/>
+      <source>TechDraw Hole Circle</source>
+      <translation>TechDraw-ის ნახვრეტის წრეწირი</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="117"/>
       <source>Bolt Circle Centerlines</source>
       <translation>ხრახნის წრის ცენტრის ხაზები</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="186"/>
+      <source>TechDraw Circle Centerlines</source>
+      <translation>TechDraw წრეწირის ცენტრალური ხაზები</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2262,9 +2282,19 @@
       <translation>წრეწირის ცენრის ხაზები</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="363"/>
+      <source>TechDraw Thread Hole Side</source>
+      <translation>TechDraw-ის კუთხვილის ხვრელის გვერდი</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>კოსმეტიკური კუთხვილის ხრახნის ნახვრეტის კედელი</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="415"/>
+      <source>TechDraw Thread Bolt Side</source>
+      <translation>TechDraw კუთხვილის ხრახნის გვერდი</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2272,9 +2302,19 @@
       <translation>ჰოსმეტიკური კუთხვილის ხრახნის გვერდი</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="467"/>
+      <source>TechDraw Thread Hole Bottom</source>
+      <translation>TechDraw კუთხვილის ხვრელის ფსკერი</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>კოსმეტიკური კუთხვილის ხრახნის ნახვრეტის ძირი</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="519"/>
+      <source>TechDraw Thread Bolt Bottom</source>
+      <translation>TechDraw კუთხვილის ჭანჭიკის ფსკერი</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2282,9 +2322,19 @@
       <translation>ჰოსმეტიკური კუთხვილის ხრახნის ძირი</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="765"/>
+      <source>TechDraw Change Line Attributes</source>
+      <translation>TechDraw ხაზის ატრიბუტების შეცვლა</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
       <source>Change Line Attributes</source>
       <translation>ხაზის ატრიბუტების შეცვლა</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="825"/>
+      <source>TechDraw Cosmetic Intersection Vertex(es)</source>
+      <translation>TechDraw კოსმეტიკური კვეთის წვერო(ებ)ი</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
@@ -2292,9 +2342,19 @@
       <translation>კოსმეტიკური კვეთის წვეროები</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="872"/>
+      <source>TechDraw Cosmetic Arc</source>
+      <translation>TechDraw კოსმეტიკური რკალი</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
       <source>Cosmetic Arc</source>
       <translation>კოსმეტიკური რკალი</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="937"/>
+      <source>TechDraw Cosmetic Circle</source>
+      <translation>TechDraw კოსმეტიკური წრეწირი</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2302,9 +2362,19 @@
       <translation>კოსმეტიკური წრეწირი</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <source>TechDraw Cosmetic Circle 3 Points</source>
+      <translation>TechDraw კოსმეტიკური წრე 3 წერტილით</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>კოსმეტიკური წრე 3 წერტილი</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1187"/>
+      <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
+      <translation>TechDraw კოსმეტიკური ხაზი პარალელურია თუ მართობული</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2312,14 +2382,29 @@
       <translation>კოსმეტიკური ხაზი პარალელურია თუ მართობული</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <source>TechDraw Lock/Unlock View</source>
+      <translation>TechDraw ხედის დაბლოკვა/განბლოკვა</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
       <source>Lock/Unlock View</source>
       <translation>ხედის დაბლოკვა/განბლოკვა</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1527"/>
+      <source>TechDraw Extend/Shorten Line</source>
+      <translation>TechDraw ხაზის გაგრძელება/შემოკლება</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
       <source>Extend/Shorten Line</source>
       <translation>ხაზის გაგრძელება/შემოკლება</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
+      <source>TechDraw calculate selected area</source>
+      <translation>TechDraw მონიშნული ფართობის გამოთვლა</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -2627,9 +2712,9 @@
       <location filename="../../Command.cpp" line="1233"/>
       <location filename="../../Command.cpp" line="1252"/>
       <location filename="../../Command.cpp" line="1365"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1435"/>
-      <location filename="../../Command.cpp" line="1478"/>
+      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -2765,37 +2850,37 @@
       <translation>ერთი ობიექტი მაინც მონიშნეთ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>აირჩიეთ მხოლოდ 1 არქიტექტურული კვეთა.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1446"/>
       <source>No Arch Sections in selection.</source>
       <translation>არქიტექტურული კვეთები მონიშნული არაა.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>აირჩიეთ ელცხრილის ზუსტად ერთი ობიექტი.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1561"/>
       <source>No Drawing View</source>
       <translation>ნახაზის ხედები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>SVG-ში გატანის წინ ხატვის ხედის გახსნა.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Can not export selection</source>
       <translation>მონიშნულის გატანა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>გვერდი შეიცავს DrawViewArch-ს, რომელიც არ იქნება გატანილი. გავაგრძელო?</translation>
     </message>
@@ -3285,50 +3370,50 @@
       <translation>დოკუმენტში ნახაზის გვერდები არაა.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="272"/>
+      <location filename="../../MDIViewPage.cpp" line="280"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="273"/>
-      <location filename="../../MDIViewPage.cpp" line="675"/>
+      <location filename="../../MDIViewPage.cpp" line="281"/>
+      <location filename="../../MDIViewPage.cpp" line="687"/>
       <source>All Files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="275"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
       <source>Export Page As PDF</source>
       <translation>გვერდის PDF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="566"/>
+      <location filename="../../MDIViewPage.cpp" line="578"/>
       <source>Document Name: </source>
       <translation>დოკუმენტის სახელი: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="674"/>
+      <location filename="../../MDIViewPage.cpp" line="686"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="677"/>
+      <location filename="../../MDIViewPage.cpp" line="689"/>
       <source>Export page as SVG</source>
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="211"/>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="232"/>
+      <location filename="../../ViewProviderPage.cpp" line="233"/>
       <source>Show drawing</source>
       <translation>ნახაზის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="234"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle KeepUpdated</source>
       <translation>განახლების ჩართ/გამორთ</translation>
     </message>
@@ -3355,7 +3440,7 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <source>Rich text editor</source>
       <translation>ტექსტის ფორმატირების რედაქტორი</translation>
     </message>
@@ -3400,7 +3485,7 @@
       <translation>ცენტრალური ხაზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="201"/>
+      <location filename="../../TaskCenterLine.cpp" line="207"/>
       <source>Edit Center Line</source>
       <translation>ცენტრალური ხაზის ჩასწორება</translation>
     </message>
@@ -3596,14 +3681,14 @@
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
       <location filename="../../CommandExtensionDims.cpp" line="2268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1469"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1957"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1958"/>
       <source>Selection is empty</source>
       <translation>მონიშნული ცარიელია</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1964"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1965"/>
       <source>No object selected</source>
       <translation>ობიექტი მონიშნული არაა</translation>
     </message>
@@ -3628,12 +3713,12 @@
       <translation>მონიშნულში ზედაპირები არაა.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2045"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw-ის კუთხვილის ხვრელის გვერდი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2047"/>
       <source>Please select two straight lines</source>
       <translation>გთხოვთ, არჩიეთ ორი სწორი ხაზი</translation>
     </message>
@@ -3745,16 +3830,19 @@ it has a weld symbol that would become broken.</source>
 რომ მას აქვს შედუღების ნიშანი, რომელიც გაფუჭდება.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია ერთი ან მეტი დამოკიდებული ხედი, რომელიც გაფუჭდებოდა.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
@@ -3767,25 +3855,22 @@ it has a weld symbol that would become broken.</source>
       <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="314"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია კვეთის ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია დეტალის ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="330"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია გატანადი ხაზი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="205"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>გვერდი ცარიელი არ არის, ამიტომ
@@ -4731,15 +4816,6 @@ when hatching a face with a PAT pattern</translation>
       <translation>ხედზე წვეროების ფერი</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
-      <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
-
-</source>
-      <translation>თუ ჩართულია, FreeCAD-ი ყველა ტექსტისა და ხაზისთვის ერთ ფერს გამოიყენებს. თუ გამორთულია, FreeCAD-ი არჩეული ფერების ღია ვერსიების გამოყენებას ეცდება.
-
-</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>დეტალების განათება</translation>
@@ -4778,6 +4854,15 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="375"/>
       <source>Face color (if not transparent)</source>
       <translation>ზედაპირის ფერი (თუ გამჭვირვალე არაა)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>If checked FreeCAD will use a single color for all text and lines. 
+
+</source>
+      <translation>თუ ჩართულია, FreeCAD-ი ყველა ტექსტისა და ხაზებისთვის ერთ ფერს გამოიყენებს. 
+
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
@@ -5448,81 +5533,81 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>განახლებადობის &amp;ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>Toggle &amp;Frames</source>
       <translation>ჩარჩოების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;SVG-ში გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export DXF</source>
       <translation>DXF-ის გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Export PDF</source>
       <translation>PDF-ად გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Print All Pages</source>
       <translation>ყველა გვერდის დაბეჭდვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="381"/>
+      <location filename="../../MDIViewPage.cpp" line="391"/>
       <source>Different orientation</source>
       <translation>განსხვავებული ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="382"/>
+      <location filename="../../MDIViewPage.cpp" line="392"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი ნახაზისგან განსხვავებულ ორიენტაციას იყენებს.
 გნებავთ გაგრძელება?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="401"/>
       <source>Different paper size</source>
       <translation>ფურცლის განსხვავებული ზომა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="402"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი იყენებს ქაღალდის განსხვავებულ ზომას, ვიდრე ნახაზი.
 Გინდა გააგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="415"/>
       <source>Opening file failed</source>
       <translation>ფაილის გახსნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="416"/>
       <source>Can not open file %1 for writing.</source>
       <translation>ჩასაწერად ფაილის „%1“ გახსნა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="701"/>
+      <location filename="../../MDIViewPage.cpp" line="713"/>
       <source>Save DXF file</source>
       <translation>DXF ფაილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="702"/>
+      <location filename="../../MDIViewPage.cpp" line="714"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1210"/>
+      <location filename="../../MDIViewPage.cpp" line="1222"/>
       <source>Selected:</source>
       <translation>მონიშნული:</translation>
     </message>
@@ -8548,12 +8633,12 @@ using the given X/Y Spacing</source>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
       <source>Add a hole or shaft fit to a dimension&lt;br&gt;
                 - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel openes&lt;br&gt;
+                - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
       <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
                 - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel openes&lt;br&gt;
+                - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</translation>
     </message>

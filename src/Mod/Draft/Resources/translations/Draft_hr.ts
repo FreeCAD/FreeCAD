@@ -43,7 +43,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation type="unfinished">Layers manager</translation>
+      <translation>Upravitelj slojeva</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -64,12 +64,12 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation type="unfinished">Toggle on/off</translation>
+      <translation>Uključivanje/Isključivanje</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Izoliraj</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -184,7 +184,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>Razmak između redova za višestruke tekstove i oznake (relativno na veličinu pisma)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
@@ -259,7 +259,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation type="unfinished">The distance between the dimension text and the dimension line</translation>
+      <translation>Udaljenost između teksta dimenzije i linije dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
@@ -315,7 +315,8 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>
+Detalji dimenzija</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
@@ -1114,7 +1115,7 @@ tijekom crtanja pomoću tipki [i]
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="455"/>
       <source>Apply above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Primjeni gornji stil na sve oznake (tekstove, dimenzije i oznake)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
@@ -1201,12 +1202,12 @@ tijekom crtanja pomoću tipki [i]
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Ext lines</source>
-      <translation type="unfinished">Ext lines</translation>
+      <translation>Pomoćne linije dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Udaljenost za koju je linija dimenzije proširena uzduž pomoćne linije dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1235,12 +1236,12 @@ tijekom crtanja pomoću tipki [i]
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="381"/>
       <source>Dim overshoot</source>
-      <translation type="unfinished">Dim overshoot</translation>
+      <translation>Prebaćaj dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="388"/>
       <source>Length of the extension lines beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension lines beyond the dimension line</translation>
+      <translation>Duljina linija oznake duljine izvan linije dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="398"/>
@@ -1250,7 +1251,7 @@ tijekom crtanja pomoću tipki [i]
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Ext overshoot</source>
-      <translation type="unfinished">Ext overshoot</translation>
+      <translation>Prebaćaj pomoćne linije dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -2111,27 +2112,27 @@ Inače će se primijeniti zadane boje. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>Get original colors from the DXF file (legacy importer only)</source>
-      <translation type="unfinished">Get original colors from the DXF file (legacy importer only)</translation>
+      <translation>Zadrži orginalne boje od DFX datoteke (samo za zastarjeli uvoznik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation type="unfinished">Import hatch boundaries as wires (legacy importer only)</translation>
+      <translation>Uvezi granice iscrtavanja kao žice (samo za stari uvoznik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width (legacy importer only)</source>
-      <translation type="unfinished">Render polylines with width (legacy importer only)</translation>
+      <translation>Iscrtaj višestruku liniju (polyline) sa širinom (samo za stari uvoznik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes (legacy exporter only)</translation>
+      <translation>Izvezi 3D objekt kao Poligonalne mreže (samo za stari uvoznik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation type="unfinished">Project exported objects along current view direction (legacy exporter only)</translation>
+      <translation>Projeciraj izvezene objekte u smjeru trenutnog pogleda (samo za stari uvoznik)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
@@ -2231,13 +2232,13 @@ Ako je postavljeno na '0', cijela je krivulja (spline) tretirana kao ravni segme
       <location filename="../ui/preferences-dxf.ui" line="587"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">TechDraw Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Pogledi Tehničkog crteža izvozit će se kao blokovi.
+Ovo možda neće uspjeti za predloške DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation type="unfinished">Export TechDraw Views as blocks</translation>
+      <translation>Izvoz pogleda Tehničkog Crteža kao blokova</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
@@ -3185,7 +3186,7 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
     <message>
       <location filename="../../DraftGui.py" line="848"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Tip oznaka</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="864"/>
@@ -3306,60 +3307,61 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Pretvaranje:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Pretvorba je uspješna</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>LibreDWG converter nije pronađen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>ODA konverter datoteka nije pronađen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD converter nije pronađen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>
+Nije pronađen niti jedan prikladan vanjski DWG konverter.
+Molimo postavite ručno  Uredi -&gt; Postavke -&gt; Uvoz/Izvoz -&gt; DWG
+Za više informacija pogledaj:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>Pogreška tijekom DWG pretvorbe. 
+Pokušajte premjestiti DWG datoteku na put direktorija bez razmaka i neengleskih znakova
+ili pokušajte spremiti u nižu DWG verziju.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="721"/>
@@ -3425,7 +3427,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3446,7 +3448,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3468,37 +3470,37 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Nema grafičkog sučelja</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nije moguće umetnuti novi objekt u skalirani dio</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Simbol nije implementiran. Korištenje zadanog simbola.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Vidljivost isključena; uklonjeno s popisa:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>slika je Ništavna</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>naziv datoteke ne postoji na sustavu ili u datoteci resursa</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>nije moguće učitati teksturu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nema 'ViewObject.RootNode'.</translation>
     </message>
@@ -4768,7 +4770,7 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="116"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Oblik-tekstom: stvaranje lica za jedan znak nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -4795,12 +4797,12 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="465"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>Pomak početka je prevelik za duljinu putanje. Umjesto toga koristi se nula.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="471"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>Pomak kraja je prevelik za duljinu putanje minus pomak početka. Umjesto toga koristi se nula.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="533"/>
@@ -5251,53 +5253,53 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <translation>Spljošti</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Nadogradnja: Nepoznata metoda prisile:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Pronađeno 1 blok: razdjeli ga</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Pronađeno 1 složeno višestruko čvrsto tijelo: razdjeli ga</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Pronađen 1 parametarski objekt: uklanjanje njegovih ovisnosti</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Pronađena 2 objekta: oduzmi ih</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Pronađeno nekoliko lica: razdjeli ih</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Pronađeno nekoliko objekata: oduzimanje tih objekata od prvog objekta</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Pronađeno 1 lice: izdvajanje njegovih žica</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Našao samo žice: izdvajanje njihovih rubova</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Nije moguće vraćanje na stariju verziju</translation>
     </message>
@@ -5559,7 +5561,7 @@ iz izbornika Alati-&gt; Upravitelj dodataka</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="312"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Pogreška: json modul nije pronađen. Nije moguće učitati stil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="329"/>
@@ -5669,7 +5671,7 @@ iz izbornika Alati-&gt; Upravitelj dodataka</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="277"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Uključeno</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="278"/>
@@ -5694,7 +5696,7 @@ iz izbornika Alati-&gt; Upravitelj dodataka</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="282"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Boja lica</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5704,12 +5706,12 @@ iz izbornika Alati-&gt; Upravitelj dodataka</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Boja ispisa linije</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="305"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>Novi Sloj</translation>
     </message>
   </context>
   <context>
@@ -7395,12 +7397,12 @@ Kako bi dobili bolje rezultate s 'Originalnim' ili 'Tangencijalnim' moguće je d
     <message>
       <location filename="../../draftobjects/patharray.py" line="268"/>
       <source>Length from the start of the path to the first copy.</source>
-      <translation type="unfinished">Length from the start of the path to the first copy.</translation>
+      <translation>Duljina od početka putanje do prve kopije.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="276"/>
       <source>Length from the end of the path to the last copy.</source>
-      <translation type="unfinished">Length from the end of the path to the last copy.</translation>
+      <translation>Duljina od kraja putanje do zadnje kopije.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="286"/>
@@ -8200,12 +8202,12 @@ izvan linije dimenzije</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="91"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Upravljanje slojevima...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="94"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Postavi/Izmijeni različite slojeve ovog dokumenta</translation>
     </message>
   </context>
   <context>

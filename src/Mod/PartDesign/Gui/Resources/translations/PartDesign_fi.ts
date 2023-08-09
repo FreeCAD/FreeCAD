@@ -2634,12 +2634,12 @@ measured along the specified direction</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Osion orientaatio</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Poista</translation>
     </message>
@@ -2698,23 +2698,23 @@ measured along the specified direction</translation>
       <translation>Poista särmä</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Putken parametrit</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Poista</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Syötteen virhe</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation type="unfinished">No active body</translation>
     </message>
@@ -2757,12 +2757,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Osioiden välinen muunnos</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Poista</translation>
     </message>
@@ -3796,7 +3796,7 @@ Tämä voi johtaa odottamattomiin tuloksiin.</translation>
       <translation>Tahko</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,32 +3805,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Jos asiakirja on vanhentunutta tyyppiä OsanSuunnittelu-objekteilla ilman kappaleita, valitse muunnostoiminto OsanSuunnittelussa ja sijoita objektit kappaleeseen.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Tarvitaan aktiivinen kappale</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Jotta uudeen OsanSuunnittelu-objektin voisi luoda, asiakirjassa pitäisi olla aktiivinen kappale. Tee kappaleesta aktiivinen (tuplaklikkaus) tai luo uusi.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Piirre ei ole kappaleessa</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään kappale-objektiin.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Piirre ei kuulu osaan</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään osa-objektiin.</translation>
     </message>

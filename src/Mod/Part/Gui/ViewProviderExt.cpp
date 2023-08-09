@@ -951,7 +951,19 @@ void ViewProviderPartExt::updateVisual()
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+
+#if OCC_VERSION_HEX >= 0x070500
+        IMeshTools_Parameters meshParams;
+        meshParams.Deflection = deflection;
+        meshParams.Relative = Standard_False;
+        meshParams.Angle = AngDeflectionRads;
+        meshParams.InParallel = Standard_True;
+        meshParams.AllowQualityDecrease = Standard_True;
+
+        BRepMesh_IncrementalMesh(cShape, meshParams);
+#else
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
+#endif
 
         // We must reset the location here because the transformation data
         // are set in the placement property
@@ -1278,6 +1290,11 @@ void ViewProviderPartExt::updateVisual()
     (void)numEdges;
 #   endif
     VisualTouched = false;
+
+    // The material has to be checked again
+    setHighlightedFaces(DiffuseColor.getValues());
+    setHighlightedEdges(LineColorArray.getValues());
+    setHighlightedPoints(PointColorArray.getValue());
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable) {

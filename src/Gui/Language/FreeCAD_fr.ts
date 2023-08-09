@@ -47,24 +47,24 @@
       <translation>&lt;vide&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2272"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2538"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2276"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2542"/>
       <source>Axis</source>
       <translation>Axe</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2547"/>
       <source>Position</source>
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2786"/>
       <source>Enum</source>
       <translation>Enumération</translation>
     </message>
@@ -507,7 +507,7 @@
     <message>
       <location filename="../Widgets.cpp" line="239"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../Widgets.cpp" line="240"/>
@@ -960,7 +960,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgActivateWindow.ui" line="14"/>
       <source>Choose Window</source>
-      <translation>Choisir la fenêtre</translation>
+      <translation>Choisir une fenêtre</translation>
     </message>
     <message>
       <location filename="../DlgActivateWindowImp.cpp" line="52"/>
@@ -1181,7 +1181,7 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     <message>
       <location filename="../DlgActions.ui" line="215"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="222"/>
@@ -1394,7 +1394,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="398"/>
       <source>All</source>
-      <translation>Tous</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="436"/>
@@ -2136,7 +2136,7 @@ l'écran de démarrage</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="322"/>
       <source>Enable splash screen at start up</source>
-      <translation>Activer la page de garde au démarrage</translation>
+      <translation>Activer l'écran d'accueil au démarrage</translation>
     </message>
   </context>
   <context>
@@ -2335,7 +2335,7 @@ l'écran de démarrage</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>Macros</translation>
     </message>
@@ -2347,7 +2347,7 @@ l'écran de démarrage</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="385"/>
       <source>Macro file</source>
-      <translation>Fichier de macro</translation>
+      <translation>Fichier de la macro</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="385"/>
@@ -2356,8 +2356,8 @@ l'écran de démarrage</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>Fichier existant</translation>
     </message>
@@ -2434,52 +2434,52 @@ Remarque : vos modifications seront appliquées lorsque vous changerez d'atelier
       <translation>Instructions de passage : Cliquez sur la flèche droite (-&gt;), puis Fermez.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Instructions de passage : Cliquez sur le bouton Nouveau, puis sur la flèche droite (-&gt;), puis sur Fermer.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>Renommer le fichier de macro</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>Indiquer un nouveau nom :</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1' existe déjà.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>Échec du renommage</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Impossible de renommer en "%1".
 Peut-être une erreur de permission des fichiers ?</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>Dupliquer la macro</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>Échec de la duplication</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Impossible de dupliquer "%1".
@@ -2536,7 +2536,7 @@ Peut-être une erreur de permission du fichier ?</translation>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="110"/>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Le répertoire de macro n'existe pas. Veuillez en choisir un autre.</translation>
+      <translation>Le répertoire des macros n'existe pas. Veuillez en choisir un autre.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="122"/>
@@ -2556,7 +2556,7 @@ Peut-être une erreur de permission du fichier ?</translation>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="176"/>
       <source>Choose macro directory</source>
-      <translation>Choisir le répertoire de macro</translation>
+      <translation>Choisir le répertoire des macros</translation>
     </message>
   </context>
   <context>
@@ -2861,42 +2861,42 @@ Veuillez spécifier un autre répertoire.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>Effacer les paramètres personnels</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Voulez-vous effacer tous vos paramètres personnels ?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Si vous acceptez, tous vos paramètres personnels seront effacés.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>Paramètre erroné</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation>Redémarrage requis</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Vous devez redémarrer FreeCAD pour que les modifications soient prises en compte.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="499"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
       <translation>Redémarrer maintenant</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
+      <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
       <translation>Redémarrer plus tard</translation>
     </message>
@@ -3292,7 +3292,7 @@ de la console Python vers la Vue rapport</translation>
     <message>
       <location filename="../DlgReportView.ui" line="531"/>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Rediriger les erreurs internes de Python vers la vue rapport</translation>
+      <translation>Rediriger les erreurs internes de Python vers la Vue rapport</translation>
     </message>
     <message>
       <source/>
@@ -4074,32 +4074,32 @@ get date suffix according to the specified format</source>
 récupèrent le suffixe de date selon le format spécifié</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../DlgSettingsDocument.ui" line="518"/>
       <source>Use date and FCBak extension</source>
       <translation>Utiliser la date et l'extension FCBak</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../DlgSettingsDocument.ui" line="531"/>
       <source>Date format</source>
       <translation>Format de date</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../DlgSettingsDocument.ui" line="556"/>
       <source>Document objects</source>
-      <translation>objets Documents</translation>
+      <translation>Objets documents</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
       <translation>Autoriser les objets à avoir la même étiquette</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../DlgSettingsDocument.ui" line="565"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Autoriser la duplication des étiquettes dans un document</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../DlgSettingsDocument.ui" line="578"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4112,22 +4112,22 @@ Un document partiellement chargé ne peut pas être édité. Double-cliquez sur 
 dans la vue arborescence pour le recharger complètement.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Désactiver le chargement partiel des objets externes liés</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../DlgSettingsDocument.ui" line="601"/>
       <source>Authoring and License</source>
       <translation>Création et Licence</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../DlgSettingsDocument.ui" line="607"/>
       <source>Author name</source>
       <translation>Nom de l'auteur</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../DlgSettingsDocument.ui" line="614"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4136,32 +4136,32 @@ Gardez vide pour l'anonymat.
 Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../DlgSettingsDocument.ui" line="629"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>Le champ 'Dernière modification par' sera défini à l'auteur spécifié lors de l'enregistrement du fichier</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../DlgSettingsDocument.ui" line="632"/>
       <source>Set on save</source>
       <translation>Défini lors de la sauvegarde</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../DlgSettingsDocument.ui" line="645"/>
       <source>Company</source>
       <translation>Société</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../DlgSettingsDocument.ui" line="652"/>
       <source>Default company name to use for new files</source>
       <translation>Société par défaut à utiliser pour les nouveaux fichiers</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
       <translation>Licence par défaut</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../DlgSettingsDocument.ui" line="675"/>
       <source>Default license for new documents</source>
       <translation>Licence par défaut pour les nouveaux documents</translation>
     </message>
@@ -4231,12 +4231,12 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <translation>Autre</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
       <translation>URL de licence</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgSettingsDocument.ui" line="698"/>
       <source>URL describing more about the license</source>
       <translation>L'URL décrit plus en détail la licence</translation>
     </message>
@@ -4544,7 +4544,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../DlgSettingsMacro.ui" line="48"/>
       <source>Macro recording settings</source>
-      <translation>Réglages d'enregistrement d'une macro</translation>
+      <translation>Paramètres d'enregistrement des macros</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="69"/>
@@ -4781,7 +4781,7 @@ Vue en rotation libre : la pièce sera pivotée autour de l’axe z.</translatio
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="345"/>
       <source>Turntable</source>
-      <translation>Table tournante</translation>
+      <translation>Vue en rotation</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="350"/>
@@ -5257,7 +5257,7 @@ Pour ajouter un calcul, appuyez sur Valider dans le champ de saisie de la valeur
       <location filename="../DlgUnitsCalculator.ui" line="124"/>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation>Système d'unité à utiliser pour la Quantité
+      <translation>Système d'unité à utiliser pour les quantités.
 Le système par défaut est celui défini dans les préférences générales.</translation>
     </message>
     <message>
@@ -5731,27 +5731,27 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="673"/>
       <source>New string item</source>
-      <translation>Nouvel article chaîne</translation>
+      <translation>Nouvel élément type chaîne de caractère</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="674"/>
       <source>New float item</source>
-      <translation>Nouvel article flottant</translation>
+      <translation>Nouvel élément type variable flottante</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="675"/>
       <source>New integer item</source>
-      <translation>Nouvel article entier</translation>
+      <translation>Nouvel élément type entier</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="676"/>
       <source>New unsigned item</source>
-      <translation>Nouvel article non signé</translation>
+      <translation>Nouvel article type non signé</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="677"/>
       <source>New Boolean item</source>
-      <translation>Nouvel article booléen</translation>
+      <translation>Nouvel élément type booléen</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="789"/>
@@ -5845,7 +5845,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="237"/>
       <source>Euler angles (zy'x'')</source>
-      <translation>Angle d'Euler (zy'x'')</translation>
+      <translation>Angles d'Euler (zy'x'')</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="290"/>
@@ -5890,7 +5890,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="451"/>
       <source>Apply incremental changes</source>
-      <translation>Appliquer les modifications incrémentielles</translation>
+      <translation>Appliquer des modifications incrémentielles</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="471"/>
@@ -6130,7 +6130,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="130"/>
       <source>All</source>
-      <translation>Tous</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="157"/>
@@ -6555,7 +6555,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../Flag.cpp" line="172"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -6812,7 +6812,7 @@ Voulez enregistrer les modifications ?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Dimension</translation>
     </message>
@@ -6842,32 +6842,32 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Fermer tout</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Bascule cette barre d'outils</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Bascule cette fenêtre dockable</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Document non sauvegardé</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>L'objet exporté contient un lien externe. Veuillez enregistrer le document au moins une fois avant l'exportation.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Pour créer un lien vers des objets externes, le document doit être enregistré au moins une fois.
@@ -7102,17 +7102,17 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>Restant : %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>Abandon</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Voulez-vous vraiment abandonner l'opération?</translation>
     </message>
@@ -7125,12 +7125,12 @@ How do you want to proceed?</source>
       <translation>Restant : %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>Abandon</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Voulez-vous vraiment abandonner l'opération?</translation>
     </message>
@@ -7138,7 +7138,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4312"/>
       <source>Change the linked object</source>
       <translation>Modifiez l’objet lié</translation>
     </message>
@@ -7146,12 +7146,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Object not found</source>
       <translation>Objet introuvable</translation>
     </message>
@@ -7367,17 +7367,17 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Ouvrir le fichier %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>Fichier introuvable</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Impossible d'ouvrir le fichier '%1'.</translation>
     </message>
@@ -7385,22 +7385,22 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>aucun</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Lancer la macro %1 (Maj+clic pour modifier) le raccourci clavier : %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>Fichier introuvable</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Impossible d'ouvrir le fichier '%1'.</translation>
     </message>
@@ -7601,7 +7601,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="54"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
@@ -7759,7 +7759,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="54"/>
       <source>Press SHIFT button</source>
-      <translation>Appuyez sur la touche SHIFT</translation>
+      <translation>Appuyez sur la touche Maj</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="56"/>
@@ -8229,8 +8229,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>Sélectionner l'atelier '%1'</translation>
     </message>
@@ -8414,7 +8413,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="545"/>
       <source>Selection view</source>
-      <translation>Afficher la sélection</translation>
+      <translation>Vue de la sélection</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="567"/>
@@ -8739,7 +8738,7 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="779"/>
       <location filename="../DlgParameterImp.cpp" line="795"/>
       <source>New text item</source>
-      <translation>Nouvel article texte</translation>
+      <translation>Nouvel élément type texte</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="795"/>
@@ -8751,7 +8750,7 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="808"/>
       <location filename="../DlgParameterImp.cpp" line="824"/>
       <source>New integer item</source>
-      <translation>Nouvel article entier</translation>
+      <translation>Nouvel élément type entier</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="824"/>
@@ -8767,18 +8766,18 @@ Do you want to continue?</source>
       <location filename="../DlgParameterImp.cpp" line="838"/>
       <location filename="../DlgParameterImp.cpp" line="855"/>
       <source>New unsigned item</source>
-      <translation>Nouvel article non signé</translation>
+      <translation>Nouvel article type non signé</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="874"/>
       <location filename="../DlgParameterImp.cpp" line="890"/>
       <source>New float item</source>
-      <translation>Nouvel article flottant</translation>
+      <translation>Nouvel élément type variable flottante</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="903"/>
       <source>New Boolean item</source>
-      <translation>Nouvel article booléen</translation>
+      <translation>Nouvel élément type booléen</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="921"/>
@@ -9193,12 +9192,12 @@ Veuillez ouvrir une fenêtre de navigateur et saisir : http://localhost:%1.</tra
       <translation>Le %1 n’est pas vide, supprimez son contenu quand même ?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="298"/>
       <source>Translation:</source>
       <translation>Translation :</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="587"/>
       <source>Rotation:</source>
       <translation>Rotation :</translation>
     </message>
@@ -9446,7 +9445,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandView.cpp" line="2694"/>
       <source>Box selection</source>
-      <translation>Sélection par boîte</translation>
+      <translation>Sélectionner par une boîte</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2695"/>
@@ -9516,7 +9515,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandDoc.cpp" line="1576"/>
       <source>Alignment...</source>
-      <translation>Alignement...</translation>
+      <translation>Aligner...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1577"/>
@@ -9690,7 +9689,7 @@ apportée à la copie en cours sera perdue.
       <location filename="../CommandMacro.cpp" line="104"/>
       <location filename="../CommandMacro.cpp" line="106"/>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Ouvre une boite de dialogue pour exécuter une macro enregistrée</translation>
+      <translation>Ouvrir une boite de dialogue pour exécuter une macro enregistrée</translation>
     </message>
   </context>
   <context>
@@ -9704,7 +9703,7 @@ apportée à la copie en cours sera perdue.
       <location filename="../CommandMacro.cpp" line="133"/>
       <location filename="../CommandMacro.cpp" line="135"/>
       <source>Execute the macro in the editor</source>
-      <translation>Exécutez la macro dans l'éditeur</translation>
+      <translation>Exécuter la macro dans l'éditeur</translation>
     </message>
   </context>
   <context>
@@ -10345,7 +10344,7 @@ apportée à la copie en cours sera perdue.
       <translation>Créer un nouveau document vide</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
@@ -10418,7 +10417,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStructure.cpp" line="51"/>
       <source>Create part</source>
-      <translation>Crée une pièce</translation>
+      <translation>Créer une pièce</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="52"/>
@@ -10897,7 +10896,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandWindow.cpp" line="55"/>
       <source>&amp;Tile</source>
-      <translation>&amp;Mosaïque</translation>
+      <translation>Fenêtres en &amp;mosaïque</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="56"/>
@@ -11239,7 +11238,7 @@ apportée à la copie en cours sera perdue.
       <location filename="../CommandView.cpp" line="1490"/>
       <location filename="../CommandView.cpp" line="1492"/>
       <source>Fits the whole content on the screen</source>
-      <translation>Affiche l'ensemble du contenu à l'écran</translation>
+      <translation>Afficher l'ensemble du contenu à l'écran</translation>
     </message>
   </context>
   <context>
@@ -11247,13 +11246,13 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandView.cpp" line="1520"/>
       <source>Fit selection</source>
-      <translation>Affiche la sélection</translation>
+      <translation>Afficher la sélection</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1521"/>
       <location filename="../CommandView.cpp" line="1523"/>
       <source>Fits the selected content on the screen</source>
-      <translation>Affiche le contenu sélectionné à l'écran</translation>
+      <translation>Afficher le contenu sélectionné à l'écran</translation>
     </message>
   </context>
   <context>
@@ -11533,7 +11532,9 @@ apportée à la copie en cours sera perdue.
       <location filename="../CommandStd.cpp" line="308"/>
       <location filename="../CommandStd.cpp" line="310"/>
       <source>What's This</source>
-      <translation>Qu'est-ce que c'est</translation>
+      <translation>En utilisant cette fonction, puis en cliquant sur
+une autre fonction, une page d'explications de
+cette dernière fonction s'ouvre.</translation>
     </message>
   </context>
   <context>
@@ -11569,7 +11570,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStd.cpp" line="72"/>
       <source>Workbench</source>
-      <translation>Atelier</translation>
+      <translation>Ateliers</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="73"/>
@@ -12107,7 +12108,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../Workbench.cpp" line="532"/>
       <source>Workbench</source>
-      <translation>Atelier</translation>
+      <translation>Ateliers</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="533"/>
@@ -12157,7 +12158,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../Workbench.cpp" line="542"/>
       <source>&amp;Windows</source>
-      <translation>&amp;Fenêtre</translation>
+      <translation>Fe&amp;nêtre</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="543"/>
@@ -12620,17 +12621,17 @@ après le lancement de FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Barre d'outils</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>Coin gauche</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>Coin droit</translation>
     </message>

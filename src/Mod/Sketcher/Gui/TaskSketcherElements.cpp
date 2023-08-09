@@ -53,6 +53,7 @@
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherElements.h"
 
+// clang-format off
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
@@ -91,13 +92,9 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
     QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_##FUNC = menu.addAction(                                                       \
-        icon_##FUNC,                                                                               \
-        tr(NAMESTR),                                                                               \
-        this,                                                                                      \
-        SLOT(FUNC()),                                                                              \
-        QKeySequence(QString::fromUtf8(                                                            \
-            Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));  \
+    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
+    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
+        Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
     if (ACTSONSELECTION)                                                                           \
         constr_##FUNC->setEnabled(!items.isEmpty());                                               \
     else                                                                                           \
@@ -686,8 +683,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
     menu.addSeparator();
 
-    QAction* remove = menu.addAction(
-        tr("Delete"), this, &ElementView::deleteSelectedItems, QKeySequence(QKeySequence::Delete));
+    QAction* remove = menu.addAction(tr("Delete"), this, &ElementView::deleteSelectedItems);
+    remove->setShortcut(QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
 
     menu.menuAction()->setIconVisibleInMenu(true);
@@ -1073,8 +1070,10 @@ void TaskSketcherElements::connectSignals()
     QObject::connect(
         ui->filterButton, &QToolButton::clicked, ui->filterButton, &QToolButton::showMenu);
 
+    //NOLINTBEGIN
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
-        boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+        std::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+    //NOLINTEND
 }
 
 /* filter functions --------------------------------------------------- */
@@ -1543,7 +1542,7 @@ void TaskSketcherElements::leaveEvent(QEvent* event)
     ui->listWidgetElements->clearFocus();
 }
 
-void TaskSketcherElements::slotElementsChanged(void)
+void TaskSketcherElements::slotElementsChanged()
 {
     assert(sketchView);
     // Build up ListView with the elements
@@ -1827,3 +1826,4 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
 
 #include "TaskSketcherElements.moc"// For Delegate as it is QOBJECT
 #include "moc_TaskSketcherElements.cpp"
+// clang-format on

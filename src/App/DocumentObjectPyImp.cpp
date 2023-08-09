@@ -673,6 +673,24 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
     }
 }
 
+PyObject*  DocumentObjectPy::getParent(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        auto grp = getDocumentObjectPtr()->getFirstParent();
+        if(!grp) {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+        return grp->getPyObject();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 Py::Boolean DocumentObjectPy::getMustExecute() const
 {
     try {

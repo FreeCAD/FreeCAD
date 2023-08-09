@@ -65,7 +65,7 @@ public:
     QtApplication(int &argc, char **argv)
         : QApplication(argc, argv) {
     }
-    bool notify (QObject * receiver, QEvent * event) {
+    bool notify (QObject * receiver, QEvent * event) override {
         try {
             return QApplication::notify(receiver, event);
         }
@@ -304,6 +304,12 @@ QWidget* setupMainWindow()
         else {
             mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
         }
+
+        // set toolbar icon size
+        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("General");
+        int size = hGrp->GetInt("ToolbarIconSize", 0);
+        if (size >= 16) // must not be lower than this
+            mw->setIconSize(QSize(size,size));
 
         if (!SoDB::isInitialized()) {
             // init the Inventor subsystem

@@ -833,7 +833,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Atelier</translation>
+      <translation>Ateliers</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1648,7 +1648,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>Atelier</translation>
+      <translation>Ateliers</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -2044,7 +2044,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="800"/>
       <source>All</source>
-      <translation>Tous</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="803"/>

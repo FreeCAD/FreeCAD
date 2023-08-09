@@ -72,11 +72,12 @@
 #include "Workbench.h"
 
 
+// clang-format off
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
 using namespace SketcherGui;
 using namespace Sketcher;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /************** ViewProviderSketch::ParameterObserver *********************/
 
@@ -3231,10 +3232,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // a draw(true) via ViewProvider::UpdateData.
     getSketchObject()->solve(true);
 
+    //NOLINTBEGIN
     connectUndoDocument = getDocument()->signalUndoDocument.connect(
-        boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
+        std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
-        boost::bind(&ViewProviderSketch::slotRedoDocument, this, bp::_1));
+        std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
+    //NOLINTEND
 
     // Enable solver initial solution update while dragging.
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
@@ -4137,3 +4140,4 @@ bool ViewProviderSketch::isInEditMode() const
 {
     return editCoinManager != nullptr;
 }
+// clang-format on

@@ -44,7 +44,7 @@ public:
         , object(obj)
     {}
 
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         if (pObj != this->object)
             return false;
@@ -81,7 +81,7 @@ class DrawSketchHandlerSplitting: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerSplitting() = default;
-    virtual ~DrawSketchHandlerSplitting()
+    ~DrawSketchHandlerSplitting() override
     {
         Gui::Selection().rmvSelectionGate();
     }

@@ -43,7 +43,7 @@ TrajectoryCompound::~TrajectoryCompound()
 {
 }
 
-App::DocumentObjectExecReturn *TrajectoryCompound::execute(void)
+App::DocumentObjectExecReturn *TrajectoryCompound::execute()
 {
     const std::vector<DocumentObject*> &Tracs = Source.getValues();
     Robot::Trajectory result;

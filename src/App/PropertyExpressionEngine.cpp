@@ -39,7 +39,7 @@ FC_LOG_LEVEL_INIT("App", true);
 using namespace App;
 using namespace Base;
 using namespace boost;
-using namespace boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer)
 
@@ -164,8 +164,9 @@ void PropertyExpressionEngine::hasSetValue()
         }
     }
     if(hasHidden) {
-        if(!pimpl)
-            pimpl.reset(new Private);
+        if(!pimpl) {
+            pimpl = std::make_unique<Private>();
+        }
         for(auto &e : expressions) {
             auto expr = e.second.expression;
             if(!expr) continue;
@@ -180,12 +181,16 @@ void PropertyExpressionEngine::hasSetValue()
                         std::string key = objName + propName;
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
-                            if(!propName.empty())
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
-                            else
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
+                            //NOLINTBEGIN
+                            if(!propName.empty()) {
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
+                                            &PropertyExpressionEngine::slotChangedProperty,this,sp::_1,sp::_2)));
+                            }
+                            else {
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(std::bind(
+                                            &PropertyExpressionEngine::slotChangedObject,this,sp::_1,sp::_2)));
+                            }
+                            //NOLINTEND
                         }
                         propDeps.push_back(e.first);
                     }
@@ -265,7 +270,7 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         writer.Stream() << "\">" << std::endl;
         writer.incInd();
     } else {
-        writer.Stream() << "\" xlink=\"1\">" << std::endl;
+        writer.Stream() << R"(" xlink="1">)" << std::endl;
         writer.incInd();
         PropertyExpressionContainer::Save(writer);
     }
@@ -296,7 +301,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
     if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
         PropertyExpressionContainer::Restore(reader);
 
-    restoredExpressions.reset(new std::vector<RestoredExpression>);
+    restoredExpressions = std::make_unique<std::vector<RestoredExpression>>();
     restoredExpressions->reserve(count);
     for (int i = 0; i < count; ++i) {
 
@@ -968,7 +973,7 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
         if(!expr && !engine)
             continue;
         if(!engine) {
-            engine.reset(new PropertyExpressionEngine);
+            engine = std::make_unique<PropertyExpressionEngine>();
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
                         std::shared_ptr<Expression>(it2->second.expression->copy()));
@@ -996,7 +1001,7 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
         if(!expr && !engine)
             continue;
         if(!engine) {
-            engine.reset(new PropertyExpressionEngine);
+            engine = std::make_unique<PropertyExpressionEngine>();
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 ExpressionInfo info;
                 if (it2->second.expression)
@@ -1028,7 +1033,7 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
         if(!expr && !engine)
             continue;
         if(!engine) {
-            engine.reset(new PropertyExpressionEngine);
+            engine = std::make_unique<PropertyExpressionEngine>();
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 ExpressionInfo info;
                 if (it2->second.expression)

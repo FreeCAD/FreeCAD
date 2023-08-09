@@ -4502,7 +4502,7 @@ Például:
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Tevékenység elérési útjának kijelölése</translation>
     </message>
@@ -5280,7 +5280,7 @@ Például:
       <translation>Kikapcsolt funkciók listája</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>A beillesztendő G-kód</translation>
     </message>
@@ -7017,17 +7017,17 @@ Például:
       <translation>Gérvágó</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>A kijelölt szegély(ek) nem érhetők el. Ha többszörös, a kijelölés újrarendelése működhet.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Nem hozható létre a felület(ek) útvonala.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Ellenőrizze az élkiválasztást és a végső mélységi követelményeket a nyitott él(ek) maráshoz.</translation>
     </message>
@@ -8207,12 +8207,12 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Utófeldolgozó</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Kijelölt feladat utó eljárása</translation>
     </message>
@@ -8405,6 +8405,29 @@ Az op-létrehozás megszakítása</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s még nincs tulajdonsága %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Szöveg</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Fájl</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>A %s egyéni fájl nem található.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>Érvénytelen G-kód sor: %s</translation>
     </message>
   </context>
 </TS>

@@ -3239,43 +3239,43 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Асадка</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Пераўтварэнне:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Пераўтварэнне прайшло паспяхова</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>Сродак пераўтварэння LibreDWG не знойдзены</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>Сродак пераўтварэння ODA не знойдзены</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>Сродак пераўтварэння QCADне знойдзены</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3285,7 +3285,7 @@ https://wiki.freecad.org/Import_Export_Preferences</source>
 Каб атрымаць дадатковую інфармацыі, глядзіце: https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3354,7 +3354,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3375,7 +3375,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3397,37 +3397,37 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Без графічнага інтэрфейсу</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Немагчыма ўставіць новы аб'ект у маштабаваную дэталь</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Знак не рэалізаваны. Ужыты першапачатковы знак.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Бачнасць выключана; выдаленыя з спісу: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>выява пустая</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>імя файла не існуе ні ў сістэме, ні ў файле рэсурсаў</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>немагчыма загрузіць тэкстуру</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Не мае 'ViewObject.RootNode'.</translation>
     </message>
@@ -5173,53 +5173,53 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Звядзенне</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Абнаўленне: Невядомы сілавы метад:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Знойдзены адзін блок: разгортваю</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Знойдзены адно злучэнне з некалькіх цел: разгортваю</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Знойдзены адзін параметрычны аб'ект: разбураю залежнасці</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Знойдзены два аб'екты: аднімаю</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Знойдзена некалькі граняў: падзяляю</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Знойдзена некалькі аб'ектаў: аднімаю іх з першага</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Знойдзена адна грань: вымаю ломаную лінію</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Знойдзены толькі ломаныя лініі: вымаю рэбры</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Большае паніжэнне падзелу немагчыма</translation>
     </message>

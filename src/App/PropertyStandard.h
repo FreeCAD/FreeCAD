@@ -740,7 +740,7 @@ protected:
 };
 
 /** UUID properties
- * This property handles unique identifieers
+ * This property handles unique identifiers
  */
 class AppExport PropertyUUID: public Property
 {

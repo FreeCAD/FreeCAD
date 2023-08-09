@@ -4508,7 +4508,7 @@ Adibidez:
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Aukeratu bide-lan bat</translation>
     </message>
@@ -5286,7 +5286,7 @@ Adibidez:
       <translation>Desgaitutako elementuen zerrenda</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>Txertatuko den G-code kodea</translation>
     </message>
@@ -7022,17 +7022,17 @@ Adibidez:
       <translation>Zorrotza</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Ertz hautatua(k) ezin dira eskuratu. Anitz badira, hautapena berrordenatzeak arazoa konpondu dezake.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Ezin izan da sortu bidea aurpegietarako.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Egiaztatu ertz irekia(k) profilatzeko behar diren ertz-hautapena eta amaierako sakonera.</translation>
     </message>
@@ -8212,12 +8212,12 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Post-prozesua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Post-prozesatu hautatutako lana</translation>
     </message>
@@ -8410,6 +8410,29 @@ Sortu?</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s-(e)k ez dauka %s propietatea (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Testua</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Fitxategia</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>Ezin izan da aurkitu %s fitxategi pertsonalizatua.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>G-code lerro baliogabea: %s</translation>
     </message>
   </context>
 </TS>

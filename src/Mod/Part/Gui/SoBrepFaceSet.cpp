@@ -170,7 +170,7 @@ SoBrepFaceSet::SoBrepFaceSet()
     selContext2 = std::make_shared<SelContext>();
     packedColor = 0;
 
-    pimpl.reset(new VBO);
+    pimpl = std::make_unique<VBO>();
 }
 
 SoBrepFaceSet::~SoBrepFaceSet()

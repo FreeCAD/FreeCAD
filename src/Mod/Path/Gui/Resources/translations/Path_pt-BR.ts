@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation type="unfinished">Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</translation>
+      <translation>Selecione um modelo a ser usado para a tarefa. Caso não haja modelos, você pode criar um através do menu pop-up de um trabalho existente. Nomeie o arquivo job_*.json e coloque-o no macro ou no diretório de caminhos (veja preferências) para ser selecionável desta lista.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -166,36 +166,36 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>If enabled include all post processing settings in the template.</source>
-      <translation type="unfinished">If enabled include all post processing settings in the template.</translation>
+      <translation>Se habilitado inclui todas as configurações de pós-processamento no template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration.</source>
-      <translation type="unfinished">Hint about the current post processing configuration.</translation>
+      <translation>Dica sobre a configuração atual do processamento de postagem.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>If enabled tool controller definitions are stored in the template.</source>
-      <translation type="unfinished">If enabled tool controller definitions are stored in the template.</translation>
+      <translation>Se habilitado as definições do controlador de ferramenta serão armazenadas no template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>Check all tool controllers which should be included in the template.</source>
-      <translation type="unfinished">Check all tool controllers which should be included in the template.</translation>
+      <translation>Verificar todos os controles de ferramenta que devem ser incluídos no modelo.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation type="unfinished">Enable to include values of the SetupSheet in the template.
+      <translation>Habilite para incluir os valores da Planilha de Configurações no modelo.
 
-Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</translation>
+Quaisquer valores da Folha de Configuração que são alterados de seus padrões são pré-selecionados. Se este campo não for selecionado, a Planilha de configuração atual não foi modificada.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
       <source>Enable to include the default heights for operations in the template.</source>
-      <translation type="unfinished">Enable to include the default heights for operations in the template.</translation>
+      <translation>Habilitar para incluir as alturas padrão para operações no modelo.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="87"/>
@@ -210,7 +210,7 @@ Any values of the SetupSheet that are changed from their default are preselected
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="107"/>
       <source>Enable to include the default rapid tool speeds in the template.</source>
-      <translation type="unfinished">Enable to include the default rapid tool speeds in the template.</translation>
+      <translation>Marque para incluir as velocidades padrões das ferramentas rápidas no modelo.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="120"/>
@@ -653,27 +653,27 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>Radius of the Cylinder</source>
-      <translation type="unfinished">Radius of the Cylinder</translation>
+      <translation>Raio do Cilindro</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the Cylinder</source>
-      <translation type="unfinished">Height of the Cylinder</translation>
+      <translation>Altura do Cilindro</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>Length of the Box</source>
-      <translation type="unfinished">Length of the Box</translation>
+      <translation>Comprimento da Caixa</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>Width of the Box</source>
-      <translation type="unfinished">Width of the Box</translation>
+      <translation>Largura da Caixa</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>Height of the Box</source>
-      <translation type="unfinished">Height of the Box</translation>
+      <translation>Altura da Caixa</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -4404,7 +4404,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="641"/>
       <source>Parent job %s doesn't have a base object</source>
-      <translation type="unfinished">Parent job %s doesn't have a base object</translation>
+      <translation>Trabalho de origem %s não possui um objeto base</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="787"/>
@@ -4510,7 +4510,7 @@ For example:
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Escolha uma tarefa de trajetória</translation>
     </message>
@@ -5288,7 +5288,7 @@ For example:
       <translation type="unfinished">List of disabled features</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation type="unfinished">The G-code to be inserted</translation>
     </message>
@@ -5571,7 +5571,7 @@ For example:
       <location filename="../../../Path/Op/Slot.py" line="122"/>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary path construction objects when module is in DEBUG mode.</translation>
+      <translation>Mostra os objetos temporários de construção de trajetória quando o módulo está no modo DEBUG.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="130"/>
@@ -7025,17 +7025,17 @@ For example:
       <translation type="unfinished">Miter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation type="unfinished">Unable to create path for face(s).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
     </message>
@@ -8215,12 +8215,12 @@ Aborting op creation</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation type="unfinished">Post Process</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation type="unfinished">Post Process the selected Job</translation>
     </message>
@@ -8413,6 +8413,29 @@ Aborting op creation</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation type="unfinished">%s has no property %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Texto</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Arquivo</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>O arquivo personalizado %s não pôde ser encontrado.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>Linha Gcode inválida: %s</translation>
     </message>
   </context>
 </TS>

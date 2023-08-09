@@ -233,7 +233,9 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 
                         auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
-                        func->setFunction(std::bind(&Document::resetEdit, doc));
+                        func->setFunction([doc]() {
+                            doc->resetEdit();
+                        });
                         func->singleShot(0);
                     }
                 }

@@ -5382,117 +5382,119 @@ used for the Elmer solver</translation>
       <translation type="unfinished">&amp;Electrostatic Constraints</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>Fluid Constraints</source>
       <translation>流体约束</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Fluid Constraints</source>
       <translation>流体约束(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Electromagnetic Constraints</source>
       <translation type="unfinished">Electromagnetic Constraints</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Electromagnetic Constraints</source>
       <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Geometrical Constraints</source>
       <translation>几何约束</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>几何约束(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Mechanical Constraints</source>
       <translation>力学约束</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>力学约束(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Thermal Constraints</source>
       <translation type="unfinished">Thermal Constraints</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Thermal Constraints</source>
       <translation type="unfinished">&amp;Thermal Constraints</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Constraints without solver</source>
       <translation type="unfinished">Constraints without solver</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Constraints without solver</source>
       <translation type="unfinished">&amp;Constraints without solver</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Overwrite Constants</source>
       <translation type="unfinished">Overwrite Constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>&amp;Overwrite Constants</source>
       <translation type="unfinished">&amp;Overwrite Constants</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="66"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>M&amp;esh</source>
       <translation>网格(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="69"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Solve</source>
       <translation>求解</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>&amp;Solve</source>
       <translation>求解(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Results</source>
       <translation type="unfinished">Results</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Results</source>
       <translation>结果(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Filter functions</source>
       <translation type="unfinished">Filter functions</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>&amp;Filter functions</source>
       <translation type="unfinished">&amp;Filter functions</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="79"/>
       <source>Utilities</source>
       <translation>实用程序</translation>
     </message>

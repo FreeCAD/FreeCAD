@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Építészeti munkafelületi tárgy beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Szakaszsík nézetének beszúrása az Építészeti munkafelületből</translation>
     </message>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Export Page as DXF</source>
       <translation>Oldal exportálása DXF-ként</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Save DXF file</source>
       <translation>DXF-fájl mentése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>DXF (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1537"/>
       <source>Export Page as SVG</source>
       <translation>Oldal exportálása SVG-ként</translation>
     </message>
@@ -1601,8 +1601,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
-      <source>Template (*.svg *.dxf)</source>
-      <translation>Sablon (*.svg *.dxf)</translation>
+      <source>Template (*.svg)</source>
+      <translation>Sablon (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -1621,12 +1621,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Project shape...</source>
       <translation>Terv formák...</translation>
     </message>
@@ -1753,17 +1753,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Insert Spreadsheet View</source>
       <translation>Táblázat nézet beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1476"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Nézet beszúrása táblázatba</translation>
     </message>
@@ -1999,23 +1999,23 @@
       <translation>Rajzjel létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Create DraftView</source>
       <translation>Tervrajz nézet létrehozás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1442"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>Create ArchView</source>
       <translation>Építészet nézet létrehozásaa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Create spreadsheet view</source>
       <translation>Számolótábla nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../MDIViewPage.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Save page to dxf</source>
       <translation>Oldal mentése dxf-be</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation>Aktív nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="332"/>
+      <location filename="../../TaskCenterLine.cpp" line="397"/>
       <source>Create CenterLine</source>
       <translation>Középvonal létrehozása</translation>
     </message>
@@ -2162,9 +2162,19 @@
       <translation>Segéd csúcspont hozzáadása</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="105"/>
+      <source>TechDraw Insert Prefix</source>
+      <translation>Műszakirajz - Előtag beszúrás</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
       <source>Insert Prefix</source>
       <translation>Előtag beszúrás</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <source>TechDraw Remove Prefix</source>
+      <translation>Műszakirajz - Előtag eltávolítás</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2252,9 +2262,19 @@
       <translation>Ívhosszúság méret létrehozása</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="97"/>
+      <source>TechDraw Hole Circle</source>
+      <translation>Műszaki Rajz, Furat kör</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="117"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Csavarkör középvonalak</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="186"/>
+      <source>TechDraw Circle Centerlines</source>
+      <translation>Műszaki rajz - Kör középvonalak</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2262,9 +2282,19 @@
       <translation>Kör középvonalak</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="363"/>
+      <source>TechDraw Thread Hole Side</source>
+      <translation>A menetes furat rajzoló oldala</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Belső menet segédvonalak oldalnézetben</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="415"/>
+      <source>TechDraw Thread Bolt Side</source>
+      <translation>Műszakirajz - Menetes csavar oldal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2272,9 +2302,19 @@
       <translation>Segédvonal csavarmenet oldalnézete</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="467"/>
+      <source>TechDraw Thread Hole Bottom</source>
+      <translation>Műszakirajz - Menetes furat alja</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Segédvonal belső menethez tengelynézetben</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="519"/>
+      <source>TechDraw Thread Bolt Bottom</source>
+      <translation>Műszakirajz - Menetes csavar alja</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2282,9 +2322,19 @@
       <translation>Külső menet segédvonal tengelynézetben</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="765"/>
+      <source>TechDraw Change Line Attributes</source>
+      <translation>Műszakirajz - Vonal jellemzőinek megváltoztatása</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
       <source>Change Line Attributes</source>
       <translation>Vonal jellemzőinek megváltoztatása</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="825"/>
+      <source>TechDraw Cosmetic Intersection Vertex(es)</source>
+      <translation>Műszakirajz - Segéd csúcso(k) a metszéspontban</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
@@ -2292,9 +2342,19 @@
       <translation>Segéd metszésponti csúcs(ok)</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="872"/>
+      <source>TechDraw Cosmetic Arc</source>
+      <translation>Műszakirajz - Segéd ív</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
       <source>Cosmetic Arc</source>
       <translation>Segéd ív</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="937"/>
+      <source>TechDraw Cosmetic Circle</source>
+      <translation>Műszakirajz - Segéd kör</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2302,9 +2362,19 @@
       <translation>Segéd kör</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <source>TechDraw Cosmetic Circle 3 Points</source>
+      <translation>Műszakirajz - Segéd kör 3 ponttal</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Segédkört 3 ponttal</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1187"/>
+      <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
+      <translation>Műszakirajz - Párhuzamos/függőleges segédvonal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2312,14 +2382,29 @@
       <translation>Párhuzamos/függőleges segédvonal</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <source>TechDraw Lock/Unlock View</source>
+      <translation>Műszakirajz - Nézet zárolás/feloldás</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
       <source>Lock/Unlock View</source>
       <translation>Nézet rögzítése/feloldása</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1527"/>
+      <source>TechDraw Extend/Shorten Line</source>
+      <translation>Műszakirajz - Vonal nyújtás/rövidítés</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
       <source>Extend/Shorten Line</source>
       <translation>Vonal hosszabbítás/rövidítés</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
+      <source>TechDraw calculate selected area</source>
+      <translation>Műszakirajz - Kiválasztott terület számolás</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -2627,9 +2712,9 @@
       <location filename="../../Command.cpp" line="1233"/>
       <location filename="../../Command.cpp" line="1252"/>
       <location filename="../../Command.cpp" line="1365"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1435"/>
-      <location filename="../../Command.cpp" line="1478"/>
+      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -2765,37 +2850,37 @@
       <translation>Jelöljön ki legalább egy objektumot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Ha be van jelölve, akkor a dimenzióérték mellett az egység jelenik meg.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1446"/>
       <source>No Arch Sections in selection.</source>
       <translation>Nincsenek ívszekciók a kiválasztásban.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Jelöljön ki pontosan egy számolótábla tárgyat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1561"/>
       <source>No Drawing View</source>
       <translation>Nincs rajz nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Nyissa meg a rajz nézetet az SVG exportálási kísérlet előtt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Can not export selection</source>
       <translation>A kijelölés nem exportálható</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Az oldal rajz nézet ívet tartalmaz, amely nem lesz exportálva. Folytatja?</translation>
     </message>
@@ -3285,50 +3370,50 @@
       <translation>A dokumentumban nincsenek rajzok.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="272"/>
+      <location filename="../../MDIViewPage.cpp" line="280"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="273"/>
-      <location filename="../../MDIViewPage.cpp" line="675"/>
+      <location filename="../../MDIViewPage.cpp" line="281"/>
+      <location filename="../../MDIViewPage.cpp" line="687"/>
       <source>All Files (*.*)</source>
       <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="275"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
       <source>Export Page As PDF</source>
       <translation>Oldal export PDF formában</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="566"/>
+      <location filename="../../MDIViewPage.cpp" line="578"/>
       <source>Document Name: </source>
       <translation>Dokumentum neve: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="674"/>
+      <location filename="../../MDIViewPage.cpp" line="686"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="677"/>
+      <location filename="../../MDIViewPage.cpp" line="689"/>
       <source>Export page as SVG</source>
       <translation>Oldal export SVG formában</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="211"/>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>Biztosan folytatja?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="232"/>
+      <location filename="../../ViewProviderPage.cpp" line="233"/>
       <source>Show drawing</source>
       <translation>Mutasd a rajzot</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="234"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle KeepUpdated</source>
       <translation>Frissen tartás kapcsolója</translation>
     </message>
@@ -3355,7 +3440,7 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <source>Rich text editor</source>
       <translation>Szöveg szerkesztő</translation>
     </message>
@@ -3400,7 +3485,7 @@
       <translation>Középvonal létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="201"/>
+      <location filename="../../TaskCenterLine.cpp" line="207"/>
       <source>Edit Center Line</source>
       <translation>Középvonal szerkesztése</translation>
     </message>
@@ -3596,14 +3681,14 @@
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
       <location filename="../../CommandExtensionDims.cpp" line="2268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1469"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1957"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1958"/>
       <source>Selection is empty</source>
       <translation>A kijelölési terület nem tartalmaz objektumokat</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1964"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1965"/>
       <source>No object selected</source>
       <translation>Nincs kijelölt tárgy</translation>
     </message>
@@ -3628,12 +3713,12 @@
       <translation>Nincsenek felületek a kijelölésben.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2045"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>A menetes furat rajzoló oldala</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2047"/>
       <source>Please select two straight lines</source>
       <translation>Válasszon két egyenest</translation>
     </message>
@@ -3745,16 +3830,19 @@ it has a weld symbol that would become broken.</source>
 olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation>Nem törölheti ezt a nézetet, mert egy vagy több nézetnek függősége van, amely megszakadna.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
@@ -3767,25 +3855,22 @@ olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
       <translation>A vetítési csoport 'Lehorgonyzott nézete' nem törölhető.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="314"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Ezt a nézetet nem törölheti, mert olyan szakasznézete van, amely megtörne.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Ez a nézet nem törölhető, mert rajta egy részletnézet kapcsolata megszakadna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="330"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Nem törölheti ezt a nézetet, mert van egy referenciavonala, amely megszakadna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="205"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Az oldal nem üres, ezért a
@@ -4731,15 +4816,6 @@ amikor egy PAT-mintával töltünk ki felületet</translation>
       <translation>Csúcspontok színe a nézetekben</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
-      <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
-
-</source>
-      <translation>Ha bejelölt, a FreeCAD egyetlen színt használ minden szöveghez és vonalhoz. Ha nincs bejelölve, a FreeCAD megpróbálja a preferált színek világosabb változatait használni.
-
-</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>Részlet kiemelés</translation>
@@ -4778,6 +4854,15 @@ amikor egy PAT-mintával töltünk ki felületet</translation>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="375"/>
       <source>Face color (if not transparent)</source>
       <translation>Felület szín (ha nem átlátszó)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>If checked FreeCAD will use a single color for all text and lines. 
+
+</source>
+      <translation>Ha bejelölt, a FreeCAD ugyanazt a színt használja minden szöveghez és vonalhoz.
+
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
@@ -5447,80 +5532,80 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Frissen tartás kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>Toggle &amp;Frames</source>
       <translation>Keretek kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportálás SVG-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export DXF</source>
       <translation>DXF export</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Print All Pages</source>
       <translation>Összes oldal nyomtatása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="381"/>
+      <location filename="../../MDIViewPage.cpp" line="391"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="382"/>
+      <location filename="../../MDIViewPage.cpp" line="392"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ. Szeretné fojtatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="401"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="402"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="415"/>
       <source>Opening file failed</source>
       <translation>Fájl megnyitása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="416"/>
       <source>Can not open file %1 for writing.</source>
       <translation>%1 fájlt nem nyitható meg íráshoz.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="701"/>
+      <location filename="../../MDIViewPage.cpp" line="713"/>
       <source>Save DXF file</source>
       <translation>DXF-fájl mentése</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="702"/>
+      <location filename="../../MDIViewPage.cpp" line="714"/>
       <source>DXF (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1210"/>
+      <location filename="../../MDIViewPage.cpp" line="1222"/>
       <source>Selected:</source>
       <translation>Kiválasztott:</translation>
     </message>
@@ -8545,7 +8630,7 @@ a megadott X/Y távolság használatával</translation>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
       <source>Add a hole or shaft fit to a dimension&lt;br&gt;
                 - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel openes&lt;br&gt;
+                - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
       <translation>Adjon hozzá egy furatot vagy tengelyt egy mérethez&lt;br&gt;

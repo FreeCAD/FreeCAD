@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 
+#include "PythonWrapper.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -93,6 +94,8 @@ void View3DInventorViewerPy::init_type()
         "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.");
     add_varargs_method("isRedirectedToSceneGraph", &View3DInventorViewerPy::isRedirectedToSceneGraph,
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
+    add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
+        "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -554,6 +557,17 @@ Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& arg
         throw Py::Exception();
     bool ok = _viewer->isRedirectedToSceneGraph();
     return Py::Boolean(ok);
+}
+
+Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    QImage img = _viewer->grabFramebuffer();
+
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    return wrap.fromQImage(img.mirrored());
 }
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)

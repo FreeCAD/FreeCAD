@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="39"/>
       <source>Start</source>
-      <translation>起點</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="40"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="41"/>
       <source>Displays the start page in a browser view</source>
-      <translation>在瀏覽頁面中顯示開始頁面</translation>
+      <translation type="unfinished">Displays the start page in a browser view</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>An optional HTML template that will be used instead of the default start page.</translation>
+      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="70"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="146"/>
@@ -70,7 +70,7 @@
       <location filename="../../DlgStartPreferences.ui" line="96"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation>An optional custom folder to be displayed at the bottom of the first page.
+      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</translation>
     </message>
     <message>
@@ -86,12 +86,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="113"/>
       <source>Show tips</source>
-      <translation>顯示提示</translation>
+      <translation type="unfinished">Show tips</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation>Displays help tips in the Start workbench Documents tab</translation>
+      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="182"/>
@@ -111,7 +111,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="224"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="243"/>
@@ -126,12 +126,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>Background color down gradient</source>
-      <translation>背景色調梯度</translation>
+      <translation type="unfinished">Background color down gradient</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="295"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation>The down gradient for the background color (currently unsupported)</translation>
+      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="315"/>
@@ -141,7 +141,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="322"/>
       <source>An optional image to display as background</source>
-      <translation>An optional image to display as background</translation>
+      <translation type="unfinished">An optional image to display as background</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="335"/>
@@ -161,7 +161,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="381"/>
       <source>The background of the main start page area</source>
-      <translation>The background of the main start page area</translation>
+      <translation type="unfinished">The background of the main start page area</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="401"/>
@@ -206,7 +206,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="515"/>
       <source>Arial,Helvetica,sans</source>
-      <translation>Arial,Helvetica,sans</translation>
+      <translation type="unfinished">Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="528"/>
@@ -241,7 +241,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="605"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
@@ -256,7 +256,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Choose which workbench to switch to after the program launches</translation>
+      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
@@ -266,17 +266,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="673"/>
       <source>Close and switch on opening file</source>
-      <translation>關閉並切換到開啟文件</translation>
+      <translation type="unfinished">Close and switch on opening file</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="680"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation>If application is started by opening a file, apply the two settings above</translation>
+      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
     </message>
   </context>
   <context>
@@ -293,7 +293,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="38"/>
       <source>Start</source>
-      <translation>起點</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="39"/>
@@ -303,7 +303,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Help</source>
-      <translation>求助說明</translation>
+      <translation>説明</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -343,7 +343,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -353,7 +353,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -363,7 +363,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -373,7 +373,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -383,7 +383,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation>These are the help pages of all the workbenches currently installed on this computer.</translation>
+      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -423,17 +423,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
+      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -448,7 +448,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
@@ -478,7 +478,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
@@ -506,7 +506,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../AppStartGui.cpp" line="103"/>
       <source>Start</source>
-      <translation>起點</translation>
+      <translation type="unfinished">Start</translation>
     </message>
   </context>
 </TS>

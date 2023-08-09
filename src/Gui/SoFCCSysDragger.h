@@ -33,6 +33,7 @@
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
+#include <FCGlobal.h>
 
 
 class SoCamera;
@@ -181,7 +182,7 @@ class GuiExport SoFCCSysDragger : public SoDragger
 public:
     static void initClass();
     SoFCCSysDragger();
-    ~SoFCCSysDragger();
+    ~SoFCCSysDragger() override;
 
     SoSFVec3f translation; //!< initial translation and reflects single precision movement.
     SoSFDouble translationIncrement; //!< set from outside used for rounding.
@@ -240,11 +241,11 @@ public:
     bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
-    virtual void GLRender(SoGLRenderAction * action) override;
+    void GLRender(SoGLRenderAction * action) override;
 
 protected:
-    virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
-    virtual void handleEvent(SoHandleEventAction * action) override;
+    SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+    void handleEvent(SoHandleEventAction * action) override;
 
     static void translationSensorCB(void *f, SoSensor *);
     static void rotationSensorCB(void *f, SoSensor *);

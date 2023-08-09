@@ -172,6 +172,8 @@ public:
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 
+    SbVec3f getRotationCenter(SbBool&) const;
+
 protected:
     void initialize();
     void finalize();
@@ -187,7 +189,6 @@ protected:
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     SbBool lookAtPoint(const SbVec2s screenpos);
-    SbVec3f getRotationCenter(SbBool*) const;
 
     void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,

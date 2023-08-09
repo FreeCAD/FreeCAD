@@ -748,7 +748,7 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
 {
     std::vector<TechDraw::DrawViewDimension*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    std::sort(children.begin(), children.end(), std::less<App::DocumentObject*>());
+    std::sort(children.begin(), children.end(), std::less<>());
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
@@ -764,7 +764,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 {
     std::vector<TechDraw::DrawViewBalloon*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    std::sort(children.begin(), children.end(), std::less<App::DocumentObject*>());
+    std::sort(children.begin(), children.end(), std::less<>());
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
@@ -1216,12 +1216,12 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
 
 bool DrawViewPart::handleFaces()
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", 1l);
+    return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
 bool DrawViewPart::newFaceFinder(void)
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", 0l);
+    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
 }
 
 //! remove features that are useless without this DVP
@@ -1664,7 +1664,7 @@ bool DrawViewPart::prefHardViz()
 
 bool DrawViewPart::prefSeamViz()
 {
-    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", true);
+    return Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", false);
 }
 
 bool DrawViewPart::prefSmoothViz()
@@ -1699,7 +1699,7 @@ bool DrawViewPart::prefIsoHid()
 
 int DrawViewPart::prefIsoCount()
 {
-    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoCount", 0);
+    return Preferences::getPreferenceGroup("HLR")->GetBool("IsoCount", false);
 }
 
 // Python Drawing feature ---------------------------------------------------------

@@ -57,7 +57,7 @@ Edge2TracObject::~Edge2TracObject()
 {
 }
 
-App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
+App::DocumentObjectExecReturn *Edge2TracObject::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)

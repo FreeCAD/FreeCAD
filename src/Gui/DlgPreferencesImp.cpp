@@ -29,7 +29,6 @@
 # include <QAbstractButton>
 # include <QApplication>
 # include <QDebug>
-# include <QGenericReturnArgument>
 # include <QMessageBox>
 # include <QScreen>
 # include <QScrollArea>
@@ -546,7 +545,6 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
                 int newHeight = std::min<int>(height(), maxHeight);
                 QMetaObject::invokeMethod(this, "resizeWindow",
                     Qt::QueuedConnection,
-                    QGenericReturnArgument(),
                     Q_ARG(int, newWidth),
                     Q_ARG(int, newHeight));
             }

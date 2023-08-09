@@ -40,7 +40,7 @@ class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 
 public:
     DrawLeaderLine();
-    ~DrawLeaderLine() = default;
+    ~DrawLeaderLine() override = default;
 
     App::PropertyLink         LeaderParent;
     App::PropertyVectorList   WayPoints;

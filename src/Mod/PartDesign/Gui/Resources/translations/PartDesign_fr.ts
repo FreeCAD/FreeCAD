@@ -587,12 +587,12 @@ False=engrenage interne</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Create a datum point</source>
-      <translation>Créez un point de référence</translation>
+      <translation>Créer un point de référence</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Create a new datum point</source>
-      <translation>Créez un nouveau point de référence</translation>
+      <translation>Créer un nouveau point de référence</translation>
     </message>
   </context>
   <context>
@@ -1298,12 +1298,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>Main droite</translation>
+      <translation>Pas à droite</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>Main gauche</translation>
+      <translation>Pas à gauche</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1450,7 +1450,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -1700,7 +1700,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -2147,7 +2147,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
@@ -2210,7 +2210,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -2253,7 +2253,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -2296,7 +2296,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
@@ -2326,7 +2326,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
-      <translation>Ajouter une transformation de mise à échelle</translation>
+      <translation>Ajouter une transformation de mise à l'échelle</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
@@ -2630,14 +2630,14 @@ mesurée dans la direction spécifiée</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Orientation de la section</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -2694,23 +2694,23 @@ mesurée dans la direction spécifiée</translation>
       <translation>Enlever une arête</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Paramètres de balayage</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Aucun corps actif</translation>
     </message>
@@ -2753,14 +2753,14 @@ mesurée dans la direction spécifiée</translation>
       <translation>La liste peut être réordonnée en faisant glisser</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Transformation de section</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -2861,7 +2861,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
@@ -2989,7 +2989,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -3022,7 +3022,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="132"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -3263,7 +3263,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderScaled.h" line="37"/>
       <source>Scaled parameters</source>
-      <translation>Paramètres d'échelle</translation>
+      <translation>Paramètres de la mise à l'échelle</translation>
     </message>
   </context>
   <context>
@@ -3476,7 +3476,7 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="664"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Veuillez d'abord créer un plan, ou choisissez une face sur laquelle appliquer l'esquisse</translation>
+      <translation>Créer d'abord un plan ou choisir une face sur laquelle appliquer l'esquisse</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
@@ -3784,7 +3784,7 @@ This may lead to unexpected results.</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3793,32 +3793,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez la fonction de migration sous PartDesign pour les inclure dans un corps.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Corps actif requis</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Pour créer un nouvel objet de PartDesign, il doit y avoir un corps actif dans le document. Veuillez en activer un (par double clic) ou créer un nouveau corps.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>La fonction ne fait pas partie d'un corps</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Pour utiliser cette fonction, elle doit appartenir à un corps dans le document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>La fonction ne fait pas partie d'une pièce</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
@@ -4015,7 +4015,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
       <source>Edit multi-transform</source>
-      <translation>Modifier plusieurs transformations</translation>
+      <translation>Modifier la transformation multiple</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
@@ -4814,7 +4814,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
       <source>All</source>
-      <translation>Tous</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>

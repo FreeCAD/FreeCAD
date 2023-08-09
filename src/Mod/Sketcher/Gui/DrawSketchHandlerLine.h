@@ -39,7 +39,7 @@ public:
         : Mode(STATUS_SEEK_First)
         , EditCurve(2)
     {}
-    virtual ~DrawSketchHandlerLine()
+    ~DrawSketchHandlerLine() override
     {}
     /// mode table
     enum SelectMode

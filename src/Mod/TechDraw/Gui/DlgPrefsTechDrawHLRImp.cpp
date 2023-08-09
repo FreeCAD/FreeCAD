@@ -58,7 +58,9 @@ void DlgPrefsTechDrawHLRImp::saveSettings()
 
 void DlgPrefsTechDrawHLRImp::loadSettings()
 {
+    // set defaults for HLR
     ui->pcbSeamViz->onRestore();
+
     ui->pcbSmoothViz->onRestore();
     ui->pcbHardViz->onRestore();
     ui->pcbPolygon->onRestore();

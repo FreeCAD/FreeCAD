@@ -97,7 +97,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
 
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Convection") {
-        ui->rb_convection->setChecked(1);
+        ui->rb_convection->setChecked(true);
         ui->sw_heatflux->setCurrentIndex(0);
         Base::Quantity t =
             Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
@@ -107,7 +107,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
         ui->if_filmcoef->setValue(f);
     }
     else if (constraint_type == "DFlux") {
-        ui->rb_dflux->setChecked(1);
+        ui->rb_dflux->setChecked(true);
         ui->sw_heatflux->setCurrentIndex(1);
         Base::Quantity c = Base::Quantity(pcConstraint->DFlux.getValue(), Base::Unit::HeatFlux);
         ui->if_heatflux->setValue(c);

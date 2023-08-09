@@ -560,7 +560,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -2211,7 +2211,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <translation>Hauteur (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porte</translation>
     </message>
@@ -2422,7 +2422,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1790"/>
@@ -5955,7 +5955,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
-      <translation>Crée un équipement à partir d'un objet sélectionné (Part ou Mesh)</translation>
+      <translation>Créer un équipement à partir d'un objet sélectionné (Part ou Mesh)</translation>
     </message>
   </context>
   <context>
@@ -5981,7 +5981,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
       <source>Creates a BuildingPart including selected objects</source>
-      <translation>Crée une partie de bâtiment incluant les objets sélectionnés</translation>
+      <translation>Créer une partie de bâtiment incluant les objets sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -5995,92 +5995,92 @@ La création du bâtiment est abandonnée.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation>Outils pour les structures</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation>Outils pour les axes</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation>Outils pour les panneaux</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation>Outils pour les matériaux</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation>Outils pour la tuyauterie</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation>Outils pour les armatures</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
-      <translation>Outils Arch</translation>
+      <translation>Outils de Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation>Outils de création de Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation>Outils d'annotation de Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation>Outils de modification de Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation>Aimantation de Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>Utilitaires</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation>&amp;Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation>Création</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Annotation</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation>Modification</translation>
     </message>
@@ -6088,12 +6088,12 @@ La création du bâtiment est abandonnée.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation>Outils pour les armatures</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>Créer différents types d'armatures, en forme de U, en forme de L et des étriers</translation>
     </message>
@@ -6108,7 +6108,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
       <source>Creates a profile</source>
-      <translation>Crée un profilé</translation>
+      <translation>Créer un profilé</translation>
     </message>
   </context>
   <context>
@@ -6620,7 +6620,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1343"/>
       <source>Adds the selected components to the active object</source>
-      <translation>Ajoute les composants sélectionnés à l'objet actif</translation>
+      <translation>Ajouter les composants sélectionnés à l'objet actif</translation>
     </message>
   </context>
   <context>
@@ -6724,7 +6724,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
       <source>Starts survey</source>
-      <translation>Prise de côtes</translation>
+      <translation>Prendre des cotes</translation>
     </message>
   </context>
   <context>
@@ -6805,23 +6805,23 @@ La création du bâtiment est abandonnée.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Architecture</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Tirant d'eau</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Importer/Exporter</translation>
     </message>

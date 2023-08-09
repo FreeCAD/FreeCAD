@@ -47,24 +47,24 @@
       <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2272"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2538"/>
       <source>Angle</source>
       <translation>Hoek</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2276"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2542"/>
       <source>Axis</source>
       <translation>As</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2547"/>
       <source>Position</source>
       <translation>Positie</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2786"/>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
     </message>
@@ -1992,7 +1992,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="459"/>
       <source>Save new...</source>
-      <translation type="unfinished">Save new...</translation>
+      <translation>Nieuwe opslaan...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="472"/>
@@ -2002,7 +2002,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="479"/>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>Ongedaan maken...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="271"/>
@@ -2017,7 +2017,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="298"/>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>De tekstcursor zal knipperen</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="301"/>
@@ -2032,7 +2032,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation type="unfinished">Language and number format</translation>
+      <translation>Taal en nummer formaat</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="41"/>
@@ -2146,7 +2146,7 @@ het splashscherm weergeven</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="78"/>
       <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <translation>Beheer voorkeurspakketten</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="321"/>
@@ -2211,7 +2211,7 @@ het splashscherm weergeven</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="454"/>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>%1 voorkeurspakket toepassen</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="515"/>
@@ -2337,7 +2337,7 @@ het splashscherm weergeven</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>Macro's</translation>
     </message>
@@ -2358,8 +2358,8 @@ het splashscherm weergeven</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>Bestaand bestand</translation>
     </message>
@@ -2436,53 +2436,53 @@ Opmerking: uw wijzigingen worden toegepast wanneer u de volgende keer van werkba
       <translation>Stappeninstructies: Klik op de rechter pijltjestoets (-&gt;) en vervolgens op Sluiten.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Stappeninstructies: Klik op de knop Nieuw, vervolgens op de rechter pijltjestoets (-&gt;) en dan op Sluiten.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>Hernoemen van macrobestand</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>Nieuwe naam invoeren:</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1'
 bestaat al.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>Hernoemen is mislukt</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Kan de naam '%1' niet wijzigen.
 Misschien een fout met bestandsrechten?</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>Macro dupliceren</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>Dupliceren mislukt</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Kan niet naar '%1' dupliceren.
@@ -2830,7 +2830,7 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="134"/>
       <source>Delete user-saved preference pack '%1'</source>
-      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+      <translation>Verwijder door gebruiker opgeslagen voorkeurspakket '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
@@ -2863,44 +2863,44 @@ Kies een andere map, alstublieft.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>Gebruikersinstellingen wissen</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Wilt u alle uw gebruikersinstellingen wissen?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Als u akkoord gaat zullen alle uw instellingen worden gewist.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>Verkeerde parameter</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation>Opnieuw opstarten vereist</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>U moet FreeCAD herstarten om de wijzigingen toe te passen.</translation>
+    </message>
+    <message>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
+      <source>Restart now</source>
+      <translation>Nu opnieuw opstarten</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="499"/>
-      <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Later opnieuw opstarten</translation>
     </message>
   </context>
   <context>
@@ -3306,7 +3306,7 @@ van de Python-console naar het rapportweergavepaneel</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="14"/>
       <source>Revert to Backup Config</source>
-      <translation type="unfinished">Revert to Backup Config</translation>
+      <translation>Terugkeren naar back-up configuratie</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="26"/>
@@ -3316,7 +3316,7 @@ van de Python-console naar het rapportweergavepaneel</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files:</source>
-      <translation type="unfinished">Available backup files:</translation>
+      <translation>Beschikbare back-upbestanden:</translation>
     </message>
   </context>
   <context>
@@ -3324,7 +3324,7 @@ van de Python-console naar het rapportweergavepaneel</translation>
     <message>
       <location filename="../DlgRevertToBackupConfigImp.cpp" line="95"/>
       <source>No selection in dialog, cannot load backup file</source>
-      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+      <translation>Geen selectie in dialoogvenster, kan back-upbestand niet laden</translation>
     </message>
   </context>
   <context>
@@ -3707,7 +3707,7 @@ de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.<
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="56"/>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>Controleer periodiek bij het opstarten van het programma:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="83"/>
@@ -3747,7 +3747,7 @@ de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.<
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="161"/>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>Nu controleren...</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="58"/>
@@ -4083,32 +4083,32 @@ get date suffix according to the specified format</source>
 krijgen het achtervoegsel van de datum volgens het opgegeven formaat</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../DlgSettingsDocument.ui" line="518"/>
       <source>Use date and FCBak extension</source>
       <translation>Gebruik datum en FCBak-extensie</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../DlgSettingsDocument.ui" line="531"/>
       <source>Date format</source>
       <translation>Datumformaat</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../DlgSettingsDocument.ui" line="556"/>
       <source>Document objects</source>
       <translation>Document objecten</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
       <translation type="unfinished">Allow objects to have same label</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../DlgSettingsDocument.ui" line="565"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Dubbele voorwerpnamen in een document toestaan</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../DlgSettingsDocument.ui" line="578"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4121,22 +4121,22 @@ Een gedeeltelijk geladen document kan niet worden bewerkt. Dubbelklik op het doc
 in de boomstructuurweergave om het volledig te herladen.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Gedeeltelijk laden van externe gekoppelde objecten uitschakelen</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../DlgSettingsDocument.ui" line="601"/>
       <source>Authoring and License</source>
       <translation>Auteur en licentie</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../DlgSettingsDocument.ui" line="607"/>
       <source>Author name</source>
       <translation>Auteursnaam</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../DlgSettingsDocument.ui" line="614"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4145,32 +4145,32 @@ Houd leeg voor anoniem.
 U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../DlgSettingsDocument.ui" line="629"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>Het veld 'Laatst gewijzigd door' wordt bij het opslaan van het bestand op de opgegeven auteur ingesteld</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../DlgSettingsDocument.ui" line="632"/>
       <source>Set on save</source>
       <translation>Instellen met opslaan</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../DlgSettingsDocument.ui" line="645"/>
       <source>Company</source>
       <translation>Bedrijf</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../DlgSettingsDocument.ui" line="652"/>
       <source>Default company name to use for new files</source>
       <translation>Standaardbedrijfsnaam om te gebruiken voor nieuwe bestanden</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
       <translation>Standaardlicentie</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../DlgSettingsDocument.ui" line="675"/>
       <source>Default license for new documents</source>
       <translation>Standaardlicentie voor nieuwe documenten</translation>
     </message>
@@ -4240,12 +4240,12 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Andere</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
       <translation>Licentie URL</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../DlgSettingsDocument.ui" line="698"/>
       <source>URL describing more about the license</source>
       <translation>URL beschrijft meer over de licentie</translation>
     </message>
@@ -4717,7 +4717,7 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="142"/>
       <source>Font name:</source>
-      <translation type="unfinished">Font name:</translation>
+      <translation>Naam lettertype:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="149"/>
@@ -6105,7 +6105,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Toon afhankelijkheden</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6127,7 +6127,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="119"/>
       <source>Depended by</source>
-      <translation type="unfinished">Depended by</translation>
+      <translation>Afhankelijk van</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="123"/>
@@ -6242,7 +6242,7 @@ oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</t
     <message>
       <location filename="../ReportView.cpp" line="615"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Toon rapportweergave op</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="640"/>
@@ -6817,7 +6817,7 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2055"/>
+      <location filename="../MainWindow.cpp" line="2065"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
@@ -6847,32 +6847,32 @@ Wilt u uw wijzigingen opslaan?</translation>
       <translation>Alles sluiten</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1263"/>
       <location filename="../MainWindow.cpp" line="1264"/>
       <location filename="../MainWindow.cpp" line="1265"/>
+      <location filename="../MainWindow.cpp" line="1266"/>
       <source>Toggles this toolbar</source>
       <translation>Schakelt deze werkbalk in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1278"/>
       <location filename="../MainWindow.cpp" line="1279"/>
       <location filename="../MainWindow.cpp" line="1280"/>
+      <location filename="../MainWindow.cpp" line="1281"/>
       <source>Toggles this dockable window</source>
       <translation>Schakelt dit dokbare venster in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1846"/>
-      <location filename="../MainWindow.cpp" line="1938"/>
+      <location filename="../MainWindow.cpp" line="1856"/>
+      <location filename="../MainWindow.cpp" line="1948"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1847"/>
+      <location filename="../MainWindow.cpp" line="1857"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Het geëxporteerde object bevat een externe link. Sla het document minstens één keer op voordat u het exporteert.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1939"/>
+      <location filename="../MainWindow.cpp" line="1949"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Om een link naar externe objecten te kunnen maken, moet het document minstens één keer worden opgeslagen.
@@ -7075,17 +7075,17 @@ How do you want to proceed?</source>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Druk op de rechtermuisknop en beweeg de muis</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="57"/>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Druk op de linkermuisknop en beweeg de muis</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="59"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Druk op de middelste muisknop of SHIFT en de rechtermuisknop</translation>
     </message>
   </context>
   <context>
@@ -7109,17 +7109,17 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>Resterend: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>Bezig met afbreken</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Wilt u echt de bewerking afbreken?</translation>
     </message>
@@ -7132,12 +7132,12 @@ How do you want to proceed?</source>
       <translation>Resterend: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>Bezig met afbreken</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Wilt u echt de bewerking afbreken?</translation>
     </message>
@@ -7145,7 +7145,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4312"/>
       <source>Change the linked object</source>
       <translation>Het gekoppelde object wijzigen</translation>
     </message>
@@ -7153,12 +7153,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4281"/>
       <source>Object not found</source>
       <translation>Object niet gevonden</translation>
     </message>
@@ -7373,17 +7373,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="980"/>
+      <location filename="../Action.cpp" line="857"/>
       <source>Open file %1</source>
       <translation>Open bestand %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>File not found</source>
       <translation>Bestand niet gevonden</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="901"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Het bestand '%1' kan niet worden geopend.</translation>
     </message>
@@ -7391,22 +7391,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1147"/>
+      <location filename="../Action.cpp" line="1024"/>
       <source>none</source>
       <translation>geen</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1162"/>
+      <location filename="../Action.cpp" line="1039"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>File not found</source>
       <translation>Bestand niet gevonden</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1219"/>
+      <location filename="../Action.cpp" line="1097"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Het bestand '%1' kan niet worden geopend.</translation>
     </message>
@@ -8067,7 +8067,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../Tree.cpp" line="2793"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Items verborgen in boomweergave weergeven</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2794"/>
@@ -8235,8 +8235,7 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="794"/>
-      <location filename="../Action.cpp" line="862"/>
+      <location filename="../Action.cpp" line="722"/>
       <source>Select the '%1' workbench</source>
       <translation>Selecteer de '%1' werkbank</translation>
     </message>
@@ -8477,7 +8476,7 @@ Wilt u een andere map opgeven?</translation>
       <location filename="../resource.cpp" line="78"/>
       <location filename="../resource.cpp" line="79"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="628"/>
@@ -9199,12 +9198,12 @@ Open een browservenster en typ: http://localhost:%1.</translation>
       <translation>De %1 is niet leeg. Mag de inhoud worden verwijderd?</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="298"/>
       <source>Translation:</source>
       <translation>Verplaatsing:</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="587"/>
       <source>Rotation:</source>
       <translation>Rotatie:</translation>
     </message>
@@ -9369,7 +9368,7 @@ Also auto redo the copy if the original linked object is changed.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2535"/>
       <source>Refresh configurable object</source>
-      <translation type="unfinished">Refresh configurable object</translation>
+      <translation>Configureerbaar object vernieuwen</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2536"/>
@@ -9421,7 +9420,7 @@ the current copy will be lost.
     <message>
       <location filename="../SoFCColorLegend.cpp" line="87"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Kleurenlegende</translation>
     </message>
   </context>
   <context>
@@ -10351,7 +10350,7 @@ the current copy will be lost.
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2043"/>
+      <location filename="../MainWindow.cpp" line="2053"/>
       <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
@@ -12240,7 +12239,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Notificaties aanzetten</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
@@ -12280,7 +12279,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
-      <translation type="unfinished">Non-Intrusive Notifications</translation>
+      <translation>Niet-opdringerige meldingen</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="120"/>
@@ -12336,7 +12335,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Verbergen wanneer een ander venster is geactiveerd</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
@@ -12346,7 +12345,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Niet tonen wanneer inactief</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
@@ -12371,7 +12370,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
-      <translation type="unfinished">Auto-remove User Notifications</translation>
+      <translation>Automatisch verwijderen van gebruikersmeldingen</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNotificationArea.cpp" line="58"/>
@@ -12552,7 +12551,7 @@ nadat FreeCAD opgestart is</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>De afbeelding interactief schalen door een lengte tussen twee punten van de afbeelding in te stellen.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="250"/>
@@ -12626,17 +12625,17 @@ nadat FreeCAD opgestart is</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="472"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
       <source>Toolbar</source>
       <translation>Werkbalk</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="473"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Left corner</source>
       <translation>Linkerhoek</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="474"/>
+      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Right corner</source>
       <translation>Rechterhoek</translation>
     </message>

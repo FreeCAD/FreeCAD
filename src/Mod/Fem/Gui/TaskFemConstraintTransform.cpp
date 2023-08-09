@@ -98,13 +98,13 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
         ui->sw_transform->setCurrentIndex(0);
-        ui->rb_rect->setChecked(1);
-        ui->rb_cylin->setChecked(0);
+        ui->rb_rect->setChecked(true);
+        ui->rb_cylin->setChecked(false);
     }
     else if (transform_type == "Cylindrical") {
         ui->sw_transform->setCurrentIndex(1);
-        ui->rb_rect->setChecked(0);
-        ui->rb_cylin->setChecked(1);
+        ui->rb_rect->setChecked(false);
+        ui->rb_cylin->setChecked(true);
     }
 
     ui->lw_Rect->clear();

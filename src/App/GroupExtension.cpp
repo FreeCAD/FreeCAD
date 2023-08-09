@@ -31,7 +31,7 @@
 
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
@@ -352,8 +352,10 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         _Conns.clear();
         for(auto obj : Group.getValue()) {
             if(obj && obj->getNameInDocument()) {
-                _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,bp::_1, bp::_2));
+                //NOLINTBEGIN
+                _Conns[obj] = obj->signalChanged.connect(std::bind(
+                            &GroupExtension::slotChildChanged,this,sp::_1, sp::_2));
+                //NOLINTEND
             }
         }
     }

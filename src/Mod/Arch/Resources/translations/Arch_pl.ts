@@ -2254,7 +2254,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <translation>Wysokość (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Drzwi</translation>
     </message>
@@ -2865,7 +2865,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
-      <translation>Fazka</translation>
+      <translation>Sfazowanie</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -3031,7 +3031,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3478,7 +3478,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Rotates the plane along the X axis</source>
-      <translation>Obróć płaszczyznę wokół osi X</translation>
+      <translation>Obraca płaszczyznę wokół osi X</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1378"/>
@@ -3488,7 +3488,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation>Obróć płaszczyznę wokół osi Y</translation>
+      <translation>Obraca płaszczyznę wokół osi Y</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1380"/>
@@ -3498,7 +3498,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation>Obróć płaszczyznę wokół osi Z</translation>
+      <translation>Obraca płaszczyznę wokół osi Z</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1382"/>
@@ -3785,7 +3785,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1456"/>
       <source>Mesh to Shape</source>
-      <translation>Siatka do kształtu</translation>
+      <translation>Kształt z siatki</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1537"/>
@@ -5227,7 +5227,7 @@ Tworzenie budynku zostało przerwane.</translation>
       <location filename="../../ArchPanel.py" line="1019"/>
       <location filename="../../ArchPanel.py" line="1283"/>
       <source>Turns the display of the margin on/off</source>
-      <translation>Przełącza wyświetlanie marginesu, włącz / wyłącz</translation>
+      <translation>Włącza / wyłącza wyświetlanie marginesu</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1106"/>
@@ -6038,92 +6038,92 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation>Narzędzia konstrukcyjne</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation>Narzędzia osi</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation>Narzędzia panelu</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation>Narzędzia materiałowe</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation>Narzędzia rur</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation>Narzędzia zbrojenia</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation>Narzędzia architektoniczne</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation>Rysunek Roboczy — kreślenie</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation>Rysunek Roboczy — opisy</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation>Rysunek Roboczy — narzędzia modyfikujące</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation>Rysunek Roboczy — przyciąganie</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation>&amp;Architektura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation>&amp;Rysunek</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation>Tworzenie</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Adnotacja</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation>Zmiany</translation>
     </message>
@@ -6131,12 +6131,12 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation>Narzędzia zbrojenia</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>Tworzy różne rodzaje prętów zbrojeniowych, w tym pręty w kształcie U, L i strzemiona</translation>
     </message>
@@ -6697,7 +6697,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
-      <translation>Siatka do kształtu</translation>
+      <translation>Kształt z siatki</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1435"/>
@@ -6848,23 +6848,23 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Architektura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Rysunek roboczy</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>

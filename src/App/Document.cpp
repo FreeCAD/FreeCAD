@@ -904,7 +904,11 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
+#if QT_VERSION < QT_VERSION_CHECK(6,3,0)
     hash.addData(filename.c_str(), filename.size());
+#else
+    hash.addData(QByteArrayView(filename.c_str(), filename.size()));
+#endif
     s << App::Application::getUserCachePath() << App::Application::getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
@@ -918,7 +922,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
@@ -1069,11 +1073,11 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
-                        << App::Application::Config()["BuildVersionMajor"] << "."
-                        << App::Application::Config()["BuildVersionMinor"] << "R"
-                        << App::Application::Config()["BuildRevision"]
-                        << "\" FileVersion=\"1\">" << endl;
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
+                    << App::Application::Config()["BuildVersionMajor"] << "."
+                    << App::Application::Config()["BuildVersionMinor"] << "R"
+                    << App::Application::Config()["BuildRevision"]
+                    << R"(" FileVersion="1">)" << endl;
     // Add this block to have the same layout as for normal documents
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
@@ -1556,7 +1560,7 @@ public:
     BackupPolicy() {
         policy = Standard;
         numberOfFiles = 1;
-        useFCBakExtension = false;
+        useFCBakExtension = true;
         saveBackupDateFormat = "%Y%m%d-%H%M%S";
     }
     ~BackupPolicy() = default;
@@ -1928,7 +1932,7 @@ bool Document::saveToFile(const char* filename) const
             count_bak = -1;
         }
         bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",true);
         std::string saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
 
@@ -2753,8 +2757,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         // maximum two passes to allow some form of dependency inversion
         for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
             std::unique_ptr<Base::SequencerLauncher> seq;
-            if(canAbort)
-                seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
+            if(canAbort) {
+                seq = std::make_unique<Base::SequencerLauncher>("Recompute...", topoSortedObjects.size());
+            }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
@@ -2826,18 +2831,32 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     FC_TIME_LOG(t,"Recompute total");
 
     if (!d->_RecomputeLog.empty()) {
-        d->pendingRemove.clear();
-        if (!testStatus(Status::IgnoreErrorOnRecompute))
-            Base::Console().Error("Recompute failed!\n");
-    }
-    else {
-        for(auto &o : d->pendingRemove) {
-            auto obj = o.getObject();
-            if (obj)
-                obj->getDocument()->removeObject(obj->getNameInDocument());
+        if (!testStatus(Status::IgnoreErrorOnRecompute)) {
+            for (auto it : topoSortedObjects) {
+                if (it->isError()) {
+                    const char* text = getErrorDescription(it);
+                    if (text) {
+                        Base::Console().Error("%s: %s\n", it->Label.getValue(), text);
+                    }
+                }
+            }
         }
     }
 
+    for (auto doc : GetApplication().getDocuments()) {
+        decltype(doc->d->pendingRemove) objs;
+        objs.swap(doc->d->pendingRemove);
+        for(auto &o : objs) {
+            try {
+                if (auto obj = o.getObject()) {
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
+                }
+            } catch (Base::Exception & e) {
+                e.ReportException();
+                FC_ERR("error when removing object " << o.getDocumentName() << '#' << o.getObjectName());
+            }
+        }
+    }
     return objectCount;
 }
 
@@ -3369,7 +3388,7 @@ void Document::removeObject(const char* sName)
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
-        FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
+        FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
         d->pendingRemove.emplace_back(pos->second);
         return;
     }

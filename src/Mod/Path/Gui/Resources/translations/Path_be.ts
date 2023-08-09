@@ -3138,7 +3138,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце пажаданы стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце патрэбны стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -4544,7 +4544,7 @@ For example:
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Абраць шлях да задання</translation>
     </message>
@@ -5322,14 +5322,14 @@ For example:
       <translation>Спіс выключаных характарыстык</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>G-код, які будзе ўстаўлены</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="125"/>
       <source>The desired width of the chamfer</source>
-      <translation>Жаданая шырыня фаскі</translation>
+      <translation>Патрэбная шырыня фаскі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="131"/>
@@ -6586,7 +6586,7 @@ For example:
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;Заўвага&lt;/b&gt;: У дыялогавым акне паказваюцца каманды вызначэння шляху ў асноўных адзінках FreeCAD (мм/с).
-Значэнні будуць пераўтвораныя ў пажаданыя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
+Значэнні будуць пераўтвораныя ў патрэбныя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="268"/>
@@ -7064,17 +7064,17 @@ For example:
       <translation>Кант</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Абраныя рэбры недаступныя. Калі іх некалькі, можа спрацаваць змена парадку выбару.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Не атрымалася стварыць траекторыю для граняў.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Праверыць выбар рабра і патрабаванні да канчатковай глыбіні для апрацоўкі разамкнутых рэбраў.</translation>
     </message>
@@ -8254,12 +8254,12 @@ Aborting op creation</source>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Пасляапрацоўка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Пасляапрацоўка абранага задання</translation>
     </message>
@@ -8452,6 +8452,29 @@ Aborting op creation</source>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s не мае ўласцівасці %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Тэкст</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Файл</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>Карыстальніцкі файл %s не знойдзены.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>Хібны радок gcode: %s</translation>
     </message>
   </context>
 </TS>

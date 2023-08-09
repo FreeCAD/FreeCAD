@@ -5356,117 +5356,119 @@ used for the Elmer solver</source>
       <translation>&amp;Электрастатычныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>Fluid Constraints</source>
       <translation>Гідрастатычныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Fluid Constraints</source>
       <translation>&amp;Гідрастатычныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>Electromagnetic Constraints</source>
       <translation>Электрамагнітныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Electromagnetic Constraints</source>
       <translation>&amp;Электрамагнітныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Geometrical Constraints</source>
       <translation>Геаметрычныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>Геа&amp;метрычныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Mechanical Constraints</source>
       <translation>Механічныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>&amp;Механічныя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Thermal Constraints</source>
       <translation>Цеплавыя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Thermal Constraints</source>
       <translation>&amp;Цеплавыя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Constraints without solver</source>
       <translation>Абмежаванні без сродку рашэння</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Constraints without solver</source>
       <translation>&amp;Абмежаванні без сродку рашэння</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Overwrite Constants</source>
       <translation>Перазапісаць канстанты</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>&amp;Overwrite Constants</source>
       <translation>&amp;Перазапісаць канстанты</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="66"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>M&amp;esh</source>
       <translation>Паліганальная &amp;сетка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="69"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Solve</source>
       <translation>Вырашыць</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>&amp;Solve</source>
       <translation>Вы&amp;рашыць</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Results</source>
       <translation>Вынікі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Results</source>
       <translation>&amp;Вынікі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Filter functions</source>
       <translation>Функцыі фільтра</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>&amp;Filter functions</source>
       <translation>Функцыі &amp;фільтра</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="79"/>
       <source>Utilities</source>
       <translation>Службовыя</translation>
     </message>

@@ -219,7 +219,8 @@ public:
     //////////////////////////////////////////////////////////////
 
     std::string name() const;     //< A short name for this package, often used as a menu entry.
-    Meta::Version version() const;//< Version string in symantic triplet format, e.g. "1.2.3".
+    std::string type() const;     //< The type for this package.
+    Meta::Version version() const;//< Version string in semantic triplet format, e.g. "1.2.3".
     std::string date()
         const;//< Date string -- currently arbitrary (when C++20 is well-supported we can revisit)
     std::string description() const;//< Text-only description of the package. No markup.
@@ -285,6 +286,7 @@ public:
 
     // Setters
     void setName(const std::string& name);
+    void setType(const std::string& type);
     void setVersion(const Meta::Version& version);
     void setDate(const std::string& date);
     void setDescription(const std::string& description);
@@ -342,12 +344,13 @@ public:
 
     /**
         * Determine whether the current metadata specifies support for the currently-running version of FreeCAD.
-        * Does not interrogate content items, which must be querried individually.
+        * Does not interrogate content items, which must be queried individually.
         */
     bool supportsCurrentFreeCAD() const;
 
 private:
     std::string _name;
+    std::string _type;
     Meta::Version _version;
     std::string _date;
     std::string _description;

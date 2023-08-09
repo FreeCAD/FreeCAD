@@ -45,7 +45,7 @@ public:
         , Mode(STATUS_SEEK_First)
         , EditCurve(Corners + 1)
     {}
-    virtual ~DrawSketchHandlerRegularPolygon()
+    ~DrawSketchHandlerRegularPolygon() override
     {}
     /// mode table
     enum SelectMode

@@ -70,14 +70,14 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
 
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Temperature") {
-        ui->rb_temperature->setChecked(1);
+        ui->rb_temperature->setChecked(true);
         ui->if_temperature->setValue(pcConstraint->Temperature.getQuantityValue());
 
         ui->if_temperature->bind(pcConstraint->Temperature);
         ui->if_temperature->setUnit(pcConstraint->Temperature.getUnit());
     }
     else if (constraint_type == "CFlux") {
-        ui->rb_cflux->setChecked(1);
+        ui->rb_cflux->setChecked(true);
         std::string str = "Concentrated heat flux";
         ui->if_temperature->setValue(pcConstraint->CFlux.getQuantityValue());
         ui->if_temperature->bind(pcConstraint->CFlux);

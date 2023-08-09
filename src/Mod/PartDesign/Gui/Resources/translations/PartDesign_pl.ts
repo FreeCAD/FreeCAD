@@ -71,7 +71,7 @@ tzn. przeciwny do ruchu wskazówek zegara, poruszając się wzdłuż osi.</trans
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Jeśli wybrane, wynikiem będzie część wspólna profilu i istniejącej już zawartości.</translation>
+      <translation>Jeśli opcja jest wybrana, wynikiem będzie część wspólna profilu i istniejącej już zawartości.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
@@ -246,7 +246,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
       <source>Chamfer</source>
-      <translation>Fazka</translation>
+      <translation>Sfazowanie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1726"/>
@@ -426,7 +426,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
       <source>Mirrored</source>
-      <translation>Odbicie lustrzane</translation>
+      <translation>Transformacja odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1981"/>
@@ -444,7 +444,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
       <source>Move object to other body</source>
-      <translation>Przesuń obiekt do innej zawartości</translation>
+      <translation>Przesuń cechę do innej zawartości</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="664"/>
@@ -462,7 +462,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
       <source>Move object after other object</source>
-      <translation>Przesuń obiekt za inny obiekt</translation>
+      <translation>Przesuń cechę</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="831"/>
@@ -498,7 +498,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
       <source>Create MultiTransform</source>
-      <translation>Utwórz wielokrotną transformację</translation>
+      <translation>Utwórz transformację wielokrotną</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2221"/>
@@ -606,7 +606,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
       <source>PolarPattern</source>
-      <translation>Szyk kołowy</translation>
+      <translation>Transformacja szyku kołowego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2107"/>
@@ -642,7 +642,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
       <source>Scaled</source>
-      <translation>Skalowane</translation>
+      <translation>Transformacja zmiany skali</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2172"/>
@@ -939,12 +939,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="894"/>
       <source>Move an object inside tree</source>
-      <translation>Przesuń obiekt wewnątrz drzewa</translation>
+      <translation>Przesuń cechę wewnątrz drzewa</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
-      <translation>Odbicie lustrzane</translation>
+      <translation>Transformacja odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
@@ -954,12 +954,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
-      <translation>Szyk kołowy</translation>
+      <translation>Transformacja szyku kołowego</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
-      <translation>Skalowane</translation>
+      <translation>Transformacja zmiany skali</translation>
     </message>
   </context>
   <context>
@@ -1113,7 +1113,7 @@ Please select a body from below, or create a new body.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Pierwotne bryły geometryczne</translation>
+      <translation>Pierwotna bryła geometryczna</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
@@ -1515,7 +1515,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1856,7 +1856,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -2305,7 +2305,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
-      <translation>Edycja</translation>
+      <translation>Edytuj</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
@@ -2315,22 +2315,22 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
-      <translation>Dodaj transformację w odbiciu lustrzanym</translation>
+      <translation>Dodaj transformację odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
-      <translation>Dodaj szyk liniowy</translation>
+      <translation>Dodaj transformację szyku liniowego</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
-      <translation>Dodaj szyk kołowy</translation>
+      <translation>Dodaj transformację szyku kołowego</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
-      <translation>Dodaj transformację w zmienionej skali</translation>
+      <translation>Dodaj transformację zmiany skali</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
@@ -2634,12 +2634,12 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Kierunek sekcji profilu</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
@@ -2698,23 +2698,23 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Usuń krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Parametry wyciągnięcia</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Brak aktywnej zawartości</translation>
     </message>
@@ -2757,12 +2757,12 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Przekształcenie sekcji</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
@@ -3293,7 +3293,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Tworzenie addytywnego prostopadłościanu przez podanie szerokości, wysokości i długości</translation>
+      <translation>Tworzy addytywny prostopadłościan przez podanie szerokości, wysokości i długości</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3336,7 +3336,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Tworzenie subtraktywnego prostopadłościanu podając jego szerokość, wysokość i długość</translation>
+      <translation>Tworzy subtraktywny prostopadłościan podając jego szerokość, wysokość i długość</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
@@ -3732,7 +3732,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="721"/>
       <source>There are no other bodies to move to</source>
-      <translation>Nie istnieją inne zawartości aby do nich przejść</translation>
+      <translation>Nie istnieją inne zawartości, do których można przenieść cechę</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="858"/>
@@ -3796,7 +3796,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3805,32 +3805,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez obiektu Zawartości, użyj funkcji migracji w środowisku pracy Projekt Części, aby umieścić je w obiekcie Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Aby utworzyć nowy obiekt Projektu Części, w dokumencie musi być aktywny obiekt Zawartość. Uaktywnij jeden (podwójnym kliknięciem) lub utwórz nową Zawartość.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Funkcja nie jest w korpusie</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Ta cecha musi przynależeć do zawartości w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Funkcja nie jest w części</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
@@ -4698,7 +4698,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Involute gear...</source>
-      <translation>Przekładnia ewolwentowa ...</translation>
+      <translation>Koło zębate ewolwentowe ...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -4708,7 +4708,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Measure</source>
-      <translation>Wymiarowanie</translation>
+      <translation>Pomiary</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -4718,7 +4718,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Przełącz widok 3D</translation>
+      <translation>Włącz / wyłącz widok pomiarów 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -4736,7 +4736,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
-      <translation>Przekładnia ewolwentowa ...</translation>
+      <translation>Koło zębate ewolwentowe ...</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
@@ -4777,7 +4777,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Constraint type</source>
-      <translation>Typ wiązania</translation>
+      <translation>Typ obciążenia</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
@@ -5516,12 +5516,12 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
       <source>Length of box too small</source>
-      <translation>Długość prostopadłościanu zbyt mała</translation>
+      <translation>Długość prostopadłościanu jest zbyt mała</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
       <source>Width of box too small</source>
-      <translation>Szerokość prostopadłościanu zbyt mała</translation>
+      <translation>Szerokość prostopadłościanu jest zbyt mała</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="203"/>

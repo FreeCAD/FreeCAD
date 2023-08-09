@@ -116,7 +116,10 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation>Wybierz szablon, który będzie używany dla zadania. W przypadku braku szablonów można je utworzyć za pomocą menu podręcznego istniejącego zadania. Nazwij plik job_*.json i umieść go w katalogu "makro" lub "path" (patrz preferencje), aby można go było wybrać z tej listy.</translation>
+      <translation>Wybierz szablon, który będzie używany dla zadania. W przypadku braku szablonów
+można je utworzyć za pomocą menu podręcznego istniejącego zadania. 
+Nazwij plik job_*.json i umieść go w katalogu "makro" lub "path" (patrz preferencje),
+aby można go było wybrać z tej listy.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -156,7 +159,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
       <source>Tools</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="75"/>
@@ -227,7 +230,7 @@ This option is most useful if stock is a box or cylinder, or if the machine has 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
       <translation>Jeżeli opcja jest włączona, to tworzenie naddatku jest uwzględnione w szablonie. Jeśli szablon nie zawiera definicji naddatku, zostanie użyty domyślny algorytm tworzenia naddatku (tworzenie z ramki otaczającej obiektu Bazowego). 
 
-Ta opcja jest najbardziej przydatna, gdy materiał jest w kształcie sześcianu lub walca, lub gdy maszyna ma standardowe położenie dla obróbki. 
+Ta opcja jest najbardziej przydatna, gdy materiał jest w kształcie prostopadłościanu lub walca, lub gdy maszyna ma standardowe położenie dla obróbki. 
 
 Należy pamiętać, że opcja ta jest wyłączona, jeśli w zadaniu używany jest obiekt naddatku z istniejącej bryły - nie mogą one być przechowywane w szablonie.</translation>
     </message>
@@ -268,7 +271,7 @@ Należy pamiętać, że na liście znajdują się tylko operacje, dla których a
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półprodukt</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
@@ -279,7 +282,7 @@ For Box and Cylinder stocks this means the actual size of the stock solid being 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
       <translation>Jeśli opcja ta jest włączona, bieżące ustawienia rozmiaru obiektu naddatku są uwzględniane w szablonie.
 
-W przypadku naddatku dla sześcianu i walca oznacza to rzeczywisty rozmiar nadmiaru tworzonej bryły.
+W przypadku naddatku dla prostopadłościanu i walca oznacza to rzeczywisty rozmiar nadmiaru tworzonej bryły.
 
 Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek materiału we wszystkich kierunkach. Obiekt naddatku utworzony na podstawie takiego szablonu pobierze swój podstawowy rozmiar z obiektu Bazowego nowego zadania i zastosuje zapisane ustawienia dodatkowe.</translation>
     </message>
@@ -326,12 +329,12 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation>Poziomy kanał</translation>
+      <translation>Posuw poziomy</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation>Pionowy kanał</translation>
+      <translation>Posuw pionowy</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
@@ -351,12 +354,12 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation>W przód</translation>
+      <translation>Do przodu</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
       <source>Reverse</source>
-      <translation>Odwróć</translation>
+      <translation>Do tyłu</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="244"/>
@@ -446,7 +449,7 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation>Utwórz nóż tokarski</translation>
+      <translation>Utwórz narzędzie skrawające</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
@@ -1957,7 +1960,7 @@ Przekroczenie wartości 100% powoduje, że dwa różne cykle nie nakładają si�
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="43"/>
@@ -2371,7 +2374,7 @@ Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, w
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Ścieżka</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="67"/>
@@ -2569,7 +2572,7 @@ Jeśli pole pozostanie puste, żaden szablon nie zostanie wstępnie wybrany.</tr
     <message>
       <location filename="../preferences/PathJob.ui" line="376"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półwyrób</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
@@ -2645,7 +2648,7 @@ Jeśli pole pozostanie puste, żaden szablon nie zostanie wstępnie wybrany.</tr
     <message>
       <location filename="../preferences/PathJob.ui" line="647"/>
       <source>Tools</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="653"/>
@@ -2974,7 +2977,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
@@ -3359,7 +3362,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="123"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
@@ -3556,7 +3559,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
       <source>Tool Bit Attributes</source>
-      <translation>Atrybuty noża tokarskiego</translation>
+      <translation>Atrybuty narzędzia skrawającego</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
@@ -3566,7 +3569,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
       <source>Tool Bit</source>
-      <translation>Nóż tokarski</translation>
+      <translation>Narzędzie skrawające</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
@@ -3792,7 +3795,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półwyrób</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
@@ -3918,7 +3921,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Link Stock and Model</source>
-      <translation>Połącz naddatek z modelem</translation>
+      <translation>Połącz półwyrób z modelem</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="744"/>
@@ -3944,7 +3947,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1024"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1030"/>
@@ -4152,7 +4155,7 @@ Domyślnie: 3 mm</translation>
       <location filename="../panels/PathEdit.ui" line="1197"/>
       <location filename="../panels/PathEdit.ui" line="1215"/>
       <source>Tools</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1234"/>
@@ -4258,7 +4261,7 @@ Domyślnie: 3 mm</translation>
       <location filename="../../../InitGui.py" line="194"/>
       <location filename="../../../InitGui.py" line="231"/>
       <source>Path Modification</source>
-      <translation>Path — modyfikacja</translation>
+      <translation>Cam — modyfikacja</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="198"/>
@@ -4508,7 +4511,7 @@ Na przykład:
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Wybierz ścieżkę zadania</translation>
     </message>
@@ -5286,7 +5289,7 @@ Na przykład:
       <translation>Lista wyłączonych funkcji</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>G-code do wstawienia</translation>
     </message>
@@ -6547,7 +6550,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Uwaga&lt;/b&gt;: To okno pokazuje polecenia środowiska Path w podstawowych jednostkach dla FreeCAD (mm/s). 
+      <translation>&lt;b&gt;Uwaga&lt;/b&gt;: To okno pokazuje polecenia środowiska CAM w podstawowych jednostkach dla FreeCAD (mm/s). 
  Wartości zostaną przekonwertowane na żądaną jednostkę podczas przetwarzania końcowego.</translation>
     </message>
     <message>
@@ -6887,7 +6890,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="379"/>
       <source>Flood</source>
-      <translation>Wypełnij</translation>
+      <translation>Strumień</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="380"/>
@@ -7026,17 +7029,17 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Ukośnie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Wybrana krawędź (krawędzie) jest niedostępna. Jeśli jest ich wiele, zmiana kolejności wyboru może przynieść efekty.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Nie można utworzyć ścieżki dla powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Sprawdź wybór krawędzi i wymagania dotyczące głębokości końcowej dla profilowania otwartych krawędzi.</translation>
     </message>
@@ -7061,7 +7064,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="71"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półprodukt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="117"/>
@@ -7436,7 +7439,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półprodukt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
@@ -7748,7 +7751,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="103"/>
       <source>Stock</source>
-      <translation>Naddatek</translation>
+      <translation>Półprodukt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="106"/>
@@ -7968,7 +7971,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="938"/>
       <source>Depths</source>
-      <translation>Głębia</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1043"/>
@@ -8216,12 +8219,12 @@ Przerwanie procesu tworzenia</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Przetwarzanie końcowe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Przetwarzanie końcowe wybranego zadania</translation>
     </message>
@@ -8244,17 +8247,17 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="131"/>
       <source>Forward</source>
-      <translation>W przód</translation>
+      <translation>Do przodu</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="132"/>
       <source>Reverse</source>
-      <translation>Odwróć</translation>
+      <translation>Do tyłu</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="133"/>
       <source>None</source>
-      <translation>Brak</translation>
+      <translation>Stop</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="144"/>
@@ -8414,6 +8417,29 @@ Przerwanie procesu tworzenia</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s nie ma właściwości %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Plik</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>Plik użytkownika "%s" nie został odnaleziony.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>Nieprawidłowy wiersz G-code: %s</translation>
     </message>
   </context>
 </TS>

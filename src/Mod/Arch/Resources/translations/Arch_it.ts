@@ -11,7 +11,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation>Scegliere una scheda preimpostata</translation>
+      <translation>Scegliere una scheda predefinita</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
-      <translation>Url</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="236"/>
@@ -279,7 +279,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="128"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Se abilitato, il programma e il foglio di calcolo associato vengono aggiornati ogni volta che il documento viene ricalcolato.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
@@ -334,7 +334,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+      <translation>Un elenco opzionale di filtri proprietà:valore separati da punto e virgola. Anteponi ! a un nome di proprietà per invertire l'effetto del filtro (esclude oggetti che corrispondono al filtro). Gli oggetti la cui proprietà contiene il valore saranno abbinati. Esempi di filtri validi (tutto è indipendente da maiuscolo o minuscolo): Name:Wall - Considererà solo oggetti con 'wall' nel loro nome (nome interno); !Name:Wall - considererà solo gli oggetti che NON hanno 'wall' nel loro nome (nome interno); Description:Win - Considererà solo gli oggetti con 'win' nella loro descrizione; !Label:Win - Considererà solo gli oggetti che NON hanno 'win' nella loro etichetta; IfcType:Wall - Considererà solo gli oggetti il cui tipo Ifc è 'wall'; !Tag:Wall - Considererà solo gli oggetti il cui tag NON è 'wall'. Se lasci vuoto questo campo, non viene applicato alcun filtro</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="194"/>
@@ -384,7 +384,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation>Editor di proprietà IFC</translation>
+      <translation>Editore di proprietà IFC</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
@@ -468,7 +468,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation>Repository remoti</translation>
+      <translation>Repository remote</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
@@ -558,7 +558,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation>Aggiungi la selezione</translation>
+      <translation>Aggiungi selezionato</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
@@ -701,12 +701,12 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Imposta la proprietà "Sposta con l'host" su True, per impostazione predefinita</translation>
+      <translation>Imposta la proprietà "Sposta con l'host" su vero come impostazione predefinita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation>Imposta la proprietà "Sposta base" su vero, per impostazione predefinita</translation>
+      <translation>Imposta la proprietà "Sposta base" su vero come impostazione predefinita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
@@ -2081,7 +2081,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="944"/>
       <source>Clone level up</source>
-      <translation type="unfinished">Clone level up</translation>
+      <translation>Clona il livello</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
@@ -2230,7 +2230,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <translation>Altezza (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porta</translation>
     </message>
@@ -2302,12 +2302,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../importSHP.py" line="67"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Altezza delle forme (Shapes)</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="68"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Scegli quale campo fornisce altezze di forme:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="109"/>
@@ -2421,12 +2421,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
       <source>Hole wire</source>
-      <translation type="unfinished">Hole wire</translation>
+      <translation>Contorno del foro</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1787"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>Il numero del contorno che definisce un foro nell'oggetto ospite. Il valore zero adotta automaticamente il contorno più grande</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
@@ -2677,7 +2677,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchStairs.py" line="428"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>rimosse le proprietà 'OutlineWireLeft' e 'OutlineWireRight', e aggiunte le proprietà 'RailingLeft' e 'RailingRight'</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="442"/>
@@ -2836,7 +2836,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Slab type</source>
-      <translation type="unfinished">Slab type</translation>
+      <translation>Tipo di lastra</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
@@ -2861,7 +2861,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Slab base</source>
-      <translation type="unfinished">Slab base</translation>
+      <translation>Base lastra</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
@@ -2886,22 +2886,22 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Number of grooves</source>
-      <translation type="unfinished">Number of grooves</translation>
+      <translation>Numero di scanalature</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Depth of grooves</source>
-      <translation type="unfinished">Depth of grooves</translation>
+      <translation>Profondità delle scanalature</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Height of grooves</source>
-      <translation type="unfinished">Height of grooves</translation>
+      <translation>Altezza delle scanalature</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Spacing between grooves</source>
-      <translation type="unfinished">Spacing between grooves</translation>
+      <translation>Spazio tra le scanalature</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1019"/>
@@ -2911,7 +2911,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>Lunghezza del piano inferiore</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
@@ -2926,32 +2926,32 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1407"/>
       <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
+      <translation>Opzioni dei prefabbricati</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>Elenco delle mensole</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>Aggiungi mensola</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>Rimuovi mensola</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
       <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
+      <translation>Rastrematura</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Livello</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -3089,7 +3089,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPipe.py" line="298"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Il contorno di base è chiuso</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="312"/>
@@ -3125,7 +3125,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchSchedule.py" line="117"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>rimosso la proprietà 'Risultato', e aggiunto la proprietà 'AutoAggiorna'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="119"/>
@@ -3429,7 +3429,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>Aggiungi la selezione</translation>
+      <translation>Aggiungi selezionato</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3614,7 +3614,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="679"/>
       <source>Merge Wall</source>
-      <translation type="unfinished">Merge Wall</translation>
+      <translation>Unisci i muri</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="685"/>
@@ -3751,12 +3751,12 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1385"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>Rimuovi gruppo</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1416"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Dividi Mesh</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1456"/>
@@ -3777,12 +3777,12 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1635"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Chiave</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1645"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
+      <translation>L'oggetto non ha un attributo IfcProperties. Annulla la creazione del foglio di calcolo per l'oggetto:</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1663"/>
@@ -3921,13 +3921,13 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchStructure.py" line="708"/>
       <location filename="../../ArchPanel.py" line="417"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>Il tipo di Crea facce da utilizzare per creare il profilo di questo oggetto</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Bordi selezionati (o gruppo di bordi) della base ArchSketch, da usare per creare la forma di questa Struttura Arch (invece di usare tutti i bordi della Forma Base per impostazione predefinita). L'input è indice di numeri di bordi o gruppi.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -4016,7 +4016,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>Il livello del punto (0, 0,0) di questo livello</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="337"/>
@@ -4045,7 +4045,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="345"/>
       <source>This property stores an inventor representation for this object</source>
-      <translation type="unfinished">This property stores an inventor representation for this object</translation>
+      <translation>Questa proprietà memorizza una rappresentazione inventor per questo oggetto</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="348"/>
@@ -4055,7 +4055,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="351"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Una lista di corrispondenza MaterialName:SolidIndexesList che collega nomi materiali con indici solidi da usare quando si fa riferimento a questo oggetto da altri file</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="550"/>
@@ -4314,7 +4314,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSite.py" line="622"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>Un URL che mostra questo sito in un sito di mappatura</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="624"/>
@@ -4337,7 +4337,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSite.py" line="630"/>
       <source>The perimeter length of the projected area</source>
-      <translation type="unfinished">The perimeter length of the projected area</translation>
+      <translation>La lunghezza perimetrale dell'area proiettata</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="632"/>
@@ -4788,7 +4788,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="300"/>
       <source>The depth of the landing of these stairs</source>
-      <translation type="unfinished">The depth of the landing of these stairs</translation>
+      <translation>La profondità della pedata di queste scale</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="303"/>
@@ -4808,7 +4808,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="315"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>Il livello "assoluto" a cui porta una rampa di scale</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="318"/>
@@ -4849,7 +4849,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="382"/>
       <source>The width of the stringers</source>
-      <translation type="unfinished">The width of the stringers</translation>
+      <translation>La larghezza dei montanti</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="384"/>
@@ -5046,7 +5046,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="536"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Tipo della lastra</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="539"/>
@@ -5248,7 +5248,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1136"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>Un elenco di possibili rotazioni per il nido</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1285"/>
@@ -5448,7 +5448,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Se abilitato, il programma e il foglio di calcolo associato vengono aggiornati ogni volta che il documento viene ricalcolato</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="150"/>
@@ -6014,92 +6014,92 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation>Strumenti di Struttura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation>Strumenti per Assi</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation>Strumenti Pannello</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation>Strumenti di Materiali</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation>Strumenti di Tubo</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation>Strumenti di Armatura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation>Strumenti di Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation>Strumenti di creazione Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation>Strumenti di annotazioni Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation>Strumenti di modifica Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation>Draft Snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>Utilità</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation>&amp;Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation>Creazione</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Annotazione</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation>Modifica</translation>
     </message>
@@ -6107,12 +6107,12 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation>Strumenti di Armatura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>Creare vari tipi di armatura, tra cui a forma di U, a forma di L e staffa</translation>
     </message>
@@ -6399,7 +6399,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="122"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>Se questa griglia, quando è in modalità punto medio del bordo, deve riorientare i suoi figli lungo le normali al bordo o no</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="124"/>
@@ -6534,7 +6534,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Livello</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6660,7 +6660,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Dividi Mesh</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1410"/>
@@ -6678,7 +6678,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1435"/>
       <source>Turns selected meshes into Part Shape objects</source>
-      <translation type="unfinished">Turns selected meshes into Part Shape objects</translation>
+      <translation>Trasforma le 'Mesh' selezionate in oggetti 'Part Shapes'</translation>
     </message>
   </context>
   <context>
@@ -6699,12 +6699,12 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1496"/>
       <source>Remove Shape from Arch</source>
-      <translation type="unfinished">Remove Shape from Arch</translation>
+      <translation>Rimuovi la forma dal modulo Architettura</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1499"/>
       <source>Removes cubic shapes from Arch components</source>
-      <translation type="unfinished">Removes cubic shapes from Arch components</translation>
+      <translation>Rimuove le forme cubiche dai componenti del modulo Architettura</translation>
     </message>
   </context>
   <context>
@@ -6824,23 +6824,23 @@ Creazione Edificio interrotta.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Pescaggio</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Importa/Esporta</translation>
     </message>

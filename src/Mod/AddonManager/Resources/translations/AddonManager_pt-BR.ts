@@ -16,7 +16,7 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramo</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>Extensões FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -144,7 +144,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Ramo primário</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
@@ -199,7 +199,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>LEIA-ME URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -1585,7 +1585,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Não foi possível importar QtNetwork -- consulte Ver relatórios para detalhes. Gerenciador de Addons indisponível.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
@@ -1689,7 +1689,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Esta extensão requer pacotes do Python que não estão instalados e não podem ser instalados automaticamente. Para usar esta bancada de trabalho, você deve instalar os seguintes pacotes do Python manualmente:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
@@ -1785,7 +1785,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Consulte Ver Relatório um registro de falhas detalhado.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
@@ -1938,7 +1938,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="690"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
+      <translation>Falha ao instalar Vermin -- verifique Ver Relatório para mais detalhes.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="705"/>
@@ -2112,7 +2112,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="193"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramo</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="179"/>

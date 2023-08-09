@@ -39,7 +39,7 @@ public:
     SymbolChooser(QWidget *parent = nullptr,
                   QString startDir = QString(),
                   QString source = QString());
-    ~SymbolChooser();
+    ~SymbolChooser() override;
 
 public Q_SLOTS:
     void onOKClicked();

@@ -833,7 +833,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Entorno de trabajo</translation>
+      <translation>Banco de trabajo</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1646,7 +1646,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>Entorno de trabajo</translation>
+      <translation>Banco de trabajo</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -2047,7 +2047,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../package_list.py" line="803"/>
       <source>Workbenches</source>
-      <translation>Entornos de trabajo</translation>
+      <translation>Bancos de trabajo</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="806"/>

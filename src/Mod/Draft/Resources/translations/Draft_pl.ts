@@ -428,19 +428,19 @@ Zmień kierunek samej osi w edytorze właściwości.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
-Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w szyku zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Szyk łączy" jest nieaktywna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="247"/>
       <source>Fuse</source>
-      <translation>Scalenie</translation>
+      <translation>Scal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
+      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej, gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
@@ -564,19 +564,19 @@ Przy wartościach ujemnych kopie tworzone będą w kierunku przeciwnym.</transla
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
-Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w szyku zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Szyk łączy" jest nieaktywna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
       <source>Fuse</source>
-      <translation>Scalenie</translation>
+      <translation>Scal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
+      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej, gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
@@ -589,7 +589,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation>Szyk kołowy</translation>
+      <translation>Szyk biegunowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
@@ -665,19 +665,19 @@ Zmień kierunek samej osi w edytorze właściwości.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
-Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w szyku zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Szyk łączy" jest nieaktywna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Scalenie</translation>
+      <translation>Scal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
+      <translation>Jeśli opcja zostanie zaznaczona, utworzony zostanie "Szyk powiązań" zamiast zwykłego szyku. Szyk powiązań działa wydajniej, gdy potrzeba utworzyć wiele kopii, jednak nie można go później scalić.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
@@ -1999,7 +1999,7 @@ z Menedżera dodatków.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Zaznacz tą opcję jeśli chcesz, aby zaimportować również bloki bez nazwy (zaczynające się od *)</translation>
+      <translation>Zaznacz tę opcję, jeśli chcesz, aby zaimportować również bloki bez nazwy (zaczynające się od *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="207"/>
@@ -3110,7 +3110,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="../../DraftGui.py" line="809"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="814"/>
@@ -3164,17 +3164,17 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="../../DraftGui.py" line="965"/>
       <source>Local u0394X</source>
-      <translation>Lokalny u0394X</translation>
+      <translation>u0394X lokalnie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="966"/>
       <source>Local u0394Y</source>
-      <translation>Lokalny u0394Y</translation>
+      <translation>u0394Y lokalnie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="967"/>
       <source>Local u0394Z</source>
-      <translation>Lokalny u0394Z</translation>
+      <translation>u0394Z lokalnie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="969"/>
@@ -3249,46 +3249,46 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Rysunek roboczy</translation>
+      <translation>Rysunek Roboczy</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Konwertowanie:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Konwersja zakończona</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>Nie znaleziono konwertera LibreDWG</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>Nie znaleziono konwertera ODA</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>Nie znaleziono konwertera QCAD</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3299,7 +3299,7 @@ Aby uzyskać więcej informacji, zobacz stronę:
 https://wiki.freecad.org/Import_Export_Preferences/pl</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3368,7 +3368,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3389,7 +3389,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3411,37 +3411,37 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Brak interfejsu graficznego</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nie można wstawić nowego obiektu do przeskalowanej części</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbol nie został zaimplementowany. Użyj symbolu domyślnego.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Widoczność wyłączona, usunięto z listy: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>brak obrazu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>nazwa pliku nie istnieje w systemie lub w zasobach</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>nie można załadować tekstury</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nie ma "ViewObject.RootNode".</translation>
     </message>
@@ -3546,7 +3546,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
       <source>Dir</source>
       <comment>Dir here means Direction, not Directory. Also shorten the translation because of available space in GUI</comment>
-      <translation>Katalog</translation>
+      <translation>Kierunek</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
@@ -4260,7 +4260,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="210"/>
       <source>Some subelements could not be scaled.</source>
-      <translation>Niektóre elementy podrzędne nie mogły być skalowane.</translation>
+      <translation>Niektóre elementy podrzędne nie mogły zostać przeskalowane.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="340"/>
@@ -4432,7 +4432,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation>Aktualizacja</translation>
+      <translation>Ulepsz kształt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="79"/>
@@ -4452,7 +4452,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="126"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation>Odsunięcie krzywych Beziera nie jest obecnie obsługiwane</translation>
+      <translation>Odsunięcie krzywych Béziera nie jest obecnie obsługiwane</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
@@ -4492,7 +4492,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <location filename="../../draftmake/make_polararray.py" line="94"/>
       <source>Polar array</source>
-      <translation>Szyk kołowy</translation>
+      <translation>Szyk biegunowy</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
@@ -5187,53 +5187,53 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Spłaszcz</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Ulepszenie: Nieznana metoda siły:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Znaleziono 1 blok: rozbijanie go</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Znaleziono 1 złożenie wielu brył: rozstrzeliwuję to</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Znaleziono 1 obiekt parametryczny: łamanie jego zależności</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Znaleziono 2 obiekty: odejmowanie ich</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Znaleziono kilka ścian: dzielenie ich</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Znaleziono kilka obiektów: odejmowanie ich od pierwszego</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Znaleziono 1 powierzchnię: wyodrębnianie jej polilinii</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Znaleziono tylko polilinie: wyodrębnianie ich krawędzi</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Brak możliwości dalszego rozbijania</translation>
     </message>
@@ -5422,7 +5422,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation>&amp;Modyfikacja</translation>
+      <translation>M&amp;odyfikacja</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
@@ -5573,7 +5573,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="159"/>
       <source>Pick from/to points</source>
-      <translation>Wybierz punkty z/do</translation>
+      <translation>Wybierz punkty z / do</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
@@ -6072,7 +6072,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="69"/>
@@ -6208,7 +6208,7 @@ Szyk można zmienić w szyk ortogonalny lub kołowy poprzez zmianę jego typu.</
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="83"/>
       <source>Manage or create annotation styles</source>
-      <translation>Zarządzaj lub utwórz style adnotacji</translation>
+      <translation>Zarządzaj lub twórz style adnotacji</translation>
     </message>
   </context>
   <context>
@@ -6806,8 +6806,8 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <location filename="../../draftguitools/gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation>Tworzy klon zaznaczonych obiektów.
-Uzyskany klon może być skalowany w każdym z trzech kierunków.</translation>
+      <translation>Tworzy klona zaznaczonych obiektów.
+Powstały klon może być skalowany w każdym z trzech kierunków.</translation>
     </message>
   </context>
   <context>
@@ -6815,7 +6815,7 @@ Uzyskany klon może być skalowany w każdym z trzech kierunków.</translation>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="65"/>
       <source>Polar array</source>
-      <translation>Szyk kołowy</translation>
+      <translation>Szyk biegunowy</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="68"/>
@@ -6855,7 +6855,7 @@ prostych linii projektowych, które są rysowane w płaszczyźnie XY. Wybrane ob
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation>Aktualizacja</translation>
+      <translation>Ulepsz kształt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="61"/>
@@ -8134,7 +8134,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="138"/>
       <location filename="../../InitGui.py" line="139"/>
       <source>Draft</source>
-      <translation>Rysunek roboczy</translation>
+      <translation>Rysunek Roboczy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="181"/>

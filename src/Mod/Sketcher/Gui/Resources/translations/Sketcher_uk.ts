@@ -2166,59 +2166,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Помилка автообмеження: Ескіз не вирішується після додавання обмеження рівності.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Не вдалося розрахувати перетин кривих. Спробуйте додати обмеження збігу між вершинами кривих, які ви хочете заокруглити.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline ідентифікатор геометрії (GeoID) знаходиться поза межами.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ви просите не змінювати кратність вузлів.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Ідентифікатор геометрії (GeoId) не є кривою B-сплайн.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Індекс вузла виходить за межі. Зверніть увагу, що відповідно до нотації OCC перший вузол має індекс 1, а не нуль.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратність не може бути збільшена понад ступінь B-сплайну.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратність не може бути зменшена нижче нуля.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC нездатний зменшити кратність у межах максимального допуску.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Вузол не може мати нульову кратність.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Кратність вузла не повинна перевищувати ступінь B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Вузол не можна розмістити за межами діапазону параметрів B-сплайну.</translation>
     </message>
@@ -6128,17 +6128,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Скетч має помилкові обмеження!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Скетч має частково надлишкові обмеження!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Перенесено параболи. Перенесені файли не відкриватимуться у попередніх версіях FreeCAD!!!</translation>

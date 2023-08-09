@@ -51,7 +51,7 @@ FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer)
 
@@ -286,7 +286,7 @@ PropertySheet::~PropertySheet()
     clear();
 }
 
-App::Property *PropertySheet::Copy(void) const
+App::Property *PropertySheet::Copy() const
 {
     return new PropertySheet(*this);
 }
@@ -373,7 +373,7 @@ void PropertySheet::Save(Base::Writer &writer) const
     }
 
     writer.Stream() << writer.ind() << "<Cells Count=\"" << count
-        << "\" xlink=\"1\">" << std::endl;
+        << R"(" xlink="1">)" << std::endl;
 
     writer.incInd();
 
@@ -849,7 +849,7 @@ void PropertySheet::insertRows(int row, int count)
     boost::copy( data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, bp::_1, bp::_2));
+    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2)); //NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
             CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
@@ -919,7 +919,7 @@ void PropertySheet::removeRows(int row, int count)
     boost::copy(data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, bp::_1, bp::_2));
+    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::rowSortFunc, this, sp::_1, sp::_2));
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
             CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
@@ -1047,7 +1047,7 @@ void PropertySheet::removeColumns(int col, int count)
     boost::copy(data | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::colSortFunc, this, bp::_1, bp::_2));
+    std::sort(keys.begin(), keys.end(), std::bind(&PropertySheet::colSortFunc, this, sp::_1, sp::_2)); //NOLINT
 
     MoveCellsExpressionVisitor<PropertySheet> visitor(*this,
             CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
@@ -1414,8 +1414,10 @@ void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App:
 }
 
 void PropertySheet::onAddDep(App::DocumentObject *obj) {
-    depConnections[obj] = obj->signalChanged.connect(boost::bind(
-                &PropertySheet::slotChangedObject, this, bp::_1, bp::_2));
+    //NOLINTBEGIN
+    depConnections[obj] = obj->signalChanged.connect(std::bind(
+                &PropertySheet::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 void PropertySheet::onRemoveDep(App::DocumentObject *obj) {

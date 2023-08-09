@@ -148,7 +148,7 @@ QList<ActionLabel*> ActionBox::createItems(QList<QAction*> actions)
 
     QLayout *l = createHBoxLayout();
 
-    foreach (QAction *action, actions) {
+    Q_FOREACH (QAction *action, actions) {
         ActionLabel *act = createItem(action, l);
         if (act)
             list.append(act);

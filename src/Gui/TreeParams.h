@@ -356,7 +356,7 @@ public:
     //@{
     /// Accessor for parameter ItemBackground
     ///
-    /// Tree view item background. Only effecitve in overlay.
+    /// Tree view item background. Only effective in overlay.
     static const unsigned long & getItemBackground();
     static const unsigned long & defaultItemBackground();
     static void removeItemBackground();

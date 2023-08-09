@@ -76,7 +76,7 @@ short Offset::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset::execute(void)
+App::DocumentObjectExecReturn *Offset::execute()
 {
     App::DocumentObject* source = Source.getValue();
     if (!source)
@@ -130,7 +130,7 @@ short Offset2D::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset2D::execute(void)
+App::DocumentObjectExecReturn *Offset2D::execute()
 {
     App::DocumentObject* source = Source.getValue();
 

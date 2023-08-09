@@ -2632,12 +2632,12 @@ gemeten in de opgegeven richting</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Orientatie selectie</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
@@ -2696,23 +2696,23 @@ gemeten in de opgegeven richting</translation>
       <translation>Verwijder rand</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Pijp parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Invoerfout</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Geen actief lichaam</translation>
     </message>
@@ -2755,12 +2755,12 @@ gemeten in de opgegeven richting</translation>
       <translation>Lijst kan worden gesorteerd door te slepen</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Selectie Transformatie</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
@@ -3794,7 +3794,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="139"/>
+      <location filename="../../Utils.cpp" line="138"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3803,32 +3803,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebruik dan de overdrachtsfunctie in PartDesign om hen in een lichaam te zetten.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="187"/>
+      <location filename="../../Utils.cpp" line="186"/>
       <source>Active Body Required</source>
       <translation>Actief lichaam benodigd</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="188"/>
+      <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Om een nieuw PartDesign object te maken moet er een actief lichaam object aanwezig zijn in het document. Maak een lichaam actief (dubbel klik) of maak een nieuw lichaam.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="223"/>
+      <location filename="../../Utils.cpp" line="222"/>
       <source>Feature is not in a body</source>
       <translation>Functie is niet in een lichaam</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="224"/>
+      <location filename="../../Utils.cpp" line="223"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Om deze functie te gebruiken moet deze tot een onderdeel object behoren in het document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="256"/>
+      <location filename="../../Utils.cpp" line="255"/>
       <source>Feature is not in a part</source>
       <translation>Functie is niet in een onderdeel</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="257"/>
+      <location filename="../../Utils.cpp" line="256"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Om deze functie te gebruiken moet deze tot een onderdeel object behoren in het document.</translation>
     </message>
@@ -4220,7 +4220,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 inch</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
@@ -4716,7 +4716,7 @@ boven de 90: groter gat straal aan de onderkant</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>3D aan/uit</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -5085,7 +5085,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="129"/>
       <location filename="../../../App/FeatureHelix.cpp" line="143"/>
       <source>Error: height too small!</source>
-      <translation type="unfinished">Error: height too small!</translation>
+      <translation>Fout: hoogte te klein!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="135"/>
@@ -5097,7 +5097,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="151"/>
       <source>Error: turns too small!</source>
-      <translation type="unfinished">Error: turns too small!</translation>
+      <translation>Fout: draai te klein!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="155"/>
@@ -5529,38 +5529,38 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
       <source>Radius of cylinder too small</source>
-      <translation type="unfinished">Radius of cylinder too small</translation>
+      <translation>Straal van cilinder te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
       <source>Height of cylinder too small</source>
-      <translation type="unfinished">Height of cylinder too small</translation>
+      <translation>Hoogte van cilinder te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="253"/>
       <source>Rotation angle of cylinder too small</source>
-      <translation type="unfinished">Rotation angle of cylinder too small</translation>
+      <translation>Rotatiehoek van cilinder te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="306"/>
       <source>Radius of sphere too small</source>
-      <translation type="unfinished">Radius of sphere too small</translation>
+      <translation>Straal van de bol te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
       <source>Radius of cone cannot be negative</source>
-      <translation type="unfinished">Radius of cone cannot be negative</translation>
+      <translation>Straal van kegel mag niet negatief zijn</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="359"/>
       <source>The radii for cones must not be equal</source>
-      <translation type="unfinished">The radii for cones must not be equal</translation>
+      <translation>De stralen van kegels mogen niet gelijk zijn</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="361"/>
       <source>Height of cone too small</source>
-      <translation type="unfinished">Height of cone too small</translation>
+      <translation>Hoogte van kegel te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
@@ -5587,7 +5587,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
       <source>Height of prism is too small</source>
-      <translation type="unfinished">Height of prism is too small</translation>
+      <translation>Hoogte van het prisma is te klein</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="652"/>
@@ -5647,7 +5647,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
       <source>Transformation failed</source>
-      <translation type="unfinished">Transformation failed</translation>
+      <translation>Transformatie mislukt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>

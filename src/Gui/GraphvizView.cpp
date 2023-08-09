@@ -49,7 +49,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -253,10 +253,12 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
     connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
     connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
 
+    //NOLINTBEGIN
     // Connect signal from document
-    recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
-    undoConnection = _doc.signalUndo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
-    redoConnection = _doc.signalRedo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
+    recomputeConnection = _doc.signalRecomputed.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    undoConnection = _doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    redoConnection = _doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    //NOLINTEND
 
     updateSvgItem(_doc);
 }

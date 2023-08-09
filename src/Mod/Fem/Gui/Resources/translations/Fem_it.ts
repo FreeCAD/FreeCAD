@@ -1138,7 +1138,7 @@ Specificare un altro file, per favore.</translation>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="118"/>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
-      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
+      <translation>FEM Elmer: Non adatto per multithreading</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="119"/>
@@ -1342,7 +1342,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Risolutore predefinito</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -2880,7 +2880,7 @@ Specificare un altro file, per favore.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation type="unfinished">Contracted Area</translation>
+      <translation>Area Contrattata</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -3043,7 +3043,7 @@ Specificare un altro file, per favore.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="43"/>
       <source>Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</source>
-      <translation type="unfinished">Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
+      <translation>Frequenza di rotazione f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="74"/>
@@ -3307,7 +3307,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Parametro spessore guscio</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
@@ -3415,7 +3415,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation type="unfinished">Current density:</translation>
+      <translation>Densità attuale:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -4040,7 +4040,7 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
     <message>
       <location filename="../ui/SolverCalculix.ui" line="84"/>
       <source>Thermo mechanical</source>
-      <translation type="unfinished">Thermo mechanical</translation>
+      <translation>Termo meccanico</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="91"/>
@@ -4415,7 +4415,7 @@ per il risolutore Elmer</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formula</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
@@ -5101,7 +5101,7 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Superficie con bordi</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5180,7 +5180,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Superficie con bordi</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5382,117 +5382,119 @@ used for the Elmer solver</translation>
       <translation>&amp;Vincoli Elettrostatici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>Fluid Constraints</source>
       <translation>Vincoli dei Fluidi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Fluid Constraints</source>
       <translation>&amp;Vincoli dei Fluidi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
-      <source>Electromagnetic Constraints</source>
-      <translation type="unfinished">Electromagnetic Constraints</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>&amp;Electromagnetic Constraints</source>
-      <translation type="unfinished">&amp;Electromagnetic Constraints</translation>
-    </message>
-    <message>
+      <location filename="../../Workbench.cpp" line="51"/>
       <location filename="../../Workbench.cpp" line="55"/>
+      <source>Electromagnetic Constraints</source>
+      <translation>Vincoli Elettromagnetici</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="56"/>
+      <source>&amp;Electromagnetic Constraints</source>
+      <translation>&amp;Vincoli Elettromagnetici</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>Geometrical Constraints</source>
       <translation>Vincoli Geometrici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Geometrical Constraints</source>
       <translation>&amp;Vincoli Geometrici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Mechanical Constraints</source>
       <translation>Vincoli Meccanici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Mechanical Constraints</source>
       <translation>&amp;Vincoli Meccanici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Thermal Constraints</source>
       <translation>Vincoli Termici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>&amp;Thermal Constraints</source>
       <translation>&amp;Vincoli Termici</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Constraints without solver</source>
       <translation>Vincoli senza risolutore</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Constraints without solver</source>
       <translation>&amp;Vincoli senza risolutore</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Overwrite Constants</source>
       <translation>Sovrascrivi Costanti</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>&amp;Overwrite Constants</source>
       <translation>S&amp;Ovrascrivi costanti</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="66"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="67"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>M&amp;esh</source>
       <translation>M&amp;esh</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="69"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Solve</source>
       <translation>Risolvi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="70"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>&amp;Solve</source>
       <translation>Ri&amp;solvi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Results</source>
       <translation>Risultati</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="73"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Results</source>
       <translation>&amp;Risultati</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="76"/>
       <source>Filter functions</source>
       <translation>Funzioni di filtro</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>&amp;Filter functions</source>
       <translation>&amp;Funzioni di filtro</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="79"/>
       <source>Utilities</source>
       <translation>Utilità</translation>
     </message>
@@ -5536,7 +5538,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="98"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Piano di ritaglio sulla faccia</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="102"/>
@@ -5623,12 +5625,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Vincolo velocità di flusso iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="288"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Crea un vincolo FEM per la velocità di flusso iniziale</translation>
     </message>
   </context>
   <context>
@@ -5636,12 +5638,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Constraint initial pressure</source>
-      <translation type="unfinished">Constraint initial pressure</translation>
+      <translation>Vincolo pressione iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates a FEM constraint initial pressure</source>
-      <translation type="unfinished">Creates a FEM constraint initial pressure</translation>
+      <translation>Crea un vincolo FEM pressione iniziale</translation>
     </message>
   </context>
   <context>
@@ -5701,12 +5703,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="403"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Sezione trasversale trave</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crea una sezione trasversale di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -5732,7 +5734,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="441"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Crea una rotazione di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -5740,12 +5742,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="505"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Equazione elettrostatica</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="509"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Crea un'equazione FEM per l'elettrostatica</translation>
     </message>
   </context>
   <context>
@@ -5759,8 +5761,8 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for
- elasticity (stress)</translation>
+      <translation>Crea un'equazione FEM per l'elasticità
+ (stress)</translation>
     </message>
   </context>
   <context>
@@ -5894,12 +5896,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="772"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Converti mesh FEM in mesh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="776"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converte la superficie di una mesh FEM in una mesh</translation>
     </message>
   </context>
   <context>
@@ -5981,12 +5983,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Regione di mesh FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Crea una regione di mesh FEM</translation>
     </message>
   </context>
   <context>
@@ -6012,7 +6014,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimina tutti i risultati dall'analisi attiva</translation>
     </message>
   </context>
   <context>
@@ -6462,14 +6464,14 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="454"/>
       <source>Deformation equation</source>
-      <translation type="unfinished">Deformation equation</translation>
+      <translation>Equazione deformazione</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for
- deformation (nonlinear elasticity)</translation>
+      <translation>Crea un'equazione FEM per la deformazione
+ (elasticità non lineare)</translation>
     </message>
   </context>
   <context>

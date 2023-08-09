@@ -50,7 +50,7 @@ public:
     {
     public:
         explicit ParameterObserver(NotificationArea* notificationarea);
-        ~ParameterObserver();
+        ~ParameterObserver() override;
 
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
@@ -61,7 +61,7 @@ public:
     };
 
     NotificationArea(QWidget* parent = nullptr);
-    ~NotificationArea();
+    ~NotificationArea() override;
 
     void pushNotification(const QString& notifiername, const QString& message,
                           Base::LogStyle level);

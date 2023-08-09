@@ -86,22 +86,22 @@ public:
     //@}
     short mustExecute() const override;
 
-    typedef struct {
+    using ThreadDescription = struct {
         const char * designation;
         double diameter;
         double pitch;
         double CoreHole;
-    } ThreadDescription;
+    };
     static const ThreadDescription threadDescription[][171];
 
     static const double metricHoleDiameters[36][4];
 
-    typedef struct {
+    using UTSClearanceDefinition = struct {
         std::string designation;
         double close;
         double normal;
         double loose;
-    } UTSClearanceDefinition;
+    };
     static const UTSClearanceDefinition UTSHoleDiameters[22];
 
     void Restore(Base::XMLReader & reader) override;

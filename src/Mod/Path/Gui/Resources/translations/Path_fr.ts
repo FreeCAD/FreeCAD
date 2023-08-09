@@ -490,7 +490,7 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="272"/>
@@ -754,7 +754,7 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
@@ -3332,7 +3332,7 @@ Généralement, il est recommandé d'utiliser des chemins relatifs en raison de 
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
@@ -4179,7 +4179,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1298"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1325"/>
@@ -4309,14 +4309,13 @@ For example:
     'Metric, Small Parts &amp; CNC'
     'US Customary'
     'Imperial Decimal'</source>
-      <translation>Le système d'unité sélectionné : 
-     "{}"
+      <translation>Le système d'unité sélectionné : "{}"
 n'utilise pas les "minutes" pour les valeurs de vitesse. 
  
-Les machines CNC exigent que la vitesse d'avance soit 
-exprimée en unité/minute. Pour garantir un G-code correct : 
-sélectionnez un système basé sur les minutes dans les 
-préférences. Par exemple :
+Les CNC exigent que la vitesse d'avance soit exprimée en unité/minute.
+Pour garantir un G-code correct, sélectionnez un système basé sur les
+minutes dans les préférences.
+Par exemple :
     "Métriques, petites pièces &amp; CNC"
     "Système US"
     "Décimales impériales"</translation>
@@ -4495,16 +4494,16 @@ préférences. Par exemple :
     <message>
       <location filename="../../../Path/Op/Gui/Profile.py" line="165"/>
       <source>Profile</source>
-      <translation>Contour</translation>
+      <translation>Contournage</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Profile.py" line="168"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation>Profiler l'intégralité du modèle, de la face ou des faces sélectionnée(s) ou de l'arête ou des arêtes sélectionnée(s)</translation>
+      <translation>Opération de contour sur l'intégralité du modèle, d'une/des face(s) sélectionnée(s) ou d'une/des arête(s) sélectionnée(s)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <location filename="../../../Path/Post/Command.py" line="566"/>
+      <location filename="../../../Path/Post/Command.py" line="561"/>
       <source>Choose a Path Job</source>
       <translation>Choisir une tâche de trajectoire</translation>
     </message>
@@ -5282,7 +5281,7 @@ préférences. Par exemple :
       <translation>Liste des fonctions désactivées</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="54"/>
+      <location filename="../../../Path/Op/Custom.py" line="104"/>
       <source>The G-code to be inserted</source>
       <translation>Le gcode à insérer</translation>
     </message>
@@ -6885,7 +6884,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Base.py" line="380"/>
       <source>Mist</source>
-      <translation>Brouillard</translation>
+      <translation>Pulvérisation</translation>
     </message>
   </context>
   <context>
@@ -7018,17 +7017,17 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <translation>Coupe d’onglet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="382"/>
+      <location filename="../../../Path/Op/Profile.py" line="385"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation>Le ou les bords sélectionnés sont inaccessibles. S'il y en a plusieurs, réorganiser la sélection pourrait fonctionner.</translation>
+      <translation>Le(s) bord(s) sélectionné(s) sont inaccessible(s). S'il y en a plusieurs, réorganiser la sélection pourrait fonctionner.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="491"/>
       <source>Unable to create path for face(s).</source>
       <translation>Impossible de créer le parcours pour la(les) face(s).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="637"/>
+      <location filename="../../../Path/Op/Profile.py" line="640"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Vérifier la sélection des bords et les exigences pour la profondeur finale du ou des bord(s) ouvert(s) à profiler.</translation>
     </message>
@@ -8208,12 +8207,12 @@ Abandon de la création de l'opération</translation>
   <context>
     <name>Path_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="477"/>
+      <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
       <translation>Post-traitement</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="479"/>
+      <location filename="../../../Path/Post/Command.py" line="474"/>
       <source>Post Process the selected Job</source>
       <translation>Post-traitement de la tâche sélectionnée</translation>
     </message>
@@ -8406,6 +8405,29 @@ Abandon de la création de l'opération</translation>
       <location filename="../../../Path/Base/Util.py" line="58"/>
       <source>%s has no property %s (%s)</source>
       <translation>%s n'a pas de propriété %s (%s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="63"/>
+      <source>Text</source>
+      <translation>Texte</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="64"/>
+      <source>File</source>
+      <translation>Fichier</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="178"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>Le fichier personnalisé %s est introuvable.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="188"/>
+      <source>Invalid Gcode line: %s</source>
+      <translation>Ligne de G-gcode invalide : %s</translation>
     </message>
   </context>
 </TS>

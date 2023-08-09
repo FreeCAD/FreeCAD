@@ -402,7 +402,11 @@ def blocking_get(url: str, method=None) -> bytes:
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-        p = p.data()
+        if p:
+            try:
+                p = p.data()
+            except AttributeError:
+                pass
     elif requests and method is None or method == "requests":
         response = requests.get(url)
         if response.status_code == 200:

@@ -594,7 +594,7 @@ void Helix::proposeParameters(bool force)
 
         Pitch.setValue(pitch);
         Height.setValue(pitch * 3.0);
-        HasBeenEdited.setValue(1);
+        HasBeenEdited.setValue(true);
     }
 }
 

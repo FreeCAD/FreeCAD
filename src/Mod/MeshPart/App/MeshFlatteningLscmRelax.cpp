@@ -198,10 +198,10 @@ void LscmRelax::relax(double weight)
             for (int k=0; k < 3; k++)
             {
                 col_pos = this->triangles(k, i);
-                K_g_triplets.push_back(trip(row_pos * 2,     col_pos * 2,        K_m(j * 2,      k * 2)));
-                K_g_triplets.push_back(trip(row_pos * 2 + 1, col_pos * 2,        K_m(j * 2 + 1,  k * 2)));
-                K_g_triplets.push_back(trip(row_pos * 2 + 1, col_pos * 2 + 1,    K_m(j * 2 + 1,  k * 2 + 1)));
-                K_g_triplets.push_back(trip(row_pos * 2,     col_pos * 2 + 1,    K_m(j * 2,      k * 2 + 1)));
+                K_g_triplets.emplace_back(trip(row_pos * 2,     col_pos * 2,        K_m(j * 2,      k * 2)));
+                K_g_triplets.emplace_back(trip(row_pos * 2 + 1, col_pos * 2,        K_m(j * 2 + 1,  k * 2)));
+                K_g_triplets.emplace_back(trip(row_pos * 2 + 1, col_pos * 2 + 1,    K_m(j * 2 + 1,  k * 2 + 1)));
+                K_g_triplets.emplace_back(trip(row_pos * 2,     col_pos * 2 + 1,    K_m(j * 2,      k * 2 + 1)));
                 // we don't have to fill all because the matrix is symmetric.
             }
         }
@@ -253,16 +253,16 @@ void LscmRelax::relax(double weight)
     for (long i=0; i < this->flat_vertices.cols() ; i++)
     {
         // fixing total ux
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
+        K_g_triplets.emplace_back(trip(i * 2, this->flat_vertices.cols() * 2, 1));
+        K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2, i * 2, 1));
         // fixing total uy
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
+        K_g_triplets.emplace_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 1, 1));
+        K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2 + 1, i * 2 + 1, 1));
         // fixing ux*y-uy*x
-        K_g_triplets.push_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
-        K_g_triplets.push_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
-        K_g_triplets.push_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
+        K_g_triplets.emplace_back(trip(i * 2, this->flat_vertices.cols() * 2 + 2, - this->flat_vertices(1, i)));
+        K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2, - this->flat_vertices(1, i)));
+        K_g_triplets.emplace_back(trip(i * 2 + 1, this->flat_vertices.cols() * 2 + 2, this->flat_vertices(0, i)));
+        K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
     }
 
     // project out the nullspace solution:
@@ -334,7 +334,7 @@ void LscmRelax::area_relax(double weight)
 
 	for(auto col: range_6)
 	{
-	    K_g_triplets.push_back(trip(i, indices[col], (double) B[col]));
+        K_g_triplets.emplace_back(trip(i, indices[col], (double) B[col]));
 	}
     }
     K_g_lsq.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
@@ -403,7 +403,7 @@ void LscmRelax::edge_relax(double weight)
 	{
 	    for (auto col: range_4)
 	    {
-		K_g_triplets.push_back(trip(indices[row], indices[col], (double) K(row, col)));
+        K_g_triplets.emplace_back(trip(indices[row], indices[col], (double) K(row, col)));
 	    }
 	    rhs(indices[row]) += rhs_m[row];
 	}
@@ -436,17 +436,17 @@ void LscmRelax::lscm()
         y31 = this->q_l_g(i, 2);
         x32 = x31 - x21;
 
-        triple_list.push_back(trip(2 * i, this->new_order[this->triangles(0, i)] * 2, x32));
-        triple_list.push_back(trip(2 * i, this->new_order[this->triangles(0, i)] * 2 + 1, -y31));
-        triple_list.push_back(trip(2 * i, this->new_order[this->triangles(1, i)] * 2, -x31));
-        triple_list.push_back(trip(2 * i, this->new_order[this->triangles(1, i)] * 2 + 1, y31));
-        triple_list.push_back(trip(2 * i, this->new_order[this->triangles(2, i)] * 2, x21));
+        triple_list.emplace_back(trip(2 * i, this->new_order[this->triangles(0, i)] * 2, x32));
+        triple_list.emplace_back(trip(2 * i, this->new_order[this->triangles(0, i)] * 2 + 1, -y31));
+        triple_list.emplace_back(trip(2 * i, this->new_order[this->triangles(1, i)] * 2, -x31));
+        triple_list.emplace_back(trip(2 * i, this->new_order[this->triangles(1, i)] * 2 + 1, y31));
+        triple_list.emplace_back(trip(2 * i, this->new_order[this->triangles(2, i)] * 2, x21));
 
-        triple_list.push_back(trip(2 * i + 1, this->new_order[this->triangles(0, i)] * 2, y31));
-        triple_list.push_back(trip(2 * i + 1, this->new_order[this->triangles(0, i)] * 2 + 1, x32));
-        triple_list.push_back(trip(2 * i + 1, this->new_order[this->triangles(1, i)] * 2, -y31));
-        triple_list.push_back(trip(2 * i + 1, this->new_order[this->triangles(1, i)] * 2 + 1, -x31));
-        triple_list.push_back(trip(2 * i + 1, this->new_order[this->triangles(2, i)] * 2 + 1, x21));
+        triple_list.emplace_back(trip(2 * i + 1, this->new_order[this->triangles(0, i)] * 2, y31));
+        triple_list.emplace_back(trip(2 * i + 1, this->new_order[this->triangles(0, i)] * 2 + 1, x32));
+        triple_list.emplace_back(trip(2 * i + 1, this->new_order[this->triangles(1, i)] * 2, -y31));
+        triple_list.emplace_back(trip(2 * i + 1, this->new_order[this->triangles(1, i)] * 2 + 1, -x31));
+        triple_list.emplace_back(trip(2 * i + 1, this->new_order[this->triangles(2, i)] * 2 + 1, x21));
 
     }
     // 2. divide the triplets in matrix(unknown part) and rhs(known part) and reset the position
@@ -644,7 +644,7 @@ void LscmRelax::rotate_by_min_bound_area()
     double phi;
     double min_phi = 0;
     double  min_area = 0;
-    bool x_dominant = 0;
+    bool x_dominant = false;
     // rotate vector by 90 degree and find min area
     for (int i = 0; i < n + 1; i++ )
     {

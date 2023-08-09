@@ -2251,7 +2251,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="173"/>
       <source>Alt mod</source>
-      <translation>Mode Alt</translation>
+      <translation>Modification avec la touche Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="193"/>
@@ -2291,7 +2291,7 @@ Ceci peut échouer avec les modèles ultérieurs à DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="300"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Si coché, la grille s'affichera toujours lorsque l'établi Draft est actif. Sinon, uniquement en effectuant une commande</translation>
+      <translation>Si coché, la grille de Draft s'affichera toujours lorsque l'atelier Draft sera actif. Sinon, uniquement en effectuant une commande</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="303"/>
@@ -3221,7 +3221,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="1842"/>
       <source>Remove</source>
-      <translation>Enlever</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1843"/>
@@ -3236,46 +3236,46 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Tirant d'eau</translation>
+      <translation>Draft</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Conversion en cours :</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Conversion réussie</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>Convertisseur LibreDWG introuvable</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>Convertisseur ODA introuvable</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>Convertisseur QCAD introuvable</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3286,7 +3286,7 @@ Pour plus d'informations, voir :
 https://wiki.freecad.org/Import_Export_Preferences/fr</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3352,7 +3352,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3373,7 +3373,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3395,37 +3395,37 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, choisissez "Oui".
       <translation>Aucune interface graphique</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbole non implémenté. Utilisation d'un symbole par défaut.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Visibilité désactivée ; retirée de la liste : </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>l'image est Nulle</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>le nom du fichier n'existe ni dans le système ni dans le fichier de ressource</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>impossible de charger la texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>N'a pas de "ViewObject.RootNode".</translation>
     </message>
@@ -5171,53 +5171,53 @@ L'angle final sera l'angle de base plus cette quantité.</translation>
       <translation>Applatir</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Mettre à niveau : méthode de force inconnue :</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Trouvé 1 bloc : l'exploser</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Trouvé 1 composé multi-solides: l'exploser</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Trouvé 1 objet paramétrique : casser ses dépendances</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Trouvé 2 objets : les soustraire</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Trouvé plusieurs faces : les séparer</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Trouvé plusieurs objets : les soustraire du premier</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Trouvé 1 face : extraction de ses polylignes</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Trouvé seulement des polylignes : extraction de leurs arêtes</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Plus de rétrogradation possible</translation>
     </message>
@@ -6041,7 +6041,7 @@ Cependant, une seule esquisse avec des traces déconnectées sera convertie en p
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Déplace les objets sélectionnés d'un point de base vers un autre point.
+      <translation>Déplacer les objets sélectionnés d'un point de base vers un autre point.
 Si l'option "copie" est active, elle créera des copies déplacées.
 Ctrl pour aimanter, Maj pour contraindre.</translation>
     </message>
@@ -6230,7 +6230,8 @@ Ctrl pour aimanter, Maj pour contraindre. Maintenir Alt et cliquer pour créer u
       <location filename="../../draftguitools/gui_groups.py" line="76"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation>Déplace les objets sélectionnés vers un groupe existant, ou les supprime de n'importe quel groupe.
+      <translation>Déplacer les objets sélectionnés vers un groupe existant,
+ou les supprimer de n'importe quel groupe.
 Créer d'abord un groupe pour utiliser cet outil.</translation>
     </message>
   </context>
@@ -6519,7 +6520,7 @@ Ctrl pour aimanter, Alt pour sélectionner des objets tangents.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation>Crée un objet Surfaces liées à partir des faces sélectionnées.</translation>
+      <translation>Créer une surface liée à partir des faces sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -8112,7 +8113,7 @@ au-delà de la ligne de la dimension</translation>
       <location filename="../../InitGui.py" line="138"/>
       <location filename="../../InitGui.py" line="139"/>
       <source>Draft</source>
-      <translation>Tirant d'eau</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="181"/>

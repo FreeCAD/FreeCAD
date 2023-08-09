@@ -38,7 +38,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="782"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="783"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="857"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="858"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="970"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="971"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="775"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="776"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../Command.cpp" line="437"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="679"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="680"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="528"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="529"/>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Insertar objeto Arch Workbench</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Insertar una vista de un plano de sección desde el banco de trabajo Arch</translation>
     </message>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../../Command.cpp" line="1035"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1036"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="568"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="569"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="1099"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1100"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1136"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1137"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1221"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../Command.cpp" line="621"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="622"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1126"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1127"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="389"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="390"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="204"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="205"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1244"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1245"/>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="748"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="258"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="259"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="102"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="103"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1344"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1345"/>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>File</source>
       <translation>Archivo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Export Page as DXF</source>
       <translation>Exportar página como DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Save DXF file</source>
       <translation>Guardar archivo Dxf</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>File</source>
       <translation>Archivo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1537"/>
       <source>Export Page as SVG</source>
       <translation>Exportar página como SVG</translation>
     </message>
@@ -390,7 +390,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1674"/>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1776"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1777"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1079"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1080"/>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="901"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="902"/>
@@ -464,7 +464,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1043"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1044"/>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="968"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="969"/>
@@ -504,7 +504,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2049"/>
@@ -522,7 +522,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="748"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="749"/>
@@ -540,7 +540,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="226"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="227"/>
@@ -560,7 +560,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="260"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="261"/>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1426"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1427"/>
@@ -596,7 +596,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1787"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1788"/>
@@ -614,7 +614,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1233"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1234"/>
@@ -634,7 +634,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1946"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1947"/>
@@ -654,7 +654,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1579"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1580"/>
@@ -674,7 +674,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2148"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2149"/>
@@ -692,7 +692,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1392"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1393"/>
@@ -712,7 +712,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1751"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1752"/>
@@ -732,7 +732,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1300"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1301"/>
@@ -752,7 +752,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2015"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2016"/>
@@ -772,7 +772,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1652"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1653"/>
@@ -792,7 +792,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2226"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2227"/>
@@ -810,7 +810,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="428"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="429"/>
@@ -830,7 +830,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1063"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1064"/>
@@ -848,7 +848,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="901"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
@@ -868,7 +868,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="964"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="965"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1028"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1029"/>
@@ -912,7 +912,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1603"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1604"/>
@@ -932,7 +932,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="152"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="153"/>
@@ -952,7 +952,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="396"/>
@@ -972,7 +972,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="461"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="462"/>
@@ -990,7 +990,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="128"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="129"/>
@@ -1010,7 +1010,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="253"/>
@@ -1028,7 +1028,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="161"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="162"/>
@@ -1048,7 +1048,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1300"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1301"/>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1231"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1232"/>
@@ -1086,7 +1086,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1265"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1266"/>
@@ -1106,7 +1106,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1408"/>
@@ -1124,7 +1124,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="752"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="753"/>
@@ -1142,7 +1142,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="588"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="589"/>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="717"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="718"/>
@@ -1182,7 +1182,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="650"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="651"/>
@@ -1202,7 +1202,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1451"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1452"/>
@@ -1220,7 +1220,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="219"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="220"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="714"/>
@@ -1256,7 +1256,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1638"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1639"/>
@@ -1276,7 +1276,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="538"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="539"/>
@@ -1296,7 +1296,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="434"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="435"/>
@@ -1316,7 +1316,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="486"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="487"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="382"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="383"/>
@@ -1356,7 +1356,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="573"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="574"/>
@@ -1374,7 +1374,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="808"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="809"/>
@@ -1392,7 +1392,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="952"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="953"/>
@@ -1415,7 +1415,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="671"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="672"/>
@@ -1428,7 +1428,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="169"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
@@ -1441,7 +1441,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="71"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="72"/>
@@ -1454,7 +1454,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="483"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="484"/>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1050"/>
@@ -1480,7 +1480,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="238"/>
@@ -1509,7 +1509,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1257"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1258"/>
@@ -1522,7 +1522,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="90"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="91"/>
@@ -1535,7 +1535,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="384"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="385"/>
@@ -1548,7 +1548,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="873"/>
@@ -1561,7 +1561,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="450"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="451"/>
@@ -1574,7 +1574,7 @@
     <message>
       <location filename="../../Command.cpp" line="96"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="97"/>
@@ -1587,7 +1587,7 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
@@ -1601,8 +1601,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
-      <source>Template (*.svg *.dxf)</source>
-      <translation>Plantilla (*.svg *.dxf)</translation>
+      <source>Template (*.svg)</source>
+      <translation>Plantilla (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1610,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -1621,12 +1621,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Project shape...</source>
       <translation>Formas del proyecto...</translation>
     </message>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="../../Command.cpp" line="796"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>
@@ -1654,7 +1654,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="490"/>
@@ -1667,7 +1667,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="132"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="133"/>
@@ -1680,7 +1680,7 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
@@ -1693,7 +1693,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="152"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="153"/>
@@ -1706,7 +1706,7 @@
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="468"/>
@@ -1729,7 +1729,7 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
@@ -1742,7 +1742,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1323"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1324"/>
@@ -1753,17 +1753,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1474"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1475"/>
       <source>Insert Spreadsheet View</source>
       <translation>Insertar Vista de Hoja de Cálculo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1476"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Insertar Vista a una hoja de cálculo</translation>
     </message>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
@@ -1786,7 +1786,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="357"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="358"/>
@@ -1799,7 +1799,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
@@ -1832,7 +1832,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
@@ -1845,7 +1845,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
@@ -1858,7 +1858,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1452"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1453"/>
@@ -1876,7 +1876,7 @@
     <message>
       <location filename="../../Command.cpp" line="1293"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1294"/>
@@ -1894,7 +1894,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="289"/>
@@ -1908,7 +1908,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="582"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="583"/>
@@ -1921,7 +1921,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1162"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1163"/>
@@ -1934,7 +1934,7 @@
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="298"/>
@@ -1952,7 +1952,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1388"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1389"/>
@@ -1999,23 +1999,23 @@
       <translation>Crear Símbolo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Create DraftView</source>
       <translation>Crear Vista Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1442"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>Create ArchView</source>
       <translation>Crear vista de Arch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Create spreadsheet view</source>
       <translation>Crear vista de hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../MDIViewPage.cpp" line="728"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Save page to dxf</source>
       <translation>Guardar página como dxf</translation>
     </message>
@@ -2086,7 +2086,7 @@
       <translation>Crear Vista Activa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="332"/>
+      <location filename="../../TaskCenterLine.cpp" line="397"/>
       <source>Create CenterLine</source>
       <translation>Crear Línea Central</translation>
     </message>
@@ -2162,9 +2162,19 @@
       <translation>Añadir vértice cosmético</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="105"/>
+      <source>TechDraw Insert Prefix</source>
+      <translation type="unfinished">TechDraw Insert Prefix</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
       <source>Insert Prefix</source>
       <translation>Insertar prefijo</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <source>TechDraw Remove Prefix</source>
+      <translation type="unfinished">TechDraw Remove Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="195"/>
@@ -2252,9 +2262,19 @@
       <translation>Crear cot long arc</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="97"/>
+      <source>TechDraw Hole Circle</source>
+      <translation>Círculo de Agujero TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="117"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Líneas centrales del círculo de perno</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="186"/>
+      <source>TechDraw Circle Centerlines</source>
+      <translation>Líneas centrales de círculo en TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="188"/>
@@ -2262,9 +2282,19 @@
       <translation>Líneas centrales del círculo</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="363"/>
+      <source>TechDraw Thread Hole Side</source>
+      <translation>Dibuja lateral del agujero de la rosca</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Lado de agujero roscado cosmético</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="415"/>
+      <source>TechDraw Thread Bolt Side</source>
+      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2272,9 +2302,19 @@
       <translation>Lado de perno roscado cosmético</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="467"/>
+      <source>TechDraw Thread Hole Bottom</source>
+      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Planta de agujero roscado cosmética</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="519"/>
+      <source>TechDraw Thread Bolt Bottom</source>
+      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2282,9 +2322,19 @@
       <translation>Planta de perno roscado cosmética</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="765"/>
+      <source>TechDraw Change Line Attributes</source>
+      <translation>Cambiar atributos de línea en TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="767"/>
       <source>Change Line Attributes</source>
       <translation>Cambiar atributos de línea</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="825"/>
+      <source>TechDraw Cosmetic Intersection Vertex(es)</source>
+      <translation>Añadir vértice(s) de intersección estético(s) en TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="827"/>
@@ -2292,9 +2342,19 @@
       <translation>Vértice(s) de intersección cosmético(s)</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="872"/>
+      <source>TechDraw Cosmetic Arc</source>
+      <translation>Arco estético en TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="874"/>
       <source>Cosmetic Arc</source>
       <translation>Arco cosmético</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="937"/>
+      <source>TechDraw Cosmetic Circle</source>
+      <translation>Círculo estético en TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="939"/>
@@ -2302,9 +2362,19 @@
       <translation>Círculo cosmético</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <source>TechDraw Cosmetic Circle 3 Points</source>
+      <translation>Añadir círculo estético con 3 puntos en TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1001"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Círculo cosmético 3 puntos</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1187"/>
+      <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
+      <translation>Línea estética paralela/perpendicular en TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1189"/>
@@ -2312,14 +2382,29 @@
       <translation>Línea cosmética paralela/perpendicular</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <source>TechDraw Lock/Unlock View</source>
+      <translation>bloquear/desbloquear vista en TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
       <source>Lock/Unlock View</source>
       <translation>Bloquear/Desbloquear vista</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1527"/>
+      <source>TechDraw Extend/Shorten Line</source>
+      <translation>extender/acortar línea en TechDraw</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1529"/>
       <source>Extend/Shorten Line</source>
       <translation>Extender / Acortar línea</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
+      <source>TechDraw calculate selected area</source>
+      <translation>TechDraw calcular el área seleccionada</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1854"/>
@@ -2627,9 +2712,9 @@
       <location filename="../../Command.cpp" line="1233"/>
       <location filename="../../Command.cpp" line="1252"/>
       <location filename="../../Command.cpp" line="1365"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1435"/>
-      <location filename="../../Command.cpp" line="1478"/>
+      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -2765,37 +2850,37 @@
       <translation>Seleccione al menos un objeto.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Por favor, seleccione solamente 1 sección Arch.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1446"/>
       <source>No Arch Sections in selection.</source>
       <translation>No existen secciones Arch en esta selección.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Seleccione exactamente un objeto de hoja de cálculo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1561"/>
       <source>No Drawing View</source>
       <translation>Sin vistas de dibujo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Vista del dibujo abierta antes de intentar exportar a SVG.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Can not export selection</source>
       <translation>No se puede exportar selección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>La página contiene DrawViewArch que no será exportada. ¿Desea continuar?</translation>
     </message>
@@ -3285,50 +3370,50 @@
       <translation>No hay páginas de dibujo en el documento.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="272"/>
+      <location filename="../../MDIViewPage.cpp" line="280"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="273"/>
-      <location filename="../../MDIViewPage.cpp" line="675"/>
+      <location filename="../../MDIViewPage.cpp" line="281"/>
+      <location filename="../../MDIViewPage.cpp" line="687"/>
       <source>All Files (*.*)</source>
       <translation>Todos los archivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="275"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
       <source>Export Page As PDF</source>
       <translation>Exportar página como PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="566"/>
+      <location filename="../../MDIViewPage.cpp" line="578"/>
       <source>Document Name: </source>
       <translation>Nombre del documento: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="674"/>
+      <location filename="../../MDIViewPage.cpp" line="686"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="677"/>
+      <location filename="../../MDIViewPage.cpp" line="689"/>
       <source>Export page as SVG</source>
       <translation>Exportar página como SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="211"/>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>¿Está seguro de que desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="232"/>
+      <location filename="../../ViewProviderPage.cpp" line="233"/>
       <source>Show drawing</source>
       <translation>Mostrar dibujo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="234"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle KeepUpdated</source>
       <translation>Activar KeepUpdated</translation>
     </message>
@@ -3355,7 +3440,7 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="310"/>
+      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <source>Rich text editor</source>
       <translation>Editor de texto enriquecido</translation>
     </message>
@@ -3400,7 +3485,7 @@
       <translation>Crear Línea Central</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="201"/>
+      <location filename="../../TaskCenterLine.cpp" line="207"/>
       <source>Edit Center Line</source>
       <translation>Editar Línea Central</translation>
     </message>
@@ -3481,7 +3566,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="363"/>
       <source>TechDraw Increase/Decrease Decimal</source>
-      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+      <translation>Incrementar/Reducir decimales</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="558"/>
@@ -3540,52 +3625,52 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1199"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Chain Dimension</translation>
+      <translation>Crear cotas horizontales encadenadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1265"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chain Dimension</translation>
+      <translation>Crear cotas verticales encadenadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1331"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
-      <translation type="unfinished">TechDraw Create Oblique Chain Dimension</translation>
+      <translation>Crear cotas verticales encadenadas oblicuas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1539"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Coord Dimension</translation>
+      <translation>Insertar cota de coordenadas horizontales</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1612"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Coord Dimension</translation>
+      <translation>Insertar cota de coordenadas verticales</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1685"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Oblique Coord Dimension</translation>
+      <translation>Crear cotas verticales encadenadas oblicuas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1908"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Chamfer Dimension</translation>
+      <translation>Insertar cota de chaflán horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1977"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chamfer Dimension</translation>
+      <translation>Crear cotas verticales encadenadas</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2163"/>
       <source>TechDraw Create Arc Length Dimension</source>
-      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+      <translation>Insertar cota de longitud del arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2240"/>
       <source>TechDraw Customize Format</source>
-      <translation type="unfinished">TechDraw Customize Format</translation>
+      <translation>TechDraw personalizar formato</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2304"/>
@@ -3596,14 +3681,14 @@
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
       <location filename="../../CommandExtensionDims.cpp" line="2268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1469"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1957"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1958"/>
       <source>Selection is empty</source>
       <translation>No ha seleccionado nada</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1964"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1965"/>
       <source>No object selected</source>
       <translation>Ningún objeto seleccionado </translation>
     </message>
@@ -3628,12 +3713,12 @@
       <translation>No hay caras en la selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2045"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>Dibuja lateral del agujero de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2047"/>
       <source>Please select two straight lines</source>
       <translation>Por favor, seleccione dos líneas rectas</translation>
     </message>
@@ -3732,7 +3817,7 @@
       <location filename="../../AppTechDrawGui.cpp" line="176"/>
       <location filename="../../AppTechDrawGui.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
   </context>
   <context>
@@ -3745,16 +3830,19 @@ it has a weld symbol that would become broken.</source>
 tiene un símbolo de soldadura que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
+      <translation>No se puede borrar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
@@ -3767,25 +3855,22 @@ tiene un símbolo de soldadura que se rompería.</translation>
       <translation>No puede eliminar la vista de anclaje de un grupo de proyección.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="314"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>No puede eliminar esta vista porque tiene una vista de sección que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>No puede eliminar esta vista porque tiene una vista de detalle que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="330"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>No puede eliminar esta vista porque contiene una línea de referencia que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="205"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>La página no está vacía, por lo tanto el
@@ -4731,15 +4816,6 @@ al rayar una cara con un patrón PAT</translation>
       <translation>Color de los vértices en vistas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
-      <source>If checked FreeCAD will use a single colour for all text and lines. If unchecked FreeCAD will attempt to use lighter versions of preferred colours.
-
-</source>
-      <translation>Si está marcado, FreeCAD utilizará un solo color para todo el texto y las líneas. Si está desmarcada FreeCAD intentará usar versiones más claras de los colores preferidos.
-
-</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>Resaltar Detalle</translation>
@@ -4778,6 +4854,15 @@ al rayar una cara con un patrón PAT</translation>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="375"/>
       <source>Face color (if not transparent)</source>
       <translation>Color de la cara (si no es transparente)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>If checked FreeCAD will use a single color for all text and lines. 
+
+</source>
+      <translation>Al activarlo, FreeCAD usará un color único para texto y líneas. 
+
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
@@ -5450,81 +5535,81 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Alternar y mantener actualizados</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>Toggle &amp;Frames</source>
       <translation>Alternar Marcos</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportar SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export DXF</source>
       <translation>Exportar DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Export PDF</source>
       <translation>Exportar en PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Print All Pages</source>
       <translation>Imprimir todas las páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="381"/>
+      <location filename="../../MDIViewPage.cpp" line="391"/>
       <source>Different orientation</source>
       <translation>Orientación diferente de la hoja</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="382"/>
+      <location filename="../../MDIViewPage.cpp" line="392"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La impresora utiliza una orientación de papel distinta a la del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="401"/>
       <source>Different paper size</source>
       <translation>Tamaño de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="402"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impresora usa un tamaño de papel distinto al del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="415"/>
       <source>Opening file failed</source>
       <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="416"/>
       <source>Can not open file %1 for writing.</source>
       <translation>No se puede abrir el archivo %1 para la escritura.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="701"/>
+      <location filename="../../MDIViewPage.cpp" line="713"/>
       <source>Save DXF file</source>
       <translation>Guardar archivo Dxf</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="702"/>
+      <location filename="../../MDIViewPage.cpp" line="714"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1210"/>
+      <location filename="../../MDIViewPage.cpp" line="1222"/>
       <source>Selected:</source>
       <translation>Seleccionado:</translation>
     </message>
@@ -7920,17 +8005,17 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
       <source>Material removal required</source>
-      <translation type="unfinished">Material removal required</translation>
+      <translation>Requiere eliminar material</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
       <source>Material removal prohibited</source>
-      <translation type="unfinished">Material removal prohibited</translation>
+      <translation>Eliminación de material prohibida</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
       <source>Any method allowed</source>
-      <translation type="unfinished">Any method allowed</translation>
+      <translation>Cualquier método permitido</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
@@ -8240,7 +8325,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Stacking</source>
-      <translation type="unfinished">Stacking</translation>
+      <translation>Apilando</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -8255,7 +8340,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -8492,7 +8577,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1202"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Dibujo técnico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1203"/>
@@ -8550,14 +8635,14 @@ usando el Espaciado X/Y dado</translation>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
       <source>Add a hole or shaft fit to a dimension&lt;br&gt;
                 - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel openes&lt;br&gt;
+                - click the tool button, a panel opens&lt;br&gt;
                 - select shaft fit / hole fit&lt;br&gt;
                 - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Añade un agujero o ajuste a una dimensión&lt;br&gt;
-                - selecciona una dimensión de longitud o diámetro&lt;br&gt;
-                - haz clic en el botón de herramienta, abre un panel&lt;br&gt;
-                - seleccione ajuste de eje / ajuste de agujero&lt;br&gt;
-                - seleccione el campo de ajuste ISO 286 deseado usando la caja de combo</translation>
+      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
+                - select one length dimension or diameter dimension&lt;br&gt;
+                - click the tool button, a panel opens&lt;br&gt;
+                - select shaft fit / hole fit&lt;br&gt;
+                - select the desired ISO 286 fit field using the combo box</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>

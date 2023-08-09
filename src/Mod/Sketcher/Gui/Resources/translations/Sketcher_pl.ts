@@ -176,7 +176,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="450"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Utwórz łuk na szkicu</translation>
+      <translation>Tworzy łuk na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="527"/>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1048"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Utwórz krzywą złożoną na szkicu</translation>
+      <translation>Tworzy krzywą złożoną na szkicu</translation>
     </message>
   </context>
   <context>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1233"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Utwórz okrąg na szkicu</translation>
+      <translation>Tworzy okrąg na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1310"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="743"/>
       <source>Create a conic in the sketch</source>
-      <translation>Utwórz krzywą stożkową na szkicu</translation>
+      <translation>Tworzy krzywą stożkową na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="857"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="237"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation>Utwórz prostokąt na szkicu</translation>
+      <translation>Tworzy prostokąt na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="323"/>
@@ -324,7 +324,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1932"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Utwórz wielokąt foremny na szkicu</translation>
+      <translation>Tworzy wielokąt foremny na szkicu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2054"/>
@@ -713,7 +713,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>Utwórz łuk elipsy na szkicu</translation>
+      <translation>Tworzy łuk elipsy na szkicu</translation>
     </message>
   </context>
   <context>
@@ -726,7 +726,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="682"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>Utwórz łuk hiperboli na szkicu</translation>
+      <translation>Tworzy łuk hiperboli na szkicu</translation>
     </message>
   </context>
   <context>
@@ -739,7 +739,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="710"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation>Utwórz łuk paraboli na szkicu</translation>
+      <translation>Tworzy łuk paraboli na szkicu</translation>
     </message>
   </context>
   <context>
@@ -765,7 +765,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Create a circle in the sketch</source>
-      <translation>Utwórz okrąg na szkicu</translation>
+      <translation>Tworzy okrąg na szkicu</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="624"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Utwórz elipsę przez trzy punkty na szkicu</translation>
+      <translation>Tworzy elipsę przez trzy punkty na szkicu</translation>
     </message>
   </context>
   <context>
@@ -791,7 +791,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="591"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Utwórz elipsę przez środek na szkicu</translation>
+      <translation>Tworzy elipsę przez środek na szkicu</translation>
     </message>
   </context>
   <context>
@@ -817,7 +817,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1841"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>Utwórz siedmiokąt na szkicu</translation>
+      <translation>Tworzy siedmiokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -830,7 +830,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1812"/>
       <source>Create a hexagon in the sketch</source>
-      <translation>Utwórz sześciokąt na szkicu</translation>
+      <translation>Tworzy sześciokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -843,7 +843,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="111"/>
       <source>Create a line in the sketch</source>
-      <translation>Utwórz linię na szkicu</translation>
+      <translation>Tworzy linię na szkicu</translation>
     </message>
   </context>
   <context>
@@ -856,7 +856,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="206"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation>Utwórz zaokrąglony prostokąt na szkicu</translation>
+      <translation>Tworzy zaokrąglony prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -869,7 +869,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1870"/>
       <source>Create an octagon in the sketch</source>
-      <translation>Utwórz ośmiokąt na szkicu</translation>
+      <translation>Tworzy ośmiokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -882,7 +882,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1782"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>Utwórz pięciokąt na szkicu</translation>
+      <translation>Tworzy pięciokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -947,7 +947,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="143"/>
       <source>Create a rectangle in the sketch</source>
-      <translation>Utwórz prostokąt na szkicu</translation>
+      <translation>Tworzy prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -960,7 +960,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="173"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation>Utwórz wyśrodkowany prostokąt na szkicu</translation>
+      <translation>Tworzy wyśrodkowany prostokąt na szkicu</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1899"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Utwórz wielokąt foremny na szkicu</translation>
+      <translation>Tworzy wielokąt foremny na szkicu</translation>
     </message>
   </context>
   <context>
@@ -999,7 +999,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1753"/>
       <source>Create a square in the sketch</source>
-      <translation>Utwórz kwadrat na szkicu</translation>
+      <translation>Tworzy kwadrat na szkicu</translation>
     </message>
   </context>
   <context>
@@ -1012,7 +1012,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1724"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>Utwórz trójkąt równoboczny na szkicu</translation>
+      <translation>Tworzy trójkąt równoboczny na szkicu</translation>
     </message>
   </context>
   <context>
@@ -1098,7 +1098,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Create external geometry</source>
-      <translation>Utwórz zewnętrzną geometrię</translation>
+      <translation>Utwórz geometrię zewnętrzną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1630"/>
@@ -2169,59 +2169,59 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić punktu przecięcia się krzywych. Spróbuj dodać wiązanie zbieżne pomiędzy wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza wiązaniem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -2788,7 +2788,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane. 
+      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -2833,7 +2833,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końco
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania. 
+      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -2924,7 +2924,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
       <location filename="../../CommandConstraints.cpp" line="7155"/>
       <location filename="../../CommandConstraints.cpp" line="7352"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
-      <translation>Wiązania kąta nie można ustawić dla dwóch równoległych linii.</translation>
+      <translation>Nie można zdefiniować wiązania kąta dla dwóch linii równoległych.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7199"/>
@@ -3235,7 +3235,8 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="89"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Osie XY wybranego rysunku nie mają tego samego kierunku jak ten rysunek. Przytrzymaj Ctrl + Alt, aby to zignorować.</translation>
+      <translation>Osie XY wybranego rysunku nie mają tego samego kierunku jak ten rysunek.
+Przytrzymaj Ctrl + Alt, aby to zignorować.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="94"/>
@@ -3892,7 +3893,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
       <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-      <translation>Kliknięcie powoduje, że odstępy między wierszami i między kolumnami są takie same</translation>
+      <translation>Po kliknięciu odstępy między wierszami i między kolumnami będą jednakowe</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="80"/>
@@ -4537,9 +4538,9 @@ Kliknij na przycisk "Zamień punkty końcowe na wiązania" aby ponownie przyporz
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 znaleziono odwrócone łuki geometrii zewnętrznej. Ich punkty końcowe są otoczone widokiem 3D.
+      <translation>Znaleziono %1 łuki o odwróconej geometrii zewnętrznej. Ich punkty końcowe są zaznaczone w oknie Widoku 3D.
 
-Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
+Nie znaleziono jednak żadnych powiązań z punktami końcowymi.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="311"/>
@@ -4549,13 +4550,13 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="327"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-      <translation>Dokonano zmian %1 w wiązaniach łączących z punktami końcowymi odwróconych łuków.</translation>
+      <translation>Dokonano %1 zmian w wiązaniach łączących z punktami końcowymi odwróconych łuków.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="346"/>
       <location filename="../../TaskSketcherValidation.cpp" line="366"/>
       <source>Constraint orientation locking</source>
-      <translation>Zamykanie orientacji wiązania</translation>
+      <translation>Blokada orientacji wiązania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="347"/>
@@ -4722,7 +4723,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1647"/>
       <location filename="../../TaskSketcherElements.cpp" line="1653"/>
       <source>Construction</source>
-      <translation>Konstrukcja</translation>
+      <translation>Konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="998"/>
@@ -4765,7 +4766,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1736"/>
       <location filename="../../TaskSketcherElements.cpp" line="1737"/>
       <source>Arc</source>
-      <translation>Wzdłuż łuku</translation>
+      <translation>Łuk</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1610"/>
@@ -4932,7 +4933,7 @@ Jest to oparte wyłącznie na topologicznym kształcie szkicu, a nie na jego geo
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
       <source>Ignore construction geometry</source>
-      <translation>Ignoruj geometrię konstrukcji</translation>
+      <translation>Ignoruj geometrię konstrukcyjną</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
@@ -5019,7 +5020,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="206"/>
       <source>Constraint orientation locking</source>
-      <translation>Zamykanie orientacji wiązania</translation>
+      <translation>Blokada orientacji wiązania</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
@@ -5122,7 +5123,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3340"/>
       <source>Over-constrained: </source>
-      <translation>Przesadne wiązania: </translation>
+      <translation>Nadmiernie związany szkic: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3346"/>
@@ -5672,7 +5673,7 @@ Solver BFGS wykorzystuje algorytm Broyden-Fletcher-Goldfarb-Shanno.</translation
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="52"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="398"/>
       <source>LevenbergMarquardt</source>
-      <translation>LevenbergMarquardt</translation>
+      <translation>Levenberg Marquardt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="57"/>
@@ -5894,7 +5895,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration Level</source>
-      <translation>Poziom iteracji</translation>
+      <translation>Stopień iteracji</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="634"/>
@@ -6128,17 +6129,17 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Szkic zawiera zniekształcone wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Szkic zawiera częściowo zbędne wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>

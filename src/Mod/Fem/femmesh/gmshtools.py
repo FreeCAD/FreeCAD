@@ -720,6 +720,7 @@ class GmshTools():
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
 
     def write_geo(self):
+        temp_dir = os.path.dirname(self.temp_file_geo)
         geo = open(self.temp_file_geo, "w")
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
@@ -732,7 +733,7 @@ class GmshTools():
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
-        geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
+        geo.write('Merge "{}";\n'.format(os.path.relpath(self.temp_file_geometry, temp_dir)))
         geo.write("\n")
 
         # groups
@@ -879,7 +880,7 @@ class GmshTools():
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
         # explicit use double quotes in geo file
-        geo.write('Save "{}";\n'.format(self.temp_file_mesh))
+        geo.write('Save "{}";\n'.format(os.path.relpath(self.temp_file_mesh, temp_dir)))
         geo.write("\n\n")
 
         # some useful information

@@ -80,9 +80,9 @@ class GuiExport PythonSyntaxHighlighter : public SyntaxHighlighter
 {
 public:
     explicit PythonSyntaxHighlighter(QObject* parent);
-    virtual ~PythonSyntaxHighlighter();
+    ~PythonSyntaxHighlighter() override;
 
-    void highlightBlock (const QString & text);
+    void highlightBlock (const QString & text) override;
 
 private:
     PythonSyntaxHighlighterP* d;

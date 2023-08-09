@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsGeneral</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>660</width>
+    <height>930</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="GroupBox7">
+      <property name="title">
+       <string>Language and number format</string>
+      </property>
+      <layout class="QGridLayout">
+       <property name="leftMargin">
+        <number>11</number>
+       </property>
+       <property name="topMargin">
+        <number>11</number>
+       </property>
+       <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <property name="bottomMargin">
+        <number>11</number>
+       </property>
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="TextLabel1_4">
+         <property name="text">
+          <string>Language:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="Languages">
+         <property name="toolTip">
+          <string>Language of the application's user interface</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="unitSystemLabel">
+         <property name="text">
+          <string>Unit system:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBox_UnitSystem">
+         <property name="toolTip">
+          <string>Unit system that should be used for all parts of the application</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="decimalsLabel">
+           <property name="text">
+            <string>Number of decimals:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxDecimals">
+           <property name="toolTip">
+            <string>Number of decimals that should be shown for numbers and dimensions</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>12</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Project Unit system:</string>
+         </property>
+        </widget>
+       </item>
+        
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboBox_projectUnitSystem">
+         <property name="toolTip">
+          <string>Unit system used for display metrics stored in project</string>
+         </property>
+        </widget>
+       </item>
+        
+       <item row="2" column="2">
+        <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
+          <property name="toolTip">
+           <string>If enabled, Unit System stored in project will be ignored.</string>
+          </property>
+          <property name="text">
+           <string>Ignore</string>
+          </property>
+        </widget>
+       </item>
+
+       <item row="3" column="0">
+        <widget class="QLabel" name="fractionalInchLabel">
+         <property name="text">
+          <string>Minimum fractional inch:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboBox_FracInch">
+         <property name="toolTip">
+          <string>Minimum fractional inch to be displayed</string>
+         </property>
+         <item>
+          <property name="text">
+           <string notr="true">1/2"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/4"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/8"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/16"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/32"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/64"</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">1/128"</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="TextLabel1_5">
+         <property name="text">
+          <string>Number format:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="Gui::PrefComboBox" name="UseLocaleFormatting">
+         <property name="prefEntry" stdset="0">
+          <cstring>UseLocaleFormatting</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+         <item>
+          <property name="text">
+           <string>Operating system</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Selected language</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>C/POSIX</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
+         <property name="toolTip">
+          <string>If enabled, numerical keypad decimal separator
+will be substituted with locale separator, except
+in Python Console and Macro Editor where a
+dot/period will always be printed.</string>
+         </property>
+         <property name="text">
+          <string>Substitute decimal separator</string>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>SubstituteDecimalSeparator</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="GroupBox3">
+      <property name="title">
+       <string>Application</string>
+      </property>
+      <layout class="QGridLayout">
+       <property name="leftMargin">
+        <number>11</number>
+       </property>
+       <property name="topMargin">
+        <number>11</number>
+       </property>
+       <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <property name="bottomMargin">
+        <number>11</number>
+       </property>
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="themesLabel">
+         <property name="text">
+          <string>Theme:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="themesCombobox">
+         <property name="toolTip">
+          <string>Customize how user interface will look like</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="iconSizeLabel">
+         <property name="text">
+          <string>Size of toolbar icons:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="toolbarIconSize">
+         <property name="toolTip">
+          <string>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="treeModeLabel">
+         <property name="text">
+          <string>Tree view mode:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="treeMode">
+         <property name="toolTip">
+          <string>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="recentFileListLabel">
+         <property name="text">
+          <string>Size of recent file list:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="Gui::PrefSpinBox" name="RecentFiles">
+         <property name="toolTip">
+          <string>How many files should be listed in recent files list</string>
+         </property>
+         <property name="value">
+          <number>4</number>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>RecentFiles</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>RecentFiles</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="tiledBackground">
+         <property name="toolTip">
+          <string>Background of the main window (when no document is opened) will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</string>
+         </property>
+         <property name="text">
+          <string>Enable tiled background</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="Gui::PrefCheckBox" name="EnableCursorBlinking">
+         <property name="toolTip">
+          <string>The text cursor will be blinking</string>
+         </property>
+         <property name="text">
+          <string>Enable cursor blinking</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>EnableCursorBlinking</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="Gui::PrefCheckBox" name="SplashScreen">
+         <property name="toolTip">
+          <string>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</string>
+         </property>
+         <property name="text">
+          <string>Enable splash screen at start up</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>ShowSplasher</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Preference packs</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QTableWidget" name="PreferencePacks">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="showDropIndicator" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid">
+            <bool>false</bool>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+           <property name="cornerButtonEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderVisible">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>30</number>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>100</number>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderMinimumSectionSize">
+            <number>16</number>
+           </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>24</number>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Name</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Type</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Load</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ImportConfig">
+             <property name="text">
+              <string>Import config...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="SaveNewPreferencePack">
+             <property name="text">
+              <string>Save new...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ManagePreferencePacks">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Manage...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="RevertToSavedConfig">
+             <property name="text">
+              <string>Revert...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>Languages</tabstop>
+  <tabstop>RecentFiles</tabstop>
+  <tabstop>EnableCursorBlinking</tabstop>
+  <tabstop>SplashScreen</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

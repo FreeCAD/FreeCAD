@@ -81,8 +81,12 @@ QGIFace::QGIFace(int index) :
 
     getParameters();
 
+    // set up style & colour defaults
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
+    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
+    setFillColor(temp.asValue<QColor>());
+    m_colDefFill = temp.asValue<QColor>();
 
     if (m_defClearFace) {
         setFillMode(NoFill);
@@ -90,16 +94,18 @@ QGIFace::QGIFace(int index) :
         setFill(Qt::transparent, m_styleDef);
     } else {
         setFillMode(PlainFill);
-        m_colDefFill = Qt::white;
         setFill(m_colDefFill, m_styleDef);
     }
+
+    m_sharedRender = new QSvgRenderer();
 }
 
 QGIFace::~QGIFace()
 {
-    //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
+    delete m_sharedRender;
 }
 
+/// redraw this face
 void QGIFace::draw()
 {
     setPath(m_outline);                         //Face boundary
@@ -152,6 +158,7 @@ void QGIFace::draw()
     show();
 }
 
+/// show the face style & colour in normal configuration
 void QGIFace::setPrettyNormal() {
 //    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
@@ -164,6 +171,7 @@ void QGIFace::setPrettyNormal() {
     QGIPrimPath::setPrettyNormal();
 }
 
+/// show the face style & colour in pre-select configuration
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
     m_fillStyleCurrent = Qt::SolidPattern;
@@ -171,6 +179,7 @@ void QGIFace::setPrettyPre() {
     QGIPrimPath::setPrettyPre();
 }
 
+/// show the face style & colour in selected configuration
 void QGIFace::setPrettySel() {
 //    Base::Console().Message("QGIF::setPrettySel()\n");
     m_fillStyleCurrent = Qt::SolidPattern;
@@ -178,6 +187,7 @@ void QGIFace::setPrettySel() {
     QGIPrimPath::setPrettySel();
 }
 
+/// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool b) {
     if (b) {
         setStyle(Qt::DashLine);
@@ -191,6 +201,7 @@ void QGIFace::setHatchFile(std::string fileSpec)
     m_fileSpec = fileSpec;
 }
 
+/// get the .svg file to use for hatching this face
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
@@ -224,22 +235,26 @@ void QGIFace::setFillMode(QGIFace::fillMode m)
     }
 }
 
+/// update the outline of this face
 void QGIFace::setOutline(const QPainterPath & path)
 {
     m_outline = path;
 }
 
+/// remove the PAT hatch lines
 void QGIFace::clearLineSets()
 {
     m_dashSpecs.clear();
     clearFillItems();
 }
 
+/// add PAT hatch line set
 void QGIFace::addLineSet(LineSet& ls)
 {
     m_lineSets.push_back(ls);
 }
 
+/// convert the PAT line set to QGraphicsPathItems
 void QGIFace::lineSetToFillItems(LineSet& ls)
 {
     m_segCount = 0;
@@ -284,6 +299,7 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
     }
 }
 
+/// create a PAT fill line from 2 points and a dash configuration
 QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
@@ -293,6 +309,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
+/// create a PAT fill line from geometry
 QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
@@ -348,7 +365,7 @@ QPen QGIFace::setGeomPen()
     return result;
 }
 
-//!convert from mm to scene units
+//! convert from mm to scene units
 std::vector<double> QGIFace::decodeDashSpec(DashSpec patDash)
 {
     double penWidth = Rez::guiX(m_geomWeight);
@@ -483,6 +500,7 @@ double QGIFace::getXForm()
     return 1.0;
 }
 
+/// remove the children that make up a PAT fill
 void QGIFace::clearFillItems()
 {
     for (auto& f: m_fillItems) {
@@ -492,6 +510,7 @@ void QGIFace::clearFillItems()
     }
 }
 
+/// debugging tool draws a mark at a position on this face
 void QGIFace::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
@@ -502,39 +521,43 @@ void QGIFace::makeMark(double x, double y)
     cmItem->setZValue(ZVALUE::VERTEX);
 }
 
+/// make an array of svg tiles to cover this face
 void QGIFace::buildSvgHatch()
 {
 //    Base::Console().Message("QGIF::buildSvgHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
     double wTile = SVGSIZEW * m_fillScale;
     double hTile = SVGSIZEH * m_fillScale;
-    double w = m_outline.boundingRect().width();
-    double h = m_outline.boundingRect().height();
-    //make the hatch tiled area big enough to handle rotations
-    double hatchOverlaySize = 2.0 * std::max(w, h);
+    double faceWidth = m_outline.boundingRect().width();
+    double faceHeight = m_outline.boundingRect().height();
+    double faceOverlaySize = Preferences::svgHatchFactor() * std::max(faceWidth, faceHeight);
     QPointF faceCenter = m_outline.boundingRect().center();
-    double nw = ceil(hatchOverlaySize / wTile);
-    double nh = ceil(hatchOverlaySize / hTile);
-    w = nw * wTile;
-    h = nh * hTile;
-    m_svgHatchArea->setRect(0., 0., w,-h);
+    double tilesWide = ceil(faceOverlaySize / wTile);
+    double tilesHigh = ceil(faceOverlaySize / hTile);
+
+    double overlayWidth = tilesWide * wTile;
+    double overlayHeight = tilesHigh * hTile;
+    m_svgHatchArea->setRect(0., 0., overlayWidth,-overlayHeight);
     m_svgHatchArea->centerAt(faceCenter);
     QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before, after);
+    if (!m_sharedRender->load(colorXML)) {
+        Base::Console().Message("QGIF::buildSvgHatch - failed to load svg string\n");
+        return;
+    }
     long int tileCount = 0;
-    for (int iw = 0; iw < int(nw); iw++) {
-        for (int ih = 0; ih < int(nh); ih++) {
+    for (int iw = 0; iw < int(tilesWide); iw++) {
+        for (int ih = 0; ih < int(tilesHigh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
             tile->setScale(m_fillScale);
-            if (tile->load(&colorXML)) {
-                tile->setParentItem(m_svgHatchArea);
-                tile->setPos(iw*wTile + getHatchOffset().x,
-                             -h + ih*hTile + getHatchOffset().y);
-            }
+            tile->setSharedRenderer(m_sharedRender);
+            tile->setParentItem(m_svgHatchArea);
+            tile->setPos(iw*wTile + getHatchOffset().x,
+                         -overlayWidth + ih*hTile + getHatchOffset().y);
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("SVG tile count exceeded: %ld\n", tileCount);
+                Base::Console().Warning("SVG tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -552,6 +575,7 @@ void QGIFace::clearSvg()
     hideSvg(true);
 }
 
+/// make an array of bitmap tiles to cover this face
 void QGIFace::buildPixHatch()
 {
 //    Base::Console().Message("QGIF::buildPixHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
@@ -561,7 +585,7 @@ void QGIFace::buildPixHatch()
     double faceHeight = m_outline.boundingRect().height();
     QRectF faceRect = m_outline.boundingRect();
     QPointF faceCenter = faceRect.center();
-    double hatchOverlaySize = 2.0 * std::max(faceWidth, faceHeight);
+    double hatchOverlaySize = Preferences::svgHatchFactor() * std::max(faceWidth, faceHeight);
     double numberWide = ceil(hatchOverlaySize / wTile);
     double numberHigh = ceil(hatchOverlaySize / hTile);
     double overlayWidth = numberWide * wTile;
@@ -594,7 +618,7 @@ void QGIFace::buildPixHatch()
     pm  = QPixmap::fromImage(imageIn);
     pm = pm.scaled(wTile, hTile);
     if (pm.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - pm is null\n");
+        Base::Console().Error("QGIF::buildPixHatch - pixmap is null\n");
         return;
     }
 
@@ -602,7 +626,6 @@ void QGIFace::buildPixHatch()
     QImage tileField(overlayWidth, overlayHeight, QImage::Format_ARGB32);
     QPointF fieldCenter(overlayWidth / 2.0, overlayHeight / 2.0);
 
-    //do we have to rotate the field before we clip it??
     tileField.fill(Qt::transparent);
     QPainter painter2(&tileField);
     QPainter::RenderHints hints = painter2.renderHints();
@@ -622,7 +645,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld\n", tileCount);
+                Base::Console().Warning("Pixmap tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
                 break;
             }
         }
@@ -667,12 +690,17 @@ void QGIFace::setHatchScale(double s)
     m_fillScale = s;
 }
 
-//QtSvg does not handle clipping, so we must be able to turn the hatching on/off
+/// turn svg tiles on or off. QtSvg does not handle clipping,
+/// so we must be able to turn the hatching on/off when exporting a face with an
+/// svg hatch.  Otherwise the full tile pattern is shown in the export.
 void QGIFace::hideSvg(bool b)
 {
     m_hideSvgTiles = b;
 }
 
+
+/// create a QPixmap from a bitmap file.  The QPixmap will be used as a QBrush
+/// texture.
 QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
 {
     QPixmap pix;
@@ -701,9 +729,6 @@ void QGIFace::getParameters()
 {
     m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
     m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
-
-    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
-    setFillColor(temp.asValue<QColor>());
 
     m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
 }

@@ -2166,59 +2166,59 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze nach dem Anwenden von gleichheits Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2117"/>
+      <location filename="../../../App/SketchObject.cpp" line="2182"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Der Schnittpunkt der Kurven kann nicht ermittelt werden. Die Randbedingung Koinzidenz festlegen, angewendet auf die Endpunkte der Kurven, die verrundet werden sollen, kann hier helfen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6300"/>
-      <location filename="../../../App/SketchObject.cpp" line="6508"/>
+      <location filename="../../../App/SketchObject.cpp" line="6365"/>
+      <location filename="../../../App/SketchObject.cpp" line="6573"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6305"/>
+      <location filename="../../../App/SketchObject.cpp" line="6370"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Sie fordern keine Änderung in der Multiplizität der Knoten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6311"/>
-      <location filename="../../../App/SketchObject.cpp" line="6518"/>
+      <location filename="../../../App/SketchObject.cpp" line="6376"/>
+      <location filename="../../../App/SketchObject.cpp" line="6583"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6320"/>
+      <location filename="../../../App/SketchObject.cpp" line="6385"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten Sie, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6331"/>
+      <location filename="../../../App/SketchObject.cpp" line="6396"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6339"/>
+      <location filename="../../../App/SketchObject.cpp" line="6404"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6353"/>
+      <location filename="../../../App/SketchObject.cpp" line="6418"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6512"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ein Knoten kann nicht die Vielfachheit Null haben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6529"/>
+      <location filename="../../../App/SketchObject.cpp" line="6594"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Die Vielfachheit kann nicht höher als der Grad des B-Splines sein.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6535"/>
+      <location filename="../../../App/SketchObject.cpp" line="6600"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knoten kann nicht außerhalb des BSpline-Parameterbereichs eingefügt werden.</translation>
     </message>
@@ -2450,7 +2450,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../EditDatumDialog.cpp" line="81"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Der Bezug darf nicht geändert werden, da die Skizze widersprüchliche Einschränkungen enthält</translation>
+      <translation>Der Bezug darf nicht geändert werden, da die Skizze widersprüchliche Randbedingungen enthält</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -2785,7 +2785,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Es gibt mehrere Möglichkeiten diese Beschränkung anzuwenden.  
+      <translation>Es gibt mehrere Möglichkeiten diese Beschränkung anzuwenden.
 
 Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunkte; zwei Kurven und einen Punkt.</translation>
     </message>
@@ -2830,7 +2830,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Es gibt eine Reihe von Möglichkeiten, wie diese Einschränkung angewendet werden kann. 
+      <translation>Es gibt eine Reihe von Möglichkeiten, wie diese Einschränkung angewendet werden kann.
 
 Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpunkte; Zwei Kurven und ein Punkt.</translation>
     </message>
@@ -4419,7 +4419,7 @@ Standardmäßig: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt. 
+      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt.
 Funktioniert nur, wenn "Kameraposition nach dem Bearbeiten wiederherstellen" aktiviert ist.</translation>
     </message>
     <message>
@@ -4717,7 +4717,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1647"/>
       <location filename="../../TaskSketcherElements.cpp" line="1653"/>
       <source>Construction</source>
-      <translation>Konstruktion</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="998"/>
@@ -5931,7 +5931,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation>Sketcher-Modus Bearbeitung</translation>
+      <translation>Sketcher-Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -6119,17 +6119,17 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="327"/>
+      <location filename="../../../App/SketchObject.cpp" line="392"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Die Skizze enthält fehlerhafte Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="333"/>
+      <location filename="../../../App/SketchObject.cpp" line="398"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Die Skizze enthält teilweise redundante Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8962"/>
+      <location filename="../../../App/SketchObject.cpp" line="9027"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabeln wurden intern umstrukturiert. Solche Dateien lassen sich mit früheren Versionen von FreeCAD nicht mehr öffnen!!
@@ -6238,13 +6238,13 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="206"/>
       <source>Error creating B-spline pole</source>
-      <translation type="unfinished">Error creating B-spline pole</translation>
+      <translation>Fehler beim Erstellen des B-spline Kontrollpunktes</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <source>Error creating B-spline</source>
-      <translation type="unfinished">Error creating B-spline</translation>
+      <translation>Fehler beim Erstellen des B-splines</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="306"/>

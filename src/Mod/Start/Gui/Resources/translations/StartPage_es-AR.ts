@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="39"/>
       <source>Start</source>
-      <translation>Iniciar</translation>
+      <translation>Inicio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="40"/>
@@ -251,12 +251,12 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
-      <translation>Cambiar el entorno de trabajo después de cargar</translation>
+      <translation>Cambiar el banco de trabajo después de cargar</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Elegí el entorno de trabajo al que cambiar después del lanzamiento del programa</translation>
+      <translation>Elige el banco de trabajo al que cambiar después del lanzamiento del programa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
@@ -293,7 +293,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="38"/>
       <source>Start</source>
-      <translation>Iniciar</translation>
+      <translation>Inicio</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="39"/>
@@ -343,7 +343,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Esta sección contiene documentación útil para los usuarios de FreeCAD en general: una lista de todos los entornos de trabajo, instrucciones detalladas sobre cómo instalar y usar FreeCAD, tutoriales y todo lo que necesitás para empezar.</translation>
+      <translation>Esta sección contiene documentación útil para los usuarios de FreeCAD en general: una lista de todos los bancos de trabajo, instrucciones detalladas sobre cómo instalar y usar FreeCAD, tutoriales y todo lo que necesitás para empezar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -378,7 +378,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Workbenches documentation</source>
-      <translation>Documentación de entornos de trabajo</translation>
+      <translation>Documentación de bancos de trabajo</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
@@ -393,7 +393,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>El &lt;a href="http://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
+      <translation>El foro &lt;a href="http://forum.freecad.org"&gt;FreeCAD&lt;/a&gt; es un buen lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de temas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Ayuda general sobre el uso de FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -428,7 +428,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Si no está incluido con tu versión de FreeCAD, instalá el paquete de documentación de FreeCAD para obtener los centros de documentación, la ayuda de entorno de trabajo y la documentación de comandos individuales sin conexión a Internet.</translation>
+      <translation>Si no está incluido con tu versión de FreeCAD, instalá el paquete de documentación de FreeCAD para obtener los centros de documentación, la ayuda del banco de trabajo y la documentación de comandos individuales sin conexión a Internet.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
@@ -506,7 +506,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../AppStartGui.cpp" line="103"/>
       <source>Start</source>
-      <translation>Iniciar</translation>
+      <translation>Inicio</translation>
     </message>
   </context>
 </TS>

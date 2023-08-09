@@ -179,10 +179,10 @@ void Trajectory::generateTrajectory()
                     bool Cont = (*it)->Cont && !(it == --vpcWaypoints.end());
                     // start of a continue block
                     if (Cont && !pcRoundComp) {
-                        pcRoundComp.reset(new KDL::Path_RoundedComposite(3, 3,
-                            new KDL::RotationalInterpolation_SingleAxis()));
+                        pcRoundComp = std::make_unique<KDL::Path_RoundedComposite>(3, 3,
+                            new KDL::RotationalInterpolation_SingleAxis());
                         // the velocity of the first waypoint is used
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity, (*it)->Acceleration));
+                        pcVelPrf = std::make_unique<KDL::VelocityProfile_Trap>((*it)->Velocity, (*it)->Acceleration);
                         pcRoundComp->Add(Last);
                         pcRoundComp->Add(Next);
 
@@ -197,7 +197,7 @@ void Trajectory::generateTrajectory()
                         pcRoundComp->Add(Next);
                         pcRoundComp->Finish();
                         pcVelPrf->SetProfile(0, pcRoundComp->PathLength());
-                        pcTrak.reset(new KDL::Trajectory_Segment(pcRoundComp.release(), pcVelPrf.release()));
+                        pcTrak = std::make_unique<KDL::Trajectory_Segment>(pcRoundComp.release(), pcVelPrf.release());
 
                         // normal block
                     }
@@ -210,9 +210,9 @@ void Trajectory::generateTrajectory()
                             true
                         );
 
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity, (*it)->Acceleration));
+                        pcVelPrf = std::make_unique<KDL::VelocityProfile_Trap>((*it)->Velocity, (*it)->Acceleration);
                         pcVelPrf->SetProfile(0, pcPath->PathLength());
-                        pcTrak.reset(new KDL::Trajectory_Segment(pcPath, pcVelPrf.release()));
+                        pcTrak = std::make_unique<KDL::Trajectory_Segment>(pcPath, pcVelPrf.release());
                     }
                     Last = Next;
                     break; }

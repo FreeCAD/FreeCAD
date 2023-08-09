@@ -89,10 +89,9 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if (activeBody != body) {
         parent = obj;
-        subname.clear();
     }
     else {
         parent = getParent(obj, subname);
@@ -181,7 +180,7 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
     return dynamic_cast<PartDesign::Body*>(body);
 }
 
-void needActiveBodyError(void)
+void needActiveBodyError()
 {
     QMessageBox::warning( Gui::getMainWindow(),
         QObject::tr("Active Body Required"),
@@ -280,7 +279,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         return; // Sketch is on a face of a solid, do nothing
 
     const App::Document* doc = sketch->getDocument();
-    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
+    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ false);
     if (!body) {
         throw Base::RuntimeError ("Couldn't find body for the sketch");
     }

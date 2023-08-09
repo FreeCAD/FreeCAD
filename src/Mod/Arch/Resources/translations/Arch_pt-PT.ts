@@ -1876,7 +1876,7 @@ No entanto, alguns aplicativos BIM usarão este fator para escolher com qual uni
       <location filename="../../ArchStructure.py" line="865"/>
       <location filename="../../ArchPanel.py" line="525"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>O Facemaker retornou um erro</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1180"/>
@@ -1949,25 +1949,25 @@ No entanto, alguns aplicativos BIM usarão este fator para escolher com qual uni
       <location filename="../../ArchStructure.py" line="1252"/>
       <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>O objeto escolhido não é uma Estrutura</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>O objeto escolhido não tem nenhum nó estrutural</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1258"/>
       <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Um desses objetos tem mais de 2 nós</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1265"/>
       <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
-      <translation type="unfinished">Unable to find a suitable intersection point</translation>
+      <translation>Não foi possível encontrar um ponto de intersecção adequado</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1268"/>
@@ -2087,7 +2087,7 @@ No entanto, alguns aplicativos BIM usarão este fator para escolher com qual uni
     <message>
       <location filename="../../ArchBuildingPart.py" line="944"/>
       <source>Clone level up</source>
-      <translation type="unfinished">Clone level up</translation>
+      <translation>Clonar nível acima</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
@@ -2128,22 +2128,22 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Por favor selecione apenas objetos de Construção ou nada!
 
-Site is not allowed to accept any other object besides Building.
+O site não pode aceitar qualquer outro objeto além de Construção.
 
-Other objects will be removed from the selection.
+Outros objetos serão removidos da seleção.
 
-Note: You can change that in the preferences.</translation>
+Nota: Você pode alterar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="545"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Não há nenhum objeto válido na seleção.
 
-Site creation aborted.</translation>
+Criação de site abortada.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="552"/>
@@ -2188,17 +2188,17 @@ Site creation aborted.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Parâmetros dos perfis do telhado:
+* Ângulo: inclinação em graus em relação ao horizontal.
+* Execute: distância horizontal entre a parede e a aresta.
+* Espessura: espessura do telhado.
+* Substituição: distância horizontal entre a cova e a parede.
+* Altura: altura da aresta acima da base (calculada automaticamente).
+* IdRel: ID do perfil relativo usado para cálculos automáticos.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Se Ângulo = 0 e Executar = 0, então o perfil é idêntico ao perfil relativo.
+Se o ângulo = 0, então o ângulo é calculado de forma que a altura seja igual ao perfil relativo.
+Se executar = 0, então a execução é calculada de modo que a altura seja a mesma do perfil relativo.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
@@ -2218,7 +2218,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
-      <translation type="unfinished">IdRel</translation>
+      <translation>IdRel</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
@@ -2236,7 +2236,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Altura (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porta</translation>
     </message>
@@ -2263,7 +2263,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="190"/>
       <source>Behind</source>
-      <translation type="unfinished">Behind</translation>
+      <translation>Atrás</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
@@ -2293,12 +2293,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchFrame.py" line="61"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Moldura</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="92"/>
       <source>Create Frame</source>
-      <translation type="unfinished">Create Frame</translation>
+      <translation>Criar moldura</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="229"/>
@@ -2308,52 +2308,52 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="67"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Elevação das formas</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="68"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Escolha qual campo fornece elevações de formas:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="109"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>Nenhuma forma encontrada neste arquivo</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="134"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Módulo Shapefile não encontrado</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="135"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>A biblioteca python do shapefile não foi encontrada no seu sistema. Gostaria de baixá-la agora de &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github. om/GeospatialPython/pyshp&lt;/a&gt;? Será colocado na sua pasta de macros.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="141"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Erro: Não foi possível baixar de:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="153"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
+      <translation>Não foi possível baixar o módulo shapefile. Abortando.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="156"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
+      <translation>Módulo Shapefile não baixado. Abortando.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="159"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>Módulo Shapefile não encontrado. Cancelando.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="160"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
-      <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+      <translation>A biblioteca de shapefile pode ser baixada do seguinte URL e instalada na sua pasta de macros:</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="88"/>
@@ -2365,74 +2365,74 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="230"/>
       <location filename="../../ArchWindow.py" line="275"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Criar Janela</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="246"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>Escolha uma face em um objeto existente ou selecione uma predefinição</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="298"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Janela não baseada no esboço. Janela não alinhada ou redimensionada.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="308"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Nenhuma restrição de largura e/ou altura no esboço da janela. Janela não redimensionada.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="311"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nenhuma janela encontrada. Não é possível continuar.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="367"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Opções de janela</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="371"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Incluir automaticamente no objeto de host</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="377"/>
       <source>Sill height</source>
-      <translation type="unfinished">Sill height</translation>
+      <translation>Altura do peitoril</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1321"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Essa janela não tem abertura definida</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1598"/>
       <location filename="../../ArchWindow.py" line="1647"/>
       <location filename="../../ArchWindow.py" line="1808"/>
       <source>Get selected edge</source>
-      <translation type="unfinished">Get selected edge</translation>
+      <translation>Usar aresta selecionada</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1747"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Não é possível criar componente</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1785"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Elementos da janela</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1786"/>
       <source>Hole wire</source>
-      <translation type="unfinished">Hole wire</translation>
+      <translation>Fio de buraco</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1787"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>O número do traço que define um furo no objeto. Um valor de zero selecionará automaticamente o traço maior</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
@@ -2477,12 +2477,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
       <source>Create/update component</source>
-      <translation type="unfinished">Create/update component</translation>
+      <translation>Criar/atualizar componente</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1793"/>
       <source>Base 2D object</source>
-      <translation type="unfinished">Base 2D object</translation>
+      <translation>Objeto base 2D</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1794"/>
@@ -2499,7 +2499,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
       <source>Create new component</source>
-      <translation type="unfinished">Create new component</translation>
+      <translation>Criar novo componente</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1797"/>
@@ -2537,34 +2537,34 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1803"/>
       <source>Opening mode</source>
-      <translation type="unfinished">Opening mode</translation>
+      <translation>Modo de abertura</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1804"/>
       <location filename="../../ArchWindow.py" line="1806"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ padrão</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1805"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Se isto estiver marcado, o valor padrão da moldura desta janela será adicionado ao valor inserido aqui</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1807"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>Se isto estiver marcado, o valor de deslocamento padrão desta janela será adicionado ao valor inserido aqui</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1809"/>
       <source>Press to retrieve the selected edge</source>
-      <translation type="unfinished">Press to retrieve the selected edge</translation>
+      <translation>Pressione para recuperar a aresta selecionada</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1251"/>
       <location filename="../../ArchWindow.py" line="1810"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Inverter direção de abertura</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1260"/>
@@ -2787,12 +2787,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Largura total</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="425"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Altura total</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
@@ -2807,12 +2807,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
       <source>Add col</source>
-      <translation type="unfinished">Add col</translation>
+      <translation>Adicionar coluna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="429"/>
       <source>Del col</source>
-      <translation type="unfinished">Del col</translation>
+      <translation>Remover coluna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="430"/>
@@ -2827,22 +2827,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Linhas</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="432"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Colunas</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Precast elements</source>
-      <translation type="unfinished">Precast elements</translation>
+      <translation>Elementos pré-moldados</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Slab type</source>
-      <translation type="unfinished">Slab type</translation>
+      <translation>Tipo de laje</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
@@ -2852,62 +2852,62 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Dent length</source>
-      <translation type="unfinished">Dent length</translation>
+      <translation>Comprimento do dente</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent width</source>
-      <translation type="unfinished">Dent width</translation>
+      <translation>Largura do dente</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent height</source>
-      <translation type="unfinished">Dent height</translation>
+      <translation>Altura do dente</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Slab base</source>
-      <translation type="unfinished">Slab base</translation>
+      <translation>Base da Laje</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Number of holes</source>
-      <translation type="unfinished">Number of holes</translation>
+      <translation>Número de furos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1012"/>
       <source>Major diameter of holes</source>
-      <translation type="unfinished">Major diameter of holes</translation>
+      <translation>Diâmetro maior dos furos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Minor diameter of holes</source>
-      <translation type="unfinished">Minor diameter of holes</translation>
+      <translation>Diâmetro menor dos furos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Spacing between holes</source>
-      <translation type="unfinished">Spacing between holes</translation>
+      <translation>Espaçamento entre os furos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Number of grooves</source>
-      <translation type="unfinished">Number of grooves</translation>
+      <translation>Número de sulcos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Depth of grooves</source>
-      <translation type="unfinished">Depth of grooves</translation>
+      <translation>Profundidade dos sulcos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Height of grooves</source>
-      <translation type="unfinished">Height of grooves</translation>
+      <translation>Altura dos sulcos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Spacing between grooves</source>
-      <translation type="unfinished">Spacing between grooves</translation>
+      <translation>Espaçamento entre os sulcos</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1019"/>
@@ -2917,7 +2917,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>Comprimento do patamar inferior</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
@@ -2927,27 +2927,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
+      <translation>Profundidade dos degraus</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1407"/>
       <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
+      <translation>Opções pré-moldadas</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>Lista de dentes</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>Adicionar dente</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>Remover dente</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
@@ -2957,7 +2957,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nível</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -2972,7 +2972,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="105"/>
       <source>View of</source>
-      <translation type="unfinished">View of</translation>
+      <translation>Vista de</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="120"/>
@@ -2983,7 +2983,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="157"/>
       <location filename="../../ArchPanel.py" line="186"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Criar Painel</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="209"/>
@@ -3167,7 +3167,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="642"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Não é possível reconhecer o tipo de arquivo</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3194,7 +3194,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Agendamento</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
@@ -3205,37 +3205,37 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Pode colocar qualquer coisa menos os seguintes objetos: Site, Edifício e Piso - em um objeto do piso.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+O objeto do piso não tem permissão para aceitar objetos de Site, Construção ou Piso.
 
-Site, Building, and Floor objects will be removed from the selection.
+Site, Construir e Objetos de piso serão removidos da seleção.
 
-You can change that in the preferences.</translation>
+Pode alterar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="158"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Não há nenhum objeto válido na seleção.
 
-Floor creation aborted.</translation>
+Criação de piso abortada.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="165"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Criar piso</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Criar Eixo</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="807"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Distâncias (mm) e ângulos (graus) entre eixos</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
@@ -6020,92 +6020,92 @@ Building creation aborted.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation type="unfinished">Structure tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation type="unfinished">Axis tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation type="unfinished">Panel tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation type="unfinished">Material tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation type="unfinished">Pipe tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation type="unfinished">Arch tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation type="unfinished">Draft snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation type="unfinished">&amp;Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>Utilitários</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation type="unfinished">&amp;Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation type="unfinished">Creation</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Anotação</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation type="unfinished">Modification</translation>
     </message>
@@ -6113,12 +6113,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
@@ -6206,7 +6206,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Moldura</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6527,7 +6527,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Agendamento</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
@@ -6540,7 +6540,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Nível</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6830,23 +6830,23 @@ Building creation aborted.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Arquitetura</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Calado do Navio</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Importar/Exportar</translation>
     </message>

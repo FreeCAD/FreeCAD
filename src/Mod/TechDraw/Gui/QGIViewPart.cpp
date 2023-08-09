@@ -1280,7 +1280,7 @@ void QGIViewPart::rotateView() {}
 bool QGIViewPart::prefFaceEdges()
 {
     bool result = false;
-    result = Preferences::getPreferenceGroup("General")->GetBool("DrawFaceEdges", 0l);
+    result = Preferences::getPreferenceGroup("General")->GetBool("DrawFaceEdges", false);
     return result;
 }
 

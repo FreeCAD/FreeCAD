@@ -253,7 +253,7 @@ Deaktivieren um alle Objekte des Dokuments zu verwenden</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</translation>
+      <translation>Die Eigenschaft, die von jedem Objekt abgerufen werden soll. Kann 'Zählen' sein, um die Objekte zu zählen, oder Eigenschaftsnamen wie 'Länge' oder 'Form.Volumen', um eine bestimmte Eigenschaft abzurufen.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="108"/>
@@ -318,12 +318,12 @@ Deaktivieren um alle Objekte des Dokuments zu verwenden</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
       <source>Put selected objects into the 'Objects' column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the 'Objects' column of the selected row</translation>
+      <translation>Ausgewählte Objekte in die Spalte 'Objekte' der ausgewählten Zeile einfügen</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
       <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
-      <translation type="unfinished">This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</translation>
+      <translation>Dadurch werden die Ergebnisse in eine CSV- oder Markdowndatei exportiert. Hinweis zum CSV Export: In Libreoffice kann diese CSV Datei verknüpft werden, indem Du mit der rechten Maustaste auf den Reiter Arbeitsblätter, Neues Blatt, Aus Datei, Verknüpfen klickst (Hinweis: Seit LibreOffice v6.x lautet der korrekte Pfad jetzt: Blatt, Blatt einfügen..., Aus Datei, Durchsuchen...)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="187"/>
@@ -333,7 +333,7 @@ Deaktivieren um alle Objekte des Dokuments zu verwenden</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+      <translation>Eine optionale durch Semikolon (;) getrennte Liste von Eigenschaft:Wert Filtern. Setze ! vor einen Eigenschaftsnamen, um die Wirkung des Filters umzukehren (Objekte, die dem Filter entsprechen, werden ausgeschlossen). Objekte, deren Eigenschaft den Wert enthält, werden gefiltert. Beispiele für gültige Filter (Groß- und Kleinschreibung wird nicht berücksichtigt): Name:Wand - Es werden nur Objekte berücksichtigt, die 'Wand' in ihrem Namen haben (interner Name); !Name:Wand - Es werden nur Objekte berücksichtigt, die NICHT 'Wand' in ihrem Namen haben (interner Name); Beschreibung:Win - Es werden nur Objekte berücksichtigt, die 'win' in ihrer Beschreibung haben; !Kennzeichen:Win - Es werden nur Objekte berücksichtigt, die NICHT 'win' in ihrer Beschriftung haben; IfcTyp:Wand - Es werden nur Objekte berücksichtigt, deren Ifc Type 'Wand' ist; !Markierung:Wand - Es werden nur Objekte berücksichtigt, deren Markierung NICHT 'Wand' ist. Wenn Sie dieses Feld leer lassen, wird keine Filterung vorgenommen</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="194"/>
@@ -1727,7 +1727,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="150"/>
       <source>StructuralSystem</source>
-      <translation type="unfinished">StructuralSystem</translation>
+      <translation>StrukturiertesSystem</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
@@ -2212,7 +2212,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
       <translation>Höhe (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Tür</translation>
     </message>
@@ -2244,7 +2244,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>Vorne</translation>
+      <translation>Vorderansicht</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2691,7 +2691,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>VerschiedeneMaterialien</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
@@ -2953,7 +2953,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="../../ArchPanel.py" line="120"/>
       <source>PanelSheet</source>
-      <translation type="unfinished">PanelSheet</translation>
+      <translation>PaneelBlatt</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="157"/>
@@ -3578,12 +3578,12 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Seitenansicht von links</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Rechts</translation>
+      <translation>Seitenansicht von rechts</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -3779,7 +3779,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Erstelle mehrere Bogenstrukturen aus einer ausgewählten Basis, indem jede ausgewählte Kante als Extrusionspfad verwendet wird</translation>
     </message>
   </context>
   <context>
@@ -3792,7 +3792,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system from a selected structure and axis</translation>
+      <translation>Erstelle ein Struktursystem aus einer ausgewählten Struktur und Achse</translation>
     </message>
   </context>
   <context>
@@ -3805,7 +3805,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Erzeugt eine Struktur von Grund auf oder aus einem ausgewählten Objekt (Skizze, Draht, Fläche oder Festkörper)</translation>
     </message>
   </context>
   <context>
@@ -3900,7 +3900,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <location filename="../../ArchStructure.py" line="708"/>
       <location filename="../../ArchPanel.py" line="417"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>Der Typ Flächenerzeuger, der verwendet werden soll, um das Profil dieses Objekts zu erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="711"/>
@@ -4216,7 +4216,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <location filename="../../ArchProfile.py" line="295"/>
       <location filename="../../ArchProfile.py" line="443"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Dicke des Netzes</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="296"/>
@@ -4232,7 +4232,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="386"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Dicke der Netze</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="387"/>
@@ -4242,7 +4242,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="416"/>
       <source>Thickness of the legs</source>
-      <translation type="unfinished">Thickness of the legs</translation>
+      <translation>Dicke der Beine</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="599"/>
@@ -4447,7 +4447,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>First- und Gratlängen des gesamten Daches</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="304"/>
@@ -4462,12 +4462,12 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchReference.py" line="93"/>
       <source>The base file this component is built upon</source>
-      <translation type="unfinished">The base file this component is built upon</translation>
+      <translation>Die Basisdatei, auf der diese Komponente basiert</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>
       <source>The part to use from the base file</source>
-      <translation type="unfinished">The part to use from the base file</translation>
+      <translation>Der zu verwendende Teil aus der Basisdatei</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="97"/>
@@ -4477,7 +4477,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchReference.py" line="105"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Verschmelze Objekte aus gleichem Werkstoff</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="378"/>
@@ -4487,7 +4487,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchReference.py" line="381"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Wenn aktiviert, werden die Farben der verknüpften Datei aktualisiert</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="114"/>
@@ -5513,7 +5513,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="253"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>Die für Texte zu verwendende Schriftart</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="256"/>
@@ -5993,92 +5993,92 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation type="unfinished">Structure tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation>Achsenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation type="unfinished">Panel tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation>Materialwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation>Rohrwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation>Arch Werkzeuge</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation>Draft-Werkzeuge zum Erstellen</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation>Draft-Werkzeuge zum Beschriften</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation>Draft-Werkzeuge zum Bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
-      <translation>Entwurfs-Einrastung</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
-      <source>&amp;Arch</source>
-      <translation>&amp;Arch</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
-      <source>Utilities</source>
-      <translation>Dienstprogramme</translation>
+      <translation>Draft-Einrasten</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="184"/>
       <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
-      <source>&amp;Draft</source>
-      <translation>&amp;Entwurf</translation>
+      <source>&amp;Arch</source>
+      <translation>&amp;Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
+      <source>Utilities</source>
+      <translation>Dienstprogramme</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Draft</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation>Erstellung</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Anmerkung</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation>Änderung</translation>
     </message>
@@ -6086,12 +6086,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>Erstellen verschiedener Arten von Bewehrungsstäben, einschließlich U-förmiger, L-förmiger und bügelförmiger Stäbe</translation>
     </message>
@@ -6803,23 +6803,23 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
       <translation>Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
       <translation>Import / Export</translation>
     </message>

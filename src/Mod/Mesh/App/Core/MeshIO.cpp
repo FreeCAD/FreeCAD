@@ -188,7 +188,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else {
         // read file
         bool ok = false;
-        if (fi.hasExtension("stl") || fi.hasExtension("ast")) {
+        if (fi.hasExtension({"stl", "ast"})) {
             ok = LoadSTL(str);
         }
         else if (fi.hasExtension("iv")) {
@@ -196,7 +196,7 @@ bool MeshInput::LoadAny(const char* FileName)
             if (ok && _rclMesh.CountFacets() == 0)
                 Base::Console().Warning("No usable mesh found in file '%s'", FileName);
         }
-        else if (fi.hasExtension("nas") || fi.hasExtension("bdf")) {
+        else if (fi.hasExtension({"nas", "bdf"})) {
             ok = LoadNastran( str );
         }
         else if (fi.hasExtension("obj")) {
@@ -412,7 +412,7 @@ bool MeshInput::LoadSMF (std::istream &rstrIn)
 bool MeshInput::LoadOFF (std::istream &rstrIn)
 {
     // http://edutechwiki.unige.ch/en/3D_file_format
-    boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    boost::regex rx_n(R"(^\s*([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*$)");
     boost::cmatch what;
 
     bool colorPerVertex = false;
@@ -842,7 +842,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
         boost::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
         boost::regex rx_s("\\b([-+]?[0-9]+)\\s*");
         boost::regex rx_u("\\b([0-9]+)\\s*");
-        boost::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
+        boost::regex rx_f(R"(^\s*3\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*)");
         boost::smatch what;
 
         for (std::size_t i = 0; i < v_count && std::getline(inp, line); i++) {
@@ -1066,7 +1066,7 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f("^f\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    boost::regex rx_f(R"(^f\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*$)");
     boost::regex rx_e("\\s*]\\s*");
     boost::cmatch what;
 
@@ -1711,13 +1711,13 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("py")) {
         return MeshIO::PY;
     }
-    else if (file.hasExtension("wrl") || file.hasExtension("vrml")) {
+    else if (file.hasExtension({"wrl", "vrml"})) {
         return MeshIO::VRML;
     }
     else if (file.hasExtension("wrz")) {
         return MeshIO::WRZ;
     }
-    else if (file.hasExtension("nas") || file.hasExtension("bdf")) {
+    else if (file.hasExtension({"nas", "bdf"})) {
         return MeshIO::NAS;
     }
     else if (file.hasExtension("amf")) {
@@ -2716,7 +2716,7 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
     out.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd="
+    out << R"(<X3D profile="Immersive" version="3.2" xmlns:xsd=)"
         << "\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation="
         << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\" width=\"1280px\"  height=\"1024px\">\n";
     out << "  <head>\n"
@@ -2735,7 +2735,7 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
                 << "\" centerOfRotation=\"" << cnt.x << " " << cnt.y << " " << cnt.z
                 << "\" position=\"" << pos.x << " " << pos.y << " " << pos.z
                 << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " " << angle
-                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << R"(" description="camera" fieldOfView="0.9">)"
                 << "</Viewpoint>\n";
         };
 

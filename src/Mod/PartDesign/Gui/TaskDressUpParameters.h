@@ -49,8 +49,8 @@ public:
     TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
     ~TaskDressUpParameters() override;
 
-    const std::vector<std::string> getReferences(void) const;
-    Part::Feature *getBase(void) const;
+    const std::vector<std::string> getReferences() const;
+    Part::Feature *getBase() const;
 
     void hideObject();
     void showObject();
@@ -68,7 +68,7 @@ protected Q_SLOTS:
     void doubleClicked(QListWidgetItem* item);
     void setSelection(QListWidgetItem* current);
     void itemClickedTimeout();
-    virtual void onRefDeleted(void) = 0;
+    virtual void onRefDeleted() = 0;
     void createDeleteAction(QListWidget* parentList);
     void createAddAllEdgesAction(QListWidget* parentList);
 

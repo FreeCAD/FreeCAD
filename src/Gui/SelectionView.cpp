@@ -333,7 +333,7 @@ void SelectionView::select(QListWidgetItem* item)
         //Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
         //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-        QString cmd = QString::fromLatin1("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0],elements[1]);
+        QString cmd = QString::fromLatin1(R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))").arg(elements[0],elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
         e.ReportException();
@@ -350,7 +350,7 @@ void SelectionView::deselect()
         return;
 
     //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0],elements[1]);
+    QString cmd = QString::fromLatin1(R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))").arg(elements[0],elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
@@ -457,7 +457,7 @@ void SelectionView::touch()
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.size() < 2)
         return;
-    QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0],elements[1]);
+    QString cmd = QString::fromLatin1(R"(App.getDocument("%1").getObject("%2").touch())").arg(elements[0],elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
     }catch(Base::Exception &e) {
@@ -475,19 +475,19 @@ void SelectionView::toPython()
         return;
 
     try {
-        QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0], elements[1]);
+        QString cmd = QString::fromLatin1(R"(obj = App.getDocument("%1").getObject("%2"))").arg(elements[0], elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         if (elements.length() > 2) {
             App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
             App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
             QString property = getProperty(obj);
 
-            cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").%3")
+            cmd = QString::fromLatin1(R"(shp = App.getDocument("%1").getObject("%2").%3)")
                     .arg(elements[0], elements[1], property);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 
             if (supportPart(obj, elements[2])) {
-                cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").%3.%4")
+                cmd = QString::fromLatin1(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
                         .arg(elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
@@ -512,7 +512,7 @@ void SelectionView::showPart()
         if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
             try {
                 Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
-                QString cmd = QString::fromLatin1("%1.show(App.getDocument(\"%2\").getObject(\"%3\").%4.%5)")
+                QString cmd = QString::fromLatin1(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
                         .arg(module, elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }

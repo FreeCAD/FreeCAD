@@ -53,6 +53,12 @@ bytes : bytes\n    Python bytes-like object.</UserDocu>
             </Documentation>
             <Parameter Name="Date" Type="Object" />
         </Attribute>
+        <Attribute Name="Type">
+            <Documentation>
+                <UserDocu>String representing the type of this item (text only, no markup allowed).</UserDocu>
+            </Documentation>
+            <Parameter Name="Type" Type="Object" />
+        </Attribute>
         <Attribute Name="Description">
             <Documentation>
                 <UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>

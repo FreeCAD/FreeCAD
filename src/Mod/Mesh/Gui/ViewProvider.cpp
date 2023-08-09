@@ -777,19 +777,25 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setCheckable(true);
     act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == HighlighMode::Component);
-    func->toggle(act, std::bind(&ViewProviderMesh::setHighlightedComponents, this, sp::_1));
+    func->toggle(act, [this](bool on){
+        this->setHighlightedComponents(on);
+    });
 
     QAction* seg = menu->addAction(QObject::tr("Display segments"));
     seg->setCheckable(true);
     seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == HighlighMode::Segment);
-    func->toggle(seg, std::bind(&ViewProviderMesh::setHighlightedSegments, this, sp::_1));
+    func->toggle(seg, [this](bool on){
+        this->setHighlightedSegments(on);
+    });
 
     QAction* col = menu->addAction(QObject::tr("Display colors"));
     col->setVisible(canHighlightColors());
     col->setCheckable(true);
     col->setChecked(highlightMode == HighlighMode::Color);
-    func->toggle(col, std::bind(&ViewProviderMesh::setHighlightedColors, this, sp::_1));
+    func->toggle(col, [this](bool on){
+        this->setHighlightedColors(on);
+    });
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -994,7 +1000,9 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                     Gui::TimerFunction* func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction(std::bind(&MeshSplit::cutMesh, split));
+                    func->setFunction([split](){
+                        split->cutMesh();
+                    });
                     func->singleShot(0);
                 }
             }
@@ -1055,7 +1063,9 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                     Gui::TimerFunction* func = new Gui::TimerFunction();
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
-                    func->setFunction(std::bind(&MeshSplit::trimMesh, split));
+                    func->setFunction([split](){
+                        split->trimMesh();
+                    });
                     func->singleShot(0);
                 }
             }

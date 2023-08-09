@@ -247,7 +247,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation>Расстояние между размерным текстом и размерной линией</translation>
+      <translation>Расстояние между текстом и размерной линией</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
@@ -288,7 +288,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="349"/>
       <source>Tick</source>
-      <translation>Зацеп</translation>
+      <translation>Засечка</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
       <source>Dimension overshoot</source>
-      <translation>Нахлёст размерной линии</translation>
+      <translation>Вынос размерной линии</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
@@ -324,7 +324,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>Extension overshoot</source>
-      <translation>Дополнительное расширение</translation>
+      <translation>Выступ выносной линии</translation>
     </message>
   </context>
   <context>
@@ -379,7 +379,7 @@ It must be at least 2.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation>Количество линий симметрии в круговом массиве.</translation>
+      <translation>Количество осей симметрии в круговом массиве.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="132"/>
@@ -445,7 +445,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
       <source>Link array</source>
-      <translation>Массив ссылок</translation>
+      <translation>Массив из связанных объектов</translation>
     </message>
   </context>
   <context>
@@ -453,7 +453,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation>Ортогональный массив</translation>
+      <translation>Прямоугольный массив</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
@@ -581,7 +581,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>Массив ссылок</translation>
+      <translation>Массив из связанных объектов</translation>
     </message>
   </context>
   <context>
@@ -683,7 +683,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>Массив ссылок</translation>
+      <translation>Массив из связанных объектов</translation>
     </message>
   </context>
   <context>
@@ -1151,7 +1151,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="314"/>
       <source>Tick</source>
-      <translation>Зацеп</translation>
+      <translation>Засечка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="319"/>
@@ -1694,7 +1694,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation>Зацеп</translation>
+      <translation>Засечка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="343"/>
@@ -3224,43 +3224,43 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Осадка</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="288"/>
-      <location filename="../../importDWG.py" line="306"/>
-      <location filename="../../importDWG.py" line="325"/>
-      <location filename="../../importDWG.py" line="372"/>
-      <location filename="../../importDWG.py" line="386"/>
-      <location filename="../../importDWG.py" line="397"/>
+      <location filename="../../importDWG.py" line="292"/>
+      <location filename="../../importDWG.py" line="310"/>
+      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="376"/>
+      <location filename="../../importDWG.py" line="390"/>
+      <location filename="../../importDWG.py" line="401"/>
       <source>Converting:</source>
       <translation>Конвертировать:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="292"/>
-      <location filename="../../importDWG.py" line="311"/>
-      <location filename="../../importDWG.py" line="329"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <location filename="../../importDWG.py" line="315"/>
+      <location filename="../../importDWG.py" line="333"/>
       <source>Conversion successful</source>
       <translation>Конвертация прошла успешно</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="297"/>
-      <location filename="../../importDWG.py" line="377"/>
+      <location filename="../../importDWG.py" line="301"/>
+      <location filename="../../importDWG.py" line="381"/>
       <source>LibreDWG converter not found</source>
       <translation>Не найден конвертер LibreDWG</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="316"/>
-      <location filename="../../importDWG.py" line="391"/>
+      <location filename="../../importDWG.py" line="320"/>
+      <location filename="../../importDWG.py" line="395"/>
       <source>ODA converter not found</source>
       <translation>Не найден конвертер ODA</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="334"/>
-      <location filename="../../importDWG.py" line="402"/>
+      <location filename="../../importDWG.py" line="338"/>
+      <location filename="../../importDWG.py" line="406"/>
       <source>QCAD converter not found</source>
       <translation>Не найден конвертер QCAD</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="339"/>
-      <location filename="../../importDWG.py" line="407"/>
+      <location filename="../../importDWG.py" line="343"/>
+      <location filename="../../importDWG.py" line="411"/>
       <source>No suitable external DWG converter has been found.
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
@@ -3271,7 +3271,7 @@ https://wiki.freecad.org/Import_Export_Preferences</source>
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="279"/>
+      <location filename="../../importDWG.py" line="283"/>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
@@ -3338,7 +3338,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="773"/>
+      <location filename="../../draftutils/gui_utils.py" line="821"/>
       <location filename="../../draftutils/utils.py" line="1052"/>
       <location filename="../../draftmake/make_patharray.py" line="171"/>
       <location filename="../../draftmake/make_patharray.py" line="358"/>
@@ -3359,7 +3359,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="782"/>
+      <location filename="../../draftutils/gui_utils.py" line="830"/>
       <location filename="../../draftmake/make_patharray.py" line="180"/>
       <location filename="../../draftmake/make_patharray.py" line="191"/>
       <location filename="../../draftmake/make_patharray.py" line="367"/>
@@ -3381,37 +3381,37 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Нет графического интерфейса</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <location filename="../../draftutils/gui_utils.py" line="168"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Невозможно вставить новый объект в масштабированную деталь</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <location filename="../../draftutils/gui_utils.py" line="274"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Символ не поддерживается. Испольуйте базовые символы.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <location filename="../../draftutils/gui_utils.py" line="340"/>
       <source>Visibility off; removed from list: </source>
       <translation>Видимость выключена; удалена из списка: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="656"/>
+      <location filename="../../draftutils/gui_utils.py" line="704"/>
       <source>image is Null</source>
       <translation>изображение пустое</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="662"/>
+      <location filename="../../draftutils/gui_utils.py" line="710"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>имя файла не существует в системе или в файле ресурсов</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="721"/>
+      <location filename="../../draftutils/gui_utils.py" line="769"/>
       <source>unable to load texture</source>
       <translation>невозможно загрузить текстуру</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="791"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Не имеет 'ViewObject.RootNode'.</translation>
     </message>
@@ -3438,7 +3438,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftutils/utils.py" line="657"/>
       <source>Vertices:</source>
-      <translation>Вершины | Узлы:</translation>
+      <translation>Вершины:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="661"/>
@@ -3459,7 +3459,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftutils/utils.py" line="712"/>
       <source>Objects have different placements. Distance between the two base points: </source>
-      <translation>Объекты имеют разные размещения. Расстояние между двумя базовыми точками: </translation>
+      <translation>Объекты имеют разные позиции. Расстояние между двумя базовыми точками: </translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="715"/>
@@ -3510,7 +3510,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="274"/>
       <source>Working plane aligned to global placement of</source>
-      <translation>Рабочая плоскость выровнена по глобальному размещению</translation>
+      <translation>Рабочая плоскость, привязанная к глобальному расположению</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
@@ -3527,7 +3527,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="147"/>
       <source>Path array</source>
-      <translation>Массив путей</translation>
+      <translation>Массив по кривой</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="80"/>
@@ -3549,7 +3549,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftguitools/gui_labels.py" line="201"/>
       <location filename="../../draftguitools/gui_labels.py" line="228"/>
       <source>Pick text position</source>
-      <translation>Выбрать положение текста</translation>
+      <translation>Указать положение текста</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="83"/>
@@ -3557,7 +3557,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftguitools/gui_dimensions.py" line="123"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
-      <translation>Укажите первую точку</translation>
+      <translation>Указать первую точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="167"/>
@@ -3580,7 +3580,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftguitools/gui_beziers.py" line="150"/>
       <location filename="../../draftguitools/gui_beziers.py" line="153"/>
       <source>Pick next point</source>
-      <translation>Укажите следующую точку</translation>
+      <translation>Указать следующую точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="334"/>
@@ -3595,7 +3595,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_join.py" line="76"/>
       <source>Select an object to join</source>
-      <translation>Выберите объект для присоединения</translation>
+      <translation>Выбрать как объект для присоединения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="99"/>
@@ -3610,7 +3610,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="76"/>
       <source>Pick location point</source>
-      <translation>Выберите точку местоположения</translation>
+      <translation>Выбрать точку расположения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="124"/>
@@ -4553,7 +4553,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <location filename="../../draftmake/make_orthoarray.py" line="275"/>
       <source>Orthogonal array</source>
-      <translation>Ортогональный массив</translation>
+      <translation>Прямоугольный массив</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
@@ -5157,53 +5157,53 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Сведение</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="230"/>
+      <location filename="../../draftfunctions/downgrade.py" line="245"/>
       <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Обновление: Неизвестный метод силы:</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="238"/>
+      <location filename="../../draftfunctions/downgrade.py" line="253"/>
       <source>Found 1 block: exploding it</source>
       <translation>Найден 1 блок: развёртываю его</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="246"/>
+      <location filename="../../draftfunctions/downgrade.py" line="262"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Найдено 1 соединение нескольких тел: Развёртывание тел</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="253"/>
+      <location filename="../../draftfunctions/downgrade.py" line="271"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Найден один параметрический объект: уничтожаю его зависимости</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="261"/>
+      <location filename="../../draftfunctions/downgrade.py" line="279"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Найдены 2 объекта: вычитаю их</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="268"/>
+      <location filename="../../draftfunctions/downgrade.py" line="286"/>
       <source>Found several faces: splitting them</source>
       <translation>Найдено несколько граней: разделяю их</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="273"/>
+      <location filename="../../draftfunctions/downgrade.py" line="291"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Найдено несколько объектов: вычитаю их из первого</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="278"/>
+      <location filename="../../draftfunctions/downgrade.py" line="297"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Найдена 1 грань: извлекаю ее каркас</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="284"/>
+      <location filename="../../draftfunctions/downgrade.py" line="303"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Найден только каркас: извлекаем его края</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/downgrade.py" line="288"/>
+      <location filename="../../draftfunctions/downgrade.py" line="307"/>
       <source>No more downgrade possible</source>
       <translation>Дальнейшее разделение не возможно</translation>
     </message>
@@ -5669,7 +5669,7 @@ You may also select a three vertices or a Working Plane Proxy.</source>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation>Массив путей</translation>
+      <translation>Массив по кривой</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="76"/>
