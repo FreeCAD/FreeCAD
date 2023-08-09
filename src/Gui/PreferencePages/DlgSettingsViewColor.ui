@@ -445,9 +445,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>checkBoxPreselection</tabstop>
-  <tabstop>HighlightColor</tabstop>
-  <tabstop>checkBoxSelection</tabstop>
-  <tabstop>SelectionColor</tabstop>
   <tabstop>SelectionColor_Background</tabstop>
   <tabstop>backgroundColorFrom</tabstop>
   <tabstop>backgroundColorTo</tabstop>
