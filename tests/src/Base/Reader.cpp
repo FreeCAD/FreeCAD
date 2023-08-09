@@ -9,12 +9,7 @@
 #include <fmt/format.h>
 #include <fstream>
 
-#ifdef _MSC_VER
-#include <filesystem>
-namespace fs = std::filesystem;
-#else
 namespace fs = boost::filesystem;
-#endif
 
 class ReaderTest: public ::testing::Test
 {
@@ -39,10 +34,10 @@ protected:
         auto stringData =
             R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>";
         std::istringstream stream(stringData);
-        std::ofstream fileStream(_tempFile);
+        std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
         fileStream.close();
-        std::ifstream inputStream(_tempFile);
+        std::ifstream inputStream(_tempFile.string());
         _reader = std::make_unique<Base::XMLReader>(_tempFile.string().c_str(), inputStream);
     }
 
@@ -91,7 +86,7 @@ TEST_F(ReaderTest, beginCharStreamAlreadyBegun)
     Reader()->beginCharStream();
 
     // Act & Assert
-    EXPECT_THROW(Reader()->beginCharStream(), Base::XMLParseException);
+    EXPECT_THROW(Reader()->beginCharStream(), Base::XMLParseException);// NOLINT
 }
 
 TEST_F(ReaderTest, charStreamGood)
@@ -115,7 +110,7 @@ TEST_F(ReaderTest, charStreamBad)
     Reader()->readElement("data");
 
     // Act & Assert
-    EXPECT_THROW(Reader()->charStream(), Base::XMLParseException);
+    EXPECT_THROW(Reader()->charStream(), Base::XMLParseException);// NOLINT
 }
 
 TEST_F(ReaderTest, endCharStreamGood)
