@@ -355,18 +355,26 @@ void DlgSettingsGeneral::loadSettings()
 
 void DlgSettingsGeneral::saveThemes()
 {
-    // First we save the name of the theme
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
 
-    std::string theme = ui->themesCombobox->currentText().toStdString();
-    hGrp->SetASCII("Theme", theme);
+    // First we check if the theme has actually changed.
+    std::string previousTheme = hGrp->GetASCII("Theme", "").c_str();
+    std::string newTheme = ui->themesCombobox->currentText().toStdString();
+
+    if (previousTheme == newTheme) {
+        themeChanged = false;
+        return;
+    }
+
+    // Save the name of the theme
+    hGrp->SetASCII("Theme", newTheme);
 
     // Then we apply the themepack.
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
 
     for (const auto& pack : packs) {
-        if (pack.first == theme) {
+        if (pack.first == newTheme) {
 
             Application::Instance->prefPackManager()->apply(pack.first);
             break;
