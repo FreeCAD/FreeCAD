@@ -588,7 +588,7 @@ class EditDependency:
         # display name, but keeping track of their official name as well (stored in the UserRole)
         for repo in AM_INSTANCE.item_model.repos:
             repo_dict[repo.display_name.lower()] = (repo.display_name, repo.name)
-        sorted_keys = sorted(repo_dict.keys())
+        sorted_keys = sorted(repo_dict)
         for item in sorted_keys:
             self.dialog.dependencyComboBox.addItem(
                 repo_dict[item][0], repo_dict[item][1]
