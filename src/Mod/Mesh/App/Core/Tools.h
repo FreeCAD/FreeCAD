@@ -88,9 +88,9 @@ protected:
   Wm4::Sphere3<float> _akSphere;
   bool _bTooFewPoints;
 
-private:
-  MeshSearchNeighbours (const MeshSearchNeighbours&);
-  void operator = (const MeshSearchNeighbours&);
+public:
+  MeshSearchNeighbours (const MeshSearchNeighbours&) = delete;
+  void operator = (const MeshSearchNeighbours&) = delete;
 };
 
 inline bool MeshSearchNeighbours::CheckDistToFacet (const MeshFacet &rclF)

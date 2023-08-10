@@ -216,7 +216,6 @@ public:
     virtual double toDouble(Base::InputStream&) const = 0;
     virtual int getSizeOf() const = 0;
 
-private:
     Converter(const Converter&) = delete;
     Converter(Converter&&) = delete;
     Converter& operator= (const Converter&) = delete;
@@ -307,7 +306,7 @@ protected:
         return seekoff(pos, std::ios_base::beg);
     }
 
-private:
+public:
     DataStreambuf(const DataStreambuf&) = delete;
     DataStreambuf(DataStreambuf&&) = delete;
     DataStreambuf& operator=(const DataStreambuf&) = delete;

@@ -133,10 +133,9 @@ public:
         return fWhatToShow;
     }
 
-private:
     // unimplemented copy ctor and assignment operator
     DOMPrintFilter(const DOMPrintFilter&) = delete;
-    DOMPrintFilter & operator = (const DOMPrintFilter&);
+    DOMPrintFilter & operator = (const DOMPrintFilter&) = delete;
 
    ShowType fWhatToShow;
 };

@@ -118,6 +118,8 @@ private:
     }
 
     ~FemPostObjectSelectionObserver() = default;
+
+public:
     FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
     FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
 
