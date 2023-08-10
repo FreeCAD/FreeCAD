@@ -106,7 +106,7 @@ class ViewProviderDraft(object):
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
                                                "Defines an SVG pattern."))
-            patterns = list(utils.svg_patterns().keys())
+            patterns = list(utils.svg_patterns())
             patterns.sort()
             vobj.Pattern = ["None"] + patterns
 
@@ -283,7 +283,7 @@ class ViewProviderDraft(object):
                             path = vobj.TextureImage
                     if not path:
                         if hasattr(vobj, "Pattern"):
-                            if str(vobj.Pattern) in list(utils.svg_patterns().keys()):
+                            if str(vobj.Pattern) in utils.svg_patterns():
                                 path = utils.svg_patterns()[vobj.Pattern][1]
                             else:
                                 path = "None"
