@@ -248,10 +248,10 @@ protected:
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
-private:
+public:
   // forbidden
-  PropertyContainer(const PropertyContainer&);
-  PropertyContainer& operator = (const PropertyContainer&);
+  PropertyContainer(const PropertyContainer&) = delete;
+  PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
   DynamicProperty dynamicProps;

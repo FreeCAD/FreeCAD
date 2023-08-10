@@ -158,11 +158,11 @@ public:
      */
     Gui::Document* operator->() const noexcept;
 
-private:
     // disable
-    DocumentWeakPtrT(const DocumentWeakPtrT&);
-    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&);
+    DocumentWeakPtrT(const DocumentWeakPtrT&) = delete;
+    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&) = delete;
 
+private:
     class Private;
     std::unique_ptr<Private> d;
 };
@@ -220,9 +220,11 @@ public:
 
 private:
     ViewProviderDocumentObject* _get() const noexcept;
+
+public:
     // disable
-    ViewProviderWeakPtrT(const ViewProviderWeakPtrT&);
-    ViewProviderWeakPtrT& operator=(const ViewProviderWeakPtrT&);
+    ViewProviderWeakPtrT(const ViewProviderWeakPtrT&) = delete;
+    ViewProviderWeakPtrT& operator=(const ViewProviderWeakPtrT&) = delete;
 
 private:
     class Private;
@@ -297,10 +299,9 @@ public:
         return ptr.get<T>();
     }
 
-private:
     // disable
-    WeakPtrT(const WeakPtrT&);
-    WeakPtrT& operator=(const WeakPtrT&);
+    WeakPtrT(const WeakPtrT&) = delete;
+    WeakPtrT& operator=(const WeakPtrT&) = delete;
 
 private:
     ViewProviderWeakPtrT ptr;

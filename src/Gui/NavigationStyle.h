@@ -114,6 +114,7 @@ public:
 public:
     NavigationStyle();
     ~NavigationStyle() override;
+    NavigationStyle(const NavigationStyle&) = delete;
 
     NavigationStyle& operator = (const NavigationStyle& ns);
     void setViewer(View3DInventorViewer*);
@@ -265,7 +266,6 @@ protected:
     //@}
 
 private:
-    NavigationStyle(const NavigationStyle&);
     struct NavigationStyleP* pimpl;
     friend struct NavigationStyleP;
 };

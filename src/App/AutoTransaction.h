@@ -32,7 +32,7 @@ class Application;
 
 /// Helper class to manager transaction (i.e. undo/redo)
 class AppExport AutoTransaction {
-private:
+public:
     /// Private new operator to prevent heap allocation
     void* operator new (std::size_t) = delete;
 
@@ -121,7 +121,7 @@ public:
 
     friend class Application;
 
-private:
+public:
     /// Private new operator to prevent heap allocation
     void* operator new (std::size_t) = delete;
 

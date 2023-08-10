@@ -286,11 +286,12 @@ protected:
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
 
-private:
+public:
     // forbidden
-    Property(const Property&);
-    Property& operator = (const Property&);
+    Property(const Property&) = delete;
+    Property& operator = (const Property&) = delete;
 
+private:
     // Sync status with Property_Type
     void syncType(unsigned type);
 
