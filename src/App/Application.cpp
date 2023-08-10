@@ -114,6 +114,8 @@
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
+#include "StringHasherPy.h"
+#include "StringIDPy.h"
 #include "TextDocument.h"
 #include "Transactions.h"
 #include "VRMLObject.h"
@@ -310,6 +312,9 @@ void Application::setupPythonTypes()
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
+
+    Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
+    Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");
 
     // Add document types
     Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
@@ -2108,6 +2113,10 @@ void Application::initTypes()
     App::FunctionExpression        ::init();
     App::RangeExpression           ::init();
     App::PyObjectExpression        ::init();
+
+    // Topological naming classes
+    App::StringHasher              ::init();
+    App::StringID                  ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
