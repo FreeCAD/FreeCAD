@@ -84,6 +84,8 @@ void DlgSettingsTheme::saveStyleSheet()
     hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
     bool tiledBackground = hGrp->GetBool("TiledBackground", false);
     Application::Instance->setStyleSheet(sheet.toString(), tiledBackground);
+
+    styleSheetChanged = false;
 }
 
 void DlgSettingsTheme::loadStyleSheet()
@@ -142,7 +144,6 @@ void DlgSettingsTheme::loadStyleSheet()
 
 void DlgSettingsTheme::onStyleSheetChanged(int index) {
     Q_UNUSED(index);
-    Base::Console().Warning("Hello");
     styleSheetChanged = true;
 }
 
