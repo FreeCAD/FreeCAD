@@ -386,7 +386,7 @@ void MaterialsEditor::onSave(bool checked)
 {
     Q_UNUSED(checked)
 
-    MaterialSave dialog(this);
+    MaterialSave dialog(&_material, this);
     dialog.setModal(true);
     if(dialog.exec() == QDialog::Accepted)
     {
@@ -438,6 +438,8 @@ void MaterialsEditor::addMaterials(QStandardItem &parent, const QString &top, co
                 card->setData(QVariant(material.getUUID()), Qt::UserRole);
             } catch (Materials::ModelNotFound &e) {
                 Base::Console().Log("Model not found error\n");
+            } catch (Materials::MaterialNotFound &e) {
+                // Base::Console().Log("Material not found error\n");
             } catch (std::exception &e) {
                 Base::Console().Log("Exception '%s'\n", e.what());
             }
