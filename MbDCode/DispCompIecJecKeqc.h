@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DispCompIecJecKec.h"
@@ -8,7 +16,7 @@ namespace MbD {
         //priIeJeKepEK ppriIeJeKepEKpEK pAjOKepEKT ppAjOKepEKpEK 
     public:
         DispCompIecJecKeqc();
-        DispCompIecJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

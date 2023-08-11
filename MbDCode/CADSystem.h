@@ -1,21 +1,27 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include<memory>
 
+#include "ExternalSystem.h"
 #include "System.h"
 
-//using namespace MbD;
-
-//namespace CAD {
 namespace MbD {
-	//class System;
 
 	class CADSystem
 	{
 		//
 	public:
 		CADSystem() {
-			mbdSystem->externalSystem = this;
+			mbdSystem->initialize();
+			mbdSystem->externalSystem->cadSystem = this;
 		}
 
 		void outputFor(AnalysisType type);
@@ -23,7 +29,9 @@ namespace MbD {
 		void logString(double value);
 		void runOndselPiston();
 		void runPiston();
+		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
+		void updateFromMbD();
 
 		std::shared_ptr<System> mbdSystem = std::make_shared<System>();
 

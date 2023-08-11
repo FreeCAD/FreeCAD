@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "ConstraintIJ.h"
@@ -9,7 +17,7 @@ namespace MbD {
     {
         //axisI axisJ aAijIeJe 
     public:
-        DirectionCosineConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void initaAijIeJe();

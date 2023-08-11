@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "GearConstraintIqcJqc.h"
 #include "EndFrameqc.h"
 #include "OrbitAngleZIeqcJeqc.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-MbD::GearConstraintIqcJqc::GearConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : GearConstraintIqcJc(frmi, frmj)
+MbD::GearConstraintIqcJqc::GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIqcJc(frmi, frmj)
 {
 }
 

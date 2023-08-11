@@ -1,9 +1,17 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "TranslationConstraintIJ.h"
 #include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIJ::TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
     ConstraintIJ(frmi, frmj), axisI(axisi)
 {
 }

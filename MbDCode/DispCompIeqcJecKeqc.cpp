@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DispCompIeqcJecKeqc.h"
 #include "EndFrameqc.h"
 
@@ -7,7 +15,7 @@ DispCompIeqcJecKeqc::DispCompIeqcJecKeqc()
 {
 }
 
-DispCompIeqcJecKeqc::DispCompIeqcJecKeqc(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk) : DispCompIecJecKeqc(frmi, frmj, frmk, axisk)
+DispCompIeqcJecKeqc::DispCompIeqcJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIecJecKeqc(frmi, frmj, frmk, axisk)
 {
 }
 

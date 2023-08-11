@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "ScrewJoint.h"
 #include "CREATE.h"
 #include "System.h"
@@ -28,7 +36,7 @@ void MbD::ScrewJoint::initializeGlobally()
 	}
 }
 
-void MbD::ScrewJoint::connectsItoJ(EndFrmcptr frmIe, EndFrmcptr frmJe)
+void MbD::ScrewJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
 {
 	//"Subsequent prescribed motions may make frmIe, frmJe become prescribed end frames."
 	//"Use newCopyEndFrameqc to prevent efrms from becoming EndFrameqct."

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <string>
@@ -55,9 +63,9 @@ namespace MbD {
 		virtual void fillqsudot(FColDsptr col);
 		virtual void fillqsudotPlam(FColDsptr col);
 		virtual void fillqsudotPlamDeriv(FColDsptr col);
-		virtual void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
+		virtual void fillqsudotWeights(DiagMatDsptr diagMat);
 		virtual void fillqsulam(FColDsptr col);
-		virtual void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat);
+		virtual void fillqsuWeights(DiagMatDsptr diagMat);
 		virtual void fillqsuWeightsSmall(FColDsptr col);
 		virtual void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
 		virtual void fillStaticError(FColDsptr col);
@@ -133,7 +141,6 @@ namespace MbD {
 		virtual std::shared_ptr<StateData> stateData();
 		virtual void storeCollisionState();
 		virtual void storeDynState();
-		virtual void submitToSystem();
 		virtual double suggestSmallerOrAcceptCollisionFirstStepSize(double hnew);
 		virtual double suggestSmallerOrAcceptCollisionStepSize(double hnew);
 		virtual double suggestSmallerOrAcceptDynFirstStepSize(double hnew);

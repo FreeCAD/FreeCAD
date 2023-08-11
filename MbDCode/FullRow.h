@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "FullVector.h"
@@ -5,9 +13,19 @@
 
 namespace MbD {
 	template<typename T>
+	class FullRow;
+	template<typename T>
+	using FRowsptr = std::shared_ptr<FullRow<T>>;
+	using FRowDsptr = std::shared_ptr<FullRow<double>>;
+	template<typename T>
 	class FullMatrix;
 	template<typename T>
+	using FMatsptr = std::shared_ptr<FullMatrix<T>>;
+	template<typename T>
 	class FullColumn;
+	template<typename T>
+	using FColsptr = std::shared_ptr<FullColumn<T>>;
+	using ListFRD = std::initializer_list<FRowDsptr>;
 
 	template<typename T>
 	class FullRow : public FullVector<T>
@@ -19,41 +37,46 @@ namespace MbD {
 		FullRow(int count, const T& value) : FullVector<T>(count, value) {}
 		FullRow(std::vector<T>::iterator begin, std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullRow(std::initializer_list<T> list) : FullVector<T>{ list } {}
-		std::shared_ptr<FullRow<T>> times(double a);
-		std::shared_ptr<FullRow<T>> negated();
-		std::shared_ptr<FullRow<T>> plusFullRow(std::shared_ptr<FullRow<T>> fullRow);
-		std::shared_ptr<FullRow<T>> minusFullRow(std::shared_ptr<FullRow<T>> fullRow);
-		T timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
+		FRowsptr<T> times(T a);
+		FRowsptr<T> negated();
+		FRowsptr<T> plusFullRow(FRowsptr<T> fullRow);
+		FRowsptr<T> minusFullRow(FRowsptr<T> fullRow);
+		T timesFullColumn(FColsptr<T> fullCol);
 		T timesFullColumn(FullColumn<T>* fullCol);
-		std::shared_ptr<FullRow<T>> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
-		std::shared_ptr<FullRow<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
-		void equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor);
-		void equalFullRow(std::shared_ptr<FullRow<T>> fullRow);
-		std::shared_ptr<FullColumn<T>> transpose();
-		std::shared_ptr<FullRow<T>> copy();
-		void atiplusFullRow(int j, std::shared_ptr<FullRow<T>> fullRow);
-		std::shared_ptr<FullMatrix<T>> transposeTimesFullRow(std::shared_ptr<FullRow<T>> fullRow);
+		FRowsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
+		FRowsptr<T> timesTransposeFullMatrix(FMatsptr<T> fullMat);
+		void equalSelfPlusFullRowTimes(FRowsptr<T> fullRow, double factor);
+		void equalFullRow(FRowsptr<T> fullRow);
+		FColsptr<T> transpose();
+		FRowsptr<T> copy();
+		void atiplusFullRow(int j, FRowsptr<T> fullRow);
+		FMatsptr<T> transposeTimesFullRow(FRowsptr<T> fullRow);
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
 
-	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::times(double a)
+	template<>
+	inline FRowDsptr FullRow<double>::times(double a)
 	{
-		int n = (int) this->size();
-		auto answer = std::make_shared<FullRow<T>>(n);
+		int n = (int)this->size();
+		auto answer = std::make_shared<FullRow<double>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) * a;
 		}
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::negated()
+	inline FRowsptr<T> FullRow<T>::times(T a)
+	{
+		assert(false);
+	}
+	template<typename T>
+	inline FRowsptr<T> FullRow<T>::negated()
 	{
 		return this->times(-1.0);
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::plusFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	inline FRowsptr<T> FullRow<T>::plusFullRow(FRowsptr<T> fullRow)
 	{
 		int n = (int) this->size();
 		auto answer = std::make_shared<FullRow<T>>(n);
@@ -63,7 +86,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::minusFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	inline FRowsptr<T> FullRow<T>::minusFullRow(FRowsptr<T> fullRow)
 	{
 		int n = (int) this->size();
 		auto answer = std::make_shared<FullRow<T>>(n);
@@ -73,7 +96,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline T FullRow<T>::timesFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+	inline T FullRow<T>::timesFullColumn(FColsptr<T> fullCol)
 	{
 		return this->timesFullColumn(fullCol.get());
 	}
@@ -88,7 +111,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	inline FRowsptr<T> FullRow<T>::timesTransposeFullMatrix(FMatsptr<T> fullMat)
 	{
 		//"a*bT = a(1,j)b(k,j)"
 		int ncol = fullMat->nrow();
@@ -99,22 +122,22 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline void FullRow<T>::equalSelfPlusFullRowTimes(std::shared_ptr<FullRow<T>> fullRow, double factor)
+	inline void FullRow<T>::equalSelfPlusFullRowTimes(FRowsptr<T> fullRow, double factor)
 	{
 		this->equalSelfPlusFullVectortimes(fullRow, factor);
 	}
 	template<typename T>
-	inline void FullRow<T>::equalFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	inline void FullRow<T>::equalFullRow(FRowsptr<T> fullRow)
 	{
 		this->equalArrayAt(fullRow, 0);
 	}
 	template<typename T>
-	inline std::shared_ptr<FullColumn<T>> FullRow<T>::transpose()
+	inline FColsptr<T> FullRow<T>::transpose()
 	{
 		return std::make_shared<FullColumn<T>>(*this);
 	}
 	template<>
-	inline std::shared_ptr<FullRow<double>> FullRow<double>::copy()
+	inline FRowDsptr FullRow<double>::copy()
 	{
 		auto n = (int)this->size();
 		auto answer = std::make_shared<FullRow<double>>(n);
@@ -125,7 +148,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline void FullRow<T>::atiplusFullRow(int j1, std::shared_ptr<FullRow<T>> fullRow)
+	inline void FullRow<T>::atiplusFullRow(int j1, FRowsptr<T> fullRow)
 	{
 		for (int jj = 0; jj < fullRow->size(); jj++)
 		{
@@ -134,7 +157,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline std::shared_ptr<FullMatrix<T>> FullRow<T>::transposeTimesFullRow(std::shared_ptr<FullRow<T>> fullRow)
+	inline FMatsptr<T> FullRow<T>::transposeTimesFullRow(FRowsptr<T> fullRow)
 	{
 		//"a*b = a(i)b(j)"
 		auto nrow = (int)this->size();
@@ -158,17 +181,15 @@ namespace MbD {
 		return s;
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat)
+	inline FRowsptr<T> FullRow<T>::timesFullMatrix(FMatsptr<T> fullMat)
 	{
-		std::shared_ptr<FullRow<T>> answer = fullMat->at(0)->times(this->at(0));
+		FRowsptr<T> answer = fullMat->at(0)->times(this->at(0));
 		for (int j = 1; j < (int) this->size(); j++)
 		{
 			answer->equalSelfPlusFullRowTimes(fullMat->at(j), this->at(j));
 		}
 		return answer;
-			//return std::shared_ptr<FullRow<T>>();
+			//return FRowsptr<T>();
 	}
-	using ListFRD = std::initializer_list<std::shared_ptr<FullRow<double>>>;
-	using FRowDsptr = std::shared_ptr<FullRow<double>>;
 }
 

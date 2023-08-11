@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "Translation.h"
 #include "CREATE.h"
 #include "System.h"
@@ -24,8 +32,4 @@ void MbD::Translation::initializeGlobally()
 	else {
 		PrescribedMotion::initializeGlobally();
 	}
-}
-
-void MbD::Translation::initMotions()
-{
 }

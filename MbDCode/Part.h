@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <memory>
@@ -56,17 +64,19 @@ namespace MbD {
 
 		void prePosIC() override;
 		void prePosKine() override;
+		int iqX();
+		int iqE();
 		void iqX(int eqnNo);
 		void iqE(int eqnNo);
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
 		void fillqsu(FColDsptr col) override;
-		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsuWeights(DiagMatDsptr diagMat) override;
 		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
-		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsudotWeights(DiagMatDsptr diagMat) override;
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
@@ -107,13 +117,13 @@ namespace MbD {
 		int ipX = -1; 
 		int ipE = -1; 
 		double m = 0.0; 
-		std::shared_ptr<DiagonalMatrix<double>> aJ;
+		DiagMatDsptr aJ;
 		std::shared_ptr<PartFrame> partFrame;
 		FColDsptr pX;
 		FColDsptr pXdot;
 		FColDsptr pE;
 		FColDsptr pEdot;
-		std::shared_ptr<DiagonalMatrix<double>> mX;
+		DiagMatDsptr mX;
 		FMatDsptr mE;
 		FMatDsptr mEdot;
 		FColDsptr pTpE;

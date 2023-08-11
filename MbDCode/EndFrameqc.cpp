@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <memory>
 
 #include "EndFrameqc.h"
@@ -5,6 +13,7 @@
 #include "Variable.h"
 #include "MarkerFrame.h"
 #include "CREATE.h"
+#include "EndFrameqct2.h"
 
 using namespace MbD;
 
@@ -17,9 +26,9 @@ EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
 void EndFrameqc::initialize()
 {
 	prOeOpE = std::make_shared<FullMatrix<double>>(3, 4);
-	pprOeOpEpE = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
-	pAOepE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
-	ppAOepEpE = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
+	pprOeOpEpE = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
+	pAOepE = std::make_shared<FullColumn<FMatDsptr>>(4);
+	ppAOepEpE = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
 }
 
 void EndFrameqc::initializeGlobally()
@@ -38,9 +47,19 @@ void EndFrameqc::initEndFrameqct()
 	endFrameqct->setMarkerFrame(markerFrame);
 }
 
+void MbD::EndFrameqc::initEndFrameqct2()
+{
+	endFrameqct = CREATE<EndFrameqct2>::With(this->name.data());
+	endFrameqct->prOeOpE = prOeOpE;
+	endFrameqct->pprOeOpEpE = pprOeOpEpE;
+	endFrameqct->pAOepE = pAOepE;
+	endFrameqct->ppAOepEpE = ppAOepEpE;
+	endFrameqct->setMarkerFrame(markerFrame);
+}
+
 FMatFColDsptr EndFrameqc::ppAjOepEpE(int jj)
 {
-	auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+	auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
 	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipE = ppAOepEpE->at(i);

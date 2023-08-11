@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 /*********************************************************************
  * @file  MbDCode.cpp
  *
@@ -14,16 +22,22 @@
 #include "ASMTAssembly.h"
 
 using namespace MbD;
-//using namespace CAD;
 void runSpMat();
 
 int main()
 {
-	//ASMTAssembly::runFile("C:\\Users\\askoh\\OneDrive\\askoh\\visualworks\\vw8.1\\askoh\\64bit\\CADSM\\current\\asm\\00piston.asmt");
+	ASMTAssembly::runFile("piston.asmt");
+	ASMTAssembly::runFile("00backhoe.asmt");
+	ASMTAssembly::runFile("circular.asmt");
+	ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile("engine1.asmt");
+	ASMTAssembly::runFile("fourbar.asmt");
+	ASMTAssembly::runFile("fourbot.asmt");
+	ASMTAssembly::runFile("wobpump.asmt");
 
-	auto externalSys = std::make_shared<CADSystem>();
-	externalSys->runOndselPiston();
-	externalSys->runPiston();
+	auto cadSystem = std::make_shared<CADSystem>();
+	cadSystem->runOndselPiston();
+	cadSystem->runPiston();
 	runSpMat();
 }
 

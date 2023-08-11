@@ -1,9 +1,17 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "ConstVelConstraintIJ.h"
 #include "DirectionCosineIecJec.h"
 
 using namespace MbD;
 
-ConstVelConstraintIJ::ConstVelConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj) : ConstraintIJ(frmi, frmj)
+ConstVelConstraintIJ::ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
 }
 

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "KinematicIeJe.h"
@@ -8,11 +16,11 @@ namespace MbD {
         //efrmK axisK riIeJeKe aAjOKe rIeJeO 
     public:
         DispCompIecJecKec();
-        DispCompIecJecKec(EndFrmcptr frmi, EndFrmcptr frmj, EndFrmcptr frmk, int axisk);
+        DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk);
 
         double value() override;
 
-        EndFrmcptr efrmK;
+        EndFrmsptr efrmK;
         int axisK;
         double riIeJeKe;
         FColDsptr aAjOKe;

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "FullMotion.h"
 #include "CREATE.h"
 #include "System.h"
@@ -10,6 +18,12 @@ MbD::FullMotion::FullMotion()
 
 MbD::FullMotion::FullMotion(const char* str)
 {
+}
+
+void MbD::FullMotion::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	Joint::connectsItoJ(frmi, frmj);
+	std::static_pointer_cast<EndFrameqc>(frmI)->initEndFrameqct2();
 }
 
 void MbD::FullMotion::initializeGlobally()
@@ -31,4 +45,7 @@ void MbD::FullMotion::initializeGlobally()
 
 void MbD::FullMotion::initMotions()
 {
+	auto efrmI = std::static_pointer_cast<EndFrameqct>(frmI);
+	efrmI->rmemBlks = frIJI;
+	efrmI->phiThePsiBlks = fangIJJ;
 }

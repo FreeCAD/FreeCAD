@@ -1,10 +1,19 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "EndFrameqc.h"
-#include "Symbolic.h"
+//#include "Symbolic.h"
 
 namespace MbD {
 	class Time;
+	class Symbolic;
 
 	class EndFrameqct : public EndFrameqc
 	{
@@ -18,13 +27,13 @@ namespace MbD {
 		void initializeGlobally() override;
 		void initprmemptBlks();
 		void initpprmemptptBlks();
-		void initpPhiThePsiptBlks();
-		void initppPhiThePsiptptBlks();
+		virtual void initpPhiThePsiptBlks();
+		virtual void initppPhiThePsiptptBlks();
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
 		void prePosIC() override;
 		void evalrmem();
-		void evalAme();
+		virtual void evalAme();
 		void preVelIC() override;
 		void postVelIC() override;
 		FColDsptr pAjOept(int j);
@@ -35,9 +44,9 @@ namespace MbD {
 		FRowDsptr ppriOeOpEpt(int i);
 		double ppriOeOptpt(int i);
 		void evalprmempt();
-		void evalpAmept();
+		virtual void evalpAmept();
 		void evalpprmemptpt();
-		void evalppAmeptpt();
+		virtual void evalppAmeptpt();
 		FColDsptr rmeO() override;
 		FColDsptr rpep() override;
 
@@ -48,9 +57,8 @@ namespace MbD {
 		FColDsptr rmem, prmempt, pprmemptpt, prOeOpt, pprOeOptpt;
 		FMatDsptr aAme, pAmept, ppAmeptpt, pAOept, ppAOeptpt;
 		FMatDsptr pprOeOpEpt;
-		std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> ppAOepEpt;
+		FColFMatDsptr ppAOepEpt;
 		
 	};
-	using EndFrmqctptr = std::shared_ptr<EndFrameqct>;
 }
 

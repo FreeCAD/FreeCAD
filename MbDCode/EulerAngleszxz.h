@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "EulerArray.h"
@@ -10,6 +18,7 @@ namespace MbD {
 	class EulerAngleszxz : public EulerArray<T>
 	{
 		//phiA theA psiA aA 
+		//Used by EndFrameqct
 	public:
 		EulerAngleszxz() : EulerArray<T>(3) {}
 		void initialize() override;

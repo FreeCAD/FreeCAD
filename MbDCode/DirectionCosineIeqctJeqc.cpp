@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DirectionCosineIeqctJeqc.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
@@ -8,7 +16,7 @@ DirectionCosineIeqctJeqc::DirectionCosineIeqctJeqc()
 {
 }
 
-DirectionCosineIeqctJeqc::DirectionCosineIeqctJeqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineIeqctJeqc::DirectionCosineIeqctJeqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
 	DirectionCosineIeqcJeqc(frmi, frmj, axisi, axisj)
 {
 }

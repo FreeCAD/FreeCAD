@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistxyIeqcJeqc.h"
 #include "CREATE.h"
 #include "DispCompIeqcJeqcIe.h"
@@ -8,7 +16,7 @@ MbD::DistxyIeqcJeqc::DistxyIeqcJeqc()
 {
 }
 
-MbD::DistxyIeqcJeqc::DistxyIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : DistxyIeqcJec(frmi, frmj)
+MbD::DistxyIeqcJeqc::DistxyIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistxyIeqcJec(frmi, frmj)
 {
 }
 

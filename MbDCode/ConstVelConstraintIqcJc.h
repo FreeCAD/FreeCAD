@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "ConstVelConstraintIJ.h"
@@ -7,7 +15,7 @@ namespace MbD {
     {
         //pGpEI ppGpEIpEI iqEI 
     public:
-        ConstVelConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj);
+        ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
         
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

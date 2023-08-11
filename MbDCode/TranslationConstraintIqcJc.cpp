@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "TranslationConstraintIqcJc.h"
 #include "DispCompIeqcJecKeqc.h"
 #include "EndFrameqc.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
 	TranslationConstraintIJ(frmi, frmj, axisi)
 {
 }

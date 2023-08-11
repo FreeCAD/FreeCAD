@@ -1,35 +1,55 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
+#include <sstream>
+#include <string>
+
 #include "Sum.h"
 #include "Constant.h"
+#include <algorithm>
 
 using namespace MbD;
 
-Symsptr Sum::timesSum(Symsptr sptr, Symsptr aSum)
+Symsptr MbD::Sum::parseExpression(std::string& expression)
 {
-	auto answer = std::make_shared<Sum>();
-	auto sumTERMs = aSum->getTerms();
-	for (const auto& term : *terms) {
-		for (const auto& sumTERM : *sumTERMs) {
-			Symsptr termTERM;
-			if (sumTERM->isProduct()) {
-				termTERM = term->timesProduct(term, sumTERM);
-			}
-			else {
-				termTERM = term->timesFunction(term, sumTERM);
-			}
-			answer->terms->push_back(termTERM);
-		}
+	std::istringstream iss(expression);
+	auto sum = std::make_shared<Sum>();
+	sum->parse(iss);
+	return sum->simplified(sum);
+}
+
+void MbD::Sum::parse(std::istringstream& iss)
+{
+	iss >> std::ws;
+	char c = iss.peek();
+	if (c == '+') {
+		parsePlusTerm(iss);
 	}
-	return answer;
+	else 	if (c == '-') {
+		parseMinusTerm(iss);
+	}
+	else {
+		parseTerm(iss);
+	}
 }
 
-Symsptr Sum::timesProduct(Symsptr sptr, Symsptr product)
+void MbD::Sum::parseTerm(std::istringstream& iss)
 {
-	return product->timesSum(product, sptr);
 }
 
-Symsptr Sum::timesFunction(Symsptr sptr, Symsptr function)
+void MbD::Sum::parsePlusTerm(std::istringstream& iss)
 {
-	return function->timesSum(function, sptr);
+	iss.get();
+
+}
+
+void MbD::Sum::parseMinusTerm(std::istringstream& iss)
+{
 }
 
 Symsptr Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -109,6 +129,23 @@ double Sum::getValue()
 {
 	double answer = 0.0;
 	for (int i = 0; i < terms->size(); i++) answer += terms->at(i)->getValue();
+	return answer;
+}
+
+Symsptr MbD::Sum::clonesptr()
+{
+	return std::make_shared<Sum>(*this);
+}
+
+Symsptr MbD::Sum::differentiateWRT(Symsptr var)
+{
+	auto derivatives = std::make_shared<std::vector<Symsptr>>();
+	std::transform(terms->begin(), terms->end(), 
+		std::back_inserter(*derivatives),
+		[var](Symsptr term) { return term->differentiateWRT(var); }
+	);
+	auto answer = std::make_shared<Sum>();
+	answer->terms = derivatives;
 	return answer;
 }
 

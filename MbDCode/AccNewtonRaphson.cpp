@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "AccNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Part.h"
@@ -58,7 +66,7 @@ void AccNewtonRaphson::fillY()
 		item->fillAccICIterError(y);
 		//std::cout << item->name << *y << std::endl;
 		});
-	std::cout << *y << std::endl;
+	//std::cout << *y << std::endl;
 }
 
 void AccNewtonRaphson::incrementIterNo()

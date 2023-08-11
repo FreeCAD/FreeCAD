@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "ConstraintIJ.h"
@@ -8,7 +16,7 @@ namespace MbD {
     {
         //xIeJeIe yIeJeIe 
     public:
-        DistancexyConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe();

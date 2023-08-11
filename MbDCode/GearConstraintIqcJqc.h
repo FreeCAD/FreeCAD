@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "GearConstraintIqcJc.h"
@@ -7,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXJ pGpEJ ppGpXIpXJ ppGpXIpEJ ppGpEIpXJ ppGpEIpEJ ppGpXJpXJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
 	public:
-		GearConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpEJ();
 		void calc_pGpXJ();

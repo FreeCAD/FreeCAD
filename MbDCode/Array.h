@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <ostream>
@@ -6,8 +14,13 @@
 #include <cmath>
 #include <cassert>
 
+//#include "Symbolic.h"
 
 namespace MbD {
+	using ListD = std::initializer_list<double>;
+	using ListListD = std::initializer_list<std::initializer_list<double>>;
+	using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
+
 	template<typename T>
 	class Array : public std::vector<T>
 	{
@@ -25,9 +38,16 @@ namespace MbD {
 		double rootMeanSquare();
 		virtual int numberOfElements();
 		void swapElems(int i, int ii);
-		//double maxMagnitude();
+		virtual double maxMagnitude() = 0;
 		double maxMagnitudeOfVector();
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
+		//virtual void normalizeSelf();
+		//virtual void conditionSelf();
+		//virtual void conditionSelfWithTol(double tol);
+		virtual void atiput(int i, T value);
+		//double length();
+		void magnifySelf(T factor);
+		void atitimes(int i, double factor);
 
 		virtual std::ostream& printOn(std::ostream& s) const {
 			std::string str = typeid(*this).name();
@@ -76,21 +96,17 @@ namespace MbD {
 		this->at(i) = this->at(ii);
 		this->at(ii) = temp;
 	}
-	//template<typename T>
-	//inline double Array<T>::maxMagnitude()
+	//template<>
+	//inline double Array<double>::maxMagnitude()
 	//{
-	//	if (std::is_arithmetic<T>::value) {
-	//		return this->maxMagnitudeOfVector();
+	//	auto max = 0.0;
+	//	for (int i = 0; i < this->size(); i++)
+	//	{
+	//		auto element = this->at(i);
+	//		if (element < 0.0) element = -element;
+	//		if (max < element) max = element;
 	//	}
-	//	else {
-	//		auto answer = 0.0;
-	//		for (int i = 0; i < this->size(); i++)
-	//		{
-	//			auto mag = this->at(i)->maxMagnitude();
-	//			if (answer < mag) answer = mag;
-	//		}
-	//		return answer;
-	//	}
+	//	return max;
 	//}
 	template<typename T>
 	inline double Array<T>::maxMagnitudeOfVector()
@@ -111,7 +127,57 @@ namespace MbD {
 			this->at(ii) = array->at(i + ii);
 		}
 	}
-	using ListD = std::initializer_list<double>;
-	using ListListD = std::initializer_list<std::initializer_list<double>>;
-	using ListListPairD = std::initializer_list<std::initializer_list<std::initializer_list<double>>>;
+	//template<>
+	//inline void Array<double>::normalizeSelf()
+	//{
+	//	auto length = this->length();
+	//	if (length == 0.0) throw std::runtime_error("Cannot normalize a null vector.");
+	//	this->magnifySelf(1.0 / length);
+	//}
+	//template<>
+	//inline void Array<double>::conditionSelf()
+	//{
+	//	constexpr auto epsilon = std::numeric_limits<double>::epsilon();
+	//	auto tol = maxMagnitude() * epsilon;
+	//	conditionSelfWithTol(tol);
+	//}
+	//template<>
+	//inline void Array<double>::conditionSelfWithTol(double tol)
+	//{
+	//	for (int i = 0; i < this->size(); i++)
+	//	{
+	//		auto element = this->at(i);
+	//		if (element < 0.0) element = -element;
+	//		if (element < tol) this->atiput(i, 0.0);
+	//	}
+	//}
+	template<typename T>
+	inline void Array<T>::atiput(int i, T value)
+	{
+		this->at(i) = value;
+	}
+	//template<>
+	//inline double Array<double>::length()
+	//{
+	//	auto ssq = 0.0;
+	//	for (int i = 0; i < this->size(); i++)
+	//	{
+	//		auto elem = this->at(i);
+	//		ssq += elem * elem;
+	//	}
+	//	return std::sqrt(ssq);
+	//}
+	template<typename T>
+	inline void Array<T>::magnifySelf(T factor)
+	{
+		for (int i = 0; i < this->size(); i++)
+		{
+			this->atitimes(i, factor);
+		}
+	}
+	template<typename T>
+	inline void Array<T>::atitimes(int i, double factor)
+	{
+		this->at(i) *= factor;
+	}
 }

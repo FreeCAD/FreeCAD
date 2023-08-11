@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DispCompIeqctJeqcIe.h"
 #include "EndFrameqct.h"
 
@@ -7,7 +15,7 @@ MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe()
 {
 }
 
-MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : DispCompIeqcJeqcIe(frmi, frmj, axis)
+MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIeqcJeqcIe(frmi, frmj, axis)
 {
 }
 

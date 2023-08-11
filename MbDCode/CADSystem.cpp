@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <string>
 #include <iostream>
 
@@ -18,7 +26,6 @@
 #include "StateData.h"
 
 using namespace MbD;
-//using namespace CAD;
 
 void CADSystem::outputFor(AnalysisType type)
 {
@@ -277,7 +284,7 @@ void CADSystem::runOndselPiston()
 	std::cout << "rotMotion1->phiBlk " << *(rotMotion1->phiBlk) << std::endl;
 	TheSystem->addJoint(rotMotion1);
 	//
-	TheSystem->runKINEMATIC();
+	TheSystem->runKINEMATIC(TheSystem);
 }
 
 void CADSystem::runPiston()
@@ -514,9 +521,17 @@ void CADSystem::runPiston()
 	std::cout << "rotMotion1->phiBlk " << *(rotMotion1->phiBlk) << std::endl;
 	TheSystem->addJoint(rotMotion1);
 	//
-	TheSystem->runKINEMATIC();
+	TheSystem->runKINEMATIC(TheSystem);
+}
+
+void MbD::CADSystem::preMbDrun(std::shared_ptr<System> mbdSys)
+{
 }
 
 void CADSystem::postMbDrun()
+{
+}
+
+void MbD::CADSystem::updateFromMbD()
 {
 }

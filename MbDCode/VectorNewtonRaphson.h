@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "NewtonRaphson.h"
@@ -23,7 +31,7 @@ namespace MbD {
 
         std::shared_ptr<MatrixSolver> matrixSolver;
         int n;
-        std::shared_ptr<FullColumn<double>> xold, x, dx, y;
+        FColDsptr xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };
 }

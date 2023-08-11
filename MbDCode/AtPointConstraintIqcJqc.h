@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "AtPointConstraintIqcJc.h"
@@ -7,7 +15,7 @@ namespace MbD {
     {
         //pGpEJ ppGpEJpEJ iqXJminusOnePlusAxis iqEJ 
     public:
-        AtPointConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        AtPointConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initializeGlobally() override;

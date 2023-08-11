@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "RackPinJoint.h"
 #include "CREATE.h"
 #include "System.h"
@@ -28,7 +36,7 @@ void MbD::RackPinJoint::initializeGlobally()
 	}
 }
 
-void MbD::RackPinJoint::connectsItoJ(EndFrmcptr frmIe, EndFrmcptr frmJe)
+void MbD::RackPinJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
 {
 	//"OODS J is on pinion. z axis is axis of pinion."
 	//"OODS I is on rack. x axis is axis of rack. z axis is parallel to axis of pinion."

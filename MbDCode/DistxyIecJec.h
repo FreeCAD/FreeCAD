@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "KinematicIeJe.h"
@@ -9,7 +17,7 @@ namespace MbD {
 		//distxy xIeJeIe yIeJeIe
 	public:
         DistxyIecJec();
-        DistxyIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

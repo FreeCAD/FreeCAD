@@ -429,7 +429,7 @@
     <ClCompile Include="StateData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataPosVelAcc.cpp">
+    <ClCompile Include="PosVelAccData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CADSystem.cpp">
@@ -702,6 +702,117 @@
     <ClCompile Include="ASMTGeneralMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ASMTSpatialItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSpatialContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExternalSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTItemIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRefItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantGravity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolicParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Units.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionXY.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Power.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Abs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcTan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ln.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerAngles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cosine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcTan2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exponential.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Log10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LogN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Negative.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Reciprocal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTTranslationalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSphericalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTFixedJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionXcParameter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionFromData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralSpline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DifferentiatedGeneralSpline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnyGeneralSpline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTUniversalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerAnglesDot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EulerAnglesDDot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EndFrameqct2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPointInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -846,9 +957,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DirectionCosineIeqctJeqc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="typedef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Function.h">
@@ -1127,7 +1235,7 @@
     <ClInclude Include="StateData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataPosVelAcc.h">
+    <ClInclude Include="PosVelAccData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CADSystem.h">
@@ -1400,6 +1508,117 @@
     <ClInclude Include="ASMTGeneralMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ASMTSpatialItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSpatialContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternalSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTItemIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRefItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantGravity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolicParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Units.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SyntaxError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionXY.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Power.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Abs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcTan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ln.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cosine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcTan2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exponential.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Log10.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Negative.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reciprocal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTTranslationalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSphericalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTFixedJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionXcParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionFromData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralSpline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DifferentiatedGeneralSpline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnyGeneralSpline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTUniversalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAnglesDot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAnglesDDot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EndFrameqct2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPointInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MbDCode.rc">
@@ -1408,5 +1627,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="piston.asmt" />
+    <None Include="00backhoe.asmt" />
+    <None Include="circular.asmt" />
+    <None Include="cirpendu.asmt" />
+    <None Include="engine1.asmt" />
+    <None Include="fourbar.asmt" />
+    <None Include="fourbot.asmt" />
+    <None Include="gyro.asmt" />
+    <None Include="robot.asmt" />
+    <None Include="wobpump.asmt" />
   </ItemGroup>
 </Project>

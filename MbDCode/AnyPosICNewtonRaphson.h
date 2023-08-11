@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "PosNewtonRaphson.h"
@@ -7,6 +15,7 @@ namespace MbD {
 
     class AnyPosICNewtonRaphson : public PosNewtonRaphson
     {
+        //IC with fully or under constrained system
         //nqsu qsuOld qsuWeights nSingularMatrixError 
     public:
         void initialize() override;
@@ -18,8 +27,8 @@ namespace MbD {
         void assignEquationNumbers() = 0;
 
         int nqsu = -1;
-        std::shared_ptr<FullColumn<double>> qsuOld;
-        std::shared_ptr<DiagonalMatrix<double>> qsuWeights;
+        FColDsptr qsuOld;
+        DiagMatDsptr qsuWeights;
         int nSingularMatrixError = -1;
     };
 }

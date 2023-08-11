@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <memory>
 
 #include "ConstVelConstraintIqcJc.h"
@@ -8,7 +16,7 @@
 
 using namespace MbD;
 
-MbD::ConstVelConstraintIqcJc::ConstVelConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : ConstVelConstraintIJ(frmi, frmj)
+MbD::ConstVelConstraintIqcJc::ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIJ(frmi, frmj)
 {
 }
 

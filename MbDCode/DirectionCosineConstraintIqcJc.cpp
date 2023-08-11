@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DirectionCosineConstraintIqcJc.h"
 #include "DirectionCosineIeqcJec.h"
 #include "EndFrameqc.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj) :
+DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
 	DirectionCosineConstraintIJ(frmi, frmj, axisi, axisj)
 {
 }

@@ -1,9 +1,20 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
+#include <memory>
 
 #include "Joint.h"
-#include "Symbolic.h"
 
 namespace MbD {
+    class Symbolic;
+    using Symsptr = std::shared_ptr<Symbolic>;
+    class EndFramec;
 
     class PrescribedMotion : public Joint
     {
@@ -12,7 +23,7 @@ namespace MbD {
         PrescribedMotion();
         PrescribedMotion(const char* str);
 
-        void connectsItoJ(EndFrmcptr frmI, EndFrmcptr frmJ) override;
+        void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
         void initialize() override;
         virtual void initMotions();
 

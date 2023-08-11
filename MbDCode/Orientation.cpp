@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "Orientation.h"
 #include "CREATE.h"
 #include "System.h"
@@ -24,8 +32,4 @@ void MbD::Orientation::initializeGlobally()
 	else {
 		PrescribedMotion::initializeGlobally();
 	}
-}
-
-void MbD::Orientation::initMotions()
-{
 }

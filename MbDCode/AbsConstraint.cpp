@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "AbsConstraint.h"
 #include "PartFrame.h"
 
@@ -15,10 +23,10 @@ AbsConstraint::AbsConstraint(int i)
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
     if (axis < 3) {
-        aG = static_cast<PartFrame*>(owner)->qX->at(axis);
+        aG = static_cast<PartFrame*>(owner)->qX->at((size_t)axis);
     }
     else {
-        aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
+        aG = static_cast<PartFrame*>(owner)->qE->at((size_t)axis - 3);
     }
 }
 
@@ -55,10 +63,10 @@ void AbsConstraint::fillAccICIterError(FColDsptr col)
     auto partFrame = static_cast<PartFrame*>(owner);
         double sum;
         if (axis < 3) {
-            sum = partFrame->qXddot->at(axis);
+            sum = partFrame->qXddot->at((size_t)axis);
         }
         else {
-            sum = partFrame->qEddot->at(axis - 3);
+            sum = partFrame->qEddot->at((size_t)axis - 3);
         }
         col->atiplusNumber(iG, sum);
 }

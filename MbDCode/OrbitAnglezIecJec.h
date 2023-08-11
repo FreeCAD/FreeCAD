@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "KinematicIeJe.h"
@@ -9,7 +17,7 @@ namespace MbD {
         //thez xIeJeIe yIeJeIe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
     public:
         OrbitAngleZIecJec();
-        OrbitAngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe() = 0;

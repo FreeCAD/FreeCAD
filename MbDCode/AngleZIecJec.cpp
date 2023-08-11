@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <corecrt_math_defines.h>
 
 #include "AngleZIecJec.h"
@@ -9,7 +17,7 @@ MbD::AngleZIecJec::AngleZIecJec()
 {
 }
 
-MbD::AngleZIecJec::AngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::AngleZIecJec::AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
 }
 

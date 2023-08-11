@@ -1,5 +1,0 @@
-#include "FullMatrix.h"
-#include "FullRow.h"
-
-using namespace MbD;
-

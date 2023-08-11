@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistIeqcJeqc.h"
 #include "EndFrameqc.h"
 
@@ -7,7 +15,7 @@ MbD::DistIeqcJeqc::DistIeqcJeqc()
 {
 }
 
-MbD::DistIeqcJeqc::DistIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj) : DistIeqcJec(frmi, frmj)
+MbD::DistIeqcJeqc::DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistIeqcJec(frmi, frmj)
 {
 }
 

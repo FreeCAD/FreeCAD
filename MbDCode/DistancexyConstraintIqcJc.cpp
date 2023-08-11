@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistancexyConstraintIqcJc.h"
 #include "EndFramec.h"
 #include "CREATE.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-MbD::DistancexyConstraintIqcJc::DistancexyConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : DistancexyConstraintIJ(frmi, frmj)
+MbD::DistancexyConstraintIqcJc::DistancexyConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : DistancexyConstraintIJ(frmi, frmj)
 {
 }
 

@@ -1,20 +1,27 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <memory>
 #include <functional>
 
 #include "CartesianFrame.h"
-//#include "PartFrame.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
-#include "EndFramec.h"
 #include "EulerParametersDot.h"
 #include "EulerParametersDDot.h"
 
 namespace MbD {
+	class CartesianFrame;
 	class PartFrame;
-	//class EndFramec;
-	//using EndFrmcptr = std::shared_ptr<EndFramec>;
+	class EndFramec;
+	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
 	class MarkerFrame : public CartesianFrame
 	{
@@ -28,7 +35,7 @@ namespace MbD {
 		PartFrame* getPartFrame();
 		void setrpmp(FColDsptr x);
 		void setaApm(FMatDsptr x);
-		void addEndFrame(EndFrmcptr x);
+		void addEndFrame(EndFrmsptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void postInput() override;
@@ -36,13 +43,13 @@ namespace MbD {
 		void prePosIC() override;
 		int iqX();
 		int iqE();
-		void endFramesDo(const std::function <void(std::shared_ptr<EndFramec>)>& f);
+		void endFramesDo(const std::function <void(EndFrmsptr)>& f);
 		void fillqsu(FColDsptr col) override;
-		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsuWeights(DiagMatDsptr diagMat) override;
 		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
-		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsudotWeights(DiagMatDsptr diagMat) override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
 		void setqsudot(FColDsptr col) override;
@@ -69,10 +76,10 @@ namespace MbD {
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
 		FMatDsptr prOmOpE;
-		std::shared_ptr<FullColumn<std::shared_ptr<FullMatrix<double>>>> pAOmpE;
-		std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> pprOmOpEpE;
+		FColFMatDsptr pAOmpE;
+		FMatFColDsptr pprOmOpEpE;
 		FMatFMatDsptr ppAOmpEpE;
-		std::shared_ptr<std::vector<EndFrmcptr>> endFrames;
+		std::shared_ptr<std::vector<EndFrmsptr>> endFrames;
 
 	};
 }

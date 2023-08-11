@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "ConstVelConstraintIqcJqc.h"
 #include "DirectionCosineIeqcJeqc.h"
 #include "EndFrameqc.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
+MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
 {
 }
 

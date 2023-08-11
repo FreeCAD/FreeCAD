@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "ConstraintIJ.h"
@@ -8,7 +16,7 @@ namespace MbD {
     {
         //riIeJeIe
     public:
-        TranslationConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

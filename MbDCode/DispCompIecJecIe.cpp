@@ -1,4 +1,13 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DispCompIecJecIe.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -6,7 +15,7 @@ MbD::DispCompIecJecIe::DispCompIecJecIe()
 {
 }
 
-MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 

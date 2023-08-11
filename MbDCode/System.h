@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 /*****************************************************************//**
  * \file   System.h
  * \brief  Multibody system of parts, joints, forces.
@@ -13,9 +21,6 @@
 #include <functional>
 
 #include "Item.h"
-#include "PrescribedMotion.h"
-
-//using namespace CAD;
 
 namespace MbD {
 	class Part;
@@ -23,9 +28,9 @@ namespace MbD {
 	class SystemSolver;
 	class Time;
 	class Constraint;
+	class PrescribedMotion;
 	class ForceTorqueItem;
-	//class CAD::CADSystem;
-	class CADSystem;
+	class ExternalSystem;
 
 	class System : public Item
 	{
@@ -38,9 +43,7 @@ namespace MbD {
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void clear();
-		void runKINEMATIC();
-		void outputInput();
-		void outputTimeSeries();
+		void runKINEMATIC(std::shared_ptr<System> self);
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
 		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f);
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
@@ -48,7 +51,7 @@ namespace MbD {
 		void logString(std::string& str) override;
 		double mbdTimeValue();
 		void mbdTimeValue(double t);
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();
@@ -56,6 +59,7 @@ namespace MbD {
 		void addPart(std::shared_ptr<Part> part);
 		void addJoint(std::shared_ptr<Joint> joint);
 		void addMotion(std::shared_ptr<PrescribedMotion> motion);
+		void addForceTorque(std::shared_ptr<ForceTorqueItem> forTor);
 
 		double maximumMass();
 		double maximumMomentOfInertia();
@@ -63,8 +67,7 @@ namespace MbD {
 		double rotationLimit();
 		void outputFor(AnalysisType type);
 
-		//CAD::CADSystem* externalSystem;	//Use raw pointer to point backwards
-		CADSystem* externalSystem;	//Use raw pointer to point backwards
+		std::shared_ptr<ExternalSystem> externalSystem;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;

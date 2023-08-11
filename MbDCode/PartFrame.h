@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <memory>
@@ -16,8 +24,6 @@ namespace MbD {
 	class MarkerFrame;
 	class EulerConstraint;
 	class AbsConstraint;
-	//class EulerParameters;
-	//class EulerParametersDot;
 
 	class PartFrame : public CartesianFrame
 	{
@@ -50,7 +56,7 @@ namespace MbD {
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
-		EndFrmcptr endFrame(std::string name);
+		EndFrmsptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
@@ -69,11 +75,11 @@ namespace MbD {
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
 		void fillqsu(FColDsptr col) override;
-		void fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsuWeights(DiagMatDsptr diagMat) override;
 		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
-		void fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat) override;
+		void fillqsudotWeights(DiagMatDsptr diagMat) override;
 		void useEquationNumbers() override;
 		void setqsu(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;

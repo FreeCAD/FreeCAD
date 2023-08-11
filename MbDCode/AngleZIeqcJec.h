@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "AngleZIecJec.h"
@@ -8,7 +16,7 @@ namespace MbD {
 		//pthezpEI ppthezpEIpEI pcthezpEI psthezpEI 
 	public:
 		AngleZIeqcJec();
-		AngleZIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+		AngleZIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calcPostDynCorrectorIteration() override;
 		void init_aAijIeJe() override;

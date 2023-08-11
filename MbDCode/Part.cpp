@@ -1,10 +1,18 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "Part.h"
 #include "PartFrame.h"
 #include "System.h"
 #include "CREATE.h"
 #include "DiagonalMatrix.h"
 #include "EulerParameters.h"
-#include "DataPosVelAcc.h"
+#include "PosVelAccData.h"
 
 
 using namespace MbD;
@@ -204,6 +212,16 @@ void Part::prePosKine()
 	partFrame->prePosKine();
 }
 
+int MbD::Part::iqX()
+{
+	return partFrame->iqX;
+}
+
+int MbD::Part::iqE()
+{
+	return partFrame->iqE;
+}
+
 void Part::iqX(int eqnNo)
 {
 	partFrame->iqX = eqnNo;
@@ -234,7 +252,7 @@ void Part::fillqsu(FColDsptr col)
 	partFrame->fillqsu(col);
 }
 
-void Part::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Part::fillqsuWeights(DiagMatDsptr diagMat)
 {
 	//"Map wqX and wqE according to inertias. (0 to maximum inertia) map to (minw to maxw)"
 	//"When the inertias are zero, they are set to a small number for positive definiteness."
@@ -281,7 +299,7 @@ void Part::fillqsudot(FColDsptr col)
 	partFrame->fillqsudot(col);
 }
 
-void Part::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 	//"wqXdot and wqEdot are set to their respective inertias."
 	//"When the inertias are zero, they are set to a small number for positive definiteness."
@@ -538,7 +556,7 @@ std::shared_ptr<StateData> Part::stateData()
 	auto omeOpO = this->omeOpO();
 	auto aOpO = this->qXddot();
 	auto alpOpO = this->alpOpO();
-	auto answer = std::make_shared<DataPosVelAcc>();
+	auto answer = std::make_shared<PosVelAccData>();
 	answer->rFfF = rOpO;
 	answer->aAFf = aAOp;
 	answer->vFfF = vOpO;

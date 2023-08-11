@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <cmath>
 
 #include "DifferenceOperator.h"
@@ -8,7 +16,7 @@
 
 using namespace MbD;
 
-std::shared_ptr<FullRow<double>> DifferenceOperator::OneOverFactorials = []() {
+FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
 	for (int i = 0; i < oneOverFactorials->size(); i++)
 	{

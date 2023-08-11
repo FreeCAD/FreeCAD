@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "AtPointConstraintIJ.h"
@@ -7,7 +15,7 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqXIminusOnePlusAxis iqEI 
 	public:
-		AtPointConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+		AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;

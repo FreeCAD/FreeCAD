@@ -1,10 +1,18 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "AtPointConstraintIqctJqc.h"
 #include "DispCompIeqctJeqcO.h"
 #include "CREATE.h"
 
 using namespace MbD;
 
-AtPointConstraintIqctJqc::AtPointConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi) :
+AtPointConstraintIqctJqc::AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
 	AtPointConstraintIqcJqc(frmi, frmj, axisi)
 {
 }

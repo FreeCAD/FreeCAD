@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "AccICNewtonRaphson.h"
 #include "SystemSolver.h"
 
@@ -10,7 +18,7 @@ bool AccICNewtonRaphson::isConverged()
 
 void AccICNewtonRaphson::preRun()
 {
-	std::string str("MbD: Solving for quasi kinematic acceleration.");
+	std::string str("MbD: Solving for acceleration initial conditions.");
 	system->logString(str);
 	AccNewtonRaphson::preRun();
 }

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DistIecJec.h"
@@ -8,7 +16,7 @@ namespace MbD {
         //prIeJepXI prIeJepEI pprIeJepXIpXI pprIeJepXIpEI pprIeJepEIpEI mprIeJeOpEIT 
     public:
         DistIeqcJec();
-        DistIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPrivate() override;
         void initialize() override;

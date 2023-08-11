@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "FunctionWithManyArgs.h"
 #include "Symbolic.h"
 
@@ -32,5 +40,15 @@ FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>>
 std::shared_ptr<std::vector<Symsptr>> FunctionWithManyArgs::getTerms()
 {
 	return terms;
+}
+
+void MbD::FunctionWithManyArgs::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	for (auto& term : *terms) term->createMbD(mbdSys, mbdUnits);
+}
+
+void MbD::FunctionWithManyArgs::arguments(Symsptr args)
+{
+	assert(false);
 }
 

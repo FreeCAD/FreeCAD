@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "OrbitAngleZIeqcJec.h"
 #include "CREATE.h"
 #include "DispCompIeqcJecIe.h"
@@ -8,7 +16,7 @@ MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec()
 {
 }
 
-MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj) : OrbitAngleZIecJec(frmi, frmj)
+MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : OrbitAngleZIecJec(frmi, frmj)
 {
 }
 

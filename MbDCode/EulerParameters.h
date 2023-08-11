@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "EulerArray.h"
@@ -16,16 +24,17 @@ namespace MbD {
 		EulerParameters(int count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
 
-		static std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<T>>>> ppApEpEtimesColumn(FColDsptr col);
-		static std::shared_ptr<FullMatrix<double>> pCpEtimesColumn(FColDsptr col);
-		static std::shared_ptr<FullMatrix<double>> pCTpEtimesColumn(FColDsptr col);
-		static std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<T>>>> ppApEpEtimesMatrix(FMatDsptr mat);
+		static std::shared_ptr<FullMatrix<FColsptr<T>>> ppApEpEtimesColumn(FColDsptr col);
+		static FMatDsptr pCpEtimesColumn(FColDsptr col);
+		static FMatDsptr pCTpEtimesColumn(FColDsptr col);
+		static std::shared_ptr<FullMatrix<FMatsptr<T>>> ppApEpEtimesMatrix(FMatDsptr mat);
 
 
 		void initialize() override;
 		void calc() override;
 		void calcABC();
 		void calcpApE();
+		void conditionSelf() override;
 
 		FMatDsptr aA;
 		FMatDsptr aB;
@@ -34,7 +43,7 @@ namespace MbD {
 	};
 
 	template<>
-	inline std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)
+	inline FMatFColDsptr EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)
 	{
 		double a2c0 = 2 * col->at(0);
 		double a2c1 = 2 * col->at(1);
@@ -52,7 +61,7 @@ namespace MbD {
 		auto col22 = std::make_shared<FullColumn<double>>(ListD{ m2c0, m2c1, a2c2 });
 		auto col23 = std::make_shared<FullColumn<double>>(ListD{ m2c1, a2c0, 0 });
 		auto col33 = std::make_shared<FullColumn<double>>(ListD{ a2c0, a2c1, a2c2 });
-		auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullColumn<double>>>>(4, 4);
+		auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
 		auto& row0 = answer->at(0);
 		row0->at(0) = col00;
 		row0->at(1) = col01;
@@ -77,7 +86,7 @@ namespace MbD {
 	}
 
 	template<>
-	inline std::shared_ptr<FullMatrix<double>> EulerParameters<double>::pCpEtimesColumn(FColDsptr col)
+	inline FMatDsptr EulerParameters<double>::pCpEtimesColumn(FColDsptr col)
 	{
 		//"col size = 4."
 		auto c0 = col->at(0);
@@ -107,7 +116,7 @@ namespace MbD {
 	}
 
 	template<typename T>
-	inline std::shared_ptr<FullMatrix<double>> EulerParameters<T>::pCTpEtimesColumn(FColDsptr col)
+	inline FMatDsptr EulerParameters<T>::pCTpEtimesColumn(FColDsptr col)
 	{
 		//"col size = 3."
 		auto c0 = col->at(0);
@@ -141,7 +150,7 @@ namespace MbD {
 	}
 
 	template<>
-	inline std::shared_ptr<FullMatrix<std::shared_ptr<FullMatrix<double>>>> EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
+	inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
 	{
 		FRowDsptr a2m0 = mat->at(0)->times(2.0);
 		FRowDsptr a2m1 = mat->at(1)->times(2.0);
@@ -160,7 +169,7 @@ namespace MbD {
 		auto mat22 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m0, m2m1, a2m2 });
 		auto mat23 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m1, a2m0, zero });
 		auto mat33 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m0, a2m1, a2m2 });
-		auto answer = std::make_shared<FullMatrix<std::shared_ptr<FullMatrix<double>>>>(4, 4);
+		auto answer = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
 		auto& row0 = answer->at(0);
 		row0->at(0) = mat00;
 		row0->at(1) = mat01;
@@ -190,7 +199,7 @@ namespace MbD {
 		aA = std::make_shared<FullMatrix<double>>(3, 3);
 		aB = std::make_shared<FullMatrix<double>>(3, 4);
 		aC = std::make_shared<FullMatrix<double>>(3, 4);
-		pApE = std::make_shared<FullColumn<std::shared_ptr<FullMatrix<double>>>>(4);
+		pApE = std::make_shared<FullColumn<FMatDsptr>>(4);
 		for (int i = 0; i < 4; i++)
 		{
 			pApE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
@@ -315,6 +324,12 @@ namespace MbD {
 		pAipEk->at(0) = m2E1;
 		pAipEk->at(1) = a2E0;
 		pAipEk->at(2) = a2E3;
+	}
+	template<typename T>
+	inline void EulerParameters<T>::conditionSelf()
+	{
+		EulerArray<T>::conditionSelf();
+		this->normalizeSelf();
 	}
 }
 

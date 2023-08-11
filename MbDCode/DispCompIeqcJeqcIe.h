@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DispCompIeqcJecIe.h"
@@ -8,7 +16,7 @@ namespace MbD {
         //priIeJeIepXJ priIeJeIepEJ ppriIeJeIepEIpXJ ppriIeJeIepEIpEJ ppriIeJeIepEJpEJ 
     public:
         DispCompIeqcJeqcIe();
-        DispCompIeqcJeqcIe(EndFrmcptr frmi, EndFrmcptr frmj, int axis);
+        DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis);
 
         void calc_ppvaluepEIpEJ() override;
         void calc_ppvaluepEIpXJ() override;

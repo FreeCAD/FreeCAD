@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "RackPinConstraintIqcJqc.h"
 #include "EndFrameqc.h"
 #include "CREATE.h"
@@ -6,7 +14,7 @@
 
 using namespace MbD;
 
-MbD::RackPinConstraintIqcJqc::RackPinConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : RackPinConstraintIqcJc(frmi, frmj)
+MbD::RackPinConstraintIqcJqc::RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIqcJc(frmi, frmj)
 {
 }
 

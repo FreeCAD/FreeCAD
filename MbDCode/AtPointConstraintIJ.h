@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "ConstraintIJ.h"
@@ -9,7 +17,7 @@ namespace MbD {
     {
         //axis riIeJeO 
     public:
-        AtPointConstraintIJ(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

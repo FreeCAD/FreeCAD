@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DistxyIecJec.h"
@@ -9,7 +17,7 @@ namespace MbD {
 
 	public:
 		DistxyIeqcJec();
-		DistxyIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj);
+		DistxyIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_ppdistxypEIpEI();
 		void calc_ppdistxypXIpEI();

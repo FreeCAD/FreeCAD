@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include<algorithm>
 #include <memory>
 #include <typeinfo>
@@ -10,6 +18,7 @@
 #include "RedundantConstraint.h"
 #include "MarkerFrame.h"
 #include "ForceTorqueData.h"
+#include "System.h"
 
 using namespace MbD;
 
@@ -26,7 +35,7 @@ void Joint::initialize()
 	constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 }
 
-void Joint::connectsItoJ(EndFrmcptr frmi, EndFrmcptr frmj)
+void Joint::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	frmI = frmi;
 	frmJ = frmj;
@@ -125,7 +134,7 @@ void Joint::fillqsudot(FColDsptr col)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
 }
 
-void Joint::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Joint::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 }
 

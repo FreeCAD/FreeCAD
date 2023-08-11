@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <memory>
@@ -19,10 +27,10 @@ namespace MbD {
 		void settime(double t);
 
 		int iStep = 0, order = 0;
-		std::shared_ptr<FullMatrix<double>> taylorMatrix, operatorMatrix;
+		FMatDsptr taylorMatrix, operatorMatrix;
 		double time = 0;
 		std::shared_ptr<std::vector<double>> timeNodes;
-		static std::shared_ptr<FullRow<double>> OneOverFactorials;
+		static FRowDsptr OneOverFactorials;
 	};
 }
 

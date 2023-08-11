@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistxyIecJec.h"
 
 using namespace MbD;
@@ -6,7 +14,7 @@ MbD::DistxyIecJec::DistxyIecJec()
 {
 }
 
-MbD::DistxyIecJec::DistxyIecJec(EndFrmcptr frmi, EndFrmcptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::DistxyIecJec::DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
 }
 

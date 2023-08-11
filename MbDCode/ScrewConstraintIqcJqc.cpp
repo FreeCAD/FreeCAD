@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <corecrt_math_defines.h>
 
 #include "ScrewConstraintIqcJqc.h"
@@ -8,7 +16,7 @@
 
 using namespace MbD;
 
-MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj) : ScrewConstraintIqcJc(frmi, frmj)
+MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIqcJc(frmi, frmj)
 {
 }
 

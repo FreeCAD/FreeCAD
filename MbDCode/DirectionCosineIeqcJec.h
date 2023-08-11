@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DirectionCosineIecJec.h"
@@ -8,7 +16,7 @@ namespace MbD {
         //pAijIeJepEI ppAijIeJepEIpEI pAjOIepEIT ppAjOIepEIpEI 
     public:
         DirectionCosineIeqcJec();
-        DirectionCosineIeqcJec(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;
@@ -19,7 +27,7 @@ namespace MbD {
         FRowDsptr pAijIeJepEI;
         FMatDsptr ppAijIeJepEIpEI;
         FMatDsptr pAjOIepEIT;
-        std::shared_ptr<FullMatrix<std::shared_ptr<FullColumn<double>>>> ppAjOIepEIpEI;
+        FMatFColDsptr ppAjOIepEIpEI;
     };
 }
 

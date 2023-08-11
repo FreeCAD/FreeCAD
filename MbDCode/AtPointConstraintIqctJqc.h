@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "AtPointConstraintIqcJqc.h"
@@ -7,7 +15,7 @@ namespace MbD {
     {
         //pGpt ppGpEIpt ppGptpt 
     public:
-        AtPointConstraintIqctJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi);
+        AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

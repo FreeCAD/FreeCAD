@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "KinematicIeJe.h"
@@ -9,7 +17,7 @@ namespace MbD {
         //thez aA00IeJe aA10IeJe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
     public:
         AngleZIecJec();
-        AngleZIecJec(EndFrmcptr frmi, EndFrmcptr frmj);
+        AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
         
         void calcPostDynCorrectorIteration() override;
         virtual void init_aAijIeJe() = 0;

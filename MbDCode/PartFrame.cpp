@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include<algorithm>
 
 #include "PartFrame.h"
@@ -114,7 +122,7 @@ void PartFrame::addMarkerFrame(std::shared_ptr<MarkerFrame> markerFrame)
 	markerFrames->push_back(markerFrame);
 }
 
-EndFrmcptr PartFrame::endFrame(std::string name)
+EndFrmsptr PartFrame::endFrame(std::string name)
 {
 	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
 	return (*match)->endFrames->at(0);
@@ -254,7 +262,7 @@ void PartFrame::fillqsu(FColDsptr col)
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsu(col); });
 }
 
-void PartFrame::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void PartFrame::fillqsuWeights(DiagMatDsptr diagMat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsuWeights(diagMat); });
 }
@@ -284,7 +292,7 @@ void PartFrame::fillqsudot(FColDsptr col)
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudot(col); });
 }
 
-void PartFrame::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void PartFrame::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsudotWeights(diagMat); });
 }

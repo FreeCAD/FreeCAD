@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "OrbitAngleZIeqcJec.h"
@@ -8,7 +16,7 @@ namespace MbD {
 		//pthezpXJ pthezpEJ ppthezpXIpXJ ppthezpXIpEJ ppthezpEIpXJ ppthezpEIpEJ ppthezpXJpXJ ppthezpXJpEJ ppthezpEJpEJ 
 	public:
 		OrbitAngleZIeqcJeqc();
-		OrbitAngleZIeqcJeqc(EndFrmcptr frmi, EndFrmcptr frmj);
+		OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_ppthezpEIpEJ();
 		void calc_ppthezpEIpXJ();

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DirectionCosineConstraintIqcJc.h"
@@ -7,7 +15,7 @@ namespace MbD {
     {
         //pGpEJ ppGpEIpEJ ppGpEJpEJ iqEJ 
     public:
-        DirectionCosineConstraintIqcJqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;

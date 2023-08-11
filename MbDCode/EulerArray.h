@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "FullColumn.h"
@@ -13,8 +21,8 @@ namespace MbD {
         EulerArray(int count, const T& value) : FullColumn<T>(count, value) {}
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
         void initialize() override;
-        void equalFullColumn(std::shared_ptr<FullColumn<T>> fullCol);
-        void equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i);
+        void equalFullColumn(FColsptr<T> fullCol);
+        void equalFullColumnAt(FColsptr<T> fullCol, int i);
         virtual void calc() = 0;
 
     };
@@ -23,12 +31,12 @@ namespace MbD {
     {
     }
     template<typename T>
-    inline void EulerArray<T>::equalFullColumn(std::shared_ptr<FullColumn<T>> fullCol)
+    inline void EulerArray<T>::equalFullColumn(FColsptr<T> fullCol)
     {
         this->equalArrayAt(fullCol, 0);
     }
     template<typename T>
-    inline void EulerArray<T>::equalFullColumnAt(std::shared_ptr<FullColumn<T>> fullCol, int i)
+    inline void EulerArray<T>::equalFullColumnAt(FColsptr<T> fullCol, int i)
     {
         this->equalArrayAt(fullCol, i);
     }

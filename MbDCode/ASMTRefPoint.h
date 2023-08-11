@@ -1,20 +1,27 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
-#include "ASMTItem.h"
+#include "ASMTRefItem.h"
 #include <vector>
 #include <string>
-#include "ASMTMarker.h"
 
 namespace MbD {
-    class ASMTRefPoint : public ASMTItem
+    class ASMTRefPoint : public ASMTRefItem
     {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
+        std::string fullName(std::string partialName) override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
-        FColDsptr position3D;
-        FMatDsptr rotationMatrix;
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markers;
+    
     };
 }
 

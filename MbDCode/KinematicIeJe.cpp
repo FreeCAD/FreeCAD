@@ -1,4 +1,13 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "KinematicIeJe.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -6,7 +15,7 @@ KinematicIeJe::KinematicIeJe()
 {
 }
 
-KinematicIeJe::KinematicIeJe(EndFrmcptr frmi, EndFrmcptr frmj) : frmI(frmi), frmJ(frmj)
+KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj)
 {
 }
 

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include <windows.h>
 #include <assert.h>
 #include <debugapi.h>
@@ -178,7 +186,7 @@ void Item::fillqsu(FColDsptr col)
 {
 }
 
-void Item::fillqsuWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Item::fillqsuWeights(DiagMatDsptr diagMat)
 {
 }
 
@@ -298,11 +306,6 @@ void Item::storeDynState()
 {
 }
 
-void MbD::Item::submitToSystem()
-{
-	assert(false);
-}
-
 double MbD::Item::suggestSmallerOrAcceptCollisionFirstStepSize(double hnew)
 {
 	assert(false);
@@ -357,7 +360,7 @@ void MbD::Item::fillqsudotPlamDeriv(FColDsptr col)
 	assert(false);
 }
 
-void Item::fillqsudotWeights(std::shared_ptr<DiagonalMatrix<double>> diagMat)
+void Item::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 }
 

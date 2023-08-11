@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "MatrixLDU.h"
@@ -22,7 +30,7 @@ namespace MbD {
         void forwardSubstituteIntoL() override;
         void backSubstituteIntoDU() override;
 
-        std::shared_ptr<FullMatrix<double>> matrixA;
+        FMatDsptr matrixA;
 
     };
 }

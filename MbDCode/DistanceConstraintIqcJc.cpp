@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include "DistanceConstraintIqcJc.h"
 #include "EndFrameqc.h"
 #include "CREATE.h"
@@ -5,7 +13,7 @@
 
 using namespace MbD;
 
-MbD::DistanceConstraintIqcJc::DistanceConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj) : DistanceConstraintIJ(frmi, frmj)
+MbD::DistanceConstraintIqcJc::DistanceConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIJ(frmi, frmj)
 {
 }
 

@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DistanceConstraintIJ.h"
@@ -7,7 +15,7 @@ namespace MbD {
     {
         //pGpXI pGpEI ppGpXIpXI ppGpXIpEI ppGpEIpEI iqXI iqEI 
     public:
-        DistanceConstraintIqcJc(EndFrmcptr frmi, EndFrmcptr frmj);
+        DistanceConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void addToJointForceI(FColDsptr col) override;
         void addToJointTorqueI(FColDsptr col) override;

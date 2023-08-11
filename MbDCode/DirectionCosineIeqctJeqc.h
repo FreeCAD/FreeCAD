@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include "DirectionCosineIeqcJeqc.h"
@@ -8,7 +16,7 @@ namespace MbD {
         //pAijIeJept ppAijIeJepEIpt ppAijIeJepEJpt ppAijIeJeptpt 
     public:
         DirectionCosineIeqctJeqc();
-        DirectionCosineIeqctJeqc(EndFrmcptr frmi, EndFrmcptr frmj, int axisi, int axisj);
+        DirectionCosineIeqctJeqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

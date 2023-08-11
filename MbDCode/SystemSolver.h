@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #pragma once
 
 #include <memory>
@@ -51,7 +59,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
 		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();
 		//std::shared_ptr<std::vector<UHolder>> uHolders();
-		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints2();
+		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> displacementConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints();

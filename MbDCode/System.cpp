@@ -1,3 +1,11 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselSolver.                                    *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+ 
 #include<algorithm>
 
 #include "System.h"
@@ -7,16 +15,15 @@
 #include "SystemSolver.h"
 #include "Time.h"
 #include "CREATE.h"
-#include "CADSystem.h"
+#include "ExternalSystem.h"
+#include "PrescribedMotion.h"
 
 using namespace MbD;
 
 System::System() {
-	initialize();
 }
 
 System::System(const char* str) : Item(str) {
-	initialize();
 }
 
 System* MbD::System::root()
@@ -26,6 +33,7 @@ System* MbD::System::root()
 
 void System::initialize()
 {
+	externalSystem = std::make_shared<ExternalSystem>();
 	time = CREATE<Time>::With();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
@@ -51,28 +59,27 @@ void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
 	jointsMotions->push_back(motion);
 }
 
-void System::runKINEMATIC()
+void MbD::System::addForceTorque(std::shared_ptr<ForceTorqueItem> forTor)
 {
+	forTor->owner = this;
+	forcesTorques->push_back(forTor);
+}
+
+void System::runKINEMATIC(std::shared_ptr<System> self)
+{
+	externalSystem->preMbDrun(self);
 	while (true)
 	{
 		initializeLocally();
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
-	partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postInput(); });
-	outputInput();
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	externalSystem->outputFor(INPUT);
 	systemSolver->runAllIC();
 	externalSystem->outputFor(INITIALCONDITION);
 	systemSolver->runBasicKinematic();
 	externalSystem->postMbDrun();
-}
-
-void System::outputInput()
-{
-}
-
-void System::outputTimeSeries()
-{
 }
 
 void System::initializeLocally()
@@ -135,7 +142,7 @@ void System::mbdTimeValue(double t)
 	time->setValue(t);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints2()
+std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints()
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });
