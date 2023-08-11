@@ -38,11 +38,15 @@ public:
     explicit Array3D(const QString &propertyName, Materials::Material *material, QWidget* parent = nullptr);
     ~Array3D() override;
 
+    void defaultValueChanged(const Base::Quantity &value);
+
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_Array3D> ui;
+    Materials::MaterialProperty *_property;
+    Materials::Material2DArray *_value;
 };
 
 } // namespace MatGui

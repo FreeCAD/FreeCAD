@@ -39,6 +39,21 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
 {
     ui->setupUi(this);
 
+    if (material->hasPhysicalProperty(propertyName))
+    {
+        _property = &(material->getPhysicalProperty(propertyName));
+    } else if (material->hasAppearanceProperty(propertyName)) {
+        _property = &(material->getAppearanceProperty(propertyName));
+    } else {
+        _property = nullptr;
+    }
+    if (_property)
+        _value = static_cast<Materials::Material2DArray *>(_property->getValue());
+    else
+        _value = nullptr;
+
+    setupDefault();
+
     Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
@@ -51,6 +66,39 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
 Array3D::~Array3D()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+void Array3D::setupDefault()
+{
+    if (_property == nullptr)
+        return;
+
+    try
+    {
+        auto column1 = _property->getColumn(0);
+        QString label =
+            QString::fromStdString("Default ") + column1.getName();
+        ui->labelDefault->setText(label);
+        if (column1.getPropertyType() == QString::fromStdString("Quantity"))
+        {
+            ui->inputDefault->setMinimum(std::numeric_limits<double>::min());
+            ui->inputDefault->setMaximum(std::numeric_limits<double>::max());
+            ui->inputDefault->setUnitText(_property->getColumnUnits(0));
+            ui->inputDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
+
+            connect(ui->inputDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
+                    this, &Array3D::defaultValueChanged);
+        }
+    }
+    catch(const Materials::PropertyNotFound&)
+    {
+        return;
+    }
+}
+
+void Array3D::defaultValueChanged(const Base::Quantity &value)
+{
+    _value->setDefault(QVariant::fromValue(value));
 }
 
 void Array3D::accept()
