@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="inputDefault">
+      <widget class="Gui::QuantitySpinBox" name="editDefault" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>

@@ -196,6 +196,150 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
     return false;
 }
+//===
+
+
+Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty *property, Materials::Material3DArray *value, QObject *parent) :
+    AbstractArrayModel(parent),
+    _property(property),
+    _value(value)
+{}
+
+Array3DDepthModel::~Array3DDepthModel()
+{}
+
+int Array3DDepthModel::rowCount(const QModelIndex& parent) const
+{
+    if (parent.isValid())
+        return 0; // No children
+
+    return _value->depth() + 1; // Will always have 1 empty row
+}
+
+bool Array3DDepthModel::newRow(const QModelIndex& index) const
+{
+    return (index.row() == _value->depth());
+}
+
+QVariant Array3DDepthModel::data(const QModelIndex &index, int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        try
+        {
+            return _value->getValue(index.row(), index.column());
+        }
+        catch(const Materials::InvalidIndex &)
+        {
+        }
+
+        try
+        {
+            auto column = _property->getColumnType(index.column());
+            if (column == Materials::MaterialValue::Quantity)
+            {
+                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
+                return QVariant::fromValue(q);
+            }
+        }
+        catch(const Materials::InvalidColumn &)
+        {
+        }
+
+        return QString();
+    }
+
+    return QVariant();
+}
+
+QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
+                    int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        if (orientation == Qt::Horizontal)
+        {
+            auto column = _property->getColumn(section);
+            return QVariant(column.getName());
+        } else if (orientation == Qt::Vertical) {
+            // Vertical header
+            if (section == (rowCount() - 1))
+                return QVariant(QString::fromStdString("*"));
+            return QVariant(section + 1);
+        }
+    }
+
+    return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+bool Array3DDepthModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    Q_UNUSED(role);
+    
+    if (index.row() == _value->depth())
+    {
+        insertRows(index.row(), 1);
+    }
+    _value->setValue(index.row(), index.column(), value);
+
+    Q_EMIT dataChanged(index, index);
+    return true;
+}
+
+Qt::ItemFlags Array3DDepthModel::flags(const QModelIndex& index) const
+{
+    return (QAbstractTableModel::flags(index) | Qt::ItemIsEditable);
+}
+
+
+// Resizing functions
+bool Array3DDepthModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+    beginInsertRows(parent, row, row + count - 1);
+
+    int columns = columnCount();
+    for (int i = 0; i < count; i++)
+    {
+        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
+        for (int j = 0; j < columns; j++)
+        {
+            rowPtr->push_back(_property->getColumnNull(j));
+        }
+
+        // _value->insertRow(row, rowPtr);
+    }
+
+    endInsertRows();
+
+    return false;
+}
+
+bool Array3DDepthModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    beginRemoveRows(parent, row, row + count - 1);
+
+    endRemoveRows();
+
+    return false;
+}
+
+bool Array3DDepthModel::insertColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
+
+bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
 
 //===
 

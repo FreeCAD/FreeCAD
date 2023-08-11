@@ -28,8 +28,11 @@
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/Exceptions.h>
 #include "Array3D.h"
 #include "ui_Array3D.h"
+#include "ArrayModel.h"
+#include "ArrayDelegate.h"
 
 
 using namespace MatGui;
@@ -48,19 +51,20 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
         _property = nullptr;
     }
     if (_property)
-        _value = static_cast<Materials::Material2DArray *>(_property->getValue());
+        _value = static_cast<Materials::Material3DArray *>(_property->getValue());
     else
         _value = nullptr;
 
     setupDefault();
+    setupDepthArray();
 
     Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
 
-    connect(ui->standardButtons, &QDialogButtonBox::accepted,
-            this, &Array3D::accept);
-    connect(ui->standardButtons, &QDialogButtonBox::rejected,
-            this, &Array3D::reject);
+    connect(ui->standardButtons->button(QDialogButtonBox::Ok), &QPushButton::clicked,
+            this, &Array3D::onOk);
+    connect(ui->standardButtons->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
+            this, &Array3D::onCancel);
 }
 
 Array3D::~Array3D()
@@ -81,12 +85,12 @@ void Array3D::setupDefault()
         ui->labelDefault->setText(label);
         if (column1.getPropertyType() == QString::fromStdString("Quantity"))
         {
-            ui->inputDefault->setMinimum(std::numeric_limits<double>::min());
-            ui->inputDefault->setMaximum(std::numeric_limits<double>::max());
-            ui->inputDefault->setUnitText(_property->getColumnUnits(0));
-            ui->inputDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
+            ui->editDefault->setMinimum(std::numeric_limits<double>::min());
+            ui->editDefault->setMaximum(std::numeric_limits<double>::max());
+            ui->editDefault->setUnitText(_property->getColumnUnits(0));
+            ui->editDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
 
-            connect(ui->inputDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
+            connect(ui->editDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
                     this, &Array3D::defaultValueChanged);
         }
     }
@@ -101,13 +105,42 @@ void Array3D::defaultValueChanged(const Base::Quantity &value)
     _value->setDefault(QVariant::fromValue(value));
 }
 
-void Array3D::accept()
+void Array3D::setDepthColumnDelegate(QTableView *table)
 {
+    auto column = _property->getColumn(0);
+    table->setItemDelegateForColumn(0, new ArrayDelegate(column.getType(), column.getUnits(), this));
+}
+
+void Array3D::setDepthColumnWidth(QTableView *table)
+{
+    table->setColumnWidth(0, 100);
+}
+
+void Array3D::setupDepthArray()
+{
+    if (_property == nullptr)
+        return;
+
+    auto table = ui->table3D;
+    auto model = new Array3DDepthModel(_property, _value, this);
+    table->setModel(model);
+    table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
+    setDepthColumnWidth(table);
+    setDepthColumnDelegate(table);
+}
+
+void Array3D::onOk(bool checked)
+{
+    Q_UNUSED(checked)
+
     QDialog::accept();
 }
 
-void Array3D::reject()
+void Array3D::onCancel(bool checked)
 {
+    Q_UNUSED(checked)
+
     QDialog::reject();
 }
 

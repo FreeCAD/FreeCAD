@@ -84,12 +84,12 @@ void Array2D::setupDefault()
         ui->labelDefault->setText(label);
         if (column1.getPropertyType() == QString::fromStdString("Quantity"))
         {
-            ui->inputDefault->setMinimum(std::numeric_limits<double>::min());
-            ui->inputDefault->setMaximum(std::numeric_limits<double>::max());
-            ui->inputDefault->setUnitText(_property->getColumnUnits(0));
-            ui->inputDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
+            ui->editDefault->setMinimum(std::numeric_limits<double>::min());
+            ui->editDefault->setMaximum(std::numeric_limits<double>::max());
+            ui->editDefault->setUnitText(_property->getColumnUnits(0));
+            ui->editDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
 
-            connect(ui->inputDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
+            connect(ui->editDefault, qOverload<const Base::Quantity &>(&Gui::QuantitySpinBox::valueChanged),
                     this, &Array2D::defaultValueChanged);
         }
     }

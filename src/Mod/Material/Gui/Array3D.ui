@@ -30,7 +30,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="editDefault"/>
+      <widget class="Gui::QuantitySpinBox" name="editDefault" native="true">
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -55,6 +59,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

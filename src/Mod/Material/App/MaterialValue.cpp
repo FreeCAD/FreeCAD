@@ -153,7 +153,8 @@ void Material2DArray::dump() const
 //===
 
 Material3DArray::Material3DArray() :
-    MaterialValue(Array3D)
+    MaterialValue(Array3D),
+    _defaultSet(false)
 {}
 
 Material3DArray::~Material3DArray()
@@ -166,7 +167,16 @@ MaterialValue Material3DArray::getDefault() const
     return ret;
 }
 
-const std::vector<QVariant> &Material3DArray::getRow(const QString &depth, int row) const
+const std::vector<std::vector<QVariant> *> &Material3DArray::getTable(const QVariant &depth) const
+{
+    try {
+        return _rowMap.at(depth);
+    } catch (std::out_of_range const &) {
+        throw InvalidRow();
+    }
+}
+
+const std::vector<QVariant> &Material3DArray::getRow(const QVariant &depth, int row) const
 {
     try {
         return *(_rowMap.at(depth).at(row));
@@ -180,7 +190,7 @@ const std::vector<QVariant> &Material3DArray::getRow(int row) const
     return getRow(getDefault().getValue().toString(), row);
 }
 
-std::vector<QVariant> &Material3DArray::getRow(const QString & depth, int row)
+std::vector<QVariant> &Material3DArray::getRow(const QVariant & depth, int row)
 {
     try {
         return *(_rowMap.at(depth).at(row));
@@ -194,12 +204,12 @@ std::vector<QVariant> &Material3DArray::getRow(int row)
     return getRow(getDefault().getValue().toString(), row);
 }
 
-void Material3DArray::addRow(const QString & depth, std::vector<QVariant> *row)
+void Material3DArray::addRow(const QVariant & depth, std::vector<QVariant> *row)
 {
 
 }
 
-void Material3DArray::deleteRow(const QString & depth, int row)
+void Material3DArray::deleteRow(const QVariant & depth, int row)
 {
 
 }
@@ -209,7 +219,7 @@ void Material3DArray::deleteRows(int depth)
 
 }
 
-void Material3DArray::setValue(const QString & depth, int row, int column,  const QVariant &value)
+void Material3DArray::setValue(const QVariant & depth, int row, int column,  const QVariant &value)
 {
 
 }
@@ -219,7 +229,7 @@ void Material3DArray::setValue(int row, int column,  const QVariant &value)
 
 }
 
-const QVariant &Material3DArray::getValue(const QString & depth, int row, int column)
+const QVariant &Material3DArray::getValue(const QVariant & depth, int row, int column)
 {
     auto val = getRow(depth, row);
     try {

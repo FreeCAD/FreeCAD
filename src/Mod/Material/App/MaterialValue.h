@@ -99,24 +99,30 @@ public:
     Material3DArray();
     ~Material3DArray() override;
 
-    void setDefault(MaterialValue value) { _value = value.getValue(); }
+    void setDefault(MaterialValue value) { _value = value.getValue(); _defaultSet = true; }
+    void setDefault(const QVariant &value) { _value = value; _defaultSet = true; }
     MaterialValue getDefault() const;
+    bool defaultSet() const { return _defaultSet; }
 
-    const std::vector<QVariant> &getRow(const QString &depth, int row) const;
+    const std::vector<std::vector<QVariant> *> &getTable(const QVariant &depth) const;
+    const std::vector<QVariant> &getRow(const QVariant &depth, int row) const;
     const std::vector<QVariant> &getRow(int row) const;
-    std::vector<QVariant> &getRow(const QString & depth, int row);
+    std::vector<QVariant> &getRow(const QVariant &depth, int row);
     std::vector<QVariant> &getRow(int row);
-    void addRow(const QString & depth, std::vector<QVariant> *row);
-    void deleteRow(const QString & depth, int row);
+    void addRow(const QVariant &depth, std::vector<QVariant> *row);
+    void deleteRow(const QVariant &depth, int row);
     void deleteRows(int depth);
+    int depth() const { return _rowMap.size(); }
+    int rows(const QVariant &depth) const { return getTable(depth).size(); }
 
-    void setValue(const QString & depth, int row, int column,  const QVariant &value);
+    void setValue(const QVariant &depth, int row, int column,  const QVariant &value);
     void setValue(int row, int column,  const QVariant &value);
-    const QVariant &getValue(const QString & depth, int row, int column);
+    const QVariant &getValue(const QVariant &depth, int row, int column);
     const QVariant &getValue(int row, int column);
 
 protected:
-    std::map<QString, std::vector<std::vector<QVariant> *>> _rowMap;
+    std::map<QVariant, std::vector<std::vector<QVariant> *>> _rowMap;
+    bool _defaultSet;
 };
 
 } // namespace Materials

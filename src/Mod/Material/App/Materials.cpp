@@ -56,6 +56,10 @@ MaterialProperty::MaterialProperty(const ModelProperty &property) :
     {
         reinterpret_cast<Material2DArray *>(_valuePtr)->setDefault(getColumnNull(0));
     }
+    else if (_valuePtr->getType() == MaterialValue::Array3D)
+    {
+        reinterpret_cast<Material3DArray *>(_valuePtr)->setDefault(getColumnNull(0));
+    }
 }
 
 MaterialProperty::~MaterialProperty()

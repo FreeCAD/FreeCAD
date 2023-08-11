@@ -40,13 +40,18 @@ public:
 
     void defaultValueChanged(const Base::Quantity &value);
 
-    void accept() override;
-    void reject() override;
+    void onOk(bool checked);
+    void onCancel(bool checked);
 
 private:
     std::unique_ptr<Ui_Array3D> ui;
     Materials::MaterialProperty *_property;
-    Materials::Material2DArray *_value;
+    Materials::Material3DArray *_value;
+
+    void setupDefault();
+    void setDepthColumnWidth(QTableView *table);
+    void setDepthColumnDelegate(QTableView *table);
+    void setupDepthArray();
 };
 
 } // namespace MatGui
