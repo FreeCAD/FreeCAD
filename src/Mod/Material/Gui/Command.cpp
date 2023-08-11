@@ -142,41 +142,6 @@ bool CmdMaterialModelSelect::isActive()
     return true;
 }
 
-//===========================================================================
-// Materials_MaterialSave
-//===========================================================================
-DEF_STD_CMD_A(CmdMaterialSave)
-
-CmdMaterialSave::CmdMaterialSave()
-  :Command("Materials_MaterialSave")
-{
-    sAppModule    = "Material";
-    sGroup        = QT_TR_NOOP("Material");
-    sMenuText     = QT_TR_NOOP("Material save...");
-    sToolTipText  = QT_TR_NOOP("Material save");
-    sWhatsThis    = "Materials_MaterialSave";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Materials_Edit";
-}
-
-void CmdMaterialSave::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Base::Console().Log("Materials_MaterialSave\n");
-
-    static QPointer<QDialog> dlg = nullptr;
-    if (!dlg)
-        dlg = new MatGui::MaterialSave(Gui::getMainWindow());
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->show();
-}
-
-bool CmdMaterialSave::isActive()
-{
-    return true;
-}
-
 //---------------------------------------------------------------
 
 void CreateMaterialCommands()
@@ -186,5 +151,4 @@ void CreateMaterialCommands()
     rcCmdMgr.addCommand(new CmdMaterialsEdit());
     rcCmdMgr.addCommand(new CmdMaterialsValueEdit());
     rcCmdMgr.addCommand(new CmdMaterialModelSelect());
-    rcCmdMgr.addCommand(new CmdMaterialSave());
 }

@@ -47,7 +47,7 @@ class MaterialSave : public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialSave(QWidget* parent = nullptr);
+    explicit MaterialSave(Materials::Material *material, QWidget* parent = nullptr);
     ~MaterialSave() override;
 
     void setLibraries();
@@ -61,12 +61,21 @@ public:
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
     void currentTextChanged(const QString &value);
     void onNewFolder(bool checked);
+    void onOk(bool checked);
+    void onCancel(bool checked);
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_MaterialSave> ui;
     Materials::MaterialManager _manager;
+    Materials::Material* _material;
+    QString _selectedPath;
+    QString _selectedUUID;
+    QString _libraryName;
+    QString _filename;
+
+    QString getPath(const QStandardItem *item) const;
 };
 
 } // namespace MatGui

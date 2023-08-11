@@ -328,7 +328,9 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
     QSettings fcmat(path, QSettings::IniFormat);
 
     // General section
-    QString name = value(fcmat, "Name", "");
+    // QString name = value(fcmat, "Name", ""); - always get the name from the filename
+    QFileInfo filepath(path);
+    QString name = filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
     QString uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
     QString version = QUuid::createUuid().toString(QUuid::WithoutBraces);

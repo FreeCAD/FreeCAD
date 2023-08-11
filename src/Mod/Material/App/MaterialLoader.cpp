@@ -191,9 +191,12 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
         YAML::Node yamlroot = YAML::LoadFile(path.toStdString());
 
         const std::string uuid = yamlroot["General"]["UUID"].as<std::string>();
-        const std::string name = yamlroot["General"]["Name"].as<std::string>();
+        // Always get the name from the filename
+        // QString name = QString::fromStdString(yamlroot["General"]["Name"].as<std::string>());
+        QFileInfo filepath(path);
+        QString name = filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
 
-        model = new MaterialYamlEntry(library, QString::fromStdString(name), modelDir, QString::fromStdString(uuid), yamlroot);
+        model = new MaterialYamlEntry(library, name, modelDir, QString::fromStdString(uuid), yamlroot);
         // showYaml(yamlroot);
     } catch (YAML::Exception const &) {
         Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
