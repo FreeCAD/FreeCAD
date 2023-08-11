@@ -424,7 +424,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
     ParameterGrp::handle hGrp;
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench,InspectionWorkbench,RobotWorkbench,ReverseEngineeringWorkbench"));
+    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench,InspectionWorkbench,RobotWorkbench,ReverseEngineeringWorkbench,OpenSCADWorkbench"));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
 #else
