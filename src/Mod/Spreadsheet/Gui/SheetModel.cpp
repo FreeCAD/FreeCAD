@@ -47,9 +47,9 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent) : QAbstractTableModel(par
 {
     //NOLINTBEGIN
     cellUpdatedConnection =
-        sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, sp::_1));
+        sheet->cellUpdated.connect(std::bind(&SheetModel::cellUpdated, this, sp::_1));
     rangeUpdatedConnection =
-        sheet->rangeUpdated.connect(bind(&SheetModel::rangeUpdated, this, sp::_1));
+        sheet->rangeUpdated.connect(std::bind(&SheetModel::rangeUpdated, this, sp::_1));
     //NOLINTEND
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
