@@ -560,6 +560,9 @@ PartGui::TaskMeasureLinear::~TaskMeasureLinear()
 
 void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   if (buttonSelectedIndex == 0)
   {
     if (msg.Type == Gui::SelectionChanges::AddSelection)
@@ -1557,6 +1560,9 @@ PartGui::TaskMeasureAngular::~TaskMeasureAngular()
 
 void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   TopoDS_Shape shape;
   Base::Matrix4D mat;
   if (!getShapeFromStrings(shape, std::string(msg.pDocName),
