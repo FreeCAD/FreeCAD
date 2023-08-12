@@ -434,7 +434,9 @@ void TaskDetail::createDetail()
 //    Base::Console().Message("TD::createDetail()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
-    m_detailName = m_doc->getUniqueObjectName("Detail");
+    const std::string objectName{QT_TR_NOOP("Detail")};
+    std::string m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {m_detailName.substr(objectName.length())};
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDetail', '%s')",
                             m_detailName.c_str());
@@ -457,6 +459,9 @@ void TaskDetail::createDetail()
                             m_detailName.c_str(), m_baseName.c_str());
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                             m_pageName.c_str(), m_detailName.c_str());
+
+    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+    docObj->Label.setValue(translatedObjectName + generatedSuffix);
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
