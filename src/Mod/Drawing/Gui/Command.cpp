@@ -100,7 +100,8 @@ void CmdDrawingNewPage::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QAction* a = qAsConst(pcAction)->actions()[iMsg];
 
-    std::string FeatName = getUniqueObjectName("Page");
+    std::string FeatName = getUniqueObjectName(
+            QCoreApplication::translate("Drawing_NewPage", "Page").toStdString().c_str());
 
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
