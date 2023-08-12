@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="131"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Web</source>
-      <translation>Webb</translation>
+      <translation type="unfinished">Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -146,7 +146,7 @@
       <location filename="../../BrowserView.cpp" line="616"/>
       <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
-      <translation>Fel</translation>
+      <translation type="unfinished">Error</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="616"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>Det uppstod allvarliga fel vid inläsning av filen. Vissa data kan ha ändrats eller inte återställts alls. Att spara projektet kommer sannolikt att resultera i förlust av data.</translation>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="783"/>

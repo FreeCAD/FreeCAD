@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="265"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="266"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="372"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="152"/>
       <source>Points</source>
-      <translation>Body</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="153"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Convert to points</source>
-      <translation>Převést na body</translation>
+      <translation type="unfinished">Convert to points</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="456"/>
@@ -247,7 +247,7 @@
       <location filename="../../DlgPointsRead.ui" line="245"/>
       <location filename="../../DlgPointsRead.ui" line="281"/>
       <source>none</source>
-      <translation>žádný</translation>
+      <translation type="unfinished">none</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="214"/>
@@ -300,7 +300,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
-      <translation>Všechny soubory</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>

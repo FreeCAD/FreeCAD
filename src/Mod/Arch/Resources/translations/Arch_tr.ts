@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
       <source>Name</source>
-      <translation>Isim</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
       <source>Description</source>
-      <translation>Açıklama</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
       <source>Color</source>
-      <translation>Renk</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="125"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
       <source>Idle</source>
-      <translation>Beklemede</translation>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in browser</source>
-      <translation>Tarayıcıda aç</translation>
+      <translation type="unfinished">Open in browser</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="90"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
       <source>Open</source>
-      <translation>Aç</translation>
+      <translation type="unfinished">Open</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>Yorum</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
-      <translation>Açıklama</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
-      <translation>Özellik</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="76"/>
@@ -282,7 +282,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation>Otomatik güncelle</translation>
+      <translation type="unfinished">Auto update</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -312,7 +312,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
-      <translation>Temizle</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
@@ -342,7 +342,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>İçe aktar</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
@@ -367,7 +367,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
-      <translation>Şifre:</translation>
+      <translation type="unfinished">Password:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
@@ -377,7 +377,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pencere</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -425,7 +425,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
       <source>Status</source>
-      <translation>Durum</translation>
+      <translation type="unfinished">Status</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
@@ -435,7 +435,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>Yenile</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -450,7 +450,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>Tümünü Seç</translation>
+      <translation type="unfinished">Select all</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
@@ -486,7 +486,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>Mevcut Kopyala...</translation>
+      <translation type="unfinished">Copy existing...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -511,7 +511,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
       <source>Add</source>
-      <translation>Ekle</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
@@ -531,7 +531,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation>Evir</translation>
+      <translation type="unfinished">Invert</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -551,7 +551,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
       <source>Shapes</source>
-      <translation>Şekiller</translation>
+      <translation type="unfinished">Shapes</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -561,7 +561,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>Kaldır</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -571,7 +571,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>Tolerans</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -611,17 +611,17 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>Başla</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
       <source>Stop</source>
-      <translation>Dur</translation>
+      <translation type="unfinished">Stop</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="177"/>
       <source>Preview</source>
-      <translation>Önizleme</translation>
+      <translation type="unfinished">Preview</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@ Belgedeki tüm nesneleri kullanmak için boş bırakın</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="14"/>
       <source>General settings</source>
-      <translation>Genel ayarlar</translation>
+      <translation type="unfinished">General settings</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
@@ -898,7 +898,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="702"/>
       <location filename="../ui/preferences-archdefaults.ui" line="859"/>
       <source>Width:</source>
-      <translation>Genişlik:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="41"/>
@@ -923,7 +923,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="494"/>
       <location filename="../ui/preferences-archdefaults.ui" line="741"/>
       <source>Height:</source>
-      <translation>Yükseklik:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
@@ -954,7 +954,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation>Uzunluk:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -974,12 +974,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="372"/>
       <source>Offset</source>
-      <translation>Uzaklaşma</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>Pencereler</translation>
+      <translation type="unfinished">Windows</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1005,7 +1005,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>Şeffaflık:</translation>
+      <translation type="unfinished">Transparency:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1038,12 +1038,12 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="905"/>
       <location filename="../ui/preferences-archdefaults.ui" line="985"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="898"/>
       <source>Thickness</source>
-      <translation>Kalınlık</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
@@ -1073,7 +1073,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>Katı</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1394,12 +1394,12 @@ Netgen kullanılır ise mevcut olduğundan emin ol.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
-      <translation>Mefisto</translation>
+      <translation type="unfinished">Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
-      <translation>Netgen</translation>
+      <translation type="unfinished">Netgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
@@ -1409,7 +1409,7 @@ Netgen kullanılır ise mevcut olduğundan emin ol.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>Mozaikleme</translation>
+      <translation type="unfinished">Tessellation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -1463,7 +1463,7 @@ Bölgesel ağ kafesi boyutunun değişim hızı h(x), |Δh(x)| ≤ 1 değeri ile
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
       <source>Second order</source>
-      <translation>İkinci emir</translation>
+      <translation type="unfinished">Second order</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
@@ -1473,7 +1473,7 @@ Bölgesel ağ kafesi boyutunun değişim hızı h(x), |Δh(x)| ≤ 1 değeri ile
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>En iyi duruma getir</translation>
+      <translation type="unfinished">Optimize</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -1738,13 +1738,13 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
-      <translation>Yapı</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>Işın</translation>
+      <translation type="unfinished">Beam</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -1814,7 +1814,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchCommands.py" line="1634"/>
       <source>Category</source>
-      <translation>Kategori</translation>
+      <translation type="unfinished">Category</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="451"/>
@@ -1831,7 +1831,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
       <location filename="../../ArchWall.py" line="508"/>
       <location filename="../../ArchCommands.py" line="1016"/>
       <source>Length</source>
-      <translation>Uzunluk</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
@@ -1839,14 +1839,14 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
       <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
-      <translation>Genişlik</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
-      <translation>Yükseklik</translation>
+      <translation type="unfinished">Height</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
@@ -1988,7 +1988,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>Bitti</translation>
+      <translation type="unfinished">Done</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1441"/>
@@ -1999,7 +1999,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
       <source>Equipment</source>
-      <translation>Ekipman</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2044,7 +2044,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation>YapıParçası</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="221"/>
@@ -2060,12 +2060,12 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
-      <translation>Devre dışı bırak</translation>
+      <translation type="unfinished">Deactivate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>Etkinleştir</translation>
+      <translation type="unfinished">Activate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2080,7 +2080,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
-      <translation>Grup Oluştur...</translation>
+      <translation type="unfinished">Create group...</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="937"/>
@@ -2096,7 +2096,7 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>Mimari</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2116,12 +2116,12 @@ Ancak bazı BIM uygulamaları dosya açılırken seçilen faktörü uygular.</tr
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>Yan görünüm</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
       <source>Site</source>
-      <translation>Alan</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2207,7 +2207,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>Kullanıcı kimliği</translation>
+      <translation type="unfinished">Id</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2247,7 +2247,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>Kesme</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2272,7 +2272,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>Ön</translation>
+      <translation type="unfinished">Front</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2362,7 +2362,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="88"/>
       <source>Window</source>
-      <translation>Pencere</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
@@ -2441,7 +2441,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>Seçilen çekme</translation>
+      <translation type="unfinished">Pick selected</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
@@ -2451,7 +2451,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
-      <translation>Kaldır</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1790"/>
@@ -2460,7 +2460,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1946"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Add</source>
-      <translation>Ekle</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="935"/>
@@ -2476,7 +2476,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1501"/>
       <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>Edit</source>
-      <translation>Düzenle</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
@@ -2498,7 +2498,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1795"/>
       <location filename="../../ArchComponent.py" line="1953"/>
       <source>Components</source>
-      <translation>Bileşenler</translation>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
@@ -2510,14 +2510,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
-      <translation>Isim</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1798"/>
       <location filename="../../ArchComponent.py" line="2008"/>
       <location filename="../../ArchCommands.py" line="1636"/>
       <source>Type</source>
-      <translation>Türü</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1800"/>
@@ -2525,13 +2525,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="888"/>
       <location filename="../../ArchPanel.py" line="237"/>
       <source>Thickness</source>
-      <translation>Kalınlık</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1801"/>
       <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Offset</source>
-      <translation>Uzaklaşma</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1802"/>
@@ -2579,7 +2579,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
       <source>Axis System</source>
-      <translation>Eksen sistemi</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
@@ -2662,7 +2662,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchProject.py" line="76"/>
       <source>Project</source>
-      <translation>Proje</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -2672,7 +2672,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="67"/>
       <source>Stairs</source>
-      <translation>Merdivenler</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
@@ -2714,7 +2714,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
-      <translation>Malzeme</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
@@ -2729,7 +2729,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>Toplam kalınlık</translation>
+      <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -2786,7 +2786,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="56"/>
       <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
-      <translation>Izgara</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
@@ -2801,12 +2801,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
-      <translation>Satır Ekle</translation>
+      <translation type="unfinished">Add row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
-      <translation>Satır sil</translation>
+      <translation type="unfinished">Del row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
@@ -2851,7 +2851,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
-      <translation>Pah kır</translation>
+      <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -2997,7 +2997,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
-      <translation>Döndür</translation>
+      <translation type="unfinished">Rotate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
@@ -3017,7 +3017,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>Araçlar</translation>
+      <translation type="unfinished">Tools</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3043,7 +3043,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>Boru</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
@@ -3178,7 +3178,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1015"/>
       <source>Description</source>
-      <translation>Açıklama</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3186,14 +3186,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="2009"/>
       <location filename="../../ArchCommands.py" line="1637"/>
       <source>Value</source>
-      <translation>Değer</translation>
+      <translation type="unfinished">Value</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1638"/>
       <source>Unit</source>
-      <translation>Birim</translation>
+      <translation type="unfinished">Unit</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
@@ -3244,22 +3244,22 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
-      <translation>Eksen</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation>Uzaklık</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
       <source>Angle</source>
-      <translation>Açı</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
-      <translation>Etiket</translation>
+      <translation type="unfinished">Label</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="87"/>
@@ -3338,7 +3338,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
-      <translation>Nesneler</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
@@ -3348,12 +3348,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
       <source>Group</source>
-      <translation>Grup</translation>
+      <translation type="unfinished">Group</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1956"/>
       <source>Hosts</source>
-      <translation>Sunucular</translation>
+      <translation type="unfinished">Hosts</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1957"/>
@@ -3368,7 +3368,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>Özellik</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3383,7 +3383,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
-      <translation>Yeni...</translation>
+      <translation type="unfinished">New...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
@@ -3398,7 +3398,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="64"/>
       <source>Rebar</source>
-      <translation>İnşaat demiri</translation>
+      <translation type="unfinished">Rebar</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="130"/>
@@ -3414,7 +3414,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>Kesişim</translation>
+      <translation type="unfinished">Section</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3439,7 +3439,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>Seçileni ekle</translation>
+      <translation type="unfinished">Add selected</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3500,7 +3500,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>Ortala</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3511,7 +3511,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="231"/>
       <location filename="../../ArchBuilding.py" line="204"/>
       <source>Building</source>
-      <translation>İnşa ediliyor</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
@@ -3547,7 +3547,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>Uzay, Boşluk, Alan</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3604,22 +3604,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="526"/>
       <source>Alignment</source>
-      <translation>Hizalama</translation>
+      <translation type="unfinished">Alignment</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>Sol</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Sağ</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
       <source>Use sketches</source>
-      <translation>Eskizleri kullan</translation>
+      <translation type="unfinished">Use sketches</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="679"/>
@@ -3655,7 +3655,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
-      <translation>Yönü değiştir</translation>
+      <translation type="unfinished">Flip direction</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="410"/>
@@ -3690,7 +3690,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>Anket</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -3700,7 +3700,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
-      <translation>Temizle</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1012"/>
@@ -3720,12 +3720,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
-      <translation>Alan</translation>
+      <translation type="unfinished">Area</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>Toplam</translation>
+      <translation type="unfinished">Total</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -3831,7 +3831,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="270"/>
       <source>Structure</source>
-      <translation>Yapı</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
@@ -4941,7 +4941,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
       <source>The color of this material</source>
-      <translation>Bu malzemenin rengini</translation>
+      <translation type="unfinished">The color of this material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
@@ -5979,7 +5979,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
-      <translation>Ekipman</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
@@ -6005,7 +6005,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation>YapıParçası</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
@@ -6088,7 +6088,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="185"/>
       <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
-      <translation>Yard. Uygulamalar</translation>
+      <translation type="unfinished">Utilities</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="191"/>
@@ -6106,7 +6106,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>Not</translation>
+      <translation type="unfinished">Annotation</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6132,7 +6132,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
-      <translation>Yan görünüm</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
@@ -6145,7 +6145,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
-      <translation>Alan</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
@@ -6223,7 +6223,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="164"/>
       <source>Window</source>
-      <translation>Pencere</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="168"/>
@@ -6236,7 +6236,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation>Eksen sistemi</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6262,7 +6262,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProject.py" line="98"/>
       <source>Project</source>
-      <translation>Proje</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="102"/>
@@ -6275,7 +6275,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
-      <translation>Merdivenler</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="212"/>
@@ -6288,7 +6288,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>Uzay, Boşluk, Alan</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6301,7 +6301,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation>Çit</translation>
+      <translation type="unfinished">Fence</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="391"/>
@@ -6314,7 +6314,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="116"/>
       <source>Material</source>
-      <translation>Malzeme</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="120"/>
@@ -6349,7 +6349,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
       <source>Grid</source>
-      <translation>Izgara</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="75"/>
@@ -6435,7 +6435,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Panel Kesme</translation>
+      <translation type="unfinished">Panel Cut</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6448,8 +6448,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>deneme2 silinecek
-</translation>
+      <translation type="unfinished">Panel Sheet</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6497,7 +6496,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>Boru</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
@@ -6558,7 +6557,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
-      <translation>Eksen</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
@@ -6606,7 +6605,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
-      <translation>İnşa ediliyor</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="223"/>
@@ -6749,7 +6748,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>Anket</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
@@ -6829,7 +6828,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="646"/>
       <source>Transform</source>
-      <translation>Dönüştür</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -6838,7 +6837,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>Mimari</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6846,14 +6845,14 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Taslak</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>İçe-Dışa Aktar</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
   </context>
 </TS>

@@ -57,7 +57,7 @@ que hacen referencia al mismo objeto configurable</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Origen de Coordenadas</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

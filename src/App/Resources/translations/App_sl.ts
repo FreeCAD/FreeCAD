@@ -16,7 +16,7 @@ za vse povezave, ki se sklicujejo na isti nastavljivi predmet</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Neimenovan</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ za vse povezave, ki se sklicujejo na isti nastavljivi predmet</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Izhodišče</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

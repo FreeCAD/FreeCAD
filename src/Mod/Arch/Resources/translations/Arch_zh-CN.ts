@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
       <source>Name</source>
-      <translation>名称</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
       <source>Color</source>
-      <translation>颜色</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="125"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
       <source>Idle</source>
-      <translation>空闲</translation>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in browser</source>
-      <translation>在浏览器中打开</translation>
+      <translation type="unfinished">Open in browser</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="90"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
       <source>Open</source>
-      <translation>打开</translation>
+      <translation type="unfinished">Open</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>注释</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
-      <translation>属性</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="76"/>
@@ -284,7 +284,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation>自动更新</translation>
+      <translation type="unfinished">Auto update</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -314,7 +314,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
-      <translation>清除</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
@@ -345,12 +345,12 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>导入</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
-      <translation>导出</translation>
+      <translation type="unfinished">Export</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -370,7 +370,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
-      <translation>密码:</translation>
+      <translation type="unfinished">Password:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
@@ -380,7 +380,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
-      <translation>对话框</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -428,7 +428,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
       <source>Status</source>
-      <translation>状态</translation>
+      <translation type="unfinished">Status</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
@@ -438,7 +438,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>刷新</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -453,7 +453,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>全选</translation>
+      <translation type="unfinished">Select all</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
@@ -489,7 +489,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>复制现有...</translation>
+      <translation type="unfinished">Copy existing...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -514,7 +514,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
       <source>Add</source>
-      <translation>添加</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
@@ -534,7 +534,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation>反转</translation>
+      <translation type="unfinished">Invert</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -554,7 +554,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
       <source>Shapes</source>
-      <translation>形状</translation>
+      <translation type="unfinished">Shapes</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -564,7 +564,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -574,7 +574,7 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>公差</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -614,17 +614,17 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>开始</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
       <source>Stop</source>
-      <translation>停止</translation>
+      <translation type="unfinished">Stop</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="177"/>
       <source>Preview</source>
-      <translation>预览</translation>
+      <translation type="unfinished">Preview</translation>
     </message>
   </context>
   <context>
@@ -900,7 +900,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="702"/>
       <location filename="../ui/preferences-archdefaults.ui" line="859"/>
       <source>Width:</source>
-      <translation>宽度:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="41"/>
@@ -925,7 +925,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="494"/>
       <location filename="../ui/preferences-archdefaults.ui" line="741"/>
       <source>Height:</source>
-      <translation>高度:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
@@ -956,7 +956,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation>长度:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -976,12 +976,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="372"/>
       <source>Offset</source>
-      <translation>偏移</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>窗口</translation>
+      <translation type="unfinished">Windows</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1007,7 +1007,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>透明度:</translation>
+      <translation type="unfinished">Transparency:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1040,12 +1040,12 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="905"/>
       <location filename="../ui/preferences-archdefaults.ui" line="985"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="898"/>
       <source>Thickness</source>
-      <translation>厚度</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
@@ -1075,7 +1075,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>实体</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1390,12 +1390,12 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
-      <translation>Mefisto</translation>
+      <translation type="unfinished">Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
-      <translation>Netgen</translation>
+      <translation type="unfinished">Netgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
@@ -1405,7 +1405,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>曲面细分</translation>
+      <translation type="unfinished">Tessellation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -1459,7 +1459,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
       <source>Second order</source>
-      <translation>二阶</translation>
+      <translation type="unfinished">Second order</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
@@ -1469,7 +1469,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>优化</translation>
+      <translation type="unfinished">Optimize</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -1726,13 +1726,13 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
-      <translation>结构</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>梁</translation>
+      <translation type="unfinished">Beam</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -1802,7 +1802,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchCommands.py" line="1634"/>
       <source>Category</source>
-      <translation>类别</translation>
+      <translation type="unfinished">Category</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="451"/>
@@ -1819,7 +1819,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchWall.py" line="508"/>
       <location filename="../../ArchCommands.py" line="1016"/>
       <source>Length</source>
-      <translation>长度</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
@@ -1827,14 +1827,14 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
-      <translation>宽度</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
-      <translation>高度</translation>
+      <translation type="unfinished">Height</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
@@ -1976,7 +1976,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>完成</translation>
+      <translation type="unfinished">Done</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1441"/>
@@ -1987,7 +1987,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
       <source>Equipment</source>
-      <translation>设备</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2032,7 +2032,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation>构建组件</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="221"/>
@@ -2048,12 +2048,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
-      <translation>停用</translation>
+      <translation type="unfinished">Deactivate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>启用</translation>
+      <translation type="unfinished">Activate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2068,7 +2068,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
-      <translation>创建组...</translation>
+      <translation type="unfinished">Create group...</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="937"/>
@@ -2084,7 +2084,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>建筑</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2104,12 +2104,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>轮廓</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
       <source>Site</source>
-      <translation>场地</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2192,7 +2192,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>编号</translation>
+      <translation type="unfinished">Id</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2232,7 +2232,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>锯切</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2257,7 +2257,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>前视</translation>
+      <translation type="unfinished">Front</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2347,7 +2347,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="88"/>
       <source>Window</source>
-      <translation>窗口</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
@@ -2426,7 +2426,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>选取选定的</translation>
+      <translation type="unfinished">Pick selected</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
@@ -2436,7 +2436,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1790"/>
@@ -2445,7 +2445,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1946"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Add</source>
-      <translation>添加</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="935"/>
@@ -2461,7 +2461,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1501"/>
       <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>Edit</source>
-      <translation>编辑</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
@@ -2483,7 +2483,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1795"/>
       <location filename="../../ArchComponent.py" line="1953"/>
       <source>Components</source>
-      <translation>组件</translation>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
@@ -2495,14 +2495,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
-      <translation>名称</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1798"/>
       <location filename="../../ArchComponent.py" line="2008"/>
       <location filename="../../ArchCommands.py" line="1636"/>
       <source>Type</source>
-      <translation>类型</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1800"/>
@@ -2510,13 +2510,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="888"/>
       <location filename="../../ArchPanel.py" line="237"/>
       <source>Thickness</source>
-      <translation>厚度</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1801"/>
       <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Offset</source>
-      <translation>偏移</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1802"/>
@@ -2564,7 +2564,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
       <source>Axis System</source>
-      <translation>轴线系统</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
@@ -2647,7 +2647,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchProject.py" line="76"/>
       <source>Project</source>
-      <translation>项目</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -2657,7 +2657,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="67"/>
       <source>Stairs</source>
-      <translation>楼梯</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
@@ -2699,7 +2699,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
-      <translation>材质</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
@@ -2714,7 +2714,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>总厚度</translation>
+      <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -2771,7 +2771,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="56"/>
       <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
-      <translation>网格</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
@@ -2786,12 +2786,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
-      <translation>添加行</translation>
+      <translation type="unfinished">Add row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
-      <translation>删除行</translation>
+      <translation type="unfinished">Del row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
@@ -2836,7 +2836,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
-      <translation>倒角</translation>
+      <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -2982,7 +2982,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
-      <translation>旋转</translation>
+      <translation type="unfinished">Rotate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
@@ -3002,7 +3002,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>工具</translation>
+      <translation type="unfinished">Tools</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3028,7 +3028,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>管状</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
@@ -3163,7 +3163,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1015"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3171,14 +3171,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="2009"/>
       <location filename="../../ArchCommands.py" line="1637"/>
       <source>Value</source>
-      <translation>值</translation>
+      <translation type="unfinished">Value</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1638"/>
       <source>Unit</source>
-      <translation>单位</translation>
+      <translation type="unfinished">Unit</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
@@ -3229,22 +3229,22 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
-      <translation>轴线</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation>距离</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
       <source>Angle</source>
-      <translation>角度</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
-      <translation>标签</translation>
+      <translation type="unfinished">Label</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="87"/>
@@ -3323,7 +3323,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
-      <translation>对象</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
@@ -3333,12 +3333,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
       <source>Group</source>
-      <translation>组</translation>
+      <translation type="unfinished">Group</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1956"/>
       <source>Hosts</source>
-      <translation>主机</translation>
+      <translation type="unfinished">Hosts</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1957"/>
@@ -3353,7 +3353,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>属性</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3368,7 +3368,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
-      <translation>新建...</translation>
+      <translation type="unfinished">New...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
@@ -3383,7 +3383,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="64"/>
       <source>Rebar</source>
-      <translation>钢筋</translation>
+      <translation type="unfinished">Rebar</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="130"/>
@@ -3399,7 +3399,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>截面</translation>
+      <translation type="unfinished">Section</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3424,7 +3424,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>添加所选</translation>
+      <translation type="unfinished">Add selected</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3485,7 +3485,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>中心</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3496,7 +3496,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="231"/>
       <location filename="../../ArchBuilding.py" line="204"/>
       <source>Building</source>
-      <translation>建筑</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
@@ -3532,7 +3532,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>空间</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3589,22 +3589,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="526"/>
       <source>Alignment</source>
-      <translation>对齐</translation>
+      <translation type="unfinished">Alignment</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>左视</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>右视</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
       <source>Use sketches</source>
-      <translation>使用草图</translation>
+      <translation type="unfinished">Use sketches</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="679"/>
@@ -3640,7 +3640,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
-      <translation>翻转方向</translation>
+      <translation type="unfinished">Flip direction</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="410"/>
@@ -3675,7 +3675,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>调查</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -3685,7 +3685,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
-      <translation>清除</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1012"/>
@@ -3705,12 +3705,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
-      <translation>面积</translation>
+      <translation type="unfinished">Area</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>总计</translation>
+      <translation type="unfinished">Total</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -3816,7 +3816,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="270"/>
       <source>Structure</source>
-      <translation>结构</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
@@ -4926,7 +4926,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
       <source>The color of this material</source>
-      <translation>此材料的颜色</translation>
+      <translation type="unfinished">The color of this material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
@@ -5964,7 +5964,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
-      <translation>设备</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
@@ -5990,7 +5990,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation>构建组件</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
@@ -6073,7 +6073,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="185"/>
       <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
-      <translation>实用程序</translation>
+      <translation type="unfinished">Utilities</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="191"/>
@@ -6091,7 +6091,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>注释</translation>
+      <translation type="unfinished">Annotation</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6117,7 +6117,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
-      <translation>轮廓</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
@@ -6130,7 +6130,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
-      <translation>场地</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
@@ -6143,7 +6143,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation>屋顶</translation>
+      <translation type="unfinished">Roof</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6195,7 +6195,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation>框架</translation>
+      <translation type="unfinished">Frame</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6208,7 +6208,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="164"/>
       <source>Window</source>
-      <translation>窗口</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="168"/>
@@ -6221,7 +6221,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation>轴线系统</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6234,7 +6234,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation>桁架</translation>
+      <translation type="unfinished">Truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>
@@ -6247,7 +6247,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProject.py" line="98"/>
       <source>Project</source>
-      <translation>项目</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="102"/>
@@ -6260,7 +6260,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
-      <translation>楼梯</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="212"/>
@@ -6273,7 +6273,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>空间</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6286,7 +6286,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation>栅栏</translation>
+      <translation type="unfinished">Fence</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="391"/>
@@ -6299,7 +6299,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="116"/>
       <source>Material</source>
-      <translation>材质</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="120"/>
@@ -6334,7 +6334,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
       <source>Grid</source>
-      <translation>网格</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="75"/>
@@ -6420,7 +6420,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>面板切割</translation>
+      <translation type="unfinished">Panel Cut</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6433,7 +6433,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>面板表</translation>
+      <translation type="unfinished">Panel Sheet</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6481,7 +6481,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>管状</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
@@ -6542,7 +6542,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
-      <translation>轴线</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
@@ -6590,7 +6590,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
-      <translation>建筑</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="223"/>
@@ -6733,7 +6733,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>调查</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
@@ -6813,7 +6813,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="646"/>
       <source>Transform</source>
-      <translation>变换</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -6822,7 +6822,7 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>建筑</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6830,14 +6830,14 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>拔模</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
   </context>
 </TS>

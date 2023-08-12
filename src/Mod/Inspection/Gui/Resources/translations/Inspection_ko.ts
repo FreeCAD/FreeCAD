@@ -62,7 +62,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation>오브젝트</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation>매개 변수</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
@@ -83,12 +83,12 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation> mm</translation>
+      <translation type="unfinished"> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation>두께</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
   </context>
   <context>

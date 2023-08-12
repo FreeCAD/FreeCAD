@@ -16,7 +16,7 @@ które odnoszą się do tego samego obiektu konfigurowalnego</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Nienazwany</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ które odnoszą się do tego samego obiektu konfigurowalnego</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Odniesienie położenia</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

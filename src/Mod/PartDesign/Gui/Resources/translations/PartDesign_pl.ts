@@ -169,7 +169,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -187,7 +187,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -205,12 +205,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
-      <translation>Operacja logiczna</translation>
+      <translation type="unfinished">Boolean operation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
@@ -223,7 +223,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -241,7 +241,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -277,7 +277,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
@@ -295,7 +295,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -313,7 +313,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -331,7 +331,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -349,7 +349,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -367,7 +367,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -385,7 +385,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
@@ -403,7 +403,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
@@ -421,7 +421,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
@@ -439,7 +439,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
@@ -457,7 +457,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
@@ -475,7 +475,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
@@ -493,7 +493,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
@@ -511,12 +511,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
-      <translation>Utwórz szkic</translation>
+      <translation type="unfinished">Create sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="504"/>
@@ -529,7 +529,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="991"/>
@@ -547,7 +547,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -565,7 +565,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -583,7 +583,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -601,7 +601,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -619,7 +619,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -637,7 +637,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
@@ -655,7 +655,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -673,7 +673,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -687,7 +687,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -705,7 +705,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -723,7 +723,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -741,12 +741,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>Thickness</source>
-      <translation>Grubość</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1823"/>
@@ -759,7 +759,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -813,7 +813,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -944,7 +944,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
-      <translation>Transformacja odbicia lustrzanego</translation>
+      <translation type="unfinished">Mirrored</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
@@ -954,12 +954,12 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
-      <translation>Transformacja szyku kołowego</translation>
+      <translation type="unfinished">PolarPattern</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
-      <translation>Transformacja zmiany skali</translation>
+      <translation type="unfinished">Scaled</translation>
     </message>
   </context>
   <context>
@@ -1119,13 +1119,13 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
-      <translation>Długość:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
       <source>Width:</source>
-      <translation>Szerokość:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1134,7 +1134,7 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1254"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
-      <translation>Wysokość:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1143,7 +1143,7 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1749"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1805"/>
       <source>Radius:</source>
-      <translation>Promień:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
@@ -1179,31 +1179,31 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="797"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1016"/>
       <source>Radius 1:</source>
-      <translation>Promień 1:</translation>
+      <translation type="unfinished">Radius 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="485"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="820"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2:</source>
-      <translation>Promień 2:</translation>
+      <translation type="unfinished">Radius 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
       <source>Angle:</source>
-      <translation>Kąt:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <source>U parameter:</source>
-      <translation>Parametr U:</translation>
+      <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters:</source>
-      <translation>Parametry V:</translation>
+      <translation type="unfinished">V parameters:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1218,7 +1218,7 @@ Please select a body from below, or create a new body.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
       <source>Radius 3:</source>
-      <translation>Promień 3:</translation>
+      <translation type="unfinished">Radius 3:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
@@ -1231,7 +1231,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter:</source>
-      <translation>Parametr V:</translation>
+      <translation type="unfinished">V parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
@@ -1246,132 +1246,132 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U Parameter:</source>
-      <translation>Parametr U:</translation>
+      <translation type="unfinished">U Parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2290"/>
       <source>Polygon:</source>
-      <translation>Wielokąt:</translation>
+      <translation type="unfinished">Polygon:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius:</source>
-      <translation>Promień okręgu opisanego:</translation>
+      <translation type="unfinished">Circumradius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
       <source>X min/max:</source>
-      <translation>X min / max:</translation>
+      <translation type="unfinished">X min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1383"/>
       <source>Y min/max:</source>
-      <translation>Y min / max:</translation>
+      <translation type="unfinished">Y min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max:</source>
-      <translation>Z min / max:</translation>
+      <translation type="unfinished">Z min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max:</source>
-      <translation>X2 min / max:</translation>
+      <translation type="unfinished">X2 min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max:</source>
-      <translation>Z2 min / max:</translation>
+      <translation type="unfinished">Z2 min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>Skok:</translation>
+      <translation type="unfinished">Pitch:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system:</source>
-      <translation>Układ współrzędnych:</translation>
+      <translation type="unfinished">Coordinate system:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>Prawoskrętny</translation>
+      <translation type="unfinished">Right-handed</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>Lewoskrętny</translation>
+      <translation type="unfinished">Left-handed</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
       <source>Growth:</source>
-      <translation>Skok:</translation>
+      <translation type="unfinished">Growth:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations:</source>
-      <translation>Liczba obrotów:</translation>
+      <translation type="unfinished">Number of rotations:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1947"/>
       <source>Angle 1:</source>
-      <translation>Kąt 1:</translation>
+      <translation type="unfinished">Angle 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1842"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1964"/>
       <source>Angle 2:</source>
-      <translation>Kąt 2:</translation>
+      <translation type="unfinished">Angle 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From three points</source>
-      <translation>Z trzech punktów</translation>
+      <translation type="unfinished">From three points</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
       <source>Major radius:</source>
-      <translation>Promień główny:</translation>
+      <translation type="unfinished">Major radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>Promień pomocniczy:</translation>
+      <translation type="unfinished">Minor radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2093"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2170"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2025"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2113"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2193"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2045"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2133"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2216"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
-      <translation>Punkt początkowy</translation>
+      <translation type="unfinished">Start point</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation>Punkt końcowy</translation>
+      <translation type="unfinished">End point</translation>
     </message>
   </context>
   <context>
@@ -1379,7 +1379,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Odniesienie</translation>
+      <translation type="unfinished">Reference</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1435,7 +1435,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1450,7 +1450,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -1527,7 +1527,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="49"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="57"/>
@@ -1552,7 +1552,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="101"/>
       <source>Size</source>
-      <translation>Rozmiar</translation>
+      <translation type="unfinished">Size</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="120"/>
@@ -1567,7 +1567,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="180"/>
       <source>Angle</source>
-      <translation>Kąt</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
@@ -1629,7 +1629,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
@@ -1641,7 +1641,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1683,12 +1683,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="84"/>
       <source>Preview</source>
-      <translation>Podgląd</translation>
+      <translation type="unfinished">Preview</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1703,7 +1703,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -1751,7 +1751,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
@@ -1844,19 +1844,19 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
-kliknij ponownie, aby zakończyć wybór</translation>
+      <translation type="unfinished">Click button to enter selection mode,
+click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Dodaj</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -1868,7 +1868,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
       <source>Radius:</source>
-      <translation>Promień:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
@@ -1888,7 +1888,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
@@ -1898,12 +1898,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>Poprawny</translation>
+      <translation type="unfinished">Valid</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
       <source>Axis:</source>
-      <translation>Oś:</translation>
+      <translation type="unfinished">Axis:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
@@ -1975,12 +1975,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch:</source>
-      <translation>Skok:</translation>
+      <translation type="unfinished">Pitch:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
       <source>Height:</source>
-      <translation>Wysokość:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="179"/>
@@ -2015,7 +2015,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="289"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="51"/>
@@ -2101,7 +2101,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
@@ -2121,12 +2121,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
       <source>Direction</source>
-      <translation>Kierunek</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Odwróć kierunek</translation>
+      <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2141,22 +2141,22 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
-      <translation>Błąd</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2164,27 +2164,27 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation>Powierzchnia prostokreślna</translation>
+      <translation type="unfinished">Ruled surface</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
       <source>Closed</source>
-      <translation>Zamknięty</translation>
+      <translation type="unfinished">Closed</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation>Obiekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2214,7 +2214,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2222,7 +2222,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
@@ -2237,32 +2237,32 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
       <source>Plane</source>
-      <translation>Płaszczyzna</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
       <source>Error</source>
-      <translation>Błąd</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2270,22 +2270,22 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj element</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń element</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2295,12 +2295,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
@@ -2310,7 +2310,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
@@ -2335,12 +2335,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
-      <translation>Przenieś wyżej</translation>
+      <translation type="unfinished">Move up</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
-      <translation>Przenieś w dół</translation>
+      <translation type="unfinished">Move down</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
@@ -2368,7 +2368,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>Dimension</source>
-      <translation>Wymiar</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2383,7 +2383,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to face</source>
-      <translation>Do ściany</translation>
+      <translation type="unfinished">Up to face</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="76"/>
@@ -2396,17 +2396,17 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Wymiar</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2421,7 +2421,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="77"/>
       <source>Direction</source>
-      <translation>Kierunek</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="85"/>
@@ -2443,7 +2443,7 @@ z modelu jako odniesienie</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation>Wybierz odniesienie ...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2465,7 +2465,7 @@ zostanie użyty wektor normalny płaszczyzny szkicu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="140"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="147"/>
@@ -2475,7 +2475,7 @@ zostanie użyty wektor normalny płaszczyzny szkicu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="169"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="176"/>
@@ -2485,7 +2485,7 @@ zostanie użyty wektor normalny płaszczyzny szkicu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="198"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="205"/>
@@ -2548,7 +2548,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
   </context>
   <context>
@@ -2556,7 +2556,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
@@ -2566,7 +2566,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Standardowy</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
@@ -2576,7 +2576,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
       <source>Frenet</source>
-      <translation>Freneta</translation>
+      <translation type="unfinished">Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
@@ -2586,7 +2586,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Binormalny</translation>
+      <translation type="unfinished">Binormal</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -2596,12 +2596,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation>Obiekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2621,17 +2621,17 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="197"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="204"/>
       <source>Z</source>
-      <translation>Z</translation>
+      <translation type="unfinished">Z</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="534"/>
@@ -2641,7 +2641,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2649,18 +2649,18 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
       <location filename="../../TaskPipeParameters.ui" line="93"/>
       <source>Object</source>
-      <translation>Obiekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
@@ -2705,13 +2705,13 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
-      <translation>Błąd danych wejściowych</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
@@ -2724,7 +2724,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
@@ -2754,7 +2754,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="802"/>
@@ -2764,7 +2764,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2787,7 +2787,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>Dimension</source>
-      <translation>Wymiar</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
@@ -2802,7 +2802,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>Do ściany</translation>
+      <translation type="unfinished">Up to face</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="77"/>
@@ -2815,22 +2815,22 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj element</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń element</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2840,12 +2840,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Odwróć kierunek</translation>
+      <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
       <source>Angle</source>
-      <translation>Kąt</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
@@ -2855,22 +2855,22 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
-      <translation>Błąd</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2886,12 +2886,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
-      <translation>Oś:</translation>
+      <translation type="unfinished">Axis:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
@@ -2925,12 +2925,12 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
-      <translation>Wybierz odniesienie ...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Kąt:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
@@ -2940,12 +2940,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation>Odwrócony</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
@@ -2958,17 +2958,17 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj element</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń element</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="53"/>
@@ -2978,22 +2978,22 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="67"/>
       <source>Occurrences</source>
-      <translation>Wystąpienia</translation>
+      <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="81"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -3001,12 +3001,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation>Obiekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
@@ -3026,7 +3026,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="132"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -3042,19 +3042,19 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
-kliknij ponownie, aby zakończyć wybór</translation>
+      <translation type="unfinished">Click button to enter selection mode,
+click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
@@ -3066,22 +3066,22 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="47"/>
       <source>Thickness</source>
-      <translation>Grubość</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="76"/>
       <source>Mode</source>
-      <translation>Tryb</translation>
+      <translation type="unfinished">Mode</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="84"/>
       <source>Skin</source>
-      <translation>Powłoka</translation>
+      <translation type="unfinished">Skin</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="89"/>
       <source>Pipe</source>
-      <translation>Rura</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="94"/>
@@ -3102,7 +3102,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskThicknessParameters.ui" line="115"/>
       <location filename="../../TaskThicknessParameters.ui" line="125"/>
       <source>Intersection</source>
-      <translation>Przecięcie</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="132"/>
@@ -3135,12 +3135,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="251"/>
       <source>Vertical sketch axis</source>
-      <translation>Pionowa oś szkicu</translation>
+      <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="252"/>
       <source>Horizontal sketch axis</source>
-      <translation>Pozioma oś szkicu</translation>
+      <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="254"/>
@@ -3151,23 +3151,23 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="268"/>
       <source>Base X axis</source>
-      <translation>Bazowa oś X</translation>
+      <translation type="unfinished">Base X axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="269"/>
       <source>Base Y axis</source>
-      <translation>Bazowa oś Y</translation>
+      <translation type="unfinished">Base Y axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="270"/>
       <source>Base Z axis</source>
-      <translation>Bazowa oś Z</translation>
+      <translation type="unfinished">Base Z axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
       <location filename="../../TaskTransformedParameters.cpp" line="313"/>
       <source>Select reference...</source>
-      <translation>Wybierz odniesienie ...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
@@ -3188,7 +3188,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Przełącz aktywną zawartość</translation>
     </message>
@@ -3432,7 +3432,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Error</source>
-      <translation>Błąd</translation>
+      <translation type="unfinished">Error</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="145"/>
@@ -3666,7 +3666,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="197"/>
       <source>Body</source>
-      <translation>Zawartość</translation>
+      <translation type="unfinished">Body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="343"/>
@@ -3695,7 +3695,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <location filename="../../CommandBody.cpp" line="857"/>
       <location filename="../../CommandBody.cpp" line="864"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation type="unfinished">Selection error</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
@@ -3777,23 +3777,23 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
-      <translation>Pionowa oś szkicu</translation>
+      <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
-      <translation>Pozioma oś szkicu</translation>
+      <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
       <source>Construction line %1</source>
-      <translation>Linia konstrukcyjna %1</translation>
+      <translation type="unfinished">Construction line %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="138"/>
@@ -3845,7 +3845,7 @@ Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez 
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
       <source>Set colors...</source>
-      <translation>Ustaw kolory ...</translation>
+      <translation type="unfinished">Set colors...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>
@@ -3856,19 +3856,19 @@ Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez 
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
       <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
-      <translation>Płaszczyzna</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="115"/>
       <location filename="../../ViewProviderDatum.cpp" line="200"/>
       <source>Line</source>
-      <translation>Linia</translation>
+      <translation type="unfinished">Line</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="120"/>
       <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Point</source>
-      <translation>Punkt</translation>
+      <translation type="unfinished">Point</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="125"/>
@@ -3963,27 +3963,27 @@ Ta cecha jest uszkodzona i nie może być edytowana.</translation>
       <translation>Transformacja udana</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>Edytowany dokument "%1" został zaprojektowany w starszej wersji środowiska Projekt Części.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>Czy chcesz migrować w celu używania nowoczesnych funkcji środowiska Projekt części?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Dokument %1 wydaje się być w środku procesu migracji z dziedziczącego środowiska Projekt części lub ma lekko uszkodzoną strukturę.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Czy chcesz dokonać migracji automatycznie?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -3992,7 +3992,7 @@ Jeśli odmówisz migracji, nie będziesz mógł używać nowych funkcji środowi
 Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Migruj".</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Migruj ręcznie</translation>
     </message>
@@ -4044,7 +4044,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>
       <source>Edit thickness</source>
-      <translation>Edytuj grubość</translation>
+      <translation type="unfinished">Edit thickness</translation>
     </message>
   </context>
   <context>
@@ -4240,23 +4240,23 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
-      <translation>Pozycja</translation>
+      <translation type="unfinished">Position</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="87"/>
       <source>Edge</source>
-      <translation>Krawędź</translation>
+      <translation type="unfinished">Edge</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="63"/>
@@ -4267,7 +4267,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="137"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
@@ -4308,14 +4308,14 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>Tolerancja</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="368"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="474"/>
       <source>Diameter</source>
-      <translation>Średnica</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
@@ -4341,7 +4341,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="466"/>
       <source>Data</source>
-      <translation>Dane</translation>
+      <translation type="unfinished">Data</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
@@ -4379,7 +4379,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4411,7 +4411,7 @@ Zauważ, że obliczenia mogą zająć trochę czasu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4437,7 +4437,7 @@ Zauważ, że obliczenia mogą zająć trochę czasu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="159"/>
       <source>Direction</source>
-      <translation>Kierunek</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="178"/>
@@ -4452,7 +4452,7 @@ Zauważ, że obliczenia mogą zająć trochę czasu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="210"/>
       <source>Size</source>
-      <translation>Rozmiar</translation>
+      <translation type="unfinished">Size</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="246"/>
@@ -4463,20 +4463,20 @@ Dostępne tylko dla otworów bez gwintu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
-      <translation>Standardowy</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
       <translation>Dokładne</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>Zgrubne</translation>
     </message>
@@ -4494,7 +4494,7 @@ Dostępne tylko dla otworów bez gwintu</translation>
       <location filename="../../TaskHoleParameters.ui" line="301"/>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <source>Diameter</source>
-      <translation>Średnica</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="314"/>
@@ -4511,7 +4511,7 @@ Dostępne tylko dla otworów bez gwintu</translation>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Wymiar</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4542,7 +4542,7 @@ Dostępne tylko dla otworów bez gwintu</translation>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
       <location filename="../../TaskHoleParameters.ui" line="613"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
@@ -4627,15 +4627,15 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation>Odwrócony</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
-      <source>Normal</source>
-      <translation>Normalny</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <source>Normal</source>
+      <translation type="unfinished">Normal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation>Pasowanie</translation>
     </message>
@@ -4645,7 +4645,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="14"/>
       <source>Form</source>
-      <translation>Formularz</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
@@ -4708,17 +4708,17 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Measure</source>
-      <translation>Pomiary</translation>
+      <translation type="unfinished">Measure</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Refresh</source>
-      <translation>Odśwież</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Włącz / wyłącz widok pomiarów 3D</translation>
+      <translation type="unfinished">Toggle 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -4830,7 +4830,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
       <source>All</source>
-      <translation>Wszystkie</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>

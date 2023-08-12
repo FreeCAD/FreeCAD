@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Папярочныя перасекі...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Папярочныя перасекі</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Difference</source>
-      <translation>Розніца</translation>
+      <translation type="unfinished">Difference</translation>
     </message>
   </context>
   <context>
@@ -272,12 +272,12 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>Стварыць паліганальную сетку з фігуры...</translation>
+      <translation type="unfinished">Create mesh from shape...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
-      <translation>Мазаічная фігура</translation>
+      <translation type="unfinished">Tessellate shape</translation>
     </message>
   </context>
   <context>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
-      <translation>Перасячэнне</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Union</source>
-      <translation>Аб'яднанне</translation>
+      <translation type="unfinished">Union</translation>
     </message>
   </context>
   <context>
@@ -734,7 +734,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Harmonize normals</source>
-      <translation>Узгадніць вектары нармалі</translation>
+      <translation type="unfinished">Harmonize normals</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
@@ -785,18 +785,18 @@
       <location filename="../../ViewProvider.cpp" line="916"/>
       <location filename="../../ViewProvider.cpp" line="971"/>
       <source>Cut</source>
-      <translation>Разрэзаць</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="925"/>
       <location filename="../../ViewProvider.cpp" line="1032"/>
       <source>Trim</source>
-      <translation>Абрэзка</translation>
+      <translation type="unfinished">Trim</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
-      <translation>Падзяліць</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
@@ -806,7 +806,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1719"/>
       <source>Delete</source>
-      <translation>Выдаліць</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1826"/>
@@ -829,7 +829,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Дакладнасць</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="90"/>
@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
       <source>Refresh</source>
-      <translation>Абнавіць</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
       <source>No selection</source>
-      <translation>Не абрана</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
@@ -1003,12 +1003,12 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
-      <translation>Без інфармацыі</translation>
+      <translation type="unfinished">No information</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
       <source>Orientation</source>
-      <translation>Арыентацыя</translation>
+      <translation type="unfinished">Orientation</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
@@ -1034,7 +1034,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Non-manifolds</source>
-      <translation>Аднастайныя</translation>
+      <translation type="unfinished">Non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
@@ -1099,7 +1099,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
       <source>Duplicated faces</source>
-      <translation>Паўторныя грані</translation>
+      <translation type="unfinished">Duplicated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
@@ -1110,7 +1110,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
       <source>Duplicated points</source>
-      <translation>Паўторныя кропкі</translation>
+      <translation type="unfinished">Duplicated points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
@@ -1120,7 +1120,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
       <source>Self-intersections</source>
-      <translation>Самаперакрыжаванні</translation>
+      <translation type="unfinished">Self-intersections</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
@@ -1154,7 +1154,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Налады</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1192,27 +1192,27 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
       <source>Cylinder</source>
-      <translation>Цыліндр</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="60"/>
       <source>Cone</source>
-      <translation>Конус</translation>
+      <translation type="unfinished">Cone</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
       <source>Ellipsoid</source>
-      <translation>Эліпсоід</translation>
+      <translation type="unfinished">Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>Тор</translation>
+      <translation type="unfinished">Torus</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
@@ -1224,18 +1224,18 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
       <source>Width:</source>
-      <translation>Шырыня:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height:</source>
-      <translation>Вышыня:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
       <source>Radius:</source>
-      <translation>Радыус:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
@@ -1263,29 +1263,29 @@
       <location filename="../../DlgRegularSolid.ui" line="588"/>
       <location filename="../../DlgRegularSolid.ui" line="692"/>
       <source>Radius 1:</source>
-      <translation>Радыус 1:</translation>
+      <translation type="unfinished">Radius 1:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="370"/>
       <location filename="../../DlgRegularSolid.ui" line="605"/>
       <location filename="../../DlgRegularSolid.ui" line="709"/>
       <source>Radius 2:</source>
-      <translation>Радыус 2:</translation>
+      <translation type="unfinished">Radius 2:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp;Стварыць</translation>
+      <translation type="unfinished">&amp;Create</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
       <source>Alt+C</source>
-      <translation>&lt;Alt+C&gt;</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Close</source>
-      <translation>Зачыніць</translation>
+      <translation type="unfinished">Close</translation>
     </message>
   </context>
   <context>
@@ -1295,12 +1295,12 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
       <source>Create %1</source>
-      <translation>Стварыць %1</translation>
+      <translation type="unfinished">Create %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
       <source>No active document</source>
-      <translation>Без бягучага дакумента</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
   </context>
   <context>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>Шырыня:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Вышыня:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1492,7 +1492,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Згладжванне</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1512,7 +1512,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>Налада</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
@@ -1540,7 +1540,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="95"/>
       <source>Automatic</source>
-      <translation>Аўтаматычна</translation>
+      <translation type="unfinished">Automatic</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
@@ -1566,7 +1566,7 @@ to a smoother appearance.
       <location filename="../../RemeshGmsh.cpp" line="189"/>
       <location filename="../../RemeshGmsh.cpp" line="245"/>
       <source>Time:</source>
-      <translation>Час:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
@@ -1581,7 +1581,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
-      <translation>Памылка</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -1589,7 +1589,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Add triangle</source>
-      <translation>Дадаць трыкутнік</translation>
+      <translation type="unfinished">Add triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
@@ -1599,12 +1599,12 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>
       <source>Clear</source>
-      <translation>Ачысціць</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Finish</source>
-      <translation>Скончыць</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1612,7 +1612,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Скончыць</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1625,12 +1625,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation>Налады</translation>
+      <translation type="unfinished">Parameters</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation>Выдзяленне</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -1640,12 +1640,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
-      <translation>Трыкутнік</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Ачысціць</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1655,7 +1655,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Не абрана</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1693,7 +1693,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Вугал:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1703,7 +1703,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Траекторыя</translation>
+      <translation type="unfinished">Path</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1713,12 +1713,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation>Час:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Ачысціць</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
   </context>
   <context>
@@ -1731,19 +1731,19 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation>Абраць</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Вобласць</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Усе</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>
@@ -1813,7 +1813,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Плоскасць</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1821,7 +1821,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Дакладнасць</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1834,7 +1834,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Цыліндр</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1855,7 +1855,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1878,12 +1878,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Сегментацыя паліганальнай сеткі</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Плоскасць</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1897,51 +1897,51 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Дакладнасць</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Найменшая колькасць граняў</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Cylinder</source>
-      <translation>Цыліндр</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="352"/>
       <location filename="../../SegmentationBestFit.cpp" line="378"/>
       <source>Base</source>
-      <translation>Асноўныя</translation>
+      <translation type="unfinished">Base</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Звычайны</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>Вось</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
-      <translation>Радыус</translation>
+      <translation type="unfinished">Radius</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Па цэнтры</translation>
+      <translation type="unfinished">Center</translation>
     </message>
   </context>
   <context>
@@ -1950,27 +1950,27 @@ to a smoother appearance.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Выдзяленне</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
       <source>Add</source>
-      <translation>Дадаць</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Ачысціць</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation>Прымаць толькі бачныя трыкутнікі</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Прымаць толькі трыкутнікі з павернутымі вектарамі нармалі да экрану</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="83"/>
@@ -1989,7 +1989,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Выдаліць</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2003,7 +2003,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of points:</source>
-      <translation>Колькасць кропак:</translation>
+      <translation type="unfinished">Number of points:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -2079,7 +2079,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Ацаніць і аднавіць паліганальную сетку</translation>
+      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
     </message>
   </context>
   <context>
@@ -2087,12 +2087,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Display</source>
-      <translation>Праецыраванне</translation>
+      <translation type="unfinished">Display</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>Імпарт-Экспарт</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2150,7 +2150,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="388"/>
       <source>All Files</source>
-      <translation>Усе файлы</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
@@ -2329,12 +2329,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
-      <translation>Даследаваць</translation>
+      <translation type="unfinished">Analyze</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Лагічная аперацыя</translation>
+      <translation type="unfinished">Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -2344,7 +2344,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Абрэзка</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -2369,7 +2369,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Сегментацыя паліганальнай сеткі</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

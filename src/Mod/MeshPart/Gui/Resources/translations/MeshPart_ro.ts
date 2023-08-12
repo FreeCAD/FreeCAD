@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
-      <translation>Sectiune transversala...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
-      <translation>Sectiune transversala</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -67,12 +67,12 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>Creează o secțiune plecând de la la o plasă şi un plan</translation>
+      <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
-      <translation>Secţiune</translation>
+      <translation type="unfinished">Section</translation>
     </message>
   </context>
   <context>
@@ -85,13 +85,13 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>Tăiaţi plasa cu un plan</translation>
+      <translation type="unfinished">Trim mesh with a plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Tăie o plasă cu un plan</translation>
+      <translation type="unfinished">Trims a mesh with a plane</translation>
     </message>
   </context>
   <context>
@@ -112,57 +112,57 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Sectiune transversala</translation>
+      <translation type="unfinished">Cross sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Plan director</translation>
+      <translation type="unfinished">Guiding plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation>XY</translation>
+      <translation type="unfinished">XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation>XZ</translation>
+      <translation type="unfinished">XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation>YZ</translation>
+      <translation type="unfinished">YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Pozitie:</translation>
+      <translation type="unfinished">Position:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sectiuni</translation>
+      <translation type="unfinished">Sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation>Pe ambele parti</translation>
+      <translation type="unfinished">On both sides</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Numar</translation>
+      <translation type="unfinished">Count</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>Distanta:</translation>
+      <translation type="unfinished">Distance:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
-      <translation>Opţiuni</translation>
+      <translation type="unfinished">Options</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
@@ -170,7 +170,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
       <translation>Conectează marginile dacă distanța este mai mică de</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Eșec</translation>
     </message>
@@ -180,7 +180,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Create</source>
-      <translation>Creează</translation>
+      <translation type="unfinished">Create</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -190,12 +190,12 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Clear</source>
-      <translation>Șterge</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="369"/>
       <source>Cancel</source>
-      <translation>Renunţă</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
@@ -205,7 +205,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation>Nu a fost ales nici un punct</translation>
+      <translation type="unfinished">No point was picked</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Polilinie</translation>
+      <translation type="unfinished">Wire</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -275,7 +275,7 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Mozaicare</translation>
+      <translation type="unfinished">Tessellation</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -285,7 +285,7 @@ Această comandă funcționează doar cu un obiect 'plasă', nu cu o față sau 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
@@ -388,7 +388,7 @@ Cea mai mică valoare este 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation>Finețe:</translation>
+      <translation type="unfinished">Fineness:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -398,17 +398,17 @@ Cea mai mică valoare este 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Brut</translation>
+      <translation type="unfinished">Coarse</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Moderat</translation>
+      <translation type="unfinished">Moderate</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Fin</translation>
+      <translation type="unfinished">Fine</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -488,13 +488,13 @@ O valoare în intervalul 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation>Zgură</translation>
+      <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="225"/>
       <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
-      <translation>Nici un document activ</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="259"/>

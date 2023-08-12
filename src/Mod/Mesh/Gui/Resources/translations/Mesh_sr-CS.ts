@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Poprečni presek...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Poprečni presek</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Difference</source>
-      <translation>Razlika</translation>
+      <translation type="unfinished">Difference</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>Napravi mrežu od oblika...</translation>
+      <translation type="unfinished">Create mesh from shape...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
-      <translation>Presek</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Union</source>
-      <translation>Unija</translation>
+      <translation type="unfinished">Union</translation>
     </message>
   </context>
   <context>
@@ -734,7 +734,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Harmonize normals</source>
-      <translation>Uskladi normale</translation>
+      <translation type="unfinished">Harmonize normals</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
@@ -785,18 +785,18 @@
       <location filename="../../ViewProvider.cpp" line="916"/>
       <location filename="../../ViewProvider.cpp" line="971"/>
       <source>Cut</source>
-      <translation>Isecanje</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="925"/>
       <location filename="../../ViewProvider.cpp" line="1032"/>
       <source>Trim</source>
-      <translation>Opseci</translation>
+      <translation type="unfinished">Trim</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
-      <translation>Podeli</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
@@ -806,7 +806,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1719"/>
       <source>Delete</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1826"/>
@@ -829,7 +829,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Nijedan</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Tolerancija</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="90"/>
@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
       <source>Refresh</source>
-      <translation>Osveži</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
       <source>No selection</source>
-      <translation>Ništa izabrano</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
@@ -1003,12 +1003,12 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
-      <translation>Nema informacija</translation>
+      <translation type="unfinished">No information</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
       <source>Orientation</source>
-      <translation>Orijentacija</translation>
+      <translation type="unfinished">Orientation</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
@@ -1034,7 +1034,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Non-manifolds</source>
-      <translation>Loša-mnogostrukost</translation>
+      <translation type="unfinished">Non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
@@ -1099,7 +1099,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
       <source>Duplicated faces</source>
-      <translation>Duplirane stranice</translation>
+      <translation type="unfinished">Duplicated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
@@ -1110,7 +1110,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
       <source>Duplicated points</source>
-      <translation>Duplirane tačke</translation>
+      <translation type="unfinished">Duplicated points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
@@ -1120,7 +1120,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
       <source>Self-intersections</source>
-      <translation>Samo-ukrštanje</translation>
+      <translation type="unfinished">Self-intersections</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
@@ -1154,7 +1154,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Podešavanja</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1192,27 +1192,27 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
       <source>Cylinder</source>
-      <translation>Valjak</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="60"/>
       <source>Cone</source>
-      <translation>Kupa</translation>
+      <translation type="unfinished">Cone</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>Lopta</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
       <source>Ellipsoid</source>
-      <translation>Elipsoid</translation>
+      <translation type="unfinished">Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>Torus</translation>
+      <translation type="unfinished">Torus</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
@@ -1224,18 +1224,18 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
       <source>Width:</source>
-      <translation>Širina:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
       <source>Radius:</source>
-      <translation>Poluprečnik:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
@@ -1263,29 +1263,29 @@
       <location filename="../../DlgRegularSolid.ui" line="588"/>
       <location filename="../../DlgRegularSolid.ui" line="692"/>
       <source>Radius 1:</source>
-      <translation>Poluprečnik 1:</translation>
+      <translation type="unfinished">Radius 1:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="370"/>
       <location filename="../../DlgRegularSolid.ui" line="605"/>
       <location filename="../../DlgRegularSolid.ui" line="709"/>
       <source>Radius 2:</source>
-      <translation>Poluprečnik 2:</translation>
+      <translation type="unfinished">Radius 2:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp;Napravi</translation>
+      <translation type="unfinished">&amp;Create</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Close</source>
-      <translation>Zatvori</translation>
+      <translation type="unfinished">Close</translation>
     </message>
   </context>
   <context>
@@ -1295,12 +1295,12 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
       <source>Create %1</source>
-      <translation>Napravi %1</translation>
+      <translation type="unfinished">Create %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
       <source>No active document</source>
-      <translation>Nema aktivnog dokumenta</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
   </context>
   <context>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>Širina:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1495,7 +1495,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Glačanje</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1515,7 +1515,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>Parametar</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
@@ -1543,7 +1543,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="95"/>
       <source>Automatic</source>
-      <translation>Automatski</translation>
+      <translation type="unfinished">Automatic</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
@@ -1569,7 +1569,7 @@ to a smoother appearance.
       <location filename="../../RemeshGmsh.cpp" line="189"/>
       <location filename="../../RemeshGmsh.cpp" line="245"/>
       <source>Time:</source>
-      <translation>Vreme:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
@@ -1584,7 +1584,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
-      <translation>Greška</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -1592,7 +1592,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Add triangle</source>
-      <translation>Dodaj trougao</translation>
+      <translation type="unfinished">Add triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
@@ -1602,12 +1602,12 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>
       <source>Clear</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Finish</source>
-      <translation>Završi</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Završi</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1628,12 +1628,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation>Parametri</translation>
+      <translation type="unfinished">Parameters</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation>Izbor</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -1643,12 +1643,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
-      <translation>Trougao</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1658,7 +1658,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Ništa izabrano</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1696,7 +1696,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Ugao:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1706,7 +1706,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Putanja</translation>
+      <translation type="unfinished">Path</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1716,12 +1716,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation>Vreme:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
   </context>
   <context>
@@ -1734,19 +1734,19 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation>Izaberi</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Region</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>
@@ -1816,7 +1816,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Ravan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1824,7 +1824,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Tolerancija</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1837,7 +1837,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Valjak</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1858,7 +1858,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Lopta</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1881,12 +1881,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentacija mreže</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Ravan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1900,51 +1900,51 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Tolerancija</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalni broj stranica</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Cylinder</source>
-      <translation>Valjak</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Lopta</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="352"/>
       <location filename="../../SegmentationBestFit.cpp" line="378"/>
       <source>Base</source>
-      <translation>Baza</translation>
+      <translation type="unfinished">Base</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Obične</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>Osa</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
-      <translation>Poluprečnik</translation>
+      <translation type="unfinished">Radius</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Po sredini</translation>
+      <translation type="unfinished">Center</translation>
     </message>
   </context>
   <context>
@@ -1953,27 +1953,27 @@ to a smoother appearance.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Izbor</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
       <source>Add</source>
-      <translation>Dodaj</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation>Uvaži samo vidljive trouglove</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Uvažite samo trouglove sa normalama okrenutim prema ekranu</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="83"/>
@@ -1992,7 +1992,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Obriši</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2006,7 +2006,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of points:</source>
-      <translation>Broj tačaka:</translation>
+      <translation type="unfinished">Number of points:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -2082,7 +2082,7 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Proceni &amp; Popravi Mrežu</translation>
+      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
     </message>
   </context>
   <context>
@@ -2090,12 +2090,12 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Display</source>
-      <translation>Prikaz</translation>
+      <translation type="unfinished">Display</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>Uvoz/Izvoz</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2153,7 +2153,7 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="388"/>
       <source>All Files</source>
-      <translation>Sve datoteke</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
@@ -2332,12 +2332,12 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
-      <translation>Analiziraj</translation>
+      <translation type="unfinished">Analyze</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Bulove</translation>
+      <translation type="unfinished">Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -2372,7 +2372,7 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentacija mreže</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

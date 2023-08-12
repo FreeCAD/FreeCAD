@@ -70,13 +70,13 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Kesitler...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Kesit</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -274,12 +274,12 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>Şekilden metal örgü oluştur...</translation>
+      <translation type="unfinished">Create mesh from shape...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
-      <translation>Mozaik şekil döşe</translation>
+      <translation type="unfinished">Tessellate shape</translation>
     </message>
   </context>
   <context>
@@ -330,7 +330,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
-      <translation>Kesişim</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
   </context>
   <context>
@@ -625,7 +625,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Union</source>
-      <translation>Birleştir</translation>
+      <translation type="unfinished">Union</translation>
     </message>
   </context>
   <context>
@@ -736,7 +736,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Harmonize normals</source>
-      <translation>Normları uyumlu hale getirin</translation>
+      <translation type="unfinished">Harmonize normals</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
@@ -787,18 +787,18 @@ Sınırlamala Bilgisi...</translation>
       <location filename="../../ViewProvider.cpp" line="916"/>
       <location filename="../../ViewProvider.cpp" line="971"/>
       <source>Cut</source>
-      <translation>Kes</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="925"/>
       <location filename="../../ViewProvider.cpp" line="1032"/>
       <source>Trim</source>
-      <translation>Kırp</translation>
+      <translation type="unfinished">Trim</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
-      <translation>Ayır</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
@@ -831,7 +831,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Hiçbiri</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -847,7 +847,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Tolerans</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="90"/>
@@ -1005,12 +1005,12 @@ Sınırlamala Bilgisi...</translation>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
-      <translation>Bilgi yok</translation>
+      <translation type="unfinished">No information</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
       <source>Orientation</source>
-      <translation>Yönlendirme</translation>
+      <translation type="unfinished">Orientation</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
@@ -1036,7 +1036,7 @@ Sınırlamala Bilgisi...</translation>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Non-manifolds</source>
-      <translation>Çoğaltılamayan Manifoldlar</translation>
+      <translation type="unfinished">Non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
@@ -1101,7 +1101,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
       <source>Duplicated faces</source>
-      <translation>Yinelenen yüzler</translation>
+      <translation type="unfinished">Duplicated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
@@ -1112,7 +1112,7 @@ Sınırlamala Bilgisi...</translation>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
       <source>Duplicated points</source>
-      <translation>Yinelenen Noktalar</translation>
+      <translation type="unfinished">Duplicated points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
@@ -1122,7 +1122,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
       <source>Self-intersections</source>
-      <translation>Kendine Doğru kesişim noktaları</translation>
+      <translation type="unfinished">Self-intersections</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
@@ -1156,7 +1156,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Ayarlar</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1287,7 +1287,7 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Close</source>
-      <translation>Kapat</translation>
+      <translation type="unfinished">Close</translation>
     </message>
   </context>
   <context>
@@ -1350,12 +1350,12 @@ Sınırlamala Bilgisi...</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>Genişlik:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Yükseklik:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1491,7 +1491,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Düzgünleştirme</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1539,7 +1539,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../RemeshGmsh.cpp" line="95"/>
       <source>Automatic</source>
-      <translation>Otomatik</translation>
+      <translation type="unfinished">Automatic</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
@@ -1565,7 +1565,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../RemeshGmsh.cpp" line="189"/>
       <location filename="../../RemeshGmsh.cpp" line="245"/>
       <source>Time:</source>
-      <translation>Zaman:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
@@ -1580,7 +1580,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
-      <translation>Hata</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -1588,7 +1588,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Add triangle</source>
-      <translation>Üçgen Ekle</translation>
+      <translation type="unfinished">Add triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
@@ -1611,7 +1611,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Bitir</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1624,12 +1624,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation>Parametreler</translation>
+      <translation type="unfinished">Parameters</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation>seçim</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -1639,12 +1639,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
-      <translation>Üçgen</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Temizle</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1654,7 +1654,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Seçim yok</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1692,7 +1692,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Açı:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1702,7 +1702,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation type="unfinished">Path</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1712,12 +1712,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation>Zaman:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Temizle</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
   </context>
   <context>
@@ -1736,7 +1736,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Bölge</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
@@ -1812,7 +1812,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Düzlem</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1820,7 +1820,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Tolerans</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1833,7 +1833,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Silindir</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1854,7 +1854,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Küre</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1877,12 +1877,12 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Örgü bölütleme</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Düzlem</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1896,51 +1896,51 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Tolerans</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minimum yüz sayısı</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Cylinder</source>
-      <translation>Silindir</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Küre</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="352"/>
       <location filename="../../SegmentationBestFit.cpp" line="378"/>
       <source>Base</source>
-      <translation>Baz</translation>
+      <translation type="unfinished">Base</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Olağan</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>Eksen</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
-      <translation>Yarıçap</translation>
+      <translation type="unfinished">Radius</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Ortala</translation>
+      <translation type="unfinished">Center</translation>
     </message>
   </context>
   <context>
@@ -1949,27 +1949,27 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>seçim</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
       <source>Add</source>
-      <translation>Ekle</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Temizle</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation>Yalnızca görünür üçgenlere saygı gösterin</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Ekrana bakan normallere sahip yalnızca üçgenlere saygı gösterin</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="83"/>
@@ -1988,7 +1988,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Sil</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2002,7 +2002,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of points:</source>
-      <translation>Noktaların sayısı:</translation>
+      <translation type="unfinished">Number of points:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -2078,7 +2078,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Ağı Değerlendir ve Onar</translation>
+      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
     </message>
   </context>
   <context>
@@ -2086,12 +2086,12 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Display</source>
-      <translation>Ekran</translation>
+      <translation type="unfinished">Display</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>İçe-Dışa Aktar</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2149,7 +2149,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="388"/>
       <source>All Files</source>
-      <translation>Tüm Dosyalar</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
@@ -2328,7 +2328,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
-      <translation>İrdele (Analiz)</translation>
+      <translation type="unfinished">Analyze</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -2343,7 +2343,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Kesme</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -2368,7 +2368,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Örgü bölütleme</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

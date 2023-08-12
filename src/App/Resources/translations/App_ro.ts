@@ -16,7 +16,7 @@ care fac referire la același obiect configurabil</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Nedenumit</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ care fac referire la același obiect configurabil</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Origine</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

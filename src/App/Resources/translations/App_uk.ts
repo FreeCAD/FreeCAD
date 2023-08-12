@@ -16,7 +16,7 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Без назви</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Початок координат</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

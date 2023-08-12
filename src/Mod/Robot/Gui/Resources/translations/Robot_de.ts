@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="55"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="56"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="314"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="315"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="108"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="109"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="169"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="170"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="88"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="89"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="129"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="130"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="46"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="47"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="88"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="89"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="145"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="146"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="100"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="101"/>
@@ -236,7 +236,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="209"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="210"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="248"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="249"/>
@@ -272,7 +272,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="195"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="425"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="426"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="378"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="379"/>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Sie benötigen mindestens zwei Wegpunkte, um eine Bewegungsbahn zu simulieren.</translation>
+      <translation>Sie benötigen für die Simulation mindestens zwei Wegpunkte auf der Bewegungsbahn.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="84"/>
@@ -409,7 +409,7 @@
       <location filename="../../CommandExport.cpp" line="85"/>
       <location filename="../../CommandExport.cpp" line="147"/>
       <source>All Files</source>
-      <translation>Alle Dateien</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="86"/>
@@ -452,7 +452,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="272"/>
       <source>Set default continuity</source>
-      <translation>Setze Vorgabe zur Dauer</translation>
+      <translation>Setze Standart Dauer</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="273"/>
@@ -731,7 +731,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
@@ -764,7 +764,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../TaskRobotControl.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
@@ -882,7 +882,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
@@ -895,7 +895,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
@@ -964,7 +964,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Robot</source>
-      <translation>Roboter</translation>
+      <translation type="unfinished">Robot</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

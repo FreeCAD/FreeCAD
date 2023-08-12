@@ -26,12 +26,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
       <source>Alt+S</source>
-      <translation>ALT + S</translation>
+      <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
@@ -46,17 +46,17 @@
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation type="unfinished">Alt+A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;Close</source>
-      <translation>&amp;Zavřít</translation>
+      <translation type="unfinished">&amp;Close</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="169"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
       <source>Errors:</source>
-      <translation>Chyby:</translation>
+      <translation type="unfinished">Errors:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
@@ -104,7 +104,7 @@
     <message>
       <location filename="../../UnitTestImp.cpp" line="166"/>
       <source>Help</source>
-      <translation>Nápověda</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="166"/>

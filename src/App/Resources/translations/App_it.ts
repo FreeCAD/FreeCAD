@@ -57,7 +57,7 @@ che fanno riferimento allo stesso oggetto configurabile</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Origine</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

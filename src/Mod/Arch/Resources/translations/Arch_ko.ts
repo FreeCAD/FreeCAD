@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
       <source>Color</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="125"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
       <source>Idle</source>
-      <translation>유휴 상태</translation>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in browser</source>
-      <translation>브라우저에서 열기</translation>
+      <translation type="unfinished">Open in browser</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="90"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
       <source>Open</source>
-      <translation>열기</translation>
+      <translation type="unfinished">Open</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>주석</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
-      <translation>속성</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="76"/>
@@ -313,7 +313,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
-      <translation>지우기</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
@@ -343,7 +343,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>가져오기</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
@@ -368,7 +368,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
-      <translation>비밀번호:</translation>
+      <translation type="unfinished">Password:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
@@ -378,7 +378,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
-      <translation>다이얼로그</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -426,7 +426,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
       <source>Status</source>
-      <translation>상태</translation>
+      <translation type="unfinished">Status</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
@@ -436,7 +436,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>새로 고침</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -451,7 +451,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>모두 선택</translation>
+      <translation type="unfinished">Select all</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
@@ -487,7 +487,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>기존의 것 복사...</translation>
+      <translation type="unfinished">Copy existing...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -512,7 +512,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
@@ -552,7 +552,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
       <source>Shapes</source>
-      <translation>모양</translation>
+      <translation type="unfinished">Shapes</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -562,7 +562,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -572,7 +572,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>공차</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -613,12 +613,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>시작</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
       <source>Stop</source>
-      <translation>중지</translation>
+      <translation type="unfinished">Stop</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="177"/>
@@ -631,7 +631,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="14"/>
       <source>General settings</source>
-      <translation>일반 설정</translation>
+      <translation type="unfinished">General settings</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
@@ -903,7 +903,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="702"/>
       <location filename="../ui/preferences-archdefaults.ui" line="859"/>
       <source>Width:</source>
-      <translation>너비:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="41"/>
@@ -928,7 +928,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="494"/>
       <location filename="../ui/preferences-archdefaults.ui" line="741"/>
       <source>Height:</source>
-      <translation>높이:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
@@ -959,7 +959,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation>길이:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -979,12 +979,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="372"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>창</translation>
+      <translation type="unfinished">Windows</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1010,7 +1010,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>투명도:</translation>
+      <translation type="unfinished">Transparency:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1043,12 +1043,12 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="905"/>
       <location filename="../ui/preferences-archdefaults.ui" line="985"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="898"/>
       <source>Thickness</source>
-      <translation>두께</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
@@ -1078,7 +1078,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1396,12 +1396,12 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
-      <translation>Mefisto</translation>
+      <translation type="unfinished">Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
-      <translation>Netgen</translation>
+      <translation type="unfinished">Netgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
@@ -1411,7 +1411,7 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>공간 분할</translation>
+      <translation type="unfinished">Tessellation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -1475,7 +1475,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>최적화</translation>
+      <translation type="unfinished">Optimize</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -1742,13 +1742,13 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
-      <translation>구조</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>빔</translation>
+      <translation type="unfinished">Beam</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -1818,7 +1818,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchCommands.py" line="1634"/>
       <source>Category</source>
-      <translation>카테고리</translation>
+      <translation type="unfinished">Category</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="451"/>
@@ -1835,7 +1835,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchWall.py" line="508"/>
       <location filename="../../ArchCommands.py" line="1016"/>
       <source>Length</source>
-      <translation>거리</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
@@ -1843,14 +1843,14 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
-      <translation>너비</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
-      <translation>높이</translation>
+      <translation type="unfinished">Height</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
@@ -1992,7 +1992,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>완료</translation>
+      <translation type="unfinished">Done</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1441"/>
@@ -2064,12 +2064,12 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
-      <translation>비활성화</translation>
+      <translation type="unfinished">Deactivate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>활성화</translation>
+      <translation type="unfinished">Activate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2084,7 +2084,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
-      <translation>그룹 만들기...</translation>
+      <translation type="unfinished">Create group...</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="937"/>
@@ -2120,7 +2120,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>프로필</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
@@ -2211,7 +2211,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>Id</translation>
+      <translation type="unfinished">Id</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2251,7 +2251,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>절단</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2276,7 +2276,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>정면</translation>
+      <translation type="unfinished">Front</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2366,7 +2366,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="88"/>
       <source>Window</source>
-      <translation>작업창</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
@@ -2445,7 +2445,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>선택</translation>
+      <translation type="unfinished">Pick selected</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
@@ -2455,7 +2455,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1790"/>
@@ -2464,7 +2464,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1946"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="935"/>
@@ -2480,7 +2480,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="1501"/>
       <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>Edit</source>
-      <translation>편집</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
@@ -2514,14 +2514,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1798"/>
       <location filename="../../ArchComponent.py" line="2008"/>
       <location filename="../../ArchCommands.py" line="1636"/>
       <source>Type</source>
-      <translation>유형</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1800"/>
@@ -2529,13 +2529,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="888"/>
       <location filename="../../ArchPanel.py" line="237"/>
       <source>Thickness</source>
-      <translation>두께</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1801"/>
       <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1802"/>
@@ -2666,7 +2666,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchProject.py" line="76"/>
       <source>Project</source>
-      <translation>프로젝트</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -2676,7 +2676,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="67"/>
       <source>Stairs</source>
-      <translation>계단</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
@@ -2718,7 +2718,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
-      <translation>재료</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
@@ -2733,7 +2733,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>총 두께</translation>
+      <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -2790,7 +2790,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchGrid.py" line="56"/>
       <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
-      <translation>격자</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
@@ -2805,12 +2805,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
-      <translation>행 추가</translation>
+      <translation type="unfinished">Add row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
-      <translation>열 삭제</translation>
+      <translation type="unfinished">Del row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
@@ -2855,7 +2855,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
-      <translation>모따기</translation>
+      <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -3001,7 +3001,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
-      <translation>회전하기</translation>
+      <translation type="unfinished">Rotate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
@@ -3021,7 +3021,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>도구</translation>
+      <translation type="unfinished">Tools</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3182,7 +3182,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1015"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3190,14 +3190,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchComponent.py" line="2009"/>
       <location filename="../../ArchCommands.py" line="1637"/>
       <source>Value</source>
-      <translation>값</translation>
+      <translation type="unfinished">Value</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1638"/>
       <source>Unit</source>
-      <translation>단위</translation>
+      <translation type="unfinished">Unit</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
@@ -3248,7 +3248,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
-      <translation>축</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
@@ -3258,7 +3258,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
       <source>Angle</source>
-      <translation>각</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
@@ -3342,7 +3342,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
-      <translation>오브젝트</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
@@ -3352,7 +3352,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
       <source>Group</source>
-      <translation>그룹</translation>
+      <translation type="unfinished">Group</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1956"/>
@@ -3372,7 +3372,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>속성</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3387,7 +3387,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
-      <translation>새로 만들기...</translation>
+      <translation type="unfinished">New...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
@@ -3418,7 +3418,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>단면</translation>
+      <translation type="unfinished">Section</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3443,7 +3443,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>선택한 항목 추가</translation>
+      <translation type="unfinished">Add selected</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3504,7 +3504,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3551,7 +3551,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>공간</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3608,17 +3608,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="526"/>
       <source>Alignment</source>
-      <translation>정렬</translation>
+      <translation type="unfinished">Alignment</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>좌측면</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>우측면</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -3704,7 +3704,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
-      <translation>지우기</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1012"/>
@@ -3724,12 +3724,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
-      <translation>면적</translation>
+      <translation type="unfinished">Area</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>합계</translation>
+      <translation type="unfinished">Total</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -3835,7 +3835,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="270"/>
       <source>Structure</source>
-      <translation>구조</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
@@ -4945,7 +4945,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
       <source>The color of this material</source>
-      <translation>색깔</translation>
+      <translation type="unfinished">The color of this material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
@@ -6136,7 +6136,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
-      <translation>프로필</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
@@ -6227,7 +6227,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="164"/>
       <source>Window</source>
-      <translation>작업창</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="168"/>
@@ -6266,7 +6266,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProject.py" line="98"/>
       <source>Project</source>
-      <translation>프로젝트</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="102"/>
@@ -6279,7 +6279,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
-      <translation>계단</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="212"/>
@@ -6292,7 +6292,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>공간</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6318,7 +6318,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="116"/>
       <source>Material</source>
-      <translation>재료</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="120"/>
@@ -6353,7 +6353,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
       <source>Grid</source>
-      <translation>격자</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="75"/>
@@ -6561,7 +6561,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
-      <translation>축</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
@@ -6832,7 +6832,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="646"/>
       <source>Transform</source>
-      <translation>변환하기</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -6849,14 +6849,14 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>흘수</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>가져오기 내보내기</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
   </context>
 </TS>

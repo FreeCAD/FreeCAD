@@ -16,7 +16,7 @@ angewendet werden soll, die das gleiche konfigurierbare Objekt referenzieren</tr
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Unbenannt</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ angewendet werden soll, die das gleiche konfigurierbare Objekt referenzieren</tr
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Ursprung</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

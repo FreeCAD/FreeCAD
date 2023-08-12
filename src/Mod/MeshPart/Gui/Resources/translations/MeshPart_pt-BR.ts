@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
-      <translation>Secções transversais...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
-      <translation>Secções transversais</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -67,12 +67,12 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>Criar a seção a partir da malha e plano</translation>
+      <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
-      <translation>Seção</translation>
+      <translation type="unfinished">Section</translation>
     </message>
   </context>
   <context>
@@ -80,18 +80,18 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation>Malha</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>Aparar malha numa superfície plana</translation>
+      <translation type="unfinished">Trim mesh with a plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Apare uma malha numa superfície plana</translation>
+      <translation type="unfinished">Trims a mesh with a plane</translation>
     </message>
   </context>
   <context>
@@ -112,57 +112,57 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Secções transversais</translation>
+      <translation type="unfinished">Cross sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Plano guia</translation>
+      <translation type="unfinished">Guiding plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation>XY</translation>
+      <translation type="unfinished">XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation>XZ</translation>
+      <translation type="unfinished">XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation>YZ</translation>
+      <translation type="unfinished">YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Posição:</translation>
+      <translation type="unfinished">Position:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Seções</translation>
+      <translation type="unfinished">Sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation>Em ambos os lados</translation>
+      <translation type="unfinished">On both sides</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Quantidade</translation>
+      <translation type="unfinished">Count</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>Distância:</translation>
+      <translation type="unfinished">Distance:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
-      <translation>Opções</translation>
+      <translation type="unfinished">Options</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
@@ -170,7 +170,7 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
       <translation>Conecte as arestas se a distância for menor que</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Falha</translation>
     </message>
@@ -180,7 +180,7 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Create</source>
-      <translation>Criar</translation>
+      <translation type="unfinished">Create</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -190,12 +190,12 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Clear</source>
-      <translation>Limpar</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="369"/>
       <source>Cancel</source>
-      <translation>Cancelar</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
@@ -205,7 +205,7 @@ Este comando só funciona com um objeto do tipo "malha".</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation>Nenhum ponto foi escolhido</translation>
+      <translation type="unfinished">No point was picked</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ Este comando só funciona com um objeto 'malha', não com uma face ou superfíci
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Fio</translation>
+      <translation type="unfinished">Wire</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -285,7 +285,7 @@ Este comando só funciona com um objeto 'malha', não com uma face ou superfíci
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Padrão</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
@@ -388,7 +388,7 @@ O menor valor possível é 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation>Espessura:</translation>
+      <translation type="unfinished">Fineness:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -398,17 +398,17 @@ O menor valor possível é 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Grosso</translation>
+      <translation type="unfinished">Coarse</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Moderado</translation>
+      <translation type="unfinished">Moderate</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Fino</translation>
+      <translation type="unfinished">Fine</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -488,13 +488,13 @@ Um valor na amplitude de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation>Gmsh</translation>
+      <translation type="unfinished">Gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="225"/>
       <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
-      <translation>Nenhum documento ativo</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="259"/>

@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="1116"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1117"/>
@@ -350,13 +350,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1702"/>
-      <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <source>Define/create a clip filter which uses functions to define the clipped region</source>
+      <translation type="unfinished">Define/create a clip filter which uses functions to define the clipped region</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2210"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2211"/>
@@ -438,17 +438,17 @@
     <message>
       <location filename="../../Command.cpp" line="2261"/>
       <source>Plane</source>
-      <translation>평면</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2267"/>
       <source>Sphere</source>
-      <translation>공모양</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2273"/>
       <source>Cylinder</source>
-      <translation>실린더</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2279"/>
@@ -513,7 +513,7 @@
       <location filename="../../Command.cpp" line="1916"/>
       <location filename="../../Command.cpp" line="1925"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1917"/>
@@ -694,7 +694,7 @@
       <translation type="unfinished">Create pipeline from result</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="280"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
       <source>Edit Mirror</source>
       <translation type="unfinished">Edit Mirror</translation>
     </message>
@@ -706,7 +706,7 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
-      <translation>다이얼로그</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
@@ -726,7 +726,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
       <source>Elements</source>
-      <translation>요소</translation>
+      <translation type="unfinished">Elements</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
@@ -758,12 +758,12 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="94"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
@@ -857,7 +857,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="210"/>
       <source>Type</source>
-      <translation>유형</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="223"/>
@@ -907,7 +907,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
       <source>Default</source>
-      <translation>기본값</translation>
+      <translation type="unfinished">Default</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
@@ -1101,7 +1101,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
       <source>Options</source>
-      <translation>옵션</translation>
+      <translation type="unfinished">Options</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
@@ -1121,7 +1121,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation>파일이 존재하지 않습니다</translation>
+      <translation type="unfinished">File does not exist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1197,7 +1197,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="57"/>
       <source>All</source>
-      <translation>전체</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="62"/>
@@ -1231,7 +1231,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="14"/>
       <source>General</source>
-      <translation>일반</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
@@ -1276,7 +1276,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
       <source>Path:</source>
-      <translation>경로:</translation>
+      <translation type="unfinished">Path:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="247"/>
@@ -1354,7 +1354,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
       <source>None</source>
-      <translation>없음</translation>
+      <translation type="unfinished">None</translation>
     </message>
   </context>
   <context>
@@ -1387,7 +1387,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation>파일이 존재하지 않습니다</translation>
+      <translation type="unfinished">File does not exist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1411,7 +1411,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="23"/>
       <source>Import</source>
-      <translation>가져오기</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="31"/>
@@ -1467,7 +1467,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="14"/>
       <source>Material</source>
-      <translation>재료</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="23"/>
@@ -1579,7 +1579,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation>파일이 존재하지 않습니다</translation>
+      <translation type="unfinished">File does not exist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1691,7 +1691,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation>파일이 존재하지 않습니다</translation>
+      <translation type="unfinished">File does not exist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1743,7 +1743,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraint.cpp" line="257"/>
       <location filename="../../TaskFemConstraint.cpp" line="268"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="257"/>
@@ -1756,7 +1756,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="361"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1764,7 +1764,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="500"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1772,7 +1772,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="718"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1780,7 +1780,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1073"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1789,7 +1789,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="464"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="503"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="464"/>
@@ -1802,7 +1802,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="291"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1810,7 +1810,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="466"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1819,7 +1819,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="129"/>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="141"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1827,7 +1827,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="334"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1835,7 +1835,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="206"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1843,7 +1843,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="349"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1851,7 +1851,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="379"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1859,7 +1859,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="600"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1880,7 +1880,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="364"/>
       <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -1901,7 +1901,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="199"/>
       <source>Delete</source>
-      <translation>삭제</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
   </context>
   <context>
@@ -1953,7 +1953,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="57"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="61"/>
       <source>Delete</source>
-      <translation>삭제</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
@@ -2159,7 +2159,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="651"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="615"/>
@@ -2245,7 +2245,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="329"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="345"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="329"/>
@@ -2546,7 +2546,7 @@ Specify another file please.</translation>
       <location filename="../../TaskPostBoxes.cpp" line="844"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
-      <translation>거리</translation>
+      <translation type="unfinished">Length</translation>
     </message>
   </context>
   <context>
@@ -2636,7 +2636,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
       <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
-      <translation>재료</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="34"/>
@@ -2663,7 +2663,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
       <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
-      <translation>텍스트 라벨</translation>
+      <translation type="unfinished">TextLabel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="80"/>
@@ -2797,19 +2797,19 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="60"/>
       <location filename="../ui/MaterialReinforcement.ui" line="133"/>
       <source>Edit</source>
-      <translation>편집</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="67"/>
       <location filename="../ui/MaterialReinforcement.ui" line="140"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="83"/>
       <location filename="../ui/MaterialReinforcement.ui" line="156"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="102"/>
@@ -2822,7 +2822,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
@@ -3038,7 +3038,7 @@ Specify another file please.</translation>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
-      <translation>매개 변수</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="43"/>
@@ -3173,7 +3173,7 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/Magnetization.ui" line="50"/>
       <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
@@ -3194,7 +3194,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/Magnetization.ui" line="148"/>
       <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
@@ -3215,7 +3215,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/Magnetization.ui" line="246"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
@@ -3302,7 +3302,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
       <source>Thickness:</source>
-      <translation>두께:</translation>
+      <translation type="unfinished">Thickness:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
@@ -3390,7 +3390,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
@@ -3559,32 +3559,32 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../PlaneWidget.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="22"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="32"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="42"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="58"/>
       <source>Origin</source>
-      <translation>원점</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="104"/>
       <source>Normal</source>
-      <translation>일반</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
   </context>
   <context>
@@ -3607,7 +3607,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="77"/>
       <source>Cancel</source>
-      <translation>취소하기</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="139"/>
@@ -3616,27 +3616,27 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="321"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="811"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>테스크 패널에 이미 다이얼로그가 열려있습니다.</translation>
+      <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="322"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="812"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <source>Do you want to close this dialog?</source>
-      <translation>다이얼로그를 닫으시겠습니까?</translation>
+      <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="59"/>
@@ -3657,13 +3657,13 @@ Note: for 2D only setting for x is possible,
       <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
-      <translation>FEM</translation>
+      <translation type="unfinished">FEM</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="182"/>
       <location filename="../../AppFemGui.cpp" line="183"/>
       <source>Import-Export</source>
-      <translation>가져오기 내보내기</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="466"/>
@@ -3733,7 +3733,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
       <source>Nodes</source>
-      <translation>노드</translation>
+      <translation type="unfinished">Nodes</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
@@ -3763,10 +3763,10 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
       <source>Groups</source>
-      <translation>묶음</translation>
+      <translation type="unfinished">Groups</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="308"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="310"/>
       <source>Are you sure you want to continue?</source>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
@@ -3786,7 +3786,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/ResultShow.ui" line="34"/>
       <source>None</source>
-      <translation>없음</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="50"/>
@@ -3866,7 +3866,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/ResultShow.ui" line="217"/>
       <source>Displacement</source>
-      <translation>변위</translation>
+      <translation type="unfinished">Displacement</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="225"/>
@@ -4027,7 +4027,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation>정적</translation>
+      <translation type="unfinished">Static</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="77"/>
@@ -4067,7 +4067,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="151"/>
       <source>Time:</source>
-      <translation>시간:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
   </context>
   <context>
@@ -4075,22 +4075,22 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../SphereWidget.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="22"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="32"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="42"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="110"/>
@@ -4100,15 +4100,15 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../SphereWidget.ui" line="58"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation type="unfinished">Center</translation>
     </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="311"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
       <source>Object dependencies</source>
-      <translation>객체 종속성</translation>
+      <translation type="unfinished">Object dependencies</translation>
     </message>
   </context>
   <context>
@@ -4116,7 +4116,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
@@ -4134,7 +4134,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
@@ -4169,7 +4169,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="87"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
@@ -4192,7 +4192,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskDriver.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
   </context>
   <context>
@@ -4200,7 +4200,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
@@ -4215,7 +4215,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="59"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
@@ -4230,7 +4230,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
       <source>Direction</source>
-      <translation>방향</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="149"/>
@@ -4240,7 +4240,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>위치: </translation>
+      <translation type="unfinished">Location</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -4253,7 +4253,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
@@ -4313,7 +4313,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="205"/>
       <source>Location</source>
-      <translation>위치: </translation>
+      <translation type="unfinished">Location</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
@@ -4326,7 +4326,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
@@ -4337,13 +4337,13 @@ For possible variables, see the description box below.</source>
       <location filename="../../TaskFemConstraintContact.ui" line="35"/>
       <location filename="../../TaskFemConstraintContact.ui" line="94"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="51"/>
       <location filename="../../TaskFemConstraintContact.ui" line="110"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
@@ -4376,12 +4376,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="74"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
@@ -4427,7 +4427,7 @@ for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="217"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="227"/>
@@ -4471,7 +4471,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
@@ -4481,12 +4481,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -4494,7 +4494,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="28"/>
@@ -4514,12 +4514,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="101"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="141"/>
@@ -4560,7 +4560,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
@@ -4618,33 +4618,34 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="63"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="93"/>
       <source>Load [N]</source>
-      <translation>로드[N]</translation>
+      <translation type="unfinished">Load [N]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="111"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation>'면의 경계' 또는 '면'을 선택한 다음, 이 버튼을 누르세요</translation>
+      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="114"/>
       <source>Direction</source>
-      <translation>방향</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="121"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>면의 방향은 면의 모서리의 방향 또는 면에 직각방향 벡터에 해당 합니다.</translation>
+      <translation type="unfinished">The direction of the edge or the direction of the
+normal vector of the face is used as direction</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="131"/>
@@ -4667,12 +4668,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="68"/>
@@ -4716,7 +4717,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="14"/>
       <source>Dialog</source>
-      <translation>다이얼로그</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
@@ -4729,7 +4730,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
@@ -4739,12 +4740,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -4752,7 +4753,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
@@ -4762,17 +4763,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="68"/>
       <source>Pressure</source>
-      <translation>압력</translation>
+      <translation type="unfinished">Pressure</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="75"/>
@@ -4790,7 +4791,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
@@ -4800,12 +4801,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="35"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="95"/>
@@ -4835,7 +4836,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
@@ -4845,12 +4846,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="29"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="39"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="56"/>
@@ -4869,7 +4870,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
@@ -4889,12 +4890,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="75"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="112"/>
@@ -4923,7 +4924,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskObjectName.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
   </context>
   <context>
@@ -4931,12 +4932,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="31"/>
       <source>Create</source>
-      <translation>만들기</translation>
+      <translation type="unfinished">Create</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
@@ -4954,12 +4955,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostCut.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostCut.ui" line="31"/>
       <source>Create</source>
-      <translation>만들기</translation>
+      <translation type="unfinished">Create</translation>
     </message>
   </context>
   <context>
@@ -4967,7 +4968,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
@@ -4977,17 +4978,17 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="36"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="46"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
@@ -5022,7 +5023,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="231"/>
       <source>Vector</source>
-      <translation>벡터</translation>
+      <translation type="unfinished">Vector</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="250"/>
@@ -5035,22 +5036,22 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="43"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="86"/>
@@ -5073,7 +5074,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
@@ -5090,7 +5091,7 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
       <location filename="../../TaskPostDisplay.ui" line="98"/>
       <source>Surface</source>
-      <translation>표면</translation>
+      <translation type="unfinished">Surface</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
@@ -5102,7 +5103,7 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
       <location filename="../../TaskPostDisplay.ui" line="108"/>
       <source>Wireframe</source>
-      <translation>와이어 프레임</translation>
+      <translation type="unfinished">Wireframe</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
@@ -5117,7 +5118,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
       <source>Vector</source>
-      <translation>벡터</translation>
+      <translation type="unfinished">Vector</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
@@ -5127,17 +5128,17 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="140"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="145"/>
       <source>Z</source>
-      <translation>Z</translation>
+      <translation type="unfinished">Z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="156"/>
@@ -5147,7 +5148,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>
       <source>Transparency</source>
-      <translation>투명한 정도</translation>
+      <translation type="unfinished">Transparency</translation>
     </message>
   </context>
   <context>
@@ -5155,7 +5156,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
@@ -5170,7 +5171,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
       <source>Surface</source>
-      <translation>표면</translation>
+      <translation type="unfinished">Surface</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
@@ -5180,7 +5181,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>와이어 프레임</translation>
+      <translation type="unfinished">Wireframe</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
@@ -5208,12 +5209,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="28"/>
       <source>Vector</source>
-      <translation>벡터</translation>
+      <translation type="unfinished">Vector</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="42"/>
@@ -5241,7 +5242,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
@@ -5329,7 +5330,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>FEM</source>
-      <translation>FEM</translation>
+      <translation type="unfinished">FEM</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5339,7 +5340,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Model</source>
-      <translation>모델</translation>
+      <translation type="unfinished">Model</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -5461,7 +5462,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>Solve</source>
-      <translation>솔버 실행</translation>
+      <translation type="unfinished">Solve</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
@@ -5991,7 +5992,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1019"/>
       <source>Show result</source>
-      <translation>결과 표시</translation>
+      <translation type="unfinished">Show result</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
@@ -6114,7 +6115,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="315"/>
       <source>Edit</source>
-      <translation>편집</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
@@ -6125,7 +6126,7 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="312"/>
       <source>Run</source>
-      <translation>실행</translation>
+      <translation type="unfinished">Run</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
@@ -6149,12 +6150,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="50"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="51"/>
       <source>Remove</source>
-      <translation>제거</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -6193,7 +6194,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="271"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
@@ -6213,7 +6214,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="296"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
   </context>
   <context>
@@ -6281,7 +6282,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="454"/>
       <source>Information</source>
-      <translation>정보</translation>
+      <translation type="unfinished">Information</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
@@ -6298,7 +6299,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
       <source>Nodes</source>
-      <translation>노드</translation>
+      <translation type="unfinished">Nodes</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
@@ -6387,7 +6388,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
@@ -6474,42 +6475,42 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="22"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="42"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="58"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="110"/>
       <source>Length</source>
-      <translation>거리</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="136"/>
       <source>Width</source>
-      <translation>너비</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="162"/>
       <source>Height</source>
-      <translation>높이</translation>
+      <translation type="unfinished">Height</translation>
     </message>
   </context>
   <context>
@@ -6517,32 +6518,32 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="22"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="32"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="42"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="58"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="110"/>
       <source>Axis</source>
-      <translation>축</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="162"/>

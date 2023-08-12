@@ -149,7 +149,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
@@ -167,7 +167,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -185,7 +185,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -203,12 +203,12 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
-      <translation>Booleovské operace</translation>
+      <translation type="unfinished">Boolean operation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
@@ -221,7 +221,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -239,7 +239,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -257,7 +257,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
@@ -275,12 +275,12 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
-      <translation>Ponor</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -293,7 +293,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -311,7 +311,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -329,7 +329,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -347,7 +347,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -365,7 +365,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -383,7 +383,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
@@ -401,7 +401,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
@@ -419,7 +419,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
@@ -437,7 +437,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
@@ -455,7 +455,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
@@ -473,7 +473,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
@@ -491,7 +491,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
@@ -509,12 +509,12 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
-      <translation>Vytvoř náčrt</translation>
+      <translation type="unfinished">Create sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="504"/>
@@ -527,7 +527,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="991"/>
@@ -545,7 +545,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -563,7 +563,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -581,7 +581,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -599,7 +599,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -617,7 +617,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -635,7 +635,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
@@ -653,7 +653,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -671,7 +671,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -685,7 +685,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -703,7 +703,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -721,7 +721,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -739,12 +739,12 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>Thickness</source>
-      <translation>Tloušťka</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1823"/>
@@ -757,7 +757,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -811,7 +811,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Tvorba dílu</translation>
+      <translation type="unfinished">PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -942,7 +942,7 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
-      <translation>Zrcadlit</translation>
+      <translation type="unfinished">Mirrored</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
@@ -952,12 +952,12 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
-      <translation>Kruhové pole</translation>
+      <translation type="unfinished">PolarPattern</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
-      <translation>Změna měřítka</translation>
+      <translation type="unfinished">Scaled</translation>
     </message>
   </context>
   <context>
@@ -1113,19 +1113,19 @@ Vyberte některé z níže uvedených těles nebo vytvořte nové těleso.</tran
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Základní geometrické útvary</translation>
+      <translation type="unfinished">Geometric Primitives</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
-      <translation>Délka:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
       <source>Width:</source>
-      <translation>Šířka:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1134,7 +1134,7 @@ Vyberte některé z níže uvedených těles nebo vytvořte nové těleso.</tran
       <location filename="../../TaskPrimitiveParameters.ui" line="1254"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
-      <translation>Výška:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1143,7 +1143,7 @@ Vyberte některé z níže uvedených těles nebo vytvořte nové těleso.</tran
       <location filename="../../TaskPrimitiveParameters.ui" line="1749"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1805"/>
       <source>Radius:</source>
-      <translation>Poloměr:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
@@ -1179,31 +1179,31 @@ Vyberte některé z níže uvedených těles nebo vytvořte nové těleso.</tran
       <location filename="../../TaskPrimitiveParameters.ui" line="797"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1016"/>
       <source>Radius 1:</source>
-      <translation>Poloměr 1:</translation>
+      <translation type="unfinished">Radius 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="485"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="820"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2:</source>
-      <translation>Poloměr 2:</translation>
+      <translation type="unfinished">Radius 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
       <source>Angle:</source>
-      <translation>Úhel:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <source>U parameter:</source>
-      <translation>Parametr U:</translation>
+      <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters:</source>
-      <translation>Parametry V:</translation>
+      <translation type="unfinished">V parameters:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1218,7 +1218,7 @@ Vyberte některé z níže uvedených těles nebo vytvořte nové těleso.</tran
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
       <source>Radius 3:</source>
-      <translation>Poloměr 3:</translation>
+      <translation type="unfinished">Radius 3:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
@@ -1231,7 +1231,7 @@ Je-li nulový, rovná se Poloměr2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter:</source>
-      <translation>Parametr V:</translation>
+      <translation type="unfinished">V parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
@@ -1246,132 +1246,132 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U Parameter:</source>
-      <translation>Parametr U:</translation>
+      <translation type="unfinished">U Parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2290"/>
       <source>Polygon:</source>
-      <translation>Mnohoúhelník:</translation>
+      <translation type="unfinished">Polygon:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius:</source>
-      <translation>Kruhový rádius:</translation>
+      <translation type="unfinished">Circumradius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
       <source>X min/max:</source>
-      <translation>X min/max:</translation>
+      <translation type="unfinished">X min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1383"/>
       <source>Y min/max:</source>
-      <translation>Y min/max:</translation>
+      <translation type="unfinished">Y min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max:</source>
-      <translation>Z min/max:</translation>
+      <translation type="unfinished">Z min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max:</source>
-      <translation>X 2 min/max:</translation>
+      <translation type="unfinished">X2 min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max:</source>
-      <translation>Z2 min/max:</translation>
+      <translation type="unfinished">Z2 min/max:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>Rozteč:</translation>
+      <translation type="unfinished">Pitch:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system:</source>
-      <translation>Systém souřadnic:</translation>
+      <translation type="unfinished">Coordinate system:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>Pravou rukou</translation>
+      <translation type="unfinished">Right-handed</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>Levou rukou</translation>
+      <translation type="unfinished">Left-handed</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
       <source>Growth:</source>
-      <translation>Vybrání:</translation>
+      <translation type="unfinished">Growth:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations:</source>
-      <translation>Počet otočení:</translation>
+      <translation type="unfinished">Number of rotations:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1947"/>
       <source>Angle 1:</source>
-      <translation>Úhel 1:</translation>
+      <translation type="unfinished">Angle 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1842"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1964"/>
       <source>Angle 2:</source>
-      <translation>Úhel 2:</translation>
+      <translation type="unfinished">Angle 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From three points</source>
-      <translation>Ze tří bodů</translation>
+      <translation type="unfinished">From three points</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
       <source>Major radius:</source>
-      <translation>Hlavní poloměr:</translation>
+      <translation type="unfinished">Major radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>Vedlejší poloměr:</translation>
+      <translation type="unfinished">Minor radius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2093"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2170"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2025"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2113"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2193"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2045"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2133"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2216"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
-      <translation>Počáteční bod</translation>
+      <translation type="unfinished">Start point</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation>Koncový bod</translation>
+      <translation type="unfinished">End point</translation>
     </message>
   </context>
   <context>
@@ -1379,7 +1379,7 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation type="unfinished">Reference</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1415,7 +1415,7 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
@@ -1435,7 +1435,7 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Řezat</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1450,7 +1450,7 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -1503,7 +1503,7 @@ Je-li nulový, rovná se Poloměr2</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
@@ -1515,7 +1515,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1527,7 +1527,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="49"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="57"/>
@@ -1552,7 +1552,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="101"/>
       <source>Size</source>
-      <translation>Velikost</translation>
+      <translation type="unfinished">Size</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="120"/>
@@ -1567,7 +1567,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="180"/>
       <source>Angle</source>
-      <translation>Úhel</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
@@ -1629,7 +1629,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
@@ -1641,7 +1641,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1683,12 +1683,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="84"/>
       <source>Preview</source>
-      <translation>Náhled</translation>
+      <translation type="unfinished">Preview</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1703,7 +1703,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -1751,7 +1751,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
@@ -1844,19 +1844,19 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klikněte na tlačítko pro vstup do módu výběru,
-klikněte znovu pro ukončení výběru</translation>
+      <translation type="unfinished">Click button to enter selection mode,
+click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -1868,7 +1868,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
       <source>Radius:</source>
-      <translation>Poloměr:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
@@ -1888,7 +1888,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
@@ -1898,12 +1898,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>Platný</translation>
+      <translation type="unfinished">Valid</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
       <source>Axis:</source>
-      <translation>Osa:</translation>
+      <translation type="unfinished">Axis:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
@@ -1975,12 +1975,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch:</source>
-      <translation>Rozteč:</translation>
+      <translation type="unfinished">Pitch:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
       <source>Height:</source>
-      <translation>Výška:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="179"/>
@@ -2015,7 +2015,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="289"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="51"/>
@@ -2068,7 +2068,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="63"/>
       <source>None</source>
-      <translation>Žádný</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="64"/>
@@ -2101,7 +2101,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
@@ -2121,12 +2121,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
       <source>Direction</source>
-      <translation>Směr</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Obrátit směr</translation>
+      <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2141,22 +2141,22 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
-      <translation>Chyba</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2164,27 +2164,27 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation>Přímková plocha</translation>
+      <translation type="unfinished">Ruled surface</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
       <source>Closed</source>
-      <translation>Uzavřeno</translation>
+      <translation type="unfinished">Closed</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation>Objekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2204,7 +2204,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
@@ -2214,7 +2214,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2222,7 +2222,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
@@ -2237,32 +2237,32 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
       <source>Plane</source>
-      <translation>Rovina</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
       <source>Error</source>
-      <translation>Chyba</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2270,22 +2270,22 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Přidat prvek</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2295,22 +2295,22 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
-      <translation>Upravit</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
@@ -2335,12 +2335,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
-      <translation>Posunout nahorů</translation>
+      <translation type="unfinished">Move up</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
-      <translation>Posunout dolů</translation>
+      <translation type="unfinished">Move down</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
@@ -2368,7 +2368,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>Dimension</source>
-      <translation>Rozměr</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2383,7 +2383,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to face</source>
-      <translation>K ploše</translation>
+      <translation type="unfinished">Up to face</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="76"/>
@@ -2396,17 +2396,17 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Rozměr</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2421,7 +2421,7 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="77"/>
       <source>Direction</source>
-      <translation>Směr</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="85"/>
@@ -2443,7 +2443,7 @@ z modelu jako referenční</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation>Vyber referenci...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2465,7 +2465,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="140"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="147"/>
@@ -2475,7 +2475,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="169"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="176"/>
@@ -2485,7 +2485,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="198"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="205"/>
@@ -2548,7 +2548,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
   </context>
   <context>
@@ -2556,7 +2556,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
@@ -2566,17 +2566,17 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Standardní</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Pevné</translation>
+      <translation type="unfinished">Fixed</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
       <source>Frenet</source>
-      <translation>Frenet</translation>
+      <translation type="unfinished">Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
@@ -2586,7 +2586,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Binormála</translation>
+      <translation type="unfinished">Binormal</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -2596,12 +2596,12 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation>Objekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2621,17 +2621,17 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="197"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="204"/>
       <source>Z</source>
-      <translation>Z</translation>
+      <translation type="unfinished">Z</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="534"/>
@@ -2641,7 +2641,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2649,18 +2649,18 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
       <location filename="../../TaskPipeParameters.ui" line="93"/>
       <source>Object</source>
-      <translation>Objekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
@@ -2705,13 +2705,13 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
-      <translation>Chyba zadání</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
@@ -2724,7 +2724,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
@@ -2754,7 +2754,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="802"/>
@@ -2764,7 +2764,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -2787,7 +2787,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>Dimension</source>
-      <translation>Rozměr</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
@@ -2802,7 +2802,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>K ploše</translation>
+      <translation type="unfinished">Up to face</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="77"/>
@@ -2815,22 +2815,22 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Přidat prvek</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
+      <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2840,12 +2840,12 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Obrátit směr</translation>
+      <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
       <source>Angle</source>
-      <translation>Úhel</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
@@ -2855,22 +2855,22 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
-      <translation>Chyba</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -2878,7 +2878,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
-      <translation>Připojení</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
   </context>
   <context>
@@ -2886,12 +2886,12 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
-      <translation>Osa:</translation>
+      <translation type="unfinished">Axis:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
@@ -2925,12 +2925,12 @@ měřena ve stanoveném směru</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
-      <translation>Vyber referenci...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Úhel:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
@@ -2940,12 +2940,12 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation>Překlopit</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
@@ -2958,17 +2958,17 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Přidat prvek</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="53"/>
@@ -2978,22 +2978,22 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="67"/>
       <source>Occurrences</source>
-      <translation>Počet výskytů</translation>
+      <translation type="unfinished">Occurrences</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="81"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -3001,12 +3001,12 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation>Objekt</translation>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
@@ -3026,7 +3026,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="132"/>
       <source>Remove</source>
-      <translation>Odstranit</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
   </context>
   <context>
@@ -3042,19 +3042,19 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klikněte na tlačítko pro vstup do módu výběru,
-klikněte znovu pro ukončení výběru</translation>
+      <translation type="unfinished">Click button to enter selection mode,
+click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
@@ -3066,22 +3066,22 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="47"/>
       <source>Thickness</source>
-      <translation>Tloušťka</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="76"/>
       <source>Mode</source>
-      <translation>Způsob</translation>
+      <translation type="unfinished">Mode</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="84"/>
       <source>Skin</source>
-      <translation>Skin</translation>
+      <translation type="unfinished">Skin</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="89"/>
       <source>Pipe</source>
-      <translation>Potrubí</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="94"/>
@@ -3096,13 +3096,13 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="110"/>
       <source>Arc</source>
-      <translation>oblouk</translation>
+      <translation type="unfinished">Arc</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="115"/>
       <location filename="../../TaskThicknessParameters.ui" line="125"/>
       <source>Intersection</source>
-      <translation>Průnik</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="132"/>
@@ -3135,12 +3135,12 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="251"/>
       <source>Vertical sketch axis</source>
-      <translation>Svislá skicovací osa</translation>
+      <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="252"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vodorovná skicovací osa</translation>
+      <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="254"/>
@@ -3151,23 +3151,23 @@ klikněte znovu pro ukončení výběru</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="268"/>
       <source>Base X axis</source>
-      <translation>Základní osa X</translation>
+      <translation type="unfinished">Base X axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="269"/>
       <source>Base Y axis</source>
-      <translation>Základní osa Y</translation>
+      <translation type="unfinished">Base Y axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="270"/>
       <source>Base Z axis</source>
-      <translation>Základní osa Z</translation>
+      <translation type="unfinished">Base Z axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
       <location filename="../../TaskTransformedParameters.cpp" line="313"/>
       <source>Select reference...</source>
-      <translation>Vyber referenci...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
@@ -3188,7 +3188,7 @@ klikněte znovu pro ukončení výběru</translation>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Přepnout aktivní tělo</translation>
     </message>
@@ -3432,7 +3432,7 @@ klikněte znovu pro ukončení výběru</translation>
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Error</source>
-      <translation>Chyba</translation>
+      <translation type="unfinished">Error</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="145"/>
@@ -3544,7 +3544,7 @@ klikněte znovu pro ukončení výběru</translation>
       <location filename="../../Command.cpp" line="1579"/>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Wrong selection</source>
-      <translation>Neplatný výběr</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1580"/>
@@ -3666,7 +3666,7 @@ To může vést k neočekávaným výsledkům.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="197"/>
       <source>Body</source>
-      <translation>Tělo</translation>
+      <translation type="unfinished">Body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="343"/>
@@ -3695,7 +3695,7 @@ To může vést k neočekávaným výsledkům.</translation>
       <location filename="../../CommandBody.cpp" line="857"/>
       <location filename="../../CommandBody.cpp" line="864"/>
       <source>Selection error</source>
-      <translation>Chyba výběru</translation>
+      <translation type="unfinished">Selection error</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
@@ -3777,23 +3777,23 @@ To může vést k neočekávaným výsledkům.</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
-      <translation>Svislá skicovací osa</translation>
+      <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vodorovná skicovací osa</translation>
+      <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
       <source>Construction line %1</source>
-      <translation>Konstrukční čára %1</translation>
+      <translation type="unfinished">Construction line %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="138"/>
@@ -3845,7 +3845,7 @@ Pokud máte starší dokument s objekty PartDesignu bez Těla, použijte funkci 
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
       <source>Set colors...</source>
-      <translation>Nastavení barev...</translation>
+      <translation type="unfinished">Set colors...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>
@@ -3856,19 +3856,19 @@ Pokud máte starší dokument s objekty PartDesignu bez Těla, použijte funkci 
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
       <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
-      <translation>Rovina</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="115"/>
       <location filename="../../ViewProviderDatum.cpp" line="200"/>
       <source>Line</source>
-      <translation>Čára</translation>
+      <translation type="unfinished">Line</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="120"/>
       <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Point</source>
-      <translation>Bod</translation>
+      <translation type="unfinished">Point</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="125"/>
@@ -3963,27 +3963,27 @@ Tento prvek je rozbitý a nelze upravovat.</translation>
       <translation>Transformace byla úspěšná</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>Dokument "%1", který upravujete, byl vytvořen ve starém pracovním prostředí PartDesign.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>Migrovat, aby bylo možno použít moderní PartDesign prvky?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Zdá se, že dokument "%1" je buď v procesu migrace ze staršího PartDesignu nebo má mírně rozbitou strukturu.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Chcete provést migraci automaticky?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -3992,7 +3992,7 @@ If you refuse to migrate you won't be able to use new PartDesign features like B
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Migrovat manuálně</translation>
     </message>
@@ -4044,7 +4044,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>
       <source>Edit thickness</source>
-      <translation>Upravit tloušťku</translation>
+      <translation type="unfinished">Edit thickness</translation>
     </message>
   </context>
   <context>
@@ -4232,7 +4232,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
       <source>Thickness:</source>
-      <translation>Tloušťka:</translation>
+      <translation type="unfinished">Thickness:</translation>
     </message>
   </context>
   <context>
@@ -4240,7 +4240,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
@@ -4250,13 +4250,13 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
       <source>Face</source>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="87"/>
       <source>Edge</source>
-      <translation>Hrana</translation>
+      <translation type="unfinished">Edge</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="63"/>
@@ -4267,7 +4267,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="137"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
@@ -4308,14 +4308,14 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>Odchylka</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="368"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="474"/>
       <source>Diameter</source>
-      <translation>Průměr</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
@@ -4341,7 +4341,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="466"/>
       <source>Data</source>
-      <translation>Údaje</translation>
+      <translation type="unfinished">Data</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
@@ -4379,7 +4379,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4411,7 +4411,7 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4437,7 +4437,7 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="159"/>
       <source>Direction</source>
-      <translation>Směr</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="178"/>
@@ -4452,7 +4452,7 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="210"/>
       <source>Size</source>
-      <translation>Velikost</translation>
+      <translation type="unfinished">Size</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="246"/>
@@ -4463,20 +4463,20 @@ Only available for holes without thread</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
-      <translation>Standardní</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
-      <translation>Zavřít</translation>
+      <translation type="unfinished">Close</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>Šířka</translation>
     </message>
@@ -4494,7 +4494,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="301"/>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <source>Diameter</source>
-      <translation>Průměr</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="314"/>
@@ -4511,7 +4511,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Rozměr</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4542,7 +4542,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
       <location filename="../../TaskHoleParameters.ui" line="613"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
@@ -4627,15 +4627,15 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation>Překlopit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
-      <source>Normal</source>
-      <translation>Normála</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <source>Normal</source>
+      <translation type="unfinished">Normal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>
@@ -4645,7 +4645,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
@@ -4708,17 +4708,17 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Measure</source>
-      <translation>Měření</translation>
+      <translation type="unfinished">Measure</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Refresh</source>
-      <translation>Aktualizovat</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>Přepnout 3D</translation>
+      <translation type="unfinished">Toggle 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -4830,7 +4830,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="57"/>
       <source>All</source>
-      <translation>Vše</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>

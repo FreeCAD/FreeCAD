@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="523"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="524"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="715"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="269"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="270"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="91"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="92"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../Command.cpp" line="437"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="388"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="678"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="679"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../Command.cpp" line="745"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="746"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="462"/>
       <source>Export PDF</source>
-      <translation>Exportar a PDF</translation>
+      <translation>Exportar PDF</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="463"/>
@@ -465,7 +465,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="532"/>
       <source>General</source>
-      <translation>General</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="541"/>
@@ -614,7 +614,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="88"/>
       <source>No active document</source>
-      <translation>Ningún documento activo</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="89"/>
@@ -687,7 +687,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="638"/>
       <location filename="../../Command.cpp" line="758"/>
       <source>Wrong selection</source>
-      <translation>Selección Incorrecta</translation>
+      <translation>Selección incorrecta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="322"/>
@@ -769,7 +769,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Drawing</source>
-      <translation>Dibujo</translation>
+      <translation type="unfinished">Drawing</translation>
     </message>
   </context>
 </TS>

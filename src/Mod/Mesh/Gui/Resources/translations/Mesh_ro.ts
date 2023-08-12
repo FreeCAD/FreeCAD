@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Sectiune transversala...</translation>
+      <translation type="unfinished">Cross-sections...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Sectiune transversala</translation>
+      <translation type="unfinished">Cross-sections</translation>
     </message>
   </context>
   <context>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Difference</source>
-      <translation>Diferenţa</translation>
+      <translation type="unfinished">Difference</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>Creaza retea din forma...</translation>
+      <translation type="unfinished">Create mesh from shape...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Intersection</source>
-      <translation>Intersecţie</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Union</source>
-      <translation>Reuniune</translation>
+      <translation type="unfinished">Union</translation>
     </message>
   </context>
   <context>
@@ -734,7 +734,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="540"/>
       <source>Harmonize normals</source>
-      <translation>Armonizeaza normalele</translation>
+      <translation type="unfinished">Harmonize normals</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="643"/>
@@ -785,18 +785,18 @@
       <location filename="../../ViewProvider.cpp" line="916"/>
       <location filename="../../ViewProvider.cpp" line="971"/>
       <source>Cut</source>
-      <translation>Scădere</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="925"/>
       <location filename="../../ViewProvider.cpp" line="1032"/>
       <source>Trim</source>
-      <translation>Taiere</translation>
+      <translation type="unfinished">Trim</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1109"/>
       <source>Split</source>
-      <translation>Divizare</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
@@ -806,7 +806,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1719"/>
       <source>Delete</source>
-      <translation>Ştergeţi</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1826"/>
@@ -829,7 +829,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Niciunul</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Toleranţă</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="90"/>
@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
       <source>Refresh</source>
-      <translation>Reîmprospătare</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
       <source>No selection</source>
-      <translation>Nici o selecţie</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
@@ -1003,12 +1003,12 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <source>No information</source>
-      <translation>Nici o informatie</translation>
+      <translation type="unfinished">No information</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
       <source>Orientation</source>
-      <translation>Orientarea</translation>
+      <translation type="unfinished">Orientation</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="516"/>
@@ -1034,7 +1034,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Non-manifolds</source>
-      <translation>Obiecte ne-manufacturabile</translation>
+      <translation type="unfinished">Non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
@@ -1099,7 +1099,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="882"/>
       <source>Duplicated faces</source>
-      <translation>Fațete duplicate</translation>
+      <translation type="unfinished">Duplicated faces</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="916"/>
@@ -1110,7 +1110,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="922"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="947"/>
       <source>Duplicated points</source>
-      <translation>Puncte duplicate</translation>
+      <translation type="unfinished">Duplicated points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="988"/>
@@ -1120,7 +1120,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="994"/>
       <source>Self-intersections</source>
-      <translation>Coliziuni interne</translation>
+      <translation type="unfinished">Self-intersections</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1062"/>
@@ -1154,7 +1154,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Setari</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1192,50 +1192,50 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
       <source>Cylinder</source>
-      <translation>Cilindru</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="60"/>
       <source>Cone</source>
-      <translation>Con</translation>
+      <translation type="unfinished">Cone</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
       <source>Ellipsoid</source>
-      <translation>Elipsoid</translation>
+      <translation type="unfinished">Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>Tor</translation>
+      <translation type="unfinished">Torus</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length:</source>
-      <translation>Lungime:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
       <source>Width:</source>
-      <translation>Latime:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height:</source>
-      <translation>Inaltime:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
       <source>Radius:</source>
-      <translation>Raza:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
@@ -1263,29 +1263,29 @@
       <location filename="../../DlgRegularSolid.ui" line="588"/>
       <location filename="../../DlgRegularSolid.ui" line="692"/>
       <source>Radius 1:</source>
-      <translation>Raza 1:</translation>
+      <translation type="unfinished">Radius 1:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="370"/>
       <location filename="../../DlgRegularSolid.ui" line="605"/>
       <location filename="../../DlgRegularSolid.ui" line="709"/>
       <source>Radius 2:</source>
-      <translation>Raza 2:</translation>
+      <translation type="unfinished">Radius 2:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp;Creeaza</translation>
+      <translation type="unfinished">&amp;Create</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
       <source>Alt+C</source>
-      <translation>Alt + C</translation>
+      <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Close</source>
-      <translation>Închide</translation>
+      <translation type="unfinished">Close</translation>
     </message>
   </context>
   <context>
@@ -1295,12 +1295,12 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
       <source>Create %1</source>
-      <translation>Creati %1</translation>
+      <translation type="unfinished">Create %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
       <source>No active document</source>
-      <translation>Nici un document activ</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
   </context>
   <context>
@@ -1313,7 +1313,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation>Export</translation>
+      <translation type="unfinished">Export</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>Latime:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Inaltime:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
@@ -1494,7 +1494,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Netezire</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1514,7 +1514,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>Parametru</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
@@ -1542,7 +1542,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="95"/>
       <source>Automatic</source>
-      <translation>Automat</translation>
+      <translation type="unfinished">Automatic</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="96"/>
@@ -1568,7 +1568,7 @@ la un aspect mai uşor.
       <location filename="../../RemeshGmsh.cpp" line="189"/>
       <location filename="../../RemeshGmsh.cpp" line="245"/>
       <source>Time:</source>
-      <translation>Timp:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="234"/>
@@ -1583,7 +1583,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
-      <translation>Eroare</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -1591,7 +1591,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Add triangle</source>
-      <translation>Adauga triunghi</translation>
+      <translation type="unfinished">Add triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
@@ -1601,12 +1601,12 @@ la un aspect mai uşor.
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>
       <source>Clear</source>
-      <translation>Șterge</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Finish</source>
-      <translation>Terminare</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1614,7 +1614,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation>Terminare</translation>
+      <translation type="unfinished">Finish</translation>
     </message>
   </context>
   <context>
@@ -1627,12 +1627,12 @@ la un aspect mai uşor.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation>Parametrii</translation>
+      <translation type="unfinished">Parameters</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation>Selecţie</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -1642,12 +1642,12 @@ la un aspect mai uşor.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
-      <translation>Triunghi</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Șterge</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1657,7 +1657,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Nici o selecţie</translation>
+      <translation type="unfinished">No selection</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1695,7 +1695,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Unghiul:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1705,7 +1705,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Drum</translation>
+      <translation type="unfinished">Path</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1715,12 +1715,12 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation>Timp:</translation>
+      <translation type="unfinished">Time:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Șterge</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
   </context>
   <context>
@@ -1733,19 +1733,19 @@ la un aspect mai uşor.
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation>Selectaţi</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Regiune</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Toate</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>
@@ -1815,7 +1815,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1823,7 +1823,7 @@ la un aspect mai uşor.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Toleranţă</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1836,7 +1836,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Cilindru</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1857,7 +1857,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1880,12 +1880,12 @@ la un aspect mai uşor.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentarea plasei</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1899,51 +1899,51 @@ la un aspect mai uşor.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Toleranţă</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Numar maxim de fete</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Cylinder</source>
-      <translation>Cilindru</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Sfera</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="352"/>
       <location filename="../../SegmentationBestFit.cpp" line="378"/>
       <source>Base</source>
-      <translation>Bază</translation>
+      <translation type="unfinished">Base</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Normal</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>Axele</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
-      <translation>Raza</translation>
+      <translation type="unfinished">Radius</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Centru</translation>
+      <translation type="unfinished">Center</translation>
     </message>
   </context>
   <context>
@@ -1952,27 +1952,27 @@ la un aspect mai uşor.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Selecţie</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
       <source>Add</source>
-      <translation>Adaugă</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Șterge</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecta doar triunghiurile vizibile</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecta numai triunghiuri cu normalele catre ecran</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="83"/>
@@ -1991,7 +1991,7 @@ la un aspect mai uşor.
       <location filename="../../RemoveComponents.cpp" line="203"/>
       <location filename="../../RemoveComponents.cpp" line="260"/>
       <source>Delete</source>
-      <translation>Ştergeţi</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="204"/>
@@ -2005,7 +2005,7 @@ la un aspect mai uşor.
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of points:</source>
-      <translation>Numar de puncte:</translation>
+      <translation type="unfinished">Number of points:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -2081,7 +2081,7 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1283"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluează și repară plasa</translation>
+      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
     </message>
   </context>
   <context>
@@ -2089,12 +2089,12 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Display</source>
-      <translation>Afișare</translation>
+      <translation type="unfinished">Display</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>Import/Export</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2152,7 +2152,7 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="388"/>
       <source>All Files</source>
-      <translation>Toate fișierele</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
@@ -2331,12 +2331,12 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Analyze</source>
-      <translation>Analizează</translation>
+      <translation type="unfinished">Analyze</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Boolean</translation>
+      <translation type="unfinished">Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -2346,7 +2346,7 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Tăiere</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -2371,7 +2371,7 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentarea plasei</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

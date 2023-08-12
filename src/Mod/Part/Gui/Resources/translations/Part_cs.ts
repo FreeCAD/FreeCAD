@@ -25,7 +25,7 @@
       <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="319"/>
@@ -43,7 +43,7 @@
       <location filename="../../AttacherTexts.cpp" line="321"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
-      <translation>Kruh</translation>
+      <translation type="unfinished">Circle</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="322"/>
@@ -510,7 +510,7 @@
       <location filename="../../AttacherTexts.cpp" line="127"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Deaktivováno</translation>
+      <translation type="unfinished">Deactivated</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -707,7 +707,7 @@
       <location filename="../../AttacherTexts.cpp" line="52"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Deaktivováno</translation>
+      <translation type="unfinished">Deactivated</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1054,7 +1054,7 @@
       <location filename="../../DlgBlock.ui" line="48"/>
       <location filename="../../DlgBlock.ui" line="209"/>
       <source>Dimension</source>
-      <translation>Rozměr</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="53"/>
@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2328"/>
       <location filename="../../Command.cpp" line="2330"/>
       <source>Box selection</source>
-      <translation>Okno výběru</translation>
+      <translation type="unfinished">Box selection</translation>
     </message>
   </context>
   <context>
@@ -1185,7 +1185,7 @@
     <message>
       <location filename="../../Command.cpp" line="2068"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2069"/>
@@ -1203,7 +1203,7 @@
     <message>
       <location filename="../../Command.cpp" line="2138"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2139"/>
@@ -1221,7 +1221,7 @@
     <message>
       <location filename="../../Command.cpp" line="2197"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2198"/>
@@ -1239,7 +1239,7 @@
     <message>
       <location filename="../../Command.cpp" line="2107"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2108"/>
@@ -1261,12 +1261,12 @@ mezi jejich dvěma vrcholy.</translation>
     <message>
       <location filename="../../Command.cpp" line="2167"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2168"/>
       <source>Refresh</source>
-      <translation>Aktualizovat</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2169"/>
@@ -1281,7 +1281,7 @@ jestli se měřené body posunuly.</translation>
     <message>
       <location filename="../../Command.cpp" line="2263"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2264"/>
@@ -1301,7 +1301,7 @@ včetně úhlových.</translation>
     <message>
       <location filename="../../Command.cpp" line="2226"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2227"/>
@@ -1321,7 +1321,7 @@ přímé, ortogonální a úhlové.</translation>
     <message>
       <location filename="../../Command.cpp" line="2294"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2295"/>
@@ -1343,7 +1343,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1247"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1248"/>
@@ -1361,14 +1361,14 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="107"/>
       <location filename="../../CommandParametric.cpp" line="118"/>
       <location filename="../../CommandParametric.cpp" line="123"/>
       <source>Cube</source>
-      <translation>Krychle</translation>
+      <translation type="unfinished">Cube</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
@@ -1399,7 +1399,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="171"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="172"/>
@@ -1417,7 +1417,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1509"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
@@ -1435,7 +1435,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1415"/>
@@ -1445,7 +1445,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Srazí vybrané hrany útvaru</translation>
+      <translation type="unfinished">Chamfer the selected edges of a shape</translation>
     </message>
   </context>
   <context>
@@ -1453,12 +1453,12 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Intersection</source>
-      <translation>Průnik</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="360"/>
@@ -1471,7 +1471,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="736"/>
@@ -1489,7 +1489,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -1507,7 +1507,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1708"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
@@ -1525,7 +1525,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="618"/>
@@ -1543,7 +1543,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="842"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="843"/>
@@ -1561,7 +1561,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="191"/>
@@ -1581,7 +1581,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -1599,7 +1599,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="300"/>
@@ -1617,7 +1617,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="65"/>
@@ -1637,7 +1637,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="413"/>
@@ -1655,7 +1655,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
@@ -1673,7 +1673,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1691,7 +1691,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1709,7 +1709,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1386"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1387"/>
@@ -1727,7 +1727,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -1745,7 +1745,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -1763,7 +1763,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1058"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1059"/>
@@ -1781,7 +1781,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1538"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
@@ -1799,7 +1799,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
@@ -1817,7 +1817,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
@@ -1835,7 +1835,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1442"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1443"/>
@@ -1853,7 +1853,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
@@ -1871,7 +1871,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1654"/>
@@ -1889,7 +1889,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -1907,7 +1907,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
@@ -1925,7 +1925,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="212"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="213"/>
@@ -1943,7 +1943,7 @@ na jeho složky X, Y a Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="2356"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
@@ -1967,7 +1967,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="353"/>
@@ -1985,7 +1985,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1186"/>
@@ -2003,7 +2003,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1359"/>
@@ -2021,7 +2021,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1931"/>
@@ -2039,7 +2039,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="899"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="900"/>
@@ -2070,7 +2070,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
@@ -2088,7 +2088,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="222"/>
@@ -2106,7 +2106,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
@@ -2124,7 +2124,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2144,7 +2144,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
@@ -2162,7 +2162,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1800"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
@@ -2190,7 +2190,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="233"/>
@@ -2210,7 +2210,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation type="unfinished">Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -2239,7 +2239,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Common</source>
-      <translation>Průnik</translation>
+      <translation type="unfinished">Common</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -2309,12 +2309,12 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
       <source>Refine shape</source>
-      <translation>Vylepšit tvar</translation>
+      <translation type="unfinished">Refine shape</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="426"/>
       <source>Defeaturing</source>
-      <translation>Odstraňování prvků</translation>
+      <translation type="unfinished">Defeaturing</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.cpp" line="76"/>
@@ -2322,12 +2322,12 @@ of projection.</translation>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1077"/>
+      <location filename="../../TaskAttacher.cpp" line="1079"/>
       <source>Edit attachment</source>
       <translation>Upravit připojení</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="419"/>
+      <location filename="../../TaskFaceColors.cpp" line="421"/>
       <source>Change face colors</source>
       <translation type="unfinished">Change face colors</translation>
     </message>
@@ -2350,7 +2350,7 @@ of projection.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="358"/>
       <location filename="../../TaskShapeBuilder.cpp" line="410"/>
       <source>Face</source>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="473"/>
@@ -2378,7 +2378,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
@@ -2557,12 +2557,12 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="49"/>
       <source>Intersection</source>
-      <translation>Průnik</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Výběr</translation>
+      <translation type="unfinished">Section</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2604,42 +2604,42 @@ Note: The placement is expressed in local space of object being attached.</trans
       <translation>Převrátit výběr</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="385"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="387"/>
       <source>Select a shape on the left side, first</source>
       <translation>Nejprve vyber útvar na levé straně</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="390"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Select a shape on the right side, first</source>
       <translation>Nejprve vyber útvar na pravé straně</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="395"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
       <translation>Nelze provést booleovskou operaci se stejným útvarem</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="405"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="407"/>
       <source>No active document available</source>
       <translation>Není dostupný aktivní dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="415"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="417"/>
       <source>One of the selected objects doesn't exist anymore</source>
       <translation>Jeden z vybraných objektů neexistuje</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="422"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing union on non-solids is not possible</source>
       <translation>Nelze provést sjednocení neobjemových útvarů</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="430"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="432"/>
       <source>Performing intersection on non-solids is not possible</source>
       <translation>Nelze provést průnik neobjemových útvarů</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="438"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="440"/>
       <source>Performing difference on non-solids is not possible</source>
       <translation>Nelze provést rozdíl neobjemových útvarů</translation>
     </message>
@@ -2647,7 +2647,7 @@ Note: The placement is expressed in local space of object being attached.</trans
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1067"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1069"/>
       <source>Chamfer Edges</source>
       <translation>Sražené hrany</translation>
     </message>
@@ -2808,7 +2808,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
       <source>Reversed</source>
-      <translation>Překlopit</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -2819,7 +2819,7 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgExtrusion.ui" line="71"/>
       <location filename="../../DlgExtrusion.cpp" line="230"/>
       <source>Select</source>
-      <translation>Vybrat</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
@@ -2834,22 +2834,22 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="122"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="145"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation>Délka</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
@@ -3000,7 +3000,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation>Útvar</translation>
+      <translation type="unfinished">Shape</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -3014,14 +3014,14 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="278"/>
       <source>Fillet Parameter</source>
       <translation>Parametr zaoblení</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
       <source>Selection</source>
-      <translation>Výběr</translation>
+      <translation type="unfinished">Selection</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
@@ -3036,12 +3036,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
       <source>All</source>
-      <translation>Vše</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
       <source>None</source>
-      <translation>Žádný</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
@@ -3064,105 +3064,105 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <translation>Poloměr:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="265"/>
+      <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Chamfer Parameter</source>
       <translation type="unfinished">Chamfer Parameter</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="266"/>
+      <location filename="../../DlgFilletEdges.cpp" line="268"/>
       <source>Chamfer type</source>
       <translation type="unfinished">Chamfer type</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="267"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Length:</source>
       <translation>Délka:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Edges to chamfer</source>
       <translation>Hrany ke sražení</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="864"/>
+      <location filename="../../DlgFilletEdges.cpp" line="866"/>
       <source>Start length</source>
       <translation>Počáteční délka</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Equal distance</source>
-      <translation>Rovná vzdálenost</translation>
+      <translation type="unfinished">Equal distance</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Two distances</source>
-      <translation>Dvě vzdálenosti</translation>
+      <translation type="unfinished">Two distances</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Size</source>
-      <translation>Velikost</translation>
+      <translation type="unfinished">Size</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Size2</source>
       <translation type="unfinished">Size2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="279"/>
       <source>Fillet type</source>
       <translation type="unfinished">Fillet type</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Edges to fillet</source>
       <translation>Hrany pro zaoblení</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
-      <location filename="../../DlgFilletEdges.cpp" line="866"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <location filename="../../DlgFilletEdges.cpp" line="868"/>
       <source>Start radius</source>
       <translation>Počáteční rádius</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>End radius</source>
       <translation>Koncový rádius</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="713"/>
-      <location filename="../../DlgFilletEdges.cpp" line="773"/>
+      <location filename="../../DlgFilletEdges.cpp" line="715"/>
+      <location filename="../../DlgFilletEdges.cpp" line="775"/>
       <source>Edge%1</source>
       <translation>Hrana%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="856"/>
+      <location filename="../../DlgFilletEdges.cpp" line="858"/>
       <source>Length</source>
-      <translation>Délka</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="858"/>
+      <location filename="../../DlgFilletEdges.cpp" line="860"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>No shape selected</source>
       <translation>Není vybrán útvar</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="913"/>
+      <location filename="../../DlgFilletEdges.cpp" line="915"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Není vybrán přípustný útvar. Prosím vyber přípustný útvar.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="964"/>
+      <location filename="../../DlgFilletEdges.cpp" line="966"/>
       <source>No edge selected</source>
       <translation>Není vybraná hrana</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="965"/>
+      <location filename="../../DlgFilletEdges.cpp" line="967"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Nevhodná entita pro zaoblení. Prosím vyber nejprve jednu nebo více hran.</translation>
@@ -3228,7 +3228,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Import</source>
-      <translation>Import</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
@@ -3271,7 +3271,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="177"/>
       <source>STEP</source>
-      <translation>STEP</translation>
+      <translation type="unfinished">STEP</translation>
     </message>
   </context>
   <context>
@@ -3279,12 +3279,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP</source>
-      <translation>STEP</translation>
+      <translation type="unfinished">STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Import</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -3362,7 +3362,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="161"/>
       <source>Single document</source>
-      <translation>Jediný dokument</translation>
+      <translation type="unfinished">Single document</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="166"/>
@@ -3400,17 +3400,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="92"/>
@@ -3420,12 +3420,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="109"/>
       <source>Size:</source>
-      <translation>Velikost:</translation>
+      <translation type="unfinished">Size:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="121"/>
       <source>Length:</source>
-      <translation>Délka:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="141"/>
@@ -3448,27 +3448,27 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Poloha:</translation>
+      <translation type="unfinished">Position:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="52"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="72"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation>Směr:</translation>
+      <translation type="unfinished">Direction:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -3478,12 +3478,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Radius:</source>
-      <translation>Poloměr:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
       <source>Height:</source>
-      <translation>Výška:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
   </context>
   <context>
@@ -3504,12 +3504,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="70"/>
       <source>IGES</source>
-      <translation>IGES</translation>
+      <translation type="unfinished">IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="71"/>
       <source>All Files</source>
-      <translation>Všechny soubory</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
   </context>
   <context>
@@ -3522,7 +3522,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
-      <translation>Název souboru</translation>
+      <translation type="unfinished">File Name</translation>
     </message>
   </context>
   <context>
@@ -3530,12 +3530,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="70"/>
       <source>STEP</source>
-      <translation>STEP</translation>
+      <translation type="unfinished">STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="71"/>
       <source>All Files</source>
-      <translation>Všechny soubory</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
   </context>
   <context>
@@ -3561,19 +3561,19 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="51"/>
       <location filename="../../DlgPrimitives.cpp" line="439"/>
       <source>Cylinder</source>
-      <translation>Válec</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
       <location filename="../../DlgPrimitives.cpp" line="535"/>
       <source>Cone</source>
-      <translation>Kužel</translation>
+      <translation type="unfinished">Cone</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
       <location filename="../../DlgPrimitives.cpp" line="626"/>
       <source>Sphere</source>
-      <translation>Koule</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
@@ -3585,7 +3585,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="87"/>
       <location filename="../../DlgPrimitives.cpp" line="837"/>
       <source>Torus</source>
-      <translation>Anuloid</translation>
+      <translation type="unfinished">Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
@@ -3615,7 +3615,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="132"/>
       <location filename="../../DlgPrimitives.cpp" line="1372"/>
       <source>Circle</source>
-      <translation>Kruh</translation>
+      <translation type="unfinished">Circle</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
@@ -3643,19 +3643,19 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length:</source>
-      <translation>Délka:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
       <location filename="../../DlgPrimitives.ui" line="351"/>
       <source>Width:</source>
-      <translation>Šířka:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="371"/>
@@ -3664,7 +3664,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="1419"/>
       <location filename="../../DlgPrimitives.ui" line="1745"/>
       <source>Height:</source>
-      <translation>Výška:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="445"/>
@@ -3673,36 +3673,36 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
       <source>Radius:</source>
-      <translation>Poloměr:</translation>
+      <translation type="unfinished">Radius:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="485"/>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <source>Angle in first direction:</source>
-      <translation>Úhel v prvním směru:</translation>
+      <translation type="unfinished">Angle in first direction:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="492"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation>Úhel v prvním směru</translation>
+      <translation type="unfinished">Angle in first direction</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="511"/>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <source>Angle in second direction:</source>
-      <translation>Úhel v druhém směru:</translation>
+      <translation type="unfinished">Angle in second direction:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="518"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation>Úhel v druhém směru</translation>
+      <translation type="unfinished">Angle in second direction</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="569"/>
       <source>Rotation angle:</source>
-      <translation>Úhel otáčení:</translation>
+      <translation type="unfinished">Rotation angle:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="643"/>
@@ -3722,7 +3722,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="729"/>
       <location filename="../../DlgPrimitives.ui" line="1785"/>
       <source>Angle:</source>
-      <translation>Úhel:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="852"/>
@@ -3849,19 +3849,19 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
       <location filename="../../DlgPrimitives.ui" line="2268"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2190"/>
       <location filename="../../DlgPrimitives.ui" line="2301"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2210"/>
       <location filename="../../DlgPrimitives.ui" line="2334"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2251"/>
@@ -3876,7 +3876,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
-      <translation>Vrchol</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1912"/>
@@ -3927,7 +3927,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
       <source>Show all</source>
-      <translation>Zobrazit vše</translation>
+      <translation type="unfinished">Show all</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
@@ -3952,7 +3952,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
       <source>Direction</source>
-      <translation>Směr</translation>
+      <translation type="unfinished">Direction</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
@@ -3962,17 +3962,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="186"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="213"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
@@ -4000,7 +4000,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
       <source>Shape</source>
-      <translation>Útvar</translation>
+      <translation type="unfinished">Shape</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
@@ -4052,7 +4052,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Úhel:</translation>
+      <translation type="unfinished">Angle:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4077,7 +4077,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="183"/>
       <source>Object not found: %1</source>
-      <translation>Objekt nebyl nalezen. %1</translation>
+      <translation type="unfinished">Object not found: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="264"/>
@@ -4174,7 +4174,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="14"/>
       <source>General</source>
-      <translation>Obecné</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="20"/>
@@ -4212,7 +4212,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="20"/>
       <source>Measure</source>
-      <translation>Měření</translation>
+      <translation type="unfinished">Measure</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
@@ -4237,17 +4237,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
       <source>Font size</source>
-      <translation>Velikost písma</translation>
+      <translation type="unfinished">Font size</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="158"/>
       <source>Bold</source>
-      <translation>Tučně</translation>
+      <translation type="unfinished">Bold</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="176"/>
       <source>Italic</source>
-      <translation>Kurzíva</translation>
+      <translation type="unfinished">Italic</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
@@ -4257,7 +4257,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
       <source>Font name</source>
-      <translation>Název písma</translation>
+      <translation type="unfinished">Font name</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
@@ -4280,7 +4280,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Shape color</source>
-      <translation>Barva tvaru</translation>
+      <translation type="unfinished">Shape color</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
@@ -4310,7 +4310,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="118"/>
       <source>Line color</source>
-      <translation>Barva čáry</translation>
+      <translation type="unfinished">Line color</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="125"/>
@@ -4320,7 +4320,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>Line width</source>
-      <translation>Tloušťka čáry</translation>
+      <translation type="unfinished">Line width</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="158"/>
@@ -4387,7 +4387,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="334"/>
       <source>Two-side rendering</source>
-      <translation>Oboustranný render</translation>
+      <translation type="unfinished">Two-side rendering</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="368"/>
@@ -4397,7 +4397,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="382"/>
       <source>Text color</source>
-      <translation>Barva textu</translation>
+      <translation type="unfinished">Text color</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="389"/>
@@ -4420,22 +4420,22 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="37"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
       <source>Z</source>
-      <translation>Z</translation>
+      <translation type="unfinished">Z</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation>3D</translation>
+      <translation type="unfinished">3D view</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4457,7 +4457,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation>X složka vektoru směru</translation>
+      <translation type="unfinished">x-component of direction vector</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4467,7 +4467,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation>Y složka vektoru směru</translation>
+      <translation type="unfinished">y-component of direction vector</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4477,12 +4477,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation>Z složka vektoru směru</translation>
+      <translation type="unfinished">z-component of direction vector</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
       <source>Angle</source>
-      <translation>Úhel</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
   </context>
   <context>
@@ -4510,7 +4510,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="215"/>
       <source>Input error</source>
-      <translation>Chyba zadání</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
@@ -4563,17 +4563,17 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation type="unfinished">x</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="96"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation type="unfinished">y</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="119"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation type="unfinished">z</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="129"/>
@@ -4591,7 +4591,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskOffset.cpp" line="210"/>
       <source>Input error</source>
-      <translation>Chyba zadání</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -4599,17 +4599,17 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
-      <translation>Chyba</translation>
+      <translation type="unfinished">Error</translation>
     </message>
   </context>
   <context>
@@ -4629,14 +4629,14 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>Odstup</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
       <location filename="../../SectionCutting.ui" line="145"/>
       <location filename="../../SectionCutting.ui" line="213"/>
       <source>Flip</source>
-      <translation>Překlopit</translation>
+      <translation type="unfinished">Flip</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
@@ -4663,7 +4663,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../SectionCutting.ui" line="257"/>
       <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
-      <translation>Barva</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
@@ -4681,7 +4681,7 @@ have the same values.</translation>
       <location filename="../../SectionCutting.ui" line="308"/>
       <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
-      <translation>Automaticky</translation>
+      <translation type="unfinished">Auto</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="330"/>
@@ -4693,7 +4693,7 @@ have the same values.</translation>
       <location filename="../../SectionCutting.ui" line="333"/>
       <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
-      <translation>Průhlednost</translation>
+      <translation type="unfinished">Transparency</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="371"/>
@@ -4846,17 +4846,17 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="135"/>
       <source>Available profiles</source>
-      <translation>Dostupné profily</translation>
+      <translation type="unfinished">Available profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Selected profiles</source>
-      <translation>Vybrané profily</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="332"/>
       <source>Too few elements</source>
-      <translation>Příliž málo elemnetů</translation>
+      <translation type="unfinished">Too few elements</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="332"/>
@@ -4866,7 +4866,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="336"/>
       <source>Invalid selection</source>
-      <translation>Neplatný výběr</translation>
+      <translation type="unfinished">Invalid selection</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="336"/>
@@ -4886,7 +4886,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="381"/>
       <source>Input error</source>
-      <translation>Chyba zadání</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
@@ -4918,7 +4918,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="459"/>
       <source>Sweep</source>
-      <translation>Tažení</translation>
+      <translation type="unfinished">Sweep</translation>
     </message>
   </context>
   <context>
@@ -4926,7 +4926,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="14"/>
       <source>Form</source>
-      <translation>Návrh</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
@@ -4960,7 +4960,7 @@ only created cuts will be visible</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
     </message>
@@ -5041,77 +5041,77 @@ of object being attached.</translation>
       <translation>Otočit strany</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="318"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>OCC error: %1</source>
       <translation>OCC chyba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>unknown error</source>
       <translation>neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="323"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attachment mode failed: %1</source>
       <translation>Mód připojení selhal: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Not attached</source>
       <translation>Není připojeno</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="331"/>
+      <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attached with mode %1</source>
       <translation>Připojené v módu %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="632"/>
+      <location filename="../../TaskAttacher.cpp" line="634"/>
       <source>Face</source>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="639"/>
+      <location filename="../../TaskAttacher.cpp" line="641"/>
       <source>Edge</source>
-      <translation>Hrana</translation>
+      <translation type="unfinished">Edge</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="646"/>
+      <location filename="../../TaskAttacher.cpp" line="648"/>
       <source>Vertex</source>
-      <translation>Vrchol</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="711"/>
+      <location filename="../../TaskAttacher.cpp" line="713"/>
       <source>Selecting...</source>
-      <translation>Vybírání...</translation>
+      <translation type="unfinished">Selecting...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="715"/>
+      <location filename="../../TaskAttacher.cpp" line="717"/>
       <source>Reference%1</source>
       <translation>Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="762"/>
+      <location filename="../../TaskAttacher.cpp" line="764"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="828"/>
+      <location filename="../../TaskAttacher.cpp" line="830"/>
       <source>Reference combinations:</source>
       <translation>Kombinace referencí:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="845"/>
+      <location filename="../../TaskAttacher.cpp" line="847"/>
       <source>%1 (add %2)</source>
       <translation>%1 (přidat %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="850"/>
+      <location filename="../../TaskAttacher.cpp" line="852"/>
       <source>%1 (add more references)</source>
       <translation>%1 (přidat více referencí)</translation>
     </message>
@@ -5127,7 +5127,7 @@ of object being attached.</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
       <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
       <source>Settings</source>
-      <translation>Nastavení</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
@@ -5234,7 +5234,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
       <source>Continuity</source>
-      <translation>Pokračování</translation>
+      <translation type="unfinished">Continuity</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
@@ -5369,7 +5369,7 @@ Individual boolean operation checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1118"/>
+      <location filename="../../TaskAttacher.cpp" line="1120"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialog hodnoty: Chyba vstupu</translation>
     </message>
@@ -5419,7 +5419,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>Okno výběru</translation>
+      <translation type="unfinished">Box selection</translation>
     </message>
   </context>
   <context>
@@ -5427,12 +5427,12 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Profilování</translation>
+      <translation type="unfinished">Loft</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Vytvoř těleso</translation>
+      <translation type="unfinished">Create solid</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5442,7 +5442,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="37"/>
       <source>Closed</source>
-      <translation>Uzavřeno</translation>
+      <translation type="unfinished">Closed</translation>
     </message>
   </context>
   <context>
@@ -5451,12 +5451,12 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Odstup</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
       <source>Mode</source>
-      <translation>Způsob</translation>
+      <translation type="unfinished">Mode</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
@@ -5492,7 +5492,7 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Průnik</translation>
+      <translation type="unfinished">Intersection</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -5561,7 +5561,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="82"/>
       <source>Refine shape</source>
-      <translation>Vylepšit tvar</translation>
+      <translation type="unfinished">Refine shape</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="92"/>
@@ -5576,7 +5576,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
       <source>Create</source>
-      <translation>Vytvořit</translation>
+      <translation type="unfinished">Create</translation>
     </message>
   </context>
   <context>
@@ -5584,7 +5584,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Tažení</translation>
+      <translation type="unfinished">Sweep</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -5594,7 +5594,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Vytvoř těleso</translation>
+      <translation type="unfinished">Create solid</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5618,7 +5618,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
@@ -5633,7 +5633,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Height:</source>
-      <translation>Výška:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
   </context>
   <context>
@@ -5653,12 +5653,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="194"/>
       <source>Done</source>
-      <translation>Hotovo</translation>
+      <translation type="unfinished">Done</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="259"/>
       <source>Input error</source>
-      <translation>Chyba zadání</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -5712,7 +5712,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
-      <translation>Upravit %1</translation>
+      <translation type="unfinished">Edit %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="228"/>
@@ -5741,7 +5741,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="913"/>
       <location filename="../../Command.cpp" line="2005"/>
       <source>Wrong selection</source>
-      <translation>Neplatný výběr</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
@@ -5788,7 +5788,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../Command.cpp" line="1076"/>
       <source>All Files</source>
-      <translation>Všechny soubory</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2006"/>
@@ -5805,19 +5805,19 @@ Chcete pokračovat?</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
-      <translation>Plocha</translation>
+      <translation type="unfinished">Face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
-      <translation>Hrana</translation>
+      <translation type="unfinished">Edge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
-      <translation>Vrchol</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5832,22 +5832,22 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
-      <translation>Těleso</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
-      <translation>Skořepina</translation>
+      <translation type="unfinished">Shell</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
-      <translation>Křivka</translation>
+      <translation type="unfinished">Wire</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
-      <translation>Útvar</translation>
+      <translation type="unfinished">Shape</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
@@ -6092,42 +6092,42 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
       <source>Invalid</source>
-      <translation>Neplatné</translation>
+      <translation type="unfinished">Invalid</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="656"/>
-      <location filename="../../TaskDimension.cpp" line="1792"/>
+      <location filename="../../TaskDimension.cpp" line="658"/>
+      <location filename="../../TaskDimension.cpp" line="1794"/>
       <source>Selections</source>
       <translation>Výběry</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="663"/>
-      <location filename="../../TaskDimension.cpp" line="1799"/>
+      <location filename="../../TaskDimension.cpp" line="665"/>
+      <location filename="../../TaskDimension.cpp" line="1801"/>
       <source>Control</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1420"/>
+      <location filename="../../TaskDimension.cpp" line="1422"/>
       <source>Selection </source>
       <translation>Výběr </translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1504"/>
+      <location filename="../../TaskDimension.cpp" line="1506"/>
       <source>Reset selection</source>
       <translation type="unfinished">Reset selection</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1508"/>
+      <location filename="../../TaskDimension.cpp" line="1510"/>
       <source>Toggle direct dimensions</source>
       <translation type="unfinished">Toggle direct dimensions</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1513"/>
+      <location filename="../../TaskDimension.cpp" line="1515"/>
       <source>Toggle orthogonal dimensions</source>
       <translation type="unfinished">Toggle orthogonal dimensions</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1518"/>
+      <location filename="../../TaskDimension.cpp" line="1520"/>
       <source>Clear all dimensions</source>
       <translation type="unfinished">Clear all dimensions</translation>
     </message>
@@ -6232,12 +6232,12 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Split</source>
-      <translation>Rozdělit</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Směs</translation>
+      <translation type="unfinished">Compound</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6247,7 +6247,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Měření</translation>
+      <translation type="unfinished">Measure</translation>
     </message>
   </context>
   <context>
@@ -6286,7 +6286,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
       <source>Continue</source>
-      <translation>Pokračovat</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
@@ -6376,7 +6376,7 @@ Chcete pokračovat?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
       <source>Continue</source>
-      <translation>Pokračovat</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
@@ -6396,7 +6396,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
       <source>Compound Filter</source>
-      <translation>Filtr složenin</translation>
+      <translation type="unfinished">Compound Filter</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
@@ -6482,12 +6482,12 @@ It will create a 'Compound Filter' for each shape.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
       <source>Attachment</source>
-      <translation>Připojení</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
       <source>Continue</source>
-      <translation>Pokračovat</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
@@ -6518,7 +6518,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
       <source>Reference combinations:</source>
-      <translation>Kombinace referencí:</translation>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
@@ -6528,7 +6528,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
       <source>Selecting...</source>
-      <translation>Vybírání...</translation>
+      <translation type="unfinished">Selecting...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
@@ -6538,7 +6538,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
       <source>Not attached</source>
-      <translation>Není připojeno</translation>
+      <translation type="unfinished">Not attached</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
@@ -6553,12 +6553,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
     </message>
   </context>
   <context>
@@ -6584,22 +6584,22 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
       <source>Vertices</source>
-      <translation>Vrcholy</translation>
+      <translation type="unfinished">Vertices</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>Edges</source>
-      <translation>Hrany</translation>
+      <translation type="unfinished">Edges</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation>Dráty</translation>
+      <translation type="unfinished">Wires</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
       <source>Faces</source>
-      <translation>Plochy</translation>
+      <translation type="unfinished">Faces</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
@@ -6609,7 +6609,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="65"/>
       <source>Solids</source>
-      <translation>Tělesa</translation>
+      <translation type="unfinished">Solids</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
@@ -6624,32 +6624,32 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="83"/>
       <source>Shapes</source>
-      <translation>Útvar</translation>
+      <translation type="unfinished">Shapes</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="108"/>
       <source>Area</source>
-      <translation>Oblast</translation>
+      <translation type="unfinished">Area</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="121"/>
       <source>Volume</source>
-      <translation>Objem</translation>
+      <translation type="unfinished">Volume</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="128"/>
       <source>Mass</source>
-      <translation>Hmotnost</translation>
+      <translation type="unfinished">Mass</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="135"/>
       <source>Length</source>
-      <translation>Délka</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="142"/>
       <source>Radius</source>
-      <translation>Poloměr</translation>
+      <translation type="unfinished">Radius</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
@@ -6659,7 +6659,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
       <source>Continuity</source>
-      <translation>Pokračování</translation>
+      <translation type="unfinished">Continuity</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="163"/>
@@ -6674,7 +6674,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
       <source>Orientation</source>
-      <translation>Orientace</translation>
+      <translation type="unfinished">Orientation</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
@@ -6689,7 +6689,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
       <source>Placement</source>
-      <translation>Umístění</translation>
+      <translation type="unfinished">Placement</translation>
     </message>
   </context>
   <context>

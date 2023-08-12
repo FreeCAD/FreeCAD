@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
       <source>Name</source>
-      <translation>Nome</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
       <source>Description</source>
-      <translation>Descrizione</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
       <source>Color</source>
-      <translation>Colore</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="125"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
       <source>Idle</source>
-      <translation>Inattivo</translation>
+      <translation type="unfinished">Idle</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in browser</source>
-      <translation>Apri nel browser</translation>
+      <translation type="unfinished">Open in browser</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="90"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
       <source>Open</source>
-      <translation>Apri</translation>
+      <translation type="unfinished">Open</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>Commento</translation>
+      <translation type="unfinished">Comment</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
-      <translation>Descrizione</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
-      <translation>Proprietà</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="76"/>
@@ -284,7 +284,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation>Auto aggiorna</translation>
+      <translation type="unfinished">Auto update</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -314,7 +314,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
-      <translation>Pulisci</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
@@ -344,12 +344,12 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>Importa</translation>
+      <translation type="unfinished">Import</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
-      <translation>Esporta</translation>
+      <translation type="unfinished">Export</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -369,7 +369,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
-      <translation>Password:</translation>
+      <translation type="unfinished">Password:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
@@ -379,7 +379,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Finestra di dialogo</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -427,7 +427,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
       <source>Status</source>
-      <translation>Stato</translation>
+      <translation type="unfinished">Status</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
@@ -437,7 +437,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>Aggiorna</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -452,7 +452,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>Seleziona tutto</translation>
+      <translation type="unfinished">Select all</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
@@ -488,7 +488,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>Copia esistente...</translation>
+      <translation type="unfinished">Copy existing...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -513,7 +513,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
       <source>Add</source>
-      <translation>Aggiungi</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
@@ -533,7 +533,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation>Inverti</translation>
+      <translation type="unfinished">Invert</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -553,7 +553,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
       <source>Shapes</source>
-      <translation>Forme</translation>
+      <translation type="unfinished">Shapes</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -563,7 +563,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>Rimuovi</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -573,7 +573,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>Tolleranza</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -613,17 +613,17 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>Inizio</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
       <source>Stop</source>
-      <translation>Ferma</translation>
+      <translation type="unfinished">Stop</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="177"/>
       <source>Preview</source>
-      <translation>Anteprima</translation>
+      <translation type="unfinished">Preview</translation>
     </message>
   </context>
   <context>
@@ -899,7 +899,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="702"/>
       <location filename="../ui/preferences-archdefaults.ui" line="859"/>
       <source>Width:</source>
-      <translation>Larghezza:</translation>
+      <translation type="unfinished">Width:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="41"/>
@@ -924,7 +924,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="494"/>
       <location filename="../ui/preferences-archdefaults.ui" line="741"/>
       <source>Height:</source>
-      <translation>Altezza:</translation>
+      <translation type="unfinished">Height:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
@@ -975,12 +975,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="372"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>Finestre</translation>
+      <translation type="unfinished">Windows</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1006,7 +1006,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>Trasparenza:</translation>
+      <translation type="unfinished">Transparency:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1039,12 +1039,12 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="905"/>
       <location filename="../ui/preferences-archdefaults.ui" line="985"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="898"/>
       <source>Thickness</source>
-      <translation>Spessore</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
@@ -1074,7 +1074,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>Solido</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1387,12 +1387,12 @@ Se si utilizza Netgen, accertarsi che sia disponibile.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
-      <translation>Mefisto</translation>
+      <translation type="unfinished">Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
-      <translation>Netgen</translation>
+      <translation type="unfinished">Netgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
@@ -1456,7 +1456,7 @@ Il gradiente della dimensione della maglia locale h(x) è limitato da |Δh(x)| �
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
       <source>Second order</source>
-      <translation>Secondo ordine</translation>
+      <translation type="unfinished">Second order</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
@@ -1466,7 +1466,7 @@ Il gradiente della dimensione della maglia locale h(x) è limitato da |Δh(x)| �
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>Ottimizza</translation>
+      <translation type="unfinished">Optimize</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -1728,13 +1728,13 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
-      <translation>Struttura</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>Trave</translation>
+      <translation type="unfinished">Beam</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -1804,7 +1804,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchCommands.py" line="1634"/>
       <source>Category</source>
-      <translation>Categoria</translation>
+      <translation type="unfinished">Category</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="451"/>
@@ -1821,7 +1821,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchWall.py" line="508"/>
       <location filename="../../ArchCommands.py" line="1016"/>
       <source>Length</source>
-      <translation>Lunghezza</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
@@ -1829,14 +1829,14 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
-      <translation>Larghezza</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
-      <translation>Altezza</translation>
+      <translation type="unfinished">Height</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="487"/>
@@ -1978,7 +1978,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>Fatto</translation>
+      <translation type="unfinished">Done</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1441"/>
@@ -1989,7 +1989,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
       <source>Equipment</source>
-      <translation>Arredo</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2034,7 +2034,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation>Parte di edificio</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="221"/>
@@ -2050,12 +2050,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
-      <translation>Disattiva</translation>
+      <translation type="unfinished">Deactivate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>Attiva</translation>
+      <translation type="unfinished">Activate</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2070,7 +2070,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
-      <translation>Crea gruppo...</translation>
+      <translation type="unfinished">Create group...</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="937"/>
@@ -2086,7 +2086,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>Arch</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2106,12 +2106,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>Profilo</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
       <source>Site</source>
-      <translation>Sito</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2197,7 +2197,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>Id</translation>
+      <translation type="unfinished">Id</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2237,7 +2237,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>Taglio</translation>
+      <translation type="unfinished">Cutting</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2262,7 +2262,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>Di fronte</translation>
+      <translation type="unfinished">Front</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2352,7 +2352,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchWindow.py" line="88"/>
       <source>Window</source>
-      <translation>Finestra</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
@@ -2431,7 +2431,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>Usa selezionata</translation>
+      <translation type="unfinished">Pick selected</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
@@ -2441,7 +2441,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchSectionPlane.py" line="1370"/>
       <location filename="../../ArchSpace.py" line="799"/>
       <source>Remove</source>
-      <translation>Rimuovi</translation>
+      <translation type="unfinished">Remove</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1790"/>
@@ -2450,7 +2450,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchComponent.py" line="1946"/>
       <location filename="../../ArchSpace.py" line="793"/>
       <source>Add</source>
-      <translation>Aggiungi</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="935"/>
@@ -2466,7 +2466,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchComponent.py" line="1501"/>
       <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>Edit</source>
-      <translation>Modifica</translation>
+      <translation type="unfinished">Edit</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
@@ -2488,7 +2488,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchWindow.py" line="1795"/>
       <location filename="../../ArchComponent.py" line="1953"/>
       <source>Components</source>
-      <translation>Componenti</translation>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
@@ -2500,14 +2500,14 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
-      <translation>Nome</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1798"/>
       <location filename="../../ArchComponent.py" line="2008"/>
       <location filename="../../ArchCommands.py" line="1636"/>
       <source>Type</source>
-      <translation>Tipo</translation>
+      <translation type="unfinished">Type</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1800"/>
@@ -2515,13 +2515,13 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchMaterial.py" line="888"/>
       <location filename="../../ArchPanel.py" line="237"/>
       <source>Thickness</source>
-      <translation>Spessore</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1801"/>
       <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1802"/>
@@ -2569,7 +2569,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
       <source>Axis System</source>
-      <translation>Sistema di assi</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
@@ -2652,7 +2652,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchProject.py" line="76"/>
       <source>Project</source>
-      <translation>Progetto</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -2662,7 +2662,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchStairs.py" line="67"/>
       <source>Stairs</source>
-      <translation>Scale</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
@@ -2704,7 +2704,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
-      <translation>Materiale</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
@@ -2719,7 +2719,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>Spessore totale</translation>
+      <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -2776,7 +2776,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchGrid.py" line="56"/>
       <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
-      <translation>Griglia</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="424"/>
@@ -2791,12 +2791,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
-      <translation>Aggiungi riga</translation>
+      <translation type="unfinished">Add row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
-      <translation>Cancella riga</translation>
+      <translation type="unfinished">Del row</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
@@ -2841,7 +2841,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
-      <translation>Smusso</translation>
+      <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -2956,12 +2956,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
-      <translation>Rotazione</translation>
+      <translation type="unfinished">Rotation</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="83"/>
       <source>Panel</source>
-      <translation>Pannello</translation>
+      <translation type="unfinished">Panel</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="105"/>
@@ -2987,7 +2987,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
-      <translation>Ruota</translation>
+      <translation type="unfinished">Rotate</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
@@ -3007,7 +3007,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>Strumenti</translation>
+      <translation type="unfinished">Tools</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3033,12 +3033,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>Tubo</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
       <source>Connector</source>
-      <translation>Raccordo</translation>
+      <translation type="unfinished">Connector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="123"/>
@@ -3168,7 +3168,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1015"/>
       <source>Description</source>
-      <translation>Descrizione</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
@@ -3176,14 +3176,14 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchComponent.py" line="2009"/>
       <location filename="../../ArchCommands.py" line="1637"/>
       <source>Value</source>
-      <translation>Valore</translation>
+      <translation type="unfinished">Value</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <location filename="../../ArchCommands.py" line="1638"/>
       <source>Unit</source>
-      <translation>Unità</translation>
+      <translation type="unfinished">Unit</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
@@ -3234,22 +3234,22 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
-      <translation>Asse</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation>Distanza</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
       <source>Angle</source>
-      <translation>Angolo</translation>
+      <translation type="unfinished">Angle</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
-      <translation>Etichetta</translation>
+      <translation type="unfinished">Label</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="87"/>
@@ -3328,7 +3328,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
-      <translation>Oggetti</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
@@ -3338,12 +3338,12 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
       <source>Group</source>
-      <translation>Gruppo</translation>
+      <translation type="unfinished">Group</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1956"/>
       <source>Hosts</source>
-      <translation>Ospiti</translation>
+      <translation type="unfinished">Hosts</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1957"/>
@@ -3358,7 +3358,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>Proprietà</translation>
+      <translation type="unfinished">Property</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3373,7 +3373,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
-      <translation>Nuovo...</translation>
+      <translation type="unfinished">New...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
@@ -3388,7 +3388,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="64"/>
       <source>Rebar</source>
-      <translation>Armatura</translation>
+      <translation type="unfinished">Rebar</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="130"/>
@@ -3404,7 +3404,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>Seziona</translation>
+      <translation type="unfinished">Section</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3429,7 +3429,7 @@ Creazione del Piano interrotta.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>Aggiungi selezionato</translation>
+      <translation type="unfinished">Add selected</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3490,7 +3490,7 @@ Creazione del Piano interrotta.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>Centro</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3501,7 +3501,7 @@ Creazione del Piano interrotta.</translation>
       <location filename="../../ArchBuildingPart.py" line="231"/>
       <location filename="../../ArchBuilding.py" line="204"/>
       <source>Building</source>
-      <translation>Edificio</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
@@ -3537,7 +3537,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>Spazio</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3594,22 +3594,22 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="526"/>
       <source>Alignment</source>
-      <translation>Allineamento</translation>
+      <translation type="unfinished">Alignment</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>Da sinistra</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Da destra</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
       <source>Use sketches</source>
-      <translation>Utilizza gli schizzi</translation>
+      <translation type="unfinished">Use sketches</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="679"/>
@@ -3645,7 +3645,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
-      <translation>Inverti direzione</translation>
+      <translation type="unfinished">Flip direction</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="410"/>
@@ -3680,7 +3680,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>Ispeziona</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -3690,7 +3690,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
-      <translation>Pulisci</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1012"/>
@@ -3710,12 +3710,12 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
-      <translation>Area</translation>
+      <translation type="unfinished">Area</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>Totale</translation>
+      <translation type="unfinished">Total</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -3821,7 +3821,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="270"/>
       <source>Structure</source>
-      <translation>Struttura</translation>
+      <translation type="unfinished">Structure</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
@@ -4931,7 +4931,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
       <source>The color of this material</source>
-      <translation>Il colore di questo materiale</translation>
+      <translation type="unfinished">The color of this material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
@@ -5969,7 +5969,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
-      <translation>Arredo</translation>
+      <translation type="unfinished">Equipment</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
@@ -5995,7 +5995,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation>Parte di edificio</translation>
+      <translation type="unfinished">BuildingPart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
@@ -6016,7 +6016,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
-      <translation>Strumenti di Struttura</translation>
+      <translation type="unfinished">Structure tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="92"/>
@@ -6051,22 +6051,22 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
-      <translation>Strumenti di creazione Draft</translation>
+      <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
-      <translation>Strumenti di annotazioni Draft</translation>
+      <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
-      <translation>Strumenti di modifica Draft</translation>
+      <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
-      <translation>Draft Snap</translation>
+      <translation type="unfinished">Draft snap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="184"/>
@@ -6078,7 +6078,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../InitGui.py" line="185"/>
       <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
-      <translation>Utilità</translation>
+      <translation type="unfinished">Utilities</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="191"/>
@@ -6096,7 +6096,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>Annotazione</translation>
+      <translation type="unfinished">Annotation</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6109,7 +6109,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
-      <translation>Strumenti di Armatura</translation>
+      <translation type="unfinished">Rebar tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="149"/>
@@ -6122,7 +6122,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
-      <translation>Profilo</translation>
+      <translation type="unfinished">Profile</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="128"/>
@@ -6135,7 +6135,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
-      <translation>Sito</translation>
+      <translation type="unfinished">Site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
@@ -6148,7 +6148,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation>Tetto</translation>
+      <translation type="unfinished">Roof</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6200,7 +6200,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation>Telaio</translation>
+      <translation type="unfinished">Frame</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6213,7 +6213,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="164"/>
       <source>Window</source>
-      <translation>Finestra</translation>
+      <translation type="unfinished">Window</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="168"/>
@@ -6226,7 +6226,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation>Sistema di assi</translation>
+      <translation type="unfinished">Axis System</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6239,7 +6239,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation>Travatura</translation>
+      <translation type="unfinished">Truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>
@@ -6252,7 +6252,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchProject.py" line="98"/>
       <source>Project</source>
-      <translation>Progetto</translation>
+      <translation type="unfinished">Project</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="102"/>
@@ -6265,7 +6265,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
-      <translation>Scale</translation>
+      <translation type="unfinished">Stairs</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="212"/>
@@ -6278,7 +6278,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>Spazio</translation>
+      <translation type="unfinished">Space</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6291,7 +6291,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation>Recinzione</translation>
+      <translation type="unfinished">Fence</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="391"/>
@@ -6304,7 +6304,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="116"/>
       <source>Material</source>
-      <translation>Materiale</translation>
+      <translation type="unfinished">Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="120"/>
@@ -6331,7 +6331,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchMaterial.py" line="1031"/>
       <location filename="../../ArchMaterial.py" line="1034"/>
       <source>Material tools</source>
-      <translation>Strumenti di Materiali</translation>
+      <translation type="unfinished">Material tools</translation>
     </message>
   </context>
   <context>
@@ -6339,7 +6339,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
       <source>Grid</source>
-      <translation>Griglia</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="75"/>
@@ -6425,7 +6425,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Sagoma pannello</translation>
+      <translation type="unfinished">Panel Cut</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6438,7 +6438,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>Foglio pannello</translation>
+      <translation type="unfinished">Panel Sheet</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6465,7 +6465,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchPanel.py" line="1577"/>
       <location filename="../../ArchPanel.py" line="1580"/>
       <source>Panel tools</source>
-      <translation>Strumenti Pannello</translation>
+      <translation type="unfinished">Panel tools</translation>
     </message>
   </context>
   <context>
@@ -6473,7 +6473,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation>Facciata continua</translation>
+      <translation type="unfinished">Curtain Wall</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6486,7 +6486,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>Tubo</translation>
+      <translation type="unfinished">Pipe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
@@ -6513,7 +6513,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchPipe.py" line="520"/>
       <location filename="../../ArchPipe.py" line="523"/>
       <source>Pipe tools</source>
-      <translation>Strumenti di Tubo</translation>
+      <translation type="unfinished">Pipe tools</translation>
     </message>
   </context>
   <context>
@@ -6534,7 +6534,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation>Livello</translation>
+      <translation type="unfinished">Level</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6547,7 +6547,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
-      <translation>Asse</translation>
+      <translation type="unfinished">Axis</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
@@ -6561,7 +6561,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxis.py" line="827"/>
       <source>Axis tools</source>
-      <translation>Strumenti per Assi</translation>
+      <translation type="unfinished">Axis tools</translation>
     </message>
   </context>
   <context>
@@ -6595,7 +6595,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
-      <translation>Edificio</translation>
+      <translation type="unfinished">Building</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="223"/>
@@ -6608,7 +6608,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="285"/>
       <source>Wall</source>
-      <translation>Muro</translation>
+      <translation type="unfinished">Wall</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="289"/>
@@ -6621,7 +6621,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="648"/>
       <source>Merge Walls</source>
-      <translation>Unisci Muri</translation>
+      <translation type="unfinished">Merge Walls</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="651"/>
@@ -6660,7 +6660,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
-      <translation>Dividi Mesh</translation>
+      <translation type="unfinished">Split Mesh</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1410"/>
@@ -6673,7 +6673,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
-      <translation>Da Mesh a Forma</translation>
+      <translation type="unfinished">Mesh to Shape</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1435"/>
@@ -6738,7 +6738,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>Ispeziona</translation>
+      <translation type="unfinished">Survey</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
@@ -6764,7 +6764,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1579"/>
       <source>Component</source>
-      <translation>Componente</translation>
+      <translation type="unfinished">Component</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1583"/>
@@ -6803,7 +6803,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1680"/>
       <source>Toggle subcomponents</source>
-      <translation>Attiva/disattiva sottocomponenti</translation>
+      <translation type="unfinished">Toggle subcomponents</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1683"/>
@@ -6818,7 +6818,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="646"/>
       <source>Transform</source>
-      <translation>Trasforma</translation>
+      <translation type="unfinished">Transform</translation>
     </message>
   </context>
   <context>
@@ -6827,7 +6827,7 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>Arch</translation>
+      <translation type="unfinished">Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6835,14 +6835,14 @@ Creazione Edificio interrotta.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Pescaggio</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>Importa/Esporta</translation>
+      <translation type="unfinished">Import-Export</translation>
     </message>
   </context>
 </TS>

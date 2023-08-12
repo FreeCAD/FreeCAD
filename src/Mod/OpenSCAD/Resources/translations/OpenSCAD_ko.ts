@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>일반 설정</translation>
+      <translation type="unfinished">General settings</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
@@ -139,7 +139,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="359"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
@@ -200,17 +200,17 @@
       <location filename="../../OpenSCADCommands.py" line="334"/>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Add</source>
-      <translation>추가하기</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Clear</source>
-      <translation>지우기</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Load</source>
-      <translation>불러오기</translation>
+      <translation type="unfinished">Load</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="367"/>
@@ -221,7 +221,7 @@
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Refresh</source>
-      <translation>새로 고침</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Open...</source>
-      <translation>열기...</translation>
+      <translation type="unfinished">Open...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
@@ -475,7 +475,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="566"/>
       <source>Hull</source>
-      <translation>선체</translation>
+      <translation type="unfinished">Hull</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>

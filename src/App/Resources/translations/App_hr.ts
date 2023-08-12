@@ -16,7 +16,7 @@ na sve veze koje referenciraju isti konfigurabilni objekt</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Neimenovano</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ na sve veze koje referenciraju isti konfigurabilni objekt</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Izvornik</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

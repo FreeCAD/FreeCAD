@@ -56,7 +56,7 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>原点</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

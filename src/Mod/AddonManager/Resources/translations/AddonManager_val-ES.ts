@@ -25,13 +25,13 @@
       <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
-      <translation>Forma</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
-      <translation>Icona</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="81"/>
@@ -43,13 +43,13 @@
       <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
-      <translation>Versió</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
-      <translation>Descripció</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="88"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
@@ -155,7 +155,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
       <source>Description</source>
-      <translation>Descripció</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
@@ -165,7 +165,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
       <source>Icon</source>
-      <translation>Icona</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
@@ -229,7 +229,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
       <source>Version</source>
-      <translation>Versió</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
@@ -317,7 +317,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
       <source>Close</source>
-      <translation>Tanca</translation>
+      <translation type="unfinished">Close</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
@@ -424,13 +424,13 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="116"/>
       <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
-      <translation>Forma</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
-      <translation>Icona</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="120"/>
@@ -442,7 +442,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="121"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
-      <translation>Versió</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="122"/>
@@ -454,7 +454,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="149"/>
       <source>Description</source>
-      <translation>Descripció</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="126"/>
@@ -479,7 +479,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
-      <translation>Forma</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
@@ -489,7 +489,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
       <source>License</source>
-      <translation>Llicència</translation>
+      <translation type="unfinished">License</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
@@ -509,7 +509,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
@@ -643,7 +643,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="210"/>
       <source>No proxy</source>
-      <translation>Sense servidor intermediari</translation>
+      <translation type="unfinished">No proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="226"/>
@@ -706,7 +706,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
-      <translation>Forma</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -726,7 +726,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>Actualitza</translation>
+      <translation type="unfinished">Update</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -787,12 +787,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Diàleg</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>EtiquetaText</translation>
+      <translation type="unfinished">TextLabel</translation>
     </message>
   </context>
   <context>
@@ -823,7 +823,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation type="unfinished">Macro</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
@@ -833,7 +833,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Banc de treball</translation>
+      <translation type="unfinished">Workbench</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -890,7 +890,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
-      <translation>Icona</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -925,12 +925,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
       <source>Version</source>
-      <translation>Versió</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="285"/>
       <source>Description</source>
-      <translation>Descripció</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
@@ -1027,7 +1027,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation>Nom:</translation>
+      <translation type="unfinished">Name:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1282,7 +1282,7 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="435"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
-      <translation>Autor</translation>
+      <translation type="unfinished">Author</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="166"/>
@@ -1303,7 +1303,7 @@ installed addons will be checked for available updates
       <location filename="../../manage_python_dependencies.py" line="253"/>
       <location filename="../../package_details.py" line="918"/>
       <source>Update</source>
-      <translation>Actualitza</translation>
+      <translation type="unfinished">Update</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
@@ -1545,12 +1545,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="932"/>
       <source>Enable</source>
-      <translation>Habilita</translation>
+      <translation type="unfinished">Enable</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="935"/>
       <source>Disable</source>
-      <translation>Desactiva</translation>
+      <translation type="unfinished">Disable</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="940"/>
@@ -1643,12 +1643,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="452"/>
       <source>Automatic</source>
-      <translation>Automàtica</translation>
+      <translation type="unfinished">Automatic</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>Banc de treball</translation>
+      <translation type="unfinished">Workbench</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -1840,7 +1840,7 @@ installed addons will be checked for available updates
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>executa</translation>
+      <translation type="unfinished">Run</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1865,17 +1865,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Name</source>
-      <translation>Nom</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Class</source>
-      <translation>Classe</translation>
+      <translation type="unfinished">Class</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>
       <source>Description</source>
-      <translation>Descripció</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="282"/>
@@ -1885,7 +1885,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="288"/>
       <source>Files</source>
-      <translation>Fitxers</translation>
+      <translation type="unfinished">Files</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="464"/>
@@ -2044,17 +2044,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="800"/>
       <source>All</source>
-      <translation>Tot</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="803"/>
       <source>Workbenches</source>
-      <translation>Bancs de treball</translation>
+      <translation type="unfinished">Workbenches</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="806"/>
       <source>Macros</source>
-      <translation>Macros</translation>
+      <translation type="unfinished">Macros</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="811"/>
@@ -2069,7 +2069,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="818"/>
       <source>Any</source>
-      <translation>Qualsevol</translation>
+      <translation type="unfinished">Any</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="826"/>
@@ -2079,12 +2079,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="836"/>
       <source>Filter</source>
-      <translation>Filtre</translation>
+      <translation type="unfinished">Filter</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="839"/>
       <source>OK</source>
-      <translation>D'acord</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
@@ -2136,7 +2136,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>Seguiment</translation>
+      <translation type="unfinished">Tracking</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>

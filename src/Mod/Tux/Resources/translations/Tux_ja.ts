@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
-      <translation>選択</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -61,12 +61,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="331"/>
       <source>Settings</source>
-      <translation>設定</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
       <source>Orbit style</source>
-      <translation>軌道スタイル</translation>
+      <translation type="unfinished">Orbit style</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
@@ -81,17 +81,17 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>ターンテーブル</translation>
+      <translation type="unfinished">Turntable</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
       <source>Free Turntable</source>
-      <translation>フリーターンテーブル</translation>
+      <translation type="unfinished">Free Turntable</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
-      <translation>トラックボール</translation>
+      <translation type="unfinished">Trackball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="338"/>

@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="265"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="266"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="372"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="152"/>
       <source>Points</source>
-      <translation>Точки</translation>
+      <translation type="unfinished">Points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="153"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Convert to points</source>
-      <translation>Преобразовать в точки</translation>
+      <translation type="unfinished">Convert to points</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="456"/>
@@ -300,12 +300,12 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
-      <translation>Все файлы</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Distance</source>
-      <translation>Расстояние</translation>
+      <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="209"/>

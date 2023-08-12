@@ -25,13 +25,13 @@
       <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
-      <translation>아이콘</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="81"/>
@@ -43,13 +43,13 @@
       <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
-      <translation>버전</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="88"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
@@ -155,7 +155,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
@@ -165,7 +165,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
       <source>Icon</source>
-      <translation>아이콘</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
@@ -209,7 +209,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>저장소 URL</translation>
+      <translation type="unfinished">Repository URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -229,7 +229,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
       <source>Version</source>
-      <translation>버전</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
@@ -317,7 +317,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
       <source>Close</source>
-      <translation>닫기</translation>
+      <translation type="unfinished">Close</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
@@ -424,13 +424,13 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="116"/>
       <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
-      <translation>아이콘</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="120"/>
@@ -442,7 +442,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="121"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
-      <translation>버전</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="122"/>
@@ -454,7 +454,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="149"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="126"/>
@@ -470,7 +470,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation>업데이트 가능</translation>
+      <translation type="unfinished">UpdateAvailable</translation>
     </message>
   </context>
   <context>
@@ -479,7 +479,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_licenses_table.ui" line="14"/>
       <location filename="../../developer_mode_people_table.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
@@ -489,7 +489,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
       <source>License</source>
-      <translation>라이선스</translation>
+      <translation type="unfinished">License</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
@@ -509,7 +509,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
@@ -593,7 +593,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>매크로 메타데이터 다운로드 (약 10MB)</translation>
+      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
@@ -706,7 +706,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
-      <translation>양식</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -726,7 +726,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>업데이트</translation>
+      <translation type="unfinished">Update</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -787,12 +787,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="14"/>
       <source>Dialog</source>
-      <translation>다이얼로그</translation>
+      <translation type="unfinished">Dialog</translation>
     </message>
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>텍스트 라벨</translation>
+      <translation type="unfinished">TextLabel</translation>
     </message>
   </context>
   <context>
@@ -823,7 +823,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
       <source>Macro</source>
-      <translation>매크로</translation>
+      <translation type="unfinished">Macro</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
@@ -833,7 +833,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>워크벤치</translation>
+      <translation type="unfinished">Workbench</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -860,12 +860,12 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation>탐색...</translation>
+      <translation type="unfinished">Browse...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation>환경설정 팩 이름</translation>
+      <translation type="unfinished">Preference Pack Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
@@ -890,7 +890,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
-      <translation>아이콘</translation>
+      <translation type="unfinished">Icon</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -925,12 +925,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
       <source>Version</source>
-      <translation>버전</translation>
+      <translation type="unfinished">Version</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="285"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
@@ -1027,7 +1027,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation>이름:</translation>
+      <translation type="unfinished">Name:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1113,7 +1113,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation>탐색...</translation>
+      <translation type="unfinished">Browse...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
@@ -1226,7 +1226,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManager.py" line="501"/>
       <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
-      <translation>로컬 캐시 비우기</translation>
+      <translation type="unfinished">Refresh local cache</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="629"/>
@@ -1282,7 +1282,7 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="435"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
       <source>Author</source>
-      <translation>작성자: </translation>
+      <translation type="unfinished">Author</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="166"/>
@@ -1303,7 +1303,7 @@ installed addons will be checked for available updates
       <location filename="../../manage_python_dependencies.py" line="253"/>
       <location filename="../../package_details.py" line="918"/>
       <source>Update</source>
-      <translation>업데이트</translation>
+      <translation type="unfinished">Update</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
@@ -1545,7 +1545,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="932"/>
       <source>Enable</source>
-      <translation>활성화</translation>
+      <translation type="unfinished">Enable</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="935"/>
@@ -1648,7 +1648,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>워크벤치</translation>
+      <translation type="unfinished">Workbench</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -1840,7 +1840,7 @@ installed addons will be checked for available updates
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>실행</translation>
+      <translation type="unfinished">Run</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1865,7 +1865,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
@@ -1875,7 +1875,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>
       <source>Description</source>
-      <translation>설명</translation>
+      <translation type="unfinished">Description</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="282"/>
@@ -1984,7 +1984,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>태그</translation>
+      <translation type="unfinished">Tags</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2044,17 +2044,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="800"/>
       <source>All</source>
-      <translation>전체</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="803"/>
       <source>Workbenches</source>
-      <translation>워크벤치</translation>
+      <translation type="unfinished">Workbenches</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="806"/>
       <source>Macros</source>
-      <translation>매크로</translation>
+      <translation type="unfinished">Macros</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="811"/>
@@ -2064,7 +2064,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="815"/>
       <source>Status:</source>
-      <translation>상태:</translation>
+      <translation type="unfinished">Status:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="818"/>
@@ -2079,12 +2079,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="836"/>
       <source>Filter</source>
-      <translation>필터</translation>
+      <translation type="unfinished">Filter</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="839"/>
       <source>OK</source>
-      <translation>확인</translation>
+      <translation type="unfinished">OK</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
@@ -2136,7 +2136,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>트래킹</translation>
+      <translation type="unfinished">Tracking</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>
@@ -2409,7 +2409,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.py" line="274"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation>저장소 URL</translation>
+      <translation type="unfinished">Repository URL</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="280"/>
@@ -2505,7 +2505,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="124"/>
       <source>Addon Manager</source>
-      <translation>애드온 매니저</translation>
+      <translation type="unfinished">Addon Manager</translation>
     </message>
   </context>
 </TS>

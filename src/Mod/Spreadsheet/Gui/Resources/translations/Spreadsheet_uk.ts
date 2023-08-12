@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="285"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="545"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="818"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="671"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="745"/>
@@ -284,12 +284,12 @@
     <message>
       <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
-      <translation>Об'єднати комірки</translation>
+      <translation type="unfinished">Merge cells</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Split cell</source>
-      <translation>Роз'єднати комірку</translation>
+      <translation type="unfinished">Split cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -347,7 +347,7 @@
       <translation>Зміна властивостей комірок</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Редагування комірки</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Очистити комірку(и)</translation>
     </message>
@@ -472,12 +472,12 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation type="unfinished">OK</translation>
     </message>
   </context>
   <context>
@@ -564,12 +564,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation>Скасувати</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation type="unfinished">OK</translation>
     </message>
   </context>
   <context>
@@ -587,7 +587,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="33"/>
       <source>Text</source>
-      <translation>Текст</translation>
+      <translation type="unfinished">Text</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="43"/>
@@ -607,7 +607,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Ліворуч</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -618,7 +618,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Направо</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -628,12 +628,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Згори</translation>
+      <translation type="unfinished">Top</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>Знизу</translation>
+      <translation type="unfinished">Bottom</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -687,12 +687,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
-      <translation>Імпорт файлу</translation>
+      <translation type="unfinished">Import file</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
-      <translation>Експорт файлу</translation>
+      <translation type="unfinished">Export file</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
@@ -727,12 +727,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Копіювання і вставка завершилась невдачею</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псевдонім містить некоректні символи!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Зверніться до комірки за псевдонімом, наприклад
@@ -741,7 +741,7 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -751,13 +751,13 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
       <location filename="../../qtcolorpicker.cpp" line="412"/>
       <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
-      <translation>Чорний</translation>
+      <translation type="unfinished">Black</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="413"/>
       <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
-      <translation>Білий</translation>
+      <translation type="unfinished">White</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="414"/>
@@ -852,7 +852,7 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation>Колір, який встановлюється користувачем</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -860,7 +860,7 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="14"/>
       <source>Form</source>
-      <translation>Форма</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
@@ -876,8 +876,8 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Зверніться до комірки за псевдонімом, наприклад
-Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -899,7 +899,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Звʼязування комірок таблиці</translation>
+      <translation type="unfinished">Bind Spreadsheet Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -919,7 +919,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1113,7 +1113,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
-      <translation>Об'єднати комірки</translation>
+      <translation type="unfinished">Merge cells</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
@@ -1125,13 +1125,13 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Вирізати</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
       <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
-      <translation>Копіювати</translation>
+      <translation type="unfinished">Copy</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
@@ -1143,20 +1143,20 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="209"/>
       <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Delete</source>
-      <translation>Видалити</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
-      <translation>Експорт в PDF</translation>
+      <translation type="unfinished">Export PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
-      <translation>PDF-файл</translation>
+      <translation type="unfinished">PDF file</translation>
     </message>
   </context>
   <context>
@@ -1164,7 +1164,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Таблиця</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1174,7 +1174,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Вирівнювання</translation>
+      <translation type="unfinished">&amp;Alignment</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1187,7 +1187,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
-      <translation>Без назви</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
 </TS>

@@ -43,7 +43,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="783"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation>두 선 사이에 중심선 추가</translation>
+      <translation type="unfinished">Add Centerline between 2 Lines</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="858"/>
       <source>Add Centerline between 2 Points</source>
-      <translation>두 점 사이에 중심선 추가</translation>
+      <translation type="unfinished">Add Centerline between 2 Points</translation>
     </message>
   </context>
   <context>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Add Cosmetic Vertex</source>
-      <translation>꾸밈 꼭짓점 추가</translation>
+      <translation type="unfinished">Add Cosmetic Vertex</translation>
     </message>
   </context>
   <context>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>File</source>
-      <translation>파일</translation>
+      <translation type="unfinished">File</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1578"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Command.cpp" line="1536"/>
       <source>File</source>
-      <translation>파일</translation>
+      <translation type="unfinished">File</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1537"/>
@@ -918,7 +918,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1604"/>
       <location filename="../../CommandExtensionPack.cpp" line="1742"/>
       <source>Extend Line</source>
-      <translation>연장선</translation>
+      <translation type="unfinished">Extend Line</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1605"/>
@@ -1420,7 +1420,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="672"/>
       <source>Add Centerline to Faces</source>
-      <translation>면에 중심선 추가</translation>
+      <translation type="unfinished">Add Centerline to Faces</translation>
     </message>
   </context>
   <context>
@@ -1566,7 +1566,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="451"/>
       <source>Add Midpoint Vertices</source>
-      <translation>중간점 정점 추가</translation>
+      <translation type="unfinished">Add Midpoint Vertices</translation>
     </message>
   </context>
   <context>
@@ -1628,7 +1628,7 @@
     <message>
       <location filename="../../Command.cpp" line="1641"/>
       <source>Project shape...</source>
-      <translation>프로젝트 모양...</translation>
+      <translation type="unfinished">Project shape...</translation>
     </message>
   </context>
   <context>
@@ -1659,7 +1659,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="490"/>
       <source>Add Quadrant Vertices</source>
-      <translation>사분원 정점 추가</translation>
+      <translation type="unfinished">Add Quadrant Vertices</translation>
     </message>
   </context>
   <context>
@@ -2014,7 +2014,7 @@
       <translation type="unfinished">Create spreadsheet view</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="728"/>
+      <location filename="../../MDIViewPage.cpp" line="734"/>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Save page to dxf</source>
       <translation type="unfinished">Save page to dxf</translation>
@@ -2022,12 +2022,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="338"/>
       <source>Add Midpoint Vertices</source>
-      <translation>중간점 정점 추가</translation>
+      <translation type="unfinished">Add Midpoint Vertices</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="364"/>
       <source>Add Quadrant Vertices</source>
-      <translation>사분원 정점 추가</translation>
+      <translation type="unfinished">Add Quadrant Vertices</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="546"/>
@@ -2159,7 +2159,7 @@
     <message>
       <location filename="../../TaskCosVertex.cpp" line="135"/>
       <source>Add Cosmetic Vertex</source>
-      <translation>꾸밈 꼭짓점 추가</translation>
+      <translation type="unfinished">Add Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="105"/>
@@ -2491,7 +2491,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="148"/>
       <source>Cut</source>
-      <translation>자르기</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
@@ -2501,7 +2501,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
       <source>Copy</source>
-      <translation>복사하기</translation>
+      <translation type="unfinished">Copy</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
@@ -2521,12 +2521,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="224"/>
       <source>Link</source>
-      <translation>링크</translation>
+      <translation type="unfinished">Link</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="257"/>
       <source>Bold</source>
-      <translation>굵게</translation>
+      <translation type="unfinished">Bold</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
@@ -2536,7 +2536,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="283"/>
       <source>Italic</source>
-      <translation>기울임</translation>
+      <translation type="unfinished">Italic</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="306"/>
@@ -2546,7 +2546,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="309"/>
       <source>Underline</source>
-      <translation>밑줄</translation>
+      <translation type="unfinished">Underline</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="329"/>
@@ -2601,12 +2601,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
       <source>Background</source>
-      <translation>배경</translation>
+      <translation type="unfinished">Background</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="525"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation type="unfinished">Font size</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="566"/>
@@ -2617,7 +2617,7 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="100"/>
       <source>Standard</source>
-      <translation>표준</translation>
+      <translation type="unfinished">Standard</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="101"/>
@@ -2716,7 +2716,7 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1488"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
@@ -2784,7 +2784,7 @@
       <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
       <source>Create a page first.</source>
-      <translation>먼저 페이지를 작성합니다.</translation>
+      <translation type="unfinished">Create a page first.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
@@ -2832,17 +2832,17 @@
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Choose an SVG file to open</source>
-      <translation>불러올 SVG 파일을 선택하세요</translation>
+      <translation type="unfinished">Choose an SVG file to open</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
       <source>Scalable Vector Graphic</source>
-      <translation>스케일러블 벡터 그래픽(SVG)</translation>
+      <translation type="unfinished">Scalable Vector Graphic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
       <source>All Files</source>
-      <translation>모든 파일</translation>
+      <translation type="unfinished">All Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1366"/>
@@ -2862,7 +2862,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>스프레드시트 오브젝트를 하나만 선택하십시오.</translation>
+      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1561"/>
@@ -3357,7 +3357,7 @@
       <location filename="../../DrawGuiUtil.cpp" line="109"/>
       <location filename="../../DrawGuiUtil.cpp" line="142"/>
       <source>No page found</source>
-      <translation>페이지를 찾을 수 없습니다</translation>
+      <translation type="unfinished">No page found</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="110"/>
@@ -3370,50 +3370,50 @@
       <translation type="unfinished">No Drawing Pages in document.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="280"/>
+      <location filename="../../MDIViewPage.cpp" line="282"/>
       <source>PDF (*.pdf)</source>
       <translation type="unfinished">PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="281"/>
-      <location filename="../../MDIViewPage.cpp" line="687"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="693"/>
       <source>All Files (*.*)</source>
       <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="285"/>
       <source>Export Page As PDF</source>
       <translation type="unfinished">Export Page As PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="578"/>
+      <location filename="../../MDIViewPage.cpp" line="584"/>
       <source>Document Name: </source>
       <translation type="unfinished">Document Name: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="686"/>
+      <location filename="../../MDIViewPage.cpp" line="692"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="689"/>
+      <location filename="../../MDIViewPage.cpp" line="695"/>
       <source>Export page as SVG</source>
       <translation type="unfinished">Export page as SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Show drawing</source>
-      <translation>드로잉 보기</translation>
+      <translation type="unfinished">Show drawing</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="237"/>
       <source>Toggle KeepUpdated</source>
       <translation type="unfinished">Toggle KeepUpdated</translation>
     </message>
@@ -3440,7 +3440,7 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="278"/>
+      <location filename="../../QGIRichAnno.cpp" line="323"/>
       <source>Rich text editor</source>
       <translation type="unfinished">Rich text editor</translation>
     </message>
@@ -3842,12 +3842,12 @@ it has a weld symbol that would become broken.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <source>Object dependencies</source>
-      <translation>객체 종속성</translation>
+      <translation type="unfinished">Object dependencies</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="145"/>
@@ -3870,7 +3870,7 @@ it has a weld symbol that would become broken.</translation>
       <translation type="unfinished">You cannot delete this view because it has a leader line that would become broken.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="208"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation type="unfinished">The page is not empty, therefore the
@@ -4075,7 +4075,7 @@ Number of welds × length, (gap)</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="174"/>
       <source>Delete</source>
-      <translation>삭제</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="181"/>
@@ -4312,7 +4312,7 @@ Only change unless you know what you are doing!</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="423"/>
       <source>Square</source>
-      <translation>사각형</translation>
+      <translation type="unfinished">Square</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="428"/>
@@ -4445,7 +4445,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="439"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="692"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="270"/>
@@ -4474,7 +4474,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="808"/>
       <source>Hide</source>
-      <translation>숨기기</translation>
+      <translation type="unfinished">Hide</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="813"/>
@@ -4514,13 +4514,13 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="176"/>
       <source>Circle</source>
-      <translation>원</translation>
+      <translation type="unfinished">Circle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="185"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="610"/>
       <source>Square</source>
-      <translation>사각형</translation>
+      <translation type="unfinished">Square</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
@@ -4560,12 +4560,12 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="574"/>
       <source>None</source>
-      <translation>없음</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="583"/>
       <source>Triangle</source>
-      <translation>삼각형</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="592"/>
@@ -4575,17 +4575,17 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="601"/>
       <source>Hexagon</source>
-      <translation>육각형</translation>
+      <translation type="unfinished">Hexagon</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="619"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation type="unfinished">Rectangle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="628"/>
       <source>Line</source>
-      <translation>선</translation>
+      <translation type="unfinished">Line</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="505"/>
@@ -4674,12 +4674,12 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="47"/>
       <source>Colors</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Colors</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="606"/>
       <source>Normal</source>
-      <translation>일반</translation>
+      <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="494"/>
@@ -4739,7 +4739,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="130"/>
       <source>Background</source>
-      <translation>배경</translation>
+      <translation type="unfinished">Background</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="243"/>
@@ -4759,7 +4759,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="613"/>
       <source>Dimension</source>
-      <translation>치수</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
@@ -4882,7 +4882,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="44"/>
       <source>Dimensions</source>
-      <translation>면적</translation>
+      <translation type="unfinished">Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
@@ -5070,7 +5070,7 @@ Normally, no gap is used. If a gap is used, the recommended value is 6.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="20"/>
       <source>General</source>
-      <translation>일반</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="47"/>
@@ -5183,7 +5183,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="418"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="426"/>
@@ -5288,7 +5288,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="792"/>
       <source>Grid</source>
-      <translation>격자</translation>
+      <translation type="unfinished">Grid</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="805"/>
@@ -5369,7 +5369,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Show smooth lines</source>
-      <translation>매끄러운 선 표시</translation>
+      <translation type="unfinished">Show smooth lines</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
@@ -5436,7 +5436,7 @@ Fast, but result is a collection of short straight lines.</translation>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="47"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation type="unfinished">Scale</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
@@ -5461,17 +5461,17 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
       <source>Auto</source>
-      <translation>자동</translation>
+      <translation type="unfinished">Auto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="148"/>
       <source>Custom</source>
-      <translation>색상 편집</translation>
+      <translation type="unfinished">Custom</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
@@ -5559,7 +5559,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Export PDF</source>
-      <translation>PDF로 내보내기</translation>
+      <translation type="unfinished">Export PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="108"/>
@@ -5567,52 +5567,53 @@ Fast, but result is a collection of short straight lines.</translation>
       <translation type="unfinished">Print All Pages</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="395"/>
       <source>Different orientation</source>
-      <translation>다른 방향</translation>
+      <translation type="unfinished">Different orientation</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="396"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation type="unfinished">The printer uses a different orientation  than the drawing.
 Do you want to continue?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="401"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>Different paper size</source>
-      <translation>다른 용지 크기</translation>
+      <translation type="unfinished">Different paper size</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="402"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>프린터가 사용중인 종이 크기가 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
+      <translation type="unfinished">The printer uses a different paper size than the drawing.
+Do you want to continue?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="415"/>
+      <location filename="../../MDIViewPage.cpp" line="419"/>
       <source>Opening file failed</source>
-      <translation>파일 열기 실패</translation>
+      <translation type="unfinished">Opening file failed</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="420"/>
       <source>Can not open file %1 for writing.</source>
       <translation type="unfinished">Can not open file %1 for writing.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="713"/>
+      <location filename="../../MDIViewPage.cpp" line="719"/>
       <source>Save DXF file</source>
-      <translation>DXF 파일 저장</translation>
+      <translation type="unfinished">Save DXF file</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="714"/>
+      <location filename="../../MDIViewPage.cpp" line="720"/>
       <source>DXF (*.dxf)</source>
       <translation type="unfinished">DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1222"/>
+      <location filename="../../MDIViewPage.cpp" line="1228"/>
       <source>Selected:</source>
-      <translation>선택:</translation>
+      <translation type="unfinished">Selected:</translation>
     </message>
   </context>
   <context>
@@ -5693,12 +5694,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
       <source>None</source>
-      <translation>없음</translation>
+      <translation type="unfinished">None</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="124"/>
       <source>Triangle</source>
-      <translation>삼각형</translation>
+      <translation type="unfinished">Triangle</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="133"/>
@@ -5708,12 +5709,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="142"/>
       <source>Hexagon</source>
-      <translation>육각형</translation>
+      <translation type="unfinished">Hexagon</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="151"/>
       <source>Square</source>
-      <translation>사각형</translation>
+      <translation type="unfinished">Square</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="160"/>
@@ -5723,7 +5724,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="169"/>
       <source>Line</source>
-      <translation>선</translation>
+      <translation type="unfinished">Line</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
@@ -5768,12 +5769,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="273"/>
       <source>False</source>
-      <translation>거짓</translation>
+      <translation type="unfinished">False</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="278"/>
       <source>True</source>
-      <translation>참</translation>
+      <translation type="unfinished">True</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="286"/>
@@ -5811,7 +5812,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="52"/>
       <source>Elements</source>
-      <translation>요소</translation>
+      <translation type="unfinished">Elements</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="83"/>
@@ -5826,7 +5827,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="92"/>
       <source>Vertical</source>
-      <translation>세로</translation>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="108"/>
@@ -5836,7 +5837,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="111"/>
       <source>Horizontal</source>
-      <translation>가로</translation>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="124"/>
@@ -5877,7 +5878,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="197"/>
       <source>Rotate</source>
-      <translation>회전하기</translation>
+      <translation type="unfinished">Rotate</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="210"/>
@@ -5897,12 +5898,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="256"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="266"/>
       <source>Color</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="284"/>
@@ -5912,7 +5913,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="304"/>
       <source>Style</source>
-      <translation>스타일</translation>
+      <translation type="unfinished">Style</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="315"/>
@@ -5927,7 +5928,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="333"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="342"/>
@@ -5981,7 +5982,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="109"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="114"/>
@@ -5991,12 +5992,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="119"/>
       <source>Custom</source>
-      <translation>색상 편집</translation>
+      <translation type="unfinished">Custom</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="127"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation type="unfinished">Scale</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="134"/>
@@ -6012,7 +6013,7 @@ Do you want to continue?</source>
       <location filename="../../TaskComplexSection.ui" line="179"/>
       <location filename="../../TaskComplexSection.ui" line="186"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation type="unfinished">Offset</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="191"/>
@@ -6126,12 +6127,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.ui" line="106"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="142"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="158"/>
@@ -6170,7 +6171,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
       <source>View</source>
-      <translation>보기</translation>
+      <translation type="unfinished">View</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
@@ -6188,19 +6189,19 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="88"/>
       <location filename="../../TaskCosmeticLine.ui" line="161"/>
       <source>X:</source>
-      <translation>X:</translation>
+      <translation type="unfinished">X:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="102"/>
       <location filename="../../TaskCosmeticLine.ui" line="175"/>
       <source>Y:</source>
-      <translation>Y:</translation>
+      <translation type="unfinished">Y:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="116"/>
       <location filename="../../TaskCosmeticLine.ui" line="189"/>
       <source>Z:</source>
-      <translation>Z:</translation>
+      <translation type="unfinished">Z:</translation>
     </message>
   </context>
   <context>
@@ -6283,7 +6284,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Symmetry</source>
-      <translation>대칭</translation>
+      <translation type="unfinished">Symmetry</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
@@ -6373,7 +6374,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="428"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation type="unfinished">Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
@@ -6388,7 +6389,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="458"/>
       <source>Square</source>
-      <translation>사각형</translation>
+      <translation type="unfinished">Square</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="470"/>
@@ -6418,7 +6419,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="521"/>
       <source>Other</source>
-      <translation>기타</translation>
+      <translation type="unfinished">Other</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="533"/>
@@ -6433,12 +6434,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
       <source>Counterbore</source>
-      <translation>카운터보어(Counterbore)</translation>
+      <translation type="unfinished">Counterbore</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="563"/>
       <source>Countersink</source>
-      <translation>카운터싱크(Countersink)</translation>
+      <translation type="unfinished">Countersink</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
@@ -6513,7 +6514,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
       <source>Preview:</source>
-      <translation>미리보기:</translation>
+      <translation type="unfinished">Preview:</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="81"/>
@@ -6552,7 +6553,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="114"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="134"/>
@@ -6562,7 +6563,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="153"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="160"/>
@@ -6598,7 +6599,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="216"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
@@ -6608,7 +6609,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="226"/>
       <source>Custom</source>
-      <translation>색상 편집</translation>
+      <translation type="unfinished">Custom</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="234"/>
@@ -6623,7 +6624,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="266"/>
       <source>Reference</source>
-      <translation>참조</translation>
+      <translation type="unfinished">Reference</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="273"/>
@@ -6636,7 +6637,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="14"/>
       <source>Dimension</source>
-      <translation>치수</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
@@ -7080,12 +7081,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="199"/>
       <source>Color</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="212"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation type="unfinished">Line color</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="226"/>
@@ -7095,17 +7096,17 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="242"/>
       <source>Line width</source>
-      <translation>선 두께</translation>
+      <translation type="unfinished">Line width</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="258"/>
       <source>Style</source>
-      <translation>스타일</translation>
+      <translation type="unfinished">Style</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="271"/>
       <source>Line style</source>
-      <translation>선 스타일</translation>
+      <translation type="unfinished">Line style</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
@@ -7125,7 +7126,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="305"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="314"/>
@@ -7203,7 +7204,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="34"/>
       <source>View</source>
-      <translation>보기</translation>
+      <translation type="unfinished">View</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="57"/>
@@ -7213,7 +7214,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="78"/>
       <source>Style</source>
-      <translation>스타일</translation>
+      <translation type="unfinished">Style</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="105"/>
@@ -7228,7 +7229,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="120"/>
@@ -7243,7 +7244,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="133"/>
       <source>Color</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="151"/>
@@ -7263,12 +7264,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
       <source>False</source>
-      <translation>거짓</translation>
+      <translation type="unfinished">False</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="196"/>
       <source>True</source>
-      <translation>참</translation>
+      <translation type="unfinished">True</translation>
     </message>
   </context>
   <context>
@@ -7329,7 +7330,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Projection</source>
-      <translation>투영</translation>
+      <translation type="unfinished">Projection</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
@@ -7339,12 +7340,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="45"/>
       <source>First Angle</source>
-      <translation>첫 번째 각도</translation>
+      <translation type="unfinished">First Angle</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Third Angle</source>
-      <translation>세 번째 각도</translation>
+      <translation type="unfinished">Third Angle</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="55"/>
@@ -7355,7 +7356,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="67"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation type="unfinished">Scale</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="74"/>
@@ -7430,7 +7431,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="390"/>
       <source>Top</source>
-      <translation>평면</translation>
+      <translation type="unfinished">Top</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="407"/>
@@ -7440,7 +7441,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="437"/>
       <source>Left</source>
-      <translation>좌측면</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="457"/>
@@ -7450,12 +7451,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="477"/>
       <source>Right</source>
-      <translation>우측면</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="494"/>
       <source>Rear</source>
-      <translation>배면</translation>
+      <translation type="unfinished">Rear</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="524"/>
@@ -7465,7 +7466,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="544"/>
       <source>Bottom</source>
-      <translation>저면</translation>
+      <translation type="unfinished">Bottom</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="561"/>
@@ -7520,27 +7521,27 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="14"/>
       <source>Project shapes</source>
-      <translation>프로젝트 모양</translation>
+      <translation type="unfinished">Project shapes</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="22"/>
       <source>Visible sharp edges</source>
-      <translation>눈에 보이는 날카로운 모서리</translation>
+      <translation type="unfinished">Visible sharp edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="32"/>
       <source>Visible smooth edges</source>
-      <translation>눈에 보이는 부드러운 가장자리</translation>
+      <translation type="unfinished">Visible smooth edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="42"/>
       <source>Visible sewn edges</source>
-      <translation>눈에 보이는 날카로운 모서리</translation>
+      <translation type="unfinished">Visible sewn edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="52"/>
       <source>Visible outline edges</source>
-      <translation>보이는 윤곽선 가장자리</translation>
+      <translation type="unfinished">Visible outline edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="62"/>
@@ -7550,22 +7551,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.ui" line="72"/>
       <source>Hidden sharp edges</source>
-      <translation>숨겨진 날카로운 모서리</translation>
+      <translation type="unfinished">Hidden sharp edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="79"/>
       <source>Hidden smooth edges</source>
-      <translation>숨겨진 매끄러운 모서리</translation>
+      <translation type="unfinished">Hidden smooth edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="86"/>
       <source>Hidden sewn edges</source>
-      <translation>숨겨진 날카로운 모서리</translation>
+      <translation type="unfinished">Hidden sewn edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="93"/>
       <source>Hidden outline edges</source>
-      <translation>보이는 윤곽선 가장자리</translation>
+      <translation type="unfinished">Hidden outline edges</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.ui" line="100"/>
@@ -7575,22 +7576,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="64"/>
       <source>No active document</source>
-      <translation>활성 문서가 없습니다</translation>
+      <translation type="unfinished">No active document</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="65"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>현재 작업을 완료하기 위한 활성 문서가 없습니다.</translation>
+      <translation type="unfinished">There is currently no active document to complete the operation</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="70"/>
       <source>No active view</source>
-      <translation>활성 보기 없음</translation>
+      <translation type="unfinished">No active view</translation>
     </message>
     <message>
       <location filename="../../TaskProjection.cpp" line="71"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>현재 작업을 완료할 수 있는 활성 보기가 없습니다.</translation>
+      <translation type="unfinished">There is currently no active view to complete the operation</translation>
     </message>
   </context>
   <context>
@@ -7603,7 +7604,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="22"/>
       <source>All</source>
-      <translation>전체</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="39"/>
@@ -7656,32 +7657,32 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="138"/>
       <source>Color</source>
-      <translation>색상</translation>
+      <translation type="unfinished">Color</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="148"/>
       <source>Line color</source>
-      <translation>선 색</translation>
+      <translation type="unfinished">Line color</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="162"/>
       <source>Width</source>
-      <translation>너비</translation>
+      <translation type="unfinished">Width</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="172"/>
       <source>Line width</source>
-      <translation>선 두께</translation>
+      <translation type="unfinished">Line width</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="188"/>
       <source>Style</source>
-      <translation>스타일</translation>
+      <translation type="unfinished">Style</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="198"/>
       <source>Line style</source>
-      <translation>선 스타일</translation>
+      <translation type="unfinished">Line style</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="205"/>
@@ -7701,7 +7702,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="220"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="225"/>
@@ -7754,7 +7755,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="98"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation type="unfinished">Page</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="103"/>
@@ -7764,12 +7765,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="108"/>
       <source>Custom</source>
-      <translation>색상 편집</translation>
+      <translation type="unfinished">Custom</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="116"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation type="unfinished">Scale</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="141"/>
@@ -7839,17 +7840,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="339"/>
       <source>X</source>
-      <translation>X</translation>
+      <translation type="unfinished">X</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="393"/>
       <source>Y</source>
-      <translation>Y</translation>
+      <translation type="unfinished">Y</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="434"/>
       <source>Z</source>
-      <translation>Z</translation>
+      <translation type="unfinished">Z</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="440"/>
@@ -7882,7 +7883,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="44"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation type="unfinished">Solid</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
@@ -7902,7 +7903,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="103"/>
       <source>Line width:</source>
-      <translation>선 굵기:</translation>
+      <translation type="unfinished">Line width:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="110"/>
@@ -7922,17 +7923,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="156"/>
       <source>Line color:</source>
-      <translation>선 색:</translation>
+      <translation type="unfinished">Line color:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="163"/>
       <source>Black</source>
-      <translation>검정색</translation>
+      <translation type="unfinished">Black</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="179"/>
       <source>Blue</source>
-      <translation>파랑색</translation>
+      <translation type="unfinished">Blue</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="192"/>
@@ -7942,27 +7943,27 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="205"/>
       <source>Magenta</source>
-      <translation>진홍색</translation>
+      <translation type="unfinished">Magenta</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="218"/>
       <source>Red</source>
-      <translation>빨간색</translation>
+      <translation type="unfinished">Red</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="231"/>
       <source>Cyan</source>
-      <translation>하늘색</translation>
+      <translation type="unfinished">Cyan</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="244"/>
       <source>Green</source>
-      <translation>초록색</translation>
+      <translation type="unfinished">Green</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="257"/>
       <source>Yellow</source>
-      <translation>노랑색</translation>
+      <translation type="unfinished">Yellow</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="283"/>
@@ -8162,7 +8163,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
-      <translation>텍스트 라벨</translation>
+      <translation type="unfinished">TextLabel</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="42"/>
@@ -8300,7 +8301,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Dimensions</source>
-      <translation>면적</translation>
+      <translation type="unfinished">Dimensions</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -8321,7 +8322,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Annotations</source>
-      <translation>주석</translation>
+      <translation type="unfinished">Annotations</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -8512,12 +8513,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
       <source>Dimension</source>
-      <translation>치수</translation>
+      <translation type="unfinished">Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="28"/>
       <source>Name</source>
-      <translation>이름</translation>
+      <translation type="unfinished">Name</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="35"/>
@@ -8681,12 +8682,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
       <source>Tick</source>
-      <translation>두꺼움</translation>
+      <translation type="unfinished">Tick</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>
       <source>Dot</source>
-      <translation>점</translation>
+      <translation type="unfinished">Dot</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
@@ -8706,7 +8707,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="39"/>
       <source>None</source>
-      <translation>없음</translation>
+      <translation type="unfinished">None</translation>
     </message>
   </context>
   <context>
@@ -8714,32 +8715,32 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="44"/>
       <source>Front</source>
-      <translation>정면</translation>
+      <translation type="unfinished">Front</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="45"/>
       <source>Left</source>
-      <translation>좌측면</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="46"/>
       <source>Right</source>
-      <translation>우측면</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="47"/>
       <source>Rear</source>
-      <translation>배면</translation>
+      <translation type="unfinished">Rear</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="48"/>
       <source>Top</source>
-      <translation>평면</translation>
+      <translation type="unfinished">Top</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="49"/>
       <source>Bottom</source>
-      <translation>저면</translation>
+      <translation type="unfinished">Bottom</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="50"/>
@@ -8765,14 +8766,14 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TaskBalloon</name>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="183"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
       <translation type="unfinished">You cannot delete this balloon now because
 there is an open task dialog.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="186"/>
       <source>Can Not Delete</source>
       <translation type="unfinished">Can Not Delete</translation>
     </message>

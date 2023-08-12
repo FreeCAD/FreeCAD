@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="39"/>
       <source>Start</source>
-      <translation>Başla</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="40"/>
@@ -116,7 +116,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../DlgStartPreferences.ui" line="243"/>
       <source>Background color</source>
-      <translation>Arka plan rengi</translation>
+      <translation type="unfinished">Background color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="256"/>
@@ -196,7 +196,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../DlgStartPreferences.ui" line="500"/>
       <source>Font family</source>
-      <translation>Yazı tipi</translation>
+      <translation type="unfinished">Font family</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>
@@ -216,7 +216,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../DlgStartPreferences.ui" line="531"/>
       <source>px</source>
-      <translation>px</translation>
+      <translation type="unfinished">px</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="552"/>
@@ -246,7 +246,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>Options</source>
-      <translation>Seçenekler</translation>
+      <translation type="unfinished">Options</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -293,7 +293,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="38"/>
       <source>Start</source>
-      <translation>Başla</translation>
+      <translation type="unfinished">Start</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="39"/>
@@ -303,7 +303,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Help</source>
-      <translation>Yardım</translation>
+      <translation type="unfinished">Help</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -313,7 +313,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Son dosyalar</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
@@ -506,7 +506,7 @@ Yolları ayırmak için ";;" (çift noktalı virgül) kullanarak birden fazla di
     <message>
       <location filename="../../AppStartGui.cpp" line="103"/>
       <source>Start</source>
-      <translation>Başla</translation>
+      <translation type="unfinished">Start</translation>
     </message>
   </context>
 </TS>

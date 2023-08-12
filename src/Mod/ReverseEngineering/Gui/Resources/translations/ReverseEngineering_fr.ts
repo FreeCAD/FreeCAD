@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
-      <translation>Cylindre</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>Sphère</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="485"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="550"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="551"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
-      <translation>Segmenter le maillage</translation>
+      <translation type="unfinished">Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="584"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="585"/>
@@ -228,12 +228,12 @@
       <translation>Afficher la triangulation</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
-      <translation>Placement</translation>
+      <translation type="unfinished">Placement</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Ajuster la B-spline</translation>
     </message>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation>Lissage</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
-      <translation>Erreur de saisie</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Veuillez sélectionner l'emplacement d'un seul objet pour obtenir l'orientation locale.</translation>
     </message>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="98"/>
       <source>Input error</source>
-      <translation>Erreur de saisie</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -412,17 +412,17 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentation du maillage</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Lissage du maillage</translation>
+      <translation type="unfinished">Smooth mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>Nombre minimum de faces</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -460,47 +460,47 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation>Sélectionner</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Region</source>
-      <translation>Région</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation>Tout</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
       <source>Components</source>
-      <translation>Composants</translation>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>des faces &lt; à</translation>
+      <translation type="unfinished">&lt; faces than</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation>Choisir un triangle</translation>
+      <translation type="unfinished">Pick triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>Sélectionner le composant entier</translation>
+      <translation type="unfinished">Select whole component</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
@@ -514,39 +514,39 @@
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>Tolérance</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Nombre minimum de faces</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Cylindre</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Sphère</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>Options de région</translation>
+      <translation type="unfinished">Region options</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecter uniquement les triangles visibles</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecter seulement les triangles dont les normales font face à écran</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -569,7 +569,7 @@
     <message>
       <location filename="../../SegmentationManual.cpp" line="333"/>
       <source>Create</source>
-      <translation>Créer</translation>
+      <translation type="unfinished">Create</translation>
     </message>
   </context>
   <context>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Rétro-ingénierie</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
   </context>
 </TS>

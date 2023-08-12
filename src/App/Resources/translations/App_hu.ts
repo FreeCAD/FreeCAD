@@ -16,7 +16,7 @@ amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Névtelen</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Kezdőpont</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

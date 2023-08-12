@@ -200,28 +200,28 @@
       <location filename="../../OpenSCADCommands.py" line="334"/>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Add</source>
-      <translation>Ajouter</translation>
+      <translation type="unfinished">Add</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Load</source>
-      <translation>Charger</translation>
+      <translation type="unfinished">Load</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Save</source>
-      <translation>Enregistrer</translation>
+      <translation type="unfinished">Save</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Refresh</source>
-      <translation>Rafraîchir</translation>
+      <translation type="unfinished">Refresh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Open...</source>
-      <translation>Ouvrir...</translation>
+      <translation type="unfinished">Open...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
@@ -303,7 +303,7 @@
       <location filename="../../importCSG.py" line="550"/>
       <location filename="../../importCSG.py" line="1432"/>
       <source>Press OK</source>
-      <translation>Appuyez sur OK</translation>
+      <translation type="unfinished">Press OK</translation>
     </message>
   </context>
   <context>
@@ -475,7 +475,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="566"/>
       <source>Hull</source>
-      <translation>Enveloppe</translation>
+      <translation type="unfinished">Hull</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>
@@ -501,7 +501,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="586"/>
       <source>Minkowski sum</source>
-      <translation>Somme de Minkowski</translation>
+      <translation type="unfinished">Minkowski sum</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="589"/>

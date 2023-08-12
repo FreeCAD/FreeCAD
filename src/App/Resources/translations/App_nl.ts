@@ -16,7 +16,7 @@ die verwijzen naar hetzelfde configureerbare object</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Naamloos</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ die verwijzen naar hetzelfde configureerbare object</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Oorsprong</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

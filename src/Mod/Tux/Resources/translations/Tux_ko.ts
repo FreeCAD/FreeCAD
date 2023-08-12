@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
-      <translation>선택</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
       <source>Orbit style</source>
-      <translation>궤도 스타일</translation>
+      <translation type="unfinished">Orbit style</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>턴테이블</translation>
+      <translation type="unfinished">Turntable</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
-      <translation>트랙볼</translation>
+      <translation type="unfinished">Trackball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="338"/>

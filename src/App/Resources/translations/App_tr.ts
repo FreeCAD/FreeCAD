@@ -16,7 +16,7 @@ uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Adsız</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Orijin</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

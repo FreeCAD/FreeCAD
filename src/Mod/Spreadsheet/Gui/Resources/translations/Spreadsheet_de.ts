@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="285"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="545"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="818"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="671"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="745"/>
@@ -284,12 +284,12 @@
     <message>
       <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
-      <translation>Zellen verbinden</translation>
+      <translation type="unfinished">Merge cells</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Split cell</source>
-      <translation>Zelle teilen</translation>
+      <translation type="unfinished">Split cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -347,7 +347,7 @@
       <translation>Zelleneigenschaften festlegen</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Zelle bearbeiten</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Zelle(n) löschen</translation>
     </message>
@@ -473,12 +473,12 @@ Nützlich, um Zirkelabhängigkeiten zu vermeiden, aber mit Vorsicht verwenden!</
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation>Abbrechen</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
   </context>
   <context>
@@ -562,12 +562,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation>Abbrechen</translation>
+      <translation type="unfinished">Cancel</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
       <source>OK</source>
-      <translation>OK</translation>
+      <translation type="unfinished">OK</translation>
     </message>
   </context>
   <context>
@@ -585,7 +585,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="33"/>
       <source>Text</source>
-      <translation>Text</translation>
+      <translation type="unfinished">Text</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="43"/>
@@ -605,7 +605,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Seitenansicht von links</translation>
+      <translation type="unfinished">Left</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -616,7 +616,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Seitenansicht von rechts</translation>
+      <translation type="unfinished">Right</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -626,12 +626,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Draufsicht</translation>
+      <translation type="unfinished">Top</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>Untersicht</translation>
+      <translation type="unfinished">Bottom</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -685,12 +685,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
-      <translation>Importiere Datei</translation>
+      <translation type="unfinished">Import file</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
-      <translation>Exportiere Datei</translation>
+      <translation type="unfinished">Export file</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
@@ -725,12 +725,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Kopieren &amp; Einfügen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias enthält ungültige Zeichen!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Zellbezug mit Alias, zum Beispiel
@@ -739,7 +739,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -749,13 +749,13 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
       <location filename="../../qtcolorpicker.cpp" line="412"/>
       <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
-      <translation>Schwarz</translation>
+      <translation type="unfinished">Black</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="413"/>
       <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
-      <translation>Weiß</translation>
+      <translation type="unfinished">White</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="414"/>
@@ -850,7 +850,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation>Benutzerdefinierte Farbe</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -858,7 +858,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation type="unfinished">Form</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
@@ -874,8 +874,8 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Zellbezug mit Alias, zum Beispiel
-Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -897,7 +897,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Tabellenzellen binden</translation>
+      <translation type="unfinished">Bind Spreadsheet Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -917,7 +917,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation type="unfinished">Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1095,7 +1095,7 @@ Standard: %V = %A
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
-      <translation>Zellen verbinden</translation>
+      <translation type="unfinished">Merge cells</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
@@ -1107,38 +1107,38 @@ Standard: %V = %A
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Differenz</translation>
+      <translation type="unfinished">Cut</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
       <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
-      <translation>Kopieren</translation>
+      <translation type="unfinished">Copy</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Paste</source>
-      <translation>Einfügen</translation>
+      <translation type="unfinished">Paste</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
       <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Delete</source>
-      <translation>Löschen</translation>
+      <translation type="unfinished">Delete</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
-      <translation>PDF exportieren</translation>
+      <translation type="unfinished">Export PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
-      <translation>PDF-Datei</translation>
+      <translation type="unfinished">PDF file</translation>
     </message>
   </context>
   <context>
@@ -1156,7 +1156,7 @@ Standard: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Ausrichtung</translation>
+      <translation type="unfinished">&amp;Alignment</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1169,7 +1169,7 @@ Standard: %V = %A
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
-      <translation>Unbenannt</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
 </TS>

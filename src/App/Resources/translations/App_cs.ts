@@ -16,7 +16,7 @@ které odkazují na stejný konfigurovatelný objekt</translation>
     <message>
       <location filename="../../Application.cpp" line="441"/>
       <source>Unnamed</source>
-      <translation>Nepojmenovaný</translation>
+      <translation type="unfinished">Unnamed</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@ které odkazují na stejný konfigurovatelný objekt</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="134"/>
       <source>Origin</source>
-      <translation>Počátek</translation>
+      <translation type="unfinished">Origin</translation>
     </message>
   </context>
 </TS>

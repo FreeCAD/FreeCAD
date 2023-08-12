@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
-      <translation>ცილინდრი</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>სფერო</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="485"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="550"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="551"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
-      <translation>მრავალკუთხა ბადის სეგმენების შექმნა</translation>
+      <translation type="unfinished">Create mesh segments</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="584"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="585"/>
@@ -228,12 +228,12 @@
       <translation>ტრიანგულაციის ნახვა</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
-      <translation>მდებარეობა</translation>
+      <translation type="unfinished">Placement</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>B-სპლაინის მოთავსება</translation>
     </message>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation>მოგლუვება</translation>
+      <translation type="unfinished">Smoothing</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
-      <translation>არასწორი არჩევანი</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>გთხოვთ, აირჩიოთ ერთი განლაგების ობიექტი ლოკალური ორიენტაციის მისაღებად.</translation>
     </message>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>არასწორი არჩევანი</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -412,17 +412,17 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+      <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>მრავალკუთხა ბადის მოგლუვება</translation>
+      <translation type="unfinished">Smooth mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>ზედაპირების მინიმალური რაოდენობა</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -460,47 +460,47 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation type="unfinished">Select</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Region</source>
-      <translation>რეგიონი</translation>
+      <translation type="unfinished">Region</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation>ყველა</translation>
+      <translation type="unfinished">All</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
       <source>Components</source>
-      <translation>კომპონენტები</translation>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; ზედაპირი, ვიდრე</translation>
+      <translation type="unfinished">&lt; faces than</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation>აირჩიეთ სამკუთხედი</translation>
+      <translation type="unfinished">Pick triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>მთლიანი კომპონენტის მონიშვნა</translation>
+      <translation type="unfinished">Select whole component</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
       <source>Clear</source>
-      <translation>გასუფთავება</translation>
+      <translation type="unfinished">Clear</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation type="unfinished">Plane</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
@@ -514,39 +514,39 @@
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation type="unfinished">Tolerance</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>ზედაპირების მინიმალური რაოდენობა</translation>
+      <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>ცილინდრი</translation>
+      <translation type="unfinished">Cylinder</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>სფერო</translation>
+      <translation type="unfinished">Sphere</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>რეგიონის პარამეტრები</translation>
+      <translation type="unfinished">Region options</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>ყურადღების მხოლოდ ხილულ სამკუთხედებზე მიქცევა</translation>
+      <translation type="unfinished">Respect only visible triangles</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>ყურადღების მხოლოდ ეკრანისკენ მოშვერილი ნორმალიანი სამკუთხედებისთვის მიქცევა</translation>
+      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -569,7 +569,7 @@
     <message>
       <location filename="../../SegmentationManual.cpp" line="333"/>
       <source>Create</source>
-      <translation>შექმნა</translation>
+      <translation type="unfinished">Create</translation>
     </message>
   </context>
   <context>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>საინჟინრო ანალიზი</translation>
+      <translation type="unfinished">Reverse Engineering</translation>
     </message>
   </context>
 </TS>

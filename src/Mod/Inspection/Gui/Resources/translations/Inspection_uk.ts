@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Візуальний огляд</translation>
+      <translation type="unfinished">Visual Inspection</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -62,7 +62,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation>Об'єкти</translation>
+      <translation type="unfinished">Objects</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation>Параметр</translation>
+      <translation type="unfinished">Parameter</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
@@ -83,12 +83,12 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation> мм</translation>
+      <translation type="unfinished"> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation>Товщина</translation>
+      <translation type="unfinished">Thickness</translation>
     </message>
   </context>
   <context>
@@ -106,12 +106,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Annotation</source>
-      <translation>Анотація</translation>
+      <translation type="unfinished">Annotation</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Leave info mode</source>
-      <translation>Вийти з інформаційного режиму</translation>
+      <translation type="unfinished">Leave info mode</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="632"/>
