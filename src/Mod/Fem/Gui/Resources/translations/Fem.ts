@@ -350,7 +350,7 @@
     </message>
     <message>
         <location filename="../../Command.cpp" line="1702"/>
-        <source>Define/create a clip filter which uses functions to define the cliped region</source>
+        <source>Define/create a clip filter which uses functions to define the clipped region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -694,7 +694,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemPostFunction.cpp" line="280"/>
+        <location filename="../../ViewProviderFemPostFunction.cpp" line="282"/>
         <source>Edit Mirror</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3547,24 +3547,24 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-        <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
+        <location filename="../../ViewProviderFemPostFunction.cpp" line="321"/>
         <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
         <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="811"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-        <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+        <location filename="../../ViewProviderFemPostFunction.cpp" line="322"/>
         <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
         <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="812"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
@@ -3697,7 +3697,7 @@ Note: for 2D only setting for x is possible,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAnalysis.cpp" line="308"/>
+        <location filename="../../ViewProviderAnalysis.cpp" line="310"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4037,7 +4037,7 @@ For possible variables, see the description box below.</source>
 <context>
     <name>Std_Delete</name>
     <message>
-        <location filename="../../ViewProviderAnalysis.cpp" line="311"/>
+        <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>

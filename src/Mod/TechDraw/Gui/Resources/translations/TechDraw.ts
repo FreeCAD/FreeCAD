@@ -2014,7 +2014,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="728"/>
+        <location filename="../../MDIViewPage.cpp" line="734"/>
         <location filename="../../Command.cpp" line="1620"/>
         <source>Save page to dxf</source>
         <translation type="unfinished"></translation>
@@ -3370,50 +3370,50 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="280"/>
+        <location filename="../../MDIViewPage.cpp" line="282"/>
         <source>PDF (*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="281"/>
-        <location filename="../../MDIViewPage.cpp" line="687"/>
+        <location filename="../../MDIViewPage.cpp" line="283"/>
+        <location filename="../../MDIViewPage.cpp" line="693"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="283"/>
+        <location filename="../../MDIViewPage.cpp" line="285"/>
         <source>Export Page As PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="578"/>
+        <location filename="../../MDIViewPage.cpp" line="584"/>
         <source>Document Name: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="686"/>
+        <location filename="../../MDIViewPage.cpp" line="692"/>
         <source>SVG (*.svg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="689"/>
+        <location filename="../../MDIViewPage.cpp" line="695"/>
         <source>Export page as SVG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="212"/>
+        <location filename="../../ViewProviderPage.cpp" line="214"/>
         <location filename="../../ViewProviderTemplate.cpp" line="201"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="233"/>
+        <location filename="../../ViewProviderPage.cpp" line="235"/>
         <source>Show drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="235"/>
+        <location filename="../../ViewProviderPage.cpp" line="237"/>
         <source>Toggle KeepUpdated</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3440,7 +3440,7 @@
     <message>
         <location filename="../../TaskRichAnno.cpp" line="102"/>
         <location filename="../../TaskRichAnno.cpp" line="240"/>
-        <location filename="../../QGIRichAnno.cpp" line="278"/>
+        <location filename="../../QGIRichAnno.cpp" line="323"/>
         <source>Rich text editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3838,7 +3838,7 @@ it has a weld symbol that would become broken.</source>
         <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
         <location filename="../../ViewProviderLeader.cpp" line="226"/>
         <location filename="../../ViewProviderWeld.cpp" line="145"/>
-        <location filename="../../ViewProviderPage.cpp" line="215"/>
+        <location filename="../../ViewProviderPage.cpp" line="217"/>
         <location filename="../../ViewProviderTemplate.cpp" line="205"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
         <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
@@ -3866,7 +3866,7 @@ it has a weld symbol that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="206"/>
+        <location filename="../../ViewProviderPage.cpp" line="208"/>
         <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
@@ -5529,49 +5529,49 @@ Fast, but result is a collection of short straight lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="391"/>
+        <location filename="../../MDIViewPage.cpp" line="395"/>
         <source>Different orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="392"/>
+        <location filename="../../MDIViewPage.cpp" line="396"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="401"/>
+        <location filename="../../MDIViewPage.cpp" line="405"/>
         <source>Different paper size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="402"/>
+        <location filename="../../MDIViewPage.cpp" line="406"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="415"/>
+        <location filename="../../MDIViewPage.cpp" line="419"/>
         <source>Opening file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="416"/>
+        <location filename="../../MDIViewPage.cpp" line="420"/>
         <source>Can not open file %1 for writing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="713"/>
+        <location filename="../../MDIViewPage.cpp" line="719"/>
         <source>Save DXF file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="714"/>
+        <location filename="../../MDIViewPage.cpp" line="720"/>
         <source>DXF (*.dxf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MDIViewPage.cpp" line="1222"/>
+        <location filename="../../MDIViewPage.cpp" line="1228"/>
         <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8704,13 +8704,13 @@ using the given X/Y Spacing</source>
 <context>
     <name>TaskBalloon</name>
     <message>
-        <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+        <location filename="../../ViewProviderBalloon.cpp" line="183"/>
         <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+        <location filename="../../ViewProviderBalloon.cpp" line="186"/>
         <source>Can Not Delete</source>
         <translation type="unfinished"></translation>
     </message>
