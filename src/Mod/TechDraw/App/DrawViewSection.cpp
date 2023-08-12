@@ -297,7 +297,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
 
 TopoDS_Shape DrawViewSection::getShapeForDetail() const
 {
-    return TechDraw::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
 }
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
@@ -476,18 +476,18 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         Base::Vector3d origin(0.0, 0.0, 0.0);
         m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
-        inputCenter = TechDraw::findCentroid(rawShape, m_projectionCS);
+        inputCenter = ShapeUtils::findCentroid(rawShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
-        preparedShape = TechDraw::moveShape(rawShape, centroid * -1.0);
+        preparedShape = ShapeUtils::moveShape(rawShape, centroid * -1.0);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
-        preparedShape = TechDraw::scaleShape(preparedShape, getScale());
+        preparedShape = ShapeUtils::scaleShape(preparedShape, getScale());
 
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             preparedShape =
-                TechDraw::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
+                ShapeUtils::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
         }
         if (debugSection()) {
             BRepTools::Write(m_cutShape, "DVSCutShape.brep");//debug
@@ -564,12 +564,12 @@ void DrawViewSection::postHlrTasks(void)
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");//debug
     }
 
-    TopoDS_Shape centeredFaces = TechDraw::moveShape(faceIntersections, m_saveCentroid * -1.0);
+    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
 
-    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredFaces, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            TechDraw::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
@@ -662,12 +662,12 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersection
 //                            faceIntersections.IsNull());
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
-        TechDraw::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
+        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
 
-    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShape, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            TechDraw::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     return mapToPage(scaledSection);

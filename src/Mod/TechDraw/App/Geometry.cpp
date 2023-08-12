@@ -424,7 +424,7 @@ bool BaseGeom::closed()
 BaseGeomPtr BaseGeom::inverted()
 {
     Base::Console().Message("BG::inverted()\n");
-    TopoDS_Shape invertedShape = GeometryObject::invertGeometry(occEdge);
+    TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
     TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
     return baseFactory(invertedEdge);
 }
@@ -713,7 +713,7 @@ void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
 TopoShape BaseGeom::asTopoShape(double scale)
 {
 //    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
-    TopoDS_Shape unscaledShape = TechDraw::scaleShape(getOCCEdge(), 1.0 / scale);
+    TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
 }
