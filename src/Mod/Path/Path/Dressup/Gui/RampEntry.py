@@ -203,7 +203,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
 
-        if not obj.Base.Active:
+        if hasattr(obj.Base, 'Active') and not obj.Base.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             return
