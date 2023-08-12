@@ -77,7 +77,7 @@
 #include "GeometryObject.h"
 #include "ShapeExtractor.h"
 #include "Preferences.h"
-
+#include "ShapeUtils.h"
 
 using namespace TechDraw;
 using DU = DrawUtil;
@@ -175,7 +175,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
 // version of the shape?  Should we have a getShapeForSection?
 TopoDS_Shape DrawViewPart::getShapeForDetail() const
 {
-    return TechDraw::rotateShape(getSourceShape(true), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(getSourceShape(true), getProjectionCS(), Rotation.getValue());
 }
 
 // combine the regular links and xlinks into a single list
@@ -211,11 +211,11 @@ void DrawViewPart::addShapes2d(void)
         else if (s.ShapeType() == TopAbs_EDGE) {
             //not supporting edges yet.  Why?
             //Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
-            TopoDS_Shape sTrans = TechDraw::moveShape(s,
+            TopoDS_Shape sTrans = ShapeUtils::moveShape(s,
                                                       m_saveCentroid * -1.0);
-            TopoDS_Shape sScale = TechDraw::scaleShape(sTrans,
+            TopoDS_Shape sScale = ShapeUtils::scaleShape(sTrans,
                                                        getScale());
-            TopoDS_Shape sMirror = TechDraw::mirrorShape(sScale);
+            TopoDS_Shape sMirror = ShapeUtils::mirrorShape(sScale);
             TopoDS_Edge edge = TopoDS::Edge(sMirror);
             BaseGeomPtr bg = projectEdge(edge);
 
@@ -313,7 +313,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
     BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
     TopoDS_Shape localShape = copier.Shape();
 
-    gp_Pnt gCentroid = TechDraw::findCentroid(localShape, getProjectionCS());
+    gp_Pnt gCentroid = ShapeUtils::findCentroid(localShape, getProjectionCS());
     m_saveCentroid = DU::toVector3d(gCentroid);
     m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
 
@@ -328,11 +328,11 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& in
     gp_Ax2 viewAxis = dvp->getProjectionCS();
 
     //center shape on origin
-    TopoDS_Shape centeredShape = TechDraw::moveShape(inOutShape, centroid * -1.0);
+    TopoDS_Shape centeredShape = ShapeUtils::moveShape(inOutShape, centroid * -1.0);
 
-    inOutShape = TechDraw::scaleShape(centeredShape, dvp->getScale());
+    inOutShape = ShapeUtils::scaleShape(centeredShape, dvp->getScale());
     if (!DrawUtil::fpCompare(dvp->Rotation.getValue(), 0.0)) {
-        inOutShape = TechDraw::rotateShape(inOutShape, viewAxis,
+        inOutShape = ShapeUtils::rotateShape(inOutShape, viewAxis,
                                            dvp->Rotation.getValue());//conventional rotation
     }
     //    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
@@ -993,7 +993,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     if (getEdgeCompound().IsNull()) {
         return 1.0;
     }
-    TopoDS_Shape rotatedShape = rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / M_PI);
+    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / M_PI);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
     BRepBndLib::AddOptimal(rotatedShape, shapeBox);
@@ -1145,7 +1145,7 @@ Base::Vector3d DrawViewPart::getCurrentCentroid() const
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
     gp_Ax2 cs = getProjectionCS();
-    gp_Pnt gCenter = TechDraw::findCentroid(shape, cs);
+    gp_Pnt gCenter = ShapeUtils::findCentroid(shape, cs);
     return DU::toVector3d(gCenter);
 }
 
@@ -1287,7 +1287,7 @@ Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Ve
                                         const bool flip) const
 {
     //    Base::Console().Message("DVP::getLegacyX() - %s\n", Label.getValue());
-    gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(pt, axis, flip);
+    gp_Ax2 viewAxis = ShapeUtils::legacyViewAxis1(pt, axis, flip);
     gp_Dir gXDir = viewAxis.XDirection();
     return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
 }

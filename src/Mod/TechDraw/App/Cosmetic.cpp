@@ -182,7 +182,7 @@ TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vecto
 TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(double scale)
 {
     TopoDS_Edge e = m_geometry->getOCCEdge();
-    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+    TopoDS_Shape s = ShapeUtils::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
     newGeom->setClassOfEdge(ecHARD);

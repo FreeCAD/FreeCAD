@@ -546,7 +546,7 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool inv
         builder.Add(compOut, v);
     }
     if (invert) {
-        return TechDraw::mirrorShape(compOut);
+        return ShapeUtils::mirrorShape(compOut);
     }
     return compOut;
 }
@@ -561,7 +561,7 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn, bool inv
         builder.Add(compOut, v);
     }
     if (invert) {
-        return TechDraw::mirrorShape(compOut);
+        return ShapeUtils::mirrorShape(compOut);
     }
     return compOut;
 }

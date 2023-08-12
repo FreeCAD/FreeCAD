@@ -215,13 +215,13 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
     m_saveDvp = dvp;
     m_saveDvs = dvs;
 
-    gp_Pnt gpCenter = TechDraw::findCentroid(copyShape, dirDetail);
+    gp_Pnt gpCenter = ShapeUtils::findCentroid(copyShape, dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(), gpCenter.Y(), gpCenter.Z());
     m_saveCentroid = shapeCenter;//centroid of original shape
 
     if (!dvs) {
         //section cutShape should already be on origin
-        copyShape = TechDraw::moveShape(copyShape,//centre shape on origin
+        copyShape = ShapeUtils::moveShape(copyShape,//centre shape on origin
                                         -shapeCenter);
     }
 
@@ -344,14 +344,14 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
     gp_Pnt inputCenter;
     try {
         //centroid of result
-        inputCenter = TechDraw::findCentroid(pieces, dirDetail);
+        inputCenter = ShapeUtils::findCentroid(pieces, dirDetail);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
         m_saveCentroid += centroid;//center of massaged shape
 
         if ((solidCount > 0) || (shellCount > 0)) {
             //align shape with detail anchor
-            TopoDS_Shape centeredShape = TechDraw::moveShape(pieces, anchor * -1.0);
-            m_scaledShape = TechDraw::scaleShape(centeredShape, getScale());
+            TopoDS_Shape centeredShape = ShapeUtils::moveShape(pieces, anchor * -1.0);
+            m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
             if (debugDetail()) {
                 BRepTools::Write(m_scaledShape, "DVDScaled.brep");//debug
             }
@@ -359,19 +359,19 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
         else {
             //no solids, no shells, do what you can with edges
             TopoDS_Shape projectedEdges = projectEdgesOntoFace(copyShape, extrusionFace, gdir);
-            TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges, anchor * -1.0);
+            TopoDS_Shape centeredShape = ShapeUtils::moveShape(projectedEdges, anchor * -1.0);
             if (debugDetail()) {
                 BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");//debug
                 BRepTools::Write(centeredShape, "DVDCenteredShape.brep");  //debug
             }
-            m_scaledShape = TechDraw::scaleShape(centeredShape, getScale());
+            m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
         }
 
         Base::Vector3d stdOrg(0.0, 0.0, 0.0);
         m_viewAxis = dvp->getProjectionCS(stdOrg);
 
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-            m_scaledShape = TechDraw::rotateShape(m_scaledShape, m_viewAxis, Rotation.getValue());
+            m_scaledShape = ShapeUtils::rotateShape(m_scaledShape, m_viewAxis, Rotation.getValue());
         }
     }//end try block
 
