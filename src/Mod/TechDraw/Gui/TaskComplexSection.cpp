@@ -556,7 +556,9 @@ void TaskComplexSection::createComplexSection()
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ComplexSection"));
     if (!m_section) {
-        m_sectionName = m_page->getDocument()->getUniqueObjectName("ComplexSection");
+        const std::string objectName{QT_TR_NOOP("ComplexSection")};
+        std::string imageName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());
+        std::string generatedSuffix {imageName.substr(objectName.length())};
         std::string sectionType = "TechDraw::DrawComplexSection";
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
@@ -625,6 +627,9 @@ void TaskComplexSection::createComplexSection()
         double rotation = requiredRotation(viewDirectionAngle);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+
+        std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+        newObj->Label.setValue(translatedObjectName + generatedSuffix);
     }
     Gui::Command::commitCommand();
 }

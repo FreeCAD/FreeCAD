@@ -195,9 +195,12 @@ void TaskHatch::createHatch()
 {
 //    Base::Console().Message("TH::createHatch()\n");
     App::Document* doc = m_dvp->getDocument();
-    std::string FeatName = doc->getUniqueObjectName("Hatch");
+    const std::string objectName{QT_TR_NOOP("Hatch")};
+    std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {FeatName.substr(objectName.length())};
+    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
     std::stringstream featLabel;
-    featLabel << FeatName << "F" <<
+    featLabel << translatedObjectName << generatedSuffix << "F" <<
                     TechDraw::DrawUtil::getIndexFromName(m_subs.at(0)); //use 1st face# for label
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));

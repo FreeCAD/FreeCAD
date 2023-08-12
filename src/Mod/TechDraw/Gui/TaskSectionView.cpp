@@ -500,7 +500,9 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (!m_section) {
-        m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
+        const std::string objectName{QT_TR_NOOP("SectionView")};
+        std::string m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
+        std::string generatedSuffix {m_sectionName.substr(objectName.length())};
         std::string sectionType = "TechDraw::DrawViewSection";
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
@@ -545,6 +547,9 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         double rotation = requiredRotation(viewDirectionAngle);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+
+        std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+        newObj->Label.setValue(translatedObjectName + generatedSuffix);
     }
     Gui::Command::commitCommand();
     return m_section;
