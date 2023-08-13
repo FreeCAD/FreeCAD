@@ -82,7 +82,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     start_point = 1
     end_point = 2
     middle_point = 3
-    deletable = None
 
     if App.GuiUp:
         v_dir = gui_utils.get_3d_view().getViewDirection()
@@ -153,9 +152,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         nobj = addTo
     else:
         nobj = App.ActiveDocument.addObject("Sketcher::SketchObject", name)
-        deletable = nobj
-        if App.GuiUp:
-            nobj.ViewObject.Autoconstraints = False
 
     # Collect constraints and add in one go to improve performance
     constraints = []
