@@ -1081,7 +1081,7 @@ Restart:
                                 static_cast<const Part::GeomCircle*>(geo1);
                             const Part::GeomCircle* circle2 =
                                 static_cast<const Part::GeomCircle*>(geo2);
-                            // tangency between two cicles
+                            // tangency between two circles
                             Base::Vector3d dir =
                                 (circle2->getCenter() - circle1->getCenter()).Normalize();
                             pos = circle1->getCenter() + dir * circle1->getRadius();
