@@ -84,6 +84,29 @@ class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
 
+namespace {
+    // This function creates a document object that has a unique name based exactly on the provided baseName, but also
+    // has a label that is a translated version of that base name. For example, the internal name of an object might be
+    // "Page001", and the label produced for a Spanish-speaker "Pagina001". The internal name is still Page001, and the
+    // label is stored and is editable, but the default is a sensible default for the selected language.
+
+    // The translation context used is "DefaultObjectName" (literally, type that in exactly), so you should
+    // call this with baseName set to QT_TRANSLATE_NOOP("DefaultObjectName", "XXX") where XXX is a name you choose
+    App::DocumentObject *
+    addObjectWithTranslatedLabel(Gui::Command *command, const std::string &type, const std::string &baseName) {
+        std::string uniqueName = command->getUniqueObjectName(baseName.c_str()); // Adds a numeric suffix, e.g. Part001
+        std::string suffix{uniqueName.substr(baseName.length())};
+        std::string translatedName{qApp->translate("DefaultObjectName", baseName.c_str()).toStdString() + suffix};
+        command->doCommand(command->Doc,
+                           "App.activeDocument().addObject('%s', '%s')",
+                           type.c_str(),
+                           uniqueName.c_str());
+        auto object = command->getDocument()->getObject(uniqueName.c_str());
+        object->Label.setValue(translatedName);
+        return object;
+    }
+}
+
 //===========================================================================
 // TechDraw_PageDefault
 //===========================================================================
@@ -107,27 +130,24 @@ void CmdTechDrawPageDefault::activated(int iMsg)
 
     QString templateFileName = Preferences::defaultTemplate();
 
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
+        auto pageObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawPage",
+                                                       QT_TRANSLATE_NOOP("DefaultObjectName", "Page"));
+        auto templateObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawSVGTemplate",
+                                                           QT_TRANSLATE_NOOP("DefaultObjectName", "Template"));
 
-        doCommand(Doc, "App.activeDocument().%s.Template = '%s'", TemplateName.c_str(),
+        doCommand(Doc, "App.activeDocument().%s.Template = '%s'", templateObject->getNameInDocument(),
                   templateFileName.toStdString().c_str());
         doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
+                  pageObject->getNameInDocument(), templateObject->getNameInDocument());
 
         updateActive();
         commitCommand();
         TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
+            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(pageObject->getNameInDocument()));
         if (!fp) {
             throw Base::TypeError("CmdTechDrawPageDefault fp not found\n");
         }
@@ -170,55 +190,48 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString work_dir = Gui::FileDialog::getWorkingDirectory();
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a Template File")), templateDir,
-        QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
+            Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a Template File")), templateDir,
+            QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
         return;
     }
 
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
-
-        // Create the Template Object to attach to the page
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
+        auto pageObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawPage",
+                                                       QT_TRANSLATE_NOOP("DefaultObjectName", "Page"));
+        auto templateObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawSVGTemplate",
+                                                           QT_TRANSLATE_NOOP("DefaultObjectName", "Template"));
 
         //why is "Template" property set twice? -wf
         // once to set DrawSVGTemplate.Template to OS template file name
         templateFileName = Base::Tools::escapeEncodeFilename(templateFileName);
-        doCommand(Doc, "App.activeDocument().%s.Template = \"%s\"", TemplateName.c_str(),
+        doCommand(Doc, "App.activeDocument().%s.Template = \"%s\"", templateObject->getNameInDocument(),
                   templateFileName.toUtf8().constData());
         // once to set Page.Template to DrawSVGTemplate.Name
         doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
+                  pageObject->getNameInDocument(), templateObject->getNameInDocument());
         // consider renaming DrawSVGTemplate.Template property?
 
         updateActive();
         commitCommand();
-        TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
+        TechDraw::DrawPage *fp = dynamic_cast<TechDraw::DrawPage *>(pageObject);
         if (!fp) {
             throw Base::TypeError("CmdTechDrawNewPagePick fp not found\n");
         }
-        Gui::ViewProvider* vp =
-            Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        Gui::ViewProvider *vp =
+                Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
+        TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>(vp);
         if (dvp) {
             dvp->show();
         }
-    }
-    else {
-        QMessageBox::critical(Gui::getMainWindow(), QLatin1String("No template"),
-                              QLatin1String("Template file is invalid"));
+    } else {
+        QMessageBox::critical(Gui::getMainWindow(), qApp->translate("CmdTechDrawPageTemplate", "No template"),
+                              qApp->translate("CmdTechDrawPageTemplate", "Template file is invalid"));
     }
 }
 
@@ -381,13 +394,13 @@ void CmdTechDrawView::activated(int iMsg)
 
     Gui::WaitCursor wc;
     openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
-    std::string FeatName = getUniqueObjectName("View");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
 
-    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
+    auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewPart",
+                                                   QT_TRANSLATE_NOOP("DefaultObjectName", "View"));
+    auto FeatName = viewObject->getNameInDocument();
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
+
+    App::DocumentObject* docObj = getDocument()->getObject(FeatName);
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
     if (!dvp) {
         throw Base::TypeError("CmdTechDrawView DVP not found\n");
@@ -400,12 +413,12 @@ void CmdTechDrawView::activated(int iMsg)
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
+                  FeatName, projDir.x, projDir.y, projDir.z);
         //do something clever with dirs.second;
         //        dvp->setXDir(dirs.second);
         doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
+                  FeatName, dirs.second.x, dirs.second.y, dirs.second.z);
+        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     }
     else {
@@ -413,12 +426,12 @@ void CmdTechDrawView::activated(int iMsg)
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
+                  FeatName, projDir.x, projDir.y, projDir.z);
         doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+                  FeatName, dirs.second.x, dirs.second.y, dirs.second.z);
         //        dvp->setXDir(dirs.second);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName);
     }
     commitCommand();
 }
@@ -880,17 +893,15 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Projection Group"));
 
-    std::string multiViewName = getUniqueObjectName("ProjGroup");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')",
-              multiViewName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              multiViewName.c_str());
+    auto docObj = addObjectWithTranslatedLabel(this, "TechDraw::DrawProjGroup",
+                                                   QT_TRANSLATE_NOOP3("DefaultObjectName", "ProjGroup", "Abbreviation of Projection Group"));
+    auto multiViewName = docObj->getNameInDocument();
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), multiViewName);
 
-    App::DocumentObject* docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView(static_cast<TechDraw::DrawProjGroup*>(docObj));
     multiView->Source.setValues(shapes);
     multiView->XSource.setValues(xShapes);
-    doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName);
 
     if (!faceName.empty()) {
         std::pair<Base::Vector3d, Base::Vector3d> dirs =
@@ -898,14 +909,14 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,
                   "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+                  multiViewName, dirs.first.x, dirs.first.y, dirs.first.z);
         doCommand(
             Doc,
             "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+            multiViewName, dirs.second.x, dirs.second.y, dirs.second.z);
         doCommand(Doc,
                   "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+                  multiViewName, dirs.second.x, dirs.second.y, dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     }
     else {
@@ -913,18 +924,18 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,
                   "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+                  multiViewName, dirs.first.x, dirs.first.y, dirs.first.z);
         doCommand(
             Doc,
             "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+            multiViewName, dirs.second.x, dirs.second.y, dirs.second.z);
         doCommand(Doc,
                   "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+                  multiViewName, dirs.second.x, dirs.second.y, dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     }
 
-    doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName);
     commitCommand();
     updateActive();
 
@@ -1113,12 +1124,13 @@ void CmdTechDrawClipGroup::activated(int iMsg)
     }
     std::string PageName = page->getNameInDocument();
 
-    std::string FeatName = getUniqueObjectName("Clip");
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Clip"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewClip', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
+
+    auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewClip",
+                                                   QT_TRANSLATE_NOOP("DefaultObjectName", "Clip"));
+    auto FeatName = viewObject->getNameInDocument();
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
+
     updateActive();
     commitCommand();
 }
@@ -1314,17 +1326,18 @@ void CmdTechDrawSymbol::activated(int iMsg)
             .arg(QObject::tr("Scalable Vector Graphic"), QObject::tr("All Files")));
 
     if (!filename.isEmpty()) {
-        std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
+
+        auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewSymbol",
+                                                       QT_TRANSLATE_NOOP("DefaultObjectName", "Symbol"));
+        auto FeatName = viewObject->getNameInDocument();
+
         doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filename.toUtf8());
         doCommand(Doc, "svg = f.read()");
         doCommand(Doc, "f.close()");
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
-                  FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-                  FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName);
+        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
         updateActive();
         commitCommand();
     }
@@ -1375,17 +1388,17 @@ void CmdTechDrawDraftView::activated(int iMsg)
             // skip over TechDraw objects as they are not valid subjects for a DraftView
             continue;
         }
-        std::string FeatName = getUniqueObjectName("DraftView");
         std::string SourceName = (*it)->getNameInDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDraft', '%s')",
-                  FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
-                  SourceName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-                  FeatName.c_str());
+
+        auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewDraft",
+                                                       QT_TRANSLATE_NOOP("DefaultObjectName", "DraftView"));
+        auto FeatName = viewObject->getNameInDocument();
+
+        doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName, SourceName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+                  FeatName, dirs.first.x, dirs.first.y, dirs.first.z);
         updateActive();
         commitCommand();
     }
@@ -1447,15 +1460,14 @@ void CmdTechDrawArchView::activated(int iMsg)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ArchView");
     std::string SourceName = archObject->getNameInDocument();
     openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
-              SourceName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
+
+    auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewArch",
+                                                   QT_TRANSLATE_NOOP("DefaultObjectName", "ArchView"));
+    auto FeatName = viewObject->getNameInDocument();
+    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName, SourceName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
     updateActive();
     commitCommand();
 }
@@ -1498,13 +1510,12 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
-    std::string FeatName = getUniqueObjectName("Sheet");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
-              SpreadName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
+
+    auto viewObject = addObjectWithTranslatedLabel(this, "TechDraw::DrawViewSpreadsheet",
+                                                   QT_TRANSLATE_NOOP("DefaultObjectName", "Sheet"));
+    auto FeatName = viewObject->getNameInDocument();
+    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName, SpreadName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName);
     updateActive();
     commitCommand();
 }
