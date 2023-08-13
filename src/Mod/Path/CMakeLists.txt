@@ -130,6 +130,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/comparams_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
+    Path/Post/scripts/estlcam_post.py
     Path/Post/scripts/example_pre.py
     Path/Post/scripts/fablin_post.py
     Path/Post/scripts/fanuc_post.py
