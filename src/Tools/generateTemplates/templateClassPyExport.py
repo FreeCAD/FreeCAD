@@ -17,6 +17,13 @@ class TemplateClassPyExport(template.ModelTemplate):
         path = self.path
         exportName = self.export.Name
         dirname = self.dirname
+        def escapeString(s, indent=4):
+            """Escapes a string for use as literal in C++ code"""
+            s = s.strip() # This allows UserDocu-tags on their own lines without adding whitespace
+            s = s.replace('\\', '\\\\')
+            s = s.replace('"', '\\"')
+            s = s.replace('\n', f'\\n"\n{" "*indent}"')
+            return s
         print("TemplateClassPyExport", path + exportName)
         # Imp.cpp must not exist, neither in path nor in dirname
         if not os.path.exists(path + exportName + "Imp.cpp"):
@@ -316,7 +323,7 @@ PyTypeObject @self.export.Name@::Type = {
     nullptr,                                          /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,        /*tp_flags */
-    "@self.export.Documentation.UserDocu.replace('\\n','\\\\n\\"\\n    \\"')@",           /*tp_doc */
+    "@escapeString(self.export.Documentation.UserDocu, indent=4)@",           /*tp_doc */
     nullptr,                                          /*tp_traverse */
     nullptr,                                          /*tp_clear */
 + if (self.export.RichCompare):
@@ -390,7 +397,7 @@ PyMethodDef @self.export.Name@::Methods[] = {
         reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
         METH_VARARGS,
 -
-        "@i.Documentation.UserDocu.replace('\\n','\\\\n')@"
+        "@escapeString(i.Documentation.UserDocu, indent=8)@"
     },
 -
     {nullptr, nullptr, 0, nullptr}		/* Sentinel */
@@ -510,7 +517,7 @@ PyGetSetDef @self.export.Name@::GetterSetter[] = {
     {"@i.Name@",
         (getter) staticCallback_get@i.Name@,
         (setter) staticCallback_set@i.Name@,
-        "@i.Documentation.UserDocu.replace('\\n','\\\\n')@",
+        "@escapeString(i.Documentation.UserDocu, indent=8)@",
         nullptr
     },
 -
