@@ -77,7 +77,8 @@ enum ConstraintType
     SlopeAtBSplineKnot = 28,
     PointOnBSpline = 29,
     C2CDistance = 30,
-    C2LDistance = 31
+    C2LDistance = 31,
+    P2CDistance = 32
 };
 
 enum InternalAlignmentType
@@ -821,7 +822,10 @@ private:
     bool internal;
 
 public:
-    ConstraintTangentCircumf(Point& p1, Point& p2, double* rd1, double* rd2,
+    ConstraintTangentCircumf(Point& p1,
+                             Point& p2,
+                             double* rd1,
+                             double* rd2,
                              bool internal_ = false);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     inline ConstraintTangentCircumf(bool internal_)
@@ -905,7 +909,8 @@ public:
 class ConstraintInternalAlignmentPoint2Ellipse: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1,
+    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
+                                             Point& p1,
                                              InternalAlignmentType alignmentType);
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -925,7 +930,8 @@ private:
 class ConstraintInternalAlignmentPoint2Hyperbola: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e, Point& p1,
+    ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
+                                               Point& p1,
                                                InternalAlignmentType alignmentType);
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -1152,8 +1158,14 @@ private:
 
 public:
     // n1dn2 = n1 divided by n2. from n1 to n2. flipn1 = true instructs to flip ray1's tangent
-    ConstraintSnell(Curve& ray1, Curve& ray2, Curve& boundary, Point p, double* n1, double* n2,
-                    bool flipn1, bool flipn2);
+    ConstraintSnell(Curve& ray1,
+                    Curve& ray2,
+                    Curve& boundary,
+                    Point p,
+                    double* n1,
+                    double* n2,
+                    bool flipn1,
+                    bool flipn2);
     ~ConstraintSnell() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
@@ -1225,6 +1237,31 @@ public:
     double error() override;
     double grad(double*) override;
 };
+
+// P2CDistance
+class ConstraintP2CDistance: public Constraint
+{
+private:
+    Circle circle;
+    Point pt;
+    double* d;
+    inline double* distance()
+    {
+        return pvec[0];
+    }
+    void ReconstructGeomPointers();// writes pointers in pvec to the parameters of c
+    void
+    errorgrad(double* err,
+              double* grad,
+              double* param);// error and gradient combined. Values are returned through pointers.
+public:
+    ConstraintP2CDistance(Point& p, Circle& c, double* d);
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
 
 }// namespace GCS
 

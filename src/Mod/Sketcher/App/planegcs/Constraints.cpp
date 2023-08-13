@@ -40,13 +40,13 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-    : origpvec(0),
-      pvec(0),
-      scale(1.),
-      tag(0),
-      pvecChangedFlag(true),
-      driving(true),
-      internalAlignment(Alignment::NoInternalAlignment)
+    : origpvec(0)
+    , pvec(0)
+    , scale(1.)
+    , tag(0)
+    , pvecChangedFlag(true)
+    , driving(true)
+    , internalAlignment(Alignment::NoInternalAlignment)
 {}
 
 void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
@@ -54,8 +54,9 @@ void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
     int i = 0;
     for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
         MAP_pD_pD::const_iterator it = redirectionmap.find(*param);
-        if (it != redirectionmap.end())
+        if (it != redirectionmap.end()) {
             pvec[i] = it->second;
+        }
     }
     pvecChangedFlag = true;
 }
@@ -133,10 +134,12 @@ double ConstraintEqual::error()
 double ConstraintEqual::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1())
+    if (param == param1()) {
         deriv += 1;
-    if (param == param2())
+    }
+    if (param == param2()) {
         deriv += -1;
+    }
     return scale * deriv;
 }
 
@@ -144,10 +147,11 @@ double ConstraintEqual::grad(double* param)
 // --------------------------------------------------------
 // Weighted Linear Combination
 ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
-    size_t givennumpoles, const std::vector<double*>& givenpvec,
+    size_t givennumpoles,
+    const std::vector<double*>& givenpvec,
     const std::vector<double>& givenfactors)
-    : factors(givenfactors),
-      numpoles(givennumpoles)
+    : factors(givenfactors)
+    , numpoles(givennumpoles)
 {
     pvec = givenpvec;
     assert(pvec.size() == 2 * numpoles + 1);
@@ -244,8 +248,9 @@ void ConstraintCenterOfGravity::rescale(double coef)
 double ConstraintCenterOfGravity::error()
 {
     double sum = 0;
-    for (size_t i = 0; i < numpoints; ++i)
+    for (size_t i = 0; i < numpoints; ++i) {
         sum += *pointat(i) * weights[i];
+    }
 
     return scale * (*thecenter() - sum);
 }
@@ -253,12 +258,15 @@ double ConstraintCenterOfGravity::error()
 double ConstraintCenterOfGravity::grad(double* param)
 {
     double deriv = 0.;
-    if (param == thecenter())
+    if (param == thecenter()) {
         deriv = 1;
+    }
 
-    for (size_t i = 0; i < numpoints; ++i)
-        if (param == pointat(i))
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (param == pointat(i)) {
             deriv = -weights[i];
+        }
+    }
 
     return scale * deriv;
 }
@@ -280,17 +288,22 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
     // See `System::addConstraintInternalAlignmentKnotPoint()` for some elaboration
-    for (size_t j = 1; j <= knotindex; ++j)
+    for (size_t j = 1; j <= knotindex; ++j) {
         startpole += b.mult[j];
-    if (!b.periodic && startpole >= b.poles.size())
+    }
+    if (!b.periodic && startpole >= b.poles.size()) {
         startpole = b.poles.size() - 1;
+    }
 
-    for (size_t i = 0; i < numpoles; ++i)
+    for (size_t i = 0; i < numpoles; ++i) {
         pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
-    for (size_t i = 0; i < numpoles; ++i)
+    }
+    for (size_t i = 0; i < numpoles; ++i) {
         pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
-    for (size_t i = 0; i < numpoles; ++i)
+    }
+    for (size_t i = 0; i < numpoles; ++i) {
         pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+    }
     pvec.push_back(l.p1.x);
     pvec.push_back(l.p1.y);
     pvec.push_back(l.p2.x);
@@ -301,9 +314,10 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     factors.resize(numpoles);
     slopefactors.resize(numpoles);
     for (size_t i = 0; i < numpoles + 1; ++i) {
-        tempfactors[i] =
-            b.getLinCombFactor(
-                *(b.knots[knotindex]), startpole + b.degree, startpole + i, b.degree - 1)
+        tempfactors[i] = b.getLinCombFactor(*(b.knots[knotindex]),
+                                            startpole + b.degree,
+                                            startpole + i,
+                                            b.degree - 1)
             / (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
     }
     for (size_t i = 0; i < numpoles; ++i) {
@@ -481,7 +495,9 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
 
 // --------------------------------------------------------
 // Point On BSpline
-ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initparam, int coordidx,
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
+                                                   double* initparam,
+                                                   int coordidx,
                                                    BSpline& b)
     : bsp(b)
 {
@@ -495,16 +511,20 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initpa
     setStartPole(*initparam);
 
     for (size_t i = 0; i < b.poles.size(); ++i) {
-        if (coordidx == 0)
+        if (coordidx == 0) {
             pvec.push_back(b.poles[i].x);
-        else
+        }
+        else {
             pvec.push_back(b.poles[i].y);
+        }
     }
-    for (size_t i = 0; i < b.weights.size(); ++i)
+    for (size_t i = 0; i < b.weights.size(); ++i) {
         pvec.push_back(b.weights[i]);
+    }
 
-    if (bsp.flattenedknots.empty())
+    if (bsp.flattenedknots.empty()) {
         bsp.setupFlattenedKnots();
+    }
 
     origpvec = pvec;
     rescale();
@@ -521,10 +541,12 @@ void ConstraintPointOnBSpline::setStartPole(double u)
     // for example in GCS and slope at knot
     // find relevant poles
     startpole = 0;
-    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= u; ++j)
+    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= u; ++j) {
         startpole += bsp.mult[j];
-    if (!bsp.periodic && startpole >= bsp.poles.size())
+    }
+    if (!bsp.periodic && startpole >= bsp.poles.size()) {
         startpole = bsp.poles.size() - bsp.degree - 1;
+    }
 }
 
 void ConstraintPointOnBSpline::rescale(double coef)
@@ -535,22 +557,31 @@ void ConstraintPointOnBSpline::rescale(double coef)
 double ConstraintPointOnBSpline::error()
 {
     if (*theparam() < bsp.flattenedknots[startpole + bsp.degree]
-        || *theparam() > bsp.flattenedknots[startpole + bsp.degree + 1])
+        || *theparam() > bsp.flattenedknots[startpole + bsp.degree + 1]) {
         setStartPole(*theparam());
+    }
 
     double sum = 0;
     double wsum = 0;
 
     // TODO: maybe make it global so it doesn't have to be created every time
     VEC_D d(numpoints);
-    for (size_t i = 0; i < numpoints; ++i)
+    for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *poleat(i) * *weightat(i);
-    sum = BSpline::splineValue(
-        *theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
-    for (size_t i = 0; i < numpoints; ++i)
+    }
+    sum = BSpline::splineValue(*theparam(),
+                               startpole + bsp.degree,
+                               bsp.degree,
+                               d,
+                               bsp.flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *weightat(i);
-    wsum = BSpline::splineValue(
-        *theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+    }
+    wsum = BSpline::splineValue(*theparam(),
+                                startpole + bsp.degree,
+                                bsp.degree,
+                                d,
+                                bsp.flattenedknots);
 
     // TODO: Change the poles as the point moves between pieces
 
@@ -562,10 +593,14 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
     double deriv = 0.;
     if (gcsparam == thepoint()) {
         VEC_D d(numpoints);
-        for (size_t i = 0; i < numpoints; ++i)
+        for (size_t i = 0; i < numpoints; ++i) {
             d[i] = *weightat(i);
-        double wsum = BSpline::splineValue(
-            *theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+        }
+        double wsum = BSpline::splineValue(*theparam(),
+                                           startpole + bsp.degree,
+                                           bsp.degree,
+                                           d,
+                                           bsp.flattenedknots);
         deriv += wsum;
     }
 
@@ -576,15 +611,21 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
                 / (bsp.flattenedknots[startpole + i + bsp.degree]
                    - bsp.flattenedknots[startpole + i]);
         }
-        double slopevalue = BSpline::splineValue(
-            *theparam(), startpole + bsp.degree, bsp.degree - 1, d, bsp.flattenedknots);
+        double slopevalue = BSpline::splineValue(*theparam(),
+                                                 startpole + bsp.degree,
+                                                 bsp.degree - 1,
+                                                 d,
+                                                 bsp.flattenedknots);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*weightat(i) - *weightat(i - 1))
                 / (bsp.flattenedknots[startpole + i + bsp.degree]
                    - bsp.flattenedknots[startpole + i]);
         }
-        double wslopevalue = BSpline::splineValue(
-            *theparam(), startpole + bsp.degree, bsp.degree - 1, d, bsp.flattenedknots);
+        double wslopevalue = BSpline::splineValue(*theparam(),
+                                                  startpole + bsp.degree,
+                                                  bsp.degree - 1,
+                                                  d,
+                                                  bsp.flattenedknots);
         deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
     }
 
@@ -632,12 +673,15 @@ double ConstraintDifference::error()
 double ConstraintDifference::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1())
+    if (param == param1()) {
         deriv += -1;
-    if (param == param2())
+    }
+    if (param == param2()) {
         deriv += 1;
-    if (param == difference())
+    }
+    if (param == difference()) {
         deriv += -1;
+    }
     return scale * deriv;
 }
 
@@ -681,17 +725,22 @@ double ConstraintP2PDistance::grad(double* param)
         double dx = (*p1x() - *p2x());
         double dy = (*p1y() - *p2y());
         double d = sqrt(dx * dx + dy * dy);
-        if (param == p1x())
+        if (param == p1x()) {
             deriv += dx / d;
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += dy / d;
-        if (param == p2x())
+        }
+        if (param == p2x()) {
             deriv += -dx / d;
-        if (param == p2y())
+        }
+        if (param == p2y()) {
             deriv += -dy / d;
+        }
     }
-    if (param == distance())
+    if (param == distance()) {
         deriv += -1.;
+    }
 
     return scale * deriv;
 }
@@ -702,31 +751,37 @@ double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
     // distance() >= 0
     it = dir.find(distance());
     if (it != dir.end()) {
-        if (it->second < 0.)
+        if (it->second < 0.) {
             lim = std::min(lim, -(*distance()) / it->second);
+        }
     }
     // restrict actual distance change
     double ddx = 0., ddy = 0.;
     it = dir.find(p1x());
-    if (it != dir.end())
+    if (it != dir.end()) {
         ddx += it->second;
+    }
     it = dir.find(p1y());
-    if (it != dir.end())
+    if (it != dir.end()) {
         ddy += it->second;
+    }
     it = dir.find(p2x());
-    if (it != dir.end())
+    if (it != dir.end()) {
         ddx -= it->second;
+    }
     it = dir.find(p2y());
-    if (it != dir.end())
+    if (it != dir.end()) {
         ddy -= it->second;
+    }
     double dd = sqrt(ddx * ddx + ddy * ddy);
     double dist = *distance();
     if (dd > dist) {
         double dx = (*p1x() - *p2x());
         double dy = (*p1y() - *p2y());
         double d = sqrt(dx * dx + dy * dy);
-        if (dd > d)
+        if (dd > d) {
             lim = std::min(lim, std::max(d, dist) / dd);
+        }
     }
     return lim;
 }
@@ -782,17 +837,22 @@ double ConstraintP2PAngle::grad(double* param)
         double r2 = dx * dx + dy * dy;
         dx = -y / r2;
         dy = x / r2;
-        if (param == p1x())
+        if (param == p1x()) {
             deriv += (-ca * dx + sa * dy);
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += (-sa * dx - ca * dy);
-        if (param == p2x())
+        }
+        if (param == p2x()) {
             deriv += (ca * dx - sa * dy);
-        if (param == p2y())
+        }
+        if (param == p2y()) {
             deriv += (sa * dx + ca * dy);
+        }
     }
-    if (param == angle())
+    if (param == angle()) {
         deriv += -1;
+    }
 
     return scale * deriv;
 }
@@ -803,8 +863,9 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > M_PI / 18.0)
+        if (step > M_PI / 18.0) {
             lim = std::min(lim, (M_PI / 18.0) / step);
+        }
     }
     return lim;
 }
@@ -864,23 +925,31 @@ double ConstraintP2LDistance::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x())
+        if (param == p0x()) {
             deriv += (y1 - y2) / d;
-        if (param == p0y())
+        }
+        if (param == p0y()) {
             deriv += (x2 - x1) / d;
-        if (param == p1x())
+        }
+        if (param == p1x()) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
-        if (param == p2x())
+        }
+        if (param == p2x()) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
-        if (param == p2y())
+        }
+        if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
-        if (area < 0)
+        }
+        if (area < 0) {
             deriv *= -1;
+        }
     }
-    if (param == distance())
+    if (param == distance()) {
         deriv += -1;
+    }
 
     return scale * deriv;
 }
@@ -891,31 +960,38 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
     // distance() >= 0
     it = dir.find(distance());
     if (it != dir.end()) {
-        if (it->second < 0.)
+        if (it->second < 0.) {
             lim = std::min(lim, -(*distance()) / it->second);
+        }
     }
     // restrict actual area change
     double darea = 0.;
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
     it = dir.find(p0x());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (y1 - y2) * it->second;
+    }
     it = dir.find(p0y());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (x2 - x1) * it->second;
+    }
     it = dir.find(p1x());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (y2 - y0) * it->second;
+    }
     it = dir.find(p1y());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (x0 - x2) * it->second;
+    }
     it = dir.find(p2x());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (y0 - y1) * it->second;
+    }
     it = dir.find(p2y());
-    if (it != dir.end())
+    if (it != dir.end()) {
         darea += (x1 - x0) * it->second;
+    }
 
     darea = std::abs(darea);
     if (darea > 0.) {
@@ -924,8 +1000,9 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
         double area = 0.3 * (*distance()) * sqrt(dx * dx + dy * dy);
         if (darea > area) {
             area = std::max(area, 0.3 * std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1));
-            if (darea > area)
+            if (darea > area) {
                 lim = std::min(lim, area / darea);
+            }
         }
     }
     return lim;
@@ -995,18 +1072,24 @@ double ConstraintPointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x())
+        if (param == p0x()) {
             deriv += (y1 - y2) / d;
-        if (param == p0y())
+        }
+        if (param == p0y()) {
             deriv += (x2 - x1) / d;
-        if (param == p1x())
+        }
+        if (param == p1x()) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
-        if (param == p2x())
+        }
+        if (param == p2x()) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
-        if (param == p2y())
+        }
+        if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
+        }
     }
     return scale * deriv;
 }
@@ -1064,10 +1147,12 @@ void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double*
     double projd2, dprojd2;
     projd2 = d2.scalarProd(D, &dprojd2);
 
-    if (err)
+    if (err) {
         *err = projd1 + projd2;
-    if (grad)
+    }
+    if (grad) {
         *grad = dprojd1 + dprojd2;
+    }
 }
 
 double ConstraintPointOnPerpBisector::error()
@@ -1080,8 +1165,9 @@ double ConstraintPointOnPerpBisector::error()
 double ConstraintPointOnPerpBisector::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1132,23 +1218,31 @@ double ConstraintParallel::error()
 double ConstraintParallel::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x())
+    if (param == l1p1x()) {
         deriv += (*l2p1y() - *l2p2y());// = dy2
-    if (param == l1p2x())
+    }
+    if (param == l1p2x()) {
         deriv += -(*l2p1y() - *l2p2y());// = -dy2
-    if (param == l1p1y())
+    }
+    if (param == l1p1y()) {
         deriv += -(*l2p1x() - *l2p2x());// = -dx2
-    if (param == l1p2y())
+    }
+    if (param == l1p2y()) {
         deriv += (*l2p1x() - *l2p2x());// = dx2
+    }
 
-    if (param == l2p1x())
+    if (param == l2p1x()) {
         deriv += -(*l1p1y() - *l1p2y());// = -dy1
-    if (param == l2p2x())
+    }
+    if (param == l2p2x()) {
         deriv += (*l1p1y() - *l1p2y());// = dy1
-    if (param == l2p1y())
+    }
+    if (param == l2p1y()) {
         deriv += (*l1p1x() - *l1p2x());// = dx1
-    if (param == l2p2y())
+    }
+    if (param == l2p2y()) {
         deriv += -(*l1p1x() - *l1p2x());// = -dx1
+    }
 
     return scale * deriv;
 }
@@ -1210,23 +1304,31 @@ double ConstraintPerpendicular::error()
 double ConstraintPerpendicular::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x())
+    if (param == l1p1x()) {
         deriv += (*l2p1x() - *l2p2x());// = dx2
-    if (param == l1p2x())
+    }
+    if (param == l1p2x()) {
         deriv += -(*l2p1x() - *l2p2x());// = -dx2
-    if (param == l1p1y())
+    }
+    if (param == l1p1y()) {
         deriv += (*l2p1y() - *l2p2y());// = dy2
-    if (param == l1p2y())
+    }
+    if (param == l1p2y()) {
         deriv += -(*l2p1y() - *l2p2y());// = -dy2
+    }
 
-    if (param == l2p1x())
+    if (param == l2p1x()) {
         deriv += (*l1p1x() - *l1p2x());// = dx1
-    if (param == l2p2x())
+    }
+    if (param == l2p2x()) {
         deriv += -(*l1p1x() - *l1p2x());// = -dx1
-    if (param == l2p1y())
+    }
+    if (param == l2p1y()) {
         deriv += (*l1p1y() - *l1p2y());// = dy1
-    if (param == l2p2y())
+    }
+    if (param == l2p2y()) {
         deriv += -(*l1p1y() - *l1p2y());// = -dy1
+    }
 
     return scale * deriv;
 }
@@ -1249,7 +1351,10 @@ ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
     rescale();
 }
 
-ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2,
+ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1,
+                                       Point& l1p2,
+                                       Point& l2p1,
+                                       Point& l2p2,
                                        double* a)
 {
     pvec.push_back(l1p1.x);
@@ -1296,14 +1401,18 @@ double ConstraintL2LAngle::grad(double* param)
         double dx1 = (*l1p2x() - *l1p1x());
         double dy1 = (*l1p2y() - *l1p1y());
         double r2 = dx1 * dx1 + dy1 * dy1;
-        if (param == l1p1x())
+        if (param == l1p1x()) {
             deriv += -dy1 / r2;
-        if (param == l1p1y())
+        }
+        if (param == l1p1y()) {
             deriv += dx1 / r2;
-        if (param == l1p2x())
+        }
+        if (param == l1p2x()) {
             deriv += dy1 / r2;
-        if (param == l1p2y())
+        }
+        if (param == l1p2y()) {
             deriv += -dx1 / r2;
+        }
     }
     if (param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
         double dx1 = (*l1p2x() - *l1p1x());
@@ -1318,17 +1427,22 @@ double ConstraintL2LAngle::grad(double* param)
         double r2 = dx2 * dx2 + dy2 * dy2;
         dx2 = -y2 / r2;
         dy2 = x2 / r2;
-        if (param == l2p1x())
+        if (param == l2p1x()) {
             deriv += (-ca * dx2 + sa * dy2);
-        if (param == l2p1y())
+        }
+        if (param == l2p1y()) {
             deriv += (-sa * dx2 - ca * dy2);
-        if (param == l2p2x())
+        }
+        if (param == l2p2x()) {
             deriv += (ca * dx2 - sa * dy2);
-        if (param == l2p2y())
+        }
+        if (param == l2p2y()) {
             deriv += (sa * dx2 + ca * dy2);
+        }
     }
-    if (param == angle())
+    if (param == angle()) {
         deriv += -1;
+    }
 
     return scale * deriv;
 }
@@ -1339,8 +1453,9 @@ double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > M_PI / 18.0)
+        if (step > M_PI / 18.0) {
             lim = std::min(lim, (M_PI / 18.0) / step);
+        }
     }
     return lim;
 }
@@ -1362,7 +1477,9 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
     rescale();
 }
 
-ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1,
+ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1,
+                                                   Point& l1p2,
+                                                   Point& l2p1,
                                                    Point& l2p2)
 {
     pvec.push_back(l1p1.x);
@@ -1418,22 +1535,30 @@ double ConstraintMidpointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == l1p1x())
+        if (param == l1p1x()) {
             deriv += (y1 - y2) / (2 * d);
-        if (param == l1p1y())
+        }
+        if (param == l1p1y()) {
             deriv += (x2 - x1) / (2 * d);
-        if (param == l1p2x())
+        }
+        if (param == l1p2x()) {
             deriv += (y1 - y2) / (2 * d);
-        if (param == l1p2y())
+        }
+        if (param == l1p2y()) {
             deriv += (x2 - x1) / (2 * d);
-        if (param == l2p1x())
+        }
+        if (param == l2p1x()) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
-        if (param == l2p1y())
+        }
+        if (param == l2p1y()) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
-        if (param == l2p2x())
+        }
+        if (param == l2p2x()) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
-        if (param == l2p2y())
+        }
+        if (param == l2p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
+        }
     }
     return scale * deriv;
 }
@@ -1441,7 +1566,10 @@ double ConstraintMidpointOnLine::grad(double* param)
 
 // --------------------------------------------------------
 // TangentCircumf
-ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1, Point& p2, double* rad1, double* rad2,
+ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1,
+                                                   Point& p2,
+                                                   double* rad1,
+                                                   double* rad2,
                                                    bool internal_)
 {
     internal = internal_;
@@ -1469,10 +1597,12 @@ double ConstraintTangentCircumf::error()
 {
     double dx = (*c1x() - *c2x());
     double dy = (*c1y() - *c2y());
-    if (internal)
+    if (internal) {
         return scale * (sqrt(dx * dx + dy * dy) - std::abs(*r1() - *r2()));
-    else
+    }
+    else {
         return scale * (sqrt(dx * dx + dy * dy) - (*r1() + *r2()));
+    }
 }
 
 double ConstraintTangentCircumf::grad(double* param)
@@ -1483,25 +1613,33 @@ double ConstraintTangentCircumf::grad(double* param)
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
         double d = sqrt(dx * dx + dy * dy);
-        if (param == c1x())
+        if (param == c1x()) {
             deriv += dx / d;
-        if (param == c1y())
+        }
+        if (param == c1y()) {
             deriv += dy / d;
-        if (param == c2x())
+        }
+        if (param == c2x()) {
             deriv += -dx / d;
-        if (param == c2y())
+        }
+        if (param == c2y()) {
             deriv += -dy / d;
+        }
         if (internal) {
-            if (param == r1())
+            if (param == r1()) {
                 deriv += (*r1() > *r2()) ? -1 : 1;
-            if (param == r2())
+            }
+            if (param == r2()) {
                 deriv += (*r1() > *r2()) ? 1 : -1;
+            }
         }
         else {
-            if (param == r1())
+            if (param == r1()) {
                 deriv += -1;
-            if (param == r2())
+            }
+            if (param == r2()) {
                 deriv += -1;
+            }
         }
     }
     return scale * deriv;
@@ -1563,34 +1701,41 @@ double ConstraintPointOnEllipse::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x())
+        if (param == p1x()) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == f1x())
+        }
+        if (param == f1x()) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == f1y())
+        }
+        if (param == f1y()) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == cx())
+        }
+        if (param == cx()) {
             deriv += 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == cy())
+        }
+        if (param == cy()) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == rmin())
+        }
+        if (param == rmin()) {
             deriv += -2 * b / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
+        }
     }
     return scale * deriv;
 }
@@ -1633,8 +1778,9 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
     // DeepSOIC equation
     // http://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
 
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
     DeriVector2 p1(l.p1, param);
     DeriVector2 p2(l.p2, param);
     DeriVector2 f1(e.focus1, param);
@@ -1656,10 +1802,12 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
     double radmaj, dradmaj;
     radmaj = e.getRadMaj(c, f1, *e.radmin, dradmin, dradmaj);
 
-    if (err)
+    if (err) {
         *err = distF1mF2 - 2 * radmaj;
-    if (grad)
+    }
+    if (grad) {
         *grad = ddistF1mF2 - 2 * dradmaj;
+    }
 }
 
 double ConstraintEllipseTangentLine::error()
@@ -1672,8 +1820,9 @@ double ConstraintEllipseTangentLine::error()
 double ConstraintEllipseTangentLine::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1702,7 +1851,9 @@ double ConstraintEllipseTangentLine::grad(double* param)
 // --------------------------------------------------------
 // ConstraintInternalAlignmentPoint2Ellipse
 ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellipse(
-    Ellipse& e, Point& p1, InternalAlignmentType alignmentType)
+    Ellipse& e,
+    Point& p1,
+    InternalAlignmentType alignmentType)
 {
     this->p = p1;
     pvec.push_back(p.x);
@@ -1737,8 +1888,9 @@ void ConstraintInternalAlignmentPoint2Ellipse::rescale(double coef)
 
 void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     // todo: prefill only what's needed, not everything
 
@@ -1789,10 +1941,12 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
             // shouldn't happen
             poa = pv;// align to the point itself, doing nothing essentially
     }
-    if (err)
+    if (err) {
         *err = by_y_not_by_x ? pv.y - poa.y : pv.x - poa.x;
-    if (grad)
+    }
+    if (grad) {
         *grad = by_y_not_by_x ? pv.dy - poa.dy : pv.dx - poa.dx;
+    }
 }
 
 double ConstraintInternalAlignmentPoint2Ellipse::error()
@@ -1805,8 +1959,9 @@ double ConstraintInternalAlignmentPoint2Ellipse::error()
 double ConstraintInternalAlignmentPoint2Ellipse::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1835,7 +1990,9 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double* param)
 // --------------------------------------------------------
 // ConstraintInternalAlignmentPoint2Hyperbola
 ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(
-    Hyperbola& e, Point& p1, InternalAlignmentType alignmentType)
+    Hyperbola& e,
+    Point& p1,
+    InternalAlignmentType alignmentType)
 {
     this->p = p1;
     pvec.push_back(p.x);
@@ -1870,8 +2027,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::rescale(double coef)
 
 void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     // todo: prefill only what's needed, not everything
 
@@ -1927,10 +2085,12 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
             poa = pv;// align to the point itself, doing nothing essentially
     }
 
-    if (err)
+    if (err) {
         *err = by_y_not_by_x ? pv.y - poa.y : pv.x - poa.x;
-    if (grad)
+    }
+    if (grad) {
         *grad = by_y_not_by_x ? pv.dy - poa.dy : pv.dx - poa.dx;
+    }
 }
 
 double ConstraintInternalAlignmentPoint2Hyperbola::error()
@@ -1943,8 +2103,9 @@ double ConstraintInternalAlignmentPoint2Hyperbola::error()
 double ConstraintInternalAlignmentPoint2Hyperbola::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1987,16 +2148,19 @@ void ConstraintEqualMajorAxesConic::rescale(double coef)
 
 void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
     double a1, da1;
     a1 = e1->getRadMaj(param, da1);
     double a2, da2;
     a2 = e2->getRadMaj(param, da2);
-    if (err)
+    if (err) {
         *err = a2 - a1;
-    if (grad)
+    }
+    if (grad) {
         *grad = da2 - da1;
+    }
 }
 
 double ConstraintEqualMajorAxesConic::error()
@@ -2009,8 +2173,9 @@ double ConstraintEqualMajorAxesConic::error()
 double ConstraintEqualMajorAxesConic::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2050,8 +2215,9 @@ void ConstraintEqualFocalDistance::rescale(double coef)
 
 void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     DeriVector2 focus1(this->e1->focus1, param);
     DeriVector2 vertex1(this->e1->vertex, param);
@@ -2071,10 +2237,12 @@ void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* 
 
     focal2 = focalvect2.length(dfocal2);
 
-    if (err)
+    if (err) {
         *err = focal2 - focal1;
-    if (grad)
+    }
+    if (grad) {
         *grad = dfocal2 - dfocal1;
+    }
 }
 
 double ConstraintEqualFocalDistance::error()
@@ -2087,8 +2255,9 @@ double ConstraintEqualFocalDistance::error()
 double ConstraintEqualFocalDistance::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2143,8 +2312,9 @@ void ConstraintCurveValue::rescale(double coef)
 
 void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     double u, du;
     u = *(this->u());
@@ -2158,16 +2328,20 @@ void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
     DeriVector2 err_vec = P_from.subtr(P_to);
 
     if (this->pcoord() == this->p.x) {// this constraint is for X projection
-        if (err)
+        if (err) {
             *err = err_vec.x;
-        if (grad)
+        }
+        if (grad) {
             *grad = err_vec.dx;
+        }
     }
     else if (this->pcoord() == this->p.y) {// this constraint is for Y projection
-        if (err)
+        if (err) {
             *err = err_vec.y;
-        if (grad)
+        }
+        if (grad) {
             *grad = err_vec.dy;
+        }
     }
     else {
         assert(false /*this constraint is neither X nor Y. Nothing to do..*/);
@@ -2184,8 +2358,9 @@ double ConstraintCurveValue::error()
 double ConstraintCurveValue::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2289,34 +2464,41 @@ double ConstraintPointOnHyperbola::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x())
+        if (param == p1x()) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == p1y())
+        }
+        if (param == p1y()) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == f1x())
+        }
+        if (param == f1x()) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == f1y())
+        }
+        if (param == f1y()) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == cx())
+        }
+        if (param == cx()) {
             deriv += 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == cy())
+        }
+        if (param == cy()) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
-        if (param == rmin())
+        }
+        if (param == rmin()) {
             deriv += 2 * b / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
+        }
     }
     return scale * deriv;
 }
@@ -2375,8 +2557,9 @@ void ConstraintPointOnParabola::rescale(double coef)
 
 void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     DeriVector2 focus(this->parab->focus1, param);
     DeriVector2 vertex(this->parab->vertex, param);
@@ -2401,10 +2584,12 @@ void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* par
 
     proj = point_to_focus.scalarProd(xdir, &dproj);
 
-    if (err)
+    if (err) {
         *err = pf - 2 * focal - proj;
-    if (grad)
+    }
+    if (grad) {
         *grad = dpf - 2 * dfocal - dproj;
+    }
 }
 
 double ConstraintPointOnParabola::error()
@@ -2417,8 +2602,9 @@ double ConstraintPointOnParabola::error()
 double ConstraintPointOnParabola::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2476,8 +2662,9 @@ void ConstraintAngleViaPoint::rescale(double coef)
 
 double ConstraintAngleViaPoint::error()
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
     double ang = *angle();
     DeriVector2 n1 = crv1->CalculateNormal(poa);
     DeriVector2 n2 = crv2->CalculateNormal(poa);
@@ -2497,16 +2684,19 @@ double ConstraintAngleViaPoint::error()
 double ConstraintAngleViaPoint::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv = 0.;
 
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
-    if (param == angle())
+    if (param == angle()) {
         deriv += -1.0;
+    }
     DeriVector2 n1 = crv1->CalculateNormal(poa, param);
     DeriVector2 n2 = crv2->CalculateNormal(poa, param);
     deriv -= ((-n1.dx) * n1.y / pow(n1.length(), 2) + n1.dy * n1.x / pow(n1.length(), 2));
@@ -2536,8 +2726,14 @@ double ConstraintAngleViaPoint::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(Curve& ray1, Curve& ray2, Curve& boundary, Point p, double* n1,
-                                 double* n2, bool flipn1, bool flipn2)
+ConstraintSnell::ConstraintSnell(Curve& ray1,
+                                 Curve& ray2,
+                                 Curve& boundary,
+                                 Point p,
+                                 double* n1,
+                                 double* n2,
+                                 bool flipn1,
+                                 bool flipn2)
 {
     pvec.push_back(n1);
     pvec.push_back(n2);
@@ -2596,8 +2792,9 @@ void ConstraintSnell::rescale(double coef)
 // error and gradient combined. Values are returned through pointers.
 void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
     DeriVector2 tang1 = ray1->CalculateNormal(poa, param).rotate90cw().getNormalized();
     DeriVector2 tang2 = ray2->CalculateNormal(poa, param).rotate90cw().getNormalized();
     DeriVector2 tangB = boundary->CalculateNormal(poa, param).rotate90cw().getNormalized();
@@ -2615,10 +2812,12 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 
     double dn1 = (param == n1()) ? 1.0 : 0.0;
     double dn2 = (param == n2()) ? 1.0 : 0.0;
-    if (err)
+    if (err) {
         *err = *n1() * sin1 - *n2() * sin2;
-    if (grad)
+    }
+    if (grad) {
         *grad = dn1 * sin1 + *n1() * dsin1 - dn2 * sin2 - *n2() * dsin2;
+    }
 }
 
 double ConstraintSnell::error()
@@ -2631,8 +2830,9 @@ double ConstraintSnell::error()
 double ConstraintSnell::grad(double* param)
 {
     // first of all, check that we need to compute anything.
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2692,8 +2892,9 @@ void ConstraintEqualLineLength::rescale(double coef)
 
 void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     DeriVector2 p1(l1.p1, param);
     DeriVector2 p2(l1.p2, param);
@@ -2709,8 +2910,9 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
     double length2, dlength2;
     length2 = v2.length(dlength2);
 
-    if (err)
+    if (err) {
         *err = length2 - length1;
+    }
 
     if (grad) {
         *grad = dlength2 - dlength1;
@@ -2723,22 +2925,30 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
         // or just locked into a maximum/minimum
         if (fabs(*grad) < 1e-10) {
             double surrogate = 1e-10;
-            if (param == l1.p1.x)
+            if (param == l1.p1.x) {
                 *grad = v1.x > 0 ? surrogate : -surrogate;
-            if (param == l1.p1.y)
+            }
+            if (param == l1.p1.y) {
                 *grad = v1.y > 0 ? surrogate : -surrogate;
-            if (param == l1.p2.x)
+            }
+            if (param == l1.p2.x) {
                 *grad = v1.x > 0 ? -surrogate : surrogate;
-            if (param == l1.p2.y)
+            }
+            if (param == l1.p2.y) {
                 *grad = v1.y > 0 ? -surrogate : surrogate;
-            if (param == l2.p1.x)
+            }
+            if (param == l2.p1.x) {
                 *grad = v2.x > 0 ? surrogate : -surrogate;
-            if (param == l2.p1.y)
+            }
+            if (param == l2.p1.y) {
                 *grad = v2.y > 0 ? surrogate : -surrogate;
-            if (param == l2.p2.x)
+            }
+            if (param == l2.p2.x) {
                 *grad = v2.x > 0 ? -surrogate : surrogate;
-            if (param == l2.p2.y)
+            }
+            if (param == l2.p2.y) {
                 *grad = v2.y > 0 ? -surrogate : surrogate;
+            }
         }
     }
 }
@@ -2752,8 +2962,9 @@ double ConstraintEqualLineLength::error()
 
 double ConstraintEqualLineLength::grad(double* param)
 {
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2801,8 +3012,9 @@ void ConstraintC2CDistance::rescale(double coef)
 
 void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     DeriVector2 ct1(c1.center, param);
     DeriVector2 ct2(c2.center, param);
@@ -2863,8 +3075,9 @@ double ConstraintC2CDistance::error()
 
 double ConstraintC2CDistance::grad(double* param)
 {
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2911,8 +3124,9 @@ void ConstraintC2LDistance::ReconstructGeomPointers()
 
 void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 {
-    if (pvecChangedFlag)
+    if (pvecChangedFlag) {
         ReconstructGeomPointers();
+    }
 
     DeriVector2 ct(circle.center, param);
     DeriVector2 p1(line.p1, param);
@@ -2965,8 +3179,100 @@ double ConstraintC2LDistance::error()
 
 double ConstraintC2LDistance::grad(double* param)
 {
-    if (findParamInPvec(param) == -1)
+    if (findParamInPvec(param) == -1) {
         return 0.0;
+    }
+
+    double deriv;
+    errorgrad(nullptr, &deriv, param);
+
+    return deriv * scale;
+}
+
+// --------------------------------------------------------
+// ConstraintP2CDistance
+ConstraintP2CDistance::ConstraintP2CDistance(Point& p, Circle& c, double* d)
+{
+    this->d = d;
+    pvec.push_back(d);
+
+    this->circle = c;
+    this->circle.PushOwnParams(pvec);
+
+    this->pt = p;
+    this->pt.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+ConstraintType ConstraintP2CDistance::getTypeId()
+{
+    return P2CDistance;
+}
+
+void ConstraintP2CDistance::rescale(double coef)
+{
+    scale = coef;
+}
+
+void ConstraintP2CDistance::ReconstructGeomPointers()
+{
+    int i = 0;
+    i++;// skip the first parameter as there is the inline function distance for it
+    circle.ReconstructOnNewPvec(pvec, i);
+    pt.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    DeriVector2 ct(circle.center, param);
+    DeriVector2 p(pt, param);
+    DeriVector2 v_length = ct.subtr(p);
+
+    double dlength;
+    double length = v_length.length(dlength);
+
+    if (err) {
+        *err = *circle.rad + *distance() - length;
+        if (length < *circle.rad) {
+            *err = *circle.rad - *distance() - length;
+        }
+    }
+    else if (grad) {
+        if (param == distance()) {
+            *grad = 1.0;
+            if (length < *circle.rad) {
+                *grad = -1.0;
+            }
+        }
+        else if (param == circle.rad) {
+            *grad = 1.0;
+        }
+        else {
+            *grad = -dlength;
+        }
+    }
+}
+
+double ConstraintP2CDistance::error()
+{
+    double err;
+    errorgrad(&err, nullptr, nullptr);
+    return scale * err;
+}
+
+double ConstraintP2CDistance::grad(double* param)
+{
+    if (findParamInPvec(param) == -1) {
+        return 0.0;
+    }
 
     double deriv;
     errorgrad(nullptr, &deriv, param);

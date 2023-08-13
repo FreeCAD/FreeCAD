@@ -32,16 +32,38 @@
 namespace GCS
 {
 
+//----------------Point
+int Point::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    pvec.push_back(x);
+    cnt++;
+    pvec.push_back(y);
+    cnt++;
+    return cnt;
+}
+
+void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    x = pvec[cnt];
+    cnt++;
+    y = pvec[cnt];
+    cnt++;
+}
+
+//----------------DeriVector2
 DeriVector2::DeriVector2(const Point& p, const double* derivparam)
 {
     x = *p.x;
     y = *p.y;
     dx = 0.0;
     dy = 0.0;
-    if (derivparam == p.x)
+    if (derivparam == p.x) {
         dx = 1.0;
-    if (derivparam == p.y)
+    }
+    if (derivparam == p.y) {
         dy = 1.0;
+    }
 }
 
 double DeriVector2::length(double& dlength) const
@@ -88,8 +110,10 @@ double DeriVector2::scalarProd(const DeriVector2& v2, double* dprd) const
 
 DeriVector2 DeriVector2::divD(double val, double dval) const
 {
-    return DeriVector2(
-        x / val, y / val, dx / val - x * dval / (val * val), dy / val - y * dval / (val * val));
+    return DeriVector2(x / val,
+                       y / val,
+                       dx / val - x * dval / (val * val),
+                       dy / val - y * dval / (val * val));
 }
 
 double DeriVector2::crossProdNorm(const DeriVector2& v2, double& dprd) const
@@ -252,7 +276,10 @@ Arc* Arc::Copy()
 //--------------ellipse
 
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Ellipse::getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+double Ellipse::getRadMaj(const DeriVector2& center,
+                          const DeriVector2& f1,
+                          double b,
+                          double db,
                           double& ret_dRadMaj) const
 {
     double cf, dcf;
@@ -436,7 +463,10 @@ ArcOfEllipse* ArcOfEllipse::Copy()
 //---------------hyperbola
 
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
-double Hyperbola::getRadMaj(const DeriVector2& center, const DeriVector2& f1, double b, double db,
+double Hyperbola::getRadMaj(const DeriVector2& center,
+                            const DeriVector2& f1,
+                            double b,
+                            double db,
                             double& ret_dRadMaj) const
 {
     double cf, dcf;
@@ -848,14 +878,16 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
     // as well, when alternatives may be needed to keep `flattenedknots` updated.
     // Slightly more detailed discussion here:
     // https://github.com/FreeCAD/FreeCAD/pull/7484#discussion_r1020858392
-    if (flattenedknots.empty())
+    if (flattenedknots.empty()) {
         setupFlattenedKnots();
+    }
 
     std::vector d(p + 1, 0.0);
     // Ensure this is within range
     int idxOfPole = static_cast<int>(i) + p - static_cast<int>(k);
-    if (idxOfPole < 0 || idxOfPole > static_cast<int>(p))
+    if (idxOfPole < 0 || idxOfPole > static_cast<int>(p)) {
         return 0.0;
+    }
     d[idxOfPole] = 1.0;
 
     for (size_t r = 1; r < p + 1; ++r) {
@@ -886,8 +918,9 @@ void BSpline::setupFlattenedKnots()
 {
     flattenedknots.clear();
 
-    for (size_t i = 0; i < knots.size(); ++i)
+    for (size_t i = 0; i < knots.size(); ++i) {
         flattenedknots.insert(flattenedknots.end(), mult[i], *knots[i]);
+    }
 
     // Adjust for periodic: see OCC documentation for explanation
     if (periodic) {
