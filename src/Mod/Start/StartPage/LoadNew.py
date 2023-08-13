@@ -53,5 +53,10 @@ match template_name:
         StartPage.postStart(False)
     case "architecture":
         FreeCADGui.runCommand('Std_New')
-        FreeCADGui.activateWorkbench("ArchWorkbench")
+        try:
+            import BimCommands
+        except Exception:
+            FreeCADGui.activateWorkbench("ArchWorkbench")
+        else:
+            FreeCADGui.activateWorkbench("BIMWorkbench")
         StartPage.postStart(False)
