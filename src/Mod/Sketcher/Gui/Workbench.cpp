@@ -87,16 +87,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
 
-    Gui::MenuItem* virtualspace = new Gui::MenuItem();
-    virtualspace->setCommand("Sketcher virtual space");
-    addSketcherWorkbenchVirtualSpace(*virtualspace);
+    Gui::MenuItem* visual = new Gui::MenuItem();
+    visual->setCommand("Sketcher visual");
+    addSketcherWorkbenchVisual(*visual);
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
     root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
     addSketcherWorkbenchSketchEditModeActions(*sketch);
-    *sketch << geom << cons << consaccel << bsplines << virtualspace;
+    *sketch << geom << cons << consaccel << bsplines << visual;
 
     return root;
 }
@@ -615,9 +615,9 @@ void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline)
     SketcherAddWorkbenchBSplines(bspline);
 }
 
-void addSketcherWorkbenchVirtualSpace(Gui::ToolBarItem& virtualspace)
+void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual)
 {
-    SketcherAddWorkbenchVirtualSpace(virtualspace);
+    SketcherAddWorkbenchVisual(visual);
 }
 
 void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)
