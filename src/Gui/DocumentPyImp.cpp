@@ -269,8 +269,8 @@ PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
     PY_TRY {
         std::list<Gui::MDIView*> views = getDocumentPtr()->getMDIViewsOfType(type);
         Py::List list;
-        for (auto it = views.begin(); it != views.end(); ++it)
-            list.append(Py::asObject((*it)->getPyObject()));
+        for (auto it : views)
+            list.append(Py::asObject(it->getPyObject()));
         return Py::new_reference_to(list);
     }
     PY_CATCH;

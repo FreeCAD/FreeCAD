@@ -703,9 +703,9 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // data structure to remember actions for values
     QStringList history = d->history.asStringList();
-    for (QStringList::const_iterator it = history.cbegin();it != history.cend(); ++it) {
-        QAction* action = menu->addAction(*it);
-        action->setProperty("history_value", *it);
+    for (const auto & it : history) {
+        QAction* action = menu->addAction(it);
+        action->setProperty("history_value", it);
     }
 
     // add the save value portion of the menu

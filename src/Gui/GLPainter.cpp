@@ -429,8 +429,8 @@ void Polyline::paintGL()
     if (closed && !stippled) {
         glBegin(GL_LINE_LOOP);
 
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
-            glVertex2i(it->x(), it->y());
+        for (const QPoint& it : _cNodeVector) {
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();
@@ -439,10 +439,10 @@ void Polyline::paintGL()
         glBegin(GL_LINES);
 
         QPoint start = _cNodeVector.front();
-        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+        for (const QPoint& it : _cNodeVector) {
             glVertex2i(start.x(), start.y());
-            start = *it;
-            glVertex2i(it->x(), it->y());
+            start = it;
+            glVertex2i(it.x(), it.y());
         }
 
         glEnd();

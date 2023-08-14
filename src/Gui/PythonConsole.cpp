@@ -887,8 +887,8 @@ void PythonConsole::runSource(const QString& line)
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
     d->interactive = false;
-    for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it) {
-        printStatement(*it);
+    for (const auto & it : d->statements) {
+        printStatement(it);
     }
     d->statements.clear();
 }

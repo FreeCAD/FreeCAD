@@ -412,9 +412,8 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
-    for (std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.begin();
-         it != _sDisplayMaskModes.end(); ++it)
-        types.push_back( it->first );
+    for (const auto & it : _sDisplayMaskModes)
+        types.push_back( it.first );
     return types;
 }
 

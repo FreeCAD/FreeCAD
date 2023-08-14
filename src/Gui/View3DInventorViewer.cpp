@@ -1805,9 +1805,9 @@ std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItems() const
 std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItemsOfType(const Base::Type& type) const
 {
     std::list<GLGraphicsItem*> items;
-    for (std::list<GLGraphicsItem*>::const_iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it) {
-        if ((*it)->isDerivedFrom(type))
-            items.push_back(*it);
+    for (auto it : this->graphicsItems) {
+        if (it->isDerivedFrom(type))
+            items.push_back(it);
     }
 
     return items;
@@ -2131,8 +2131,8 @@ void View3DInventorViewer::renderFramebuffer()
     printDimension();
     navigation->redraw();
 
-    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
-        (*it)->paintGL();
+    for (auto it : this->graphicsItems)
+        it->paintGL();
 
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
@@ -2163,8 +2163,8 @@ void View3DInventorViewer::renderGLImage()
     printDimension();
     navigation->redraw();
 
-    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
-        (*it)->paintGL();
+    for (auto it : this->graphicsItems)
+        it->paintGL();
 
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
@@ -2223,8 +2223,8 @@ void View3DInventorViewer::renderScene()
     }
     catch (const Base::MemoryException&) {
         // FIXME: If this exception appears then the background and camera position get broken somehow. (Werner 2006-02-01)
-        for (std::set<ViewProvider*>::iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it)
-            (*it)->hide();
+        for (auto it : _ViewProviderSet)
+            it->hide();
 
         inherited::actualRedraw();
         QMessageBox::warning(parentWidget(), QObject::tr("Out of memory"),
@@ -2260,8 +2260,8 @@ void View3DInventorViewer::renderScene()
     printDimension();
     navigation->redraw();
 
-    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
-        (*it)->paintGL();
+    for (auto it : this->graphicsItems)
+        it->paintGL();
 
     //fps rendering
     if (fpsEnabled) {
@@ -2365,9 +2365,9 @@ void View3DInventorViewer::selectAll()
 {
     std::vector<App::DocumentObject*> objs;
 
-    for (std::set<ViewProvider*>::iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-            auto vp = static_cast<ViewProviderDocumentObject*>(*it);
+    for (auto it : _ViewProviderSet) {
+        if (it->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            auto vp = static_cast<ViewProviderDocumentObject*>(it);
             App::DocumentObject* obj = vp->getObject();
 
             if (obj) objs.push_back(obj);

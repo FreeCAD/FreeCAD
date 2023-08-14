@@ -140,9 +140,9 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         bool supported = false;
         QByteArray format;
         QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-        for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-            if (file.hasExtension((*it).data())) {
-                format = *it;
+        for (const auto & it : qtformats) {
+            if (file.hasExtension(it.data())) {
+                format = it;
                 supported = true;
                 break;
             }
@@ -243,10 +243,10 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
 
     // add now all further QImage formats
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+    for (const auto & it : qtformats) {
         // not supported? then append
-        if (!isWriteSupported((*it).data()) && formats.indexOf(QLatin1String(*it)) == -1)
-            formats << QLatin1String(*it);
+        if (!isWriteSupported(it.data()) && formats.indexOf(QLatin1String(it)) == -1)
+            formats << QLatin1String(it);
     }
 
     // now add PostScript and SGI RGB
@@ -740,8 +740,8 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
 
     QStringList formats;
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-        formats << QLatin1String(*it);
+    for (const auto & it : qtformats) {
+        formats << QLatin1String(it);
     }
     formats.sort();
     return formats;
