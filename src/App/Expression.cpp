@@ -2902,7 +2902,7 @@ bool VariableExpression::_renameObjectIdentifier(
         if (originalHasDocumentObjectName) {
             var.setDocumentObjectName(std::move(originalDocumentObjectName),
                                       true,
-                                      originalSubObjectName);
+                                      std::move(originalSubObjectName));
         }
         return true;
     }
