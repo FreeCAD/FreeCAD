@@ -96,8 +96,8 @@ std::string SelectionObject::getAsPropertyLinkSubString()const
 {
     std::ostringstream str;
     str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";
-    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it)
-        str << "'" << *it << "',";
+    for(const auto & it : SubNames)
+        str << "'" << it << "',";
     str << "])";
     return str.str();
 }

@@ -409,8 +409,8 @@ PyResource::PyResource() : myDlg(nullptr)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
-        SignalConnect* sc = *it;
+    for (auto it : mySignals) {
+        SignalConnect* sc = it;
         delete sc;
     }
 }

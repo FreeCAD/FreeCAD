@@ -664,11 +664,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) - normal * margin);
 
         float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
-            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
-            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
-            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
-            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        for (SbVec3f it : corners) {
+            minX = (it[0] < minX) ? it[0] : minX;
+            minY = (it[1] < minY) ? it[1] : minY;
+            maxX = (it[0] > maxX) ? it[0] : maxX;
+            maxY = (it[1] > maxY) ? it[1] : maxY;
         }
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
@@ -750,11 +750,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(pnt2);
 
         float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
-            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
-            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
-            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
-            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        for (SbVec3f it : corners) {
+            minX = (it[0] < minX) ? it[0] : minX;
+            minY = (it[1] < minY) ? it[1] : minY;
+            maxX = (it[0] > maxX) ? it[0] : maxX;
+            maxY = (it[1] > maxY) ? it[1] : maxY;
         }
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
@@ -852,11 +852,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(img4);
 
         float minX = pnt1[0], minY = pnt1[1], maxX = pnt1[0] , maxY = pnt1[1];
-        for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
-            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
-            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
-            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
-            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        for (SbVec3f it : corners) {
+            minX = (it[0] < minX) ? it[0] : minX;
+            minY = (it[1] < minY) ? it[1] : minY;
+            maxX = (it[0] > maxX) ? it[0] : maxX;
+            maxY = (it[1] > maxY) ? it[1] : maxY;
         }
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
@@ -910,11 +910,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(p2);
 
         float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
-        for (std::vector<SbVec3f>::iterator it=corners.begin(); it != corners.end(); ++it) {
-            minX = ((*it)[0] < minX) ? (*it)[0] : minX;
-            minY = ((*it)[1] < minY) ? (*it)[1] : minY;
-            maxX = ((*it)[0] > maxX) ? (*it)[0] : maxX;
-            maxY = ((*it)[1] > maxY) ? (*it)[1] : maxY;
+        for (SbVec3f it : corners) {
+            minX = (it[0] < minX) ? it[0] : minX;
+            minY = (it[1] < minY) ? it[1] : minY;
+            maxX = (it[0] > maxX) ? it[0] : maxX;
+            maxY = (it[1] > maxY) ? it[1] : maxY;
         }
         //Store the bounding box
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));

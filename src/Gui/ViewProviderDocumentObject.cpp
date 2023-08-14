@@ -346,8 +346,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
     //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
+    for (const auto & it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back( it.c_str() );
     }
     aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));

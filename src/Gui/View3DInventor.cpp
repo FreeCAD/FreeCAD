@@ -775,8 +775,8 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         _viewer->getGLWidget()->setFocusProxy(nullptr);
         qApp->removeEventFilter(this);
         QList<QAction*> acts = this->actions();
-        for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)
-            this->removeAction(*it);
+        for (QAction* it : acts)
+            this->removeAction(it);
 
         // Step two
         auto mdi = qobject_cast<QMdiSubWindow*>(parentWidget());

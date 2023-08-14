@@ -455,16 +455,16 @@ bool GraphvizView::onMsg(const char* pMsg,const char**)
       //formatMap << qMakePair(tr("VRML format (*.vrml)"), QString::fromLatin1("vrml"));
 
         QStringList filter;
-        for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it)
-            filter << it->first;
+        for (const auto & it : formatMap)
+            filter << it.first;
 
         QString selectedFilter;
         QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
-            for (QList< QPair<QString, QString> >::iterator it = formatMap.begin(); it != formatMap.end(); ++it) {
-                if (selectedFilter == it->first) {
-                    format = it->second;
+            for (const auto & it : formatMap) {
+                if (selectedFilter == it.first) {
+                    format = it.second;
                     break;
                 }
             }
