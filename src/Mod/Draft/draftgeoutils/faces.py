@@ -101,7 +101,7 @@ def is_coplanar(faces, tol=-1):
     """
 
     first_face = faces[0]
-    for face in faces:
+    for face in faces[1:]:
         if not are_coplanar(first_face, face, tol):
             return False
 
@@ -298,5 +298,49 @@ def removeSplitter(shape):
             return face
 
     return None
+
+
+def multi_fuse(faces):
+    """Fuse adjoining and overlapping faces. Can be very slow.
+
+    Parameters
+    ----------
+    faces: iterable
+        A list or tuple with two or more faces. The faces must be planar and
+        co-planar (their normals must have the same direction).
+
+    Returns
+    -------
+    list
+        List with one or more faces.
+    """
+    def _fuse_with_one(cur, others):
+        out_list = []
+        for other in others:
+            # Check boundboxes first to improve speed:
+            if cur.BoundBox.intersect(other.BoundBox):
+                new = cur.fuse(other)
+                if new.Area < cur.Area + other.Area:
+                    cur = new.removeSplitter().Faces[0]
+                else:
+                    out_list.append(other)
+            else:
+                out_list.append(other)
+        out_list.append(cur)
+        return out_list
+
+    tmp_len = len(faces)
+    while tmp_len != 1:
+        old_len = tmp_len
+        i = 1
+        while i < tmp_len:
+            faces = _fuse_with_one(faces[0], faces[1:])
+            tmp_len = len(faces)
+            i += 1
+        if tmp_len == old_len:
+            break
+    for face in faces:
+        face.fix(1e-7, 0, 1)
+    return faces
 
 ## @}
