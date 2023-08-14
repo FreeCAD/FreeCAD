@@ -148,8 +148,8 @@ PyObject*  TypePy::getAllDerivedFrom(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    for (const auto & it : ary) {
+        res.append(Py::asObject(new TypePy(new Base::Type(it))));
     }
     return Py::new_reference_to(res);
 }
@@ -163,8 +163,8 @@ PyObject*  TypePy::getAllDerived(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    for (const auto & it : ary) {
+        res.append(Py::asObject(new TypePy(new Base::Type(it))));
     }
     return Py::new_reference_to(res);
 }

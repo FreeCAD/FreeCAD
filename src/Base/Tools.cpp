@@ -97,9 +97,9 @@ private:
 
     void findHighestSuffix(const std::vector<std::string>& names)
     {
-        for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
-            if (it->substr(0, base_name.length()) == base_name) { // same prefix
-                std::string suffix(it->substr(base_name.length()));
+        for (const auto & name : names) {
+            if (name.substr(0, base_name.length()) == base_name) { // same prefix
+                std::string suffix(name.substr(base_name.length()));
                 if (suffix.size() > 0) {
                     std::string::size_type pos = suffix.find_first_not_of("0123456789");
                     if (pos == std::string::npos) {
@@ -161,11 +161,11 @@ std::string Base::Tools::getIdentifier(const std::string& name)
     if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57)
         CleanName[0] = '_';
     // strip illegal chars
-    for (std::string::iterator it = CleanName.begin(); it != CleanName.end(); ++it) {
-        if (!((*it>=48 && *it<=57) ||  // number
-             (*it>=65 && *it<=90)  ||  // uppercase letter
-             (*it>=97 && *it<=122)))   // lowercase letter
-             *it = '_'; // it's neither number nor letter
+    for (char & it : CleanName) {
+        if (!((it>=48 && it<=57) ||  // number
+             (it>=65 && it<=90)  ||  // uppercase letter
+             (it>=97 && it<=122)))   // lowercase letter
+             it = '_'; // it's neither number nor letter
     }
 
     return CleanName;
@@ -175,8 +175,8 @@ std::wstring Base::Tools::widen(const std::string& str)
 {
     std::wostringstream wstm;
     const std::ctype<wchar_t>& ctfacet = std::use_facet< std::ctype<wchar_t> >(wstm.getloc());
-    for (size_t i=0; i<str.size(); ++i)
-        wstm << ctfacet.widen(str[i]);
+    for (char i : str)
+        wstm << ctfacet.widen(i);
     return wstm.str();
 }
 
@@ -184,8 +184,8 @@ std::string Base::Tools::narrow(const std::wstring& str)
 {
     std::ostringstream stm;
     const std::ctype<char>& ctfacet = std::use_facet< std::ctype<char> >(stm.getloc());
-    for (size_t i=0; i<str.size(); ++i)
-        stm << ctfacet.narrow(str[i], 0);
+    for (wchar_t i : str)
+        stm << ctfacet.narrow(i, 0);
     return stm.str();
 }
 

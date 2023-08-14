@@ -165,8 +165,8 @@ void Type::init()
 
 void Type::destruct()
 {
-  for(std::vector<TypeData*>::const_iterator it = typedata.begin();it!= typedata.end();++it)
-    delete *it;
+  for(auto it : typedata)
+    delete it;
   typedata.clear();
   typemap.clear();
   loadModuleSet.clear();
@@ -218,11 +218,11 @@ int Type::getAllDerivedFrom(const Type type, std::vector<Type> & List)
 {
   int cnt = 0;
 
-  for(std::vector<TypeData*>::const_iterator it = typedata.begin();it!= typedata.end();++it)
+  for(auto it : typedata)
   {
-    if ((*it)->type.isDerivedFrom(type))
+    if (it->type.isDerivedFrom(type))
     {
-      List.push_back((*it)->type);
+      List.push_back(it->type);
       cnt++;
     }
   }
