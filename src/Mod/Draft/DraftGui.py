@@ -962,21 +962,21 @@ class DraftToolBar:
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
         if not self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Local \u0394X"))
-            self.labely.setText(translate("draft", "Local \u0394Y"))
-            self.labelz.setText(translate("draft", "Local \u0394Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("\u0394X"))  # \u0394 = ∆ (Greek delta)
+            self.labely.setText(translate("draft", "Local {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("\u0394Z"))
         elif not self.globalMode and not self.relativeMode:
-            self.labelx.setText(translate("draft", "Local X"))
-            self.labely.setText(translate("draft", "Local Y"))
-            self.labelz.setText(translate("draft", "Local Z"))
+            self.labelx.setText(translate("draft", "Local {}").format("X"))
+            self.labely.setText(translate("draft", "Local {}").format("Y"))
+            self.labelz.setText(translate("draft", "Local {}").format("Z"))
         elif self.globalMode and self.relativeMode:
-            self.labelx.setText(translate("draft", "Global \u0394X"))
-            self.labely.setText(translate("draft", "Global \u0394Y"))
-            self.labelz.setText(translate("draft", "Global \u0394Z"))
+            self.labelx.setText(translate("draft", "Global {}").format("\u0394X"))
+            self.labely.setText(translate("draft", "Global {}").format("\u0394Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("\u0394Z"))
         else:
-            self.labelx.setText(translate("draft", "Global X"))
-            self.labely.setText(translate("draft", "Global Y"))
-            self.labelz.setText(translate("draft", "Global Z"))
+            self.labelx.setText(translate("draft", "Global {}").format("X"))
+            self.labely.setText(translate("draft", "Global {}").format("Y"))
+            self.labelz.setText(translate("draft", "Global {}").format("Z"))
 
     def setNextFocus(self):
         def isThere(widget):
