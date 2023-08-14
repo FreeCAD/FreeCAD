@@ -2480,7 +2480,10 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
         if (!f.fileName().isEmpty() && f.open(QFile::ReadOnly | QFile::Text)) {
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
-            qApp->setStyleSheet(str.readAll());
+
+            QString styleSheetContent = replaceVariablesInQss(str.readAll());
+
+            qApp->setStyleSheet(styleSheetContent);
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
@@ -2530,6 +2533,28 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
         if (mdi->style())
             mdi->style()->unpolish(qApp);
     }
+}
+
+QString Application::replaceVariablesInQss(QString qssText)
+{
+    //First we fetch the colors from preferences,
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
+    unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
+    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
+
+    //convert them to hex.
+    //Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
+    QString accentColor1 = QString::fromLatin1("#%1").arg(longAccentColor1, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+    QString accentColor2 = QString::fromLatin1("#%1").arg(longAccentColor2, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+    QString accentColor3 = QString::fromLatin1("#%1").arg(longAccentColor3, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor1"), accentColor1);
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor2"), accentColor2);
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor3"), accentColor3);
+
+    //Base::Console().Warning("%s\n", qssText.toStdString());
+    return qssText;
 }
 
 void Application::checkForDeprecatedSettings()

@@ -209,8 +209,9 @@ public:
 
     /** @name Appearance */
     //@{
-    /// Activate a named workbench
+    /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
+    QString replaceVariablesInQss(QString qssText);
     //@}
 
     /** @name User Commands */
