@@ -2545,8 +2545,8 @@ Expression *FunctionExpression::simplify() const
     std::vector<Expression*> a;
 
     // Try to simplify each argument to function
-    for (auto it = args.begin(); it != args.end(); ++it) {
-        Expression * v = (*it)->simplify();
+    for (auto it : args) {
+        Expression * v = it->simplify();
 
         if (freecad_dynamic_cast<NumberExpression>(v))
             ++numerics;
@@ -2557,8 +2557,8 @@ Expression *FunctionExpression::simplify() const
         // All constants, then evaluation must also be constant
 
         // Clean-up
-        for (auto it = args.begin(); it != args.end(); ++it)
-            delete *it;
+        for (auto it : args)
+            delete it;
 
         return eval();
     }

@@ -1615,8 +1615,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             placements.reserve(objs.size());
             std::vector<Base::Vector3d> scales;
             scales.reserve(objs.size());
-            for(size_t i=0;i<objs.size();++i) {
-                auto element = freecad_dynamic_cast<LinkElement>(objs[i]);
+            for(auto obj : objs) {
+                auto element = freecad_dynamic_cast<LinkElement>(obj);
                 if(element) {
                     placements.push_back(element->Placement.getValue());
                     scales.push_back(element->getScaleVector());
@@ -1887,8 +1887,8 @@ void LinkBaseExtension::syncElementList() {
     auto owner = getContainer();
     auto ownerID = owner?owner->getID():0;
     auto elements = getElementListValue();
-    for (size_t i = 0; i < elements.size(); ++i) {
-        auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
+    for (auto i : elements) {
+        auto element = freecad_dynamic_cast<LinkElement>(i);
         if (!element
             || (element->_LinkOwner.getValue()
                 && element->_LinkOwner.getValue() != ownerID))
