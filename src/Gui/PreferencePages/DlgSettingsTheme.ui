@@ -29,27 +29,13 @@
      <item row="0" column="0">
       <layout class="QGridLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="styleSheetLabel">
-         <property name="text">
-          <string>Style sheet:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="styleSheetsCombobox">
-         <property name="toolTip">
-          <string>Style sheet how user interface will look like</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
         <widget class="QLabel">
          <property name="text">
           <string>Accent color 1</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="0" column="1">
         <widget class="Gui::PrefColorButton" name="ThemeAccentColor1">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -75,14 +61,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="1" column="0">
         <widget class="QLabel">
          <property name="text">
           <string>Accent color 2</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="1" column="1">
         <widget class="Gui::PrefColorButton" name="ThemeAccentColor2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -108,14 +94,14 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QLabel">
          <property name="text">
           <string>Accent color 3</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="2" column="1">
         <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -138,6 +124,21 @@
          </property>
          <property name="prefPath" stdset="0">
           <cstring>Themes</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="styleSheetLabel">
+         <property name="text">
+          <string>Style sheet (advanced):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="styleSheetsCombobox">
+         <property name="toolTip">
+          <string>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
+You can now use Theme to get a full customization of the interface.</string>
          </property>
         </widget>
        </item>
