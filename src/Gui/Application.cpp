@@ -2460,11 +2460,9 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
         qApp->setPalette(newPal);
     }
 
-
-    QString current = mw->property("fc_currentStyleSheet").toString();
     mw->setProperty("fc_currentStyleSheet", qssFile);
 
-    if (!qssFile.isEmpty() && current != qssFile) {
+    if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.
         // For qss they are set-up in runApplication() with the prefix "qss"
         QString prefix(QLatin1String("qss:"));
@@ -2509,8 +2507,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
             }
         }
     }
-
-    if (qssFile.isEmpty()) {
+    else {
         if (tiledBackground) {
             qApp->setStyleSheet(QString());
             ActionStyleEvent e(ActionStyleEvent::Restore);
