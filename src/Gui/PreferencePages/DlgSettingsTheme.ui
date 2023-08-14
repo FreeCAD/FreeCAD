@@ -45,12 +45,12 @@
        <item row="1" column="0">
         <widget class="QLabel">
          <property name="text">
-          <string>Secondary theme color</string>
+          <string>Accent color 1</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="Gui::PrefColorButton" name="ThemeSecondaryColor">
+        <widget class="Gui::PrefColorButton" name="ThemeAccentColor1">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -68,7 +68,7 @@
           </color>
          </property>
          <property name="prefEntry" stdset="0">
-          <cstring>ThemeSecondaryColor</cstring>
+          <cstring>ThemeAccentColor1</cstring>
          </property>
          <property name="prefPath" stdset="0">
           <cstring>Themes</cstring>
@@ -78,12 +78,12 @@
        <item row="2" column="0">
         <widget class="QLabel">
          <property name="text">
-          <string>Highlight color</string>
+          <string>Accent color 2</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="Gui::PrefColorButton" name="ThemeHighlightColor">
+        <widget class="Gui::PrefColorButton" name="ThemeAccentColor2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -101,7 +101,7 @@
           </color>
          </property>
          <property name="prefEntry" stdset="0">
-          <cstring>ThemeHighlightColor</cstring>
+          <cstring>ThemeAccentColor2</cstring>
          </property>
          <property name="prefPath" stdset="0">
           <cstring>Themes</cstring>
@@ -111,12 +111,12 @@
        <item row="3" column="0">
         <widget class="QLabel">
          <property name="text">
-          <string>Focus theme color</string>
+          <string>Accent color 3</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="Gui::PrefColorButton" name="ThemeFocusColor">
+        <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -134,7 +134,7 @@
           </color>
          </property>
          <property name="prefEntry" stdset="0">
-          <cstring>ThemeFocusColor</cstring>
+          <cstring>ThemeAccentColor3</cstring>
          </property>
          <property name="prefPath" stdset="0">
           <cstring>Themes</cstring>

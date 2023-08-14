@@ -59,9 +59,9 @@ DlgSettingsTheme::~DlgSettingsTheme()
 
 void DlgSettingsTheme::saveSettings()
 {
-    ui->ThemeSecondaryColor->onSave();
-    ui->ThemeHighlightColor->onSave();
-    ui->ThemeFocusColor->onSave();
+    ui->ThemeAccentColor1->onSave();
+    ui->ThemeAccentColor2->onSave();
+    ui->ThemeAccentColor3->onSave();
 
     if (styleSheetChanged)
         saveStyleSheet();
@@ -69,9 +69,9 @@ void DlgSettingsTheme::saveSettings()
 
 void DlgSettingsTheme::loadSettings()
 {
-    ui->ThemeSecondaryColor->onRestore();
-    ui->ThemeHighlightColor->onRestore();
-    ui->ThemeFocusColor->onRestore();
+    ui->ThemeAccentColor1->onRestore();
+    ui->ThemeAccentColor2->onRestore();
+    ui->ThemeAccentColor3->onRestore();
 
     loadStyleSheet();
 }
