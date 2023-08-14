@@ -1,10 +1,7 @@
 
 SET(Stylesheets_Files
     "Behave-dark.qss"
-    "Dark-blue.qss"
-    "Dark-green.qss"
-    "Dark-orange.qss"
-    "Dark-pink.qss"
+    "Dark.qss"
     "Darker-blue.qss"
     "Darker-green.qss"
     "Darker-orange.qss"
