@@ -47,6 +47,9 @@ DlgSettingsTheme::DlgSettingsTheme(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->styleSheetsCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsTheme::onStyleSheetChanged);
+    connect(ui->ThemeAccentColor1, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
+    connect(ui->ThemeAccentColor2, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
+    connect(ui->ThemeAccentColor3, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
 }
 
 /**
@@ -144,6 +147,10 @@ void DlgSettingsTheme::loadStyleSheet()
 
 void DlgSettingsTheme::onStyleSheetChanged(int index) {
     Q_UNUSED(index);
+    styleSheetChanged = true;
+}
+
+void DlgSettingsTheme::onColorChanged() {
     styleSheetChanged = true;
 }
 

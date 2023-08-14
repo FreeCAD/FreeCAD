@@ -54,6 +54,7 @@ protected:
 
 protected Q_SLOTS:
     void onStyleSheetChanged(int index);
+    void onColorChanged();
 
 private:
   std::unique_ptr<Ui_DlgSettingsTheme> ui;
