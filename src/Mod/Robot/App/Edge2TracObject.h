@@ -33,12 +33,12 @@ namespace Robot
 
 class RobotExport Edge2TracObject : public TrajectoryObject
 {
-    PROPERTY_HEADER(Robot::TrajectoryObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::TrajectoryObject);
 
 public:
     /// Constructor
-    Edge2TracObject(void);
-    virtual ~Edge2TracObject();
+    Edge2TracObject();
+    ~Edge2TracObject() override;
 
     App::PropertyLinkSub         Source;
     App::PropertyFloatConstraint SegValue;
@@ -50,14 +50,14 @@ public:
     int NbrOfEdges;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "RobotGui::ViewProviderEdge2TracObject";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
 
 };
 

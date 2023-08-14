@@ -144,8 +144,10 @@ void FitBSplineSurfaceWidget::onMakePlacementClicked()
                             .arg(q3);
 
                     QString document = QString::fromStdString(d->obj.getDocumentPython());
-                    QString command = QString::fromLatin1("%1.addObject(\"App::Placement\", \"Placement\").Placement = %2")
-                        .arg(document, argument);
+                    QString command =
+                        QString::fromLatin1(
+                            R"(%1.addObject("App::Placement", "Placement").Placement = %2)"
+                        ).arg(document, argument);
 
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
                     Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");

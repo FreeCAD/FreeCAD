@@ -352,7 +352,7 @@ private:
                 this, &WrapperManager::clear);
         wrapQApplication();
     }
-    ~WrapperManager() = default;
+    ~WrapperManager() override = default;
 };
 
 template<typename qttype>

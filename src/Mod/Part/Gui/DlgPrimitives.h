@@ -85,7 +85,7 @@ class AbstractPrimitive : public QObject
 
 public:
     AbstractPrimitive(Part::Primitive* feature = nullptr);
-    virtual ~AbstractPrimitive() = default;
+    ~AbstractPrimitive() override = default;
 
     bool hasValidPrimitive() const;
     virtual const char* getDefaultName() const = 0;

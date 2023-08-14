@@ -85,11 +85,11 @@
 
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
-#include "DrawProjGroupItem.h"
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
+#include "DrawViewDetail.h"
 
 #include "DrawViewSection.h"
 
@@ -270,6 +270,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     App::DocumentObject *base = BaseView.getValue();
     TechDraw::DrawViewPart *dvp = nullptr;
     TechDraw::DrawViewSection *dvs = nullptr;
+    TechDraw::DrawViewDetail *dvd = nullptr;
     if (!base) {
         return TopoDS_Shape();
     }
@@ -278,13 +279,15 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection *>(base);
         shapeToCut = dvs->getCutShape();
+    } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+        dvd = static_cast<TechDraw::DrawViewDetail *>(base);
+        shapeToCut = dvd->getDetailShape();
     } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         dvp = static_cast<TechDraw::DrawViewPart *>(base);
         shapeToCut = dvp->getSourceShape();
         if (FuseBeforeCut.getValue()) {
-            shapeToCut = dvp->getSourceShapeFused();
+            shapeToCut = dvp->getSourceShape(true);
         }
-
     } else {
         Base::Console().Message("DVS::getShapeToCut - base is weird\n");
         return TopoDS_Shape();
@@ -1076,16 +1079,6 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
     return nullptr;
 }
 
-TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
-{
-    App::DocumentObject* base = BaseView.getValue();
-    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
-        return baseDPGI;
-    }
-    return nullptr;
-}
-
 // setup / tear down routines
 
 void DrawViewSection::unsetupObject()
@@ -1124,14 +1117,13 @@ void DrawViewSection::makeLineSets(void)
 
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
-    std::string ext = fi.extension();
     if (!fi.isReadable()) {
         Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(),
                                 fileSpec.c_str());
         return;
     }
 
-    if (ext == "pat" || ext == "PAT") {
+    if (fi.hasExtension("pat")) {
         if (!fileSpec.empty() && !NameGeomPattern.isEmpty()) {
             m_lineSets.clear();
             m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());

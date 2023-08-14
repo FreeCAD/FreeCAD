@@ -297,8 +297,6 @@ SET(Gui_UIC_SRCS
     DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
-    DlgEditor.ui
-    DlgGeneral.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -313,20 +311,23 @@ SET(Gui_UIC_SRCS
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
-    DlgReportView.ui
     DlgRevertToBackupConfig.ui
-    DlgSettings3DView.ui
-    DlgSettingsCacheDirectory.ui
-    DlgSettingsNavigation.ui
-    DlgSettingsSelection.ui
-    DlgSettingsViewColor.ui
+    PreferencePages/DlgSettings3DView.ui
+    PreferencePages/DlgSettingsCacheDirectory.ui
     DlgSettingsColorGradient.ui
-    DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsEditor.ui
+    PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
-    DlgSettingsWorkbenches.ui
-    DlgSettingsMacro.ui
-    DlgSettingsNotificationArea.ui
-    DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsMacro.ui
+    PreferencePages/DlgSettingsNavigation.ui
+    PreferencePages/DlgSettingsNotificationArea.ui
+    PreferencePages/DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsReportView.ui
+    PreferencePages/DlgSettingsSelection.ui
+    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsViewColor.ui
+    PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgTreeWidget.ui
@@ -555,63 +556,66 @@ SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
-    DlgEditorImp.cpp
-    DlgGeneralImp.cpp
     DlgOnlineHelpImp.cpp
     DlgPreferencesImp.cpp
-    DlgReportViewImp.cpp
-    DlgSettings3DViewImp.cpp
-    DlgSettingsCacheDirectory.cpp
-    DlgSettingsNavigation.cpp
-    DlgSettingsSelection.cpp
-    DlgSettingsViewColor.cpp
+    PreferencePages/DlgSettings3DViewImp.cpp
+    PreferencePages/DlgSettingsCacheDirectory.cpp
     DlgSettingsColorGradientImp.cpp
-    DlgSettingsDocumentImp.cpp
+    PreferencePages/DlgSettingsDocumentImp.cpp
+    PreferencePages/DlgSettingsEditor.cpp
+    PreferencePages/DlgSettingsGeneral.cpp
     DlgSettingsImageImp.cpp
-    DlgSettingsWorkbenchesImp.cpp
-    DlgSettingsMacroImp.cpp
-    DlgSettingsNotificationArea.cpp
-    DlgSettingsPythonConsole.cpp
+    PreferencePages/DlgSettingsMacroImp.cpp
+    PreferencePages/DlgSettingsNavigation.cpp
+    PreferencePages/DlgSettingsNotificationArea.cpp
+    PreferencePages/DlgSettingsPythonConsole.cpp
+    PreferencePages/DlgSettingsReportView.cpp
+    PreferencePages/DlgSettingsSelection.cpp
+    PreferencePages/DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsViewColor.cpp
+    PreferencePages/DlgSettingsWorkbenchesImp.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
-    DlgEditorImp.h
-    DlgGeneralImp.h
     DlgOnlineHelpImp.h
     DlgPreferencesImp.h
-    DlgReportViewImp.h
-    DlgSettings3DViewImp.h
-    DlgSettingsCacheDirectory.h
-    DlgSettingsNavigation.h
-    DlgSettingsSelection.h
-    DlgSettingsViewColor.h
+    PreferencePages/DlgSettings3DViewImp.h
+    PreferencePages/DlgSettingsCacheDirectory.h
     DlgSettingsColorGradientImp.h
-    DlgSettingsDocumentImp.h
+    PreferencePages/DlgSettingsDocumentImp.h
+    PreferencePages/DlgSettingsEditor.h
+    PreferencePages/DlgSettingsGeneral.h
     DlgSettingsImageImp.h
-    DlgSettingsWorkbenchesImp.h
-    DlgSettingsMacroImp.h
-    DlgSettingsNotificationArea.h
-    DlgSettingsPythonConsole.h
+    PreferencePages/DlgSettingsMacroImp.h
+    PreferencePages/DlgSettingsNavigation.h
+    PreferencePages/DlgSettingsNotificationArea.h
+    PreferencePages/DlgSettingsPythonConsole.h
+    PreferencePages/DlgSettingsReportView.h
+    PreferencePages/DlgSettingsSelection.h
+    PreferencePages/DlgSettingsTheme.h
+    PreferencePages/DlgSettingsViewColor.h
+    PreferencePages/DlgSettingsWorkbenchesImp.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
-    DlgEditor.ui
-    DlgGeneral.ui
     DlgOnlineHelp.ui
     DlgPreferences.ui
-    DlgReportView.ui
-    DlgSettings3DView.ui
-    DlgSettingsCacheDirectory.ui
-    DlgSettingsNavigation.ui
-    DlgSettingsSelection.ui
-    DlgSettingsViewColor.ui
+    PreferencePages/DlgSettings3DView.ui
+    PreferencePages/DlgSettingsCacheDirectory.ui
     DlgSettingsColorGradient.ui
-    DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsDocument.ui
+    PreferencePages/DlgSettingsEditor.ui
+    PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
-    DlgSettingsWorkbenches.ui
-    DlgSettingsMacro.ui
-    DlgSettingsNotificationArea.ui
-    DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsMacro.ui
+    PreferencePages/DlgSettingsNavigation.ui
+    PreferencePages/DlgSettingsNotificationArea.ui
+    PreferencePages/DlgSettingsPythonConsole.ui
+    PreferencePages/DlgSettingsReportView.ui
+    PreferencePages/DlgSettingsSelection.ui
+    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsViewColor.ui
+    PreferencePages/DlgSettingsWorkbenches.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
@@ -1310,11 +1314,11 @@ else(WIN32)
     #    Icons/freecad-doc.png
     #    DESTINATION ${CMAKE_INSTALL_DATADIR}
     #)
-    INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME freecad.png)
-    INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME freecad.png)
-    INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME freecad.png)
-    INSTALL(FILES Icons/freecad-icon-64.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps RENAME freecad.png)
-    INSTALL(FILES Icons/freecad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
+    INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME org.freecad.FreeCAD.png)
+    INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME org.freecad.FreeCAD.png)
+    INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME org.freecad.FreeCAD.png)
+    INSTALL(FILES Icons/freecad-icon-64.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps RENAME org.freecad.FreeCAD.png)
+    INSTALL(FILES Icons/freecad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps RENAME org.freecad.FreeCAD.svg)
     INSTALL(FILES Icons/freecad.xpm DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
     INSTALL(FILES Icons/freecad-doc.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes RENAME application-x-extension-fcstd.svg)
 endif(WIN32)

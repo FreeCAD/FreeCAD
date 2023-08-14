@@ -52,10 +52,10 @@ public:
     ~ViewProviderSheet() override;
 
     void setDisplayMode(const char* ModeName) override;
-    bool useNewSelectionModel(void) const override {return false;}
+    bool useNewSelectionModel() const override {return false;}
     std::vector<std::string> getDisplayModes() const override;
 
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
@@ -66,7 +66,7 @@ public:
 
     bool setEdit(int ModNum) override;
 
-    bool isShow(void) const override { return true; }
+    bool isShow() const override { return true; }
 
     Gui::MDIView *getMDIView() const override;
 

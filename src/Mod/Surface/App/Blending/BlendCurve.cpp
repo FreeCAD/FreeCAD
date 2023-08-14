@@ -131,9 +131,8 @@ void BlendCurve::setSize(int i, double f, bool relative)
     double size = f;
     try {
         if (relative) {
-            double nb_poles = blendPoints.front().nbVectors() + blendPoints[1].nbVectors();
             Base::Vector3d diff = blendPoints[1].vectors[0] - blendPoints[0].vectors[0];
-            size = size * diff.Length() / nb_poles;
+            size = size * diff.Length();
         }
         blendPoints[i].setSize(size);
     }

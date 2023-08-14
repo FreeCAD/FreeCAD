@@ -101,7 +101,6 @@ bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj, int knotGeoId,
     return false;
 }
 
-
 // Convert to NURBS
 DEF_STD_CMD_A(CmdSketcherConvertToNURBS)
 
@@ -635,12 +634,15 @@ void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd;
 
-    if (iMsg == 0)
+    if (iMsg == 0) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineIncreaseKnotMultiplicity");
-    else if (iMsg == 1)
+    }
+    else if (iMsg == 1) {
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDecreaseKnotMultiplicity");
-    else
+    }
+    else {
         return;
+    }
 
     cmd->invoke(0);
 
@@ -678,8 +680,9 @@ void CmdSketcherCompModifyKnotMultiplicity::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
@@ -817,10 +820,12 @@ public:
             }
         }
 
-        if (applied)
+        if (applied) {
             Gui::Command::commitCommand();
-        else
+        }
+        else {
             Gui::Command::abortCommand();
+        }
 
         tryAutoRecomputeIfNotSolve(Obj);
 
@@ -908,9 +913,10 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     int GeoId = std::atoi(SubNames[0].substr(4, 4000).c_str()) - 1;
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
         ActivateBSplineHandler(getActiveGuiDocument(),
                                new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+    }
     else {
         Gui::TranslatedUserWarning(
             Obj,
@@ -949,7 +955,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1052,16 +1058,18 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         getSelection().clearSelection();
     }
 
-    if (applied)
+    if (applied) {
         Gui::Command::commitCommand();
-    else
+    }
+    else {
         Gui::Command::abortCommand();
+    }
 
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
 
-bool CmdSketcherJoinCurves::isActive(void)
+bool CmdSketcherJoinCurves::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }

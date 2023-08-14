@@ -120,7 +120,7 @@ def getDiscretized(edge, plane):
     return get_discretized(edge, plane)
 
 
-def _get_path_circ_ellipse(plane, edge, vertex, edata,
+def _get_path_circ_ellipse(plane, edge, verts, edata,
                            iscircle, isellipse,
                            fill, stroke, linewidth, lstyle):
     """Get the edge data from a path that is a circle or ellipse."""
@@ -184,9 +184,9 @@ def _get_path_circ_ellipse(plane, edge, vertex, edata,
             # Difference in angles
             _diff = (center.LastParameter - center.FirstParameter)/2.0
             endpoints = [get_proj(center.value(_diff), plane),
-                         get_proj(vertex[-1].Point, plane)]
+                         get_proj(verts[-1].Point, plane)]
         else:
-            endpoints = [get_proj(vertex[-1].Point, plane)]
+            endpoints = [get_proj(verts[-1].Point, plane)]
 
         # Arc with more than one vertex
         if iscircle:
@@ -378,30 +378,33 @@ def get_path(obj, plane,
             wire.fixWire()
             egroups.append(Part.__sortEdges__(wire.Edges))
 
-    for _, _edges in enumerate(egroups):
+    for _edges in egroups:
         edata = ""
-        vertex = ()  # skipped for the first edge
 
         for edgeindex, edge in enumerate(_edges):
-            previousvs = vertex
-            # vertexes of an edge (reversed if needed)
-            vertex = edge.Vertexes
-            if previousvs:
-                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
-                    vertex.reverse()
-
             if edgeindex == 0:
-                v = get_proj(vertex[0].Point, plane)
+                verts = edge.Vertexes
+                if len(_edges) > 1:
+                    last_pt = verts[-1].Point
+                    nextverts = _edges[1].Vertexes
+                    if (last_pt - nextverts[0].Point).Length > 1e-6 \
+                            and (last_pt - nextverts[-1].Point).Length > 1e-6:
+                        verts.reverse()
+                v = get_proj(verts[0].Point, plane)
                 edata += 'M {} {} '.format(v.x, v.y)
             else:
-                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
-                    raise ValueError('edges not ordered')
+                previousverts = verts
+                verts = edge.Vertexes
+                if (verts[0].Point - previousverts[-1].Point).Length > 1e-6:
+                    verts.reverse()
+                    if (verts[0].Point - previousverts[-1].Point).Length > 1e-6:
+                        raise ValueError('edges not ordered')
 
             iscircle = DraftGeomUtils.geomType(edge) == "Circle"
             isellipse = DraftGeomUtils.geomType(edge) == "Ellipse"
 
             if iscircle or isellipse:
-                _type, data = _get_path_circ_ellipse(plane, edge, vertex,
+                _type, data = _get_path_circ_ellipse(plane, edge, verts,
                                                      edata,
                                                      iscircle, isellipse,
                                                      fill, stroke,
@@ -413,7 +416,7 @@ def get_path(obj, plane,
                 # else the `edata` was properly augmented, so re-assing it
                 edata = data
             elif DraftGeomUtils.geomType(edge) == "Line":
-                v = get_proj(vertex[-1].Point, plane)
+                v = get_proj(verts[-1].Point, plane)
                 edata += 'L {} {} '.format(v.x, v.y)
             else:
                 # If it's not a circle nor ellipse nor straight line

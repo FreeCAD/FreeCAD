@@ -61,7 +61,7 @@
 
 
 using namespace MeshPartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace MeshPartGui {
 class ViewProviderCrossSections : public Gui::ViewProvider
@@ -94,7 +94,7 @@ public:
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const override
+    std::vector<std::string> getDisplayModes() const override
     {
         return std::vector<std::string>();
     }
@@ -294,10 +294,12 @@ void CrossSections::apply()
 
         MeshCore::MeshFacetGrid grid(kernel);
 
+        //NOLINTBEGIN
         MeshCrossSection cs(kernel, grid, a, b, c, connectEdges, eps);
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, boost::bind(&MeshCrossSection::section, &cs, bp::_1));
+            (d, std::bind(&MeshCrossSection::section, &cs, sp::_1));
         future.waitForFinished();
+        //NOLINTEND
 
         TopoDS_Compound comp;
         BRep_Builder builder;

@@ -153,13 +153,13 @@ public:
                              std::string &Value,
                              const char *Default) const;
     std::vector<std::pair<std::string, std::string>>
-        GetAttributeMap(ParamType Type, const char * sFilter = NULL) const;
+        GetAttributeMap(ParamType Type, const char * sFilter = nullptr) const;
     /** Return the type and name of all parameters with optional filter
      *  @param sFilter only strings which name includes sFilter are put in the vector
      *  @return std::vector of pair(type, name)
      */
     std::vector<std::pair<ParamType,std::string>>
-        GetParameterNames(const char * sFilter = NULL) const;
+        GetParameterNames(const char * sFilter = nullptr) const;
     //@}
 
     /** @name methods for bool handling */

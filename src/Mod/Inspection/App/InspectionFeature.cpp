@@ -57,7 +57,7 @@
 
 
 using namespace Inspection;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
@@ -160,7 +160,7 @@ namespace Inspection {
             // do nothing
         }
 
-        void Validate (void)
+        void Validate ()
         {
             // do nothing
         }
@@ -182,7 +182,7 @@ namespace Inspection {
             // do nothing
         }
 
-        unsigned long HasElements (void) const override
+        unsigned long HasElements () const override
         {
             return _pclMesh->CountFacets();
         }
@@ -224,7 +224,7 @@ namespace Inspection {
                 _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
         }
 
-        void InitGrid (void) override
+        void InitGrid () override
         {
             unsigned long i, j;
 
@@ -252,7 +252,7 @@ namespace Inspection {
             }
         }
 
-        void RebuildGrid (void) override
+        void RebuildGrid () override
         {
             _ulCtElements = _pclMesh->CountFacets();
             InitGrid();
@@ -552,7 +552,7 @@ void PropertyDistanceList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyDistanceList::getSize(void) const
+int PropertyDistanceList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -572,7 +572,7 @@ void PropertyDistanceList::setValues(const std::vector<float>& values)
     hasSetValue();
 }
 
-PyObject *PropertyDistanceList::getPyObject(void)
+PyObject *PropertyDistanceList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0;i<getSize(); i++)
@@ -659,7 +659,7 @@ void PropertyDistanceList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyDistanceList::Copy(void) const
+App::Property *PropertyDistanceList::Copy() const
 {
     PropertyDistanceList *p= new PropertyDistanceList();
     p->_lValueList = _lValueList;
@@ -673,7 +673,7 @@ void PropertyDistanceList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyDistanceList::getMemSize (void) const
+unsigned int PropertyDistanceList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
 }
@@ -763,7 +763,7 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Feature::execute(void)
+App::DocumentObjectExecReturn* Feature::execute()
 {
     bool useMultithreading = true;
 
@@ -818,7 +818,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
     QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
+        (index, std::bind(&DistanceInspection::mapped, &check, sp::_1));
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;

@@ -81,8 +81,8 @@ protected:
 protected:
   const MeshKernel &_rclMesh;   // const reference to mesh data structure
 
-private:
-  MeshInfo();         // not accessible default constructor
+public:
+  MeshInfo() = delete;         // not accessible default constructor
 };
 
 

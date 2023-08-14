@@ -67,7 +67,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel:disabled {
     color: transparent;
     background-color: transparent;
     border: none;
-    border-radius: 1px;
+    border-radius: 0px;
     margin: 0px;
     padding: 0px;
 }
@@ -82,6 +82,17 @@ Gui--PropertyEditor--PropertyEditor QComboBox {
     padding-top: 0px;
     padding-bottom: 0px;
 
+}
+
+/* fix for column items background when a link is present */
+Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
+  background-color: #b28416; /* same as focused background color */
+}
+
+/* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
+	color: #ffffff;
+	background-color: #ACC8E5; /* same as focused background color */
 }
 
 /*==================================================================================================
@@ -118,7 +129,6 @@ QWidget {
 }
 
 QWidget:disabled {
-  background-color: transparent;
   color: #c2c7cb;
   selection-background-color: #b28416;
   selection-color: #c2c7cb;
@@ -236,7 +246,6 @@ QCheckBox:focus {
 }
 
 QCheckBox QWidget:disabled {
-  background-color: transparent;
   color: #c2c7cb;
 }
 
@@ -275,7 +284,7 @@ QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
 
 QCheckBox::indicator:checked:disabled {
   background-color: #7F7F7F;
-  image: url(qss:images_dark-light/check_light.svg);
+  image: url(qss:images_dark-light/checkbox_checked_disabled.svg);
 }
 
 QCheckBox::indicator:indeterminate {
@@ -1327,11 +1336,13 @@ QToolButton::menu-arrow {
 QToolButton::menu-arrow:open {
   subcontrol-position: right bottom;
   image: url(qss:images_dark-light/more_arrow_light.svg);
+  width: 1.7ex;
+  height: 1.7ex;
 }
 QToolButton::menu-arrow:hover {
   image: url(qss:images_dark-light/more_arrow_light.svg);
-  background-color: rgba(0, 0, 0, 0.498);
-  border: 1px solid rgba(0, 0, 0, 0.498);
+  width: 1.7ex;
+  height: 1.7ex;
 }
 
 /* QCommandLinkButton -----------------------------------------------------
@@ -1645,7 +1656,7 @@ QSlider:disabled {
 }
 
 QSlider:focus {
-  border: 1px solid #996b00;
+  /*border: 1px solid #996b00;*/
 }
 
 QSlider::groove:horizontal {
@@ -1657,7 +1668,7 @@ QSlider::groove:horizontal {
 }
 
 QSlider::groove:vertical {
-  background: #b28416;
+  background: #7F7F7F;
   border: 1px solid #696968;
   width: 4px;
   margin: 0px;
@@ -1678,7 +1689,7 @@ QSlider::add-page:vertical :disabled {
 
 QSlider::sub-page:horizontal {
   background: #b28416;
-  border: 1px solid #0073ff;
+  border: 1px solid #696968;
   height: 4px;
   margin: 0px;
   border-radius: 1.9px;
@@ -1690,34 +1701,35 @@ QSlider::sub-page:horizontal:disabled {
 
 QSlider::handle:horizontal {
   background: #353535;
-  border: 1px solid #7F7F7F;
-  width: 8px;
+  border: 1px solid #696968;
+  width: 10px;
   height: 8px;
-  margin: -8px 0px;
-  border-radius: 1.9px;
+  margin: -4px 0px;
+  border-radius: 6px;
 }
 
 QSlider::handle:horizontal:hover {
   background: #b28416;
-  border: 1px solid #b28416;
+  border: 1px solid #696968;
 }
 
 QSlider::handle:horizontal:focus {
+  background: #996b00;
   border: 1px solid #996b00;
 }
 
 QSlider::handle:vertical {
-  background: #c2c7cb;
+  background: #353535;
   border: 1px solid #696968;
-  width: 8px;
+  width: 10px;
   height: 8px;
-  margin: 0 -8px;
-  border-radius: 1.9px;
+  margin: 0px -4px;
+  border-radius: 6px;
 }
 
 QSlider::handle:vertical:hover {
   background: #b28416;
-  border: 2px solid #b28416;
+  border: 1px solid #696968;
 }
 
 QSlider::handle:vertical:focus {
@@ -1774,7 +1786,7 @@ QTabWidget {
 
 QTabWidget QWidget {
   /* Fixes #189 */
-  border-radius: 1.9px;
+  border-radius: 0px;
 }
 
 QTabWidget::pane {
@@ -1786,6 +1798,31 @@ QTabWidget::pane {
 QTabWidget::pane:selected {
   background-color: #b28416;
   border: 1px solid #346792;
+}
+
+QTabWidget::pane:selected {
+  background-color: #557bb6;
+  border: 1px solid #346792;
+}
+
+QTabWidget::pane:top {
+  top: -1px;
+  border-top: 1px solid #696969;
+}
+
+QTabWidget::pane:bottom {
+  bottom: -1px;
+  border-bottom: 1px solid #696969;
+}
+
+QTabWidget::pane:left {
+  right: -1px;
+  border-right: 1px solid #696969;
+}
+
+QTabWidget::pane:right {
+  left: -1px;
+  border-left: 1px solid #696969;
 }
 /* QTabBar ----------------------------------------------------------------
 
@@ -2181,7 +2218,7 @@ QColumnView {
 
 QTableView,
 QListView  {
-  background-color: rgba(0, 0, 0, 0.232);  /* background of a lot of stuff including spreadsheets.*/
+  background-color: rgba(82, 82, 82, 0.85);  /* background of a lot of stuff including spreadsheets.*/
 }
 
 
@@ -2430,12 +2467,9 @@ https://stackoverflow.com/questions/14581498/qt-stylesheet-for-hline-vline-color
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qsplitter
 
---------------------------------------------------------------------------- */
-QSplitter {
-  background-color: #3c3c3c;
-  spacing: 1px;
-  padding: 1px;
-  margin: 1px;
+---------------------------------------------------------------------------*/
+QSplitterHandle:hover { /* to fix bug about hovering on splitters https://bugreports.qt.io/browse/QTBUG-13768 */
+
 }
 
 QSplitter::handle {
@@ -2444,7 +2478,7 @@ QSplitter::handle {
 }
 
 QSplitter::handle:horizontal {
-  background-image: url(qss:images_dark-light/splitter_vertical_dark.svg);
+  background-image: none;
   background-position: center center;
   background-repeat: none;
   margin: 2px 2px 2px 2px;
@@ -2452,18 +2486,24 @@ QSplitter::handle:horizontal {
 }
 
 QSplitter::handle:vertical {
-  background-image: url(qss:images_dark-light/splitter_horizontal_dark.svg);
+  background-image: none;
   background-position: center center;
   background-repeat: none;
   margin: 2px 2px 2px 2px;
   height: 1px;
 }
+QSplitter::handle:vertical:hover {
+  background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0.2 transparent,stop:0.5 #b28416, stop:0.8 transparent);
+  background-position: center center;
+  background-repeat: none;
+  }
 
-QSplitter::handle:hover {
+QSplitter::handle:vertical:hover {
   background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
   background-position: center center;
   background-repeat: none;
-  background-color: #b28416;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0.2 transparent,stop:0.5 #b28416, stop:0.8 transparent);
 }
 
 /* QDateEdit, QDateTimeEdit -----------------------------------------------
@@ -2530,4 +2570,39 @@ QAbstractView:selected {
 PlotWidget {
   /* Fix cut labels in plots #134 */
   padding: 0px;
+}
+
+/*==================================================================================================
+SKETCHER
+==================================================================================================*/
+
+Gui--StatefulLabel[state="empty_sketch"] {
+  color : rgba(255,255,255,127); /* 50% opacity white */
+}
+Gui--StatefulLabel[state="under_constrained"] {
+  color : rgba(255,255,255,255); /* White */
+}
+Gui--StatefulLabel[state="conflicting_constraints"] {
+  color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="malformed_constraints"] {
+  color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="redundant_constraints"] {
+  color : rgba(255,69,0,255); /* Orange red */
+}
+Gui--StatefulLabel[state="partially_redundant_constraints"] {
+  color : rgba(65,105,225,255); /* Royal blue */
+}
+Gui--StatefulLabel[state="solver_failed"] {
+  color : rgba(255,0,0,255); /* Red */
+  font-weight: bold;
+}
+Gui--StatefulLabel[state="fully_constrained"] {
+  color : rgba(0,255,0,255); /* Green */
+  font-weight: bold;
+}
+Gui--UrlLabel {
+  color : rgba(0,91,255,255); /* Deep sky blue */
+  text-decoration : underline;
 }

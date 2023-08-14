@@ -211,7 +211,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     if (o.isEmpty())
         return QString();
 
-    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
+    return QString::fromLatin1(R"((App.getDocument("%1").%2, ["%3"]))")
             .arg(QString::fromLatin1(doc->getName()), o, sub);
 }
 

@@ -60,7 +60,7 @@ public:
     explicit TreeWidget(const char *name, QWidget* parent=nullptr);
     ~TreeWidget() override;
 
-    static void setupResizableColumn(TreeWidget *tree=0);
+    static void setupResizableColumn(TreeWidget *tree=nullptr);
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked);

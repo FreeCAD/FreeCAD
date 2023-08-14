@@ -3410,7 +3410,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
       <source>Create Section Plane</source>
-      <translation>建立剖面平面</translation>
+      <translation>建立剖平面</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1192"/>
@@ -3450,7 +3450,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>沿 X 軸旋轉</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1377"/>
@@ -3460,7 +3460,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>沿 Y 軸旋轉</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1379"/>
@@ -3470,7 +3470,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>沿 Z 軸旋轉</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1381"/>
@@ -3480,7 +3480,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>調整大小</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1383"/>
@@ -4041,7 +4041,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="343"/>
       <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>此物件的形狀</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="345"/>
@@ -4062,7 +4062,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="550"/>
       <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The line width of this object</source>
-      <translation type="unfinished">The line width of this object</translation>
+      <translation>此物件的線寬</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="553"/>
@@ -5465,7 +5465,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchFloor.py" line="213"/>
       <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>此物件所在位置</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="123"/>
@@ -5736,7 +5736,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>此物件的顏色</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="959"/>
@@ -5746,19 +5746,19 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>在 3D 視圖中顯示標籤</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="964"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>字型名稱</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="967"/>
       <location filename="../../ArchSpace.py" line="521"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="275"/>
@@ -6583,7 +6583,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>剖平面</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="826"/>

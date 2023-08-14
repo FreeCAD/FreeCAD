@@ -32,7 +32,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 std::vector<DocumentObserverPython*> DocumentObserverPython::_instances;
 
@@ -58,11 +58,12 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
+    //NOLINTBEGIN
 #define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
+                    std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1));\
     }\
     while(0);
 
@@ -70,7 +71,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
+                    std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1, sp::_2));\
     }\
     while(0);
 
@@ -85,6 +86,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
     FC_PY_ELEMENT_ARG1(InEdit, InEdit)
     FC_PY_ELEMENT_ARG1(ResetEdit, ResetEdit)
+    //NOLINTEND
 }
 
 DocumentObserverPython::~DocumentObserverPython()

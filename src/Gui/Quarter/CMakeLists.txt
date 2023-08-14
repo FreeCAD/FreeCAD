@@ -13,16 +13,9 @@ FILE(GLOB_RECURSE Sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 FILE(GLOB_RECURSE PublicHeaders RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
 FILE(GLOB_RECURSE PrivateHeaders RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ../../include/Quarter/*.h)
 
-# Find the headers that should be Moc'ed
-FILE(GLOB_RECURSE MocPrivateHeaders RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
-FILE(GLOB_RECURSE MocPublicHeaders RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ../../include/Quarter/*.h)
-
-# Moc both the public and private headers
-SIM_QT4_AUTO_WRAP_CPP(MocPrivateSources ${MocPrivateHeaders})
-SIM_QT4_AUTO_WRAP_CPP(MocPublicSources ${MocPublicHeaders})
 
 # Some convenient variables. The inclusion of the headers in the source variable is to force CMake to include the headers in VS project generation.
-SET(AllSources ${Sources} ${MocPublicSources} ${MocPrivateSources} ${PublicHeaders} ${PrivateHeaders} ${CMakeCache})
+SET(AllSources ${Sources} ${PublicHeaders} ${PrivateHeaders} ${CMakeCache})
 
 
 IF (Spacenav_FOUND)

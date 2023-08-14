@@ -1284,7 +1284,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             try{
                 adapt.D2(u,p,d,dd);
             } catch (Standard_Failure &e){
-                //ignore. This is brobably due to insufficient continuity.
+                //ignore. This is probably due to insufficient continuity.
                 dd = gp_Vec(0., 0., 0.);
                 Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement: can't calculate second derivative of curve. OCC error: %s\n", e.GetMessageString());
             }

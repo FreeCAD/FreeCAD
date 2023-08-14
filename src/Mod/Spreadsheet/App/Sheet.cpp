@@ -408,7 +408,7 @@ void Sheet::setCell(CellAddress address, const char * value)
   * @returns The Python object.
   */
 
-PyObject *Sheet::getPyObject(void)
+PyObject *Sheet::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -675,7 +675,7 @@ void Sheet::updateProperty(CellAddress key)
             std::string s;
 
             if (cell->getStringContent(s) && !s.empty())
-                output.reset(new StringExpression(this, s));
+                output = std::make_unique<StringExpression>(this, s);
             else {
                 this->removeDynamicProperty(key.toString().c_str());
                 return;
@@ -901,7 +901,7 @@ void Sheet::updateBindings()
   *
   */
 
-DocumentObjectExecReturn *Sheet::execute(void)
+DocumentObjectExecReturn *Sheet::execute()
 {
     updateBindings();
 
@@ -1057,7 +1057,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
   *
   */
 
-short Sheet::mustExecute(void) const
+short Sheet::mustExecute() const
 {
     if (!cellErrors.empty() || cells.isDirty())
         return 1;

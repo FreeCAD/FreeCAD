@@ -163,7 +163,7 @@ private:
     {
     public:
         explicit ParameterObserver(ViewProviderSketch& client);
-        ~ParameterObserver();
+        ~ParameterObserver() override;
 
         void initParameters();
 

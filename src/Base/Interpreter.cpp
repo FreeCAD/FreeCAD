@@ -93,7 +93,7 @@ PyException::PyException()
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
-PyException::~PyException() throw() = default;
+PyException::~PyException() noexcept = default;
 
 void PyException::ThrowException()
 {

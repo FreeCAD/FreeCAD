@@ -833,7 +833,7 @@ void CmdMeshTrimByPlane::activated(int)
     doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_TrimByPlane')\n");
 }
 
-bool CmdMeshTrimByPlane::isActive(void)
+bool CmdMeshTrimByPlane::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1)
@@ -891,7 +891,7 @@ void CmdMeshCrossSections::activated(int)
     doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_CrossSections')\n");
 }
 
-bool CmdMeshCrossSections::isActive(void)
+bool CmdMeshCrossSections::isActive()
 {
     return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0 &&
             !Gui::Control().activeDialog());

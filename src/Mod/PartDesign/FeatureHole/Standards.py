@@ -349,7 +349,7 @@ def getStandards(holetype):
 
 def getBaseDiameters(standard):
     "Return the base diameters of all holes defined in the given norm"
-    if not standard in standards.keys():
+    if not standard in standards:
         return []
     #FreeCAD.Console.PrintMessage("Getting diameters for " + standard + "\n")
     if standards[standard][StandardType] == "through":
@@ -363,7 +363,7 @@ def getBaseDiameters(standard):
     return []
 
 def getThroughHoleDia(standard, threadDia, tolerance = "medium"):
-    if not standard in standards_through.keys():
+    if not standard in standards_through:
         raise Exception("No such standard exists")
     values = standards_through[standard]
     if not threadDia in values:
@@ -372,12 +372,12 @@ def getThroughHoleDia(standard, threadDia, tolerance = "medium"):
     return values[threadDia][standards_tolerance.index(tolerance)]
 
 def getThroughHoleStandard(standard):
-    if not standard in standards_counterbore_through.keys():
+    if not standard in standards_counterbore_through:
         raise Exception("No such standard exists")
     return standards_counterbore_through[standard]
 
 def getCounterboreDia(standard,  threadDia,  extraStandard = ""):
-    if not standard in standards_counterbore.keys():
+    if not standard in standards_counterbore:
         raise Exception("No such standard exists")
     values = standards_counterbore[standard]
     if not threadDia in values:
@@ -401,7 +401,7 @@ def calcCounterboreDepth(standard,  threadDia,  standardBolt,  standardsWashers 
     return headHeight + washerHeight + extraDepth
 
 def getRowStandards(standard):
-    if not standard in standards_counterbore_rows.keys():
+    if not standard in standards_counterbore_rows:
         raise Exception("No such standard exists")
     result = []
     rowdict = standards_counterbore_rows[standard]
@@ -412,7 +412,7 @@ def getRowStandards(standard):
     return result
 
 def getCountersinkDia(standard,  threadDia):
-    if not standard in standards_countersink.keys():
+    if not standard in standards_countersink:
         raise Exception("No such standard exists")
     values = standards_countersink[standard]
     if not threadDia in values:
@@ -421,7 +421,7 @@ def getCountersinkDia(standard,  threadDia):
     return values[threadDia][standards_countersink_dia]
 
 def getCountersinkAngle(standard,  threadDia):
-    if not standard in standards_countersink.keys():
+    if not standard in standards_countersink:
         raise Exception("No such standard exists")
     values = standards_countersink[standard]
     if not threadDia in values:
@@ -430,7 +430,7 @@ def getCountersinkAngle(standard,  threadDia):
     return values[threadDia][standards_countersink_angle]
 
 def getThreadCoreDiameter(standard,  threadDia):
-    if not standard in standards_thread.keys():
+    if not standard in standards_thread:
         raise Exception("No such standard exists")
     values = standards_thread[standard]
     if not threadDia in values:
@@ -439,7 +439,7 @@ def getThreadCoreDiameter(standard,  threadDia):
     return values[threadDia][standards_thread_innercoredia]
 
 def getThreadFinishLength(standard,  threadDia,  length = "normal"):
-    if not standard in standards_threaded.keys():
+    if not standard in standards_threaded:
         raise Exception("No such standard exists")
     stdThread = standards_threaded_thread[standard]
     values = standards_thread[stdThread]

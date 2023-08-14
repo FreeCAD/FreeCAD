@@ -43,7 +43,7 @@ class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
 
 public:
     MRichTextEdit(QWidget *parent = nullptr, QString textIn = QString() );
-    ~MRichTextEdit() = default;
+    ~MRichTextEdit() override = default;
 
     QString toPlainText() const { return f_textedit->toPlainText(); }
     QString toHtml() const;
@@ -70,8 +70,8 @@ protected:
   void bgColorChanged(const QColor &color);
   void list(bool checked, QTextListFormat::Style style);
   void indent(int delta);
-  void focusInEvent(QFocusEvent *event);
-  void keyPressEvent(QKeyEvent *event);
+  void focusInEvent(QFocusEvent *event) override;
+  void keyPressEvent(QKeyEvent *event) override;
   bool hasMultipleSizes();
 
   void addFontSize(QString fontSize);

@@ -68,7 +68,7 @@ ViewProviderSpline::~ViewProviderSpline()
 {
 }
 
-QIcon ViewProviderSpline::getIcon(void) const
+QIcon ViewProviderSpline::getIcon() const
 {
     return Gui::BitmapFactory().pixmap(sPixmap);
 }
@@ -97,7 +97,9 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
     QAction* act = menu->addAction(QObject::tr("Show control points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
-    func->toggle(act, std::bind(&ViewProviderSplineExtension::toggleControlPoints, this, sp::_1));
+    func->toggle(act, [this](bool on) {
+        this->toggleControlPoints(on);
+    });
 }
 
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)

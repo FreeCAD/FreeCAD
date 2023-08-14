@@ -546,8 +546,10 @@ class DocumentWeakPtrT::Private {
 public:
     explicit Private(App::Document* doc) : _document(doc) {
         if (doc) {
+            //NOLINTBEGIN
             connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
                 (&Private::deletedDocument, this, sp::_1));
+            //NOLINTEND
         }
     }
 
@@ -626,6 +628,7 @@ public:
     void set(App::DocumentObject* obj) {
         object = obj;
         if (obj) {
+            //NOLINTBEGIN
             indocument = true;
             connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
             (&Private::deletedDocument, this, sp::_1));
@@ -634,6 +637,7 @@ public:
             (&Private::createdObject, this, sp::_1));
             connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
             (&Private::deletedObject, this, sp::_1));
+            //NOLINTEND
         }
     }
     App::DocumentObject* get() const noexcept {
@@ -701,12 +705,14 @@ bool DocumentObjectWeakPtrT::operator!= (const DocumentObjectWeakPtrT& p) const 
 
 DocumentObserver::DocumentObserver() : _document(nullptr)
 {
+    //NOLINTBEGIN
     this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(std::bind
         (&DocumentObserver::slotCreatedDocument, this, sp::_1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
         (&DocumentObserver::slotDeletedDocument, this, sp::_1));
     this->connectApplicationActivateDocument = App::GetApplication().signalActiveDocument.connect(std::bind
         (&DocumentObserver::slotActivateDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 DocumentObserver::DocumentObserver(Document* doc) : DocumentObserver()
@@ -735,6 +741,7 @@ void DocumentObserver::attachDocument(Document* doc)
         detachDocument();
         _document = doc;
 
+        //NOLINTBEGIN
         this->connectDocumentCreatedObject = _document->signalNewObject.connect(std::bind
             (&DocumentObserver::slotCreatedObject, this, sp::_1));
         this->connectDocumentDeletedObject = _document->signalDeletedObject.connect(std::bind
@@ -745,6 +752,7 @@ void DocumentObserver::attachDocument(Document* doc)
             (&DocumentObserver::slotRecomputedObject, this, sp::_1));
         this->connectDocumentRecomputed = _document->signalRecomputed.connect(std::bind
             (&DocumentObserver::slotRecomputedDocument, this, sp::_1));
+        //NOLINTEND
     }
 }
 

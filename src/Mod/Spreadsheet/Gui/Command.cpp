@@ -905,7 +905,7 @@ bool CmdCreateSpreadsheet::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateSpreadsheetCommands(void)
+void CreateSpreadsheetCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

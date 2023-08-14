@@ -56,7 +56,7 @@ public:
         , firstsegment(true)
     {}
 
-    virtual ~DrawSketchHandlerLineSet() = default;
+    ~DrawSketchHandlerLineSet() override = default;
 
     /// mode table
     enum SELECT_MODE

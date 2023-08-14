@@ -206,7 +206,7 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pda
     }
 }
 
-PyObject *ViewProviderFemPostPipeline::getPyObject(void)
+PyObject *ViewProviderFemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

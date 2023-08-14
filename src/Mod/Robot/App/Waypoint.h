@@ -25,6 +25,7 @@
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 
 namespace Robot
@@ -34,7 +35,7 @@ namespace Robot
  */
 class RobotExport Waypoint : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
    enum WaypointType {
@@ -55,12 +56,12 @@ public:
         unsigned int tool = 0,
         unsigned int base = 0);
 
-    ~Waypoint();
+    ~Waypoint() override;
 
     // from base class
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer& /*writer*/) const;
-    virtual void Restore(Base::XMLReader& /*reader*/);
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer& /*writer*/) const override;
+    void Restore(Base::XMLReader& /*reader*/) override;
 
      
     std::string Name;

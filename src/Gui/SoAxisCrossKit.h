@@ -29,6 +29,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodes/SoShape.h>
+#include <FCGlobal.h>
 
 
 class SbViewport;
@@ -54,8 +55,8 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
-    virtual void GLRender(SoGLRenderAction * action);
-    virtual ~SoShapeScale();
+    void GLRender(SoGLRenderAction * action) override;
+    ~SoShapeScale() override;
 };
 
 class GuiExport SoAxisCrossKit : public SoBaseKit {
@@ -75,16 +76,16 @@ public:
 
     // Overrides default method. All the parts are shapeKits,
     // so this node will not affect the state.
-    virtual SbBool affectsState() const;
-    virtual void addWriteReference(SoOutput * out, SbBool isfromfield = false);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    SbBool affectsState() const override;
+    void addWriteReference(SoOutput * out, SbBool isfromfield = false) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
     static void initClass();
 
 private:
     // Constructor calls to build and set up parts.
     void createAxes();
-    virtual ~SoAxisCrossKit();
+    ~SoAxisCrossKit() override;
 };
 
 class GuiExport SoRegPoint : public SoShape {
@@ -96,7 +97,7 @@ public:
     static void initClass();
     SoRegPoint();
 
-    void notify(SoNotList * node);
+    void notify(SoNotList * node) override;
 
     SoSFVec3f base;
     SoSFVec3f normal;
@@ -105,10 +106,10 @@ public:
     SoSFString text;
 
 protected:
-    virtual ~SoRegPoint();
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void generatePrimitives(SoAction *action);
+    ~SoRegPoint() override;
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     SoSeparator* root;

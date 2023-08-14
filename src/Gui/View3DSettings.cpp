@@ -524,7 +524,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));
     }
     else if (strcmp(Name, "ShowCS") == 0) {
-        nc->setShowCS(hGrp->GetBool("ShowCS", 1));
+        nc->setShowCS(hGrp->GetBool("ShowCS", true));
     }
     else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
              || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0

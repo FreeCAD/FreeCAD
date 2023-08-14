@@ -27,7 +27,6 @@ __doc__ = "JoinFeatures functions that operate on shapes."
 
 import Part
 from . import ShapeMerge
-from . import generalFuseIsAvailable
 from .GeneralFuseResult import GeneralFuseResult
 from .Utils import compoundLeaves
 
@@ -75,12 +74,6 @@ def connect(list_of_shapes, tolerance = 0.0):
 
     if len(list_of_shapes) < 2:
         return Part.makeCompound(list_of_shapes)
-
-    if not generalFuseIsAvailable(): #fallback to legacy
-        result = list_of_shapes[0]
-        for i in range(1, len(list_of_shapes)):
-            result = connect_legacy(result, list_of_shapes[i], tolerance)
-        return result
 
     pieces, map = list_of_shapes[0].generalFuse(list_of_shapes[1:], tolerance)
     ao = GeneralFuseResult(list_of_shapes, (pieces, map))

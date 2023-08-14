@@ -2554,6 +2554,6 @@ Gui--StatefulLabel[state="fully_constrained"] {
 /*==================================================================================================
 PREFERENCES PACKS
 ==================================================================================================*/
-Gui--Dialog--DlgGeneralImp > QGroupBox > QGroupBox > QTableWidget > QWidget > QPushButton {
+Gui--Dialog--DlgSettingsGeneral > QGroupBox > QGroupBox > QTableWidget > QWidget > QPushButton {
     margin: 0px;
 }

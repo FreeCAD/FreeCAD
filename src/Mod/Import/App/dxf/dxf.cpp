@@ -74,7 +74,7 @@ CDxfWrite::~CDxfWrite()
     delete m_ssLayer;
 }
 
-void CDxfWrite::init(void)
+void CDxfWrite::init()
 {
     writeHeaderSection();
     makeBlockRecordTableHead();
@@ -82,7 +82,7 @@ void CDxfWrite::init(void)
 }
 
 //! assemble pieces into output file
-void CDxfWrite::endRun(void)
+void CDxfWrite::endRun()
 {
     makeLayerTable();
     makeBlockRecordTableBody();
@@ -100,7 +100,7 @@ void CDxfWrite::endRun(void)
 //***************************
 //writeHeaderSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeHeaderSection(void)
+void CDxfWrite::writeHeaderSection()
 {
     std::stringstream ss;
     ss << "FreeCAD v"
@@ -125,7 +125,7 @@ void CDxfWrite::writeHeaderSection(void)
 //***************************
 //writeClassesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeClassesSection(void)
+void CDxfWrite::writeClassesSection()
 {
     if (m_version < 14) {
         return;
@@ -141,7 +141,7 @@ void CDxfWrite::writeClassesSection(void)
 //***************************
 //writeTablesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeTablesSection(void)
+void CDxfWrite::writeTablesSection()
 {
     //static tables section head end content
     std::stringstream ss;
@@ -170,7 +170,7 @@ void CDxfWrite::writeTablesSection(void)
 //***************************
 //makeLayerTable
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeLayerTable(void)
+void CDxfWrite::makeLayerTable()
 {
     std::string tablehash = getLayerHandle();
     (*m_ssLayer) << "  0"      << endl;
@@ -238,7 +238,7 @@ void CDxfWrite::makeLayerTable(void)
 //***************************
 //makeBlockRecordTableHead
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockRecordTableHead(void)
+void CDxfWrite::makeBlockRecordTableHead()
 {
     if (m_version < 14) {
         return;
@@ -294,7 +294,7 @@ void CDxfWrite::makeBlockRecordTableHead(void)
 //***************************
 //makeBlockRecordTableBody
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockRecordTableBody(void)
+void CDxfWrite::makeBlockRecordTableBody()
 {
     if (m_version < 14) {
         return;
@@ -323,7 +323,7 @@ void CDxfWrite::makeBlockRecordTableBody(void)
 //***************************
 //makeBlockSectionHead
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::makeBlockSectionHead(void)
+void CDxfWrite::makeBlockSectionHead()
 {
     (*m_ssBlock) << "  0"          << endl;
     (*m_ssBlock) << "SECTION"      << endl;
@@ -451,7 +451,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     return outString.str();
 }
 
-std::string CDxfWrite::getHandle(void)
+std::string CDxfWrite::getHandle()
 {
     m_handle++;
     std::stringstream ss;
@@ -460,7 +460,7 @@ std::string CDxfWrite::getHandle(void)
     return ss.str();
 }
 
-std::string CDxfWrite::getEntityHandle(void)
+std::string CDxfWrite::getEntityHandle()
 {
     return getHandle();
 //    m_entityHandle++;
@@ -470,7 +470,7 @@ std::string CDxfWrite::getEntityHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getLayerHandle(void)
+std::string CDxfWrite::getLayerHandle()
 {
     return getHandle();
 //    m_layerHandle++;
@@ -480,7 +480,7 @@ std::string CDxfWrite::getLayerHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getBlockHandle(void)
+std::string CDxfWrite::getBlockHandle()
 {
     return getHandle();
 //    m_blockHandle++;
@@ -490,7 +490,7 @@ std::string CDxfWrite::getBlockHandle(void)
 //    return ss.str();
 }
 
-std::string CDxfWrite::getBlkRecordHandle(void)
+std::string CDxfWrite::getBlkRecordHandle()
 {
     return getHandle();
 //    m_blkRecordHandle++;
@@ -1378,7 +1378,7 @@ void CDxfWrite::writeDiametricDim(const double* textMidPoint,
 //***************************
 //writeDimBlockPreamble
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeDimBlockPreamble(void)
+void CDxfWrite::writeDimBlockPreamble()
 {
     if (m_version > 12) {
         std::string blockName("*");
@@ -1423,7 +1423,7 @@ void CDxfWrite::writeDimBlockPreamble(void)
 //***************************
 //writeBlockTrailer
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeBlockTrailer(void)
+void CDxfWrite::writeBlockTrailer()
 {
     (*m_ssBlock) << "  0"    << endl;
     (*m_ssBlock) << "ENDBLK" << endl;
@@ -1696,7 +1696,7 @@ void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint,
 //***************************
 //writeBlocksSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeBlocksSection(void)
+void CDxfWrite::writeBlocksSection()
 {
     if (m_version < 14) {
         std::stringstream ss;
@@ -1715,7 +1715,7 @@ void CDxfWrite::writeBlocksSection(void)
 //***************************
 //writeEntitiesSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeEntitiesSection(void)
+void CDxfWrite::writeEntitiesSection()
 {
     std::stringstream ss;
     ss << "entities" << m_version << ".rub";
@@ -1733,7 +1733,7 @@ void CDxfWrite::writeEntitiesSection(void)
 //***************************
 //writeObjectsSection
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeObjectsSection(void)
+void CDxfWrite::writeObjectsSection()
 {
     if (m_version < 14) {
         return;
@@ -1767,8 +1767,8 @@ CDxfRead::CDxfRead(const char* filepath)
     m_ifs->imbue(std::locale("C"));
 
     m_version = RUnknown;
-    m_CodePage = NULL;
-    m_encoding = NULL;
+    m_CodePage = nullptr;
+    m_encoding = nullptr;
     stringToUTF8 = &CDxfRead::UTF8ToUTF8;
 }
 
@@ -3323,7 +3323,7 @@ bool CDxfRead::ReadDWGCodePage()
 {
     get_line();
     get_line();
-    assert(m_CodePage == NULL); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
+    assert(m_CodePage == nullptr); // If not, we have found two DWGCODEPAGE variables or DoRead was called twice on the same CDxfRead object.
     m_CodePage = new std::string(m_str);
 
     return ResolveEncoding();
@@ -3331,15 +3331,15 @@ bool CDxfRead::ReadDWGCodePage()
 
 bool CDxfRead::ResolveEncoding()
 {
-    if (m_encoding != NULL) {
+    if (m_encoding != nullptr) {
         delete m_encoding;
-        m_encoding = NULL;
+        m_encoding = nullptr;
     }
     if (m_version >= R2007) {   // Note this does not include RUnknown, but does include RLater
         m_encoding = new std::string("utf_8");
         stringToUTF8 = &CDxfRead::UTF8ToUTF8;
     }
-    else if (m_CodePage == NULL) {
+    else if (m_CodePage == nullptr) {
         // cp1252
         m_encoding = new std::string("cp1252");
         stringToUTF8 = &CDxfRead::GeneralToUTF8;
@@ -3362,10 +3362,10 @@ bool CDxfRead::ResolveEncoding()
         // and is just a direct c++ callable.
         Base::PyGILStateLocker lock;
         PyObject* pyDecoder = PyCodec_Decoder(m_encoding->c_str());
-        if (pyDecoder == NULL)
+        if (pyDecoder == nullptr)
             return false; // A key error exception will have been placed.
         PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
-        assert(pyUTF8Decoder != NULL);
+        assert(pyUTF8Decoder != nullptr);
         if (pyDecoder == pyUTF8Decoder)
             stringToUTF8 = &CDxfRead::UTF8ToUTF8;
         else
@@ -3373,7 +3373,7 @@ bool CDxfRead::ResolveEncoding()
         Py_DECREF(pyDecoder);
         Py_DECREF(pyUTF8Decoder);
     }
-    return m_encoding != NULL;
+    return m_encoding != nullptr;
 }
 
 const char* CDxfRead::UTF8ToUTF8(const char* encoded) const
@@ -3385,15 +3385,15 @@ const char* CDxfRead::GeneralToUTF8(const char* encoded) const
 {
     Base::PyGILStateLocker lock;
     PyObject* decoded = PyUnicode_Decode(encoded, strlen(encoded), m_encoding->c_str(), "strict");
-    if (decoded == NULL)
-        return NULL;
+    if (decoded == nullptr)
+        return nullptr;
     Py_ssize_t len;
     const char* converted = PyUnicode_AsUTF8AndSize(decoded, &len);
-    char* result = NULL;
-    if (converted != NULL) {
+    char* result = nullptr;
+    if (converted != nullptr) {
         // converted only has lifetime of decoded so we must save a copy.
         result = (char *)malloc(len + 1);
-        if (result == NULL)
+        if (result == nullptr)
             PyErr_SetString(PyExc_MemoryError, "Out of memory");
         else
             memcpy(result, converted, len + 1);

@@ -36,32 +36,52 @@ std::string PrecisionPy::representation() const
     return std::string("<Precision object>");
 }
 
-PyObject* PrecisionPy::angular(PyObject * /*args*/)
+PyObject* PrecisionPy::angular(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::Angular());
     return Py::new_reference_to(v);
 }
 
-PyObject* PrecisionPy::confusion(PyObject * /*args*/)
+PyObject* PrecisionPy::confusion(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::Confusion());
     return Py::new_reference_to(v);
 }
 
-PyObject* PrecisionPy::squareConfusion(PyObject * /*args*/)
+PyObject* PrecisionPy::squareConfusion(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::SquareConfusion());
     return Py::new_reference_to(v);
 }
 
-PyObject* PrecisionPy::intersection(PyObject * /*args*/)
+PyObject* PrecisionPy::intersection(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::Intersection());
     return Py::new_reference_to(v);
 }
 
-PyObject* PrecisionPy::approximation(PyObject * /*args*/)
+PyObject* PrecisionPy::approximation(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::Approximation());
     return Py::new_reference_to(v);
 }
@@ -88,8 +108,9 @@ PyObject* PrecisionPy::parametric(PyObject *args)
 PyObject* PrecisionPy::isInfinite(PyObject *args)
 {
     double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
+    if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
+    }
 
     Py::Boolean b(Precision::IsInfinite(v));
     return Py::new_reference_to(b);
@@ -98,8 +119,9 @@ PyObject* PrecisionPy::isInfinite(PyObject *args)
 PyObject* PrecisionPy::isPositiveInfinite(PyObject *args)
 {
     double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
+    if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
+    }
 
     Py::Boolean b(Precision::IsPositiveInfinite(v));
     return Py::new_reference_to(b);
@@ -108,15 +130,20 @@ PyObject* PrecisionPy::isPositiveInfinite(PyObject *args)
 PyObject* PrecisionPy::isNegativeInfinite(PyObject *args)
 {
     double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
+    if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
+    }
 
     Py::Boolean b(Precision::IsNegativeInfinite(v));
     return Py::new_reference_to(b);
 }
 
-PyObject* PrecisionPy::infinite(PyObject * /*args*/)
+PyObject* PrecisionPy::infinite(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     Py::Float v(Precision::Infinite());
     return Py::new_reference_to(v);
 }
