@@ -118,7 +118,7 @@ class DOMPrintFilter : public DOMLSSerializerFilter
 public:
 
     /** @name Constructors */
-    DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
+    explicit DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
     //@{
 
     /** @name Destructors */
@@ -150,10 +150,9 @@ public:
     bool handleError(const DOMError& domError) override;
     void resetErrors() {}
 
-private :
     /* Unimplemented constructors and operators */
-    DOMPrintErrorHandler(const DOMErrorHandler&);
-    void operator=(const DOMErrorHandler&);
+    DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
+    void operator=(const DOMErrorHandler&) = delete;
 
 };
 
@@ -1374,28 +1373,28 @@ void ParameterGrp::NotifyAll()
 {
     // get all ints and notify
     std::vector<std::pair<std::string,long> > IntMap = GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); ++It1)
-        Notify(It1->first.c_str());
+    for (const auto & it : IntMap)
+        Notify(it.first.c_str());
 
     // get all booleans and notify
     std::vector<std::pair<std::string,bool> > BoolMap = GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); ++It2)
-        Notify(It2->first.c_str());
+    for (const auto & it : BoolMap)
+        Notify(it.first.c_str());
 
     // get all Floats and notify
     std::vector<std::pair<std::string,double> > FloatMap  = GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); ++It3)
-        Notify(It3->first.c_str());
+    for (const auto & it : FloatMap)
+        Notify(it.first.c_str());
 
     // get all strings and notify
     std::vector<std::pair<std::string,std::string> > StringMap = GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); ++It4)
-        Notify(It4->first.c_str());
+    for (const auto & it : StringMap)
+        Notify(it.first.c_str());
 
     // get all uints and notify
     std::vector<std::pair<std::string,unsigned long> > UIntMap = GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); ++It5)
-        Notify(It5->first.c_str());
+    for (const auto & it : UIntMap)
+        Notify(it.first.c_str());
 }
 
 void ParameterGrp::_Reset()
