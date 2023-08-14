@@ -134,10 +134,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bspline);
 
-    Gui::ToolBarItem* virtualspace =
+    Gui::ToolBarItem* visual =
         new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
-    virtualspace->setCommand("Sketcher virtual space");
-    addSketcherWorkbenchVirtualSpace(*virtualspace);
+    visual->setCommand("Sketcher visual");
+    addSketcherWorkbenchVisual(*visual);
 
     Gui::ToolBarItem* edittools =
         new Gui::ToolBarItem(root, Gui::ToolBarItem::DefaultVisibility::Unavailable);
@@ -500,12 +500,7 @@ inline void SketcherAddWorkbenchBSplines(T& bspline);
 template<>
 inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 {
-    bspline << "Sketcher_BSplineDegree"
-            << "Sketcher_BSplinePolygon"
-            << "Sketcher_BSplineComb"
-            << "Sketcher_BSplineKnotMultiplicity"
-            << "Sketcher_BSplinePoleWeight"
-            << "Sketcher_BSplineConvertToNURBS"
+    bspline << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_BSplineIncreaseKnotMultiplicity"
@@ -526,22 +521,22 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
 }
 
 template<typename T>
-inline void SketcherAddWorkbenchVirtualSpace(T& virtualspace);
+inline void SketcherAddWorkbenchVisual(T& visual);
 
 template<>
-inline void SketcherAddWorkbenchVirtualSpace<Gui::MenuItem>(Gui::MenuItem& virtualspace)
+inline void SketcherAddWorkbenchVisual<Gui::MenuItem>(Gui::MenuItem& visual)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace"
-                 << "Sketcher_CompBSplineShowHideGeometryInformation"
-                 << "Sketcher_ArcOverlay";
+    visual << "Sketcher_SwitchVirtualSpace"
+           << "Sketcher_CompBSplineShowHideGeometryInformation"
+           << "Sketcher_ArcOverlay";
 }
 
 template<>
-inline void SketcherAddWorkbenchVirtualSpace<Gui::ToolBarItem>(Gui::ToolBarItem& virtualspace)
+inline void SketcherAddWorkbenchVisual<Gui::ToolBarItem>(Gui::ToolBarItem& visual)
 {
-    virtualspace << "Sketcher_SwitchVirtualSpace"
-                 << "Sketcher_CompBSplineShowHideGeometryInformation"
-                 << "Sketcher_ArcOverlay";
+    visual << "Sketcher_SwitchVirtualSpace"
+           << "Sketcher_CompBSplineShowHideGeometryInformation"
+           << "Sketcher_ArcOverlay";
 }
 
 template<typename T>
@@ -585,9 +580,9 @@ void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline)
     SketcherAddWorkbenchBSplines(bspline);
 }
 
-void addSketcherWorkbenchVirtualSpace(Gui::MenuItem& virtualspace)
+void addSketcherWorkbenchVisual(Gui::MenuItem& visual)
 {
-    SketcherAddWorkbenchVirtualSpace(virtualspace);
+    SketcherAddWorkbenchVisual(visual);
 }
 
 void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch)
