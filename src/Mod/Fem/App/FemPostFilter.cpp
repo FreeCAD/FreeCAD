@@ -101,10 +101,9 @@ vtkDataObject* FemPostFilter::getInputData()
         //get the pipeline and use the pipelinedata
         std::vector<App::DocumentObject*> objs =
             getDocument()->getObjectsOfType(FemPostPipeline::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end();
-             ++it) {
-            if (static_cast<FemPostPipeline*>(*it)->holdsPostObject(this))
-                return static_cast<FemPostObject*>(*it)->Data.getValue();
+        for (auto it : objs) {
+            if (static_cast<FemPostPipeline*>(it)->holdsPostObject(this))
+                return static_cast<FemPostObject*>(it)->Data.getValue();
         }
     }
 
