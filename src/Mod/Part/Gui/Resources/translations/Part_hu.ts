@@ -2322,12 +2322,12 @@ irányát.</translation>
       <translation>Rács konvertálása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1077"/>
+      <location filename="../../TaskAttacher.cpp" line="1079"/>
       <source>Edit attachment</source>
       <translation>Csatolmány szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="419"/>
+      <location filename="../../TaskFaceColors.cpp" line="421"/>
       <source>Change face colors</source>
       <translation>Felületi színek megváltoztatása</translation>
     </message>
@@ -2604,42 +2604,42 @@ Megjegyzés: A pozíciót a mellékelt tárgy helyi terében fejezzük ki.</tran
       <translation>Kijelölés csere</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="385"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="387"/>
       <source>Select a shape on the left side, first</source>
       <translation>Először bal oldalon jelölje ki az alakzatot</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="390"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Select a shape on the right side, first</source>
       <translation>Először jobb oldalon jelölje ki az alakzatot</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="395"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
       <translation>Nem tud végrehajtani logikai művelet az azonos alakzaton</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="405"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="407"/>
       <source>No active document available</source>
       <translation>Nincs elérhető aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="415"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="417"/>
       <source>One of the selected objects doesn't exist anymore</source>
       <translation>Az egyik kijelölt objektum nem létezik</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="422"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing union on non-solids is not possible</source>
       <translation>Nem szilárd testek egységesítése nem lehetséges</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="430"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="432"/>
       <source>Performing intersection on non-solids is not possible</source>
       <translation>Nem szilárd test metszése nem lehetséges</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="438"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="440"/>
       <source>Performing difference on non-solids is not possible</source>
       <translation>Nem szilárd test kivonása egymásból nem lehetséges</translation>
     </message>
@@ -2647,7 +2647,7 @@ Megjegyzés: A pozíciót a mellékelt tárgy helyi terében fejezzük ki.</tran
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1067"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1069"/>
       <source>Chamfer Edges</source>
       <translation>Élek letörése</translation>
     </message>
@@ -3014,7 +3014,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="278"/>
       <source>Fillet Parameter</source>
       <translation>Lekerekítés paraméter</translation>
     </message>
@@ -3064,105 +3064,105 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <translation>Sugár:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="265"/>
+      <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Chamfer Parameter</source>
       <translation>Letörési paraméterek</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="266"/>
+      <location filename="../../DlgFilletEdges.cpp" line="268"/>
       <source>Chamfer type</source>
       <translation>Letörés típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="267"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Length:</source>
       <translation>Hossz:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Edges to chamfer</source>
       <translation>Élek letörése</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="864"/>
+      <location filename="../../DlgFilletEdges.cpp" line="866"/>
       <source>Start length</source>
       <translation>Hossz kezdete</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Equal distance</source>
       <translation>Egyenlő távolság</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Two distances</source>
       <translation>Két távolság</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Size</source>
       <translation>Méret</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Size2</source>
       <translation>Méret2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="279"/>
       <source>Fillet type</source>
       <translation>Lekerekítés típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Edges to fillet</source>
       <translation>Lekerekítendő élek</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
-      <location filename="../../DlgFilletEdges.cpp" line="866"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <location filename="../../DlgFilletEdges.cpp" line="868"/>
       <source>Start radius</source>
       <translation>Kezdeti sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>End radius</source>
       <translation>Vég sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="713"/>
-      <location filename="../../DlgFilletEdges.cpp" line="773"/>
+      <location filename="../../DlgFilletEdges.cpp" line="715"/>
+      <location filename="../../DlgFilletEdges.cpp" line="775"/>
       <source>Edge%1</source>
       <translation>Él%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="856"/>
+      <location filename="../../DlgFilletEdges.cpp" line="858"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="858"/>
+      <location filename="../../DlgFilletEdges.cpp" line="860"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>No shape selected</source>
       <translation>Nincs kijelölve alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="913"/>
+      <location filename="../../DlgFilletEdges.cpp" line="915"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Nem érvényes alakzat van kijelölve. Kérjük, először válasszon egy érvényes alakzatot a legördülő listában.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="964"/>
+      <location filename="../../DlgFilletEdges.cpp" line="966"/>
       <source>No edge selected</source>
       <translation>Nincs kiválasztott él</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="965"/>
+      <location filename="../../DlgFilletEdges.cpp" line="967"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Egyetlen élet sem választott ki.
@@ -4959,7 +4959,7 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Csatolás eltolása (helyi koordinátákban):</translation>
     </message>
@@ -5040,77 +5040,77 @@ rendszerében fejezzük ki.</translation>
       <translation>Oldalak megfordítása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="318"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>OCC error: %1</source>
       <translation>OCC hiba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>unknown error</source>
       <translation>ismeretlen hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="323"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attachment mode failed: %1</source>
       <translation>Csatolási mód sikertelen: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Not attached</source>
       <translation>Nem csatolt</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="331"/>
+      <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attached with mode %1</source>
       <translation>Csatolt ezzel a móddal %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Csatolás eltolás (inaktív - nem csatolt):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="632"/>
+      <location filename="../../TaskAttacher.cpp" line="634"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="639"/>
+      <location filename="../../TaskAttacher.cpp" line="641"/>
       <source>Edge</source>
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="646"/>
+      <location filename="../../TaskAttacher.cpp" line="648"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="711"/>
+      <location filename="../../TaskAttacher.cpp" line="713"/>
       <source>Selecting...</source>
       <translation>Kiválasztás...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="715"/>
+      <location filename="../../TaskAttacher.cpp" line="717"/>
       <source>Reference%1</source>
       <translation>Hivatkozás%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="762"/>
+      <location filename="../../TaskAttacher.cpp" line="764"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nem szerkeszthető, mert a csatolt eltolás elforgatás egy kifejezéssel kényszerített.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="828"/>
+      <location filename="../../TaskAttacher.cpp" line="830"/>
       <source>Reference combinations:</source>
       <translation>Hivatkozás kombinációk:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="845"/>
+      <location filename="../../TaskAttacher.cpp" line="847"/>
       <source>%1 (add %2)</source>
       <translation>%1 (hozzáad %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="850"/>
+      <location filename="../../TaskAttacher.cpp" line="852"/>
       <source>%1 (add more references)</source>
       <translation>%1 (további hivatkozás hozzáadása)</translation>
     </message>
@@ -5364,7 +5364,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1118"/>
+      <location filename="../../TaskAttacher.cpp" line="1120"/>
       <source>Datum dialog: Input error</source>
       <translation>Referencia párbeszédpanel: bemenet hiba</translation>
     </message>
@@ -5704,8 +5704,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -5796,20 +5796,20 @@ Do you want to continue?</source>
       <translation>Nincs kijelölt hivatkozás</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
     </message>
@@ -6089,39 +6089,39 @@ Do you want to continue?</source>
       <translation>Érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="656"/>
-      <location filename="../../TaskDimension.cpp" line="1792"/>
+      <location filename="../../TaskDimension.cpp" line="658"/>
+      <location filename="../../TaskDimension.cpp" line="1794"/>
       <source>Selections</source>
       <translation>Kijelölések</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="663"/>
-      <location filename="../../TaskDimension.cpp" line="1799"/>
+      <location filename="../../TaskDimension.cpp" line="665"/>
+      <location filename="../../TaskDimension.cpp" line="1801"/>
       <source>Control</source>
       <translation>Vezérlés</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1420"/>
+      <location filename="../../TaskDimension.cpp" line="1422"/>
       <source>Selection </source>
       <translation>Kiválasztás </translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1504"/>
+      <location filename="../../TaskDimension.cpp" line="1506"/>
       <source>Reset selection</source>
       <translation>Kijelölés visszaállítása</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1508"/>
+      <location filename="../../TaskDimension.cpp" line="1510"/>
       <source>Toggle direct dimensions</source>
       <translation>Közvetlen méretek kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1513"/>
+      <location filename="../../TaskDimension.cpp" line="1515"/>
       <source>Toggle orthogonal dimensions</source>
       <translation>Merőleges méretek kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1518"/>
+      <location filename="../../TaskDimension.cpp" line="1520"/>
       <source>Clear all dimensions</source>
       <translation>Összes méret eltávolítása</translation>
     </message>

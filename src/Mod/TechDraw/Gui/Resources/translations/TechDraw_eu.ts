@@ -2014,8 +2014,8 @@
       <translation>Sortu kalkulu-orriaren bista</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="728"/>
       <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../MDIViewPage.cpp" line="734"/>
       <source>Save page to dxf</source>
       <translation>Gorde orria DXF fitxategi batean</translation>
     </message>
@@ -2136,12 +2136,12 @@
       <translation>Sortu sekzio-bista</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="557"/>
       <source>Create ComplexSection</source>
       <translation>Sortu sekzio konplexua</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="642"/>
+      <location filename="../../TaskComplexSection.cpp" line="640"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Editatu sekzio-bista</translation>
@@ -2688,16 +2688,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="316"/>
-      <location filename="../../CommandAnnotate.cpp" line="415"/>
-      <location filename="../../CommandAnnotate.cpp" line="1152"/>
-      <location filename="../../CommandAnnotate.cpp" line="1160"/>
-      <location filename="../../CommandAnnotate.cpp" line="1207"/>
-      <location filename="../../CommandAnnotate.cpp" line="1349"/>
-      <location filename="../../CommandAnnotate.cpp" line="1356"/>
-      <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="375"/>
       <location filename="../../Command.cpp" line="601"/>
       <location filename="../../Command.cpp" line="718"/>
@@ -2715,6 +2705,16 @@
       <location filename="../../Command.cpp" line="1439"/>
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../CommandAnnotate.cpp" line="316"/>
+      <location filename="../../CommandAnnotate.cpp" line="415"/>
+      <location filename="../../CommandAnnotate.cpp" line="1152"/>
+      <location filename="../../CommandAnnotate.cpp" line="1160"/>
+      <location filename="../../CommandAnnotate.cpp" line="1207"/>
+      <location filename="../../CommandAnnotate.cpp" line="1349"/>
+      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1420"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -2746,9 +2746,10 @@
       <translation>Ez da profil-objekturik aurkitu hautapenean</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="344"/>
-      <location filename="../../CommandDecorate.cpp" line="351"/>
-      <location filename="../../CommandDecorate.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="951"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="978"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="292"/>
       <location filename="../../CommandCreateDims.cpp" line="418"/>
@@ -2760,33 +2761,33 @@
       <location filename="../../CommandCreateDims.cpp" line="1437"/>
       <location filename="../../CommandCreateDims.cpp" line="1445"/>
       <location filename="../../CommandCreateDims.cpp" line="1454"/>
-      <location filename="../../Command.cpp" line="951"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="966"/>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../CommandDecorate.cpp" line="344"/>
+      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="358"/>
       <location filename="../../CommandExtensionPack.cpp" line="1808"/>
       <source>Incorrect selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <source>Select an object first</source>
       <translation>Hautatu objektu bat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <source>Too many objects selected</source>
       <translation>Objektu gehiegi hautatuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <source>Create a page first.</source>
       <translation>Lehenengo, sortu orrialde bat.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="979"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="293"/>
       <location filename="../../CommandCreateDims.cpp" line="419"/>
@@ -2795,7 +2796,6 @@
       <location filename="../../CommandCreateDims.cpp" line="714"/>
       <location filename="../../CommandCreateDims.cpp" line="810"/>
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
-      <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>Ez dago piezaren bistarik hautapenean.</translation>
     </message>
@@ -2862,7 +2862,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Hautatu kalkulu-orri objektu zehatz bat.</translation>
+      <translation>Hautatu kalkulu-orriko objektu bakar bat.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1561"/>
@@ -2907,8 +2907,6 @@
       <translation>Hautatutako ertza B-spline bat da. Erradioa gutxi gorabeherakoa izango da. Jarraitu?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="365"/>
-      <location filename="../../CommandDecorate.cpp" line="371"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="313"/>
@@ -2928,10 +2926,12 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="371"/>
+      <location filename="../../TaskDimension.cpp" line="400"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -3059,6 +3059,9 @@
       <translation>Hautatu bi puntu-objektu eta bista bat. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandAnnotate.cpp" line="104"/>
       <location filename="../../CommandAnnotate.cpp" line="165"/>
       <location filename="../../CommandAnnotate.cpp" line="217"/>
@@ -3084,11 +3087,6 @@
       <location filename="../../CommandCreateDims.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1177"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="266"/>
       <location filename="../../CommandExtensionDims.cpp" line="475"/>
       <location filename="../../CommandExtensionDims.cpp" line="767"/>
@@ -3096,18 +3094,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1440"/>
       <location filename="../../CommandExtensionDims.cpp" line="1803"/>
       <location filename="../../CommandExtensionDims.cpp" line="2062"/>
-      <location filename="../../Command.cpp" line="479"/>
-      <location filename="../../Command.cpp" line="572"/>
-      <location filename="../../Command.cpp" line="634"/>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <location filename="../../CommandExtensionPack.cpp" line="588"/>
       <location filename="../../CommandExtensionPack.cpp" line="1079"/>
       <location filename="../../CommandExtensionPack.cpp" line="1315"/>
       <location filename="../../CommandExtensionPack.cpp" line="1688"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Ataza abian</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandAnnotate.cpp" line="105"/>
       <location filename="../../CommandAnnotate.cpp" line="166"/>
       <location filename="../../CommandAnnotate.cpp" line="218"/>
@@ -3133,11 +3136,6 @@
       <location filename="../../CommandCreateDims.cpp" line="967"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1178"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="267"/>
       <location filename="../../CommandExtensionDims.cpp" line="476"/>
       <location filename="../../CommandExtensionDims.cpp" line="768"/>
@@ -3145,14 +3143,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1441"/>
       <location filename="../../CommandExtensionDims.cpp" line="1804"/>
       <location filename="../../CommandExtensionDims.cpp" line="2063"/>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="635"/>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
       <location filename="../../CommandExtensionPack.cpp" line="589"/>
       <location filename="../../CommandExtensionPack.cpp" line="1080"/>
       <location filename="../../CommandExtensionPack.cpp" line="1316"/>
       <location filename="../../CommandExtensionPack.cpp" line="1689"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Itxi ataza aktiboaren elkarrizketa-koadroa eta saiatu berriro.</translation>
     </message>
@@ -3370,50 +3370,50 @@
       <translation>Ez dago marrazki-orririk dokumentuan.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="280"/>
+      <location filename="../../MDIViewPage.cpp" line="282"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="281"/>
-      <location filename="../../MDIViewPage.cpp" line="687"/>
+      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="693"/>
       <source>All Files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="283"/>
+      <location filename="../../MDIViewPage.cpp" line="285"/>
       <source>Export Page As PDF</source>
       <translation>Esportatu orrialdea PDF gisa</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="578"/>
+      <location filename="../../MDIViewPage.cpp" line="584"/>
       <source>Document Name: </source>
       <translation>Dokumentu-izena: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="686"/>
+      <location filename="../../MDIViewPage.cpp" line="692"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="689"/>
+      <location filename="../../MDIViewPage.cpp" line="695"/>
       <source>Export page as SVG</source>
       <translation>Esportatu orrialdea SVG gisa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ziur zaude jarraitu nahi duzula?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Show drawing</source>
       <translation>Erakutsi marrazkia</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="237"/>
       <source>Toggle KeepUpdated</source>
       <translation>Txandakatu eguneratuta mantentzea</translation>
     </message>
@@ -3438,9 +3438,9 @@
       <translation>Testu aberatsaren sortzailea</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="323"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="278"/>
       <source>Rich text editor</source>
       <translation>Testu aberatsaren editorea</translation>
     </message>
@@ -3505,24 +3505,24 @@
       <translation>Sekzio konplexu berria</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="179"/>
+      <location filename="../../TaskComplexSection.cpp" line="177"/>
       <source>Edit Complex Section</source>
       <translation>Editatu sekzio konplexua</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
+      <location filename="../../TaskComplexSection.cpp" line="215"/>
       <location filename="../../TaskSectionView.cpp" line="226"/>
       <source>Current View Direction</source>
       <translation>Uneko bista-norabidea</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskComplexSection.cpp" line="216"/>
       <location filename="../../TaskSectionView.cpp" line="227"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Bistaren norabidea oinarri-bistaren koordenatuetan</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="688"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Eragiketak huts egin du</translation>
@@ -3558,8 +3558,8 @@
       <translation>Editatu xehetasun-bista</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>Editatu %1</translation>
     </message>
@@ -3835,17 +3835,17 @@ hautsi daitekeen soldadura-ikur bat duelako.</translation>
       <translation>Ezin da bista hau ezabatu, hautsita geratuko liratekeen mendeko bista bat edo gehiago dituelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
     </message>
@@ -3870,7 +3870,7 @@ hautsi daitekeen soldadura-ikur bat duelako.</translation>
       <translation>Ezin da bista hau ezabatu hautsita geratuko litzatekeen gida-marra bat duelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="208"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Orria ez dago hutsik, eta honako erreferentzia
@@ -3962,14 +3962,6 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     </message>
   </context>
   <context>
-    <name>TaskComplexSection</name>
-    <message>
-      <location filename="../../TaskComplexSection.cpp" line="173"/>
-      <source>No direction set</source>
-      <translation>Ez da norabiderik ezarri</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskMoveView</name>
     <message>
       <location filename="../../TaskMoveView.ui" line="14"/>
@@ -3995,7 +3987,7 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="487"/>
+      <location filename="../../TaskComplexSection.cpp" line="485"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation> eguneraketa falta dira</translation>
@@ -4006,7 +3998,7 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="148"/>
       <source>No direction set</source>
-      <translation>Ez da norabiderik ezarri</translation>
+      <translation type="unfinished">No direction set</translation>
     </message>
   </context>
   <context>
@@ -5568,51 +5560,51 @@ Azkarra, baina lerro zuzen laburren bilduma bat ematen du.</translation>
       <translation>Inprimatu orrialde guztiak</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="391"/>
+      <location filename="../../MDIViewPage.cpp" line="395"/>
       <source>Different orientation</source>
       <translation>Orientazio desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="392"/>
+      <location filename="../../MDIViewPage.cpp" line="396"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak orientazio desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="401"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>Different paper size</source>
       <translation>Paper-tamaina desberdina</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="402"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Inprimagailuak eta marrazkiak paper-tamaina desberdina dute.
 Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="415"/>
+      <location filename="../../MDIViewPage.cpp" line="419"/>
       <source>Opening file failed</source>
       <translation>Fitxategia irekitzeak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="420"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Ezin da %1 fitxategia ireki hura idazteko.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="713"/>
+      <location filename="../../MDIViewPage.cpp" line="719"/>
       <source>Save DXF file</source>
       <translation>Gorde DXF fitxategia</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="714"/>
+      <location filename="../../MDIViewPage.cpp" line="720"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1222"/>
+      <location filename="../../MDIViewPage.cpp" line="1228"/>
       <source>Selected:</source>
       <translation>Hautatua:</translation>
     </message>
@@ -6092,7 +6084,12 @@ Jarraitu nahi duzu?</translation>
       <translation>Eguneratu orain</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="689"/>
+      <location filename="../../TaskComplexSection.cpp" line="172"/>
+      <source>No direction set</source>
+      <translation type="unfinished">No direction set</translation>
+    </message>
+    <message>
+      <location filename="../../TaskComplexSection.cpp" line="687"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ezin da jarraitu. Ez da * %1 edo %2 objektua aurkitu.</translation>
     </message>
@@ -8767,14 +8764,14 @@ emandako X/Y espazioa erabilita</translation>
   <context>
     <name>TaskBalloon</name>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="181"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="183"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
       <translation>Ezin da bunbuilo hau ezabatu orain zeregin baten
 elkarrizketa-koadroa irekita dagoelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="184"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="186"/>
       <source>Can Not Delete</source>
       <translation>Ezin da ezabatu</translation>
     </message>

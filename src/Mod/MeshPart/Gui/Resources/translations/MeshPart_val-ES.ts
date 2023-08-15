@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</translation>
       <translation>Connecta les arestes si la distància és menor que</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Fallada</translation>
     </message>

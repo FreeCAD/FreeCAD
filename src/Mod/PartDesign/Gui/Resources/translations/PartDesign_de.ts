@@ -514,7 +514,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="503"/>
       <source>Create sketch</source>
-      <translation>Skizze erstellen</translation>
+      <translation>Skizzen erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="504"/>
@@ -883,8 +883,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Klon erstellen</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Kopie erstellen</translation>
     </message>
@@ -909,8 +909,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Boolean erstellen</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation>Einen Körper hinzufügen</translation>
     </message>
@@ -1329,7 +1329,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From three points</source>
-      <translation>Aus drei Punkten</translation>
+      <translation>Von drei Punkten</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
@@ -1339,7 +1339,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>Nebenradius:</translation>
+      <translation>Innenradius:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -1434,7 +1434,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Differenz</translation>
+      <translation>Ausschneiden</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1449,7 +1449,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Entfernen</translation>
+      <translation>Löschen</translation>
     </message>
   </context>
   <context>
@@ -1514,7 +1514,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1634,13 +1634,13 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1687,7 +1687,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1800,12 +1800,12 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="63"/>
       <source>No wire in sketch</source>
-      <translation>Kein Kantenzug in Skizze</translation>
+      <translation>Kein Kantenzug in der Skizze</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="64"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skizze wurde bereits für anderes Objekt verwendet</translation>
+      <translation>Skizze wurde bereits für anderes Element benutzt</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="65"/>
@@ -1849,13 +1849,13 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -2125,7 +2125,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Richtung umkehren</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2145,7 +2145,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
@@ -2155,7 +2155,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
   </context>
   <context>
@@ -2547,7 +2547,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
   </context>
   <context>
@@ -2839,7 +2839,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Richtung umkehren</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
@@ -2859,7 +2859,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
@@ -2869,7 +2869,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
   </context>
   <context>
@@ -2896,7 +2896,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
-      <translation>Basis X-Achse</translation>
+      <translation>Basis-X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
@@ -2908,7 +2908,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
-      <translation>Basis Z-Achse</translation>
+      <translation>Basis-Z-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -2934,7 +2934,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Symmetrisch zu einer Ebene</translation>
+      <translation>Symmetrisch zur Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
@@ -2944,7 +2944,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
@@ -3187,7 +3187,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Aktiven Körper umschalten</translation>
     </message>
@@ -3484,28 +3484,28 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Zum Erzeugen einer Skizze zuerst eine Ebene im Koordinatensystem oder auf einem Körper wählen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="911"/>
-      <location filename="../../Command.cpp" line="1930"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>Do you want to close this dialog?</source>
       <translation>Möchten Sie diesen Dialog zu schließen?</translation>
     </message>
@@ -3771,14 +3771,14 @@ This may lead to unexpected results.</source>
       <translation>Es ist nicht möglich, ein abzuziehendes Objekt ohne ein Basisobjekt zu erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
@@ -3833,10 +3833,10 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -3854,7 +3854,7 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
       <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
-      <translation>Ebene</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="115"/>
@@ -3961,27 +3961,27 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
       <translation>Transformation erfolgreich</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>Das Dokument "%1" welches Sie editieren, wurde mit der alten Version des PartDesign Workbench erstellt.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>Möchten Sie migrieren, um neuere PartDesign-Funktionen zu nutzen?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Das Dokument "%1" scheint entweder inmitten des Migrationsprozesses aus einem älteren PartDesign zu stammen oder hat eine defekte Struktur.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Möchten Sie die Migrierung automatisch durchführen?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -3990,7 +3990,7 @@ Wenn Du die Migration ablehnst, kannst Du keine neuen PartDesign-Funktionen wie 
 Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migrieren.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Manuell migrieren</translation>
     </message>
@@ -4409,7 +4409,7 @@ Achtung, die Berechnung kann einige Zeit dauern!</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4461,20 +4461,20 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
       <translation>Eng</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>Weit</translation>
     </message>
@@ -4627,12 +4627,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Umgekehrt</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation>Ungebunden</translation>
     </message>
@@ -4930,17 +4930,17 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Fusion der Werkzeuge fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="217"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
@@ -4955,22 +4955,22 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Vereinigung fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="221"/>
-      <location filename="../../../App/FeaturePad.cpp" line="230"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Das Ergebnis enthält mehrere Festkörper: Dies wird derzeit leider nicht unterstützt.</translation>
     </message>
@@ -5033,8 +5033,8 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Winkel der Nut zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -5044,14 +5044,14 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
 - Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <source>Creating a face from sketch failed</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Die Drehachse schneidet die Skizze</translation>
     </message>
@@ -5061,14 +5061,14 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Das Ausschneiden des Basis-Formelements ist fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
       <translation>Konnte die Skizze nicht drehen!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
@@ -5123,10 +5123,10 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
       <translation>Fehler: Konnte leider keine Helix erstellen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <location filename="../../../App/FeatureHelix.cpp" line="330"/>
       <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Result is not a solid</source>
       <translation>Fehler: Ergebnis ist kein Festkörper</translation>
     </message>
@@ -5228,15 +5228,15 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
       <translation>Fehler: Konnte das Gewinde nicht hinzufügen</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Boolesche Operation fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden.

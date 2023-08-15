@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -44,7 +44,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -80,7 +80,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -112,7 +112,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Prečni prerezi</translation>
+      <translation>Prečni prerez</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -170,7 +170,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
       <translation>Stakni robove, če je razdalja manjša od</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Napaka</translation>
     </message>
@@ -275,7 +275,7 @@ Ta ukaz deluje le na "ploskovjih" in ne na pravilnih ploskvah ali površjih. Če
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Tlakovanje</translation>
+      <translation>Ploščičenje</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -387,7 +387,7 @@ Najmanjša vrednost je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation>Podrobnost:</translation>
+      <translation>Drobnatost:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -407,7 +407,7 @@ Najmanjša vrednost je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Podroben</translation>
+      <translation>Drobna</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

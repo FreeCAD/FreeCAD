@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="39"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="40"/>
@@ -293,7 +293,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="38"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="39"/>
@@ -318,7 +318,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Tip</source>
-      <translation>Astuce</translation>
+      <translation>Astuce </translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
@@ -363,7 +363,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Cette section contient la documentation pour les développeurs : comment compiler FreeCAD vous-même, comment le code source de FreeCAD est structuré + comment naviguer dedans, et également comment développer de nouveaux ateliers, et/ou incorporer FreeCAD dans votre propre application.</translation>
+      <translation>Cette section contient la documentation pour les développeurs : comment compiler FreeCAD vous-même, comment le code source de FreeCAD est structuré + comment naviguer dedans, également comment développer de nouveaux ateliers et/ou incorporer FreeCAD dans votre propre application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -506,7 +506,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../AppStartGui.cpp" line="103"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Start</translation>
     </message>
   </context>
 </TS>

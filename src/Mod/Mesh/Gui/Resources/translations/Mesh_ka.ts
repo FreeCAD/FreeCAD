@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -63,18 +63,18 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>განივი-გადანაჭრები...</translation>
+      <translation>განივი კვეთები...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>განივი-გადანაჭრები</translation>
+      <translation>განივი კვეთები</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1005"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1006"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1170"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1171"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="964"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="351"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="352"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1448"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1408"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1409"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1301"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1302"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="427"/>
@@ -267,17 +267,17 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>ფიგურისგან მრავალკუთხა ბადის შექმნა...</translation>
+      <translation>მოხაზულობის შექმნა ბადიდან...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
-      <translation>მოზაიკა მოხაზულობიდან</translation>
+      <translation>მოხაზულობის ტესელაცია</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1267"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1268"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="229"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="230"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1561"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1562"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="702"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="703"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="909"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1093"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1094"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1126"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1127"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1048"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1651"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="853"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="854"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1525"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1208"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1209"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="824"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="825"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
@@ -782,34 +782,34 @@
       <translation>მონიშნულის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
       <translation>მოკვეცა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
       <translation>გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>სეგმენტი</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>ხვრელების შევსება</translation>
     </message>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation>დაშვება</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="90"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="256"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="417"/>
       <source>No selection</source>
-      <translation>მონიშნული არაფერი არაა</translation>
+      <translation>არაფერია მონიშნული</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
@@ -1154,7 +1154,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>გამართვა</translation>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1212,14 +1212,14 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>ტორი</translation>
+      <translation>ტორუსი</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>სიგრძე:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
@@ -1295,7 +1295,7 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="219"/>
       <source>Create %1</source>
-      <translation>%1-ის შექმნა</translation>
+      <translation>%1-ის შექნა</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="126"/>
@@ -1313,7 +1313,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>გატანა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
@@ -1612,7 +1612,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>დასრულება</translation>
     </message>
@@ -1657,7 +1657,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>მონიშნული არაფერი არაა</translation>
+      <translation>არაფერია მონიშნული</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1733,7 +1733,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
@@ -1815,7 +1815,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1823,7 +1823,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation>დაშვება</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1885,7 +1885,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1899,7 +1899,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation>დაშვება</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
@@ -2089,7 +2089,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Display</source>
-      <translation>ეკრანი</translation>
+      <translation>ჩვენება</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
@@ -2280,43 +2280,43 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>კომპონენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>სეგმენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>ფერების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>საინფორმაციო რეჟიმიდან გასვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>ინდექსი: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>ნახვრეტების შევსების რეჟიმიდან გასვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>წაშლის რეჟიმიდან გამოსვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>მონიშნული ზედაპირების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>ზედაპირებზე მონიშვნის მოხსნა</translation>
     </message>
@@ -2336,7 +2336,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>ბულევური ოპერაციები</translation>
+      <translation>ბულევი</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -2371,7 +2371,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+      <translation>ბადის სეგმენტაცია</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

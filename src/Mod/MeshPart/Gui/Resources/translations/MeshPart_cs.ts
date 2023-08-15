@@ -170,7 +170,7 @@ Tento příkaz pracuje pouze s objektem typu 'mesh'.</translation>
       <translation>Propojit hrany, pokud je vzdálenost menší než</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Selhání</translation>
     </message>

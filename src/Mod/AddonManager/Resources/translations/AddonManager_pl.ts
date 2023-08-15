@@ -297,12 +297,12 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation>Wyświetl i zaktualizuj zależności pakietów Pythona</translation>
+      <translation>Wyświetl i zaktualizuj zależności pakietów środowiska Python</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation>Zależności Pythona...</translation>
+      <translation>Zależności Python ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
@@ -726,7 +726,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>Aktualizuj</translation>
+      <translation>Zaktualizuj</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -744,7 +744,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation>Zarządzaj zależnościami Pythona</translation>
+      <translation>Zarządzaj zależnościami środowiska Python</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
@@ -823,7 +823,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makrodefinicja</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
@@ -833,7 +833,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Środowiska pracy</translation>
+      <translation>Środowisko pracy</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -860,7 +860,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation>Przeglądaj...</translation>
+      <translation>Przeglądaj ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -1113,7 +1113,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation>Przeglądaj...</translation>
+      <translation>Przeglądaj ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
@@ -1268,18 +1268,18 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Wykonanie makrodefinicji nie powiodło się. Szczegóły awarii znajdują się w konsoli.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Opiekun</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1302,7 +1302,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../manage_python_dependencies.py" line="253"/>
       <location filename="../../package_details.py" line="918"/>
       <source>Update</source>
-      <translation>Aktualizuj</translation>
+      <translation>Zaktualizuj</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
@@ -1495,8 +1495,8 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Nie zainstalowano powiązań Pythona z QtWebEngine — przy użyciu awaryjnego ekranu README.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Zakończono pomyślnie</translation>
@@ -1628,9 +1628,9 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Wybierz plik ikon dla tego elementu</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nie jest podkatalogiem {}</translation>
     </message>
@@ -1642,7 +1642,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="452"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
@@ -1839,7 +1839,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>uruchom</translation>
+      <translation>Uruchom</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -2033,7 +2033,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="501"/>
       <source>Available version</source>
-      <translation>Wersja  dostępna</translation>
+      <translation>Wersja dostępna</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="797"/>
@@ -2048,8 +2048,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="803"/>
       <source>Workbenches</source>
-      <translation>Środowiska
-    pracy</translation>
+      <translation>Środowiska pracy</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="806"/>

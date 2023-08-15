@@ -280,7 +280,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
-      <translation>Ugrez</translation>
+      <translation>Nagib</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -883,8 +883,8 @@ da se izogne samosečnosti.</translation>
       <translation>Ustvari dvojnika</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Naredi kopijo</translation>
     </message>
@@ -909,8 +909,8 @@ da se izogne samosečnosti.</translation>
       <translation>Ustvari logično vrednost</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation>Dodaj telo</translation>
     </message>
@@ -1283,7 +1283,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max:</source>
-      <translation>Najv./najm. Z:</translation>
+      <translation>Najv./najm. Z2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
@@ -1379,7 +1379,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Osnova</translation>
+      <translation>Sklic</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1515,7 +1515,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1567,7 +1567,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="180"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
@@ -1641,7 +1641,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1688,7 +1688,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1856,7 +1856,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -1945,7 +1945,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Izberite osnovo …</translation>
+      <translation>Izberite sklic ...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2141,7 +2141,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>Potrdi</translation>
+      <translation>V redu</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
@@ -2179,7 +2179,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
@@ -2247,7 +2247,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>Potrdi</translation>
+      <translation>V redu</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
@@ -2443,7 +2443,7 @@ rob oblikovanca</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation>Izberite osnovo …</translation>
+      <translation>Izberite sklic ...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2571,7 +2571,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Nepremičen</translation>
+      <translation>Nespremenljivo</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2586,7 +2586,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Binormala</translation>
+      <translation>Binormalno</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -2596,7 +2596,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
@@ -2654,7 +2654,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
@@ -2845,12 +2845,12 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
       <source>Occurrences</source>
-      <translation>Pojavitve</translation>
+      <translation>Pogostosti</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
@@ -3188,7 +3188,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Preklopi dejavno telo</translation>
     </message>
@@ -3485,28 +3485,28 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Ustvarite najprej ravnino ali izberite ploskev, na katero želite očrtavati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="911"/>
-      <location filename="../../Command.cpp" line="1930"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
@@ -3774,14 +3774,14 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
       <translation>Značilke odvzemanja ni mogoče ustvariti, če osnovna značilnost ni na voljo</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Navpična os skice</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodoravna os skice</translation>
     </message>
@@ -3835,10 +3835,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Če želite uporabiti to značilnost, mora pripadati delu v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -3963,27 +3963,27 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
       <translation>Preoblikovanje uspelo</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>Dokument "%1", ki ga urejate, je bil narejen v starejši različici delavnega okolja Snovalnik delov (PartDesign).</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>Želite preseliti, da bi lahko uporabljali zmožnosti novega Snovalnika delov?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>Kaže, da je dokument "%1" bodisi sredi selitve iz podedovanega Snovalnika delova, bodisi ima malo okvarjeno zasnovo.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Želite, da bi bila selitev samodejna?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -3992,7 +3992,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
 Neglede na to je selitev v bodoče z "Snovanje delov -&gt; Preseli" mogoča kadarkoli.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Preseli ročno</translation>
     </message>
@@ -4463,20 +4463,20 @@ Na voljo le pri luknjah breh navoja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
       <translation>Običajno</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
       <translation>Zapri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>Velika</translation>
     </message>
@@ -4630,12 +4630,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Obratno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Normal</source>
       <translation>Običajno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation>Ohlapno</translation>
     </message>
@@ -4933,17 +4933,17 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Spojitev orodij spodletela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="217"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
       <source>Resulting shape is not a solid</source>
       <translation>Dobljena oblika ni telo</translation>
     </message>
@@ -4958,22 +4958,22 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Skupno dejanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="221"/>
-      <location filename="../../../App/FeaturePad.cpp" line="230"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Dobljenih je več teles, kar pa trenutno ni podprto.</translation>
     </message>
@@ -5036,8 +5036,8 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Premajhene kot žlebiča</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -5047,14 +5047,14 @@ nad 90: v spodnjem delu večji premer luknje</translation>
   - izbrani očrt ne pripada dejavnemu telesu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <source>Creating a face from sketch failed</source>
       <translation>Ustvarjanje ploskve iz očrta spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Os vrtenine seka očrt</translation>
     </message>
@@ -5064,14 +5064,14 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Izrezovanje iz osnovne značilnosti spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
       <translation>Očrta ni mogoče zvrteti!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
@@ -5126,10 +5126,10 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
       <translation>Napaka: ni mogoče narediti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <location filename="../../../App/FeatureHelix.cpp" line="330"/>
       <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Result is not a solid</source>
       <translation>Napaka: dobljeno ni telo</translation>
     </message>
@@ -5231,15 +5231,15 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
       <translation>Napaka: dodajanje navoja spodletelo</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Logična operacija spodletela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Iz očrta ni bilo mogoče ustvariti ploskve.

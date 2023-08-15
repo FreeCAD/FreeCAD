@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Sichtkontrolle</translation>
+      <translation>Optische Überprüfung</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -83,7 +83,7 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation> mm</translation>
+      <translation>mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>

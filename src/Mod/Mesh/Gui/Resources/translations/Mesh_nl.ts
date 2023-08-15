@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -63,18 +63,18 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Dwarsdoorsneden...</translation>
+      <translation>Doorsnedes...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Dwarsdoorsneden</translation>
+      <translation>Doorsnedes</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1005"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1006"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1170"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1171"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="964"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
-      <translation>Betegel vorm</translation>
+      <translation>Tegel vorm</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="703"/>
       <source>Cut mesh</source>
-      <translation>Snij de msh</translation>
+      <translation>Snij de mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>
@@ -782,34 +782,34 @@
       <translation>Selectie verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
-      <translation>Snijden</translation>
+      <translation>Knippen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
-      <translation>Trim</translation>
+      <translation>Bijsnijden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
-      <translation>Delen</translation>
+      <translation>Opsplitsen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Vul gat</translation>
     </message>
@@ -1614,7 +1614,7 @@ tot een gladder uiterlijk leidt.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Voltooien</translation>
     </message>
@@ -1929,7 +1929,7 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Normaal</translation>
+      <translation>Loodrechte lijn</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
@@ -1940,7 +1940,7 @@ tot een gladder uiterlijk leidt.
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <location filename="../../SegmentationBestFit.cpp" line="407"/>
       <source>Radius</source>
-      <translation>Radius</translation>
+      <translation>Straal</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
@@ -2027,12 +2027,12 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Mesh info box</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Mesh informatie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
@@ -2282,43 +2282,43 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>Geef componenten weer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Segmenten weergeven</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Kleuren weergeven</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Info modus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Gatvulmodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Verwijdermodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Verwijder geselecteerde vlakken</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Geselecteerde vlakken wissen</translation>
     </message>
@@ -2373,7 +2373,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Meshsegmentatie</translation>
+      <translation>Mesh segmentatie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

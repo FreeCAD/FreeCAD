@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Злучыць рэбры, калі адлегласць меней, чым</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Няўдача</translation>
     </message>
@@ -227,7 +227,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Ломаная</translation>
+      <translation>Ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -285,7 +285,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Стандартны</translation>
+      <translation>Звычайны</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>

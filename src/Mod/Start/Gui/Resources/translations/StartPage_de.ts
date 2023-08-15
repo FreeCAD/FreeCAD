@@ -196,7 +196,7 @@ Wird ";;" verwendet, um Pfade zu trennen, können hier mehrere Ordner hinzugefü
     <message>
       <location filename="../../DlgStartPreferences.ui" line="500"/>
       <source>Font family</source>
-      <translation>Schriftartfamilie</translation>
+      <translation>Schriftart</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>

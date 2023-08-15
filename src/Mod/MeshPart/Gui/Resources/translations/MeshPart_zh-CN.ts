@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>如果距离小于，则连接边缘</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>失败</translation>
     </message>

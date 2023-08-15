@@ -313,7 +313,7 @@ Door ";" te gebruiken kan je ook meerdere mappen toevoegen</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Recente Bestanden</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

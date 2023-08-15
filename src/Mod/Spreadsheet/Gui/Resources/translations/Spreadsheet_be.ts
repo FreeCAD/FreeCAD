@@ -347,7 +347,7 @@
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Змяніць клетку</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Ачысціць клеткі</translation>
     </message>
@@ -603,7 +603,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Злева</translation>
+      <translation>Па левым боку</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -614,7 +614,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Справа</translation>
+      <translation>Па правым боку</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -624,12 +624,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Зверху</translation>
+      <translation>Да верху</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>Знізу</translation>
+      <translation>Да нізу</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -723,12 +723,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Не атрымалася скапіраваць і ўставіць</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псеўданім змяшчае хібныя знакі!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Звярніцеся да клеткі па псеўданіму, напрыклад
@@ -1121,7 +1121,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Разрэзаць</translation>
+      <translation>Выразаць</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
@@ -1145,12 +1145,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
     </message>

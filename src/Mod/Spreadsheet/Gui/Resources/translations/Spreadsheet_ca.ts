@@ -347,7 +347,7 @@
       <translation>Propietats de la cel·la</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Edita la cel·la</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Neteja les cel·la(s)</translation>
     </message>
@@ -727,12 +727,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>S'ha produït un error en copiar i enganxar</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>El sobrenom conté caràcters no vàlids!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Consulteu la cel·la per sobrenom, per exemple
@@ -1132,12 +1132,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>Exporta a PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>Arxiu PDF</translation>
     </message>

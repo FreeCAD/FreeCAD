@@ -170,7 +170,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
       <translation>Yhdistä reunat, jos etäisyys on pienempi kuin</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Virhe</translation>
     </message>

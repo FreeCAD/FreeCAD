@@ -782,34 +782,34 @@
       <translation>Ştergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
       <translation>Scădere</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
       <translation>Taiere</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
       <translation>Divizare</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Ştergeţi</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Umple gaura</translation>
     </message>
@@ -1612,7 +1612,7 @@ la un aspect mai uşor.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Terminare</translation>
     </message>
@@ -2280,43 +2280,43 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
       <translation>Afișează componente</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Afișare segmente</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Culoarea afișajului</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Parasiti modul informare</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Indice: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Parasiti modul de umplere a gaurilor</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Parasiti modul de stergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Stergeti fetele selectate</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Curatati fetele selectate</translation>
     </message>

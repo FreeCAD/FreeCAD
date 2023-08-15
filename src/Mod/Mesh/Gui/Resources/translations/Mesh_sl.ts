@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1005"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1006"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1170"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1171"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="964"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="351"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="352"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1448"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1408"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1409"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1301"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1302"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="427"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Tessellate shape</source>
-      <translation>Teseliraj obliko</translation>
+      <translation>Poplošči obliko</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1267"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1268"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="229"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="230"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1561"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1562"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="702"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="703"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="909"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1093"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1094"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1126"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1127"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1048"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1651"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="853"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="854"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1525"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1208"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1209"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="824"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="825"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
@@ -782,34 +782,34 @@
       <translation>Izbriši izbor</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
       <translation>Izreži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
       <translation>Prireži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
-      <translation>Razdeli</translation>
+      <translation>Razcepi</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Odsek</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Zapolni luknjo</translation>
     </message>
@@ -1313,7 +1313,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Izvoz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
@@ -1613,7 +1613,7 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Končaj</translation>
     </message>
@@ -1628,12 +1628,12 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation>Parametri</translation>
+      <translation>Določilke </translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation>Izbira</translation>
+      <translation>Izbor</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -1734,7 +1734,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
@@ -1928,7 +1928,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Običajno</translation>
+      <translation>Normalno</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
@@ -1953,7 +1953,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Izbira</translation>
+      <translation>Izbor</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -2095,7 +2095,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>Uvoz - Izvoz</translation>
+      <translation>Uvozi-Izvozi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2281,43 +2281,43 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Prikaži sestavine</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Prikaži odseke</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Barve prikaza</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Zapusti podatkovni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Kazalo: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Zapusti način zapolnjevanja lukenj</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Zapusti odstranjevalni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Izbriši izbrane ploskve</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Počisti izbrane ploskve</translation>
     </message>
@@ -2337,7 +2337,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Logična vrednost</translation>
+      <translation>Logična operacija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -2347,7 +2347,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>Prerez</translation>
+      <translation>Rezkanje</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -2372,7 +2372,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Razčlenitev ploskovja</translation>
+      <translation>Razčlenitev ploskovja </translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

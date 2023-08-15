@@ -228,12 +228,12 @@
       <translation>Bistaren triangelaketa</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Kokapena</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Doitu B-spline kurba</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Hautatu kokapen-objektu bakarra tokiko orientazioa eskuratzeko.</translation>
     </message>

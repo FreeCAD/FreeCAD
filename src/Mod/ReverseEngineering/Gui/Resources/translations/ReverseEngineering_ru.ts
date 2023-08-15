@@ -228,12 +228,12 @@
       <translation>Просмотреть триангуляцию</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Расположение</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Разместить B-сплайн</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Пожалуйста, выберите один объект размещения для получения локальной ориентации.</translation>
     </message>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -480,7 +480,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; граней</translation>
+      <translation>граней меньше чем</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
@@ -514,7 +514,7 @@
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>Точность</translation>
+      <translation>Допуск</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Предпочитать только треугольники повернутые нормалями к экрану</translation>
+      <translation>Предпочитать только треугольники, повернутые нормалями к экрану</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>

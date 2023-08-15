@@ -25,7 +25,7 @@
       <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="319"/>
@@ -713,7 +713,7 @@
       <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
+      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="55"/>
@@ -725,7 +725,7 @@
       <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Odniesienie położenia jest dopasowane do Wierzchołka. Orientacja jest kontrolowana przez właściwość Umieszczenie.</translation>
+      <translation>Odniesienie położenia jest dopasowane do Wierzchołka. Orientacja jest kontrolowana przez właściwość Umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="58"/>
@@ -811,7 +811,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Wyrównaj do układu współrzędnych Freneta Serret zaokrąglonej krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
+      <translation>Wyrównaj do układu współrzędnych Frenet-Serret zakrzywionej krawędzi. Opcjonalne łącze wierzchołka określa miejsce.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -1104,7 +1104,7 @@
       <location filename="../../DlgBlock.ui" line="264"/>
       <location filename="../../DlgBlock.ui" line="316"/>
       <source>No selection</source>
-      <translation>Nie wybrano</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
@@ -2321,12 +2321,12 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
       <translation>Konwertuj siatkę</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1077"/>
+      <location filename="../../TaskAttacher.cpp" line="1079"/>
       <source>Edit attachment</source>
       <translation>Edytuj dołączenie</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="419"/>
+      <location filename="../../TaskFaceColors.cpp" line="421"/>
       <source>Change face colors</source>
       <translation>Zmień kolory ściany</translation>
     </message>
@@ -2349,7 +2349,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="358"/>
       <location filename="../../TaskShapeBuilder.cpp" line="410"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="473"/>
@@ -2603,42 +2603,42 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
       <translation>Odwróć zaznaczenie</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="385"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="387"/>
       <source>Select a shape on the left side, first</source>
       <translation>Najpierw zaznacz kształt po lewej stronie</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="390"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Select a shape on the right side, first</source>
       <translation>Najpierw zaznacz kształt po prawej stronie,</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="395"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
       <translation>Nie można wykonać operacji logicznej na tym samym kształcie</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="405"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="407"/>
       <source>No active document available</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="415"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="417"/>
       <source>One of the selected objects doesn't exist anymore</source>
       <translation>Jeden z zaznaczonych obiektów nie istnieje</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="422"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing union on non-solids is not possible</source>
       <translation>Utworzenie złączenia na obiektach nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="430"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="432"/>
       <source>Performing intersection on non-solids is not possible</source>
       <translation>Utworzenie iloczynu obiektów nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="438"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="440"/>
       <source>Performing difference on non-solids is not possible</source>
       <translation>Utworzenie różnicy obiektów nie będących bryłami nie jest możliwe</translation>
     </message>
@@ -2646,7 +2646,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1067"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1069"/>
       <source>Chamfer Edges</source>
       <translation>Fazowanie krawędzi</translation>
     </message>
@@ -2819,7 +2819,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
       <location filename="../../DlgExtrusion.ui" line="71"/>
       <location filename="../../DlgExtrusion.cpp" line="230"/>
       <source>Select</source>
-      <translation>Wybierz</translation>
+      <translation>Dodaj</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
@@ -3010,11 +3010,11 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
       <source>No selection</source>
-      <translation>Nie wybrano</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="278"/>
       <source>Fillet Parameter</source>
       <translation>Parametry zaokrąglenia</translation>
     </message>
@@ -3064,106 +3064,106 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
       <translation>Promień:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="265"/>
+      <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Chamfer Parameter</source>
       <translation>Parametry fazki</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="266"/>
+      <location filename="../../DlgFilletEdges.cpp" line="268"/>
       <source>Chamfer type</source>
       <translation>Typ sfazowania</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="267"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Length:</source>
       <translation>Długość:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Edges to chamfer</source>
       <translation>Krawędzie do sfazowania</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="864"/>
+      <location filename="../../DlgFilletEdges.cpp" line="866"/>
       <source>Start length</source>
       <translation>Długość początkowa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Equal distance</source>
       <translation>Wymiary równe</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Two distances</source>
       <translation>Dwa wymiary</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Size</source>
       <translation>Rozmiar</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Size2</source>
       <translation>Rozmiar 2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="279"/>
       <source>Fillet type</source>
       <translation>Typ zaokrąglenia</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Edges to fillet</source>
       <translation>Krawędzie do zaokrąglenia</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
-      <location filename="../../DlgFilletEdges.cpp" line="866"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <location filename="../../DlgFilletEdges.cpp" line="868"/>
       <source>Start radius</source>
       <translation>Początek promienia</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>End radius</source>
       <translation>Koniec promienia</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="713"/>
-      <location filename="../../DlgFilletEdges.cpp" line="773"/>
+      <location filename="../../DlgFilletEdges.cpp" line="715"/>
+      <location filename="../../DlgFilletEdges.cpp" line="775"/>
       <source>Edge%1</source>
       <translation>Krawędź %1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="856"/>
+      <location filename="../../DlgFilletEdges.cpp" line="858"/>
       <source>Length</source>
       <translation>Długość</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="858"/>
+      <location filename="../../DlgFilletEdges.cpp" line="860"/>
       <source>Radius</source>
       <translation>Promień</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>No shape selected</source>
       <translation>Brak wybranych kształtów</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="913"/>
+      <location filename="../../DlgFilletEdges.cpp" line="915"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Wybrany kształt jest nieprawidłowy. 
 Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="964"/>
+      <location filename="../../DlgFilletEdges.cpp" line="966"/>
       <source>No edge selected</source>
       <translation>Brak wybranych krawędzi</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="965"/>
+      <location filename="../../DlgFilletEdges.cpp" line="967"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Nie zaznaczono krawędzi do sfazowania. 
@@ -3180,7 +3180,7 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="20"/>
       <source>Export</source>
-      <translation>Eksport</translation>
+      <translation>Eksportuj</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
@@ -3364,7 +3364,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="161"/>
       <source>Single document</source>
-      <translation>Jeden dokument</translation>
+      <translation>Pojedynczy dokument</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="166"/>
@@ -3699,7 +3699,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <location filename="../../DlgPrimitives.ui" line="518"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation>Kąt w kierunku drugim</translation>
+      <translation>Kąt w drugim kierunku</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="569"/>
@@ -4244,7 +4244,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="158"/>
       <source>Bold</source>
-      <translation>Pogrubienie</translation>
+      <translation>Pogrubiona</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="176"/>
@@ -4763,7 +4763,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="425"/>
       <location filename="../../TaskShapeBuilder.cpp" line="488"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
@@ -4876,7 +4876,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="343"/>
@@ -4960,14 +4960,14 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Odsunięcie dołączenia (według lokalnych współrzędnych):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation>W kierunku x:</translation>
+      <translation>W kierunku X:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="158"/>
@@ -4980,12 +4980,12 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="175"/>
       <source>In y-direction:</source>
-      <translation>W kierunku y:</translation>
+      <translation>W kierunku Y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="211"/>
       <source>In z-direction:</source>
-      <translation>W kierunku z:</translation>
+      <translation>W kierunku Z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="247"/>
@@ -5040,77 +5040,77 @@ dołączanego obiektu.</translation>
       <translation>Odwróć strony</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="318"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>OCC error: %1</source>
       <translation>Błąd OCC:%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>unknown error</source>
       <translation>nieznany błąd</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="323"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attachment mode failed: %1</source>
       <translation>Tryb mocowania nie powiódł się: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Not attached</source>
       <translation>Nie dołączono</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="331"/>
+      <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attached with mode %1</source>
       <translation>Dołączony w trybie %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="632"/>
+      <location filename="../../TaskAttacher.cpp" line="634"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="639"/>
+      <location filename="../../TaskAttacher.cpp" line="641"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="646"/>
+      <location filename="../../TaskAttacher.cpp" line="648"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="711"/>
+      <location filename="../../TaskAttacher.cpp" line="713"/>
       <source>Selecting...</source>
       <translation>Wybieranie ...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="715"/>
+      <location filename="../../TaskAttacher.cpp" line="717"/>
       <source>Reference%1</source>
       <translation>Referencja%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="762"/>
+      <location filename="../../TaskAttacher.cpp" line="764"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nie można edytować, ponieważ obrót Odsunięcia Dołączenia jest związany przez wyrażenia.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="828"/>
+      <location filename="../../TaskAttacher.cpp" line="830"/>
       <source>Reference combinations:</source>
       <translation>Kombinacje odniesienia:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="845"/>
+      <location filename="../../TaskAttacher.cpp" line="847"/>
       <source>%1 (add %2)</source>
       <translation>%1 (dodaj %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="850"/>
+      <location filename="../../TaskAttacher.cpp" line="852"/>
       <source>%1 (add more references)</source>
       <translation>%1 (dodaj więcej odniesień)</translation>
     </message>
@@ -5367,7 +5367,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1118"/>
+      <location filename="../../TaskAttacher.cpp" line="1120"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialog punktu odniesienia: Błąd wprowadzenia</translation>
     </message>
@@ -5707,8 +5707,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -5740,7 +5740,7 @@ Projekt Części</translation>
       <location filename="../../Command.cpp" line="913"/>
       <location filename="../../Command.cpp" line="2005"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
@@ -5800,27 +5800,27 @@ Do you want to continue?</source>
       <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Złożenie</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -6093,39 +6093,39 @@ Do you want to continue?</source>
       <translation>Nieprawidłowy</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="656"/>
-      <location filename="../../TaskDimension.cpp" line="1792"/>
+      <location filename="../../TaskDimension.cpp" line="658"/>
+      <location filename="../../TaskDimension.cpp" line="1794"/>
       <source>Selections</source>
       <translation>Wybór:</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="663"/>
-      <location filename="../../TaskDimension.cpp" line="1799"/>
+      <location filename="../../TaskDimension.cpp" line="665"/>
+      <location filename="../../TaskDimension.cpp" line="1801"/>
       <source>Control</source>
       <translation>Kontrola</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1420"/>
+      <location filename="../../TaskDimension.cpp" line="1422"/>
       <source>Selection </source>
       <translation>Zaznaczenie </translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1504"/>
+      <location filename="../../TaskDimension.cpp" line="1506"/>
       <source>Reset selection</source>
       <translation>Resetuj wybór</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1508"/>
+      <location filename="../../TaskDimension.cpp" line="1510"/>
       <source>Toggle direct dimensions</source>
       <translation>Przełącz wymiary bezpośrednie</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1513"/>
+      <location filename="../../TaskDimension.cpp" line="1515"/>
       <source>Toggle orthogonal dimensions</source>
       <translation>Przełącz wymiary ortogonalne</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="1518"/>
+      <location filename="../../TaskDimension.cpp" line="1520"/>
       <source>Clear all dimensions</source>
       <translation>Usuń wszystkie wymiary</translation>
     </message>
@@ -6235,7 +6235,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Złożenie</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6418,7 +6418,7 @@ do filtrowania według kolizji lub odległości.</translation>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad selection</source>
-      <translation>Błędny wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
@@ -6619,7 +6619,7 @@ Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
       <source>Compounds</source>
-      <translation>Kształt złożony</translation>
+      <translation>Kształty złożone</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="83"/>

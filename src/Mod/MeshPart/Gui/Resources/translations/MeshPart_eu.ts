@@ -170,7 +170,7 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
       <translation>Konektatu ertzak distantzia hau baino txikiagoa bada:</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Hutsegitea</translation>
     </message>

@@ -347,7 +347,7 @@
       <translation>Nastavení buněk</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Editovat</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Vymazat buňku(y)</translation>
     </message>
@@ -728,12 +728,12 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
       <translation>Kopírování a vložení se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias obsahuje neplatné znaky!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odkaz na buňku aliasem, například
@@ -1150,12 +1150,12 @@ Výchozí hodnota: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>Export PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>PDF soubor</translation>
     </message>

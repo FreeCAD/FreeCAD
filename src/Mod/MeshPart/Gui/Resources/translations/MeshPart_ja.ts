@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>距離が小さい場合はエッジを接続する</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>失敗</translation>
     </message>

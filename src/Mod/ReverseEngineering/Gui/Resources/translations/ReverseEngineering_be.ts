@@ -228,12 +228,12 @@
       <translation>Выгляд трыянгуляцыі</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Размясціць</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Запоўніць B-сплайн</translation>
     </message>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total Weight</source>
-      <translation>Агульаня вага</translation>
+      <translation>Агульная вага</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Памылка ўводу</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Калі ласка, абярыце адзін аб'ект размяшчэння, каб атрымаць лакальную арыентацыю.</translation>
     </message>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="98"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Памылка ўводу</translation>
     </message>
   </context>
   <context>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Плоскасць</translation>
+      <translation>Плоскасьць</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -480,17 +480,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; чым граней</translation>
+      <translation>граней менш чым</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation>Выберыце трыкутнік</translation>
+      <translation>Выбраце трыкутнік</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>Абярыце ўсе кампаненты</translation>
+      <translation>Абраць усе кампаненты</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -500,7 +500,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>Плоскасць</translation>
+      <translation>Плоскасьць</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>

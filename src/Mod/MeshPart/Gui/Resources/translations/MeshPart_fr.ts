@@ -137,7 +137,7 @@ Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -157,7 +157,7 @@ Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>Distance :</translation>
+      <translation>Distance</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -170,7 +170,7 @@ Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
       <translation>Racorder les arêtes si la distance est inférieure à</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Échec</translation>
     </message>
@@ -227,7 +227,7 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Fil</translation>
+      <translation>Polyligne</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>

@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="131"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="189"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Web</source>
-      <translation>Sieć</translation>
+      <translation>Witryna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="815"/>
       <location filename="../../AppWebGui.cpp" line="93"/>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <source>Browser</source>
       <translation>Przeglądarka</translation>
     </message>

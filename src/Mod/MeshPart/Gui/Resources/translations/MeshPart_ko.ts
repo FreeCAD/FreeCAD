@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</translation>
       <translation>거리가 다음보다 작을 경우 가장자리를 연결 하십시오</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>실패</translation>
     </message>
