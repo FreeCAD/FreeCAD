@@ -2117,8 +2117,23 @@ Py::Object FunctionExpression::translationMatrix(double x, double y, double z)
     return Py::asObject(new Base::MatrixPy(matrix));
 }
 
+double FunctionExpression::extractLengthValueArgument(
+    const Expression *expression,
+    const std::vector<Expression*> &arguments,
+    int argumentIndex
+)
+{
+    Quantity argumentQuantity = pyToQuantity(arguments[argumentIndex]->getPyValue(), expression);
+    
+    if (!(argumentQuantity.isDimensionlessOrUnit(Unit::Length))) {
+        _EXPR_THROW("Unit must be either empty or a length.", expression);
+    }
+
+    return argumentQuantity.getValue();
+}
+
 Base::Vector3d FunctionExpression::extractVectorArgument(
-    const Expression* expression,
+    const Expression *expression,
     const std::vector<Expression*> &arguments,
     int argumentIndex
 )
@@ -2318,37 +2333,25 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         case VNORMALIZE:
             return Py::asObject(new Base::VectorPy(vector1.Normalize()));
         case VSCALE: {
-            Quantity scaleX = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
-            if (!(scaleX.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleX unit must be either empty or a length.", expr);
-            Quantity scaleY = pyToQuantity(args[2]->getPyValue(), expr, "Invalid third argument.");
-            if (!(scaleY.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleY unit must be either empty or a length.", expr);
-            Quantity scaleZ = pyToQuantity(args[3]->getPyValue(), expr, "Invalid fourth argument.");
-            if (!(scaleZ.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleZ unit must be either empty or a length.", expr);
-            vector1.Scale(scaleX.getValue(), scaleY.getValue(), scaleZ.getValue());
+            double scaleX = extractLengthValueArgument(expr, args, 1);
+            double scaleY = extractLengthValueArgument(expr, args, 2);
+            double scaleZ = extractLengthValueArgument(expr, args, 3);
+            vector1.Scale(scaleX, scaleY, scaleZ);
             return Py::asObject(new Base::VectorPy(vector1));
         }
         case VSCALEX: {
-            Quantity scaleX = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
-            if (!(scaleX.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleX unit must be either empty or a length.", expr);
-            vector1.ScaleX(scaleX.getValue());
+            double scaleX = extractLengthValueArgument(expr, args, 1);
+            vector1.ScaleX(scaleX);
             return Py::asObject(new Base::VectorPy(vector1));
         }
         case VSCALEY: {
-            Quantity scaleY = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
-            if (!(scaleY.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleY unit must be either empty or a length.", expr);
-            vector1.ScaleY(scaleY.getValue());
+            double scaleY = extractLengthValueArgument(expr, args, 1);
+            vector1.ScaleY(scaleY);
             return Py::asObject(new Base::VectorPy(vector1));
         }
         case VSCALEZ: {
-            Quantity scaleZ = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
-            if (!(scaleZ.isDimensionlessOrUnit(Unit::Length)))
-                _EXPR_THROW("scaleZ unit must be either empty or a length.", expr);
-            vector1.ScaleZ(scaleZ.getValue());
+            double scaleZ = extractLengthValueArgument(expr, args, 1);
+            vector1.ScaleZ(scaleZ);
             return Py::asObject(new Base::VectorPy(vector1));
         }
         }

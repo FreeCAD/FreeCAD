@@ -343,7 +343,8 @@ public:
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     static Base::Vector3d evaluateSecondVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments);
-    static Base::Vector3d extractVectorArgument(const Expression* expr, const std::vector<Expression*> &arguments, int argumentIndex);
+    static double extractLengthValueArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
+    static Base::Vector3d extractVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
     static void initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset = 0);
     static Py::Object transformFirstArgument(
         const Expression *expression,
