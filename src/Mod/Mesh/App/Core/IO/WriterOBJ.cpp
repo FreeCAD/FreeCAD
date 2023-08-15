@@ -192,10 +192,10 @@ bool WriterOBJ::Save(std::ostream& out)
         else {
             // facet indices (no texture and normal indices)
             std::size_t faceIdx = 1;
-            for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-                out << "f " << it->_aulPoints[0]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[1]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[2]+1 << "//" << faceIdx << '\n';
+            for (const auto & it : rFacets) {
+                out << "f " << it._aulPoints[0]+1 << "//" << faceIdx << " "
+                            << it._aulPoints[1]+1 << "//" << faceIdx << " "
+                            << it._aulPoints[2]+1 << "//" << faceIdx << '\n';
                 seq.next(true); // allow to cancel
                 faceIdx++;
             }
@@ -212,34 +212,34 @@ bool WriterOBJ::Save(std::ostream& out)
             App::Color prev;
             const std::vector<App::Color>& Kd = _material->diffuseColor;
 
-            for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
-                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
-                    const MeshFacet& f = rFacets[*it];
-                    if (first || prev != Kd[*it]) {
+            for (const auto & gt : _groups) {
+                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
+                for (FacetIndex it : gt.indices) {
+                    const MeshFacet& f = rFacets[it];
+                    if (first || prev != Kd[it]) {
                         first = false;
-                        prev = Kd[*it];
+                        prev = Kd[it];
                         std::vector<App::Color>::iterator c_it = std::find(colors.begin(), colors.end(), prev);
                         if (c_it != colors.end()) {
                             out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
                     }
 
-                    out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[1]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << *it + 1 << '\n';
+                    out << "f " << f._aulPoints[0]+1 << "//" << it + 1 << " "
+                                << f._aulPoints[1]+1 << "//" << it + 1 << " "
+                                << f._aulPoints[2]+1 << "//" << it + 1 << '\n';
                     seq.next(true); // allow to cancel
                 }
             }
         }
         else {
-            for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
-                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
-                    const MeshFacet& f = rFacets[*it];
-                    out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[1]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << *it + 1 << '\n';
+            for (const auto & gt : _groups) {
+                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
+                for (FacetIndex it : gt.indices) {
+                    const MeshFacet& f = rFacets[it];
+                    out << "f " << f._aulPoints[0]+1 << "//" << it + 1 << " "
+                                << f._aulPoints[1]+1 << "//" << it + 1 << " "
+                                << f._aulPoints[2]+1 << "//" << it + 1 << '\n';
                     seq.next(true); // allow to cancel
                 }
             }

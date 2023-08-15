@@ -198,8 +198,7 @@ void CylinderFit::ProjectToCylinder()
     Base::Vector3f cBase(_vBase.x, _vBase.y, _vBase.z);
     Base::Vector3f cAxis(_vAxis.x, _vAxis.y, _vAxis.z);
 
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
+    for (auto & cPnt : _vPoints) {
         if (cPnt.DistanceToLine(cBase, cAxis) > 0) {
             Base::Vector3f proj;
             cBase.ProjectToPlane(cPnt, cAxis, proj);

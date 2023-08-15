@@ -77,12 +77,12 @@ void MeshPointArray::ResetFlag (MeshPoint::TFlagType tF) const
 
 void MeshPointArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->SetProperty(ulVal);
+  for (const auto & pP : *this) pP.SetProperty(ulVal);
 }
 
 void MeshPointArray::ResetInvalid () const
 {
-  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->ResetInvalid();
+  for (const auto & pP : *this) pP.ResetInvalid();
 }
 
 MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
@@ -95,8 +95,8 @@ MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
 
 void MeshPointArray::Transform(const Base::Matrix4D& mat)
 {
-  for (_TIterator pP = begin(); pP != end(); ++pP)
-    mat.multVec(*pP,*pP);
+  for (auto & pP : *this)
+    mat.multVec(pP,pP);
 }
 
 MeshFacetArray::MeshFacetArray(const MeshFacetArray& ary)
@@ -159,12 +159,12 @@ void MeshFacetArray::ResetFlag (MeshFacet::TFlagType tF) const
 
 void MeshFacetArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->SetProperty(ulVal);
+  for (const auto & pF : *this) pF.SetProperty(ulVal);
 }
 
 void MeshFacetArray::ResetInvalid () const
 {
-  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->ResetInvalid();
+  for (const auto & pF : *this) pF.ResetInvalid();
 }
 
 MeshFacetArray& MeshFacetArray::operator = (const MeshFacetArray &rclFAry)
@@ -186,9 +186,9 @@ bool MeshGeomEdge::ContainedByOrIntersectBoundingBox ( const Base::BoundBox3f &r
     return true;
 
   // Test whether one of the corner points is in BB
-  for (int i=0;i<2;i++)
+  for (const auto& pnt : _aclPoints)
   {
-    if (rclBB.IsInBox(_aclPoints[i]))
+    if (rclBB.IsInBox(pnt))
       return true;
   }
 
@@ -1494,8 +1494,8 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
   radius = CenterOfCircumCircle(center);
   radius *= radius;
 
-  for (int i=0; i<3; i++) {
-    float dist = Base::DistanceP2(rFacet._aclPoints[i], center);
+  for (const auto& pnt : rFacet._aclPoints) {
+    float dist = Base::DistanceP2(pnt, center);
     if (dist < radius)
       return true;
   }

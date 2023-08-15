@@ -77,9 +77,9 @@ void MeshBuilder::Initialize (size_t ctFacets, bool deletion)
     }
     else
     {
-        for (MeshPointArray::_TConstIterator it1 = _meshKernel._aclPointArray.begin(); it1 != _meshKernel._aclPointArray.end(); ++it1)
+        for (const auto & it1 : _meshKernel._aclPointArray)
         {
-            MeshPointIterator pit = _points.insert(*it1);
+            MeshPointIterator pit = _points.insert(it1);
             _pointsIterator.push_back(pit);
         }
         _ptIdx = _points.size();
@@ -158,11 +158,9 @@ void MeshBuilder::SetNeighbourhood ()
     std::set<Edge> edges;
     FacetIndex facetIdx = 0;
 
-    for (MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it)
+    for (auto & mf : _meshKernel._aclFacetArray)
     {
         this->_seq->next(true); // allow to cancel
-        MeshFacet& mf = *it;
-
         for (int i = 0; i < 3; i++)
         {
             Edge edge(mf._aulPoints[i], mf._aulPoints[(i+1)%3], facetIdx);
@@ -202,10 +200,10 @@ void MeshBuilder::SetNeighbourhood ()
 void MeshBuilder::RemoveUnreferencedPoints()
 {
     _meshKernel._aclPointArray.SetFlag(MeshPoint::INVALID);
-    for ( MeshFacetArray::_TConstIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it )
+    for (const auto & it : _meshKernel._aclFacetArray)
     {
-        for ( int i=0; i<3; i++ )
-            _meshKernel._aclPointArray[it->_aulPoints[i]].ResetInvalid();
+        for (PointIndex point : it._aulPoints)
+            _meshKernel._aclPointArray[point].ResetInvalid();
     }
 
     unsigned long uValidPts = std::count_if(_meshKernel._aclPointArray.begin(),
@@ -220,8 +218,8 @@ void MeshBuilder::Finish (bool freeMemory)
     // now we can resize the vertex array to the exact size and copy the vertices with their correct positions in the array
     PointIndex i=0;
     _meshKernel._aclPointArray.resize(_pointsIterator.size());
-    for ( std::vector<MeshPointIterator>::iterator it = _pointsIterator.begin(); it != _pointsIterator.end(); ++it)
-        _meshKernel._aclPointArray[i++] = *(it->first);
+    for (const auto & it : _pointsIterator)
+        _meshKernel._aclPointArray[i++] = *(it.first);
 
     // free all memory of the internal structures
     // Note: this scope is needed to free memory immediately
@@ -246,8 +244,8 @@ void MeshBuilder::Finish (bool freeMemory)
             try {
                 FacetIndex i=0;
                 MeshFacetArray faces(siz);
-                for ( MeshFacetArray::_TIterator it = _meshKernel._aclFacetArray.begin(); it != _meshKernel._aclFacetArray.end(); ++it )
-                    faces[i++]=*it;
+                for (const auto & it : _meshKernel._aclFacetArray)
+                    faces[i++] = it;
                 _meshKernel._aclFacetArray.swap(faces);
             } catch ( const Base::MemoryException&) {
                 // sorry, we cannot reduce the memory
@@ -318,10 +316,10 @@ void MeshFastBuilder::AddFacet (const Base::Vector3f* facetPoints)
 void MeshFastBuilder::AddFacet (const MeshGeomFacet& facetPoints)
 {
     Private::Vertex v;
-    for (int i=0; i<3; i++) {
-        v.x = facetPoints._aclPoints[i].x;
-        v.y = facetPoints._aclPoints[i].y;
-        v.z = facetPoints._aclPoints[i].z;
+    for (const auto& pnt : facetPoints._aclPoints) {
+        v.x = pnt.x;
+        v.y = pnt.y;
+        v.z = pnt.z;
         p->verts.push_back(v);
     }
 }
@@ -361,8 +359,8 @@ void MeshFastBuilder::Finish ()
 
     MeshPointArray rPoints;
     rPoints.reserve(static_cast<size_t>(vertex_count));
-    for (QVector<Private::Vertex>::iterator v = verts.begin(); v != verts.end(); ++v) {
-        rPoints.push_back(MeshPoint(v->x, v->y, v->z));
+    for (const auto & v : verts) {
+        rPoints.push_back(MeshPoint(v.x, v.y, v.z));
     }
 
     _meshKernel.Adopt(rPoints, rFacets, true);
