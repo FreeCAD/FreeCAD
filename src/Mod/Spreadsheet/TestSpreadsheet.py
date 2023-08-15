@@ -22,6 +22,7 @@
 import os
 import sys
 import math
+from math import sqrt
 import unittest
 import FreeCAD
 import Part
