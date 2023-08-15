@@ -367,8 +367,9 @@ PyObject* SheetPy::setStyle(PyObject *args)
             if (cell)
                 cell->getStyle(oldStyle);
 
-            for (std::set<std::string>::const_iterator it = oldStyle.begin(); it != oldStyle.end(); ++it)
-                style.insert(*it);
+            for (const auto & it : oldStyle) {
+                style.insert(it);
+            }
 
             // Set new style
             getSheetPtr()->setStyle(*rangeIter, style);
@@ -385,8 +386,9 @@ PyObject* SheetPy::setStyle(PyObject *args)
             if (cell)
                 cell->getStyle(oldStyle);
 
-            for (std::set<std::string>::const_iterator it = style.begin(); it != style.end(); ++it)
-                oldStyle.erase(*it);
+            for (const auto & it : style) {
+                oldStyle.erase(it);
+            }
 
             // Set new style
             getSheetPtr()->setStyle(*rangeIter, oldStyle);
@@ -406,13 +408,15 @@ PyObject* SheetPy::setStyle(PyObject *args)
                 newStyle = oldStyle;
             }
 
-            for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
-                if (oldStyle.find(*i) == oldStyle.end())
+            for (const auto & i : style) {
+                if (oldStyle.find(i) == oldStyle.end()) {
                     // Not found in oldstyle; add it to newStyle
-                    newStyle.insert(*i);
-                else
+                    newStyle.insert(i);
+                }
+                else {
                     // Found in oldStyle, remove it from newStyle
-                    newStyle.erase(*i);
+                    newStyle.erase(i);
+                }
             }
 
             // Set new style
@@ -449,8 +453,9 @@ PyObject* SheetPy::getStyle(PyObject *args)
     if (cell && cell->getStyle(style)) {
         PyObject * s = PySet_New(nullptr);
 
-        for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
-            PySet_Add(s, PyUnicode_FromString((*i).c_str()));
+        for (const auto & i : style) {
+            PySet_Add(s, PyUnicode_FromString(i.c_str()));
+        }
 
         return s;
     }
