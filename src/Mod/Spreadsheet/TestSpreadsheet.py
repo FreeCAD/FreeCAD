@@ -1472,8 +1472,8 @@ class SpreadsheetCases(unittest.TestCase):
 
         sheet.set('C1', '=vangle(vector(1; 0; 0); vector(0; 1; 0))')
 
-        sheet.set('D1', '=vnormalize(vector(1; 0; 0)')
-        sheet.set('D2', '=vnormalize(vector(1; 1; 1)')
+        sheet.set('D1', '=vnormalize(vector(1; 0; 0))')
+        sheet.set('D2', '=vnormalize(vector(1; 1; 1))')
 
         sheet.set('E1', '=vscale(vector(1; 2; 3); 2; 3; 4)')
         sheet.set('E2', '=vscalex(vector(1; 2; 3); -2)')
