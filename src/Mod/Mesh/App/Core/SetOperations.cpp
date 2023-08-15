@@ -353,18 +353,18 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     tria.TriangulatePolygon();
 
     std::vector<MeshFacet> facets = tria.GetFacets();
-    for (std::vector<MeshFacet>::iterator it = facets.begin(); it != facets.end(); ++it)
+    for (auto & it : facets)
     {
-      if ((it->_aulPoints[0] == it->_aulPoints[1]) ||
-          (it->_aulPoints[1] == it->_aulPoints[2]) ||
-          (it->_aulPoints[2] == it->_aulPoints[0]))
+      if ((it._aulPoints[0] == it._aulPoints[1]) ||
+          (it._aulPoints[1] == it._aulPoints[2]) ||
+          (it._aulPoints[2] == it._aulPoints[0]))
       { // two same triangle corner points
         continue;
       }
 
-      MeshGeomFacet facet(points[it->_aulPoints[0]],
-                          points[it->_aulPoints[1]],
-                          points[it->_aulPoints[2]]);
+      MeshGeomFacet facet(points[it._aulPoints[0]],
+                          points[it._aulPoints[1]],
+                          points[it._aulPoints[2]]);
 
       //if (side == 1)
       // _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1], facet._aclPoints[2], true, 3, 0, 1, 1);
@@ -666,16 +666,16 @@ void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsc
         cMFI2.Set(index);
         facet2 = *cMFI2;
 
-        for (std::vector<FacetIndex>::iterator jt = elements.begin(); jt != elements.end(); ++jt) {
-            if (boxes2[index] && boxes1[*jt]) {
-                cMFI1.Set(*jt);
+        for (FacetIndex element : elements) {
+            if (boxes2[index] && boxes1[element]) {
+                cMFI1.Set(element);
                 facet1 = *cMFI1;
                 int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
                 if (ret == 2) {
                     Tuple d;
                     d.p1 = pt1;
                     d.p2 = pt2;
-                    d.f1 = *jt;
+                    d.f1 = element;
                     d.f2 = index;
                     intsct.push_back(d);
                 }
@@ -719,9 +719,9 @@ bool MeshIntersection::testIntersection(const MeshKernel& k1,
         cMFI2.Set(index);
         facet2 = *cMFI2;
 
-        for (std::vector<FacetIndex>::iterator jt = elements.begin(); jt != elements.end(); ++jt) {
-            if (boxes2[index] && boxes1[*jt]) {
-                cMFI1.Set(*jt);
+        for (FacetIndex element : elements) {
+            if (boxes2[index] && boxes1[element]) {
+                cMFI1.Set(element);
                 facet1 = *cMFI1;
                 int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
                 if (ret == 2) {

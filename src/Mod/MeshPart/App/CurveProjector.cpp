@@ -67,7 +67,8 @@ using MeshCore::MeshFacetGrid;
 using MeshCore::MeshFacet;
 
 CurveProjector::CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMesh)
-: _Shape(aShape), _Mesh(pMesh)
+  : _Shape(aShape)
+  , _Mesh(pMesh)
 {
 }
 
@@ -78,9 +79,9 @@ void CurveProjector::writeIntersectionPointsToFile(const char *name)
   Base::ofstream str(fi, std::ios::out | std::ios::binary);
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
-  for (result_type::const_iterator it1 = mvEdgeSplitPoints.begin();it1!=mvEdgeSplitPoints.end();++it1) {
-      for (std::vector<FaceSplitEdge>::const_iterator it2 = it1->second.begin();it2!=it1->second.end();++it2) {
-        str << it2->p1.x << " " << it2->p1.y << " " << it2->p1.z << std::endl;
+  for (const auto & it1 : mvEdgeSplitPoints) {
+      for (const auto & it2 : it1.second) {
+        str << it2.p1.x << " " << it2.p1.y << " " << it2.p1.z << std::endl;
       }
   }
   str.close();
@@ -93,9 +94,9 @@ void CurveProjector::writeIntersectionPointsToFile(const char *name)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 CurveProjectorShape::CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh)
-: CurveProjector(aShape,pMesh)
+  : CurveProjector(aShape, pMesh)
 {
-  Do();
+    CurveProjectorShape::Do();
 }
 
 void CurveProjectorShape::Do()
@@ -110,8 +111,8 @@ void CurveProjectorShape::Do()
 }
 
 
-void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
-                                        std::vector<FaceSplitEdge> &vSplitEdges)
+void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
+                                       std::vector<FaceSplitEdge> &vSplitEdges)
 {
   Standard_Real fFirst, fLast;
   Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
@@ -641,16 +642,16 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
   Base::Vector3f lp(FLOAT_MAX,0,0), ln, p1, p2, p3, p4,p5,p6;
   float ToolSize = 0.2f;
 
-  for (std::vector<LineSeg>::iterator It2=LineSegs.begin(); It2!=LineSegs.end();++It2)
+  for (const auto & It2 : LineSegs)
   {
     if(lp.x != FLOAT_MAX)
     {
       p1 = lp       + (ln       * (-ToolSize));
       p2 = lp       + (ln       *  ToolSize);
       p3 = lp;
-      p4 = (*It2).p;
-      p5 = (*It2).p + ((*It2).n * (-ToolSize));
-      p6 = (*It2).p + ((*It2).n *  ToolSize);
+      p4 = It2.p;
+      p5 = It2.p + (It2.n * (-ToolSize));
+      p6 = It2.p + (It2.n *  ToolSize);
 
       cVAry.emplace_back(p3,p2,p6);
       cVAry.emplace_back(p3,p6,p4);
@@ -659,8 +660,8 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
 
     }
 
-    lp = (*It2).p;
-    ln = (*It2).n;
+    lp = It2.p;
+    ln = It2.n;
   }
 }
 
@@ -713,9 +714,10 @@ void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDi
     Base::ofstream str(fi, std::ios::out | std::ios::binary);
     str.precision(4);
     str.setf(std::ios::fixed | std::ios::showpoint);
-    for (std::vector<PolyLine>::const_iterator it = rPolyLines.begin();it!=rPolyLines.end();++it) {
-        for (std::vector<Base::Vector3f>::const_iterator jt = it->points.begin();jt != it->points.end();++jt)
-            str << jt->x << " " << jt->y << " " << jt->z << std::endl;
+    for (const auto & it : rPolyLines) {
+        for (const auto& jt : it.points) {
+            str << jt.x << " " << jt.y << " " << jt.z << std::endl;
+        }
     }
     str.close();
 }
@@ -1021,12 +1023,12 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     auFInds.erase(std::unique(auFInds.begin(), auFInds.end()), auFInds.end());
 
     // facet to edge
-    for ( std::vector<MeshCore::FacetIndex>::iterator pI = auFInds.begin(); pI != auFInds.end(); ++pI ) {
-        const MeshFacet& rF = rclFAry[*pI];
+    for (MeshCore::FacetIndex index : auFInds) {
+        const MeshFacet& rF = rclFAry[index];
         for (int i = 0; i < 3; i++) {
             MeshCore::PointIndex ulPt0 = std::min<MeshCore::PointIndex>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
             MeshCore::PointIndex ulPt1 = std::max<MeshCore::PointIndex>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
-            pEdgeToFace[std::pair<MeshCore::PointIndex, MeshCore::PointIndex>(ulPt0, ulPt1)].push_front(*pI);
+            pEdgeToFace[std::pair<MeshCore::PointIndex, MeshCore::PointIndex>(ulPt0, ulPt1)].push_front(index);
         }
     }
 
@@ -1065,8 +1067,8 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
 //          continue;
 
         Base::Vector3f cEdgeNormal;
-        for ( std::list<MeshCore::FacetIndex>::const_iterator itF = auFaces.begin(); itF != auFaces.end(); ++itF ) {
-            cFI.Set( *itF );
+        for (MeshCore::FacetIndex itF : auFaces) {
+            cFI.Set( itF );
             cEdgeNormal += cFI->GetNormal();
         }
 
@@ -1144,8 +1146,7 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     }
 
     // sorted by parameter
-    for (std::map<Standard_Real, SplitEdge>::iterator itS =
-         rParamSplitEdges.begin(); itS != rParamSplitEdges.end(); ++itS) {
-         rSplitEdges.push_back( itS->second );
+    for (const auto & itS : rParamSplitEdges) {
+         rSplitEdges.push_back( itS.second );
     }
 }

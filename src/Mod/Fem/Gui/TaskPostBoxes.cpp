@@ -268,8 +268,8 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 {
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
-    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        list.push_back(QString::fromStdString(*it));
+    for (auto it : vec) {
+        list.push_back(QString::fromStdString(it));
     }
 
     int index = prop.getValue();
@@ -299,8 +299,8 @@ QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 
     //check if we only have gui task boxes
     bool guionly = true;
-    for (std::vector<TaskPostBox*>::const_iterator it = m_boxes.begin(); it != m_boxes.end(); ++it)
-        guionly = guionly && (*it)->isGuiTaskOnly();
+    for (auto it : m_boxes)
+        guionly = guionly && it->isGuiTaskOnly();
 
     if (!guionly)
         return QDialogButtonBox::Apply | QDialogButtonBox::Ok | QDialogButtonBox::Cancel;

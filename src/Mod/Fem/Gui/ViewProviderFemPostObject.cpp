@@ -873,11 +873,11 @@ void ViewProviderFemPostObject::hide()
     std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
     App::DocumentObject *firstVisiblePostObject = nullptr;
     // step through the objects
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
-            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
-                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
-                firstVisiblePostObject = *it;
+    for (auto it : ObjectsList) {
+        if (it->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && it->Visibility.getValue()
+                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                firstVisiblePostObject = it;
                 break;
             }
         }

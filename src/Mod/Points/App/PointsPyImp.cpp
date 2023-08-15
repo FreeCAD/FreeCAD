@@ -130,8 +130,8 @@ PyObject* PointsPy::writeInventor(PyObject * args)
     std::vector<Base::Vector3f> points;
     PointKernel* kernel = getPointKernelPtr();
     points.reserve(kernel->size());
-    for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it) {
-        points.push_back(Base::convertTo<Base::Vector3f>(*it));
+    for (const auto & it : *kernel) {
+        points.push_back(Base::convertTo<Base::Vector3f>(it));
     }
     builder.addNode(Base::Coordinate3Item{points});
     builder.addNode(Base::PointSetItem{});
@@ -210,9 +210,9 @@ PyObject* PointsPy::fromValid(PyObject * args)
         const PointKernel* points = getPointKernelPtr();
         std::unique_ptr<PointKernel> pts(new PointKernel());
         pts->reserve(points->size());
-        for (PointKernel::const_iterator it = points->begin(); it != points->end(); ++it) {
-            if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
-                pts->push_back(*it);
+        for (const auto & point : *points) {
+            if (!boost::math::isnan(point.x) && !boost::math::isnan(point.y) && !boost::math::isnan(point.z))
+                pts->push_back(point);
         }
 
         return new PointsPy(pts.release());
@@ -232,8 +232,8 @@ Py::List PointsPy::getPoints() const
 {
     Py::List PointList;
     const PointKernel* points = getPointKernelPtr();
-    for (PointKernel::const_point_iterator it = points->begin(); it != points->end(); ++it) {
-        PointList.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & point : *points) {
+        PointList.append(Py::asObject(new Base::VectorPy(point)));
     }
     return PointList;
 }
