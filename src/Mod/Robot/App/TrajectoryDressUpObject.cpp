@@ -65,8 +65,8 @@ App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
         return new App::DocumentObjectExecReturn("Linked object is not a Trajectory object");
 
     const std::vector<Waypoint*>& wps = static_cast<Robot::TrajectoryObject*>(link)->Trajectory.getValue().getWaypoints();
-    for (std::vector<Waypoint*>::const_iterator it = wps.begin(); it != wps.end(); ++it) {
-        Waypoint wpt = **it;
+    for (auto wp : wps) {
+        Waypoint wpt = *wp;
         if (UseSpeed.getValue())
             wpt.Velocity = Speed.getValue();
         if (UseAcceleration.getValue())
