@@ -1505,10 +1505,10 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.E3, FreeCAD.Vector(1, -4, 3))
         self.assertEqual(sheet.E4, FreeCAD.Vector(1, 2, -6))
 
-        self.assertLess(abs(sheet.F1 - 0.3464), 0.0001)
+        self.assertLess(abs(sheet.F1.Value - 0.3464), 0.0001)
         self.assertEqual(sheet.F2, FreeCAD.Vector(1, 1, 1))
         self.assertLess(sheet.F3.distanceToPoint(FreeCAD.Vector(0.28, 0.04, -0.2)), tolerance)
-        self.assertLess(abs(sheet.F4 - -1.6971), 0.0001)
+        self.assertLess(abs(sheet.F4.Value - -1.6971), 0.0001)
         self.assertEqual(sheet.F5, FreeCAD.Vector(1.72, 2.96, 4.2))
 
     def tearDown(self):
