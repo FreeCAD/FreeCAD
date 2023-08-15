@@ -222,18 +222,18 @@ void DlgBooleanOperation::findShapes()
         (Part::Feature::getClassTypeId());
 
     QTreeWidgetItem *item_left=nullptr, *item_right=nullptr;
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+    for (auto obj : objs) {
+        const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
         if (!shape.IsNull()) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
 
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 child->setIcon(0, vp->getIcon());
 
@@ -268,7 +268,7 @@ void DlgBooleanOperation::findShapes()
             }
 
             if (!item_left || !item_right) {
-                bool selected = Gui::Selection().isSelected(*it);
+                bool selected = Gui::Selection().isSelected(obj);
                 if (!item_left && selected)
                     item_left = child;
                 else if (!item_right && selected)

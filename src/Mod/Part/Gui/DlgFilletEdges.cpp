@@ -612,18 +612,18 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
-        for (std::vector<Part::FilletElement>::const_iterator et = e.begin(); et != e.end(); ++et) {
-            std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et->edgeid);
+        for (const auto & et : e) {
+            std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et.edgeid);
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
                 //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
-                model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius1, Base::Unit::Length)));
-                model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius2, Base::Unit::Length)));
+                model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius1, Base::Unit::Length)));
+                model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et.radius2, Base::Unit::Length)));
 
-                startRadius = et->radius1;
-                endRadius = et->radius2;
+                startRadius = et.radius1;
+                endRadius = et.radius2;
                 if (startRadius != endRadius)
                     twoRadii = true;
 
@@ -771,15 +771,15 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
 
         model->insertRows(0, d->edge_ids.size());
         int index = 0;
-        for (std::vector<int>::iterator it = d->edge_ids.begin(); it != d->edge_ids.end(); ++it) {
-            model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
-            model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
+        for (int id : d->edge_ids) {
+            model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(id)));
+            model->setData(model->index(index, 0), QVariant(id), Qt::UserRole);
           //model->setData(model->index(index, 1), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
           //model->setData(model->index(index, 2), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
             model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             std::stringstream element;
-            element << "Edge" << *it;
+            element << "Edge" << id;
             if (Gui::Selection().isSelected(part, element.str().c_str()))
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
             else

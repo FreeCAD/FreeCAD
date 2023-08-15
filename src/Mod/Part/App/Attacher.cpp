@@ -344,9 +344,8 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
         if (! this->modeEnabled[iMode])
             continue;
         const refTypeStringList &listStrings = modeRefTypes[iMode];
-        for (std::size_t iStr = 0; iStr < listStrings.size(); ++iStr) {
+        for (const auto & str : listStrings) {
             int score = 1; //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
-            const refTypeString &str = listStrings[iStr];
             for (std::size_t iChr = 0; iChr < str.size() && iChr < typeStr.size(); ++iChr) {
                 int match = AttachEngine::isShapeOfType(typeStr[iChr], str[iChr]);
                 switch(match){
@@ -1345,8 +1344,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
 
         std::vector<gp_Pnt> points;
 
-        for (std::size_t i = 0; i < shapes.size(); i++) {
-            const TopoDS_Shape &sh = *shapes[i];
+        for (const auto & shape : shapes) {
+            const TopoDS_Shape &sh = *shape;
             if (sh.IsNull())
                 throw Base::ValueError("Null shape in AttachEngine3D::calculateAttachedPlacement()!");
             if (sh.ShapeType() == TopAbs_VERTEX){
@@ -1807,8 +1806,8 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         case mm1TwoPoints:{
             std::vector<gp_Pnt> points;
 
-            for (std::size_t i = 0; i < shapes.size(); i++) {
-                const TopoDS_Shape &sh = *shapes[i];
+            for (const auto & shape : shapes) {
+                const TopoDS_Shape &sh = *shape;
                 if (sh.IsNull())
                     throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
                 if (sh.ShapeType() == TopAbs_VERTEX){

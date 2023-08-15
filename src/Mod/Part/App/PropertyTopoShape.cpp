@@ -559,8 +559,8 @@ void PropertyFilletEdges::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<FilletElement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->edgeid << it->radius1 << it->radius2;
+    for (const auto & it : _lValueList) {
+        str << it.edgeid << it.radius1 << it.radius2;
     }
 }
 
@@ -570,8 +570,8 @@ void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<FilletElement> values(uCt);
-    for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->edgeid >> it->radius1 >> it->radius2;
+    for (auto & it : values) {
+        str >> it.edgeid >> it.radius1 >> it.radius2;
     }
     setValues(values);
 }
