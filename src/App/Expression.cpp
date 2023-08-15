@@ -1757,6 +1757,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TAN:
     case TANH:
     case TRUNC:
+    case VNORMALIZE:
         if (args.size() != 1)
             ARGUMENT_THROW("exactly one required.");
         break;
@@ -1774,8 +1775,12 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MROTATEY:
     case MROTATEZ:
     case POW:
+    case VANGLE:
     case VCROSS:
     case VDOT:
+    case VSCALEX:
+    case VSCALEY:
+    case VSCALEZ:
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
@@ -1797,6 +1802,10 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case VECTOR:
         if (args.size() != 3)
             ARGUMENT_THROW("exactly three required.");
+        break;
+    case VSCALE:
+        if (args.size() != 4)
+            ARGUMENT_THROW("exactly four required.");
         break;
     case MATRIX:
         if (args.size() > 16)
@@ -2285,12 +2294,60 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
+    case VANGLE:
     case VCROSS:
-    case VDOT: {
+    case VDOT:
+    case VNORMALIZE:
+    case VSCALE:
+    case VSCALEX:
+    case VSCALEY:
+    case VSCALEZ: {
         Base::Vector3d vector1 = extractVectorArgument(expr, args, 0);
+
+        switch (f) {
+        case VNORMALIZE:
+            return Py::asObject(new Base::VectorPy(vector1.Normalize()));
+        case VSCALE: {
+            Quantity scaleX = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
+            if (!(scaleX.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleX unit must be either empty or a length.", expr);
+            Quantity scaleY = pyToQuantity(args[2]->getPyValue(), expr, "Invalid third argument.");
+            if (!(scaleY.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleY unit must be either empty or a length.", expr);
+            Quantity scaleZ = pyToQuantity(args[3]->getPyValue(), expr, "Invalid fourth argument.");
+            if (!(scaleZ.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleZ unit must be either empty or a length.", expr);
+            vector1.Scale(scaleX.getValue(), scaleY.getValue(), scaleZ.getValue());
+            return Py::asObject(new Base::VectorPy(vector1));
+        }
+        case VSCALEX: {
+            Quantity scaleX = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
+            if (!(scaleX.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleX unit must be either empty or a length.", expr);
+            vector1.ScaleX(scaleX.getValue());
+            return Py::asObject(new Base::VectorPy(vector1));
+        }
+        case VSCALEY: {
+            Quantity scaleY = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
+            if (!(scaleY.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleY unit must be either empty or a length.", expr);
+            vector1.ScaleY(scaleY.getValue());
+            return Py::asObject(new Base::VectorPy(vector1));
+        }
+        case VSCALEZ: {
+            Quantity scaleZ = pyToQuantity(args[1]->getPyValue(), expr, "Invalid second argument.");
+            if (!(scaleZ.isDimensionlessOrUnit(Unit::Length)))
+                _EXPR_THROW("scaleZ unit must be either empty or a length.", expr);
+            vector1.ScaleZ(scaleZ.getValue());
+            return Py::asObject(new Base::VectorPy(vector1));
+        }
+        }
+
         Base::Vector3d vector2 = extractVectorArgument(expr, args, 1);
 
         switch (f) {
+        case VANGLE:
+            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / M_PI, Unit::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
@@ -2652,10 +2709,22 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tanh("; break;;
     case TRUNC:
         ss << "trunc("; break;;
+    case VANGLE:
+        ss << "vangle("; break;;
     case VCROSS:
         ss << "vcross("; break;;
     case VDOT:
         ss << "vdot("; break;;
+    case VNORMALIZE:
+        ss << "vnormalize("; break;;
+    case VSCALE:
+        ss << "vscale("; break;;
+    case VSCALEX:
+        ss << "vscalex("; break;;
+    case VSCALEY:
+        ss << "vscaley("; break;;
+    case VSCALEZ:
+        ss << "vscalez("; break;;
     case MINVERT:
         ss << "minvert("; break;;
     case MROTATE:
@@ -3528,8 +3597,14 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tan"] = FunctionExpression::TAN;
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
+        registered_functions["vangle"] = FunctionExpression::VANGLE;
         registered_functions["vcross"] = FunctionExpression::VCROSS;
         registered_functions["vdot"] = FunctionExpression::VDOT;
+        registered_functions["vnormalize"] = FunctionExpression::VNORMALIZE;
+        registered_functions["vscale"] = FunctionExpression::VSCALE;
+        registered_functions["vscalex"] = FunctionExpression::VSCALEX;
+        registered_functions["vscaley"] = FunctionExpression::VSCALEY;
+        registered_functions["vscalez"] = FunctionExpression::VSCALEZ;
 
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["mrotate"] = FunctionExpression::MROTATE;

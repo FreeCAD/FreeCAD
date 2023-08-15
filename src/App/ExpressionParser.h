@@ -270,8 +270,16 @@ public:
         TAN,
         TANH,
         TRUNC,
+
+        // Vector
+        VANGLE,
         VCROSS,
         VDOT,
+        VNORMALIZE,
+        VSCALE,
+        VSCALEX,
+        VSCALEY,
+        VSCALEZ,
 
         // Matrix
         MINVERT, // invert matrix/placement/rotation
