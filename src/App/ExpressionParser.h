@@ -271,6 +271,7 @@ public:
         TANH,
         TRUNC,
         VCROSS,
+        VDOT,
 
         // Matrix
         MINVERT, // invert matrix/placement/rotation

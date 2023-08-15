@@ -1775,6 +1775,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MROTATEZ:
     case POW:
     case VCROSS:
+    case VDOT:
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
@@ -2284,10 +2285,17 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
-    case VCROSS: {
+    case VCROSS:
+    case VDOT: {
         Base::Vector3d vector1 = extractVectorArgument(expr, args, 0);
         Base::Vector3d vector2 = extractVectorArgument(expr, args, 1);
-        return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
+
+        switch (f) {
+        case VCROSS:
+            return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
+        case VDOT:
+            return Py::Float(vector1.Dot(vector2));
+        }
     }
     }
 
@@ -2646,6 +2654,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "trunc("; break;;
     case VCROSS:
         ss << "vcross("; break;;
+    case VDOT:
+        ss << "vdot("; break;;
     case MINVERT:
         ss << "minvert("; break;;
     case MROTATE:
@@ -3519,6 +3529,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
         registered_functions["vcross"] = FunctionExpression::VCROSS;
+        registered_functions["vdot"] = FunctionExpression::VDOT;
 
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["mrotate"] = FunctionExpression::MROTATE;
