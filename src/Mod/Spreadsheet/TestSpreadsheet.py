@@ -1497,7 +1497,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.C1, 90)
 
         self.assertEqual(sheet.D1, FreeCAD.Vector(1, 0, 0))
-        self.assertTrue(sheet.D2.isSame(FreeCAD.Vector(1/sqrt(3), 1/sqrt(3), 1/sqrt(3)), tolerance))
+        self.assertLess(sheet.D2.distanceToPoint(FreeCAD.Vector(1/sqrt(3), 1/sqrt(3), 1/sqrt(3))), tolerance)
 
         self.assertEqual(sheet.E1, FreeCAD.Vector(2, 6, 12))
         self.assertEqual(sheet.E2, FreeCAD.Vector(-2, 2, 3))
