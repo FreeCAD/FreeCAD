@@ -194,9 +194,9 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     // go through all objects and check the labels
     std::string name = label.toUtf8().data();
     std::vector<App::DocumentObject*> objs = doc->getObjects();
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (name == (*it)->Label.getValue()) {
-            return QVariant(QByteArray((*it)->getNameInDocument()));
+    for (auto obj : objs) {
+        if (name == obj->Label.getValue()) {
+            return QVariant(QByteArray(obj->getNameInDocument()));
         }
     }
 

@@ -749,49 +749,49 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
     shape.setShape(sh);
 
     std::vector<App::DocumentObject*> refs = this->getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
+    for (auto ref : refs) {
         std::vector<App::Property*> props;
-        (*it)->getPropertyList(props);
-        for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
-            if (!(*jt)->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
+        ref->getPropertyList(props);
+        for (auto prop : props) {
+            if (!prop->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
                 continue;
-            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(*jt);
+            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(prop);
             if (link->getValue() != this)
                 continue;
             std::vector<std::string> subValues = link->getSubValues();
             std::vector<std::string> newSubValues;
 
-            for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
+            for (auto & subValue : subValues) {
                 std::string shapetype;
-                if (it->compare(0, 4, "Face") == 0) {
+                if (subValue.compare(0, 4, "Face") == 0) {
                     shapetype = "Face";
                 }
-                else if (it->compare(0, 4, "Edge") == 0) {
+                else if (subValue.compare(0, 4, "Edge") == 0) {
                     shapetype = "Edge";
                 }
-                else if (it->compare(0, 6, "Vertex") == 0) {
+                else if (subValue.compare(0, 6, "Vertex") == 0) {
                     shapetype = "Vertex";
                 }
                 else {
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
                     continue;
                 }
 
                 bool success = false;
                 TopoDS_Shape element;
                 try {
-                    element = shape.getSubShape(it->c_str());
+                    element = shape.getSubShape(subValue.c_str());
                 }
                 catch (Standard_Failure&) {
                     // This shape doesn't even exist, so no chance to do some tests
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
                     continue;
                 }
                 try {
                     // as very first test check if old face and new face are parallel planes
-                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());
+                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(subValue.c_str());
                     if (isParallelPlane(element, newElement)) {
-                        newSubValues.push_back(*it);
+                        newSubValues.push_back(subValue);
                         success = true;
                     }
                 }
@@ -824,7 +824,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 
                 // the new shape couldn't be found so keep the old sub-name
                 if (!success)
-                    newSubValues.push_back(*it);
+                    newSubValues.push_back(subValue);
             }
 
             link->setValue(this, newSubValues);

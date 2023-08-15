@@ -265,8 +265,8 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
-            builder.Add(comp, *it);
+        for (const auto & draft : drafts)
+            builder.Add(comp, draft);
         prism = comp;
     }
 }

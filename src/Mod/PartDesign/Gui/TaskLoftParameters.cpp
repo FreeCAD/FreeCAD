@@ -226,8 +226,8 @@ void TaskLoftParameters::removeFromListWidget(QListWidget* widget, QString name)
 
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator it = items.cbegin(); it != items.cend(); ++it) {
-            QListWidgetItem* item = widget->takeItem(widget->row(*it));
+        for (auto it : items) {
+            QListWidgetItem* item = widget->takeItem(widget->row(it));
             delete item;
         }
     }

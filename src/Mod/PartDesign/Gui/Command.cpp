@@ -802,8 +802,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty()) {
         bool onlyAllowed = true;
-        for (auto it = selection.begin(); it!=selection.end(); ++it){
-            if (PartDesign::Body::findBodyOf((*it).getObject()) != pcActiveBody) {  // the selected objects must belong to the body
+        for (const auto & it : selection) {
+            if (PartDesign::Body::findBodyOf(it.getObject()) != pcActiveBody) {  // the selected objects must belong to the body
                 onlyAllowed = false;
                 break;
             }
@@ -1633,8 +1633,8 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
 {
     std::ostringstream str;
     str << '(' << Gui::Command::getObjectCmd(base) << ",[";
-    for (std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
-        str << "'" << *it << "',";
+    for (const auto & SubName : SubNames){
+        str << "'" << SubName << "',";
     }
     str << "])";
 
@@ -1887,8 +1887,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::stringstream str;
         str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
-        for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it) {
-            str << cmd->getObjectCmd(*it) << ",";
+        for (auto feature : features) {
+            str << cmd->getObjectCmd(feature) << ",";
         }
         str << "]";
 
@@ -1952,8 +1952,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     }
 
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
-    for (std::size_t i = 0; i < features.size(); i++) {
-        if (activeBody != PartDesignGui::getBodyFor(features[i], false)) {
+    for (auto feature : features) {
+        if (activeBody != PartDesignGui::getBodyFor(feature, false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
                 QObject::tr("Please select only one feature in an active body."));
             return;
@@ -2368,11 +2368,10 @@ void CmdPartDesignBoolean::activated(int iMsg)
     bool updateDocument = false;
     if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
-        std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
-        for (; i != BodyFilter.Result.end(); i++) {
-            for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
-                if (j->getObject() != pcActiveBody)
-                    bodies.push_back(j->getObject());
+        for (auto& results : BodyFilter.Result) {
+            for (auto & result : results) {
+                if (result.getObject() != pcActiveBody)
+                    bodies.push_back(result.getObject());
             }
         }
         if (!bodies.empty()) {
