@@ -1800,6 +1800,11 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
             ARGUMENT_THROW("exactly two, three, or four required.");
         break;
     case VECTOR:
+    case VLINEDIST:
+    case VLINESEGDIST:
+    case VLINEPROJ:
+    case VPLANEDIST:
+    case VPLANEPROJ:
         if (args.size() != 3)
             ARGUMENT_THROW("exactly three required.");
         break;
@@ -2297,7 +2302,12 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case VANGLE:
     case VCROSS:
     case VDOT:
+    case VLINEDIST:
+    case VLINESEGDIST:
+    case VLINEPROJ:
     case VNORMALIZE:
+    case VPLANEDIST:
+    case VPLANEPROJ:
     case VSCALE:
     case VSCALEX:
     case VSCALEY:
@@ -2352,6 +2362,23 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
             return Py::Float(vector1.Dot(vector2));
+        }
+
+        Base::Vector3d vector3 = extractVectorArgument(expr, args, 2);
+
+        switch (f) {
+        case VLINEDIST:
+            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToLine(vector2, vector3), Unit::Length)));
+        case VLINESEGDIST:
+            return Py::asObject(new Base::VectorPy(vector1.DistanceToLineSegment(vector2, vector3)));
+        case VLINEPROJ:
+            vector1.ProjectToLine(vector2, vector3);
+            return Py::asObject(new Base::VectorPy(vector1));
+        case VPLANEDIST:
+            return Py::asObject(new QuantityPy(new Quantity(vector1.DistanceToPlane(vector2, vector3), Unit::Length)));
+        case VPLANEPROJ:
+            vector1.ProjectToPlane(vector2, vector3);
+            return Py::asObject(new Base::VectorPy(vector1));
         }
     }
     }
@@ -2715,8 +2742,18 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "vcross("; break;;
     case VDOT:
         ss << "vdot("; break;;
+    case VLINEDIST:
+        ss << "vlinedist("; break;;
+    case VLINESEGDIST:
+        ss << "vlinesegdist("; break;;
+    case VLINEPROJ:
+        ss << "vlineproj("; break;;
     case VNORMALIZE:
         ss << "vnormalize("; break;;
+    case VPLANEDIST:
+        ss << "vplanedist("; break;;
+    case VPLANEPROJ:
+        ss << "vplaneproj("; break;;
     case VSCALE:
         ss << "vscale("; break;;
     case VSCALEX:
@@ -3600,7 +3637,12 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["vangle"] = FunctionExpression::VANGLE;
         registered_functions["vcross"] = FunctionExpression::VCROSS;
         registered_functions["vdot"] = FunctionExpression::VDOT;
+        registered_functions["vlinedist"] = FunctionExpression::VLINEDIST;
+        registered_functions["vlinesegdist"] = FunctionExpression::VLINESEGDIST;
+        registered_functions["vlineproj"] = FunctionExpression::VLINEPROJ;
         registered_functions["vnormalize"] = FunctionExpression::VNORMALIZE;
+        registered_functions["vplanedist"] = FunctionExpression::VPLANEDIST;
+        registered_functions["vplaneproj"] = FunctionExpression::VPLANEPROJ;
         registered_functions["vscale"] = FunctionExpression::VSCALE;
         registered_functions["vscalex"] = FunctionExpression::VSCALEX;
         registered_functions["vscaley"] = FunctionExpression::VSCALEY;
