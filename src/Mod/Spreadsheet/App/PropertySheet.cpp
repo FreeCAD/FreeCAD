@@ -57,13 +57,10 @@ TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer)
 
 void PropertySheet::clear()
 {
-    std::map<CellAddress, Cell* >::iterator i = data.begin();
-
     /* Clear cells */
-    while (i != data.end()) {
-        delete i->second;
-        setDirty(i->first);
-        ++i;
+    for (auto & it : data) {
+        delete it.second;
+        setDirty(it.first);
     }
 
     /* Clear from map */
@@ -188,9 +185,9 @@ std::vector<CellAddress> PropertySheet::getUsedCells() const
 {
     std::vector<CellAddress> usedSet;
 
-    for (std::map<CellAddress, Cell*>::const_iterator i = data.begin(); i != data.end(); ++i) {
-        if (i->second->isUsed())
-            usedSet.push_back(i->first);
+    for (const auto& i : data) {
+        if (i.second->isUsed())
+            usedSet.push_back(i.first);
     }
 
     return usedSet;
@@ -207,10 +204,10 @@ std::vector<CellAddress> PropertySheet::getNonEmptyCells() const
     std::vector<CellAddress> usedSet;
 
     std::string str;
-    for (std::map<CellAddress, Cell*>::const_iterator i = data.begin(); i != data.end(); ++i) {
+    for (const auto& i : data) {
         str.clear();
-        if (i->second->isUsed() && i->second->getStringContent(str) && !str.empty())
-            usedSet.push_back(i->first);
+        if (i.second->isUsed() && i.second->getStringContent(str) && !str.empty())
+            usedSet.push_back(i.first);
     }
 
     return usedSet;
@@ -927,16 +924,16 @@ void PropertySheet::removeRows(int row, int count)
     AtomicPropertyChange signaller(*this);
 
     // move all the aliases first so dependencies can be calculated correctly
-    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        if (i->row() >= row && i->row() < row + count)
-            clearAlias(*i);
-        else if (i->row() >= row + count)
-            moveAlias(*i, CellAddress(i->row() - count, i->col()));
+    for (const auto& key : keys) {
+        if (key.row() >= row && key.row() < row + count)
+            clearAlias(key);
+        else if (key.row() >= row + count)
+            moveAlias(key, CellAddress(key.row() - count, key.col()));
     }
 
     int spanRows, spanCols;
-    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+    for (const auto& key : keys) {
+        std::map<CellAddress, Cell*>::iterator j = data.find(key);
 
         assert(j != data.end());
 
@@ -946,19 +943,19 @@ void PropertySheet::removeRows(int row, int count)
         visitor.reset();
         cell->visit(visitor);
         if (visitor.changed()) {
-            setDirty(*i);
-            recomputeDependencies(*i);
+            setDirty(key);
+            recomputeDependencies(key);
         }
 
-        if (i->row() >= row && i->row() < row + count)
-            clear(*i, false);  // aliases were cleared earlier
-        else if (i->row() >= row + count)
-            moveCell(*i, CellAddress(i->row() - count, i->col()), renames);
-        else if (cell->getSpans(spanRows, spanCols) && i->row() + spanRows >= row) {
-            if (i->row() + spanRows >= row + count)
+        if (key.row() >= row && key.row() < row + count)
+            clear(key, false);  // aliases were cleared earlier
+        else if (key.row() >= row + count)
+            moveCell(key, CellAddress(key.row() - count, key.col()), renames);
+        else if (cell->getSpans(spanRows, spanCols) && key.row() + spanRows >= row) {
+            if (key.row() + spanRows >= row + count)
                 spanRows -= count;
             else
-                spanRows = i->row() - row;
+                spanRows = key.row() - row;
             mergeCells(j->first, CellAddress(j->first.row()+spanRows-1, j->first.col()+spanCols-1));
         }
     }
@@ -1055,16 +1052,16 @@ void PropertySheet::removeColumns(int col, int count)
     AtomicPropertyChange signaller(*this);
 
     // move all the aliases first so dependencies can be calculated correctly
-    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        if (i->col() >= col && i->col() < col + count)
-            clearAlias(*i);
-        else if (i->col() >= col + count)
-            moveAlias(*i, CellAddress(i->row(), i->col() - count));
+    for (const auto& key : keys) {
+        if (key.col() >= col && key.col() < col + count)
+            clearAlias(key);
+        else if (key.col() >= col + count)
+            moveAlias(key, CellAddress(key.row(), key.col() - count));
     }
 
     int spanRows, spanCols;
-    for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+    for (const auto& key : keys) {
+        std::map<CellAddress, Cell*>::iterator j = data.find(key);
 
         assert(j != data.end());
 
@@ -1074,19 +1071,19 @@ void PropertySheet::removeColumns(int col, int count)
         visitor.reset();
         cell->visit(visitor);
         if (visitor.changed()) {
-            setDirty(*i);
-            recomputeDependencies(*i);
+            setDirty(key);
+            recomputeDependencies(key);
         }
 
-        if (i->col() >= col && i->col() < col + count)
-            clear(*i, false);  // aliases were cleared earlier
-        else if (i->col() >= col + count)
-            moveCell(*i, CellAddress(i->row(), i->col() - count), renames);
-        else if (cell->getSpans(spanRows, spanCols) && i->col() + spanCols >= col) {
-            if (i->col() + spanCols >= col + count)
+        if (key.col() >= col && key.col() < col + count)
+            clear(key, false);  // aliases were cleared earlier
+        else if (key.col() >= col + count)
+            moveCell(key, CellAddress(key.row(), key.col() - count), renames);
+        else if (cell->getSpans(spanRows, spanCols) && key.col() + spanCols >= col) {
+            if (key.col() + spanCols >= col + count)
                 spanCols -= count;
             else
-                spanCols = i->col() - col;
+                spanCols = key.col() - col;
             mergeCells(j->first, CellAddress(j->first.row()+spanRows-1, j->first.col()+spanCols-1));
         }
     }
