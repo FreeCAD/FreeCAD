@@ -1774,6 +1774,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MROTATEY:
     case MROTATEZ:
     case POW:
+    case VCROSS:
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
@@ -2101,6 +2102,21 @@ Py::Object FunctionExpression::translationMatrix(double x, double y, double z)
     return Py::asObject(new Base::MatrixPy(matrix));
 }
 
+Base::Vector3d FunctionExpression::extractVectorArgument(
+    const Expression* expression,
+    const std::vector<Expression*> &arguments,
+    int argumentIndex
+)
+{
+    Py::Object argument = arguments[argumentIndex]->getPyValue();
+
+    if (!PyObject_TypeCheck(argument.ptr(), &Base::VectorPy::Type)) {
+        _EXPR_THROW("Argument must be a vector.", expression);
+    }
+
+    return static_cast<Base::VectorPy*>(argument.ptr())->value();
+}
+
 Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std::vector<Expression*> &args)
 {
     if(!expr || !expr->getOwner())
@@ -2268,6 +2284,11 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
+    case VCROSS: {
+        Base::Vector3d vector1 = extractVectorArgument(expr, args, 0);
+        Base::Vector3d vector2 = extractVectorArgument(expr, args, 1);
+        return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
+    }
     }
 
     Py::Object e1 = args[0]->getPyValue();
@@ -2623,6 +2644,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tanh("; break;;
     case TRUNC:
         ss << "trunc("; break;;
+    case VCROSS:
+        ss << "vcross("; break;;
     case MINVERT:
         ss << "minvert("; break;;
     case MROTATE:
@@ -3495,6 +3518,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tan"] = FunctionExpression::TAN;
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
+        registered_functions["vcross"] = FunctionExpression::VCROSS;
 
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["mrotate"] = FunctionExpression::MROTATE;
