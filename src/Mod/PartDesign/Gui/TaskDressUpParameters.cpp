@@ -155,8 +155,8 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     QSignalBlocker block(widget);
     widget->clear();
 
-    for (std::vector<std::string>::const_iterator it = edgeNames.begin(); it != edgeNames.end(); ++it){
-        widget->addItem(QLatin1String(it->c_str()));
+    for (const auto & it : edgeNames){
+        widget->addItem(QLatin1String(it.c_str()));
     }
 
     updateFeature(pcDressUp, edgeNames);
@@ -328,8 +328,8 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 {
     QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -425,8 +425,8 @@ bool TaskDlgDressUpParameters::accept()
     std::stringstream str;
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
-    for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
-        str << "\"" << *it << "\",";
+    for (const auto & ref : refs)
+        str << "\"" << ref << "\",";
     str << "])";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     return TaskDlgFeatureParameters::accept();
