@@ -1463,6 +1463,53 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents('A1'), '\'36C')
         self.assertEqual(sheet.get('A1'), '36C')
 
+    def testVectorFunctions(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        
+        sheet.set('A1', '=vcross(vector(1; 2; 3); vector(1; 5; 7))')
+        
+        sheet.set('B1', '=vdot(vector(1; 2; 3); vector(4; -5; 6))')
+
+        sheet.set('C1', '=vangle(vector(1; 0; 0); vector(0; 1; 0))')
+
+        sheet.set('D1', '=vnormalize(vector(1; 0; 0)')
+        sheet.set('D2', '=vnormalize(vector(1; 1; 1)')
+
+        sheet.set('E1', '=vscale(vector(1; 2; 3); 2; 3; 4)')
+        sheet.set('E2', '=vscalex(vector(1; 2; 3); -2)')
+        sheet.set('E3', '=vscaley(vector(1; 2; 3); -2)')
+        sheet.set('E4', '=vscalez(vector(1; 2; 3); -2)')
+
+        sheet.set('F1', '=vlinedist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F2', '=vlinesegdist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F3', '=vlineproj(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F4', '=vplanedist(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+        sheet.set('F5', '=vplaneproj(vector(1; 2; 3); vector(2; 3; 4); vector(3; 4; 5))')
+
+        self.doc.recompute()
+
+        tolerance = 1e-10
+
+        self.assertEqual(sheet.A1, FreeCAD.Vector(-1, -4, 3))
+
+        self.assertEqual(sheet.B1, 12)
+
+        self.assertEqual(sheet.C1, 90)
+
+        self.assertEqual(sheet.D1, FreeCAD.Vector(1, 0, 0))
+        self.assertTrue(sheet.D2.isSame(FreeCAD.Vector(1/sqrt(3), 1/sqrt(3), 1/sqrt(3)), tolerance))
+
+        self.assertEqual(sheet.E1, FreeCAD.Vector(2, 6, 12))
+        self.assertEqual(sheet.E2, FreeCAD.Vector(-2, 2, 3))
+        self.assertEqual(sheet.E3, FreeCAD.Vector(1, -4, 3))
+        self.assertEqual(sheet.E4, FreeCAD.Vector(1, 2, -6))
+
+        self.assertTrue(sheet.F1.isSame(0.3464, tolerance))
+        self.assertEqual(sheet.F2, FreeCAD.Vector(1, 1, 1))
+        self.assertEqual(sheet.F3, FreeCAD.Vector(0.28, 0.04, -0.2))
+        self.assertTrue(sheet.F4.isSame(-1.6971, tolerance))
+        self.assertEqual(sheet.F5, FreeCAD.Vector(1.72, 2.96, 4.2))
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
