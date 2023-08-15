@@ -654,14 +654,14 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     _pvcUVParam->Init(gp_Pnt2d(0.0, 0.0));
     int ii=0;
     if (clBBox.MaxX - clBBox.MinX >= clBBox.MaxY - clBBox.MinY) {
-        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->x-tx)/fDeltaX, (It2->y-ty)/fDeltaY);
+        for (const auto & pt : vcProjPts) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((pt.x-tx)/fDeltaX, (pt.y-ty)/fDeltaY);
             ii++;
         }
     }
     else {
-        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->y-ty)/fDeltaY, (It2->x-tx)/fDeltaX);
+        for (const auto & pt : vcProjPts) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((pt.y-ty)/fDeltaY, (pt.x-tx)/fDeltaX);
             ii++;
         }
     }
@@ -1101,9 +1101,9 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 
     math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
     int rowIndex=0;
-    for (QFuture< std::vector<double> >::const_iterator it = future.begin(); it != future.end(); ++it) {
+    for (const auto & it : future) {
         int colIndex=0;
-        for (std::vector<double>::const_iterator jt = it->begin(); jt != it->end(); ++jt, colIndex++)
+        for (std::vector<double>::const_iterator jt = it.begin(); jt != it.end(); ++jt, colIndex++)
             MTM(rowIndex, colIndex) = *jt;
         rowIndex++;
     }
