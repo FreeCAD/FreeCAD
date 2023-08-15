@@ -83,6 +83,7 @@
 #include "MDIViewPy.h"
 #include "SoFCDB.h"
 #include "Selection.h"
+#include "SelectionFilterPy.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
