@@ -111,15 +111,15 @@ CmdApproxPlane::CmdApproxPlane()
 void CmdApproxPlane::activated(int)
 {
     std::vector<App::GeoFeature*> obj = Gui::Selection().getObjectsOfType<App::GeoFeature>();
-    for (std::vector<App::GeoFeature*>::iterator it = obj.begin(); it != obj.end(); ++it) {
+    for (const auto& it : obj) {
         std::vector<Base::Vector3d> aPoints;
         std::vector<Base::Vector3d> aNormals;
 
         std::vector<App::Property*> List;
-        (*it)->getPropertyList(List);
-        for (std::vector<App::Property*>::iterator jt = List.begin(); jt != List.end(); ++jt) {
-            if ((*jt)->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-                const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(*jt)->getComplexData();
+        it->getPropertyList(List);
+        for (const auto& jt : List) {
+            if (jt->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+                const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt)->getComplexData();
                 if (data) {
                     data->getPoints(aPoints, aNormals, 0.01f);
                     if (!aPoints.empty())
@@ -137,8 +137,8 @@ void CmdApproxPlane::activated(int)
 
             std::vector<Base::Vector3f> aData;
             aData.reserve(aPoints.size());
-            for (std::vector<Base::Vector3d>::iterator jt = aPoints.begin(); jt != aPoints.end(); ++jt)
-                aData.push_back(Base::toVector<float>(*jt));
+            for (const auto& jt : aPoints)
+                aData.push_back(Base::toVector<float>(jt));
             MeshCore::PlaneFit fit;
             fit.AddPoints(aData);
             float sigma = fit.Fit();
@@ -506,9 +506,9 @@ void CmdMeshBoundary::activated(int)
         TopoDS_Shape shape;
         std::vector<TopoDS_Wire> wires;
 
-        for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
+        for (const auto& bt : bounds) {
             BRepBuilderAPI_MakePolygon mkPoly;
-            for (std::vector<Base::Vector3f>::reverse_iterator it = bt->rbegin(); it != bt->rend(); ++it) {
+            for (auto it = bt.rbegin(); it != bt.rend(); ++it) {
                 mkPoly.Add(gp_Pnt(it->x,it->y,it->z));
             }
             if (mkPoly.IsDone()) {
@@ -594,8 +594,8 @@ void CmdViewTriangulation::activated(int)
     addModule(App,"ReverseEngineering");
     openCommand(QT_TRANSLATE_NOOP("Command", "View triangulation"));
     try {
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            App::DocumentObjectT objT(*it);
+        for (const auto & it : obj) {
+            App::DocumentObjectT objT(it);
             QString document = QString::fromStdString(objT.getDocumentPython());
             QString object = QString::fromStdString(objT.getObjectPython());
 
