@@ -163,11 +163,11 @@ void ViewProviderMeshFaceSet::showOpenEdges(bool show)
             int index=0;
             const MeshCore::MeshKernel& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue().getKernel();
             const MeshCore::MeshFacetArray& rFaces = rMesh.GetFacets();
-            for (MeshCore::MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
+            for (const auto & rFace : rFaces) {
                 for (int i=0; i<3; i++) {
-                    if (it->_aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
-                        lines->coordIndex.set1Value(index++,it->_aulPoints[i]);
-                        lines->coordIndex.set1Value(index++,it->_aulPoints[(i+1)%3]);
+                    if (rFace._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
+                        lines->coordIndex.set1Value(index++,rFace._aulPoints[i]);
+                        lines->coordIndex.set1Value(index++,rFace._aulPoints[(i+1)%3]);
                         lines->coordIndex.set1Value(index++,SO_END_LINE_INDEX);
                     }
                 }

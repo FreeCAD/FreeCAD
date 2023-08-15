@@ -143,11 +143,11 @@ Py::List EdgePy::getPoints() const
     EdgePy::PointerType edge = this->getEdgePtr();
 
     Py::List pts;
-    for (int i=0; i<2; i++) {
+    for (const auto & pnt : edge->_aclPoints) {
         Py::Tuple pt(3);
-        pt.setItem(0, Py::Float(edge->_aclPoints[i].x));
-        pt.setItem(1, Py::Float(edge->_aclPoints[i].y));
-        pt.setItem(2, Py::Float(edge->_aclPoints[i].z));
+        pt.setItem(0, Py::Float(pnt.x));
+        pt.setItem(1, Py::Float(pnt.y));
+        pt.setItem(2, Py::Float(pnt.z));
         pts.append(pt);
     }
 

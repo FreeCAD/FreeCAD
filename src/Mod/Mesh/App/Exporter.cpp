@@ -428,13 +428,13 @@ bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
         facet = &(*clIter);
 
         // For each vertex in facet
-        for (auto i(0); i < 3; ++i) {
-            vertItr = vertices.find(facet->_aclPoints[i]);
+        for (auto pnt : facet->_aclPoints) {
+            vertItr = vertices.find(pnt);
 
             if ( vertItr == vertices.end() ) {
                 facets.push_back(vertexCount);
 
-                vertices[facet->_aclPoints[i]] = vertexCount++;
+                vertices[pnt] = vertexCount++;
 
                 // Output facet
                 *outputStreamPtr << "\t\t\t\t<vertex>\n"
@@ -442,7 +442,7 @@ bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
                 for ( auto j(0); j < 3; ++j) {
                     char axis('x' + j);
                     *outputStreamPtr << "\t\t\t\t\t\t<" << axis << '>'
-                                     << facet->_aclPoints[i][j]
+                                     << pnt[j]
                                      << "</" << axis << ">\n";
                 }
                 *outputStreamPtr << "\t\t\t\t\t</coordinates>\n"
