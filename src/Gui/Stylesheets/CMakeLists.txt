@@ -2,24 +2,12 @@
 SET(Stylesheets_Files
     "Behave-dark.qss"
     "Dark.qss"
-    "Darker-blue.qss"
-    "Darker-green.qss"
-    "Darker-orange.qss"
-    "Darker-pink.qss"
-    "Light-blue.qss"
-    "Light-green.qss"
-    "Light-orange.qss"
-    "Light-pink.qss"
+    "Darker.qss"
+    "Light.qss"
     "Dark-contrast.qss"
     "ProDark.qss"
-    "Dark-modern-green.qss"
-    "Dark-modern-orange.qss"
-    "Dark-modern-pink.qss"
-    "Dark-modern-blue.qss"
-    "Light-modern-blue.qss"
-    "Light-modern-pink.qss"
-    "Light-modern-orange.qss"
-    "Light-modern-green.qss"
+    "Dark-modern.qss"
+    "Light-modern.qss"
 )
 
 # Find all the image files
