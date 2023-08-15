@@ -105,8 +105,8 @@ inline bool MeshSearchNeighbourFacetsVisitor::Visit (const MeshFacet &rclFacet, 
         _bFacetsFoundInCurrentLevel = false;
     }
 
-    for (int i = 0; i < 3; i++) {
-        if (Base::Distance(_clCenter, _rclMeshBase.GetPoint(rclFacet._aulPoints[i])) < _fRadius) {
+    for (PointIndex ptIndex : rclFacet._aulPoints) {
+        if (Base::Distance(_clCenter, _rclMeshBase.GetPoint(ptIndex)) < _fRadius) {
             _vecFacets.push_back(ulFInd);
             _bFacetsFoundInCurrentLevel = true;
             return true;

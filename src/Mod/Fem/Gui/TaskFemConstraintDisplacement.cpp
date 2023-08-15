@@ -308,23 +308,21 @@ void TaskFemConstraintDisplacement::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        const std::vector<std::string>& subNames = it.getSubNames();
+        App::DocumentObject* obj = it.getObject();
+        for (const auto & subName : subNames) {// for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(
@@ -337,14 +335,14 @@ void TaskFemConstraintDisplacement::addToSelection()
             // limit constraint such that only vertexes or faces or edges can be used depending on
             // what was selected first
             std::string searchStr;
-            if (subNames[subIt].find("Vertex") != std::string::npos)
+            if (subName.find("Vertex") != std::string::npos)
                 searchStr = "Vertex";
-            else if (subNames[subIt].find("Edge") != std::string::npos)
+            else if (subName.find("Edge") != std::string::npos)
                 searchStr = "Edge";
             else
                 searchStr = "Face";
-            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
-                if (SubElements[iStr].find(searchStr) == std::string::npos) {
+            for (const auto & SubElement : SubElements) {
+                if (SubElement.find(searchStr) == std::string::npos) {
                     QString msg = tr(
                         "Only one type of selection (vertex,face or edge) per constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
@@ -355,8 +353,8 @@ void TaskFemConstraintDisplacement::addToSelection()
             if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->lw_references->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -378,23 +376,21 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto & subName : subNames) {// for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(

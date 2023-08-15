@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <numeric>
+#include <boost/core/ignore_unused.hpp>
 
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -78,8 +79,9 @@ unsigned long InspectActualMesh::countPoints() const
 Base::Vector3f InspectActualMesh::getPoint(unsigned long index) const
 {
     Base::Vector3f point = _mesh.GetPoint(index);
-    if (_bApply)
+    if (_bApply) {
         _clTrf.multVec(point, point);
+    }
     return point;
 }
 
@@ -96,8 +98,8 @@ unsigned long InspectActualPoints::countPoints() const
 
 Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 {
-    Base::Vector3d p = _rKernel.getPoint(index);
-    return Base::Vector3f(float(p.x), float(p.y), float(p.z));
+    Base::Vector3d pnt = _rKernel.getPoint(index);
+    return Base::Vector3f(float(pnt.x), float(pnt.y), float(pnt.z));
 }
 
 // ----------------------------------------------------------------
@@ -146,18 +148,19 @@ namespace Inspection {
     class MeshInspectGrid : public MeshCore::MeshGrid
     {
     public:
-        MeshInspectGrid (const MeshCore::MeshKernel &mesh, float fGridLen, const Base::Matrix4D& m)
-            : MeshCore::MeshGrid(mesh), _transform(m)
+        MeshInspectGrid (const MeshCore::MeshKernel &mesh, float fGridLen, const Base::Matrix4D& mat)
+            : MeshCore::MeshGrid(mesh), _transform(mat)
         {
-            Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox().Transformed(m);
+            Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox().Transformed(mat);
             Rebuild(std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
         }
 
-        void Validate (const MeshCore::MeshKernel&) override
+        void Validate (const MeshCore::MeshKernel& kernel) override
         {
             // do nothing
+            boost::ignore_unused(kernel);
         }
 
         void Validate ()
@@ -198,8 +201,12 @@ namespace Inspection {
 
         void AddFacet (const MeshCore::MeshGeomFacet &rclFacet, unsigned long ulFacetIndex)
         {
-            unsigned long ulX, ulY, ulZ;
-            unsigned long ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
+            unsigned long ulX1;
+            unsigned long ulY1;
+            unsigned long ulZ1;
+            unsigned long ulX2;
+            unsigned long ulY2;
+            unsigned long ulZ2;
 
             Base::BoundBox3f clBB;
             clBB.Add(rclFacet._aclPoints[0]);
@@ -211,17 +218,18 @@ namespace Inspection {
   
 
             if ((ulX1 < ulX2) || (ulY1 < ulY2) || (ulZ1 < ulZ2)) {
-                for (ulX = ulX1; ulX <= ulX2; ulX++) {
-                    for (ulY = ulY1; ulY <= ulY2; ulY++) {
-                        for (ulZ = ulZ1; ulZ <= ulZ2; ulZ++) {
+                for (unsigned long ulX = ulX1; ulX <= ulX2; ulX++) {
+                    for (unsigned long ulY = ulY1; ulY <= ulY2; ulY++) {
+                        for (unsigned long ulZ = ulZ1; ulZ <= ulZ2; ulZ++) {
                             if (rclFacet.IntersectBoundingBox(GetBoundBox(ulX, ulY, ulZ)))
                                 _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
                         }
                     }
                 }
             }
-            else
+            else {
                 _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
+            }
         }
 
         void InitGrid () override
@@ -316,8 +324,8 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point) const
 
     float fMinDist=FLT_MAX;
     bool positive = true;
-    for (std::vector<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+    for (unsigned long it : indices) {
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(it);
         if (_bApply) {
             geomFace.Transform(_clTrf);
         }
@@ -396,8 +404,8 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 
     float fMinDist=FLT_MAX;
     bool positive = true;
-    for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+    for (unsigned long it : indices) {
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(it);
         if (_bApply) {
             geomFace.Transform(_clTrf);
         }
@@ -438,8 +446,8 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
     _pGrid->GetElements(x,y,z,indices);
 
     double fMinDist=DBL_MAX;
-    for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        Base::Vector3d pt = _rKernel.getPoint(*it);
+    for (unsigned long it : indices) {
+        Base::Vector3d pt = _rKernel.getPoint(it);
         double fDist = Base::Distance(pointd, pt);
         if (fDist < fMinDist) {
             fMinDist = fDist;
@@ -642,8 +650,8 @@ void PropertyDistanceList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << *it;
+    for (float it : _lValueList) {
+        str << it;
     }
 }
 
@@ -653,8 +661,8 @@ void PropertyDistanceList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<float> values(uCt);
-    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> *it;
+    for (float& it : values) {
+        str >> it;
     }
     setValues(values);
 }
@@ -695,8 +703,8 @@ struct DistanceInspection
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::const_iterator it = nominal.begin(); it != nominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
+        for (auto it : nominal) {
+            float fDist = it->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
         }
@@ -792,19 +800,19 @@ App::DocumentObjectExecReturn* Feature::execute()
     // get a list of nominals
     std::vector<InspectNominalGeometry*> inspectNominal;
     const std::vector<App::DocumentObject*>& nominals = Nominals.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator it = nominals.begin(); it != nominals.end(); ++it) {
+    for (auto it : nominals) {
         InspectNominalGeometry* nominal = nullptr;
-        if ((*it)->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
-            Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
+        if (it->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+            Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
             nominal = new InspectNominalMesh(mesh->Mesh.getValue(), this->SearchRadius.getValue());
         }
-        else if ((*it)->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
-            Points::Feature* pts = static_cast<Points::Feature*>(*it);
+        else if (it->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
+            Points::Feature* pts = static_cast<Points::Feature*>(it);
             nominal = new InspectNominalPoints(pts->Points.getValue(), this->SearchRadius.getValue());
         }
-        else if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        else if (it->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             useMultithreading = false;
-            Part::Feature* part = static_cast<Part::Feature*>(*it);
+            Part::Feature* part = static_cast<Part::Feature*>(it);
             nominal = new InspectNominalShape(part->Shape.getValue(), this->SearchRadius.getValue());
         }
 
@@ -875,8 +883,8 @@ App::DocumentObjectExecReturn* Feature::execute()
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist = FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
+        for (auto it : inspectNominal) {
+            float fDist = it->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
         }
@@ -934,8 +942,8 @@ App::DocumentObjectExecReturn* Feature::execute()
 #endif
 
     delete actual;
-    for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)
-        delete *it;
+    for (auto it : inspectNominal)
+        delete it;
 
     return nullptr;
 }

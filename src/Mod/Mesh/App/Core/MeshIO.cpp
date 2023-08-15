@@ -69,8 +69,8 @@ namespace MeshCore {
 std::string& ltrim(std::string& str)
 {
     std::string::size_type pos=0;
-    for (std::string::iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it != 0x20 && *it != 0x09)
+    for (char it : str) {
+        if (it != 0x20 && it != 0x09)
             break;
         pos++;
     }
@@ -808,14 +808,13 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if (num_z != 1)
         return false;
 
-    for (std::vector<std::pair<std::string, Ply::Number> >::iterator it =
-        vertex_props.begin(); it != vertex_props.end(); ++it) {
-        if (it->first == "diffuse_red")
-            it->first = "red";
-        else if (it->first == "diffuse_green")
-            it->first = "green";
-        else if (it->first == "diffuse_blue")
-            it->first = "blue";
+    for (auto & it : vertex_props) {
+        if (it.first == "diffuse_red")
+            it.first = "red";
+        else if (it.first == "diffuse_green")
+            it.first = "green";
+        else if (it.first == "diffuse_blue")
+            it.first = "blue";
     }
 
     // check if valid colors are set
@@ -848,8 +847,8 @@ bool MeshInput::LoadPLY (std::istream &inp)
         for (std::size_t i = 0; i < v_count && std::getline(inp, line); i++) {
             // go through the vertex properties
             std::map<std::string, float> prop_values;
-            for (std::vector<std::pair<std::string, Number> >::iterator it = vertex_props.begin(); it != vertex_props.end(); ++it) {
-                switch (it->second) {
+            for (const auto & it : vertex_props) {
+                switch (it.second) {
                 case int8:
                 case int16:
                 case int32:
@@ -857,7 +856,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                         if (boost::regex_search(line, what, rx_s)) {
                             int v;
                             v = boost::lexical_cast<int>(what[1]);
-                            prop_values[it->first] = static_cast<float>(v);
+                            prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
                         }
                         else {
@@ -871,7 +870,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                         if (boost::regex_search(line, what, rx_u)) {
                             int v;
                             v = boost::lexical_cast<int>(what[1]);
-                            prop_values[it->first] = static_cast<float>(v);
+                            prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
                         }
                         else {
@@ -884,7 +883,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                         if (boost::regex_search(line, what, rx_d)) {
                             double v;
                             v = boost::lexical_cast<double>(what[1]);
-                            prop_values[it->first] = static_cast<float>(v);
+                            prop_values[it.first] = static_cast<float>(v);
                             line = line.substr(what[0].length());
                         }
                         else {
@@ -931,47 +930,47 @@ bool MeshInput::LoadPLY (std::istream &inp)
         for (std::size_t i = 0; i < v_count; i++) {
             // go through the vertex properties
             std::map<std::string, float> prop_values;
-            for (std::vector<std::pair<std::string, Number> >::iterator it = vertex_props.begin(); it != vertex_props.end(); ++it) {
-                switch (it->second) {
+            for (const auto & it : vertex_props) {
+                switch (it.second) {
                 case int8:
                     {
                         int8_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case uint8:
                     {
                         uint8_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case int16:
                     {
                         int16_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case uint16:
                     {
                         uint16_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case int32:
                     {
                         int32_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case uint32:
                     {
                         uint32_t v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 case float32:
                     {
                         float v; is >> v;
-                        prop_values[it->first] = v;
+                        prop_values[it.first] = v;
                     } break;
                 case float64:
                     {
                         double v; is >> v;
-                        prop_values[it->first] = static_cast<float>(v);
+                        prop_values[it.first] = static_cast<float>(v);
                     } break;
                 default:
                     return false;
@@ -1000,8 +999,8 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 is >> f1 >> f2 >> f3;
                 if (f1 < v_count && f2 < v_count && f3 < v_count)
                     meshFacets.push_back(MeshFacet(f1,f2,f3));
-                for (std::vector<Number>::iterator it = face_props.begin(); it != face_props.end(); ++it) {
-                    switch (*it) {
+                for (auto it : face_props) {
+                    switch (it) {
                     case int8:
                         {
                             int8_t v; is >> v;
@@ -1532,8 +1531,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     // Check the triangles to make sure the vertices they refer to actually exist:
     for (const auto& tri : mTria) {
-        for (int i = 0; i < 3; ++i) {
-            if (mNode.find(tri.second.iV[i]) == mNode.end()) {
+        for (int i : tri.second.iV) {
+            if (mNode.find(i) == mNode.end()) {
                 Base::Console().Error("CTRIA3 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1542,8 +1541,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     // Check the quads to make sure the vertices they refer to actually exist:
     for (const auto& quad : mQuad) {
-        for (int i = 0; i < 4; ++i) {
-            if (mNode.find(quad.second.iV[i]) == mNode.end()) {
+        for (int i : quad.second.iV) {
+            if (mNode.find(i) == mNode.end()) {
                 Base::Console().Error("CQUAD4 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1555,30 +1554,30 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         index = 0;
     else
         index = mTria.rbegin()->first + 1;
-    for (std::map <int, QUAD>::iterator QI=mQuad.begin(); QI!=mQuad.end(); ++QI) {
+    for (const auto & QI : mQuad) {
         for (int i = 0; i < 2; i++) {
-            float fDx = mNode[(*QI).second.iV[i+2]].x - mNode[(*QI).second.iV[i]].x;
-            float fDy = mNode[(*QI).second.iV[i+2]].y - mNode[(*QI).second.iV[i]].y;
-            float fDz = mNode[(*QI).second.iV[i+2]].z - mNode[(*QI).second.iV[i]].z;
+            float fDx = mNode[QI.second.iV[i+2]].x - mNode[QI.second.iV[i]].x;
+            float fDy = mNode[QI.second.iV[i+2]].y - mNode[QI.second.iV[i]].y;
+            float fDz = mNode[QI.second.iV[i+2]].z - mNode[QI.second.iV[i]].z;
             fLength[i] = fDx*fDx + fDy*fDy + fDz*fDz;
         }
         if (fLength[0] < fLength[1]) {
-            mTria[index].iV[0] = (*QI).second.iV[0];
-            mTria[index].iV[1] = (*QI).second.iV[1];
-            mTria[index].iV[2] = (*QI).second.iV[2];
+            mTria[index].iV[0] = QI.second.iV[0];
+            mTria[index].iV[1] = QI.second.iV[1];
+            mTria[index].iV[2] = QI.second.iV[2];
 
-            mTria[index+1].iV[0] = (*QI).second.iV[0];
-            mTria[index+1].iV[1] = (*QI).second.iV[2];
-            mTria[index+1].iV[2] = (*QI).second.iV[3];
+            mTria[index+1].iV[0] = QI.second.iV[0];
+            mTria[index+1].iV[1] = QI.second.iV[2];
+            mTria[index+1].iV[2] = QI.second.iV[3];
         }
         else {
-            mTria[index].iV[0] = (*QI).second.iV[0];
-            mTria[index].iV[1] = (*QI).second.iV[1];
-            mTria[index].iV[2] = (*QI).second.iV[3];
+            mTria[index].iV[0] = QI.second.iV[0];
+            mTria[index].iV[1] = QI.second.iV[1];
+            mTria[index].iV[2] = QI.second.iV[3];
 
-            mTria[index+1].iV[0] = (*QI).second.iV[1];
-            mTria[index+1].iV[1] = (*QI).second.iV[2];
-            mTria[index+1].iV[2] = (*QI).second.iV[3];
+            mTria[index+1].iV[0] = QI.second.iV[1];
+            mTria[index+1].iV[1] = QI.second.iV[2];
+            mTria[index+1].iV[2] = QI.second.iV[3];
         }
 
         index += 2;
@@ -1586,16 +1585,16 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     // Applying the nodes
     vVertices.reserve(mNode.size());
-    for (std::map<int, NODE>::iterator MI=mNode.begin(); MI!=mNode.end(); ++MI) {
-        vVertices.push_back(Base::Vector3f(MI->second.x, MI->second.y, MI->second.z));
+    for (const auto & MI : mNode) {
+        vVertices.push_back(Base::Vector3f(MI.second.x, MI.second.y, MI.second.z));
     }
 
     // Converting data to Mesh. Negative conversion for right orientation of normal-vectors.
     vTriangle.reserve(mTria.size());
-    for (std::map<int, TRIA>::iterator MI=mTria.begin(); MI!=mTria.end(); ++MI) {
-        clMeshFacet._aulPoints[0] = (*MI).second.iV[1];
-        clMeshFacet._aulPoints[1] = (*MI).second.iV[0];
-        clMeshFacet._aulPoints[2] = (*MI).second.iV[2];
+    for (const auto & MI : mTria) {
+        clMeshFacet._aulPoints[0] = MI.second.iV[1];
+        clMeshFacet._aulPoints[1] = MI.second.iV[0];
+        clMeshFacet._aulPoints[2] = MI.second.iV[2];
         vTriangle.push_back (clMeshFacet);
     }
 
@@ -1958,10 +1957,10 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
         rstrOut << "    outer loop\n";
 
         // vertices
-        for (int i = 0; i < 3; i++) {
-            rstrOut << "      vertex "  << pclFacet->_aclPoints[i].x << " "
-                                        << pclFacet->_aclPoints[i].y << " "
-                                        << pclFacet->_aclPoints[i].z << '\n';
+        for (const auto& pnt : pclFacet->_aclPoints) {
+            rstrOut << "      vertex "  << pnt.x << " "
+                                        << pnt.y << " "
+                                        << pnt.z << '\n';
         }
 
         rstrOut << "    endloop\n";
@@ -2094,10 +2093,10 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     }
 
     // facet indices
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        out << "f " << it->_aulPoints[0]+1 << " "
-                    << it->_aulPoints[1]+1 << " "
-                    << it->_aulPoints[2]+1 << '\n';
+    for (const auto & it : rFacets) {
+        out << "f " << it._aulPoints[0]+1 << " "
+                    << it._aulPoints[1]+1 << " "
+                    << it._aulPoints[2]+1 << '\n';
         seq.next(true); // allow to cancel
     }
 
@@ -2175,10 +2174,10 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
         out << "draw(surface(";
 
         // vertices
-        for (int i = 0; i < 3; i++) {
-            out << '(' << pclFacet->_aclPoints[i].x << ", "
-                       << pclFacet->_aclPoints[i].y << ", "
-                       << pclFacet->_aclPoints[i].z << ")--";
+        for (const auto& pnt : pclFacet->_aclPoints) {
+            out << '(' << pnt.x << ", "
+                       << pnt.y << ", "
+                       << pnt.z << ")--";
         }
 
         out << "cycle";
@@ -2283,10 +2282,10 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     }
 
     // facet indices (no texture and normal indices)
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        out << "3 " << it->_aulPoints[0]
-            << " " << it->_aulPoints[1]
-            << " " << it->_aulPoints[2] << '\n';
+    for (const auto & it : rFacets) {
+        out << "3 " << it._aulPoints[0]
+            << " " << it._aulPoints[1]
+            << " " << it._aulPoints[2] << '\n';
         seq.next(true); // allow to cancel
     }
 
@@ -2438,21 +2437,21 @@ bool MeshOutput::SaveMeshNode (std::ostream &rstrOut)
     rstrOut << "[" << '\n';
     if (this->apply_transform) {
         Base::Vector3f pt;
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-            pt = this->_transform * *it;
+        for (const auto & it : rPoints) {
+            pt = this->_transform * it;
             rstrOut << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
     }
     else {
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-            rstrOut << "v " << it->x << " " << it->y << " " << it->z << '\n';
+        for (const auto & it : rPoints) {
+            rstrOut << "v " << it.x << " " << it.y << " " << it.z << '\n';
         }
     }
     // facet indices (no texture and normal indices)
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        rstrOut << "f " << it->_aulPoints[0]+1 << " "
-                        << it->_aulPoints[1]+1 << " "
-                        << it->_aulPoints[2]+1 << '\n';
+    for (const auto & it : rFacets) {
+        rstrOut << "f " << it._aulPoints[0]+1 << " "
+                        << it._aulPoints[1]+1 << " "
+                        << it._aulPoints[2]+1 << '\n';
     }
     rstrOut << "]" << '\n';
 
@@ -2473,8 +2472,8 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
     writer.incInd();
     if (this->apply_transform) {
         Base::Vector3f pt;
-        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); ++itp) {
-            pt = this->_transform * *itp;
+        for (const auto & it : rPoints) {
+            pt = this->_transform * it;
             writer.Stream() <<  writer.ind() << "<P "
                             << "x=\"" <<  pt.x << "\" "
                             << "y=\"" <<  pt.y << "\" "
@@ -2483,11 +2482,11 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
         }
     }
     else {
-        for (MeshPointArray::_TConstIterator itp = rPoints.begin(); itp != rPoints.end(); ++itp) {
+        for (const auto & it : rPoints) {
             writer.Stream() <<  writer.ind() << "<P "
-                            << "x=\"" <<  itp->x << "\" "
-                            << "y=\"" <<  itp->y << "\" "
-                            << "z=\"" <<  itp->z << "\"/>"
+                            << "x=\"" <<  it.x << "\" "
+                            << "y=\"" <<  it.y << "\" "
+                            << "z=\"" <<  it.z << "\"/>"
                             << '\n';
         }
     }
@@ -2498,14 +2497,14 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Faces Count=\"" << _rclMesh.CountFacets() << "\">" << '\n';
 
     writer.incInd();
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
+    for (const auto & it : rFacets) {
         writer.Stream() << writer.ind() << "<F "
-                        << "p0=\"" <<  it->_aulPoints[0] << "\" "
-                        << "p1=\"" <<  it->_aulPoints[1] << "\" "
-                        << "p2=\"" <<  it->_aulPoints[2] << "\" "
-                        << "n0=\"" <<  it->_aulNeighbours[0] << "\" "
-                        << "n1=\"" <<  it->_aulNeighbours[1] << "\" "
-                        << "n2=\"" <<  it->_aulNeighbours[2] << "\"/>"
+                        << "p0=\"" <<  it._aulPoints[0] << "\" "
+                        << "p1=\"" <<  it._aulPoints[1] << "\" "
+                        << "p2=\"" <<  it._aulPoints[2] << "\" "
+                        << "n0=\"" <<  it._aulNeighbours[0] << "\" "
+                        << "n1=\"" <<  it._aulNeighbours[1] << "\" "
+                        << "n2=\"" <<  it._aulNeighbours[2] << "\"/>"
                         << '\n';
     }
     writer.decInd();
@@ -2579,8 +2578,8 @@ bool MeshOutput::SaveIDTF (std::ostream &str) const
     str << Base::tabs(4) << "}\n";
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(3) << "MESH_FACE_POSITION_LIST {\n";
-    for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        str << Base::tabs(4) << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << '\n';
+    for (const auto & ft : fts) {
+        str << Base::tabs(4) << ft._aulPoints[0] << " " << ft._aulPoints[1] << " " << ft._aulPoints[2] << '\n';
     }
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(3) << "MESH_FACE_NORMAL_LIST {\n";
@@ -2596,13 +2595,13 @@ bool MeshOutput::SaveIDTF (std::ostream &str) const
     }
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(3) << "MODEL_POSITION_LIST {\n";
-    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        str << Base::tabs(4) << it->x << " " << it->y << " " << it->z << '\n';
+    for (const auto & pt : pts) {
+        str << Base::tabs(4) << pt.x << " " << pt.y << " " << pt.z << '\n';
     }
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(3) << "MODEL_NORMAL_LIST {\n";
-    for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        MeshGeomFacet face = _rclMesh.GetFacet(*it);
+    for (const auto & ft : fts) {
+        MeshGeomFacet face = _rclMesh.GetFacet(ft);
         Base::Vector3f normal = face.GetNormal();
         str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << '\n';
         str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << '\n';
@@ -2640,26 +2639,26 @@ triplot t xt yt zt 'b'
 
     str << "light on\n";
     str << "list t ";
-    for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        str << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " | ";
+    for (const auto & ft : fts) {
+        str << ft._aulPoints[0] << " " << ft._aulPoints[1] << " " << ft._aulPoints[2] << " | ";
     }
     str << std::endl;
 
     str << "list xt ";
-    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        str << it->x << " ";
+    for (const auto & pt : pts) {
+        str << pt.x << " ";
     }
     str << std::endl;
 
     str << "list yt ";
-    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        str << it->y << " ";
+    for (const auto & pt : pts) {
+        str << pt.y << " ";
     }
     str << std::endl;
 
     str << "list zt ";
-    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        str << it->z << " ";
+    for (const auto & pt : pts) {
+        str << pt.z << " ";
     }
     str << std::endl;
 
@@ -2786,14 +2785,14 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
     }
 
     out << "coordIndex=\"";
-    for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
+    for (const auto & ft : fts) {
+        out << ft._aulPoints[0] << " " << ft._aulPoints[1] << " " << ft._aulPoints[2] << " -1 ";
     }
     out << "\">\n";
 
     out << "          <Coordinate point=\"";
-    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        out << it->x << " " << it->y << " " << it->z << ", ";
+    for (const auto & pt : pts) {
+        out << pt.x << " " << pt.y << " " << pt.z << ", ";
     }
     out << "\"/>\n";
 
@@ -2936,10 +2935,10 @@ bool MeshOutput::SavePython (std::ostream &str) const
     str << "faces = [\n";
     for (clIter.Init(); clIter.More(); clIter.Next()) {
         const MeshGeomFacet& rFacet = *clIter;
-        for (int i = 0; i < 3; i++) {
-            str << "[" << rFacet._aclPoints[i].x
-                << "," << rFacet._aclPoints[i].y
-                << "," << rFacet._aclPoints[i].z
+        for (const auto& pnt : rFacet._aclPoints) {
+            str << "[" << pnt.x
+                << "," << pnt.y
+                << "," << pnt.z
                 << "],";
         }
         str << '\n';
@@ -3117,20 +3116,20 @@ void MeshCleanup::RemoveInvalids()
     // Now go through the facets and invalidate facets with wrong indices
     // If a facet is valid all its referenced points are validated again
     // Points that are not referenced are still invalid and thus can be deleted
-    for (MeshFacetArray::_TIterator it = facetArray.begin(); it != facetArray.end(); ++it) {
-        for (int i=0; i<3; i++) {
+    for (auto & it : facetArray) {
+        for (PointIndex point : it._aulPoints) {
             // vertex index out of range
-            if (it->_aulPoints[i] >= numPoints) {
-                it->SetInvalid();
+            if (point >= numPoints) {
+                it.SetInvalid();
                 break;
             }
         }
 
         // validate referenced points
-        if (it->IsValid()) {
-            pointArray[it->_aulPoints[0]].ResetInvalid();
-            pointArray[it->_aulPoints[1]].ResetInvalid();
-            pointArray[it->_aulPoints[2]].ResetInvalid();
+        if (it.IsValid()) {
+            pointArray[it._aulPoints[0]].ResetInvalid();
+            pointArray[it._aulPoints[1]].ResetInvalid();
+            pointArray[it._aulPoints[2]].ResetInvalid();
         }
     }
 
@@ -3236,10 +3235,10 @@ MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
 void MeshPointFacetAdjacency::Build()
 {
     std::vector<std::size_t> numFacetAdjacency(numPoints);
-    for (MeshFacetArray::iterator it = facets.begin(); it != facets.end(); ++it) {
-        numFacetAdjacency[it->_aulPoints[0]]++;
-        numFacetAdjacency[it->_aulPoints[1]]++;
-        numFacetAdjacency[it->_aulPoints[2]]++;
+    for (const auto & it : facets) {
+        numFacetAdjacency[it._aulPoints[0]]++;
+        numFacetAdjacency[it._aulPoints[1]]++;
+        numFacetAdjacency[it._aulPoints[2]]++;
     }
 
     pointFacetAdjacency.resize(numPoints);
@@ -3248,8 +3247,8 @@ void MeshPointFacetAdjacency::Build()
 
     std::size_t numFacets = facets.size();
     for (std::size_t i = 0; i < numFacets; i++) {
-        for (int j = 0; j < 3; j++) {
-            pointFacetAdjacency[facets[i]._aulPoints[j]].push_back(i);
+        for (PointIndex ptIndex : facets[i]._aulPoints) {
+            pointFacetAdjacency[ptIndex].push_back(i);
         }
     }
 }
@@ -3265,11 +3264,11 @@ void MeshPointFacetAdjacency::SetFacetNeighbourhood()
 
             bool success = false;
             const std::vector<std::size_t>& refFacets = pointFacetAdjacency[n1];
-            for (std::vector<std::size_t>::const_iterator it = refFacets.begin(); it != refFacets.end(); ++it) {
-                if (*it != index) {
-                    MeshFacet& facet2 = facets[*it];
+            for (std::size_t it : refFacets) {
+                if (it != index) {
+                    MeshFacet& facet2 = facets[it];
                     if (facet2.HasPoint(n2)) {
-                        facet1._aulNeighbours[i] = *it;
+                        facet1._aulNeighbours[i] = it;
                         success = true;
                         break;
                     }

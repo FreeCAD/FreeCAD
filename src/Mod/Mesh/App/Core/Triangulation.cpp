@@ -130,16 +130,16 @@ std::vector<Base::Vector3f> AbstractPolygonTriangulator::AddedPoints() const
     // Apply the inverse transformation to project back to world coordinates
     std::vector<Base::Vector3f> added;
     added.reserve(_newpoints.size());
-    for (std::vector<Base::Vector3f>::const_iterator pt = _newpoints.begin(); pt != _newpoints.end(); ++pt)
-        added.push_back(_inverse * *pt);
+    for (auto point : _newpoints)
+        added.push_back(_inverse * point);
     return added;
 }
 
 Base::Matrix4D AbstractPolygonTriangulator::GetTransformToFitPlane() const
 {
     PlaneFit planeFit;
-    for (std::vector<Base::Vector3f>::const_iterator it = _points.begin(); it!=_points.end(); ++it)
-        planeFit.AddPoint(*it);
+    for (auto point : _points)
+        planeFit.AddPoint(point);
 
     if (planeFit.Fit() >= FLOAT_MAX)
         throw Base::RuntimeError("Plane fit failed");
@@ -183,8 +183,8 @@ std::vector<Base::Vector3f> AbstractPolygonTriangulator::ProjectToFitPlane()
     Base::Vector3f ey(static_cast<float>(_inverse[0][1]),
                       static_cast<float>(_inverse[1][1]),
                       static_cast<float>(_inverse[2][1]));
-    for (std::vector<Base::Vector3f>::iterator jt = proj.begin(); jt!=proj.end(); ++jt)
-        jt->TransformToCoordinateSystem(bs, ex, ey);
+    for (auto & jt : proj)
+        jt.TransformToCoordinateSystem(bs, ex, ey);
     return proj;
 }
 
@@ -205,15 +205,14 @@ void AbstractPolygonTriangulator::PostProcessing(const std::vector<Base::Vector3
                       static_cast<float>(_inverse[1][1]),
                       static_cast<float>(_inverse[2][1]));
 
-    for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        Base::Vector3f pt = *it;
+    for (auto pt : points) {
         pt.TransformToCoordinateSystem(bs, ex, ey);
         polyFit.AddPoint(pt);
     }
 
     if (polyFit.CountPoints() >= uMinPts && polyFit.Fit() < FLOAT_MAX) {
-        for (std::vector<Base::Vector3f>::iterator pt = _newpoints.begin(); pt != _newpoints.end(); ++pt)
-            pt->z = static_cast<float>(polyFit.Value(pt->x, pt->y));
+        for (auto & newpoint : _newpoints)
+            newpoint.z = static_cast<float>(polyFit.Value(newpoint.x, newpoint.y));
     }
 }
 
@@ -653,8 +652,8 @@ bool DelaunayTriangulator::Triangulate()
 
     std::vector<Wm4::Vector2d> akVertex;
     akVertex.reserve(_points.size());
-    for (std::vector<Base::Vector3f>::iterator it = _points.begin(); it != _points.end(); ++it) {
-        akVertex.emplace_back(static_cast<double>(it->x), static_cast<double>(it->y));
+    for (const auto & point : _points) {
+        akVertex.emplace_back(static_cast<double>(point.x), static_cast<double>(point.y));
     }
 
     Wm4::Delaunay2d del(static_cast<int>(akVertex.size()), &(akVertex[0]), 0.001, false, Wm4::Query::QT_INT64);

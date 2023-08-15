@@ -124,9 +124,9 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     }
 
     std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
-    for (std::size_t i = 0; i < nDispl.size(); i++) {
-        ui->lw_dis_rect->addItem(makeText(nDispl[i]));
-        ui->lw_dis_cylin->addItem(makeText(nDispl[i]));
+    for (auto i : nDispl) {
+        ui->lw_dis_rect->addItem(makeText(i));
+        ui->lw_dis_cylin->addItem(makeText(i));
     }
 
     if (!Objects.empty()) {
@@ -290,31 +290,29 @@ void TaskFemConstraintTransform::addToSelection()
 
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        App::DocumentObject* obj = it.getObject();
         if (subNames.size() != 1) {
             QMessageBox::warning(
                 this, tr("Selection error"), tr("Only one face for transform constraint!"));
             Gui::Selection().clearSelection();
             return;
         }
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto & subName : subNames) {// for every selected sub element
             bool addMe = true;
-            if (subNames[subIt].substr(0, 4) != "Face") {
+            if (subName.substr(0, 4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
-            if (subNames[subIt].substr(0, 4) == "Face") {
+            if (subName.substr(0, 4) == "Face") {
                 if (ui->rb_cylin->isChecked()) {
                     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-                    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
+                    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
                     BRepAdaptor_Surface surface(TopoDS::Face(ref));
                     if (surface.GetType() != GeomAbs_Cylinder) {
                         QMessageBox::warning(this,
@@ -325,11 +323,11 @@ void TaskFemConstraintTransform::addToSelection()
                 }
             }
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(
@@ -346,10 +344,10 @@ void TaskFemConstraintTransform::addToSelection()
                            &TaskFemConstraintTransform::setSelection);
                 for (std::size_t i = 0; i < ObjDispl.size(); i++) {
                     if ((makeRefText(ObjDispl[i], SubElemDispl[i]))
-                        == (makeRefText(obj, subNames[subIt]))) {
+                        == (makeRefText(obj, subName))) {
                         Objects.push_back(obj);
-                        SubElements.push_back(subNames[subIt]);
-                        ui->lw_Rect->addItem(makeRefText(obj, subNames[subIt]));
+                        SubElements.push_back(subName);
+                        ui->lw_Rect->addItem(makeRefText(obj, subName));
                         connect(ui->lw_Rect,
                                 &QListWidget::currentItemChanged,
                                 this,
@@ -418,23 +416,21 @@ void TaskFemConstraintTransform::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto& subName : subNames) {// for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(
