@@ -263,9 +263,9 @@ void TaskAttacher::documentDeleted(const Gui::Document&)
 const QString makeHintText(std::set<eRefType> hint)
 {
     QString result;
-    for (std::set<eRefType>::const_iterator t = hint.begin(); t != hint.end(); t++) {
+    for (auto t : hint) {
         QString tText;
-        tText = AttacherGui::getShapeTypeText(*t);
+        tText = AttacherGui::getShapeTypeText(t);
         result += QString::fromLatin1(result.size() == 0 ? "" : "/") + tText;
     }
 

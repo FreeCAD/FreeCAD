@@ -220,11 +220,11 @@ void ViewProviderSplineExtension::showControlPointsOfEdge(const TopoDS_Edge& edg
 
     int index=0;
     SbVec3f* verts = controlcoords->point.startEditing();
-    for (std::list<gp_Pnt>::iterator p = poles.begin(); p != poles.end(); ++p) {
-        verts[index++].setValue((float)p->X(), (float)p->Y(), (float)p->Z());
+    for (const auto & pole : poles) {
+        verts[index++].setValue((float)pole.X(), (float)pole.Y(), (float)pole.Z());
     }
-    for (std::list<gp_Pnt>::iterator k = knots.begin(); k != knots.end(); ++k) {
-        verts[index++].setValue((float)k->X(), (float)k->Y(), (float)k->Z());
+    for (const auto & knot : knots) {
+        verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     controlcoords->point.finishEditing();
 
@@ -296,13 +296,13 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
 
     int index=0;
     SbVec3f* verts = coords->point.startEditing();
-    for (std::vector<std::vector<gp_Pnt> >::iterator u = poles.begin(); u != poles.end(); ++u) {
-        for (std::vector<gp_Pnt>::iterator v = u->begin(); v != u->end(); ++v) {
-            verts[index++].setValue((float)v->X(), (float)v->Y(), (float)v->Z());
+    for (const auto & pole : poles) {
+        for (const auto& v : pole) {
+            verts[index++].setValue((float)v.X(), (float)v.Y(), (float)v.Z());
         }
     }
-    for (std::list<gp_Pnt>::iterator k = knots.begin(); k != knots.end(); ++k) {
-        verts[index++].setValue((float)k->X(), (float)k->Y(), (float)k->Z());
+    for (const auto & knot : knots) {
+        verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     coords->point.finishEditing();
 

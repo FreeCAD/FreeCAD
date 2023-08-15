@@ -260,8 +260,8 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
             TopoDS_Compound comp;
             BRep_Builder builder;
             builder.MakeCompound(comp);
-            for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
-                builder.Add(comp, *it);
+            for (const auto & draft : drafts)
+                builder.Add(comp, draft);
             result = comp;
         }
     }

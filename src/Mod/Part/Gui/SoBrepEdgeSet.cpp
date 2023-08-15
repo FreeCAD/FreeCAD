@@ -304,8 +304,8 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
 
 bool SoBrepEdgeSet::validIndexes(const SoCoordinateElement* coords, const std::vector<int32_t>& pts) const
 {
-    for (std::vector<int32_t>::const_iterator it = pts.begin(); it != pts.end(); ++it) {
-        if (*it >= coords->getNum()) {
+    for (int32_t it : pts) {
+        if (it >= coords->getNum()) {
             return false;
         }
     }

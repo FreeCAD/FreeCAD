@@ -711,9 +711,9 @@ PyObject* BSplineCurve2dPy::toBiArcs(PyObject * args)
         arcs = curve->toBiArcs(tolerance);
 
         Py::List list;
-        for (std::list<Geometry2d*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
-            list.append(Py::asObject((*it)->getPyObject()));
-            delete (*it);
+        for (auto arc : arcs) {
+            list.append(Py::asObject(arc->getPyObject()));
+            delete arc;
         }
 
         return Py::new_reference_to(list);
