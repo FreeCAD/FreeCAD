@@ -50,19 +50,21 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
     // sorted by their menu text
     QStringList work = Gui::Application::Instance->workbenches();
     QMap<QString, QString> menuText;
-    for (QStringList::Iterator it = work.begin(); it != work.end(); ++it) {
-        QString text = Gui::Application::Instance->workbenchMenuText(*it);
-        menuText[text] = *it;
+    for (const auto& it : work) {
+        QString text = Gui::Application::Instance->workbenchMenuText(it);
+        menuText[text] = it;
     }
 
     {   // add special workbench to selection
         QPixmap px = Gui::Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
         QString key = QString::fromLatin1("<last>");
         QString value = QString::fromLatin1("$LastModule");
-        if (px.isNull())
+        if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(key, QVariant(value));
-        else
+        }
+        else {
             ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+        }
     }
 
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
@@ -150,13 +152,13 @@ void DlgStartPreferencesImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgStartPreferencesImp::changeEvent(QEvent *e)
+void DlgStartPreferencesImp::changeEvent(QEvent *ev)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (ev->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     else {
-        QWidget::changeEvent(e);
+        Gui::Dialog::PreferencePage::changeEvent(ev);
     }
 }
 
