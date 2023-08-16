@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "DrawView.h"
@@ -592,6 +593,21 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
     if (Preferences::reportProgress()) {
         signalProgressMessage(this, featureName, text);
     }
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+//    Base::Console().Message("DV::getTranslatedLabel - context: %s baseName: %s uniqueName: %s\n",
+//                            context.c_str(), baseName.c_str(), uniqueName.c_str());
+    std::string suffix("");
+    if (uniqueName.length() > baseName.length()) {
+        suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
+    }
+    QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
+    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
+    Label.setValue(ssTranslated + suffix);
 }
 
 PyObject *DrawView::getPyObject(void)
