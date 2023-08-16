@@ -1466,9 +1466,9 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testVectorFunctions(self):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        
+
         sheet.set('A1', '=vcross(vector(1; 2; 3); vector(1; 5; 7))')
-        
+
         sheet.set('B1', '=vdot(vector(1; 2; 3); vector(4; -5; 6))')
 
         sheet.set('C1', '=vangle(vector(1; 0; 0); vector(0; 1; 0))')

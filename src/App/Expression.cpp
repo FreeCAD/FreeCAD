@@ -2124,7 +2124,7 @@ double FunctionExpression::extractLengthValueArgument(
 )
 {
     Quantity argumentQuantity = pyToQuantity(arguments[argumentIndex]->getPyValue(), expression);
-    
+
     if (!(argumentQuantity.isDimensionlessOrUnit(Unit::Length))) {
         _EXPR_THROW("Unit must be either empty or a length.", expression);
     }
