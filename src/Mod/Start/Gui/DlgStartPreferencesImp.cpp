@@ -112,7 +112,6 @@ void DlgStartPreferencesImp::saveSettings()
     ui->checkBox_5->onSave();
     ui->checkBox_6->onSave();
     ui->checkBox_7->onSave();
-    ui->checkBox_8->onSave();
     ui->lineEdit->onSave();
     ui->spinBox->onSave();
 }
@@ -144,7 +143,6 @@ void DlgStartPreferencesImp::loadSettings()
     ui->checkBox_5->onRestore();
     ui->checkBox_6->onRestore();
     ui->checkBox_7->onRestore();
-    ui->checkBox_8->onRestore();
     ui->lineEdit->onRestore();
     ui->spinBox->onRestore();
 }
