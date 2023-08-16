@@ -222,12 +222,12 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     if (role == Qt::FontRole && cell->getStyle(style)) {
         QFont f;
 
-        for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
-            if (*i == "bold")
+        for (const auto& i : style) {
+            if (i == "bold")
                 f.setBold(true);
-            else if (*i == "italic")
+            else if (i == "italic")
                 f.setItalic(true);
-            else if (*i == "underline")
+            else if (i == "underline")
                 f.setUnderline(true);
         }
 

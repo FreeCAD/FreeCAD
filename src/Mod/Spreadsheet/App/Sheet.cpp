@@ -106,16 +106,18 @@ void Sheet::clearAll()
 
     std::vector<std::string> propNames = props.getDynamicPropertyNames();
 
-    for (std::vector<std::string>::const_iterator i = propNames.begin(); i != propNames.end(); ++i)
-        this->removeDynamicProperty((*i).c_str());
+    for (const auto & propName : propNames) {
+        this->removeDynamicProperty(propName.c_str());
+    }
 
     propAddress.clear();
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
 
-    for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
-        delete i->second;
+    for (auto & observer : observers) {
+        delete observer.second;
+    }
     observers.clear();
 }
 
@@ -230,8 +232,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
 
 static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, std::ostream & out) {
   out << quoteChar;
-  for (std::string::const_iterator i = s.begin(), end = s.end(); i != end; ++i) {
-    unsigned char c = *i;
+  for (unsigned char c : s) {
     if (c != quoteChar)
         out << c;
     else {
@@ -909,9 +910,9 @@ DocumentObjectExecReturn *Sheet::execute()
     std::set<CellAddress> dirtyCells = cells.getDirty();
 
     // Always recompute cells that have failed
-    for (std::set<CellAddress>::const_iterator i = cellErrors.begin(); i != cellErrors.end(); ++i) {
-         cells.recomputeDependencies(*i);
-         dirtyCells.insert(*i);
+    for (auto cellError : cellErrors) {
+         cells.recomputeDependencies(cellError);
+         dirtyCells.insert(cellError);
     }
 
     DependencyList graph;
@@ -1033,14 +1034,15 @@ DocumentObjectExecReturn *Sheet::execute()
     // Signal update of column widths
     const std::set<int> & dirtyColumns = columnWidths.getDirty();
 
-    for (std::set<int>::const_iterator i = dirtyColumns.begin(); i != dirtyColumns.end(); ++i)
-        columnWidthChanged(*i, columnWidths.getValue(*i));
+    for (int dirtyColumn : dirtyColumns) {
+        columnWidthChanged(dirtyColumn, columnWidths.getValue(dirtyColumn));
+    }
 
     // Signal update of row heights
     const std::set<int> & dirtyRows = rowHeights.getDirty();
 
-    for (std::set<int>::const_iterator i = dirtyRows.begin(); i != dirtyRows.end(); ++i)
-        rowHeightChanged(*i, rowHeights.getValue(*i));
+    for (int dirtyRow : dirtyRows)
+        rowHeightChanged(dirtyRow, rowHeights.getValue(dirtyRow));
 
     //cells.clearDirty();
     rowHeights.clearDirty();
@@ -1460,8 +1462,9 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
     std::string fullName = getFullName() + ".";
     std::set<CellAddress> tmpResult = cells.getDeps(fullName + address.toString());
 
-    for (std::set<CellAddress>::const_iterator i = tmpResult.begin(); i != tmpResult.end(); ++i)
-        result.insert(fullName + i->toString());
+    for (const auto& i : tmpResult) {
+        result.insert(fullName + i.toString());
+    }
 }
 
 /**
