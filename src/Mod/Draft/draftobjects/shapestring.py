@@ -147,16 +147,18 @@ class ShapeString(DraftObject):
                 if fill is False:
                     shapes.extend(char)
                 elif char:
-                    shapes.extend(self.makeFaces(char))
+                    shapes.extend(self.make_faces(char))
             if shapes:
-                ss_shape = Part.Compound(shapes)
+                if obj.MakeFace and obj.Fuse:
+                    ss_shape = shapes[0].fuse(shapes[1:])
+                    ss_shape = faces.concatenate(ss_shape)
+                else:
+                    ss_shape = Part.Compound(shapes)
                 cap_char = Part.makeWireString("M", obj.FontFile, obj.Size, obj.Tracking)[0]
                 cap_height = Part.Compound(cap_char).BoundBox.YMax
                 if obj.ScaleToSize:
                     ss_shape.scale(obj.Size / cap_height)
                     cap_height = obj.Size
-                if obj.MakeFace and obj.Fuse:
-                    ss_shape = Part.Compound(faces.multi_fuse(ss_shape.Faces))
                 obj.Shape = self.justification(ss_shape,
                                                cap_height,
                                                obj.Justification,
@@ -199,7 +201,7 @@ class ShapeString(DraftObject):
             shape.translate(vec)
         return Part.Compound(shapes)
 
-    def makeFaces(self, wireChar):
+    def make_faces(self, wireChar):
         wrn = translate("draft", "ShapeString: face creation failed for one character") + "\n"
 
         wirelist = []

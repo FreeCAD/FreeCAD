@@ -95,8 +95,7 @@ from draftgeoutils.faces import (concatenate,
                                  is_coplanar,
                                  bind,
                                  cleanFaces,
-                                 removeSplitter,
-                                 multi_fuse)
+                                 removeSplitter)
 
 from draftgeoutils.arcs import (isClockwise,
                                 isWideAngle,
