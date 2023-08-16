@@ -57,9 +57,13 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
 
     setupDefault();
     setupDepthArray();
+    setupArray();
 
     Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
     Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
+
+    // connect(ui->splitter, &QSplitter::event,
+    //         this, &Array3D::onSplitter);
 
     connect(ui->standardButtons->button(QDialogButtonBox::Ok), &QPushButton::clicked,
             this, &Array3D::onOk);
@@ -70,6 +74,13 @@ Array3D::Array3D(const QString &propertyName, Materials::Material *material, QWi
 Array3D::~Array3D()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+bool Array3D::onSplitter(QEvent *e)
+{
+    Q_UNUSED(e)
+
+    return false;
 }
 
 void Array3D::setupDefault()
@@ -128,6 +139,36 @@ void Array3D::setupDepthArray()
 
     setDepthColumnWidth(table);
     setDepthColumnDelegate(table);
+}
+
+void Array3D::setColumnWidths(QTableView *table)
+{
+    int length = _property->columns();
+    for (int i = 0; i < length; i++)
+        table->setColumnWidth(i, 100);
+}
+
+void Array3D::setColumnDelegates(QTableView *table)
+{
+    int length = _property->columns();
+    for (int i = 0; i < length; i++) {
+        auto column = _property->getColumn(i);
+        table->setItemDelegateForColumn(i, new ArrayDelegate(column.getType(), column.getUnits(), this));
+    }
+}
+
+void Array3D::setupArray()
+{
+    if (_property == nullptr)
+        return;
+
+    auto table = ui->table2D;
+    auto model = new Array3DModel(_property, _value, this);
+    table->setModel(model);
+    table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+
+    setColumnWidths(table);
+    setColumnDelegates(table);
 }
 
 void Array3D::onOk(bool checked)

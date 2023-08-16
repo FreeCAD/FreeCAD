@@ -196,8 +196,8 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
     return false;
 }
-//===
 
+//===
 
 Array3DDepthModel::Array3DDepthModel(Materials::MaterialProperty *property, Materials::Material3DArray *value, QObject *parent) :
     AbstractArrayModel(parent),
@@ -342,5 +342,159 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 }
 
 //===
+
+Array3DModel::Array3DModel(Materials::MaterialProperty *property, Materials::Material3DArray *value, QObject *parent) :
+    AbstractArrayModel(parent),
+    _property(property),
+    _value(value)
+{}
+
+Array3DModel::~Array3DModel()
+{}
+
+int Array3DModel::rowCount(const QModelIndex& parent) const
+{
+    if (parent.isValid())
+        return 0; // No children
+
+    return _value->depth() + 1; // Will always have 1 empty row
+}
+
+int Array3DModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+
+    return _property->columns() - 1;
+}
+
+bool Array3DModel::newRow(const QModelIndex& index) const
+{
+    return (index.row() == _value->depth());
+}
+
+QVariant Array3DModel::data(const QModelIndex &index, int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        Base::Console().Error("Row %d, column %d\n", index.row(), index.column());
+        try
+        {
+            return _value->getValue(index.row(), index.column() + 1);
+        }
+        catch(const Materials::InvalidIndex &)
+        {
+        }
+        catch(const std::exception &e)
+        {
+            Base::Console().Error("The error message is: %s\n", e.what());
+        }
+
+        try
+        {
+            auto column = _property->getColumnType(index.column() + 1);
+            if (column == Materials::MaterialValue::Quantity)
+            {
+                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column() - 1));
+                return QVariant::fromValue(q);
+            }
+        }
+        catch(const Materials::InvalidColumn &)
+        {
+        }
+
+        return QString();
+    }
+
+    return QVariant();
+}
+
+QVariant Array3DModel::headerData(int section, Qt::Orientation orientation,
+                    int role) const
+{
+    if (role == Qt::DisplayRole)
+    {
+        if (orientation == Qt::Horizontal)
+        {
+            auto column = _property->getColumn(section + 1);
+            return QVariant(column.getName());
+        } else if (orientation == Qt::Vertical) {
+            // Vertical header
+            if (section == (rowCount() - 1))
+                return QVariant(QString::fromStdString("*"));
+            return QVariant(section + 1);
+        }
+    }
+
+    return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    Q_UNUSED(role);
+    
+    if (index.row() == _value->depth())
+    {
+        insertRows(index.row(), 1);
+    }
+    _value->setValue(index.row(), index.column(), value);
+
+    Q_EMIT dataChanged(index, index);
+    return true;
+}
+
+Qt::ItemFlags Array3DModel::flags(const QModelIndex& index) const
+{
+    return (QAbstractTableModel::flags(index) | Qt::ItemIsEditable);
+}
+
+
+// Resizing functions
+bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+    beginInsertRows(parent, row, row + count - 1);
+
+    int columns = columnCount();
+    for (int i = 0; i < count; i++)
+    {
+        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
+        for (int j = 0; j < columns; j++)
+        {
+            rowPtr->push_back(_property->getColumnNull(j));
+        }
+
+        // _value->insertRow(row, rowPtr);
+    }
+
+    endInsertRows();
+
+    return false;
+}
+
+bool Array3DModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    beginRemoveRows(parent, row, row + count - 1);
+
+    endRemoveRows();
+
+    return false;
+}
+
+bool Array3DModel::insertColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
+
+bool Array3DModel::removeColumns(int column, int count, const QModelIndex& parent)
+{
+    Q_UNUSED(column);
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
+
+    return false;
+}
 
 #include "moc_ArrayModel.cpp"

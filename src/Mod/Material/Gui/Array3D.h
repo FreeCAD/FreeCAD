@@ -39,6 +39,7 @@ public:
     ~Array3D() override;
 
     void defaultValueChanged(const Base::Quantity &value);
+    bool onSplitter(QEvent* e);
 
     void onOk(bool checked);
     void onCancel(bool checked);
@@ -52,6 +53,9 @@ private:
     void setDepthColumnWidth(QTableView *table);
     void setDepthColumnDelegate(QTableView *table);
     void setupDepthArray();
+    void setColumnWidths(QTableView* table);
+    void setColumnDelegates(QTableView* table);
+    void setupArray();
 };
 
 } // namespace MatGui

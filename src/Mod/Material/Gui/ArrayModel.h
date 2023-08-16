@@ -95,6 +95,33 @@ private:
 
 };
 
+class Array3DModel : public AbstractArrayModel
+{
+public:
+    Array3DModel(Materials::MaterialProperty *property = nullptr, Materials::Material3DArray *value = nullptr, QObject *parent = nullptr);
+    ~Array3DModel() override;
+
+    // Overriden virtual functions
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    bool newRow(const QModelIndex& index) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+    // Resizing functions
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
+private:
+    Materials::MaterialProperty *_property;
+    Materials::Material3DArray *_value;
+
+};
+
 } // namespace MatGui
 
 #endif // MATGUI_ARRAYMODEL_H

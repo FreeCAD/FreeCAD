@@ -206,7 +206,7 @@ std::vector<QVariant> &Material3DArray::getRow(int row)
 
 void Material3DArray::addRow(const QVariant & depth, std::vector<QVariant> *row)
 {
-
+    _rowMap[depth].push_back(row);
 }
 
 void Material3DArray::deleteRow(const QVariant & depth, int row)
