@@ -50,6 +50,26 @@ using namespace TechDraw;
 // DrawView
 //===========================================================================
 
+#if 0   // needed for Qt's lupdate utility
+    QT_TRANSLATE_NOOP("DrawView", "View");
+    QT_TRANSLATE_NOOP("DrawViewPart", "View");
+    QT_TRANSLATE_NOOP("DrawViewSection", "Section");
+    QT_TRANSLATE_NOOP("DrawComplexSection", "ComplexSection");
+    QT_TRANSLATE_NOOP("DrawViewDetail", "Detail");
+    QT_TRANSLATE_NOOP("DrawActiveView", "ActiveView");
+    QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
+    QT_TRANSLATE_NOOP("DrawViewImage", "Image");
+    QT_TRANSLATE_NOOP("DrawViewSymbol", "Symbol");
+    QT_TRANSLATE_NOOP("DrawViewArch", "Arch");
+    QT_TRANSLATE_NOOP("DrawViewDraft", "Draft");
+    QT_TRANSLATE_NOOP("DrawLeaderLine", "LeaderLine");
+    QT_TRANSLATE_NOOP("DrawViewBalloon", "Balloon");
+    QT_TRANSLATE_NOOP("DrawViewDimension", "Dimension");
+    QT_TRANSLATE_NOOP("DrawViewDimExtent", "Extent");
+    QT_TRANSLATE_NOOP("DrawHatch", "Hatch");
+    QT_TRANSLATE_NOOP("DrawGeomHatch", "GeomHatch");
+#endif
+
 const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
                                          "Custom",
