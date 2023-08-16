@@ -399,18 +399,18 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Internal document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
+            for (auto It : d->objectMap)
+                addExpressionSubgraphIfNeeded(It.second, CSSubgraphs);
 
             // Add external document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                std::vector<DocumentObject*> OutList = It->second->getOutList();
-                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-                    if (*It2) {
-                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+            for (auto it : d->objectMap) {
+                std::vector<DocumentObject*> OutList = it.second->getOutList();
+                for (auto obj : OutList) {
+                    if (obj) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(obj));
 
                         if (item == GlobalVertexList.end())
-                            addExpressionSubgraphIfNeeded(*It2, CSSubgraphs);
+                            addExpressionSubgraphIfNeeded(obj, CSSubgraphs);
                     }
                 }
             }
@@ -424,20 +424,20 @@ void Document::exportGraphviz(std::ostream& out) const
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add internal document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
+            for (auto It : d->objectMap)
+                add(It.second, It.second->getNameInDocument(), It.second->Label.getValue(), CSSubgraphs);
 
             // Add external document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                std::vector<DocumentObject*> OutList = It->second->getOutList();
-                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-                    if (*It2) {
-                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+            for (auto It : d->objectMap) {
+                std::vector<DocumentObject*> OutList = It.second->getOutList();
+                for (auto obj : OutList) {
+                    if (obj) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(obj));
 
                         if (item == GlobalVertexList.end())
-                            add(*It2,
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue(),
+                            add(obj,
+                                std::string(obj->getDocument()->getName()) + "#" + obj->getNameInDocument(),
+                                std::string(obj->getDocument()->getName()) + "#" + obj->Label.getValue(),
                                 CSSubgraphs);
                     }
                 }
@@ -484,60 +484,58 @@ void Document::exportGraphviz(std::ostream& out) const
             bool omitGeoFeatureGroups = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add edges between document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+            for (auto It : d->objectMap) {
 
                 if(omitGeoFeatureGroups) {
                     //coordinate systems are represented by subgraphs
-                    if(It->second->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    if(It.second->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                         continue;
 
                     //as well as origins
-                    if(It->second->isDerivedFrom(Origin::getClassTypeId()))
+                    if(It.second->isDerivedFrom(Origin::getClassTypeId()))
                         continue;
                 }
 
                 std::map<DocumentObject*, int> dups;
-                std::vector<DocumentObject*> OutList = It->second->getOutList();
-                const DocumentObject * docObj = It->second;
+                std::vector<DocumentObject*> OutList = It.second->getOutList();
+                const DocumentObject * docObj = It.second;
 
-                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-                    if (*It2) {
+                for (auto obj : OutList) {
+                    if (obj) {
 
                         // Count duplicate edges
-                        bool inserted = edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second;
+                        bool inserted = edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(obj)], DepList).second;
                         if (inserted) {
-                            dups[*It2]++;
+                            dups[obj]++;
                             continue;
                         }
 
                         // Skip edge if an expression edge already exists
-                        if (existingEdges.find(std::make_pair(docObj, *It2)) != existingEdges.end())
+                        if (existingEdges.find(std::make_pair(docObj, obj)) != existingEdges.end())
                             continue;
 
                         // Add edge
 
                         Edge edge;
 
-                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList);
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(obj)], DepList);
 
                         // Set properties to make arrows go between subgraphs if needed
                         if (GraphList[docObj])
                             edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
-                        if (GraphList[*It2])
-                            edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                        if (GraphList[obj])
+                            edgeAttrMap[edge]["lhead"] = getClusterName(obj);
                     }
                 }
 
                 // Set labels for duplicate edges
-                for (std::map<DocumentObject*, int>::const_iterator It2 = dups.begin(); It2 != dups.end(); ++It2) {
-                    Edge e(edge(GlobalVertexList[getId(It->second)], GlobalVertexList[getId(It2->first)], DepList).first);
+                for (const auto & dup : dups) {
+                    Edge e(edge(GlobalVertexList[getId(It.second)], GlobalVertexList[getId(dup.first)], DepList).first);
                     std::stringstream s;
-                    s << " " << (It2->second + 1) << "x";
+                    s << " " << (dup.second + 1) << "x";
                     edgeAttrMap[e]["label"] = s.str();
                 }
-
             }
-
         }
 
         using EdgeMap = std::unordered_multimap<Vertex, Edge>;
@@ -632,8 +630,8 @@ void Document::exportGraphviz(std::ostream& out) const
 
             // Update colors in graph
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
-            for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
-                edgeAttrMap[ei->second]["color"] = "red";
+            for (auto ei : out_edges)
+                edgeAttrMap[ei.second]["color"] = "red";
         }
 
 #if defined(__clang__)

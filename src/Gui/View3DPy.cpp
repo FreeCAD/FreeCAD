@@ -83,17 +83,17 @@ void View3DInventorPy::init_type()
     add_varargs_method("fitAll",&View3DInventorPy::fitAll,"fitAll()");
     add_keyword_method("boxZoom",&View3DInventorPy::boxZoom,"boxZoom()");
 
-    add_varargs_method("viewBottom",&View3DInventorPy::viewBottom,"viewBottom()");
-    add_varargs_method("viewFront",&View3DInventorPy::viewFront,"viewFront()");
-    add_varargs_method("viewLeft",&View3DInventorPy::viewLeft,"viewLeft()");
-    add_varargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
-    add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
-    add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()"); // for backward compatibility
-    add_varargs_method("viewAxonometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
-    add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
-    add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
-    add_varargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
+    add_noargs_method("viewBottom",&View3DInventorPy::viewBottom,"viewBottom()");
+    add_noargs_method("viewFront",&View3DInventorPy::viewFront,"viewFront()");
+    add_noargs_method("viewLeft",&View3DInventorPy::viewLeft,"viewLeft()");
+    add_noargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
+    add_noargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
+    add_noargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
+    add_noargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()"); // for backward compatibility
+    add_noargs_method("viewAxonometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
+    add_noargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
+    add_noargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
+    add_noargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
     add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,
                        "viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, \n"
                        "and camera position and zoom to show certain amount of model space. \n"
@@ -104,30 +104,30 @@ void View3DInventorPy::init_type()
                        "model space, so that a sphere of diameter <scale> fits the height of the\n"
                        "viewport. If zero, scaling is not done. If negative, the value is \n"
                        "fetched from Parameters.");
-    add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
-    add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
-    add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
-    add_varargs_method("zoomOut",&View3DInventorPy::zoomOut,"zoomOut()");
+    add_noargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
+    add_noargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
+    add_noargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
+    add_noargs_method("zoomOut",&View3DInventorPy::zoomOut,"zoomOut()");
     add_varargs_method("viewPosition",&View3DInventorPy::viewPosition,"viewPosition()");
     add_varargs_method("startAnimating",&View3DInventorPy::startAnimating,"startAnimating()");
-    add_varargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
+    add_noargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
     add_varargs_method("setAnimationEnabled",&View3DInventorPy::setAnimationEnabled,"setAnimationEnabled()");
-    add_varargs_method("isAnimationEnabled",&View3DInventorPy::isAnimationEnabled,"isAnimationEnabled()");
+    add_noargs_method("isAnimationEnabled",&View3DInventorPy::isAnimationEnabled,"isAnimationEnabled()");
     add_varargs_method("setPopupMenuEnabled",&View3DInventorPy::setPopupMenuEnabled,"setPopupMenuEnabled()");
-    add_varargs_method("isPopupMenuEnabled",&View3DInventorPy::isPopupMenuEnabled,"isPopupMenuEnabled()");
+    add_noargs_method("isPopupMenuEnabled",&View3DInventorPy::isPopupMenuEnabled,"isPopupMenuEnabled()");
     add_varargs_method("dump",&View3DInventorPy::dump,"dump(filename, [onlyVisible=False])");
     add_varargs_method("dumpNode",&View3DInventorPy::dumpNode,"dumpNode(node)");
     add_varargs_method("setStereoType",&View3DInventorPy::setStereoType,"setStereoType()");
-    add_varargs_method("getStereoType",&View3DInventorPy::getStereoType,"getStereoType()");
-    add_varargs_method("listStereoTypes",&View3DInventorPy::listStereoTypes,"listStereoTypes()");
+    add_noargs_method("getStereoType",&View3DInventorPy::getStereoType,"getStereoType()");
+    add_noargs_method("listStereoTypes",&View3DInventorPy::listStereoTypes,"listStereoTypes()");
     add_varargs_method("saveImage",&View3DInventorPy::saveImage,"saveImage()");
     add_varargs_method("saveVectorGraphic",&View3DInventorPy::saveVectorGraphic,"saveVectorGraphic()");
-    add_varargs_method("getCamera",&View3DInventorPy::getCamera,"getCamera()");
-    add_varargs_method("getCameraNode",&View3DInventorPy::getCameraNode,"getCameraNode()");
-    add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection() --> tuple of floats\n"
+    add_noargs_method("getCamera",&View3DInventorPy::getCamera,"getCamera()");
+    add_noargs_method("getCameraNode",&View3DInventorPy::getCameraNode,"getCameraNode()");
+    add_noargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection() --> tuple of floats\n"
         "returns the direction vector the view is currently pointing at as tuple with xyz values\n"
     );
-    add_varargs_method("getUpDirection",&View3DInventorPy::getUpDirection,"getUpDirection() --> tuple of integers\n"
+    add_noargs_method("getUpDirection",&View3DInventorPy::getUpDirection,"getUpDirection() --> tuple of integers\n"
         "Returns the up direction vector\n"
     );
     add_varargs_method("setViewDirection",&View3DInventorPy::setViewDirection,"setViewDirection(tuple) --> None\n"
@@ -136,11 +136,11 @@ void View3DInventorPy::init_type()
     );
     add_varargs_method("setCamera",&View3DInventorPy::setCamera,"setCamera()");
     add_varargs_method("setCameraOrientation",&View3DInventorPy::setCameraOrientation,"setCameraOrientation()");
-    add_varargs_method("getCameraOrientation",&View3DInventorPy::getCameraOrientation,"getCameraOrientation()");
-    add_varargs_method("getCameraType",&View3DInventorPy::getCameraType,"getCameraType()");
+    add_noargs_method("getCameraOrientation",&View3DInventorPy::getCameraOrientation,"getCameraOrientation()");
+    add_noargs_method("getCameraType",&View3DInventorPy::getCameraType,"getCameraType()");
     add_varargs_method("setCameraType",&View3DInventorPy::setCameraType,"setCameraType()");
-    add_varargs_method("listCameraTypes",&View3DInventorPy::listCameraTypes,"listCameraTypes()");
-    add_varargs_method("getCursorPos",&View3DInventorPy::getCursorPos,
+    add_noargs_method("listCameraTypes",&View3DInventorPy::listCameraTypes,"listCameraTypes()");
+    add_noargs_method("getCursorPos",&View3DInventorPy::getCursorPos,
         "getCursorPos() -> tuple of integers\n"
         "\n"
         "Return the current cursor position relative to the coordinate system of the\n"
@@ -156,7 +156,7 @@ void View3DInventorPy::init_type()
         "getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None\n"
         "\n"
         "Does the same as getObjectInfo() but returns a list of dictionaries or None.\n");
-    add_varargs_method("getSize",&View3DInventorPy::getSize,"getSize()");
+    add_noargs_method("getSize",&View3DInventorPy::getSize,"getSize()");
     add_varargs_method("getPoint",&View3DInventorPy::getPointOnFocalPlane,
         "Same as getPointOnFocalPlane");
     add_varargs_method("getPointOnFocalPlane",&View3DInventorPy::getPointOnFocalPlane,
@@ -178,19 +178,19 @@ void View3DInventorPy::init_type()
     add_varargs_method("removeEventCallback",&View3DInventorPy::removeEventCallback,"removeEventCallback()");
     add_varargs_method("setAnnotation",&View3DInventorPy::setAnnotation,"setAnnotation()");
     add_varargs_method("removeAnnotation",&View3DInventorPy::removeAnnotation,"removeAnnotation()");
-    add_varargs_method("getSceneGraph",&View3DInventorPy::getSceneGraph,"getSceneGraph()");
-    add_varargs_method("getViewer",&View3DInventorPy::getViewer,"getViewer()");
+    add_noargs_method("getSceneGraph",&View3DInventorPy::getSceneGraph,"getSceneGraph()");
+    add_noargs_method("getViewer",&View3DInventorPy::getViewer,"getViewer()");
     add_varargs_method("addEventCallbackPivy",&View3DInventorPy::addEventCallbackPivy,"addEventCallbackPivy()");
     add_varargs_method("removeEventCallbackPivy",&View3DInventorPy::removeEventCallbackPivy,"removeEventCallbackPivy()");
     add_varargs_method("addEventCallbackSWIG",&View3DInventorPy::addEventCallbackPivy,
         "Deprecated -- use addEventCallbackPivy()");
     add_varargs_method("removeEventCallbackSWIG",&View3DInventorPy::removeEventCallbackPivy,
         "Deprecated -- use removeEventCallbackPivy()");
-    add_varargs_method("listNavigationTypes",&View3DInventorPy::listNavigationTypes,"listNavigationTypes()");
-    add_varargs_method("getNavigationType",&View3DInventorPy::getNavigationType,"getNavigationType()");
+    add_noargs_method("listNavigationTypes",&View3DInventorPy::listNavigationTypes,"listNavigationTypes()");
+    add_noargs_method("getNavigationType",&View3DInventorPy::getNavigationType,"getNavigationType()");
     add_varargs_method("setNavigationType",&View3DInventorPy::setNavigationType,"setNavigationType()");
     add_varargs_method("setAxisCross",&View3DInventorPy::setAxisCross,"switch the big axis-cross on and off");
-    add_varargs_method("hasAxisCross",&View3DInventorPy::hasAxisCross,"check if the big axis-cross is on or off()");
+    add_noargs_method("hasAxisCross",&View3DInventorPy::hasAxisCross,"check if the big axis-cross is on or off()");
     add_varargs_method("addDraggerCallback",&View3DInventorPy::addDraggerCallback,
         "addDraggerCallback(SoDragger, String CallbackType, function)\n"
         "Add a DraggerCalback function to the coin node\n"
@@ -204,7 +204,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
-    add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
+    add_noargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
     add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
     add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
         "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
@@ -213,19 +213,19 @@ void View3DInventorPy::init_type()
         "beforeEditing: whether to insert the clipping node before or after editing root node\n"
         "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
-    add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
+    add_noargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
         "hasClippingPlane(): check whether this clipping plane is active");
-    add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
+    add_noargs_method("graphicsView",&View3DInventorPy::graphicsView,
         "graphicsView(): Access this view as QGraphicsView");
     add_varargs_method("setCornerCrossVisible",&View3DInventorPy::setCornerCrossVisible,
         "setCornerCrossVisible(bool): Defines corner axis cross visibility");
-    add_varargs_method("isCornerCrossVisible",&View3DInventorPy::isCornerCrossVisible,
+    add_noargs_method("isCornerCrossVisible",&View3DInventorPy::isCornerCrossVisible,
         "isCornerCrossVisible(): Returns current corner axis cross visibility");
     add_varargs_method("setCornerCrossSize",&View3DInventorPy::setCornerCrossSize,
         "setCornerCrossSize(int): Defines corner axis cross size");
-    add_varargs_method("getCornerCrossSize",&View3DInventorPy::getCornerCrossSize,
+    add_noargs_method("getCornerCrossSize",&View3DInventorPy::getCornerCrossSize,
         "getCornerCrossSize(): Returns current corner axis cross size");
-    add_varargs_method("cast_to_base", &View3DInventorPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    add_noargs_method("cast_to_base", &View3DInventorPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -236,8 +236,8 @@ View3DInventorPy::View3DInventorPy(View3DInventor *vi)
 View3DInventorPy::~View3DInventorPy()
 {
     Base::PyGILStateLocker lock;
-    for (std::list<PyObject*>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
-        Py_DECREF(*it);
+    for (auto it : callbacks)
+        Py_DECREF(it);
 }
 
 View3DInventor* View3DInventorPy::getView3DIventorPtr()
@@ -379,11 +379,8 @@ Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewBottom()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Bottom));
     }
@@ -400,11 +397,8 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewFront()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Front));
     }
@@ -421,11 +415,8 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewLeft()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Left));
     }
@@ -442,11 +433,8 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewRear()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Rear));
     }
@@ -463,11 +451,8 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewRight()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Right));
     }
@@ -484,11 +469,8 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewTop()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Top));
     }
@@ -505,11 +487,8 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewIsometric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewIsometric()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Isometric));
     }
@@ -526,11 +505,8 @@ Py::Object View3DInventorPy::viewIsometric(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewDimetric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewDimetric()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Dimetric));
     }
@@ -547,11 +523,8 @@ Py::Object View3DInventorPy::viewDimetric(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewTrimetric()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Trimetric));
     }
@@ -670,11 +643,8 @@ void View3DInventorPy::setDefaultCameraHeight(float scale)
     }
 }
 
-Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewRotateLeft()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
       SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
@@ -696,11 +666,8 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewRotateRight()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
       SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
@@ -722,11 +689,8 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
+Py::Object View3DInventorPy::zoomIn()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->navigationStyle()->zoomIn();
     }
@@ -743,11 +707,8 @@ Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
+Py::Object View3DInventorPy::zoomOut()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         getView3DIventorPtr()->getViewer()->navigationStyle()->zoomOut();
     }
@@ -806,10 +767,8 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::getCameraOrientation(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCameraOrientation()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     SbRotation rot = getView3DIventorPtr()->getViewer()->getCameraOrientation();
     float q0,q1,q2,q3;
     rot.getValue(q0,q1,q2,q3);
@@ -859,10 +818,8 @@ Py::Object View3DInventorPy::startAnimating(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::stopAnimating(const Py::Tuple& args)
+Py::Object View3DInventorPy::stopAnimating()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     getView3DIventorPtr()->getViewer()->stopAnimating();
     return Py::None();
 }
@@ -876,10 +833,8 @@ Py::Object View3DInventorPy::setAnimationEnabled(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
+Py::Object View3DInventorPy::isAnimationEnabled()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     SbBool ok = getView3DIventorPtr()->getViewer()->isAnimationEnabled();
     return Py::Boolean(ok ? true : false);
 }
@@ -893,10 +848,8 @@ Py::Object View3DInventorPy::setPopupMenuEnabled(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::isPopupMenuEnabled(const Py::Tuple& args)
+Py::Object View3DInventorPy::isPopupMenuEnabled()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     SbBool ok = getView3DIventorPtr()->getViewer()->isPopupMenuEnabled();
     return Py::Boolean(ok ? true : false);
 }
@@ -978,11 +931,8 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCameraNode()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         SoNode* camera = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
         PyObject* proxy = nullptr;
@@ -999,11 +949,8 @@ Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCamera()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     SoOutput out;
     char buffer[512];
     out.setBuffer(buffer, 512, nullptr);
@@ -1026,10 +973,8 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
+Py::Object View3DInventorPy::getViewDirection()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     try {
         SbVec3f dvec = getView3DIventorPtr()->getViewer()->getViewDirection();
         return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
@@ -1046,10 +991,8 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
 }
 
 
-Py::Object View3DInventorPy::getUpDirection(const Py::Tuple& args)
+Py::Object View3DInventorPy::getUpDirection()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     try {
         SbVec3f dvec = getView3DIventorPtr()->getViewer()->getUpDirection();
         return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
@@ -1127,11 +1070,8 @@ Py::Object View3DInventorPy::setCamera(const Py::Tuple& args)
 //FIXME: Once View3DInventor inherits from PropertyContainer we can use PropertyEnumeration.
 const char* CameraTypeEnums[]= {"Orthographic","Perspective",nullptr};
 
-Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCameraType()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) {
         throw Py::RuntimeError("No camera set!");
@@ -1179,11 +1119,8 @@ Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::listCameraTypes(const Py::Tuple& args)
+Py::Object View3DInventorPy::listCameraTypes()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         Py::List list(2);
         for (int i=0; i<2; i++) {
@@ -1285,11 +1222,8 @@ Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
+Py::Object View3DInventorPy::getStereoType()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         int mode = int(getView3DIventorPtr()->getViewer()->stereoMode());
         if (mode < 0 || mode > 4)
@@ -1307,11 +1241,8 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::listStereoTypes(const Py::Tuple& args)
+Py::Object View3DInventorPy::listStereoTypes()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         Py::List list(5);
         for (int i=0; i<5; i++) {
@@ -1331,10 +1262,8 @@ Py::Object View3DInventorPy::listStereoTypes(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCursorPos()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     try {
         QPoint pos = getView3DIventorPtr()->mapFromGlobal(QCursor::pos());
         auto viewer = getView3DIventorPtr()->getViewer();
@@ -1567,10 +1496,8 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getSize(const Py::Tuple& args)
+Py::Object View3DInventorPy::getSize()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     try {
         SbVec2s size = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
@@ -1662,7 +1589,7 @@ Py::Object View3DInventorPy::projectPointToLine(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::listNavigationTypes(const Py::Tuple&)
+Py::Object View3DInventorPy::listNavigationTypes()
 {
     std::vector<Base::Type> types;
     Py::List styles;
@@ -1673,7 +1600,7 @@ Py::Object View3DInventorPy::listNavigationTypes(const Py::Tuple&)
     return styles;
 }
 
-Py::Object View3DInventorPy::getNavigationType(const Py::Tuple&)
+Py::Object View3DInventorPy::getNavigationType()
 {
     std::string name = getView3DIventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
     return Py::String(name);
@@ -2143,11 +2070,8 @@ Py::Object View3DInventorPy::removeAnnotation(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
+Py::Object View3DInventorPy::getSceneGraph()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     try {
         SoNode* scene = getView3DIventorPtr()->getViewer()->getSceneGraph();
         PyObject* proxy = nullptr;
@@ -2160,11 +2084,8 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorPy::getViewer(const Py::Tuple& args)
+Py::Object View3DInventorPy::getViewer()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     View3DInventorViewer* viewer = getView3DIventorPtr()->getViewer();
     return Py::Object(viewer->getPyObject(), true);
 }
@@ -2330,10 +2251,8 @@ Py::Object View3DInventorPy::setAxisCross(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::hasAxisCross(const Py::Tuple& args)
+Py::Object View3DInventorPy::hasAxisCross()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     SbBool ok = getView3DIventorPtr()->getViewer()->hasAxisCross();
     return Py::Boolean(ok ? true : false);
 }
@@ -2528,10 +2447,8 @@ Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
     return list;
 }
 
-Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
+Py::Object View3DInventorPy::redraw()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     getView3DIventorPtr()->getViewer()->redraw();
     return Py::None();
 }
@@ -2577,18 +2494,13 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
     return Py::None();
 }
 
-Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
+Py::Object View3DInventorPy::hasClippingPlane()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     return Py::Boolean(getView3DIventorPtr()->getViewer()->hasClippingPlane());
 }
 
-Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
+Py::Object View3DInventorPy::graphicsView()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
-
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
     return wrap.fromQWidget(getView3DIventorPtr()->getViewer(), "QGraphicsView");
@@ -2604,10 +2516,8 @@ Py::Object View3DInventorPy::setCornerCrossVisible(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::isCornerCrossVisible(const Py::Tuple& args)
+Py::Object View3DInventorPy::isCornerCrossVisible()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     bool ok = getView3DIventorPtr()->getViewer()->isFeedbackVisible();
     return Py::Boolean(ok ? true : false);
 }
@@ -2622,15 +2532,13 @@ Py::Object View3DInventorPy::setCornerCrossSize(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::getCornerCrossSize(const Py::Tuple& args)
+Py::Object View3DInventorPy::getCornerCrossSize()
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
-        throw Py::Exception();
     int size = getView3DIventorPtr()->getViewer()->getFeedbackSize();
     return Py::Int(size);
 }
 
-Py::Object View3DInventorPy::cast_to_base(const Py::Tuple&)
+Py::Object View3DInventorPy::cast_to_base()
 {
     return Gui::MDIViewPy::create(getView3DIventorPtr());
 }

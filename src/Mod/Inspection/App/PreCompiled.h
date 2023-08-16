@@ -46,6 +46,9 @@
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 
+// boost
+#include <boost/core/ignore_unused.hpp>
+
 // Qt
 #include <QEventLoop>
 #include <QFuture>

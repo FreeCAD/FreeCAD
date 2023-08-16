@@ -202,21 +202,21 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
         // remove all items
         selectionView->clear();
         std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
-        for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        for (const auto & it : objs) {
             // save as user data
             QStringList list;
-            list << QString::fromLatin1(it->DocName);
-            list << QString::fromLatin1(it->FeatName);
+            list << QString::fromLatin1(it.DocName);
+            list << QString::fromLatin1(it.FeatName);
 
             // build name
-            str << it->DocName;
+            str << it.DocName;
             str << "#";
-            str << it->FeatName;
-            App::Document* doc = App::GetApplication().getDocument(it->DocName);
-            App::DocumentObject* obj = doc->getObject(it->FeatName);
-            if (it->SubName && it->SubName[0] != '\0') {
+            str << it.FeatName;
+            App::Document* doc = App::GetApplication().getDocument(it.DocName);
+            App::DocumentObject* obj = doc->getObject(it.FeatName);
+            if (it.SubName && it.SubName[0] != '\0') {
                 str << ".";
-                str << it->SubName;
+                str << it.SubName;
                 auto subObj = obj->getSubObject(Reason.pSubName);
                 if(subObj)
                     obj = subObj;
@@ -280,20 +280,20 @@ void SelectionView::search(const QString& text)
         if (doc) {
             objects = doc->getObjects();
             selectionView->clear();
-            for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-                QString label = QString::fromUtf8((*it)->Label.getValue());
+            for (auto it : objects) {
+                QString label = QString::fromUtf8(it->Label.getValue());
                 if (label.contains(text,Qt::CaseInsensitive)) {
-                    searchList.push_back(*it);
+                    searchList.push_back(it);
                     // save as user data
                     QString selObject;
                     QTextStream str(&selObject);
                     QStringList list;
                     list << QString::fromLatin1(doc->getName());
-                    list << QString::fromLatin1((*it)->getNameInDocument());
+                    list << QString::fromLatin1(it->getNameInDocument());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
-                    str << (*it)->getNameInDocument();
+                    str << it->getNameInDocument();
                     str << " (";
                     str << label;
                     str << ")";
@@ -312,8 +312,8 @@ void SelectionView::validateSearch()
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
             Gui::Selection().clearSelection();
-            for (std::vector<App::DocumentObject*>::iterator it = searchList.begin(); it != searchList.end(); ++it) {
-                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),nullptr);
+            for (auto it : searchList) {
+                Gui::Selection().addSelection(doc->getName(),it->getNameInDocument(),nullptr);
             }
         }
     }

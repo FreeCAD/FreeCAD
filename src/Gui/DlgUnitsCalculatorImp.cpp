@@ -124,8 +124,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient
           << Base::Unit::Work;
-    for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
-        ui->unitsBox->addItem(it->getTypeString());
+    for (const Base::Unit& it : units) {
+        ui->unitsBox->addItem(it.getTypeString());
     }
 
     ui->quantitySpinBox->setValue(1.0);

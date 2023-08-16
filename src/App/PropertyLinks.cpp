@@ -983,9 +983,11 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
     (void)newStyle;
 
     std::vector<std::string> temp;
-    for(std::vector<std::string>::const_iterator it=_cSubList.begin();it!=_cSubList.end();++it)
-        if(strncmp(starter,it->c_str(),strlen(starter))==0)
-            temp.push_back(*it);
+    for(const auto & it : _cSubList) {
+        if(strncmp(starter, it.c_str(), strlen(starter)) == 0) {
+            temp.push_back(it);
+        }
+    }
     return temp;
 }
 
@@ -1161,7 +1163,7 @@ const char *PropertyLinkBase::exportSubName(std::string &output,
         if(!dot)
             return res;
         const char *hash;
-        for(hash=sub;hash<dot && *hash!='#';++hash);
+        for(hash=sub;hash<dot && *hash!='#';++hash) {}
         App::Document *doc = nullptr;
         if(*hash == '#')
             doc = GetApplication().getDocument(std::string(sub,hash-sub).c_str());
@@ -1884,10 +1886,10 @@ DocumentObject *PropertyLinkSubList::getValue() const
 {
     App::DocumentObject* ret = nullptr;
     //FIXME: cache this to avoid iterating each time, to improve speed
-    for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
+    for (auto i : this->_lValueList) {
         if (!ret)
-            ret = this->_lValueList[i];
-        if (ret != this->_lValueList[i])
+            ret = i;
+        if (ret != i)
             return nullptr;
     }
     return ret;
@@ -1922,10 +1924,10 @@ void PropertyLinkSubList::setSubListValues(const std::vector<PropertyLinkSubList
     std::vector<DocumentObject*> links;
     std::vector<std::string> subs;
 
-    for (std::vector<PropertyLinkSubList::SubSet>::const_iterator it = values.begin(); it != values.end(); ++it) {
-        for (std::vector<std::string>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            links.push_back(it->first);
-            subs.push_back(*jt);
+    for (const auto & value : values) {
+        for (const auto& jt : value.second) {
+            links.push_back(value.first);
+            subs.push_back(jt);
         }
     }
 
@@ -3706,9 +3708,11 @@ std::vector<std::string> PropertyXLink::getSubValuesStartsWith(const char* start
     (void)newStyle;
 
     std::vector<std::string> temp;
-    for(std::vector<std::string>::const_iterator it=_SubList.begin();it!=_SubList.end();++it)
-        if(strncmp(starter,it->c_str(),strlen(starter))==0)
-            temp.push_back(*it);
+    for(const auto & it : _SubList) {
+        if(strncmp(starter, it.c_str(), strlen(starter)) == 0) {
+            temp.push_back(it);
+        }
+    }
     return temp;
 }
 

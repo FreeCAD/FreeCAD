@@ -651,7 +651,7 @@ class GmshTools():
             # we use the element name of FreeCAD which starts
             # with 1 (example: "Face1"), same as Gmsh
             # for unit test we need them to have a fixed order
-            for group in sorted(self.group_elements.keys()):
+            for group in sorted(self.group_elements):
                 gdata = self.group_elements[group]
                 # print(gdata)
                 # geo.write("// " + group + "\n")

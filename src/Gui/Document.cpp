@@ -2438,8 +2438,8 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             backGroup->addChild(childBackNode);
 
                         // cycling to all views of the document to remove the viewprovider from the viewer itself
-                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                            auto activeView = dynamic_cast<View3DInventor *>(*vIt);
+                        for (Gui::BaseView* vIt : d->baseViews) {
+                            auto activeView = dynamic_cast<View3DInventor *>(vIt);
                             if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
                                 // @Note hasViewProvider()
                                 // remove the viewprovider serves the purpose of detaching the inventor nodes from the

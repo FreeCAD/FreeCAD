@@ -164,8 +164,8 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         }
         else {
             bool ws=true;
-            for (std::string::iterator it = part_name.begin(); it != part_name.end(); ++it) {
-                if (*it != ' ') {
+            for (char it : part_name) {
+                if (it != ' ') {
                     ws = false;
                     break;
                 }

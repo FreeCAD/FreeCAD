@@ -176,11 +176,10 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
 void PropertyItem::updateData()
 {
     bool ro = true;
-    for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) {
-        App::PropertyContainer* parent = (*it)->getContainer();
+    for (auto it : propertyItems) {
+        App::PropertyContainer* parent = it->getContainer();
         if (parent)
-            ro &= (parent->isReadOnly(*it) || (*it)->testStatus(App::Property::ReadOnly));
+            ro &= (parent->isReadOnly(it) || it->testStatus(App::Property::ReadOnly));
     }
     this->setReadOnly(ro);
 }
@@ -294,8 +293,8 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
-    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
-        (*it)->setReadOnly(ro);
+    for (auto it : childItems)
+        it->setReadOnly(ro);
 }
 
 bool PropertyItem::isReadOnly() const
@@ -303,11 +302,11 @@ bool PropertyItem::isReadOnly() const
     return readonly;
 }
 
-void PropertyItem::setLinked(bool l)
+void PropertyItem::setLinked(bool value)
 {
-    linked = l;
-    for (QList<PropertyItem*>::iterator it = childItems.begin(); it != childItems.end(); ++it)
-        (*it)->setLinked(l);
+    linked = value;
+    for (auto it : childItems)
+        it->setLinked(value);
 }
 
 bool PropertyItem::isLinked() const
@@ -540,9 +539,7 @@ void PropertyItem::setPropertyValue(const QString& value)
     // intermediate changes caused by property change that may potentially
     // invalidate the current property array.
     std::ostringstream ss;
-    for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) {
-        auto prop = *it;
+    for (auto prop : propertyItems) {
         App::PropertyContainer* parent = prop->getContainer();
         if (!parent || parent->isReadOnly(prop) || prop->testStatus(App::Property::ReadOnly))
             continue;
@@ -2833,8 +2830,8 @@ void PropertyEnumItem::setValue(const QVariant& value)
         QStringList values = value.toStringList();
         QTextStream str(&data);
         str << "[";
-        for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-            QString text(*it);
+        for (const auto & it : values) {
+            QString text(it);
             text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
             std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
@@ -3051,8 +3048,8 @@ QVariant PropertyStringListItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyStringList::getClassTypeId()));
     QStringList list;
     const std::vector<std::string>& value = (static_cast<const App::PropertyStringList*>(prop))->getValues();
-    for (auto jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8((*jt).c_str());
+    for (const auto & jt : value) {
+        list << QString::fromUtf8(jt.c_str());
     }
 
     return QVariant(list);
@@ -3070,8 +3067,8 @@ void PropertyStringListItem::setValue(const QVariant& value)
 #endif
 
     str << "[";
-    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        QString text(*it);
+    for (const auto & it : values) {
+        QString text(it);
         std::string pystr = Base::Interpreter().strToPython(text.toUtf8().constData());
         str << "\"" << QString::fromUtf8(pystr.c_str()) << "\", ";
     }
@@ -3130,8 +3127,8 @@ QVariant PropertyFloatListItem::value(const App::Property* prop) const
 
     QStringList list;
     const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
-    for (std::vector<double>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-        list << QString::number(*jt, 'f', decimals());
+    for (double jt : value) {
+        list << QString::number(jt, 'f', decimals());
     }
 
     return QVariant(list);
@@ -3145,8 +3142,8 @@ void PropertyFloatListItem::setValue(const QVariant& value)
     QString data;
     QTextStream str(&data);
     str << "[";
-    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
-        str << *it << ",";
+    for (const auto & it : values) {
+        str << it << ",";
     }
     str << "]";
     if (data == QString::fromUtf8("[,]"))
@@ -3205,8 +3202,8 @@ QVariant PropertyIntegerListItem::value(const App::Property* prop) const
 
     QStringList list;
     const std::vector<long>& value = static_cast<const App::PropertyIntegerList*>(prop)->getValues();
-    for (auto jt = value.begin(); jt != value.end(); ++jt) {
-        list << QString::number(*jt);
+    for (long jt : value) {
+        list << QString::number(jt);
     }
 
     return QVariant(list);

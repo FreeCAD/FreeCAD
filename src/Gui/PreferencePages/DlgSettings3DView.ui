@@ -339,7 +339,7 @@ but slower response to any scene changes.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of vertices in the Sketcher workbench</string>
+           <string>Size of vertices in the Sketcher, TechDraw and other workbenches</string>
           </property>
          </widget>
         </item>

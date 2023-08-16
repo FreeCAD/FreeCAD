@@ -114,13 +114,13 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
     if (url.host() == QLatin1String("www.dropbox.com")) {
         QUrlQuery urlQuery(url);
         QList< QPair<QString, QString> > query = urlQuery.queryItems();
-        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
-            if (it->first == QLatin1String("dl")) {
-                if (it->second == QLatin1String("0\r\n")) {
+        for (const auto & it : query) {
+            if (it.first == QLatin1String("dl")) {
+                if (it.second == QLatin1String("0\r\n")) {
                     urlQuery.removeQueryItem(QLatin1String("dl"));
                     urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
                 }
-                else if (it->second == QLatin1String("0")) {
+                else if (it.second == QLatin1String("0")) {
                     urlQuery.removeQueryItem(QLatin1String("dl"));
                     urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
                 }

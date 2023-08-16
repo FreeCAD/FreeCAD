@@ -161,16 +161,16 @@ unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<FacetInde
     // algorithm fail to detect the faces with wrong orientation.
     const MeshFacetArray& rFAry = _rclMesh.GetFacets();
     MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
-    for (std::vector<FacetIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
-        const MeshFacet& f = iBeg[*it];
-        for (int i = 0; i < 3; i++) {
-            if (f._aulNeighbours[i] != FACET_INDEX_MAX) {
-                const MeshFacet& n = iBeg[f._aulNeighbours[i]];
+    for (FacetIndex it : inds) {
+        const MeshFacet& f = iBeg[it];
+        for (FacetIndex nbIndex : f._aulNeighbours) {
+            if (nbIndex != FACET_INDEX_MAX) {
+                const MeshFacet& n = iBeg[nbIndex];
                 if (f.IsFlag(MeshFacet::TMP0) && !n.IsFlag(MeshFacet::TMP0)) {
                     for (int j = 0; j < 3; j++) {
                         if (f.HasSameOrientation(n)) {
                             // adjacent face with same orientation => false positive
-                            return f._aulNeighbours[i];
+                            return nbIndex;
                         }
                     }
                 }
@@ -292,9 +292,9 @@ bool MeshEvalSolid::Evaluate ()
 {
   std::vector<MeshGeomEdge> edges;
   _rclMesh.GetEdges( edges );
-  for (std::vector<MeshGeomEdge>::iterator it = edges.begin(); it != edges.end(); ++it)
+  for (const auto & it : edges)
   {
-    if (it->_bBorder)
+    if (it._bBorder)
       return false;
   }
 
@@ -426,24 +426,23 @@ bool MeshFixTopology::Fixup ()
 #else
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     deletedFaces.reserve(3 * nonManifoldList.size()); // allocate some memory
-    std::list<std::vector<FacetIndex> >::const_iterator it;
-    for (it = nonManifoldList.begin(); it != nonManifoldList.end(); ++it) {
+    for (const auto& it : nonManifoldList) {
         std::vector<FacetIndex> non_mf;
-        non_mf.reserve(it->size());
-        for (std::vector<FacetIndex>::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
+        non_mf.reserve(it.size());
+        for (FacetIndex jt : it) {
             // facet is only connected with one edge and there causes a non-manifold
-            unsigned short numOpenEdges = rFaces[*jt].CountOpenEdges();
+            unsigned short numOpenEdges = rFaces[jt].CountOpenEdges();
             if (numOpenEdges == 2)
-                non_mf.push_back(*jt);
-            else if (rFaces[*jt].IsDegenerated())
-                non_mf.push_back(*jt);
+                non_mf.push_back(jt);
+            else if (rFaces[jt].IsDegenerated())
+                non_mf.push_back(jt);
         }
 
         // are we able to repair the non-manifold edge by not removing all facets?
-        if (it->size() - non_mf.size() == 2)
+        if (it.size() - non_mf.size() == 2)
             deletedFaces.insert(deletedFaces.end(), non_mf.begin(), non_mf.end());
         else
-            deletedFaces.insert(deletedFaces.end(), it->begin(), it->end());
+            deletedFaces.insert(deletedFaces.end(), it.begin(), it.end());
     }
 
     if (!deletedFaces.empty()) {
@@ -573,13 +572,11 @@ bool MeshEvalSingleFacet::Evaluate ()
 bool MeshFixSingleFacet::Fixup ()
 {
   std::vector<FacetIndex> aulInvalids;
-//  MeshFacetArray& raFacets = _rclMesh._aclFacetArray;
-  for ( std::vector<std::list<FacetIndex> >::const_iterator it=_raclManifoldList.begin();it!=_raclManifoldList.end();++it )
+  for (const auto & it : _raclManifoldList)
   {
-    for ( std::list<FacetIndex>::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 )
+    for (FacetIndex it2 : it)
     {
-      aulInvalids.push_back(*it2);
-//      MeshFacet& rF = raFacets[*it2];
+      aulInvalids.push_back(it2);
     }
   }
 
@@ -759,22 +756,21 @@ std::vector<FacetIndex> MeshFixSelfIntersection::GetFacets() const
 {
     std::vector<FacetIndex> indices;
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-    for (std::vector<std::pair<FacetIndex, FacetIndex> >::const_iterator
-        it = selfIntersectons.begin(); it != selfIntersectons.end(); ++it) {
-        unsigned short numOpenEdges1 = rFaces[it->first].CountOpenEdges();
-        unsigned short numOpenEdges2 = rFaces[it->second].CountOpenEdges();
+    for (const auto & it : selfIntersectons) {
+        unsigned short numOpenEdges1 = rFaces[it.first].CountOpenEdges();
+        unsigned short numOpenEdges2 = rFaces[it.second].CountOpenEdges();
 
         // often we have only single or border facets that intersect other facets
         // in this case remove only these facets and keep the other one
         if (numOpenEdges1 == 0 && numOpenEdges2 > 0) {
-            indices.push_back(it->second);
+            indices.push_back(it.second);
         }
         else if (numOpenEdges1 > 0 && numOpenEdges2 == 0) {
-            indices.push_back(it->first);
+            indices.push_back(it.first);
         }
         else {
-            indices.push_back(it->first);
-            indices.push_back(it->second);
+            indices.push_back(it.first);
+            indices.push_back(it.second);
         }
     }
 
@@ -1072,9 +1068,9 @@ bool MeshEigensystem::Evaluate()
     float fH;
 
     const MeshPointArray& aclPoints = _rclMesh.GetPoints ();
-    for (MeshPointArray::_TConstIterator it = aclPoints.begin(); it!=aclPoints.end(); ++it) {
+    for (const auto & it : aclPoints) {
         // u-direction
-        clVect = *it - _cC;
+        clVect = it - _cC;
         clProj.ProjectToLine(clVect, _cU);
         clVect = clVect + clProj;
         fH = clVect.Length();
@@ -1087,7 +1083,7 @@ bool MeshEigensystem::Evaluate()
         xmin = std::min<float>(xmin, fH);
 
         // v-direction
-        clVect = *it - _cC;
+        clVect = it - _cC;
         clProj.ProjectToLine(clVect, _cV);
         clVect = clVect + clProj;
         fH = clVect.Length();
@@ -1100,7 +1096,7 @@ bool MeshEigensystem::Evaluate()
         ymin = std::min<float>(ymin, fH);
 
         // w-direction
-        clVect = *it - _cC;
+        clVect = it - _cC;
         clProj.ProjectToLine(clVect, _cW);
         clVect = clVect + clProj;
         fH = clVect.Length();

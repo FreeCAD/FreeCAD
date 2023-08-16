@@ -284,8 +284,8 @@ void LightManip(SoSeparator * root)
   const char * pointlightnames[3] = { "RedLight", "GreenLight", "BlueLight" };
   SoSearchAction sa;
 
-  for (int i = 0; i < 3; i++) {
-    sa.setName( pointlightnames[i] );
+  for (const char* name : pointlightnames) {
+    sa.setName(name);
     sa.setInterest( SoSearchAction::FIRST );
     sa.setSearchingAll( false );
     sa.apply( root );

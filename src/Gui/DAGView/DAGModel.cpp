@@ -933,9 +933,9 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QPointF currentPickPoint = event->scenePos();
     QGraphicsLineItem intersectionLine(QLineF(lastPick, currentPickPoint));
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
-    for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
+    for (auto currentItem : selection)
     {
-      auto rect = dynamic_cast<RectItem *>(*currentItem);
+      auto rect = dynamic_cast<RectItem *>(currentItem);
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),

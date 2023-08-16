@@ -323,8 +323,8 @@ void CmdMeshImport::activated(int)
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
         QObject::tr("Import mesh"), QString(), filter.join(QLatin1String(";;")));
-    for (QStringList::Iterator it = fn.begin(); it != fn.end(); ++it) {
-        std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
+    for (const auto& it : fn) {
+        std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8(it.toUtf8().data());
         unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Mesh"));
         doCommand(Doc,"import Mesh");
@@ -387,8 +387,8 @@ void CmdMeshExport::activated(int)
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
-    for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)
-        filter << it->first;
+    for (const auto& it : ext)
+        filter << it.first;
 
     QString format;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
@@ -396,9 +396,9 @@ void CmdMeshExport::activated(int)
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         QByteArray extension = fi.suffix().toLatin1();
-        for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it) {
-            if (it->first == format) {
-                extension = it->second;
+        for (const auto& it : ext) {
+            if (it.first == format) {
+                extension = it.second;
                 break;
             }
         }
@@ -440,17 +440,17 @@ void CmdMeshFromGeometry::activated(int)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> geo = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = geo.begin(); it != geo.end(); ++it) {
-        if (!(*it)->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+    for (auto it : geo) {
+        if (!it->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
             // exclude meshes
             std::map<std::string, App::Property*> Map;
-            (*it)->getPropertyMap(Map);
+            it->getPropertyMap(Map);
             Mesh::MeshObject mesh;
-            for (std::map<std::string, App::Property*>::iterator jt = Map.begin(); jt != Map.end(); ++jt) {
-                if (jt->first == "Shape" && jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+            for (const auto& jt : Map) {
+                if (jt.first == "Shape" && jt.second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt->second)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt.second)->getComplexData();
                     if (data) {
                         data->getFaces(aPoints, aTopo,(float)tol);
                         mesh.setFacets(aTopo, aPoints);
@@ -519,18 +519,19 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
 void CmdMeshVertexCurvature::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        std::string fName = (*it)->getNameInDocument();
+    for (auto it : meshes) {
+        std::string fName = it->getNameInDocument();
         fName += "_Curvature";
         fName = getUniqueObjectName(fName.c_str());
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Mesh VertexCurvature"));
-        App::DocumentObject* grp = App::DocumentObjectGroup::getGroupOfObject( *it );
+        App::DocumentObject* grp = App::DocumentObjectGroup::getGroupOfObject( it );
         if (grp)
             doCommand(Doc,"App.activeDocument().getObject(\"%s\").newObject(\"Mesh::Curvature\",\"%s\")",grp->getNameInDocument(), fName.c_str());
         else
             doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Curvature\",\"%s\")",fName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),(*it)->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),
+                  it->getNameInDocument());
     }
 
     commitCommand();
@@ -663,14 +664,14 @@ CmdMeshAddFacet::CmdMeshAddFacet()
 void CmdMeshAddFacet::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument((*it)->getDocument());
+    for (auto it : docObj) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(it->getDocument());
         Gui::MDIView* view = doc->getActiveView();
         if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
             MeshGui::MeshFaceAddition* edit = new MeshGui::MeshFaceAddition
                 (static_cast<Gui::View3DInventor*>(view));
             edit->startEditing(static_cast<MeshGui::ViewProviderMesh*>
-                (Gui::Application::Instance->getViewProvider(*it)));
+                (Gui::Application::Instance->getViewProvider(it)));
             break;
         }
     }
@@ -978,8 +979,8 @@ void CmdMeshEvaluation::activated(int)
     MeshGui::DlgEvaluateMeshImp* dlg = MeshGui::DockEvaluateMeshImp::instance();
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        dlg->setMesh((Mesh::Feature*)(*it));
+    for (auto it : meshes) {
+        dlg->setMesh((Mesh::Feature*)(it));
         break;
     }
 
@@ -1178,8 +1179,8 @@ CmdMeshEvaluateSolid::CmdMeshEvaluateSolid()
 void CmdMeshEvaluateSolid::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = (Mesh::Feature*)(*it);
+    for (auto it : meshes) {
+        Mesh::Feature* mesh = (Mesh::Feature*)(it);
         QString msg;
         if (mesh->Mesh.getValue().getKernel().HasOpenEdges())
             msg = QObject::tr("The mesh '%1' is not a solid.")
@@ -1276,9 +1277,9 @@ void CmdMeshHarmonizeNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize mesh normals"));
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
+    for (auto it : meshes) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.harmonizeNormals()"
-                     ,(*it)->getNameInDocument());
+                     ,it->getNameInDocument());
     }
     commitCommand();
     updateActive();
@@ -1310,9 +1311,9 @@ void CmdMeshFlipNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     openCommand(QT_TRANSLATE_NOOP("Command", "Flip mesh normals"));
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
+    for (auto it : meshes) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.flipNormals()"
-                     ,(*it)->getNameInDocument());
+                     ,it->getNameInDocument());
     }
     commitCommand();
     updateActive();
@@ -1343,15 +1344,15 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
 void CmdMeshBoundingBox::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        const MeshCore::MeshKernel& rMesh = ((Mesh::Feature*)(*it))->Mesh.getValue().getKernel();
+    for (auto it : meshes) {
+        const MeshCore::MeshKernel& rMesh = ((Mesh::Feature*)it)->Mesh.getValue().getKernel();
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
         Base::Console().Message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
                                 box.MinX,box.MinY,box.MinZ,box.MaxX,box.MaxY,box.MaxZ);
 
         QString bound = qApp->translate("Mesh_BoundingBox", "Boundings of %1:")
-                .arg(QString::fromUtf8((*it)->Label.getValue()));
+                .arg(QString::fromUtf8(it->Label.getValue()));
         bound += QString::fromLatin1("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
             .arg(box.MinX).arg(box.MinY).arg(box.MinZ)
             .arg(box.MaxX).arg(box.MaxY).arg(box.MaxZ);
@@ -1422,9 +1423,9 @@ void CmdMeshFillupHoles::activated(int)
     if (!ok)
         return;
     openCommand(QT_TRANSLATE_NOOP("Command", "Fill up holes"));
-    for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
+    for (auto mesh : meshes) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.fillupHoles(%d)"
-                     ,(*it)->getNameInDocument(), FillupHolesOfLength);
+                     ,mesh->getNameInDocument(), FillupHolesOfLength);
     }
     commitCommand();
     updateActive();
@@ -1576,8 +1577,8 @@ void CmdMeshMerge::activated(int)
     Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
-        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+    for (auto obj : objs) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
         MeshCore::MeshKernel kernel = mesh.getKernel();
         kernel.Transform(mesh.getTransform());
         newMesh->addMesh(kernel);
@@ -1617,8 +1618,8 @@ void CmdMeshSplitComponents::activated(int)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Mesh split"));
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
-        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+    for (auto obj : objs) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
         std::vector<std::vector<Mesh::FacetIndex> > comps = mesh.getComponents();
 
         for (const auto& comp : comps) {
@@ -1671,11 +1672,11 @@ void CmdMeshScale::activated(int)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     Base::Matrix4D mat;
     mat.scale(factor,factor,factor);
-    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
-        MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
+    for (auto obj : objs) {
+        MeshObject* mesh = static_cast<Mesh::Feature*>(obj)->Mesh.startEditing();
         MeshCore::MeshKernel& kernel = mesh->getKernel();
         kernel.Transform(mat);
-        static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+        static_cast<Mesh::Feature*>(obj)->Mesh.finishEditing();
     }
 
     updateActive();

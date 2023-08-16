@@ -198,8 +198,8 @@ void ViewProviderCurveOnMesh::setPoints(const std::vector<SbVec3f>& pts)
     pcCoords->point.setNum(pts.size());
     SbVec3f* coords = pcCoords->point.startEditing();
     int index = 0;
-    for (std::vector<SbVec3f>::const_iterator it = pts.begin(); it != pts.end(); ++it) {
-        coords[index] = *it;
+    for (auto it : pts) {
+        coords[index] = it;
         index++;
     }
     pcCoords->point.finishEditing();
@@ -262,8 +262,8 @@ public:
     {
         std::vector<SbVec3f> pts;
         pts.reserve(points.size());
-        for (auto it = points.begin(); it != points.end(); ++it) {
-            pts.push_back(Base::convertTo<SbVec3f>(*it));
+        for (const auto& it : points) {
+            pts.push_back(Base::convertTo<SbVec3f>(it));
         }
         return pts;
     }
@@ -457,8 +457,8 @@ std::vector<SbVec3f> CurveOnMeshHandler::getVertexes() const
 {
     std::vector<SbVec3f> pts;
     pts.reserve(d_ptr->pickedPoints.size());
-    for (std::vector<Private::PickedPoint>::const_iterator it = d_ptr->pickedPoints.begin(); it != d_ptr->pickedPoints.end(); ++it)
-        pts.push_back(it->point);
+    for (const auto & it : d_ptr->pickedPoints)
+        pts.push_back(it.point);
     return pts;
 }
 
@@ -476,9 +476,9 @@ Handle(Geom_BSplineCurve) CurveOnMeshHandler::approximateSpline(const std::vecto
 {
     TColgp_Array1OfPnt pnts(1,points.size());
     Standard_Integer index = 1;
-    for (std::vector<SbVec3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
+    for (const auto& it : points) {
         float x,y,z;
-        it->getValue(x,y,z);
+        it.getValue(x,y,z);
         pnts(index++) = gp_Pnt(x,y,z);
     }
 
@@ -536,9 +536,9 @@ void CurveOnMeshHandler::displaySpline(const Handle(Geom_BSplineCurve)& spline)
 bool CurveOnMeshHandler::makePolyline(const std::vector<SbVec3f>& points, TopoDS_Wire& wire)
 {
     BRepBuilderAPI_MakePolygon mkPoly;
-    for (std::vector<SbVec3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
+    for (const auto& it : points) {
         float x,y,z;
-        it->getValue(x,y,z);
+        it.getValue(x,y,z);
         mkPoly.Add(gp_Pnt(x,y,z));
     }
 

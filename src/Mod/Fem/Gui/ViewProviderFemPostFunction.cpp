@@ -123,13 +123,12 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 void ViewProviderFemPostFunctionProvider::updateSize()
 {
     std::vector<App::DocumentObject*> vec = claimChildren();
-    for (std::vector<App::DocumentObject*>::iterator it = vec.begin(); it != vec.end(); ++it) {
-
-        if (!(*it)->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
+    for (auto it : vec) {
+        if (!it->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
             continue;
 
         ViewProviderFemPostFunction* vp = static_cast<FemGui::ViewProviderFemPostFunction*>(
-            Gui::Application::Instance->getViewProvider(*it));
+            Gui::Application::Instance->getViewProvider(it));
         vp->AutoScaleFactorX.setValue(SizeX.getValue());
         vp->AutoScaleFactorY.setValue(SizeY.getValue());
         vp->AutoScaleFactorZ.setValue(SizeZ.getValue());

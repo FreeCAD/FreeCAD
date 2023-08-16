@@ -1128,6 +1128,8 @@ SET(Selection_SRCS
     Selection.cpp
     SelectionFilter.h
     SelectionFilter.cpp
+    SelectionFilterPy.h
+    SelectionFilterPy.cpp
     SelectionFilter.y
     SelectionFilter.l
     SelectionObserverPython.cpp

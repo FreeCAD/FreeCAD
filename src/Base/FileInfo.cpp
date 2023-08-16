@@ -580,19 +580,19 @@ bool FileInfo::deleteDirectoryRecursive() const
         return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
-    for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
-        if (It->isDir()) {
+    for (Base::FileInfo& fi : List) {
+        if (fi.isDir()) {
             // At least on Linux, directory needs execute permission to be
             // deleted. We don't really need to set permission for directory
             // anyway, since FC code does not touch directory permission.
             //
             // It->setPermissions(FileInfo::ReadWrite);
 
-            It->deleteDirectoryRecursive();
+            fi.deleteDirectoryRecursive();
         }
-        else if (It->isFile()) {
-            It->setPermissions(FileInfo::ReadWrite);
-            It->deleteFile();
+        else if (fi.isFile()) {
+            fi.setPermissions(FileInfo::ReadWrite);
+            fi.deleteFile();
         }
         else {
             throw Base::FileException("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");

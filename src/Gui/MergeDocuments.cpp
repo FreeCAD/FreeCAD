@@ -113,8 +113,8 @@ MergeDocuments::importObjects(std::istream& input)
 void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r)
 {
     objects = o;
-    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-        Gui::ViewProvider* vp = document->getViewProvider(*it);
+    for (auto it : objects) {
+        Gui::ViewProvider* vp = document->getViewProvider(it);
         if (vp) vp->hide();
     }
     Restore(r);
