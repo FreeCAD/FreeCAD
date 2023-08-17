@@ -113,7 +113,9 @@ public:
     void overrideKeepUpdated(bool s) { m_overrideKeepUpdated = s; }
     bool overrideKeepUpdated(void) { return m_overrideKeepUpdated; }
 
-    void translateLabel(std::string context, std::string objectName, std::string uniqueName);
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
+
 
 
 protected:

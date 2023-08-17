@@ -419,8 +419,8 @@ void TaskSectionView::updateNowClicked() { apply(true); }
 //******************************************************************************
 bool TaskSectionView::apply(bool forceUpdate)
 {
-    //    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
-    //                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
+//    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
+//                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
         m_applyDeferred++;
@@ -495,18 +495,23 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         return nullptr;
     }
 
-    std::string sectionName;
     std::string baseName = m_base->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (!m_section) {
-        const std::string objectName{QT_TR_NOOP("SectionView")};
-        std::string m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
-        std::string generatedSuffix {m_sectionName.substr(objectName.length())};
-        std::string sectionType = "TechDraw::DrawViewSection";
+        const std::string objectName("SectionView");
+        m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('TechDraw::DrawViewSection', '%s')",
+                           m_sectionName.c_str());
 
-        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
-                           sectionType.c_str(), m_sectionName.c_str());
+        // section labels (Section A-A) are not unique, and are not the same as the object name (SectionView)
+        // we pluck the generated suffix from the object name and append it to "Section" to generate
+        // unique Labels
+        std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
+        std::string uniqueLabel = "Section" + uniqueSuffix;
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
+              m_sectionName.c_str(), uniqueLabel.c_str());
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_savePageName.c_str(), m_sectionName.c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
@@ -548,8 +553,6 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
 
-        std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
-        newObj->Label.setValue(translatedObjectName + generatedSuffix);
     }
     Gui::Command::commitCommand();
     return m_section;
@@ -557,7 +560,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
 void TaskSectionView::updateSectionView()
 {
-    //    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
+//    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
         failNoObject();
         return;
@@ -571,13 +574,15 @@ void TaskSectionView::updateSectionView()
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
                            m_sectionName.c_str(), ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
+
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
-        std::string lblText = "Section " + temp + " - " + temp;
+        std::string lblText = std::string(m_section->Label.getValue()) + " " + temp + " - " + temp;
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(), lblText.c_str());
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value().getValue());
         int scaleType = ui->cmbScaleType->currentIndex();

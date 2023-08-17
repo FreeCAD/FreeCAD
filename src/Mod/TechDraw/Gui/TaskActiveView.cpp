@@ -135,7 +135,8 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
 
     //we are sure we have a 3D window!
-    const std::string objectName{QT_TR_NOOP("ActiveView")};
+
+    const std::string objectName{"ActiveView"};
     std::string imageName = m_pageFeat->getDocument()->getUniqueObjectName(objectName.c_str());
     std::string generatedSuffix {imageName.substr(objectName.length())};
     std::string imageType = "TechDraw::DrawViewImage";
@@ -146,6 +147,10 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     //document by name instead of using ActiveDocument
     Command::doCommand(Command::Doc, "App.getDocument('%s').addObject('%s','%s')",
                        documentName.c_str(), imageType.c_str(), imageName.c_str());
+
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawActiveView', 'ActiveView', '%s')",
+              imageName.c_str(), imageName.c_str());
+
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.addView(App.getDocument('%s').%s)",
                        documentName.c_str(), pageName.c_str(), documentName.c_str(),
                        imageName.c_str());
@@ -211,9 +216,6 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
             }
         }
     }
-
-    std::string translatedObjectName{tr("ActiveView").toStdString()};
-    newObj->Label.setValue(translatedObjectName + generatedSuffix);
 
     return newImg;
 }

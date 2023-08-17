@@ -384,6 +384,8 @@ void CmdTechDrawView::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("View");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewPart', 'View', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
 
@@ -1322,6 +1324,8 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc, "f.close()");
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
+              FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
@@ -1380,6 +1384,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDraft', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewDraft', 'DraftView', '%s')",
+              FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
                   SourceName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1452,6 +1458,8 @@ void CmdTechDrawArchView::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SourceName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1501,6 +1509,8 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sheet");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SpreadName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
