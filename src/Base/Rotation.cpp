@@ -842,7 +842,6 @@ struct EulerSequence_Parameters
 
 EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence theSeq)
 {
-    using Params = EulerSequence_Parameters;
     const bool F = false;
     const bool T = true;
 

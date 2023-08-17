@@ -489,7 +489,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
             QList<ViewProviderIndex*> views;
             doc_index->findViewProviders(obj, views);
-            for (const auto & view : views) {
+            for (const auto & view : qAsConst(views)) {
                 DocumentModelIndex* parentitem = view->parent();
                 QModelIndex parent = createIndex(0,0,parentitem);
                 int row = view->row();
@@ -523,7 +523,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             // get all occurrences of the view provider in the tree structure
             QList<ViewProviderIndex*> obj_index;
             doc_index->findViewProviders(obj, obj_index);
-            for (const auto & it : obj_index) {
+            for (const auto & it : qAsConst(obj_index)) {
                 QModelIndex parent = createIndex(it->row(),0,it);
                 int count_obj = it->childCount();
                 beginRemoveRows(parent, 0, count_obj);
