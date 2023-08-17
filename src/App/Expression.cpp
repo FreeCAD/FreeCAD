@@ -3034,10 +3034,18 @@ bool VariableExpression::_renameObjectIdentifier(
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
         v.aboutToChange();
+        const bool originalHasDocumentObjectName = var.hasDocumentObjectName();
+        ObjectIdentifier::String originalDocumentObjectName = var.getDocumentObjectName();
+        std::string originalSubObjectName = var.getSubObjectName();
         if(path.getOwner())
             var = it->second.relativeTo(path);
         else
             var = it->second;
+        if (originalHasDocumentObjectName) {
+            var.setDocumentObjectName(std::move(originalDocumentObjectName),
+                                      true,
+                                      std::move(originalSubObjectName));
+        }
         return true;
     }
     return false;
