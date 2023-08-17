@@ -4,6 +4,8 @@ General:
   Version: "c2a48ea9-58c8-4ea9-b83e-3c3a292f45e0"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "AlZn4,5Mg1F35"
+Inherits:
+  UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

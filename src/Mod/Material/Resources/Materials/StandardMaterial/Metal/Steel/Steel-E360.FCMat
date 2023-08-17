@@ -4,6 +4,8 @@ General:
   Version: "b67083c8-3f77-48cb-acb4-a31dcb56d1d1"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "E360"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

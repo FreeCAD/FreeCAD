@@ -4,6 +4,8 @@ General:
   Version: "c8d4b1f8-49ee-46bb-80fe-6c9ba9f417e6"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "EN-GJS-400-15"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

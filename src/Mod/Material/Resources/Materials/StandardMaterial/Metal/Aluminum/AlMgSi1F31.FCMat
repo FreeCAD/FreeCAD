@@ -4,6 +4,8 @@ General:
   Version: "d4cb7c3b-92d6-4a7e-8497-5db1f9b38d87"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "AlMgSi1F31"
+Inherits:
+  UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

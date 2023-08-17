@@ -4,6 +4,8 @@ General:
   Version: "8e659006-f6d4-4dfd-a516-0bda12ec4f32"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S235JO"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

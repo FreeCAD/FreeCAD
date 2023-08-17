@@ -5,6 +5,8 @@ General:
   AuthorAndLicense: "(c) 2016 Mandeep Singh (CC-BY 3.0)"
   Name: "Aluminum 6061-T6"
   Description: "Precipitation-hardened, Nonferrous Aluminum alloy"
+Inherits:
+  UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

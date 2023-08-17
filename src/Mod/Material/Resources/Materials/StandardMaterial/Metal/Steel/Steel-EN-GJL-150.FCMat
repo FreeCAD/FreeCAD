@@ -4,6 +4,8 @@ General:
   Version: "05440e2c-40dd-40a0-9ea2-39e87032ae28"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "EN-GJL-150"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

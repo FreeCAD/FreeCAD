@@ -4,6 +4,8 @@ General:
   Version: "bce52b6f-f6e0-4ff7-b31e-848a09c627f6"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "X5CrNi18-10"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'

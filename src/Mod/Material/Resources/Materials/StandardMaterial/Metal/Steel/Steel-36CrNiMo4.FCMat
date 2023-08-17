@@ -4,6 +4,8 @@ General:
   Version: "8765d4d2-238b-4e46-bd1c-0bf04b95d4a1"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "36CrNiMo4"
+Inherits:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   Father:
     UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
