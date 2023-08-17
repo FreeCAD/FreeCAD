@@ -114,9 +114,6 @@ public:
     bool overrideKeepUpdated(void) { return m_overrideKeepUpdated; }
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
-    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
-
-
 
 protected:
     void onChanged(const App::Property* prop) override;
