@@ -296,7 +296,7 @@ private: \
   TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * getPropertyDataPtr(void); \
-  virtual const App::PropertyData &getPropertyData(void) const override; \
+  const App::PropertyData &getPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 ///

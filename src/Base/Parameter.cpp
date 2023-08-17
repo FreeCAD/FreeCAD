@@ -151,7 +151,7 @@ public:
     void resetErrors() {}
 
     /* Unimplemented constructors and operators */
-    DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
+    explicit DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
     void operator=(const DOMErrorHandler&) = delete;
 
 };
