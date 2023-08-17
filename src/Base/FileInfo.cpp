@@ -295,7 +295,7 @@ std::string FileInfo::extension() const
 {
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 
@@ -303,7 +303,7 @@ std::string FileInfo::completeExtension() const
 {
     std::string::size_type pos = FileName.find_first_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 

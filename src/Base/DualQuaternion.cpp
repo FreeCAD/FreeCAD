@@ -28,72 +28,72 @@
 
 Base::DualQuat Base::operator+(Base::DualQuat a, Base::DualQuat b)
 {
-    return DualQuat(
+    return {
                 a.x + b.x,
                 a.y + b.y,
                 a.z + b.z,
                 a.w + b.w
-                );
+                };
 }
 
 Base::DualQuat Base::operator-(Base::DualQuat a, Base::DualQuat b)
 {
-    return DualQuat(
+    return {
                 a.x - b.x,
                 a.y - b.y,
                 a.z - b.z,
                 a.w - b.w
-                );
+                };
 }
 
 Base::DualQuat Base::operator*(Base::DualQuat a, Base::DualQuat b)
 {
-    return DualQuat(
+    return {
                 a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
                 a.w * b.y + a.y * b.w + a.z * b.x - a.x * b.z,
                 a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x,
                 a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z
-                );
+                };
 }
 
 Base::DualQuat Base::operator*(Base::DualQuat a, double b)
 {
-    return DualQuat(
+    return {
                 a.x * b,
                 a.y * b,
                 a.z * b,
                 a.w * b
-                );
+                };
 }
 
 Base::DualQuat Base::operator*(double a, Base::DualQuat b)
 {
-    return DualQuat(
+    return {
                 b.x * a,
                 b.y * a,
                 b.z * a,
                 b.w * a
-                );
+                };
 }
 
 Base::DualQuat Base::operator*(Base::DualQuat a, Base::DualNumber b)
 {
-    return DualQuat(
+    return {
                 a.x * b,
                 a.y * b,
                 a.z * b,
                 a.w * b
-                );
+                };
 }
 
 Base::DualQuat Base::operator*(Base::DualNumber a, Base::DualQuat b)
 {
-    return DualQuat(
+    return {
                 b.x * a,
                 b.y * a,
                 b.z * a,
                 b.w * a
-                );
+                };
 }
 
 Base::DualQuat::DualQuat(Base::DualQuat re, Base::DualQuat du)
@@ -136,7 +136,7 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
     double le = this->vec().length();
     if (le < 1e-12) {
         //special case of no rotation. Interpolate position
-        return DualQuat(this->real(), this->dual()*t);
+        return {this->real(), this->dual()*t};
     }
 
     double normmult = 1.0/le;
@@ -159,8 +159,8 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
     pitch *= t;
 
     //back to quaternion
-    return DualQuat(
+    return {
         l * sin(theta/2) + DualQuat(0,0,0,cos(theta/2)),
         m * sin(theta/2) + pitch / 2 * cos(theta/2) * l + DualQuat(0,0,0,-pitch/2*sin(theta/2))
-    );
+    };
 }

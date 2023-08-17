@@ -125,9 +125,8 @@ string Type::getModuleName(const char* ClassName)
   std::string::size_type pos = temp.find_first_of("::");
 
   if (pos != std::string::npos)
-    return string(temp,0,pos);
-  else
-    return string();
+    return {temp,0,pos};
+  return {};
 }
 
 Type Type::badType()

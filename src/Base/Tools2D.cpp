@@ -245,7 +245,7 @@ Vector2d Line2d::FromPos (double fDistance) const
 {
   Vector2d clDir(clV2 - clV1);
   clDir.Normalize();
-  return Vector2d(clV1.x + (clDir.x * fDistance), clV1.y + (clDir.y * fDistance));
+  return {clV1.x + (clDir.x * fDistance), clV1.y + (clDir.y * fDistance)};
 }
 
 bool Line2d::IntersectAndContain (const Line2d& rclLine, Vector2d &rclV) const

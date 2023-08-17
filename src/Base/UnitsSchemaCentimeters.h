@@ -38,7 +38,7 @@ class UnitsSchemaCentimeters: public UnitsSchema
 public:
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
 
-    std::string getBasicLengthUnit() const override { return std::string("cm"); }
+    std::string getBasicLengthUnit() const override { return {"cm"}; }
 };
 
 } // namespace Base

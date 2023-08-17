@@ -243,7 +243,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
             throw SystemExitException();
         else {
             PyException::ThrowException();
-            return std::string(); // just to quieten code analyzers
+            return {}; // just to quieten code analyzers
             //throw PyException();
         }
     }
@@ -257,7 +257,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     }
     else {
         PyErr_Clear();
-        return std::string();
+        return {};
     }
 }
 
