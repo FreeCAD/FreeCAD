@@ -245,7 +245,7 @@ PyObject* TypePy::createInstanceByName (PyObject *args)
 
 Py::String TypePy::getName() const
 {
-    return Py::String(std::string(getBaseTypePtr()->getName()));
+    return {std::string(getBaseTypePtr()->getName())};
 }
 
 Py::Long TypePy::getKey() const
@@ -263,7 +263,7 @@ Py::String TypePy::getModule() const
     else
         module.clear();
 
-    return Py::String(module);
+    return {module};
 }
 
 PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const
