@@ -382,7 +382,7 @@ public:
 
     ~NotificationsAction() override
     {
-        for (auto* item : pushedItems) {
+        for (auto* item : qAsConst(pushedItems)) {
             if (item) {
                 delete item;
             }
@@ -572,7 +572,7 @@ protected:
                 QMenu menu;
 
                 QAction* del = menu.addAction(tr("Delete"), this, [&]() {
-                    for (auto it : selectedItems) {
+                    for (auto it : qAsConst(selectedItems)) {
                         delete it;
                     }
                 });
