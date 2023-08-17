@@ -252,6 +252,9 @@ public:
                                                       std::vector<Base::Vector2d>& intersections);
     static void copyFile(std::string inSpec, std::string outSpec);
 
+    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
+
+
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);
     static void dumpEdge(const char* label, int i, TopoDS_Edge e);

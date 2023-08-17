@@ -116,8 +116,13 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
                   PageName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawPage', 'Page', '%s')",
+              PageName.c_str(), PageName.c_str());
+
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
                   TemplateName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawSVGTemplate', 'Template', '%s')",
+              TemplateName.c_str(), TemplateName.c_str());
 
         doCommand(Doc, "App.activeDocument().%s.Template = '%s'", TemplateName.c_str(),
                   templateFileName.toStdString().c_str());
@@ -187,10 +192,14 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
                   PageName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawPage', 'Page', '%s')",
+              PageName.c_str(), PageName.c_str());
 
         // Create the Template Object to attach to the page
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
                   TemplateName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawSVGTemplate', 'Template', '%s')",
+              TemplateName.c_str(), TemplateName.c_str());
 
         //why is "Template" property set twice? -wf
         // once to set DrawSVGTemplate.Template to OS template file name

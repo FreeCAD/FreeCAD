@@ -45,12 +45,15 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawView
 //===========================================================================
 
 #if 0   // needed for Qt's lupdate utility
+    QT_TRANSLATE_NOOP("DrawPage", "Page");
+    QT_TRANSLATE_NOOP("DrawSVGTemplate", "Template");
     QT_TRANSLATE_NOOP("DrawView", "View");
     QT_TRANSLATE_NOOP("DrawViewPart", "View");
     QT_TRANSLATE_NOOP("DrawViewSection", "Section");
@@ -622,20 +625,8 @@ void DrawView::translateLabel(std::string context, std::string baseName, std::st
 //    Base::Console().Message("DV::translateLabel - context: %s baseName: %s uniqueName: %s\n",
 //                            context.c_str(), baseName.c_str(), uniqueName.c_str());
 
-    Label.setValue(translateArbitrary(context, baseName, uniqueName));
+    Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
 //    Base::Console().Message("DV::translateLabel - new label: %s\n", Label.getValue());
-}
-
-//! static method that provides a translated std::string for objects that are not derived from DrawView
-std::string DrawView::translateArbitrary(std::string context, std::string baseName, std::string uniqueName)
-{
-    std::string suffix("");
-    if (uniqueName.length() > baseName.length()) {
-        suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
-    }
-    QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
-    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
-    return ssTranslated + suffix;
 }
 
 PyObject *DrawView::getPyObject(void)
