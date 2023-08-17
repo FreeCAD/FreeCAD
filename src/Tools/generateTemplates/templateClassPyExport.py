@@ -17,13 +17,15 @@ class TemplateClassPyExport(template.ModelTemplate):
         path = self.path
         exportName = self.export.Name
         dirname = self.dirname
+
         def escapeString(s, indent=4):
             """Escapes a string for use as literal in C++ code"""
-            s = s.strip() # This allows UserDocu-tags on their own lines without adding whitespace
-            s = s.replace('\\', '\\\\')
+            s = s.strip()  # This allows UserDocu-tags on their own lines without adding whitespace
+            s = s.replace("\\", "\\\\")
             s = s.replace('"', '\\"')
-            s = s.replace('\n', f'\\n"\n{" "*indent}"')
+            s = s.replace("\n", f'\\n"\n{" "*indent}"')
             return s
+
         print("TemplateClassPyExport", path + exportName)
         # Imp.cpp must not exist, neither in path nor in dirname
         if not os.path.exists(path + exportName + "Imp.cpp"):
@@ -869,7 +871,7 @@ int @self.export.Name@::finalization()
 // returns a string which represents the object e.g. when printed in python
 std::string @self.export.Name@::representation() const
 {
-    return std::string("<@self.export.Twin@ object>");
+    return {"<@self.export.Twin@ object>"};
 }
 + for i in self.export.Methode:
 
