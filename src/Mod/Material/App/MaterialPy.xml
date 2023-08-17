@@ -93,11 +93,37 @@
       </Documentation>
       <Parameter Name="PhysicalModels" Type="List"/>
     </Attribute>
+    <Attribute Name="AppearanceModels" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of implemented models.</UserDocu>
+      </Documentation>
+      <Parameter Name="AppearanceModels" Type="List"/>
+    </Attribute>
     <Attribute Name="Tags" ReadOnly="true">
       <Documentation>
         <UserDocu>List of searchable tags.</UserDocu>
       </Documentation>
       <Parameter Name="Tags" Type="List"/>
     </Attribute>
+    <Methode Name="hasPhysicalModel" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the physical model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasAppearanceModel" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the appearance model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasPhysicalProperty" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the physical property with the given name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasAppearanceProperty" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the appearance property with the given name</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

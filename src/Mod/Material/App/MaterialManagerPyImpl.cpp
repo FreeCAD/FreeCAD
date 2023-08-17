@@ -59,6 +59,18 @@ int MaterialManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+PyObject* MaterialManagerPy::getManager(PyObject *args)
+{
+    // if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    // try {
+    //     return new MaterialManagerPy(new MaterialManager::MaterialManager());
+    // } catch (ModelNotFound const &) {
+    //     return nullptr;
+    // }
+}
+
 PyObject* MaterialManagerPy::getMaterial(PyObject *args)
 {
     char *uuid;

@@ -176,12 +176,13 @@ def yamMechanical(card):
                        "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness"]:
             useLinearElastic = True
 
+    yam = ""
     if useLinearElastic:
         return yamSection(card, 'LinearElastic', '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
     if useIso:
-        return yamSection(card, 'IsotropicLinearElastic', 'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+        yam = yamSection(card, 'IsotropicLinearElastic', 'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
     if useDensity:
-        return yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
+        return yam + yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
 
     # default mechanical model
     return ""

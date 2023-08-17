@@ -162,6 +162,21 @@ Py::List MaterialPy::getPhysicalModels() const
     return list;
 }
 
+Py::List MaterialPy::getAppearanceModels() const
+{
+    const std::vector<QString> *models = getMaterialPtr()->getAppearanceModels();
+    Py::List list;
+
+    for (auto it = models->begin(); it != models->end(); it++)
+    {
+        QString uuid = *it;
+
+        list.append(Py::String(uuid.toStdString()));
+    }
+
+    return list;
+}
+
 Py::List MaterialPy::getTags() const
 {
     const std::list<QString> &tags = getMaterialPtr()->getTags();
@@ -185,4 +200,44 @@ PyObject *MaterialPy::getCustomAttributes(const char* /*attr*/) const
 int MaterialPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
+}
+
+PyObject *MaterialPy::hasPhysicalModel(PyObject *args)
+{
+    char *uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid))
+        return nullptr;
+
+    bool hasProperty = getMaterialPtr()->hasPhysicalModel(QString::fromStdString(uuid));
+    return hasProperty ? Py_True : Py_False;
+}
+
+PyObject *MaterialPy::hasAppearanceModel(PyObject *args)
+{
+    char *uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid))
+        return nullptr;
+
+    bool hasProperty = getMaterialPtr()->hasAppearanceModel(QString::fromStdString(uuid));
+    return hasProperty ? Py_True : Py_False;
+}
+
+PyObject *MaterialPy::hasPhysicalProperty(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    bool hasProperty = getMaterialPtr()->hasPhysicalProperty(QString::fromStdString(name));
+    return hasProperty ? Py_True : Py_False;
+}
+
+PyObject *MaterialPy::hasAppearanceProperty(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    bool hasProperty = getMaterialPtr()->hasAppearanceProperty(QString::fromStdString(name));
+    return hasProperty ? Py_True : Py_False;
 }

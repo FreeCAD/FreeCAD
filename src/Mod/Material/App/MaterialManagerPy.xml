@@ -15,6 +15,11 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material descriptions.</UserDocu>
     </Documentation>
+    <Methode Name="getManager" Static="true">
+      <Documentation>
+        <UserDocu>Get a material manager. Material managers should not be created directly.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getMaterial">
       <Documentation>
         <UserDocu>Get a material object by specifying its UUID</UserDocu>
