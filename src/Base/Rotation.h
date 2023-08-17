@@ -162,7 +162,8 @@ public:
      * corrected to be perpendicular to Z direction, and used; Y direction
      * argument is ignored altogether (Y direction is generated from Z and X).
      *
-     * If only one vector provided is nonzero, the other two directions are picked automatically.
+     * If any needed vector is a null vector it is replaced by its global counterpart.
+     * If the two needed vectors are parallel Rotation(from, to) is used instead.
      */
     static Rotation makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder = "ZXY");
 
