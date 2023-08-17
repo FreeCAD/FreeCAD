@@ -3027,24 +3027,27 @@ bool VariableExpression::_updateElementReference(
 }
 
 bool VariableExpression::_renameObjectIdentifier(
-        const std::map<ObjectIdentifier,ObjectIdentifier> &paths,
-        const ObjectIdentifier &path, ExpressionVisitor &v)
+    const std::map<ObjectIdentifier, ObjectIdentifier>& paths,
+    const ObjectIdentifier& path,
+    ExpressionVisitor& visitor)
 {
-    const auto &oldPath = var.canonicalPath();
+    const auto& oldPath = var.canonicalPath();
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
-        v.aboutToChange();
+        visitor.aboutToChange();
         const bool originalHasDocumentObjectName = var.hasDocumentObjectName();
         ObjectIdentifier::String originalDocumentObjectName = var.getDocumentObjectName();
         std::string originalSubObjectName = var.getSubObjectName();
-        if(path.getOwner())
+        if (path.getOwner()) {
             var = it->second.relativeTo(path);
-        else
+        }
+        else {
             var = it->second;
+        }
         if (originalHasDocumentObjectName) {
             var.setDocumentObjectName(std::move(originalDocumentObjectName),
                                       true,
-                                      std::move(originalSubObjectName));
+                                      originalSubObjectName);
         }
         return true;
     }
