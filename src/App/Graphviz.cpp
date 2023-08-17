@@ -132,7 +132,7 @@ void Document::exportGraphviz(std::ostream& out) const
         std::string getId(const ObjectIdentifier & path) {
             DocumentObject * docObj = path.getDocumentObject();
             if (!docObj)
-                return std::string();
+                return {};
 
             return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
         }

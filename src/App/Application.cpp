@@ -593,7 +593,7 @@ std::vector<App::Document*> Application::getDocuments() const
 std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
@@ -3160,7 +3160,7 @@ std::tuple<QString, QString, QString> getCustomPaths()
         userTemp = fi.absoluteFilePath();
     }
 
-    return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
+    return {userHome, userData, userTemp};
 }
 
 /*!

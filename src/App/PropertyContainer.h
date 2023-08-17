@@ -158,7 +158,7 @@ public:
 
   unsigned int getMemSize () const override;
 
-  virtual std::string getFullName() const {return std::string();}
+  virtual std::string getFullName() const {return {};}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;

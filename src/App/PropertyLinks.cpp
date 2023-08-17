@@ -147,7 +147,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
         const char *subname, App::DocumentObject *obj, const std::string &ref, const char *newLabel)
 {
     if(!obj || !obj->getNameInDocument() || !parent || !parent->getNameInDocument())
-        return std::string();
+        return {};
 
     // Because the label is allowed to be the same across different
     // hierarchies, we have to search for all occurrences, and make sure the
@@ -162,7 +162,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
             return sub;
         }
     }
-    return std::string();
+    return {};
 }
 
 std::vector<std::pair<Property*, std::unique_ptr<Property> > >
@@ -192,7 +192,7 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
 
 static std::string propertyName(const Property *prop) {
     if(!prop)
-        return std::string();
+        return {};
     if(!prop->getContainer() || !prop->hasName()) {
         auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
         if(xlink)
@@ -1238,7 +1238,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         const App::Document *doc, const std::map<std::string,std::string> &nameMap)
 {
     if(!doc || !obj || !obj->getNameInDocument())
-        return std::string();
+        return {};
 
     std::ostringstream ss;
     std::string subname(_subname);
@@ -1249,7 +1249,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         auto sobj = obj->getSubObject(subname.c_str());
         if(!sobj) {
             FC_ERR("Failed to restore label reference " << obj->getFullName() << '.' << subname);
-            return std::string();
+            return {};
         }
         dot[0] = 0;
         if(next[0] == '$') {
@@ -1273,7 +1273,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
     }
     if(sub!=subname.c_str())
         return ss.str();
-    return std::string();
+    return {};
 }
 
 #define ATTR_SHADOWED "shadowed"

@@ -45,7 +45,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string PropertyContainerPy::representation() const
 {
-    return std::string("<property container>");
+    return {"<property container>"};
 }
 
 PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)

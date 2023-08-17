@@ -66,17 +66,17 @@ Py::List StringIDPy::getRelated() const
 
 Py::String StringIDPy::getData() const
 {
-    return Py::String(getStringIDPtr()->dataToText(this->_index));
+    return {getStringIDPtr()->dataToText(this->_index)};
 }
 
 Py::Boolean StringIDPy::getIsBinary() const
 {
-    return Py::Boolean(getStringIDPtr()->isBinary());
+    return {getStringIDPtr()->isBinary()};
 }
 
 Py::Boolean StringIDPy::getIsHashed() const
 {
-    return Py::Boolean(getStringIDPtr()->isHashed());
+    return {getStringIDPtr()->isHashed()};
 }
 
 Py::Long StringIDPy::getIndex() const

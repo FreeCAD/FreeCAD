@@ -449,12 +449,12 @@ Py::Object pyObjectFromAny(const App::any &value) {
 App::any pyObjectToAny(Py::Object value, bool check) {
 
     if(value.isNone())
-        return App::any();
+        return {};
 
     PyObject *pyvalue = value.ptr();
 
     if(!check)
-        return App::any(pyObjectWrap(pyvalue));
+        return {pyObjectWrap(pyvalue)};
 
     if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
         Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
@@ -1048,7 +1048,7 @@ ExpressionPtr Expression::updateLabelReference(
         App::DocumentObject *obj, const std::string &ref, const char *newLabel) const
 {
     if(ref.size()<=2)
-        return ExpressionPtr();
+        return {};
     std::vector<std::string> labels;
     for(auto &v : getIdentifiers())
         v.first.getDepLabels(labels);
@@ -1061,7 +1061,7 @@ ExpressionPtr Expression::updateLabelReference(
             return ExpressionPtr(expr);
         }
     }
-    return ExpressionPtr();
+    return {};
 }
 
 class ReplaceObjectExpressionVisitor : public ExpressionVisitor {
@@ -1097,7 +1097,7 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     const_cast<Expression*>(this)->visit(v);
 
     if(v.paths.empty())
-        return ExpressionPtr();
+        return {};
 
     // Now make a copy and do the actual replacement
     auto expr = copy();

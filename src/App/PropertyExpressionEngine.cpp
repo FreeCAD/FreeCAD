@@ -811,7 +811,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
         return e.what();
     }
 
-    return std::string();
+    return {};
 }
 
 /**
