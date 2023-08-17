@@ -851,7 +851,7 @@ class DraftToolBar:
         from draftobjects.label import get_label_types
         types = get_label_types()
         for s in types:
-            combo.addItem(s)
+            combo.addItem(translate("Draft", s), userData=s)
         combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
