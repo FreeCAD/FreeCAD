@@ -70,8 +70,8 @@
       <location filename="../../DlgStartPreferences.ui" line="96"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation>Lehen orriaren beheko aldean bistaratuko den A¡aukerako karpeta pertsonalizatu bat.
-Karpeta anitz gehitu daitezke hemen bideak bereizteko ";;" erabilita.</translation>
+      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
+By using ";;" to separate paths, you can add several folders here</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="120"/>
@@ -323,7 +323,7 @@ Karpeta anitz gehitu daitezke hemen bideak bereizteko ";;" erabilita.</translati
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Egokitu hemen erakutsiko diren azken fitxategiak 'Editatu -&gt; Hobespenak -&gt; Orokorra -&gt; Azken fitxategien zerrendaren luzera' menuan</translation>
+      <translation>Hemen erakutsiko diren azken fitxategiak antolatzeko, joan 'Editatu -&gt; Hobespenak -&gt; Orokorra -&gt; Azken fitxategien zerrendaren luzera' menura</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
@@ -448,7 +448,7 @@ Karpeta anitz gehitu daitezke hemen bideak bereizteko ";;" erabilita.</translati
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Karpeta pertsonalizatu bat konfiguratu daiteke hemen erakutsia izan dadin. Horretarako aukera: 'Editatu -&gt; Hobespenak -&gt; Hasiera -&gt; Erakutsi karpeta gehigarria'</translation>
+      <translation>Hemen karpeta pertsonalizatu bat erakutsi daiteke. Hori konfiguratzeko: 'Editatu -&gt; Hobespenak -&gt; Hasiera -&gt; Erakutsi karpeta gehigarria'</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>

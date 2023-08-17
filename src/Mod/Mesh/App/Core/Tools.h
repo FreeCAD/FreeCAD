@@ -88,18 +88,17 @@ protected:
   Wm4::Sphere3<float> _akSphere;
   bool _bTooFewPoints;
 
-private:
-  MeshSearchNeighbours (const MeshSearchNeighbours&);
-  void operator = (const MeshSearchNeighbours&);
+public:
+  MeshSearchNeighbours (const MeshSearchNeighbours&) = delete;
+  void operator = (const MeshSearchNeighbours&) = delete;
 };
 
 inline bool MeshSearchNeighbours::CheckDistToFacet (const MeshFacet &rclF)
 {
   bool bFound = false;
 
-  for (int i = 0; i < 3; i++)
+  for (PointIndex ulPIdx : rclF._aulPoints)
   {
-    PointIndex ulPIdx = rclF._aulPoints[i];
     if (!_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED))
     {
       if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2)

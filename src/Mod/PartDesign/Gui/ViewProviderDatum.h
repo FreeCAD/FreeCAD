@@ -54,14 +54,14 @@ public:
 
     void attach(App::DocumentObject *) override;
     bool onDelete(const std::vector<std::string> &) override;
-    bool doubleClicked(void) override;
-    std::vector<std::string> getDisplayModes(void) const override;
+    bool doubleClicked() override;
+    std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
 
     /// indicates if the ViewProvider use the new Selection model
-    bool useNewSelectionModel(void) const override { return true; }
+    bool useNewSelectionModel() const override { return true; }
     /// indicates if the ViewProvider can be selected
-    bool isSelectable(void) const override;
+    bool isSelectable() const override;
     /// return a hit element to the selection path or 0
     std::string getElement(const SoDetail *) const override;
     SoDetail* getDetail(const char*) const override;

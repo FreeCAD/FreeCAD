@@ -30,7 +30,7 @@
 #include "DrawWeldSymbolPy.h"  // generated from DrawWeldSymbolPy.xml
 #include "DrawLeaderLine.h"
 #include "DrawTileWeld.h"
-
+#include "DrawUtil.h"
 
 using namespace TechDraw;
 
@@ -79,6 +79,7 @@ void DrawWeldSymbol::onSettingDocument()
     auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
     DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
     if (tile1) {
+        tile1->Label.setValue(DrawUtil::translateArbitrary("DrawTileWeld",  "TileWeld",  tileName1));
         tile1->TileParent.setValue(this);
     }
 
@@ -86,6 +87,7 @@ void DrawWeldSymbol::onSettingDocument()
     auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
     DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
     if (tile2) {
+        tile2->Label.setValue(DrawUtil::translateArbitrary("DrawTileWeld",  "TileWeld",  tileName2));
         tile2->TileParent.setValue(this);
         tile2->TileRow.setValue(-1);   //other side is row -1
     }

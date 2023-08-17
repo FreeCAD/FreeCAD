@@ -147,32 +147,6 @@ DrawComplexSection::DrawComplexSection()
                       "Make a single cut, or use the profile in pieces");
 }
 
-TopoDS_Shape DrawComplexSection::getShapeToCut()
-{
-    //    Base::Console().Message("DCS::getShapeToCut()\n");
-    App::DocumentObject* base = BaseView.getValue();
-    TopoDS_Shape shapeToCut;
-    if (base && base == this) {
-        shapeToCut = getSourceShape();
-        if (FuseBeforeCut.getValue()) {
-            shapeToCut = getSourceShapeFused();
-        }
-        return shapeToCut;
-    }
-    if (!base
-        || !base->getTypeId().isDerivedFrom(
-            TechDraw::DrawViewPart::getClassTypeId())) {//is second clause necessary?
-        //Complex section is based on 3d objects, need to get our own shapes since we can't ask a dvp
-        shapeToCut = getSourceShape();
-        if (FuseBeforeCut.getValue()) {
-            shapeToCut = getSourceShapeFused();
-        }
-        return shapeToCut;
-    }
-    //complex section is based on a DVP, so get the shape the normal way
-    return DrawViewSection::getShapeToCut();
-}
-
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 {
     //    Base::Console().Message("DCS::makeCuttingTool()\n");

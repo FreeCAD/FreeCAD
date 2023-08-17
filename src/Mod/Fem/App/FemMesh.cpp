@@ -251,8 +251,8 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             SMESHDS_Group* newGroupDS = dynamic_cast<SMESHDS_Group*>(newGroupObj->GetGroupDS());
             if (newGroupDS) {
                 SMDS_MeshGroup& smdsGroup = ((SMESHDS_Group*)newGroupDS)->SMDSGroup();
-                for (unsigned i = 0; i < groupElems.size(); ++i)
-                    smdsGroup.Add(groupElems[i]);
+                for (auto it : groupElems)
+                    smdsGroup.Add(it);
             }
         }
     }
@@ -808,8 +808,8 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face &face) const
         std::map<int, std::vector<int> >::iterator it = elem_order.find(num_of_nodes);
         if (it != elem_order.end()) {
             const std::vector<int>& order = it->second;
-            for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt) {
-                int vid = vol->GetNode(*jt)->GetID();
+            for (int jt : order) {
+                int vid = vol->GetNode(jt)->GetID();
                 apair.second.push_back(vid);
             }
         }
@@ -890,8 +890,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
+    for (auto aNode : nodes) {
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -942,8 +941,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
+    for (auto aNode : nodes) {
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -992,8 +990,7 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
+    for (auto aNode : nodes) {
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -1041,8 +1038,7 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
+    for (auto aNode : nodes) {
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -1911,7 +1907,7 @@ void FemMesh::read(const char *FileName)
         readNastran(File.filePath());
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu") || File.hasExtension("pvtu")) {
+    else if (File.hasExtension({"vtk", "vtu", "pvtu"})) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
@@ -2077,8 +2073,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         std::map<int, std::string>::iterator it = volTypeMap.find(numNodes);
         if (it != volTypeMap.end()) {
             const std::vector<int>& order = elemOrderMap[it->second];
-            for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                apair.second.push_back(aVol->GetNode(*jt)->GetID());
+            for (int jt : order)
+                apair.second.push_back(aVol->GetNode(jt)->GetID());
             elementsMapVol[it->second].insert(apair);
         }
     }
@@ -2098,8 +2094,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
             std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
             if (it != faceTypeMap.end()) {
                 const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
+                for (int jt : order)
+                    apair.second.push_back(aFace->GetNode(jt)->GetID());
                 elementsMapFac[it->second].insert(apair);
             }
         }
@@ -2107,16 +2103,16 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     if (elemParam == 2) {
         // we're going to fill the elementsMapFac with the facesOnly
         std::set<int> facesOnly = getFacesOnly();
-        for (std::set<int>::iterator itfa = facesOnly.begin(); itfa != facesOnly.end(); ++itfa) {
+        for (int itfa : facesOnly) {
             std::pair<int, std::vector<int> > apair;
-            apair.first = *itfa;
-            const SMDS_MeshElement* aFace = myMesh->GetMeshDS()->FindElement(*itfa);
+            apair.first = itfa;
+            const SMDS_MeshElement* aFace = myMesh->GetMeshDS()->FindElement(itfa);
             int numNodes = aFace->NbNodes();
             std::map<int, std::string>::iterator it = faceTypeMap.find(numNodes);
             if (it != faceTypeMap.end()) {
                 const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aFace->GetNode(*jt)->GetID());
+                for (int jt : order)
+                    apair.second.push_back(aFace->GetNode(jt)->GetID());
                 elementsMapFac[it->second].insert(apair);
             }
         }
@@ -2137,8 +2133,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
             std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
             if (it != edgeTypeMap.end()) {
                 const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
+                for (int jt : order)
+                    apair.second.push_back(aEdge->GetNode(jt)->GetID());
                 elementsMapEdg[it->second].insert(apair);
             }
         }
@@ -2146,16 +2142,16 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     if (elemParam == 2) {
         // we're going to fill the elementsMapEdg with the edgesOnly
         std::set<int> edgesOnly = getEdgesOnly();
-        for (std::set<int>::iterator ited = edgesOnly.begin(); ited != edgesOnly.end(); ++ited) {
+        for (int ited : edgesOnly) {
             std::pair<int, std::vector<int> > apair;
-            apair.first = *ited;
-            const SMDS_MeshElement* aEdge = myMesh->GetMeshDS()->FindElement(*ited);
+            apair.first = ited;
+            const SMDS_MeshElement* aEdge = myMesh->GetMeshDS()->FindElement(ited);
             int numNodes = aEdge->NbNodes();
             std::map<int, std::string>::iterator it = edgeTypeMap.find(numNodes);
             if (it != edgeTypeMap.end()) {
                 const std::vector<int>& order = elemOrderMap[it->second];
-                for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt)
-                    apair.second.push_back(aEdge->GetNode(*jt)->GetID());
+                for (int jt : order)
+                    apair.second.push_back(aEdge->GetNode(jt)->GetID());
                 elementsMapEdg[it->second].insert(apair);
             }
         }
@@ -2197,11 +2193,11 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
     // This way we get sorted output.
     // See http://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
-    for (VertexMap::iterator it = vertexMap.begin(); it != vertexMap.end(); ++it) {
-        anABAQUS_Output << it->first << ", "
-            << it->second.x << ", "
-            << it->second.y << ", "
-            << it->second.z << std::endl;
+    for (const auto& it : vertexMap) {
+        anABAQUS_Output << it.first << ", "
+            << it.second.x << ", "
+            << it.second.y << ", "
+            << it.second.z << std::endl;
     }
     anABAQUS_Output << std::endl << std::endl;;
 
@@ -2209,16 +2205,15 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     // write volumes to file
     std::string elsetname;
     if (!elementsMapVol.empty()) {
-        for (ElementsMap::iterator it = elementsMapVol.begin(); it != elementsMapVol.end(); ++it) {
+        for (const auto& it : elementsMapVol) {
             anABAQUS_Output << "** Volume elements" << std::endl;
-            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Evolumes" << std::endl;
-            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-                anABAQUS_Output << jt->first;
+            anABAQUS_Output << "*Element, TYPE=" << it.first << ", ELSET=Evolumes" << std::endl;
+            for (const auto& jt : it.second) {
+                anABAQUS_Output << jt.first;
                 // Calculix allows max 16 entries in one line, a hexa20 has more !
                 int ct = 0;  // counter
                 bool first_line = true;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
-                     ++kt, ++ct) {
+                for (auto kt = jt.second.begin(); kt != jt.second.end(); ++kt, ++ct) {
                     if (ct < 15) {
                         anABAQUS_Output  << ", " << *kt;
                     }
@@ -2239,14 +2234,13 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
     // write faces to file
     if (!elementsMapFac.empty()) {
-        for (ElementsMap::iterator it = elementsMapFac.begin(); it != elementsMapFac.end(); ++it) {
+        for (const auto& it : elementsMapFac) {
             anABAQUS_Output << "** Face elements" << std::endl;
-            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Efaces" << std::endl;
-            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-                anABAQUS_Output << jt->first;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
-                     ++kt) {
-                    anABAQUS_Output << ", " << *kt;
+            anABAQUS_Output << "*Element, TYPE=" << it.first << ", ELSET=Efaces" << std::endl;
+            for (const auto& jt : it.second) {
+                anABAQUS_Output << jt.first;
+                for (int kt : jt.second) {
+                    anABAQUS_Output << ", " << kt;
                 }
                 anABAQUS_Output << std::endl;
             }
@@ -2260,14 +2254,13 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
     // write edges to file
     if (!elementsMapEdg.empty()) {
-        for (ElementsMap::iterator it = elementsMapEdg.begin(); it != elementsMapEdg.end(); ++it) {
+        for (const auto& it : elementsMapEdg) {
             anABAQUS_Output << "** Edge elements" << std::endl;
-            anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eedges" << std::endl;
-            for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-                anABAQUS_Output << jt->first;
-                for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end();
-                     ++kt) {
-                    anABAQUS_Output << ", " << *kt;
+            anABAQUS_Output << "*Element, TYPE=" << it.first << ", ELSET=Eedges" << std::endl;
+            for (const auto& jt : it.second) {
+                anABAQUS_Output << jt.first;
+                for (int kt : jt.second) {
+                    anABAQUS_Output << ", " << kt;
                 }
                 anABAQUS_Output << std::endl;
             }
@@ -2293,12 +2286,12 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         anABAQUS_Output  << std::endl << "** Group data" << std::endl;
 
         std::list<int> groupIDs = myMesh->GetGroupIds();
-        for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
+        for (int it : groupIDs) {
 
             // get and write group info and group definition
             // TODO group element type code has duplicate code of
             // PyObject* FemMeshPy::getGroupElementType()
-            SMDSAbs_ElementType aElementType = myMesh->GetGroup(*it)->GetGroupDS()->GetType();
+            SMDSAbs_ElementType aElementType = myMesh->GetGroup(it)->GetGroupDS()->GetType();
             const char* groupElementType = "";
             switch(aElementType) {
                 case SMDSAbs_All            : groupElementType = "All"; break;
@@ -2310,8 +2303,8 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
                 case SMDSAbs_Ball           : groupElementType = "Ball"; break;
                 default                     : groupElementType = "Unknown"; break;
             }
-            const char* groupName = myMesh->GetGroup(*it)->GetName();
-            anABAQUS_Output << "** GroupID: " << (*it) << " --> GroupName: " << groupName
+            const char* groupName = myMesh->GetGroup(it)->GetName();
+            anABAQUS_Output << "** GroupID: " << (it) << " --> GroupName: " << groupName
                             << " --> GroupElementType: " << groupElementType << std::endl;
 
             if (aElementType == SMDSAbs_Node) {
@@ -2323,13 +2316,13 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
 
             // get and write group elements
             std::set<int> ids;
-            SMDS_ElemIteratorPtr aElemIter = myMesh->GetGroup(*it)->GetGroupDS()->GetElements();
+            SMDS_ElemIteratorPtr aElemIter = myMesh->GetGroup(it)->GetGroupDS()->GetElements();
             while (aElemIter->more()) {
                 const SMDS_MeshElement* aElement = aElemIter->next();
                 ids.insert(aElement->GetID());
             }
-            for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-                anABAQUS_Output << *it << std::endl;
+            for (int it : ids) {
+                anABAQUS_Output << it << std::endl;
             }
 
             // write newline after each group
@@ -2406,7 +2399,7 @@ void FemMesh::write(const char *FileName) const
         writeABAQUS(File.filePath(), elemParam, groupParam);
     }
 #ifdef FC_USE_VTK
-    else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+    else if (File.hasExtension({"vtk", "vtu"})) {
         Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);

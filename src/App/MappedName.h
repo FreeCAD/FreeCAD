@@ -25,7 +25,6 @@
 #ifndef APP_MAPPED_NAME_H
 #define APP_MAPPED_NAME_H
 
-
 #include <memory>
 #include <string>
 
@@ -34,11 +33,11 @@
 #include <QByteArray>
 #include <QHash>
 #include <QVector>
+#include <utility>
 
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "IndexedName.h"
 #include "StringHasher.h"
-#include "ElementNamingUtils.h"
 
 
 namespace Data
@@ -93,13 +92,20 @@ public:
     /// is appended as text to the MappedName. In that case the memory is *not* shared between the
     /// original IndexedName and the MappedName.
     explicit MappedName(const IndexedName& element)
-        : data(QByteArray::fromRawData(element.getType(), qstrlen(element.getType()))),
-          raw(true)
+        : data(QByteArray::fromRawData(element.getType(),
+                                       static_cast<int>(qstrlen(element.getType()))))
+        , raw(true)
     {
         if (element.getIndex() > 0) {
             this->data += QByteArray::number(element.getIndex());
             this->raw = false;
         }
+    }
+
+    explicit MappedName(const App::StringIDRef& sid)
+        : raw(false)
+    {
+        sid.toBytes(this->data);
     }
 
     MappedName()
@@ -125,16 +131,16 @@ public:
     /// \param other The mapped name to copy. Its data and postfix become the new MappedName's data
     /// \param postfix The postfix for the new MappedName
     MappedName(const MappedName& other, const char* postfix)
-        : data(other.data + other.postfix),
-          postfix(postfix),
-          raw(false)
+        : data(other.data + other.postfix)
+        , postfix(postfix)
+        , raw(false)
     {}
 
     /// Move constructor
     MappedName(MappedName&& other) noexcept
-        : data(std::move(other.data)),
-          postfix(std::move(other.postfix)),
-          raw(other.raw)
+        : data(std::move(other.data))
+        , postfix(std::move(other.postfix))
+        , raw(other.raw)
     {}
 
     ~MappedName() = default;
@@ -890,21 +896,22 @@ public:
             offset);
     }
 
-    /// Extract tag and other information from a encoded element name
+    /// Extract tagOut and other information from a encoded element name
     ///
-    /// \param tag: optional pointer to receive the extracted tag
-    /// \param len: optional pointer to receive the length field after the tag field.
-    ///             This gives the length of the previous hashsed element name starting
+    /// \param tagOut: optional pointer to receive the extracted tagOut
+    /// \param lenOut: optional pointer to receive the length field after the tagOut field.
+    ///             This gives the length of the previous hashed element name starting
     ///             from the beginning of the give element name.
-    /// \param postfix: optional pointer to receive the postfix starting at the found tag field.
-    /// \param type: optional pointer to receive the element type character
-    /// \param negative: return negative tag as it is. If disabled, then always return positive tag.
-    ///                  Negative tag is sometimes used for element disambiguation.
-    /// \param recursive: recursively find the last non-zero tag
+    /// \param postfixOut: optional pointer to receive the postfixOut starting at the found tagOut field.
+    /// \param typeOut: optional pointer to receive the element typeOut character
+    /// \param negative: return negative tagOut as it is. If disabled, then always return positive tagOut.
+    ///                  Negative tagOut is sometimes used for element disambiguation.
+    /// \param recursive: recursively find the last non-zero tagOut
     ///
-    /// \return Return the end position of the tag field, or return -1 if not found.
-    int findTagInElementName(long* tag = 0, int* len = 0, const char* postfix = 0, char* type = 0,
-                             bool negative = false, bool recursive = true) const;
+    /// \return Return the end position of the tagOut field, or return -1 if not found.
+    int findTagInElementName(long* tagOut = nullptr, int* lenOut = nullptr, std::string* postfixOut = nullptr,
+                             char* typeOut = nullptr, bool negative = false,
+                             bool recursive = true) const;
 
     /// Get a hash for this MappedName
     std::size_t hash() const
@@ -919,7 +926,7 @@ private:
 };
 
 
-typedef QVector<::App::StringIDRef> ElementIDRefs;
+using ElementIDRefs = QVector<::App::StringIDRef>;
 
 struct MappedNameRef
 {
@@ -929,25 +936,34 @@ struct MappedNameRef
 
     MappedNameRef() = default;
 
-    MappedNameRef(const MappedName& name, const ElementIDRefs& sids = ElementIDRefs())
-        : name(name),
-          sids(sids)
+    ~MappedNameRef() = default;
+
+    MappedNameRef(MappedName name, ElementIDRefs sids = ElementIDRefs())
+        : name(std::move(name))
+        , sids(std::move(sids))
     {
         compact();
     }
 
     MappedNameRef(const MappedNameRef& other)
-        : name(other.name),
-          sids(other.sids)
+        : name(other.name)
+        , sids(other.sids)
     {}
 
-    MappedNameRef(MappedNameRef&& other)
-        : name(std::move(other.name)),
-          sids(std::move(other.sids)),
-          next(std::move(other.next))
+    MappedNameRef(MappedNameRef&& other) noexcept
+        : name(std::move(other.name))
+        , sids(std::move(other.sids))
+        , next(std::move(other.next))
     {}
 
-    MappedNameRef& operator=(MappedNameRef&& other)
+    MappedNameRef& operator=(const MappedNameRef& other) noexcept
+    {
+        name = other.name;
+        sids = other.sids;
+        return *this;
+    }
+
+    MappedNameRef& operator=(MappedNameRef&& other) noexcept
     {
         name = std::move(other.name);
         sids = std::move(other.sids);
@@ -960,22 +976,24 @@ struct MappedNameRef
         return !name.empty();
     }
 
-    void append(const MappedName& name, const ElementIDRefs sids = ElementIDRefs())
+    void append(const MappedName& _name, const ElementIDRefs _sids = ElementIDRefs())
     {
-        if (!name)
+        if (!_name) {
             return;
+        }
         if (!this->name) {
-            this->name = name;
-            this->sids = sids;
+            this->name = _name;
+            this->sids = _sids;
             compact();
             return;
         }
-        std::unique_ptr<MappedNameRef> n(new MappedNameRef(name, sids));
-        if (!this->next)
-            this->next = std::move(n);
+        std::unique_ptr<MappedNameRef> mappedName(new MappedNameRef(_name, _sids));
+        if (!this->next) {
+            this->next = std::move(mappedName);
+        }
         else {
-            this->next.swap(n);
-            this->next->next = std::move(n);
+            this->next.swap(mappedName);
+            this->next->next = std::move(mappedName);
         }
     }
 
@@ -987,9 +1005,9 @@ struct MappedNameRef
         }
     }
 
-    bool erase(const MappedName& name)
+    bool erase(const MappedName& _name)
     {
-        if (this->name == name) {
+        if (this->name == _name) {
             this->name.clear();
             this->sids.clear();
             if (this->next) {
@@ -1002,11 +1020,11 @@ struct MappedNameRef
             return true;
         }
 
-        for (std::unique_ptr<MappedNameRef>* p = &this->next; *p; p = &(*p)->next) {
-            if ((*p)->name == name) {
+        for (std::unique_ptr<MappedNameRef>* ptr = &this->next; *ptr; ptr = &(*ptr)->next) {
+            if ((*ptr)->name == _name) {
                 std::unique_ptr<MappedNameRef> tmp;
-                tmp.swap(*p);
-                *p = std::move(tmp->next);
+                tmp.swap(*ptr);
+                *ptr = std::move(tmp->next);
                 return true;
             }
         }

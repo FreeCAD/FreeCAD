@@ -49,7 +49,7 @@ public:
    explicit AttachEngineException(const char * sMessage);
    explicit AttachEngineException(const std::string& sMessage);
    /// Destruction
-   ~AttachEngineException() throw() override {}
+   ~AttachEngineException() noexcept override {}
 };
 
 /**

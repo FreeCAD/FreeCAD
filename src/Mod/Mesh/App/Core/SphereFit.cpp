@@ -125,10 +125,8 @@ float SphereFit::GetStdDeviation() const
 
 void SphereFit::ProjectToSphere()
 {
-	for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-		Base::Vector3f& cPnt = *it;
-
-		// Compute unit vector from sphere centre to point.
+	for (auto & cPnt : _vPoints) {
+			// Compute unit vector from sphere centre to point.
 		// Because this vector is orthogonal to the sphere's surface at the
 		// intersection point we can easily compute the projection point on the
 		// closest surface point using the radius of the sphere
@@ -207,7 +205,7 @@ float SphereFit::Fit()
 	{
 		++_numIter;
 
-		// Set up the quasi parameteric normal equations
+		// Set up the quasi parametric normal equations
 		setupNormalEquationMatrices(residuals, atpa, atpl);
 
 		// Solve the equations for the unknown corrections
@@ -271,7 +269,7 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric
+// Sets up contributions of given observation to the quasi parametric
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)

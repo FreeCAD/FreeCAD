@@ -44,4 +44,13 @@
 #endif
 #endif
 
+// PathSimulator
+#ifndef PathSimulatorExport
+#ifdef PathSimulator_EXPORTS
+#  define PathSimulatorExport      FREECAD_DECL_EXPORT
+#else
+#  define PathSimulatorExport      FREECAD_DECL_IMPORT
+#endif
+#endif
+
 #endif //PATH_GLOBAL_H

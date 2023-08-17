@@ -2304,28 +2304,28 @@ std::unique_ptr<Geom2dCurve> makeFromCurve2d(Handle(Geom2d_Curve) curve)
     if (curve.IsNull())
         return geo2d;
     if (curve->IsKind(STANDARD_TYPE (Geom2d_Parabola))) {
-        geo2d.reset(new Geom2dParabola(Handle(Geom2d_Parabola)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dParabola>(Handle(Geom2d_Parabola)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Hyperbola))) {
-        geo2d.reset(new Geom2dHyperbola(Handle(Geom2d_Hyperbola)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dHyperbola>(Handle(Geom2d_Hyperbola)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Ellipse))) {
-        geo2d.reset(new Geom2dEllipse(Handle(Geom2d_Ellipse)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dEllipse>(Handle(Geom2d_Ellipse)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Circle))) {
-        geo2d.reset(new Geom2dCircle(Handle(Geom2d_Circle)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dCircle>(Handle(Geom2d_Circle)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_Line))) {
-        geo2d.reset(new Geom2dLine(Handle(Geom2d_Line)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dLine>(Handle(Geom2d_Line)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_BSplineCurve))) {
-        geo2d.reset(new Geom2dBSplineCurve(Handle(Geom2d_BSplineCurve)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dBSplineCurve>(Handle(Geom2d_BSplineCurve)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_BezierCurve))) {
-        geo2d.reset(new Geom2dBezierCurve(Handle(Geom2d_BezierCurve)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dBezierCurve>(Handle(Geom2d_BezierCurve)::DownCast(curve));
     }
     else if (curve->IsKind(STANDARD_TYPE (Geom2d_TrimmedCurve))) {
-        geo2d.reset(new Geom2dTrimmedCurve(Handle(Geom2d_TrimmedCurve)::DownCast(curve)));
+        geo2d = std::make_unique<Geom2dTrimmedCurve>(Handle(Geom2d_TrimmedCurve)::DownCast(curve));
     }
 
     return geo2d;
@@ -2426,7 +2426,7 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
     {
     case GeomAbs_Line:
         {
-            geoCurve.reset(new Geom2dLine());
+            geoCurve = std::make_unique<Geom2dLine>();
             Handle(Geom2d_Line) this_curv = Handle(Geom2d_Line)::DownCast
                 (geoCurve->handle());
             this_curv->SetLin2d(adapt.Line());
@@ -2434,7 +2434,7 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
     case GeomAbs_Circle:
         {
-            geoCurve.reset(new Geom2dCircle());
+            geoCurve = std::make_unique<Geom2dCircle>();
             Handle(Geom2d_Circle) this_curv = Handle(Geom2d_Circle)::DownCast
                 (geoCurve->handle());
             this_curv->SetCirc2d(adapt.Circle());
@@ -2442,7 +2442,7 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
     case GeomAbs_Ellipse:
         {
-            geoCurve.reset(new Geom2dEllipse());
+            geoCurve = std::make_unique<Geom2dEllipse>();
             Handle(Geom2d_Ellipse) this_curv = Handle(Geom2d_Ellipse)::DownCast
                 (geoCurve->handle());
             this_curv->SetElips2d(adapt.Ellipse());
@@ -2450,7 +2450,7 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
     case GeomAbs_Hyperbola:
         {
-            geoCurve.reset(new Geom2dHyperbola());
+            geoCurve = std::make_unique<Geom2dHyperbola>();
             Handle(Geom2d_Hyperbola) this_curv = Handle(Geom2d_Hyperbola)::DownCast
                 (geoCurve->handle());
             this_curv->SetHypr2d(adapt.Hyperbola());
@@ -2458,7 +2458,7 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
     case GeomAbs_Parabola:
         {
-            geoCurve.reset(new Geom2dParabola());
+            geoCurve = std::make_unique<Geom2dParabola>();
             Handle(Geom2d_Parabola) this_curv = Handle(Geom2d_Parabola)::DownCast
                 (geoCurve->handle());
             this_curv->SetParab2d(adapt.Parabola());
@@ -2466,12 +2466,12 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
         }
     case GeomAbs_BezierCurve:
         {
-            geoCurve.reset(new Geom2dBezierCurve(adapt.Bezier()));
+            geoCurve = std::make_unique<Geom2dBezierCurve>(adapt.Bezier());
             break;
         }
     case GeomAbs_BSplineCurve:
         {
-            geoCurve.reset(new Geom2dBSplineCurve(adapt.BSpline()));
+            geoCurve = std::make_unique<Geom2dBSplineCurve>(adapt.BSpline());
             break;
         }
     case GeomAbs_OtherCurve:

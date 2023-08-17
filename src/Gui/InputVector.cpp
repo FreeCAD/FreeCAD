@@ -85,7 +85,7 @@ LocationWidget::~LocationWidget()
 
 QSize LocationWidget::sizeHint() const
 {
-    return QSize(150,100);
+    return {150,100};
 }
 
 void LocationWidget::changeEvent(QEvent* e)

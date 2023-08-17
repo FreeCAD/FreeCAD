@@ -34,7 +34,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Section, Part::Boolean)
 
 
-Section::Section(void)
+Section::Section()
 {
     ADD_PROPERTY_TYPE(Approximation,(false),"Section",App::Prop_None,"Approximate the output edges");
 }

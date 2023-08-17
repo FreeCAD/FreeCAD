@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="93"/>
       <location filename="../../BrowserView.cpp" line="815"/>
+      <location filename="../../AppWebGui.cpp" line="93"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>

@@ -39,7 +39,7 @@ public:
     DrawSketchHandlerPoint()
         : selectionDone(false)
     {}
-    virtual ~DrawSketchHandlerPoint()
+    ~DrawSketchHandlerPoint() override
     {}
 
     void mouseMove(Base::Vector2d onSketchPos) override

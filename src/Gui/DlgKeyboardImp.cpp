@@ -348,8 +348,7 @@ void DlgCustomKeyboardImp::populatePriorityList(QTreeWidget *priorityList,
 
     auto actionList = ShortcutManager::instance()->getActionsByShortcut(sc);
     QTreeWidgetItem *currentItem = nullptr;
-    for (size_t i=0; i<actionList.size(); ++i) {
-        const auto &info = actionList[i];
+    for (const auto &info : actionList) {
         if (!info.second)
             continue;
         QTreeWidgetItem* item = new QTreeWidgetItem(priorityList);
@@ -397,10 +396,10 @@ void DlgCustomKeyboardImp::populateCommandGroups(QComboBox *combo)
     }
     groupMap.push_back(std::make_pair(QLatin1String("All"), tr("All")));
 
-    for (GroupMap::iterator it = groupMap.begin(); it != groupMap.end(); ++it) {
-        if (combo->findData(it->first) < 0) {
-            combo->addItem(it->second);
-            combo->setItemData(combo->count()-1, QVariant(it->first), Qt::UserRole);
+    for (const auto & it : groupMap) {
+        if (combo->findData(it.first) < 0) {
+            combo->addItem(it.second);
+            combo->setItemData(combo->count()-1, QVariant(it.first), Qt::UserRole);
         }
     }
 }

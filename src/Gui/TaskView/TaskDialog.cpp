@@ -48,9 +48,9 @@ TaskDialog::TaskDialog()
 
 TaskDialog::~TaskDialog()
 {
-    for (std::vector<QWidget*>::iterator it=Content.begin();it!=Content.end();++it) {
-        delete *it;
-        *it = 0;
+    for (auto it : Content) {
+        delete it;
+        it = nullptr;
     }
 }
 

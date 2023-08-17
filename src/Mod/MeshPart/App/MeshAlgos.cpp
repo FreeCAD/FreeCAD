@@ -101,8 +101,8 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
         if(fliped.empty())
             break;
 
-        for(std::set<MeshCore::FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)
-            alg.CollapseFacet(*It);
+        for(MeshCore::FacetIndex It : fliped)
+            alg.CollapseFacet(It);
         fliped.clear();
     }
 
@@ -448,9 +448,9 @@ void MeshAlgos::cutByCurve(MeshCore::MeshKernel* pMesh,const std::vector<CurvePr
 {
   MeshTopoAlgorithm cTopAlg(*pMesh);
 
-  for (std::vector<CurveProjector::FaceSplitEdge>::const_iterator it = vSplitEdges.begin();it!=vSplitEdges.end();++it)
+  for (const auto & it : vSplitEdges)
   {
-    cTopAlg.SplitFacet( it->ulFaceIndex, it->p1, it->p2 );
+    cTopAlg.SplitFacet( it.ulFaceIndex, it.p1, it.p2 );
   }
 }
 

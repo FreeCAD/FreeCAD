@@ -55,7 +55,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -317,8 +317,9 @@ void SheetTableView::insertRows()
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
-        sortedRows.push_back(it->row());
+    for (const auto& it : rows) {
+        sortedRows.push_back(it.row());
+    }
     std::sort(sortedRows.begin(), sortedRows.end());
 
     /* Insert rows */
@@ -368,14 +369,15 @@ void SheetTableView::removeRows()
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
-        sortedRows.push_back(it->row());
-    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
+    for (const auto& it : rows) {
+        sortedRows.push_back(it.row());
+    }
+    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<>());
 
     /* Remove rows */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
-    for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
-        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
+    for (const auto& it : sortedRows) {
+        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(it).c_str(), 1);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -389,8 +391,9 @@ void SheetTableView::insertColumns()
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
-        sortedColumns.push_back(it->column());
+    for (const auto& it : cols) {
+        sortedColumns.push_back(it.column());
+    }
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
     /* Insert columns */
@@ -441,15 +444,17 @@ void SheetTableView::removeColumns()
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
-        sortedColumns.push_back(it->column());
-    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
+    for (const auto& it : cols) {
+        sortedColumns.push_back(it.column());
+    }
+    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<>());
 
     /* Remove columns */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
-    for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
+    for (const auto& it : sortedColumns) {
         Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
-            columnName(*it).c_str(), 1);
+            columnName(it).c_str(), 1);
+    }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
@@ -488,8 +493,8 @@ void SheetTableView::setSheet(Sheet* _sheet)
     // Update row and column spans
     std::vector<std::string> usedCells = sheet->getUsedCells();
 
-    for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
-        CellAddress address(*i);
+    for (const auto& i : usedCells) {
+        CellAddress address(i);
 
         if (sheet->isMergedCell(address)) {
             int rows, cols;

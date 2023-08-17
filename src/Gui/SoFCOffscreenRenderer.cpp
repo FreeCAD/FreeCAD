@@ -107,7 +107,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
     }
 
     Base::FileInfo file(filename);
-    if (file.hasExtension("JPG") || file.hasExtension("JPEG")) {
+    if (file.hasExtension({"JPG", "JPEG"})) {
         // writing comment in case of jpeg (Qt ignores setText() in case of jpeg)
         std::string com;
         if (strcmp(comment,"")==0)
@@ -140,9 +140,9 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         bool supported = false;
         QByteArray format;
         QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-        for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-            if (file.hasExtension((*it).data())) {
-                format = *it;
+        for (const auto & it : qtformats) {
+            if (file.hasExtension(it.data())) {
+                format = it;
                 supported = true;
                 break;
             }
@@ -194,7 +194,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!writeToFile(filename, file.extension().c_str()))
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("EPS") || file.hasExtension("PS")) {
+        else if (file.hasExtension({"EPS", "PS"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
@@ -206,7 +206,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
             if (!ok)
                 throw Base::FileException("Error writing image file", filename);
         }
-        else if (file.hasExtension("RGB") || file.hasExtension("SGI")) {
+        else if (file.hasExtension({"RGB", "SGI"})) {
             // Any format which is supported by Coin only
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
@@ -228,17 +228,8 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
     // get all supported formats by Coin3D
     int num = getNumWriteFiletypes();
     for (int i=0; i < num; i++) {
-#if   (COIN_MAJOR_VERSION < 2) // Coin3D <= 1.x
-        SbList<SbName> extlist;
-#elif (COIN_MAJOR_VERSION < 3) // Coin3D <= 2.x
-# if  (COIN_MINOR_VERSION < 3) // Coin3D <= 2.2.x
-        SbList<SbName> extlist;
-# else                         // Coin3D >= 2.3.x
+
         SbPList extlist;
-# endif
-#else                          // Coin3D >= 3.x
-        SbPList extlist;
-#endif
 
         SbString fullname, description;
         getWriteFiletypeInfo(i, extlist, fullname, description);
@@ -252,10 +243,10 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
 
     // add now all further QImage formats
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+    for (const auto & it : qtformats) {
         // not supported? then append
-        if (!isWriteSupported((*it).data()) && formats.indexOf(QLatin1String(*it)) == -1)
-            formats << QLatin1String(*it);
+        if (!isWriteSupported(it.data()) && formats.indexOf(QLatin1String(it)) == -1)
+            formats << QLatin1String(it);
     }
 
     // now add PostScript and SGI RGB
@@ -749,8 +740,8 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
     QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
 
     QStringList formats;
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-        formats << QLatin1String(*it);
+    for (const auto & it : qtformats) {
+        formats << QLatin1String(it);
     }
     formats.sort();
     return formats;

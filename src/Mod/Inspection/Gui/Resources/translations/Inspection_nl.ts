@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Zoekafstand</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>

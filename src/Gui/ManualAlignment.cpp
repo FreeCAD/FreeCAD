@@ -62,7 +62,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 AlignmentGroup::AlignmentGroup()
 {
@@ -609,7 +609,7 @@ public:
         Base::Vector3d pln_base;
         rot.multVec(plane1_base,pln_base);
         Base::Vector3d dif = plane2_base - pln_base;
-        return Base::Placement(dif, rot);
+        return {dif, rot};
     }
 
     static Base::Placement
@@ -654,9 +654,11 @@ ManualAlignment* ManualAlignment::_instance = nullptr;
 ManualAlignment::ManualAlignment()
   : myViewer(nullptr), myDocument(nullptr), myPickPoints(3), d(new Private)
 {
+    //NOLINTBEGIN
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
-        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, bp::_1));
+        .connect(std::bind(&ManualAlignment::slotDeletedDocument, this, sp::_1));
+    //NOLINTEND
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -849,8 +851,10 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     // Connect to the document's signal as we want to be notified when something happens
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
-    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(boost::bind
-        (&ManualAlignment::slotDeletedObject, this, bp::_1));
+    //NOLINTBEGIN
+    this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(std::bind
+        (&ManualAlignment::slotDeletedObject, this, sp::_1));
+    //NOLINTEND
 
     continueAlignment();
 }

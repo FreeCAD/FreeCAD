@@ -1082,8 +1082,8 @@ bool FaceUniter::process()
                     // by a boolean cut, where one old shape is marked as modified, producing multiple new shapes
                     if (!temp.empty())
                     {
-                        for (FaceVectorType::iterator f = temp.begin(); f != temp.end(); ++f)
-                              modifiedShapes.emplace_back(*f, newFace);
+                        for (const auto & f : temp)
+                              modifiedShapes.emplace_back(f, newFace);
                     }
                 }
             }
@@ -1115,11 +1115,11 @@ bool FaceUniter::process()
                 return false;
             }
             // update the list of modifications
-            for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+            for (auto & it : modifiedShapes)
             {
-                if (sew.IsModified(it->second))
+                if (sew.IsModified(it.second))
                 {
-                    it->second = sew.Modified(it->second);
+                    it.second = sew.Modified(it.second);
                     break;
                 }
             }
@@ -1169,11 +1169,11 @@ bool FaceUniter::process()
         for (mapIt.Initialize(faceMap); mapIt.More(); mapIt.Next())
         {
             bool isModifiedFace = false;
-            for (std::vector<ShapePairType>::iterator it = modifiedShapes.begin(); it != modifiedShapes.end(); ++it)
+            for (auto & it : modifiedShapes)
             {
-                if (mapIt.Key().IsSame(it->second)) {
+                if (mapIt.Key().IsSame(it.second)) {
                     // Note: IsEqual() for some reason does not work
-                    it->second = mapIt.Value();
+                    it.second = mapIt.Value();
                     isModifiedFace = true;
                 }
             }
@@ -1321,14 +1321,14 @@ void Part::BRepBuilderAPI_RefineModel::Build()
 void Part::BRepBuilderAPI_RefineModel::LogModifications(const ModelRefine::FaceUniter& uniter)
 {
     const std::vector<ShapePairType>& modShapes = uniter.getModifiedShapes();
-    for (std::vector<ShapePairType>::const_iterator it = modShapes.begin(); it != modShapes.end(); ++it) {
+    for (const auto & it : modShapes) {
         TopTools_ListOfShape list;
-        list.Append(it->second);
-        myModified.Bind(it->first, list);
+        list.Append(it.second);
+        myModified.Bind(it.first, list);
     }
     const ShapeVectorType& delShapes = uniter.getDeletedShapes();
-    for (ShapeVectorType::const_iterator it = delShapes.begin(); it != delShapes.end(); ++it) {
-        myDeleted.Append(*it);
+    for (const auto & it : delShapes) {
+        myDeleted.Append(it);
     }
 }
 

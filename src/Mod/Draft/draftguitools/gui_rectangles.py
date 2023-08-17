@@ -59,7 +59,7 @@ class Rectangle(gui_base_original.Creator):
         super(Rectangle, self).Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Rectangle")
+            self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
             self.ui.extUi()
             if utils.getParam("UsePartPrimitives", False):
                 self.fillstate = self.ui.hasFill.isChecked()

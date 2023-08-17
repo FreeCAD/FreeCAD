@@ -115,11 +115,8 @@ std::string Extension::name() const {
 
     if (pos != std::string::npos)
         return temp.substr(pos+1);
-    else
-        return std::string();
+    return {};
 }
-
-
 
 Property* Extension::extensionGetPropertyByName(const char* name) const {
 

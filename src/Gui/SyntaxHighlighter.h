@@ -39,7 +39,7 @@ class GuiExport SyntaxHighlighter : public QSyntaxHighlighter
 {
 public:
     SyntaxHighlighter(QObject* parent);
-    virtual ~SyntaxHighlighter();
+    ~SyntaxHighlighter() override;
 
     int maximumUserState() const;
 

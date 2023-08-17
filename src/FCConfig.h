@@ -230,9 +230,13 @@ typedef unsigned __int64    uint64_t;
 // Qt
 
 // Make sure to explicitly use the correct conversion
-#define QT_NO_CAST_FROM_ASCII
-#undef  QT3_SUPPORT
-#define QT_NO_KEYWORDS
+#ifndef QT_NO_CAST_FROM_ASCII
+# define QT_NO_CAST_FROM_ASCII
+#endif
+
+#ifndef QT_NO_KEYWORDS
+# define QT_NO_KEYWORDS
+#endif
 
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
 # ifndef QT_DLL

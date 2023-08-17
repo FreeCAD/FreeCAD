@@ -59,7 +59,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
-
+// Hint: this is to prevent to re-format big parts of the file. Remove it later again.
+// clang-format off
 using namespace std;
 using namespace SketcherGui;
 using namespace Part;
@@ -83,7 +84,7 @@ public:
         this->setMessage(ErrMsg);
     }
 
-    ~ExceptionWrongInput() throw() override
+    ~ExceptionWrongInput() noexcept override
     {}
 
     QString ErrMsg;
@@ -1187,23 +1188,24 @@ class CmdSketcherGrid: public Gui::Command
 {
 public:
     CmdSketcherGrid();
-    virtual ~CmdSketcherGrid()
+    ~CmdSketcherGrid() override
     {}
-    virtual const char* className() const override
+    const char* className() const override
     {
         return "CmdSketcherGrid";
     }
-    virtual void languageChange() override;
+    void languageChange() override;
 
 protected:
-    virtual void activated(int iMsg) override;
-    virtual bool isActive(void) override;
-    virtual Gui::Action* createAction(void) override;
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action* createAction() override;
 
 private:
     void updateIcon(bool value);
     void updateInactiveHandlerIcon();
 
+public:
     CmdSketcherGrid(const CmdSketcherGrid&) = delete;
     CmdSketcherGrid(CmdSketcherGrid&&) = delete;
     CmdSketcherGrid& operator=(const CmdSketcherGrid&) = delete;
@@ -1435,19 +1437,23 @@ class CmdSketcherSnap: public Gui::Command, public ParameterGrp::ObserverType
 {
 public:
     CmdSketcherSnap();
-    virtual ~CmdSketcherSnap();
-    virtual const char* className() const override
+    ~CmdSketcherSnap() override;
+    CmdSketcherSnap(const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap(CmdSketcherSnap&&) = delete;
+    CmdSketcherSnap& operator=(const CmdSketcherSnap&) = delete;
+    CmdSketcherSnap& operator=(CmdSketcherSnap&&) = delete;
+    const char* className() const override
     {
         return "CmdSketcherSnap";
     }
-    virtual void languageChange() override;
+    void languageChange() override;
 
     void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
 protected:
-    virtual void activated(int iMsg) override;
-    virtual bool isActive(void) override;
-    virtual Gui::Action* createAction(void) override;
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action* createAction() override;
 
 private:
     void updateIcon(bool value);
@@ -1457,11 +1463,6 @@ private:
         return App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
     }
-
-    CmdSketcherSnap(const CmdSketcherSnap&) = delete;
-    CmdSketcherSnap(CmdSketcherSnap&&) = delete;
-    CmdSketcherSnap& operator=(const CmdSketcherSnap&) = delete;
-    CmdSketcherSnap& operator=(CmdSketcherSnap&&) = delete;
 
     bool snapEnabled = true;
 };
@@ -1696,18 +1697,22 @@ class CmdRenderingOrder: public Gui::Command, public ParameterGrp::ObserverType
 
 public:
     CmdRenderingOrder();
-    virtual ~CmdRenderingOrder();
-    virtual const char* className() const override
+    ~CmdRenderingOrder() override;
+    CmdRenderingOrder(const CmdRenderingOrder&) = delete;
+    CmdRenderingOrder(CmdRenderingOrder&&) = delete;
+    CmdRenderingOrder& operator=(const CmdRenderingOrder&) = delete;
+    CmdRenderingOrder& operator=(CmdRenderingOrder&&) = delete;
+    const char* className() const override
     {
         return "CmdRenderingOrder";
     }
-    virtual void languageChange() override;
+    void languageChange() override;
     void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
 protected:
-    virtual void activated(int iMsg) override;
-    virtual bool isActive(void) override;
-    virtual Gui::Action* createAction(void) override;
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action* createAction() override;
 
 private:
     void updateIcon();
@@ -1717,11 +1722,6 @@ private:
         return App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     }
-
-    CmdRenderingOrder(const CmdRenderingOrder&) = delete;
-    CmdRenderingOrder(CmdRenderingOrder&&) = delete;
-    CmdRenderingOrder& operator=(const CmdRenderingOrder&) = delete;
-    CmdRenderingOrder& operator=(CmdRenderingOrder&&) = delete;
 
     ElementType TopElement = ElementType::Normal;
 };
@@ -1849,3 +1849,4 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdSketcherSnap());
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
+// clang-format on

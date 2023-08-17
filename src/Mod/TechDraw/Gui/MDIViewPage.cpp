@@ -78,7 +78,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
@@ -114,10 +114,12 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     tabText += QString::fromUtf8("[*]");
     setWindowTitle(tabText);
 
+    //NOLINTBEGIN
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
-    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
+    auto bnd = std::bind(&MDIViewPage::onDeleteObject, this, sp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+    //NOLINTEND
 }
 
 MDIViewPage::~MDIViewPage() { connectDeletedObject.disconnect(); }
@@ -303,6 +305,8 @@ void MDIViewPage::printPdf(std::string file)
 
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
 
@@ -513,6 +517,8 @@ void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 //static routine to print all pages in a document to pdf
 void MDIViewPage::printAllPdf(QPrinter* printer, App::Document* doc)
 {
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     //    Base::Console().Message("MDIVP::printAllPdf()\n");
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());

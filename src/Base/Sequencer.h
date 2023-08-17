@@ -370,9 +370,8 @@ public:
     void setProgress(size_t);
     bool wasCanceled() const;
 
-private:
-    SequencerLauncher(const SequencerLauncher&);
-    void operator=(const SequencerLauncher&);
+    SequencerLauncher(const SequencerLauncher&) = delete;
+    void operator=(const SequencerLauncher&) = delete;
 };
 
 /** Access to the only SequencerBase instance */

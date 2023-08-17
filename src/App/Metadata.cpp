@@ -172,6 +172,11 @@ std::string Metadata::name() const
     return _name;
 }
 
+std::string Metadata::type() const
+{
+    return _type;
+}
+
 Meta::Version Metadata::version() const
 {
     return _version;
@@ -289,6 +294,11 @@ void Metadata::setName(const std::string& name)
         throw Base::RuntimeError("Name cannot contain any of: " + invalidCharacters);
     }
     _name = name;
+}
+
+void Metadata::setType(const std::string& type)
+{
+    _type = type;
 }
 
 void Metadata::setVersion(const Meta::Version& version)
@@ -726,6 +736,7 @@ bool Metadata::supportsCurrentFreeCAD() const
 void Metadata::appendToElement(DOMElement* root) const
 {
     appendSimpleXMLNode(root, "name", _name);
+    appendSimpleXMLNode(root, "type", _type);
     appendSimpleXMLNode(root, "description", _description);
     if (_version != Meta::Version()) {
         // Only append version if it's not 0.0.0
@@ -863,6 +874,9 @@ void Metadata::parseVersion1(const DOMNode* startNode)
 
         if (tagString == "name") {
             _name = StrXUTF8(element->getTextContent()).str;
+        }
+        else if (tagString == "type") {
+            _type = StrXUTF8(element->getTextContent()).str;
         }
         else if (tagString == "version") {
             _version = Meta::Version(StrXUTF8(element->getTextContent()).str);

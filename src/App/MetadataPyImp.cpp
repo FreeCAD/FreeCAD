@@ -192,6 +192,19 @@ void MetadataPy::setDescription(Py::Object args)
     getMetadataPtr()->setDescription(description);
 }
 
+Py::Object MetadataPy::getType() const
+{
+    return Py::String(getMetadataPtr()->type());
+}
+
+void MetadataPy::setType(Py::Object args)
+{
+    const char *type = nullptr;
+    if (!PyArg_Parse(args.ptr(), "s", &type))
+        throw Py::Exception();
+    getMetadataPtr()->setType(type);
+}
+
 Py::Object MetadataPy::getMaintainer() const
 {
     auto maintainers = getMetadataPtr()->maintainer();

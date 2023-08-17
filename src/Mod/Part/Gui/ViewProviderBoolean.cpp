@@ -231,9 +231,10 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-            if (*it)
-                Gui::Application::Instance->hideViewProvider(*it);
+        for (auto it : pShapes) {
+            if (it) {
+                Gui::Application::Instance->hideViewProvider(it);
+            }
         }
     }
 }
@@ -243,9 +244,10 @@ bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto it : pShapes) {
+        if (it) {
+            Gui::Application::Instance->showViewProvider(it);
+        }
     }
 
     return true;
@@ -368,9 +370,10 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-            if (*it)
-                Gui::Application::Instance->hideViewProvider(*it);
+        for (auto it : pShapes) {
+            if (it) {
+                Gui::Application::Instance->hideViewProvider(it);
+            }
         }
     }
 }
@@ -380,9 +383,10 @@ bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto it : pShapes) {
+        if (it) {
+            Gui::Application::Instance->showViewProvider(it);
+        }
     }
 
     return true;

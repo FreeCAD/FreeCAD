@@ -2352,22 +2352,22 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Mesh tools</source>
-      <translation>Outils de maillage</translation>
+      <translation>Outils de Mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh modify</source>
-      <translation>Modifier le maillage</translation>
+      <translation>Modifier de Mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh boolean</source>
-      <translation>Opération booléenne sur le maillage</translation>
+      <translation>Opérations booléennes de Mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation>Couper le maillage</translation>
+      <translation>Couper de Mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -2377,7 +2377,7 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh analyze</source>
-      <translation>Analyser le maillage</translation>
+      <translation>Analyser de Mesh</translation>
     </message>
   </context>
 </TS>

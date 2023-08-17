@@ -27,6 +27,9 @@
 
 #include <QByteArray>
 #include <QPixmap>
+#include <QSvgRenderer>
+
+#include <App/Material.h>
 
 #include <Mod/TechDraw/App/HatchLine.h>
 
@@ -165,6 +168,8 @@ private:
 
     double m_hatchRotation;
     Base::Vector3d m_hatchOffset;
+
+    QSvgRenderer *m_sharedRender;
 
 };
 

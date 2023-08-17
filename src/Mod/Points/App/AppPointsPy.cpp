@@ -90,17 +90,17 @@ private:
 
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
-                reader.reset(new AscReader);
+                reader = std::make_unique<AscReader>();
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
+                reader = std::make_unique<E57Reader>(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting));
             }
             else if (file.hasExtension("ply")) {
-                reader.reset(new PlyReader);
+                reader = std::make_unique<PlyReader>();
             }
             else if (file.hasExtension("pcd")) {
-                reader.reset(new PcdReader);
+                reader = std::make_unique<PcdReader>();
             }
             else {
                 throw Py::RuntimeError("Unsupported file extension");
@@ -206,17 +206,17 @@ private:
 
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
-                reader.reset(new AscReader);
+                reader = std::make_unique<AscReader>();
             }
             else if (file.hasExtension("e57")) {
                 auto setting = readE57Settings();
-                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
+                reader = std::make_unique<E57Reader>(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting));
             }
             else if (file.hasExtension("ply")) {
-                reader.reset(new PlyReader);
+                reader = std::make_unique<PlyReader>();
             }
             else if (file.hasExtension("pcd")) {
-                reader.reset(new PcdReader);
+                reader = std::make_unique<PcdReader>();
             }
             else {
                 throw Py::RuntimeError("Unsupported file extension");
@@ -327,13 +327,13 @@ private:
                     const PointKernel& kernel = fea->Points.getValue();
                     std::unique_ptr<Writer> writer;
                     if (file.hasExtension("asc")) {
-                        writer.reset(new AscWriter(kernel));
+                        writer = std::make_unique<AscWriter>(kernel);
                     }
                     else if (file.hasExtension("ply")) {
-                        writer.reset(new PlyWriter(kernel));
+                        writer = std::make_unique<PlyWriter>(kernel);
                     }
                     else if (file.hasExtension("pcd")) {
-                        writer.reset(new PcdWriter(kernel));
+                        writer = std::make_unique<PcdWriter>(kernel);
                     }
                     else {
                         throw Py::RuntimeError("Unsupported file extension");

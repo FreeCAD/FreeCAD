@@ -324,20 +324,20 @@ DraftLabel = Label
 
 
 def get_label_types():
-    return ["Custom",
-            "Name",
-            "Label",
-            "Position",
-            "Length",
-            "Area",
-            "Volume",
-            "Tag",
-            "Material",
-            "Label + Position",
-            "Label + Length",
-            "Label + Area",
-            "Label + Volume",
-            "Label + Material"]
+    return [QT_TRANSLATE_NOOP("Draft","Custom"),
+            QT_TRANSLATE_NOOP("Draft","Name"),
+            QT_TRANSLATE_NOOP("Draft","Label"),
+            QT_TRANSLATE_NOOP("Draft","Position"),
+            QT_TRANSLATE_NOOP("Draft","Length"),
+            QT_TRANSLATE_NOOP("Draft","Area"),
+            QT_TRANSLATE_NOOP("Draft","Volume"),
+            QT_TRANSLATE_NOOP("Draft","Tag"),
+            QT_TRANSLATE_NOOP("Draft","Material"),
+            QT_TRANSLATE_NOOP("Draft","Label + Position"),
+            QT_TRANSLATE_NOOP("Draft","Label + Length"),
+            QT_TRANSLATE_NOOP("Draft","Label + Area"),
+            QT_TRANSLATE_NOOP("Draft","Label + Volume"),
+            QT_TRANSLATE_NOOP("Draft","Label + Material")]
 
 
 def return_info(target, typ, subelement=None):

@@ -183,12 +183,12 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 # empty annotation styles list
                 pass
             else:
-                if vobj.AnnotationStyle in self.renamed.keys():
+                if vobj.AnnotationStyle in self.renamed:
                     # the style has been renamed
                     # temporarily add the new style and switch to it
                     vobj.AnnotationStyle = vobj.AnnotationStyle + [self.renamed[vobj.AnnotationStyle]]
                     vobj.AnnotationStyle = self.renamed[vobj.AnnotationStyle]
-                if vobj.AnnotationStyle in styles.keys():
+                if vobj.AnnotationStyle in styles:
                     if vobj.AnnotationStyle in changedstyles:
                         # the style has changed
                         for attr, value in styles[vobj.AnnotationStyle].items():
@@ -202,7 +202,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 else:
                     # the style has been removed
                     vobj.AnnotationStyle = ""
-            vobj.AnnotationStyle = [""] + list(styles.keys())
+            vobj.AnnotationStyle = [""] + list(styles)
 
     def on_style_changed(self, index):
         """Execute as a callback when the styles combobox changes."""

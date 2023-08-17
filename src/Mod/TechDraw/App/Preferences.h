@@ -102,6 +102,8 @@ public:
 
     static bool autoCorrectDimRefs();
     static int scrubCount();
+
+    static double svgHatchFactor();
 };
 
 }//end namespace TechDraw

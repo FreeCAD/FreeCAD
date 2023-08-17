@@ -1983,7 +1983,7 @@ class ComponentTaskPanel:
         import ArchIFCSchema
 
         # get presets
-        self.ptypes = list(ArchIFCSchema.IfcTypes.keys())
+        self.ptypes = list(ArchIFCSchema.IfcTypes)
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")

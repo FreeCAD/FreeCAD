@@ -653,7 +653,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy, QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
+    copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -661,7 +662,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, &ReportOutput::selectAll, QKeySequence(QKeySequence::SelectAll));
+    QAction* select = menu->addAction(selectStr, this, &ReportOutput::selectAll);
+    select->setShortcut(QKeySequence(QKeySequence::SelectAll));
 
     menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();

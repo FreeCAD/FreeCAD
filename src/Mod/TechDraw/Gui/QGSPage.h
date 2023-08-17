@@ -75,7 +75,7 @@ class TechDrawGuiExport QGSPage: public QGraphicsScene
 
 public:
     explicit QGSPage(ViewProviderPage* vpPage, QWidget* parent = nullptr);
-    ~QGSPage() = default;
+    ~QGSPage() override = default;
 
     bool addView(const App::DocumentObject* obj);
     bool attachView(App::DocumentObject* obj);

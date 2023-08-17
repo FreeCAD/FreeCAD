@@ -229,12 +229,12 @@ inline bool Vector2d::operator== (const Vector2d &v) const
 
 inline Vector2d Vector2d::operator+ () const
 {
-  return Vector2d(x, y);
+  return {x, y};
 }
 
 inline Vector2d Vector2d::operator+ (const Vector2d &v) const
 {
-  return Vector2d(x + v.x, y + v.y);
+  return {x + v.x, y + v.y};
 }
 
 inline Vector2d& Vector2d::operator+= (const Vector2d &v)
@@ -246,12 +246,12 @@ inline Vector2d& Vector2d::operator+= (const Vector2d &v)
 
 inline Vector2d Vector2d::operator- () const
 {
-  return Vector2d(-x, -y);
+  return {-x, -y};
 }
 
 inline Vector2d Vector2d::operator- (const Vector2d &v) const
 {
-  return Vector2d(x - v.x, y - v.y);
+  return {x - v.x, y - v.y};
 }
 
 inline Vector2d& Vector2d::operator-= (const Vector2d &v)
@@ -263,7 +263,7 @@ inline Vector2d& Vector2d::operator-= (const Vector2d &v)
 
 inline Vector2d Vector2d::operator* (double c) const
 {
-  return Vector2d(c * x, c * y);
+  return {c * x, c * y};
 }
 
 inline Vector2d& Vector2d::operator*= (double c)
@@ -280,12 +280,12 @@ inline double Vector2d::operator* (const Vector2d &v) const
 
 inline Vector2d operator* (double c, const Vector2d &v)
 {
-  return Vector2d(c * v.x, c * v.y);
+  return {c * v.x, c * v.y};
 }
 
 inline Vector2d Vector2d::operator/ (double c) const
 {
-  return Vector2d(x / c, y / c);
+  return {x / c, y / c};
 }
 
 inline Vector2d& Vector2d::operator/= (double c)
@@ -363,7 +363,7 @@ inline Vector2d Vector2d::Perpendicular(bool clockwise) const
 
 inline Vector2d Vector2d::FromPolar(double r, double fi)
 {
-  return Vector2d(r * cos(fi), r * sin(fi));
+  return {r * cos(fi), r * sin(fi)};
 }
 
 inline double Vector2d::Distance(const Vector2d& v) const
@@ -549,7 +549,7 @@ inline bool BoundBox2d::Contains(const Vector2d &v, double tolerance) const
 
 inline Vector2d BoundBox2d::GetCenter() const
 {
-  return Vector2d((MinX + MaxX) * 0.5, (MinY + MaxY) * 0.5);
+  return {(MinX + MaxX) * 0.5, (MinY + MaxY) * 0.5};
 }
 
 inline void BoundBox2d::SetVoid()

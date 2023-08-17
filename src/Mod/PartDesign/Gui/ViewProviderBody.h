@@ -56,10 +56,10 @@ public:
 
     void attach(App::DocumentObject *) override;
 
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
-    std::vector< std::string > getDisplayModes(void) const override;
+    std::vector< std::string > getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 

@@ -44,6 +44,7 @@ endif(BUILD_GUI)
 
 set(BOPTools_Scripts
     BOPTools/__init__.py
+    BOPTools/BOPFeatures.py
     BOPTools/GeneralFuseResult.py
     BOPTools/JoinAPI.py
     BOPTools/JoinFeatures.py
@@ -66,6 +67,7 @@ set(Part_tests
     parttests/part_test_objects.py
     parttests/regression_tests.py
     parttests/TopoShapeListTest.py
+    parttests/ColorPerFaceTest.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

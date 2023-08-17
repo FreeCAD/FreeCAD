@@ -159,11 +159,11 @@ public:
     }
 
     // Auto generated code (Tools/params_utils.py:217)
-    ~TreeParamsP() {
+    ~TreeParamsP() override {
     }
 
     // Auto generated code (Tools/params_utils.py:222)
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override {
         if(!sReason)
             return;
         auto it = funcs.find(sReason);

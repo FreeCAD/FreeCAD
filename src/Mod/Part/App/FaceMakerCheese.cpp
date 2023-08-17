@@ -167,8 +167,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
     }
 
     wires.pop_front();
-    for (std::list<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it) {
-        BRepBuilderAPI_MakeFace mkInnerFace(*it);
+    for (auto wire : wires) {
+        BRepBuilderAPI_MakeFace mkInnerFace(wire);
         const TopoDS_Face& inner_face = mkInnerFace.Face();
         if (inner_face.IsNull())
             return inner_face; // failure
@@ -180,8 +180,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
         // It seems that orientation is always 'Forward' and we only have to reverse
         // if the underlying plane have opposite normals.
         if (axis.Dot(inner_axis) < 0)
-            it->Reverse();
-        mkFace.Add(*it);
+            wire.Reverse();
+        mkFace.Add(wire);
     }
     return validateFace(mkFace.Face());
 }
@@ -228,8 +228,8 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (std::list< std::list<TopoDS_Wire> >::iterator it = sep_wire_list.begin(); it != sep_wire_list.end(); ++it) {
-            TopoDS_Shape aFace = makeFace(*it);
+        for (auto & it : sep_wire_list) {
+            TopoDS_Shape aFace = makeFace(it);
             if (!aFace.IsNull())
                 builder.Add(comp, aFace);
         }
