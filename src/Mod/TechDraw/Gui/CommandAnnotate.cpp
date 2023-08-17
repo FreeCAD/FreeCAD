@@ -545,6 +545,9 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Annotation");
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewAnnotation', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewAnnotation', 'Annotation', '%s')",
+              FeatName.c_str(), FeatName.c_str());
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();

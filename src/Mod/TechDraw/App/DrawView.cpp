@@ -54,7 +54,7 @@ using namespace TechDraw;
     QT_TRANSLATE_NOOP("DrawView", "View");
     QT_TRANSLATE_NOOP("DrawViewPart", "View");
     QT_TRANSLATE_NOOP("DrawViewSection", "Section");
-    QT_TRANSLATE_NOOP("DrawComplexSection", "ComplexSection");
+    QT_TRANSLATE_NOOP("DrawComplexSection", "Section");
     QT_TRANSLATE_NOOP("DrawViewDetail", "Detail");
     QT_TRANSLATE_NOOP("DrawActiveView", "ActiveView");
     QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
@@ -619,15 +619,23 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
 //! the unique name within the document (ex ActiveView001), and use it to update the Label property.
 void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
 {
-//    Base::Console().Message("DV::getTranslatedLabel - context: %s baseName: %s uniqueName: %s\n",
+//    Base::Console().Message("DV::translateLabel - context: %s baseName: %s uniqueName: %s\n",
 //                            context.c_str(), baseName.c_str(), uniqueName.c_str());
+
+    Label.setValue(translateArbitrary(context, baseName, uniqueName));
+//    Base::Console().Message("DV::translateLabel - new label: %s\n", Label.getValue());
+}
+
+//! static method that provides a translated std::string for objects that are not derived from DrawView
+std::string DrawView::translateArbitrary(std::string context, std::string baseName, std::string uniqueName)
+{
     std::string suffix("");
     if (uniqueName.length() > baseName.length()) {
         suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
     }
     QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
     std::string ssTranslated = Base::Tools::toStdString(qTranslated);
-    Label.setValue(ssTranslated + suffix);
+    return ssTranslated + suffix;
 }
 
 PyObject *DrawView::getPyObject(void)
