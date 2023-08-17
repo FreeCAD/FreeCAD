@@ -312,7 +312,7 @@ int DocumentObject::isExporting() const {
 
 std::string DocumentObject::getExportName(bool forced) const {
     if(!pcNameInDocument)
-        return std::string();
+        return {};
 
     if(!forced && !isExporting())
         return *pcNameInDocument;

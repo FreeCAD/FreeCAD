@@ -127,7 +127,7 @@ Py::Long StringHasherPy::getSize() const
 
 Py::Boolean StringHasherPy::getSaveAll() const
 {
-    return Py::Boolean(getStringHasherPtr()->getSaveAll());
+    return {getStringHasherPtr()->getSaveAll()};
 }
 
 void StringHasherPy::setSaveAll(Py::Boolean value)

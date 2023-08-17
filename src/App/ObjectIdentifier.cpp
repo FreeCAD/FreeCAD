@@ -374,13 +374,13 @@ const std::string &ObjectIdentifier::toString() const
 std::string ObjectIdentifier::toPersistentString() const {
 
     if(!owner)
-        return std::string();
+        return {};
 
     std::ostringstream s;
     ResolveResults result(*this);
 
     if(result.propertyIndex >= (int)components.size())
-        return std::string();
+        return {};
 
     if(localProperty ||
        (result.resolvedProperty &&
@@ -1776,7 +1776,7 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool *isPseudoProperty) cons
     }catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }
-    return App::any();
+    return {};
 }
 
 Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool *isPseudoProperty) const

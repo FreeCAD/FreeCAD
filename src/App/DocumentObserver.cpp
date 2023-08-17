@@ -364,7 +364,7 @@ std::string SubObjectT::getNewElementName() const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     return std::move(element.first);
 }
@@ -373,7 +373,7 @@ std::string SubObjectT::getOldElementName(int *index) const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     if(!index)
         return std::move(element.second);

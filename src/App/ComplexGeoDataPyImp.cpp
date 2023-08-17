@@ -43,7 +43,7 @@ using namespace Base;
 // returns a string which represent the object e.g. when printed in python
 std::string ComplexGeoDataPy::representation() const
 {
-    return std::string("<ComplexGeoData object>");
+    return {"<ComplexGeoData object>"};
 }
 
 PyObject* ComplexGeoDataPy::getElementTypes(PyObject *args)

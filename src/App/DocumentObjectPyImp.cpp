@@ -55,12 +55,12 @@ Py::String DocumentObjectPy::getName() const
     if (!internal) {
         throw Py::RuntimeError(std::string("This object is currently not part of a document"));
     }
-    return Py::String(std::string(internal));
+    return {std::string(internal)};
 }
 
 Py::String DocumentObjectPy::getFullName() const
 {
-    return Py::String(getDocumentObjectPtr()->getFullName());
+    return {getDocumentObjectPtr()->getFullName()};
 }
 
 Py::Object DocumentObjectPy::getDocument() const
@@ -694,7 +694,7 @@ PyObject*  DocumentObjectPy::getParent(PyObject *args)
 Py::Boolean DocumentObjectPy::getMustExecute() const
 {
     try {
-        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+        return {getDocumentObjectPtr()->mustExecute() ? true : false};
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -741,7 +741,7 @@ Py::Int DocumentObjectPy::getID() const {
 }
 
 Py::Boolean DocumentObjectPy::getRemoving() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
 PyObject *DocumentObjectPy::resolve(PyObject *args)
@@ -813,11 +813,11 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
 }
 
 Py::String DocumentObjectPy::getOldLabel() const {
-    return Py::String(getDocumentObjectPtr()->getOldLabel());
+    return {getDocumentObjectPtr()->getOldLabel()};
 }
 
 Py::Boolean DocumentObjectPy::getNoTouch() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch)};
 }
 
 void DocumentObjectPy::setNoTouch(Py::Boolean value) {
