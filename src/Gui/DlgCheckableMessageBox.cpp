@@ -61,7 +61,7 @@ QPixmap getStandardIcon(QWidget* widget, QStyle::StandardPixmap standardPixmap)
 #endif
     }
 
-    return QPixmap();
+    return {};
 }
 
 void DlgCheckableMessageBox::showMessage(const QString& header, const QString& message, bool check, const QString& checkText)

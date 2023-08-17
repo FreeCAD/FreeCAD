@@ -1125,7 +1125,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     stack.front() = front;
     if(it!=front->contextMap.end())
         return it->second;
-    return SoFCSelectionContextBasePtr();
+    return {};
 }
 
 SoFCSelectionContextBasePtr

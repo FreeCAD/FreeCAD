@@ -742,7 +742,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
             Py::Tuple args;
             Py::Int ret(method.apply(args));
             int value = (int)ret;
-            return QDialogButtonBox::StandardButtons(value);
+            return {value};
         }
     }
     catch (Py::Exception&) {

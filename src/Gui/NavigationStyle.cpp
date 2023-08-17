@@ -878,7 +878,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
-        return SbVec3f(0,0,0);
+        return {0,0,0};
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -1105,16 +1105,16 @@ SbVec2f NavigationStyle::normalizePixelPos(SbVec2s pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ((float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                    (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {(float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 SbVec2f NavigationStyle::normalizePixelPos(SbVec2f pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ( pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                     pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 void NavigationStyle::moveCursorPosition()

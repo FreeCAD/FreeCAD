@@ -245,7 +245,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString();
+        return {};
     }
 }
 
@@ -314,7 +314,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString();
+        return {};
     }
 }
 

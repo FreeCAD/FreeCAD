@@ -311,7 +311,7 @@ QString QuantitySpinBox::boundToName() const
         std::string path = getPath().toString();
         return QString::fromStdString(path);
     }
-    return QString();
+    return {};
 }
 
 /**
@@ -374,7 +374,7 @@ QString Gui::QuantitySpinBox::expressionText() const
     catch (const Base::Exception& e) {
         qDebug() << e.what();
     }
-    return QString();
+    return {};
 }
 
 void QuantitySpinBox::evaluateExpression()

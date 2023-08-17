@@ -183,7 +183,7 @@ QSize Flag::sizeHint() const
     QRect r = metric.boundingRect(text);
     w = std::max<int>(w, r.width()+20);
     h = std::max<int>(h, r.height());
-    return QSize(w, h);
+    return {w, h};
 }
 
 // ------------------------------------------------------------------------

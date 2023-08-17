@@ -365,12 +365,14 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
 
 SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
+    //NOLINTBEGIN
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+    //NOLINTEND
 }
 
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
@@ -812,7 +814,7 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
             return ext->extensionDropObjectEx(obj, owner, subname, elements);
     }
     dropObject(obj);
-    return std::string();
+    return {};
 }
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)

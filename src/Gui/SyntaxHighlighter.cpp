@@ -131,7 +131,7 @@ QColor SyntaxHighlighter::color(const QString& type)
     else if (type == QLatin1String("Python error"))
         return d->cError;
     else
-        return QColor(); // not found
+        return {}; // not found
 }
 
 QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
@@ -159,7 +159,7 @@ QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
     else if (type == SyntaxHighlighter::Error)
         return d->cError;
     else
-        return QColor(); // not found
+        return {}; // not found
 }
 
 void SyntaxHighlighter::colorChanged(const QString& type, const QColor& col)

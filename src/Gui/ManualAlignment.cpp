@@ -609,7 +609,7 @@ public:
         Base::Vector3d pln_base;
         rot.multVec(plane1_base,pln_base);
         Base::Vector3d dif = plane2_base - pln_base;
-        return Base::Placement(dif, rot);
+        return {dif, rot};
     }
 
     static Base::Placement

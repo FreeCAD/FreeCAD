@@ -67,7 +67,7 @@ int PropertyModel::columnCount ( const QModelIndex & parent ) const
 QVariant PropertyModel::data ( const QModelIndex & index, int role ) const
 {
     if (!index.isValid())
-        return QVariant();
+        return {};
 
     auto item = static_cast<PropertyItem*>(index.internalPointer());
     return item->data(index.column(), role);
@@ -124,19 +124,19 @@ QModelIndex PropertyModel::index ( int row, int column, const QModelIndex & pare
     if (childItem)
         return createIndex(row, column, childItem);
     else
-        return QModelIndex();
+        return {};
 }
 
 QModelIndex PropertyModel::parent ( const QModelIndex & index ) const
 {
     if (!index.isValid())
-        return QModelIndex();
+        return {};
 
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
     PropertyItem *parentItem = childItem->parent();
 
     if (parentItem == rootItem)
-        return QModelIndex();
+        return {};
 
     return createIndex(parentItem->row(), 0, parentItem);
 }
@@ -157,14 +157,14 @@ QVariant PropertyModel::headerData (int section, Qt::Orientation orientation, in
 {
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
-            return QVariant();
+            return {};
         if (section == 0)
             return tr("Property");
         if (section == 1)
             return tr("Value");
     }
 
-    return QVariant();
+    return {};
 }
 
 bool PropertyModel::setHeaderData (int, Qt::Orientation, const QVariant &, int)
@@ -189,11 +189,11 @@ QStringList PropertyModel::propertyPathFromIndex(const QModelIndex& index) const
 QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 {
     if (path.size() < 2)
-        return QModelIndex();
+        return {};
 
     auto it = groupItems.find(path.front());
     if (it == groupItems.end())
-        return QModelIndex();
+        return {};
 
     PropertyItem *item = it->second.groupItem;
     QModelIndex index = this->index(item->row(), 0, QModelIndex());

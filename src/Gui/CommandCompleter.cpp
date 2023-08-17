@@ -87,13 +87,13 @@ public:
 
     QModelIndex parent(const QModelIndex &) const override
     {
-        return QModelIndex();
+        return {};
     }
 
     QVariant data(const QModelIndex & index, int role) const override
     {
         if (index.row() < 0 || index.row() >= (int)_Commands.size())
-            return QVariant();
+            return {};
 
         auto &info = _Commands[index.row()];
 
@@ -125,7 +125,7 @@ public:
         default:
             break;
         }
-        return QVariant();
+        return {};
     }
 
     QModelIndex index(int row, int, const QModelIndex &) const override

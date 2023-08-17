@@ -1695,7 +1695,7 @@ SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
         imageCoords[1] += (height-width) / 2.0;
     }
 
-    return SbVec2f(imageCoords[0], imageCoords[1]);
+    return {imageCoords[0], imageCoords[1]};
 }
 
 std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2s>& pnts) const
@@ -2319,7 +2319,7 @@ void View3DInventorViewer::setSeekMode(SbBool on)
 SbVec3f View3DInventorViewer::getCenterPointOnFocalPlane() const {
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (!cam)
-        return SbVec3f(0. ,0. ,0. );
+        return {0. ,0. ,0. };
 
     SbVec3f direction;
     cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
@@ -2439,7 +2439,7 @@ SbVec3f View3DInventorViewer::getViewDirection() const
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (!cam)  // this is the default
-        return SbVec3f(0,0,-1);
+        return {0,0,-1};
 
     SbVec3f projDir = cam->getViewVolume().getProjectionDirection();
     return projDir;
@@ -2457,7 +2457,7 @@ SbVec3f View3DInventorViewer::getUpDirection() const
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (!cam)
-        return SbVec3f(0,1,0);
+        return {0,1,0};
 
     SbRotation camrot = cam->orientation.getValue();
     SbVec3f upvec(0, 1, 0); // init to default up vector
@@ -2470,7 +2470,7 @@ SbRotation View3DInventorViewer::getCameraOrientation() const
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (!cam)
-        return SbRotation(0,0,0,1); // this is the default
+        return {0,0,0,1}; // this is the default
 
     return cam->orientation.getValue();
 }
@@ -2498,7 +2498,7 @@ SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
         pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
     }
 
-    return SbVec2f(pX, pY);
+    return {pX, pY};
 }
 
 SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
@@ -2507,7 +2507,7 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
     if (!pCam)  // return invalid point
-        return SbVec3f();
+        return {};
 
     SbViewVolume  vol = pCam->getViewVolume();
 
@@ -2540,7 +2540,7 @@ SbVec2s View3DInventorViewer::getPointOnViewport(const SbVec3f& pnt) const
     auto x = short(std::roundf(pt[0] * sp[0]));
     auto y = short(std::roundf(pt[1] * sp[1]));
 
-    return SbVec2s(x, y);
+    return {x, y};
 }
 
 QPoint View3DInventorViewer::toQPoint(const SbVec2s& pnt) const
@@ -2554,7 +2554,7 @@ QPoint View3DInventorViewer::toQPoint(const SbVec2s& pnt) const
     xpos = int(std::roundf(xpos / dev_pix_ratio));
     ypos = int(std::roundf(ypos / dev_pix_ratio));
 
-    return QPoint(xpos, ypos);
+    return {xpos, ypos};
 }
 
 SbVec2s View3DInventorViewer::fromQPoint(const QPoint& pnt) const
@@ -2615,7 +2615,7 @@ SbVec3f View3DInventorViewer::projectOnNearPlane(const SbVec2f& pt) const
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (!cam)  // return invalid point
-        return SbVec3f();
+        return {};
 
     SbViewVolume vol = cam->getViewVolume();
     vol.projectPointToLine(pt, pt1, pt2);
@@ -2628,7 +2628,7 @@ SbVec3f View3DInventorViewer::projectOnFarPlane(const SbVec2f& pt) const
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (!cam)  // return invalid point
-        return SbVec3f();
+        return {};
 
     SbViewVolume vol = cam->getViewVolume();
     vol.projectPointToLine(pt, pt1, pt2);

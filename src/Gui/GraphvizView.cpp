@@ -415,7 +415,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);
     if (!dotProc.waitForStarted()) {
-        return QByteArray();
+        return {};
     }
 
     ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -423,12 +423,12 @@ QByteArray GraphvizView::exportGraph(const QString& format)
         flatProc.setEnvironment(QProcess::systemEnvironment());
         flatProc.start(unflatten, flatArgs);
         if (!flatProc.waitForStarted()) {
-            return QByteArray();
+            return {};
         }
         flatProc.write(graphCode.c_str(), graphCode.size());
         flatProc.closeWriteChannel();
         if (!flatProc.waitForFinished())
-            return QByteArray();
+            return {};
 
         dotProc.write(flatProc.readAll());
     }
@@ -437,7 +437,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 
     dotProc.closeWriteChannel();
     if (!dotProc.waitForFinished())
-        return QByteArray();
+        return {};
 
     return dotProc.readAll();
 }
