@@ -160,7 +160,7 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
         else
             throw;
     }
-    return std::string();
+    return {};
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const

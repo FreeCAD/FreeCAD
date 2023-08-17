@@ -416,7 +416,7 @@ QByteArray InputField::paramGrpPath() const
 {
     if(_handle.isValid())
         return sGroupString.c_str();
-    return QByteArray();
+    return {};
 }
 
 /// sets the field with a quantity
@@ -567,7 +567,7 @@ void InputField::setPrecision(const int precision)
 
 QString InputField::getFormat() const
 {
-    return QString(QChar::fromLatin1(actQuantity.getFormat().toFormat()));
+    return {QChar::fromLatin1(actQuantity.getFormat().toFormat())};
 }
 
 void InputField::setFormat(const QString& format)

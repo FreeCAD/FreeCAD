@@ -1263,7 +1263,7 @@ void StatusWidget::showText(int ms)
 
 QSize StatusWidget::sizeHint () const
 {
-    return QSize(250,100);
+    return {250,100};
 }
 
 void StatusWidget::showEvent(QShowEvent* event)
@@ -1285,7 +1285,7 @@ public:
     }
 
     QSize sizeHint() const override {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+        return {codeEditor->lineNumberAreaWidth(), 0};
     }
 
 protected:

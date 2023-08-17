@@ -113,7 +113,7 @@ ActionGroup * ActionPanel::createGroup(const QPixmap &icon, const QString &title
 
 QSize ActionPanel::minimumSizeHint() const
 {
-    return QSize(200,150);
+    return {200,150};
 }
 
 

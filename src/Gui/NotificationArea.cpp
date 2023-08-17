@@ -353,7 +353,7 @@ public:
             return font;
         }
 
-        return QVariant();
+        return {};
     }
 
     Base::LogStyle notificationType;

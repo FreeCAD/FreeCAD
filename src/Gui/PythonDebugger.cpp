@@ -394,7 +394,7 @@ Breakpoint PythonDebugger::getBreakpoint(const QString& fn) const
         }
     }
 
-    return Breakpoint();
+    return {};
 }
 
 bool PythonDebugger::toggleBreakpoint(int line, const QString& fn)

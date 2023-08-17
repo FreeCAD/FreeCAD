@@ -1573,7 +1573,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
         if (!s.isEmpty())
             return icon.pixmap(s[0]);
     }
-    return QPixmap();
+    return {};
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
@@ -1597,7 +1597,7 @@ QString Application::workbenchToolTip(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString Application::workbenchMenuText(const QString& wb) const
@@ -1622,7 +1622,7 @@ QString Application::workbenchMenuText(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QStringList Application::workbenches() const

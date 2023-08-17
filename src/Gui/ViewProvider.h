@@ -166,7 +166,7 @@ public:
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const { return std::string(); }
+    virtual std::string getElement(const SoDetail *) const { return {}; }
     /// return the coin node detail of the subelement
     virtual SoDetail* getDetail(const char *) const { return nullptr; }
 
@@ -203,7 +203,7 @@ public:
     /// return the highlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         (void)Element;
-        return std::vector<Base::Vector3d>();
+        return {};
     }
 
     /** Return the bound box of this view object
@@ -312,7 +312,7 @@ public:
             const char *subname, const std::vector<std::string> &elements) const;
 
     /// return a subname referencing the sub-object holding the dropped objects
-    virtual std::string getDropPrefix() const { return std::string(); }
+    virtual std::string getDropPrefix() const { return {}; }
 
     /** Add an object with full qualified name to the view provider by drag and drop
      *

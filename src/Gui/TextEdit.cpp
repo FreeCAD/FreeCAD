@@ -517,7 +517,7 @@ LineMarker::~LineMarker()
 
 QSize LineMarker::sizeHint() const
 {
-    return QSize(textEditor->lineNumberAreaWidth(), 0);
+    return {textEditor->lineNumberAreaWidth(), 0};
 }
 
 void LineMarker::paintEvent(QPaintEvent* e)

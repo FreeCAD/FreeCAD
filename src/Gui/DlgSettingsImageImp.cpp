@@ -131,7 +131,7 @@ void DlgSettingsImageImp::setImageSize( const QSize& s )
  */
 QSize DlgSettingsImageImp::imageSize() const
 {
-    return QSize( ui->spinWidth->value(), ui->spinHeight->value() );
+    return { ui->spinWidth->value(), ui->spinHeight->value() };
 }
 
 /**
@@ -157,7 +157,7 @@ int DlgSettingsImageImp::imageHeight() const
 QString DlgSettingsImageImp::comment() const
 {
     if ( !ui->textEditComment->isEnabled() )
-        return QString();
+        return {};
     else
         return ui->textEditComment->toPlainText();
 }
