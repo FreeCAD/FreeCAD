@@ -34,7 +34,7 @@
 
 namespace TechDrawGui {
 
-class TechDrawExport PathBuilder {
+class TechDrawGuiExport PathBuilder {
 public:
     PathBuilder() {}
     PathBuilder(QGIViewPart* qvp) { m_qvp = qvp; }
