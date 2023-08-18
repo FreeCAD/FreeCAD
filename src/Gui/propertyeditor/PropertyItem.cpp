@@ -426,7 +426,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
         ss << "ERR!";
     }
 
-    return QVariant(QString::fromUtf8(ss.str().c_str()));
+    return {QString::fromUtf8(ss.str().c_str())};
 }
 
 QVariant PropertyItem::value(const App::Property* /*prop*/) const
