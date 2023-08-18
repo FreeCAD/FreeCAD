@@ -25,6 +25,8 @@
 # include <QMessageBox>
 #endif
 
+#include <QPushButton>
+
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Materials.h>
