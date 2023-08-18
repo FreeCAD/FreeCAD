@@ -21,7 +21,7 @@ using namespace FemGui;
 // returns a string which represents the object e.g. when printed in python
 std::string ViewProviderFemMeshPy::representation() const
 {
-    return std::string("<ViewProviderFemMesh object>");
+    return {"<ViewProviderFemMesh object>"};
 }
 
 

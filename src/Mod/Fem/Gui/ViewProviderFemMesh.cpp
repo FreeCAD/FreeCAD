@@ -416,7 +416,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
                 str << "Node" << vertex;
             }
             else {
-                return std::string();
+                return {};
             }
         }
     }
@@ -455,7 +455,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
 
 std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /*Element*/) const
 {
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 std::set<long> ViewProviderFemMesh::getHighlightNodes() const
