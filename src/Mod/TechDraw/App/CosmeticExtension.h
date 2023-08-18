@@ -54,8 +54,8 @@ public:
     virtual CosmeticVertex* getCosmeticVertexBySelection(const int i) const;
     virtual CosmeticVertex* getCosmeticVertexBySelection(const std::string& name) const;
     virtual CosmeticVertex* getCosmeticVertex(const std::string& tag) const;
-    virtual int             add1CVToGV(std::string tag);
-    virtual int             getCVIndex(std::string tag);
+    virtual int             add1CVToGV(const std::string& tag);
+    virtual int             getCVIndex(const std::string& tag);
     virtual std::string     addCosmeticVertex(const Base::Vector3d& pos);
     virtual void            addCosmeticVertexesToGeom();
     virtual void            clearCosmeticVertexes();
@@ -65,34 +65,34 @@ public:
 
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCosmeticEdge(TechDraw::BaseGeomPtr bg);
-    virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
+    virtual CosmeticEdge*   getCosmeticEdgeBySelection(const std::string& name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
-    virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
-    virtual void            removeCosmeticEdge(std::string tag);
-    virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
+    virtual CosmeticEdge*   getCosmeticEdge(const std::string& id) const;
+    virtual void            removeCosmeticEdge(const std::string& tag);
+    virtual void            removeCosmeticEdge(const std::vector<std::string>& delTags);
     virtual void            clearCosmeticEdges();
-    virtual int             add1CEToGE(std::string tag);
+    virtual int             add1CEToGE(const std::string& tag);
     virtual void            addCosmeticEdgesToGeom();
     virtual void            refreshCEGeoms();
 
     virtual void refreshCLGeoms();
     virtual void addCenterLinesToGeom();
-    virtual int add1CLToGE(std::string tag);
+    virtual int add1CLToGE(const std::string &tag);
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
     virtual std::string     addCenterLine(TechDraw::BaseGeomPtr bg);
-    virtual CenterLine*     getCenterLineBySelection(std::string name) const;
+    virtual CenterLine*     getCenterLineBySelection(const std::string& name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
-    virtual CenterLine*     getCenterLine(std::string tag) const;
-    virtual void            removeCenterLine(std::string tag);
-    virtual void            removeCenterLine(std::vector<std::string> delTags);
+    virtual CenterLine*     getCenterLine(const std::string& tag) const;
+    virtual void            removeCenterLine(const std::string& tag);
+    virtual void            removeCenterLine(const std::vector<std::string>& delTags);
     virtual void            clearCenterLines();
 
     virtual std::string     addGeomFormat(TechDraw::GeomFormat* gf);
-    virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
+    virtual GeomFormat*     getGeomFormatBySelection(const std::string& name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
-    virtual GeomFormat*     getGeomFormat(std::string id) const;
-    virtual void            removeGeomFormat(std::string tag);
+    virtual GeomFormat*     getGeomFormat(const std::string& id) const;
+    virtual void            removeGeomFormat(const std::string& tag);
     virtual void            clearGeomFormats();
 
     TechDraw::DrawViewPart* getOwner();
