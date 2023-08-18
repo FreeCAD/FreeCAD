@@ -376,7 +376,11 @@ void DlgSettingsGeneral::saveThemes()
     for (const auto& pack : packs) {
         if (pack.first == newTheme) {
 
-            Application::Instance->prefPackManager()->apply(pack.first);
+            if (Application::Instance->prefPackManager()->apply(pack.first)) {
+                auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
+                if (parentDialog)
+                    parentDialog->reload();
+            }
             break;
         }
     }
