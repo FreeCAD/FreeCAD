@@ -40,14 +40,17 @@
 using namespace App;
 
 
-PyObject*  DocumentPy::addProperty(PyObject *args)
+PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
 {
     char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
     short attr=0;
     std::string sDocStr;
     PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
-        &PyBool_Type, &ro, &PyBool_Type, &hd))
+    PyObject* enumVals = nullptr;
+    static char *kwlist[] = {"type","name","group","doc","attr","read_only","hidden","enum_vals",nullptr};
+    if (!PyArg_ParseTupleAndKeywords(
+            args, kwd, "ss|sethO!O!O", kwlist, &sType, &sName, &sGroup, "utf-8",
+            &sDoc, &attr, &PyBool_Type, &ro, &PyBool_Type, &hd, &enumVals))
         return nullptr;
 
     if (sDoc) {
@@ -55,8 +58,21 @@ PyObject*  DocumentPy::addProperty(PyObject *args)
         PyMem_Free(sDoc);
     }
 
-    getDocumentPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            Base::asBoolean(ro), Base::asBoolean(hd));
+    Property *prop = getDocumentPtr()->
+        addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+                           Base::asBoolean(ro), Base::asBoolean(hd));
+
+    // enum support
+    auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
+    if (propEnum) {
+        if (PySequence_Check(enumVals)) {
+            std::vector<std::string> enumValsAsVector;
+            for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
+                enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
+            }
+            propEnum->setEnums(enumValsAsVector);
+        }
+    }
 
     return Py::new_reference_to(this);
 }
