@@ -58,7 +58,7 @@ MeshSegment MeshSurfaceSegment::FindSegment(FacetIndex index) const
             return segment;
     }
 
-    return MeshSegment();
+    return {};
 }
 
 // --------------------------------------------------------

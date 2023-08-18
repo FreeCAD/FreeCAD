@@ -965,7 +965,7 @@ inline void MeshFacet::GetEdge (unsigned short usSide, MeshHelpEdge &rclEdge) co
 
 inline std::pair<PointIndex, PointIndex> MeshFacet::GetEdge (unsigned short usSide) const
 {
-    return std::pair<PointIndex, PointIndex>(_aulPoints[usSide], _aulPoints[(usSide+1)%3]);
+    return {_aulPoints[usSide], _aulPoints[(usSide+1)%3]};
 }
 
 inline void MeshFacet::Transpose (PointIndex ulOrig, PointIndex ulNew)

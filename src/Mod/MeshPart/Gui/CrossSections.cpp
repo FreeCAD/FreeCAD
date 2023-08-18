@@ -96,7 +96,7 @@ public:
     }
     std::vector<std::string> getDisplayModes() const override
     {
-        return std::vector<std::string>();
+        return {};
     }
     void setCoords(const std::vector<Base::Vector3f>& v)
     {

@@ -186,7 +186,7 @@ std::vector<FacetIndex> MeshEvalOrientation::GetIndices() const
     FacetIndex ulStartFacet, ulVisited;
 
     if (_rclMesh.CountFacets() == 0)
-        return std::vector<FacetIndex>();
+        return {};
 
     // reset VISIT flags
     MeshAlgorithm cAlg(_rclMesh);
