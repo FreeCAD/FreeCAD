@@ -534,7 +534,7 @@ private:
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(vp)
             return vp->getElementColors(subname);
-        return std::map<std::string,App::Color>();
+        return {};
     }
 
     Py::Object exportOptions(const Py::Tuple& args)

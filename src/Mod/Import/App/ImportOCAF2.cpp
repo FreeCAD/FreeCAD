@@ -991,7 +991,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
         Handle(XCAFDoc_GraphNode) ret;
         if(labels.Length() && (FindSHUO(labels,ret) || aShapeTool->SetSHUO(labels,ret)))
             return ret->Label();
-        return TDF_Label();
+        return {};
     }
     TDF_LabelSequence components;
     TDF_Label ref;
@@ -1018,7 +1018,7 @@ TDF_Label ExportOCAF2::findComponent(const char *subname, TDF_Label label, TDF_L
             }
         }
     }
-    return TDF_Label();
+    return {};
 }
 
 void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
@@ -1191,7 +1191,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     if(!obj || shape.isNull()) {
         if (obj)
             FC_WARN(obj->getFullName() << " has null shape");
-        return TDF_Label();
+        return {};
     }
 
     //sub may contain more than one hierarchy, e.g. Assembly container may use
