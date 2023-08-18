@@ -36,6 +36,7 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <gp_Ax3.hxx>
 #endif
 
 #include <Base/Console.h>
