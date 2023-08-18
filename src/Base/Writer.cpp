@@ -45,8 +45,8 @@ using namespace zipios;
 // It does not check if the character is valid utf8 or not.
 struct cdata_filter {
 
-    typedef char char_type;
-    typedef boost::iostreams::output_filter_tag category;
+    using char_type = char;
+    using category = boost::iostreams::output_filter_tag;
 
     template<typename Device>
     inline bool put(Device& dev, char c) {

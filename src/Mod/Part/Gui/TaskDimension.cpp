@@ -79,7 +79,7 @@
 #include "TaskDimension.h"
 
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 static bool _MeasureInfoInited;
 
@@ -94,7 +94,9 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
-            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, bp::_1));
+            //NOLINTBEGIN
+            App::GetApplication().signalDeleteDocument.connect(std::bind(slotDeleteDocument, sp::_1));
+            //NOLINTEND
         }
     }
 };
@@ -558,6 +560,9 @@ PartGui::TaskMeasureLinear::~TaskMeasureLinear()
 
 void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   if (buttonSelectedIndex == 0)
   {
     if (msg.Type == Gui::SelectionChanges::AddSelection)
@@ -1555,6 +1560,9 @@ PartGui::TaskMeasureAngular::~TaskMeasureAngular()
 
 void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+  if (msg.pSubName[0] == '\0')
+    return; // ignore whole objects selected in the model tree, e.g. when toggling the visibility of an object
+
   TopoDS_Shape shape;
   Base::Matrix4D mat;
   if (!getShapeFromStrings(shape, std::string(msg.pDocName),

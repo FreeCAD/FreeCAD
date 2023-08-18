@@ -10,3 +10,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Writer.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/tst_Tools.cpp
 )
+
+setup_qt_test(InventorBuilder)

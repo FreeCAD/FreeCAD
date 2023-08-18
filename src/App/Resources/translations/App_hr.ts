@@ -7,8 +7,8 @@
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Pamti posljednji izbor korisnika o tome treba li primijeniti postavljanje CopyOnChange 
+na sve veze koje referenciraju isti konfigurabilni objekt</translation>
     </message>
   </context>
   <context>
@@ -24,32 +24,32 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../Origin.cpp" line="140"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X-os</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="141"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y-os</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Z-os</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>XY-ravnina</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-ravnina</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-ravnina</translation>
     </message>
   </context>
   <context>

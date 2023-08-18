@@ -32,6 +32,7 @@
 #include <QtOpenGL.h>
 
 #include <CXX/Extensions.hxx>
+#include <FCGlobal.h>
 
 
 namespace Gui {
@@ -50,9 +51,10 @@ public:
      */
     static SoFCOffscreenRenderer& instance();
 
+    SoFCOffscreenRenderer(const SoFCOffscreenRenderer&) = delete;
+    SoFCOffscreenRenderer& operator=(const SoFCOffscreenRenderer&) = delete;
+
 private:
-    SoFCOffscreenRenderer(const SoFCOffscreenRenderer&);
-    SoFCOffscreenRenderer& operator=(const SoFCOffscreenRenderer&);
     static SoFCOffscreenRenderer* inst;
 
 protected:

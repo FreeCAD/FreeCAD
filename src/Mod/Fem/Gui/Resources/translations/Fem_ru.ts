@@ -2614,15 +2614,15 @@ Specify another file please.</source>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>Материал МКЭ</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Материал</translation>
     </message>
@@ -2647,9 +2647,9 @@ Specify another file please.</source>
       <translation>Название материала</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Текстовая надпись</translation>
     </message>
@@ -2995,17 +2995,17 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 мм</translation>
     </message>
@@ -3020,11 +3020,11 @@ Specify another file please.</source>
       <translation>Параметр Центрифугирования</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Параметр</translation>
     </message>
@@ -3054,13 +3054,13 @@ Specify another file please.</source>
       <translation>Параметр SectionPrint</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Constraint Properties</source>
       <translation>Свойства Ограничения</translation>
     </message>
@@ -3075,12 +3075,9 @@ Specify another file please.</source>
       <translation>Потенциал:</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3093,15 +3090,18 @@ Specify another file please.</source>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>не указана</translation>
     </message>
@@ -3128,16 +3128,16 @@ with a harmonic/oscillating driving force</source>
 с гармонической/колеблющейся движущей силой</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Действительная часть</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Мнимая часть</translation>
     </message>
@@ -3157,9 +3157,9 @@ with a harmonic/oscillating driving force</source>
       <translation>Мнимая часть скалярного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3178,9 +3178,9 @@ Note: has no effect if a solid was selected</source>
 Примечание: не влияет если выбрано твердое тело</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>у</translation>
     </message>
@@ -3199,9 +3199,9 @@ Note: has no effect if a solid was selected</source>
 Примечание: не влияет если выбрано твердое тело</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3266,8 +3266,8 @@ Note: has no effect if a solid was selected</source>
       <translation>Параметр секции балки</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Поперечный параметр сечения</translation>
     </message>
@@ -3318,30 +3318,30 @@ Note: has no effect if a solid was selected</source>
       <translation>Вращение:     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>формула</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Скорость по оси x:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Скорость по оси y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Скорость по оси z:</translation>
     </message>
@@ -3471,14 +3471,14 @@ Note: for 2D only setting for x is possible,
       <translation>Мнимая часть y-компоненты комплексного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation>Действительная часть z-компоненты комплексного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Мнимая часть z-компоненты комплексного потенциала</translation>
     </message>
@@ -3603,26 +3603,26 @@ Note: for 2D only setting for x is possible,
       <translation>Изменить граничное условие</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <source>Do you want to close this dialog?</source>
       <translation>Вы хотите закрыть этот диалог?</translation>
     </message>

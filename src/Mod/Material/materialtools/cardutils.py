@@ -231,11 +231,11 @@ def get_material_template(withSpaces=False):
         new_template = []
         for group in template_data:
             new_group = {}
-            gg = list(group.keys())[0]  # group dict has only one key
+            gg = list(group)[0]  # group dict has only one key
             # iterating over a dict and changing it is not allowed
             # thus it is iterated over a list of the keys
             new_group[gg] = {}
-            for proper in list(group[gg].keys()):
+            for proper in list(group[gg]):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
                 # strip underscores of vectorial properties
                 new_proper = new_proper.replace("_", " ")
@@ -256,7 +256,7 @@ def create_mat_tools_header():
     template_data = get_material_template()
     f = open(headers, "w")
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         # do not write group UserDefined
         if gg != 'UserDefined':
             for prop_name in group[gg]:
@@ -292,7 +292,7 @@ def create_mat_template_card(write_group_section=True):
     if write_group_section is False:
         f.write("\n[FCMat]\n")
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         # do not write groups Meta and UserDefined
         if (gg != 'Meta') and (gg != 'UserDefined'):
             # only write group section if write group section parameter is set to True
@@ -335,7 +335,7 @@ def get_known_material_quantity_parameter():
     template_data = get_material_template()
     known_quantities = []
     for group in template_data:
-        gname = list(group.keys())[0]  # group dict has only one key
+        gname = list(group)[0]  # group dict has only one key
         for prop_name in group[gname]:
             prop_type = group[gname][prop_name]['Type']
             if prop_type == 'Quantity':
@@ -352,7 +352,7 @@ def get_and_output_all_carddata(cards):
     template_data = get_material_template()
     # print(template_data)
     for group in template_data:
-        gg = list(group.keys())[0]  # group dict has only one key
+        gg = list(group)[0]  # group dict has only one key
         for key in group[gg]:
             registed_cardkeys.append(key)
     registed_cardkeys = sorted(registed_cardkeys)
@@ -662,7 +662,7 @@ gettemplate()[2]['Mechanical']['FractureToughness']
 from materialtools.cardutils import get_material_template as gettemplate
 template_data=gettemplate()
 for group in template_data:
-    gname = list(group.keys())[0]  # group dict has only one key
+    gname = list(group)[0]  # group dict has only one key
     for prop_name in group[gname]:
         #prop_dict = group[gname][prop_name]
         #print(prop_dict)

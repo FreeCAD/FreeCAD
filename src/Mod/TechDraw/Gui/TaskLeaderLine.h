@@ -58,7 +58,7 @@ public:
     TaskLeaderLine(TechDraw::DrawView* baseFeat,
                    TechDraw::DrawPage* page);
     explicit TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskLeaderLine() = default;
+    ~TaskLeaderLine() override = default;
 
     virtual bool accept();
     virtual bool reject();

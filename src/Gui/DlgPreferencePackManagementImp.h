@@ -27,6 +27,7 @@
 #include <memory>
 #include <QDialog>
 #include <boost/filesystem.hpp>
+#include <FCGlobal.h>
 
 
 class QTreeWidgetItem;
@@ -51,7 +52,7 @@ class GuiExport DlgPreferencePackManagementImp : public QDialog
 public:
 
     DlgPreferencePackManagementImp(QWidget* parent = nullptr);
-    ~DlgPreferencePackManagementImp();
+    ~DlgPreferencePackManagementImp() override;
 
 Q_SIGNALS:
     void packVisibilityChanged();

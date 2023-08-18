@@ -27,6 +27,7 @@
 #include <Inventor/annex/HardCopy/SoVectorOutput.h>
 
 #include <fstream>
+#include <FCGlobal.h>
 
 
 namespace Gui {
@@ -34,10 +35,10 @@ namespace Gui {
 class GuiExport SoSVGVectorOutput : public SoVectorOutput {
 public:
     SoSVGVectorOutput();
-    virtual ~SoSVGVectorOutput();
+    ~SoSVGVectorOutput() override;
 
-    virtual SbBool openFile (const char *filename);
-    virtual void closeFile ();
+    SbBool openFile (const char *filename) override;
+    void closeFile () override;
     std::fstream& getFileStream();
 
 private:
@@ -55,24 +56,24 @@ class GuiExport SoFCVectorizeSVGAction : public SoVectorizeAction {
 
 public:
     SoFCVectorizeSVGAction();
-    virtual ~SoFCVectorizeSVGAction();
+    ~SoFCVectorizeSVGAction() override;
 
     static void initClass();
     SoSVGVectorOutput * getSVGOutput() const;
 
-    virtual void setBackgroundState(bool b) { m_backgroundState = b; }
-    virtual bool getBackgroundState(void) const { return m_backgroundState; }
+    virtual void setBackgroundState(bool b)  { m_backgroundState = b; }
+    virtual bool getBackgroundState() const { return m_backgroundState; }
     virtual void setLineWidth(double w) { m_lineWidth = w; }
-    virtual double getLineWidth(void) const { return m_lineWidth; }
+    virtual double getLineWidth() const { return m_lineWidth; }
     virtual void setUseMM(bool b) { m_usemm = b; }
-    virtual bool getUseMM(void) const { return m_usemm; }
+    virtual bool getUseMM() const { return m_usemm; }
 
 protected:
-    virtual void printHeader() const;
-    virtual void printFooter() const;
-    virtual void printBackground() const;
-    virtual void printItem(const SoVectorizeItem * item) const;
-    virtual void printViewport() const;
+    void printHeader() const override;
+    void printFooter() const override;
+    void printBackground() const override;
+    void printItem(const SoVectorizeItem * item) const override;
+    void printViewport() const override;
 
 private:
     SoFCVectorizeSVGActionP* p;

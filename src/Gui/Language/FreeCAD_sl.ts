@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>
     </message>
@@ -2109,11 +2109,11 @@ Prilagodite jo lahko glede na velikost zaslona ali po lastnem okusu</translation
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Prilagodi način prikazovanja drevesnega prikaza v plošči (potreben vnovični zagon).
+      <translation>Prilagodi način prikazovanja drevesnega prikaza v podoknu (potreben vnovični zagon).
 
-"Sestavljen pogled": v eno ploščo združen drevesni pprikaz in lastnostni prikaz.
-"Drevesni in Lastnostni prikaz": drevesni in lastnostni prikaz, vsak na svoji plošči.
-"Oboje": ohrani vse tri plošče tako, da imate lahko dva drevesna in dva lastnostna prikaza.</translation>
+"Sestavljen pogled": v eno podokno združen drevesni prikaz in lastnostni prikaz.
+"Drevesni in Lastnostni prikaz": drevesni in lastnostni prikaz, vsak v svojem podoknu.
+"Oboje": ohrani vsa tri podokna tako, da imate lahko dva drevesna in dva lastnostna prikaza.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="264"/>
@@ -3237,7 +3237,7 @@ vidno poročevalno pogovorno okno</translation>
     <message>
       <location filename="../DlgReportView.ui" line="283"/>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Barva pisave pri običajnih sporočilih in plošči poročevalnega pogleda</translation>
+      <translation>Barva pisave pri običajnih sporočilih v poročilnem podoknu</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="306"/>
@@ -3247,7 +3247,7 @@ vidno poročevalno pogovorno okno</translation>
     <message>
       <location filename="../DlgReportView.ui" line="341"/>
       <source>Font color for log messages in Report view panel</source>
-      <translation>Barva pisave pri dnevniških sporočilih in plošči poročevalnega pogleda</translation>
+      <translation>Barva pisave pri dnevniških sporočilih v poročilnem podoknu</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="364"/>
@@ -3257,7 +3257,7 @@ vidno poročevalno pogovorno okno</translation>
     <message>
       <location filename="../DlgReportView.ui" line="399"/>
       <source>Font color for warning messages in Report view panel</source>
-      <translation>Barva pisave pri opozorilnih sporočilih in plošči poročevalnega pogleda</translation>
+      <translation>Barva pisave pri opozorilnih sporočilih v poročilnem podoknu</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="422"/>
@@ -3267,7 +3267,7 @@ vidno poročevalno pogovorno okno</translation>
     <message>
       <location filename="../DlgReportView.ui" line="457"/>
       <source>Font color for error messages in Report view panel</source>
-      <translation>Barva pisave pri sporočilih o napakah in plošči poročevalnega pogleda</translation>
+      <translation>Barva pisave pri sporočilih o napakah v poročilnem podoknu</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="501"/>
@@ -3279,7 +3279,7 @@ vidno poročevalno pogovorno okno</translation>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
       <translation>Pythonov notranji izpis bo preusmerjen s
-Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
+Pythonove ukazne mize na poročilno podokno</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="511"/>
@@ -3291,7 +3291,7 @@ Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
       <translation>Notranja Pythonova sporočila o napakah bodo preusmerjena
-s Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
+s Pythonove ukazne mize na poročilno podokno</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="531"/>
@@ -6197,7 +6197,7 @@ izbrani pred odprtjem tega pogovrnega okna</translation>
     <message>
       <location filename="../PropertyView.cpp" line="558"/>
       <source>Property View</source>
-      <translation>Pogled z lastnostmi</translation>
+      <translation>Lastnostni prikaz</translation>
     </message>
   </context>
   <context>
@@ -8567,8 +8567,8 @@ Ali želite navesti drugo mapo?</translation>
       <translation>Izvažanje PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Neshranjen dokument</translation>
     </message>
@@ -10361,8 +10361,8 @@ bodo izgubljene.
       <translation>Ustvari nov, prazen dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="393"/>
       <location filename="../MainWindow.cpp" line="2053"/>
+      <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>
@@ -12474,7 +12474,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -12512,7 +12512,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>

@@ -283,7 +283,7 @@ void Cell::setContent(const char * value)
         if (owner->sheet()->isRestoring()) {
             if (value[0] == '\0' || (value[0] == '\'' && value[1] == '\0'))
                 return;
-            expression.reset(new App::StringExpression(owner->sheet(), value));
+            expression = std::make_unique<App::StringExpression>(owner->sheet(), value);
             setUsed(EXPRESSION_SET, true);
             return;
         }
@@ -1011,7 +1011,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
 }
 
 //roughly based on Spreadsheet/Gui/SheetModel.cpp
-std::string Cell::getFormattedQuantity(void)
+std::string Cell::getFormattedQuantity()
 {
     std::string result;
     QString qFormatted;

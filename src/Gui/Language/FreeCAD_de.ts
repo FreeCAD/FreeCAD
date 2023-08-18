@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformieren</translation>
     </message>
@@ -7045,7 +7045,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../OpenCascadeNavigationStyle.cpp" line="57"/>
       <source>Press CTRL and right mouse button</source>
-      <translation>Drücken Sie STRG und die Rechte Maustaste</translation>
+      <translation>Drücken Sie STRG und die rechte Maustaste</translation>
     </message>
     <message>
       <location filename="../OpenCascadeNavigationStyle.cpp" line="59"/>
@@ -7738,7 +7738,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="57"/>
       <source>Press right mouse button</source>
-      <translation>Rechte Maustaste drücken</translation>
+      <translation>Drücken Sie die rechte Maustaste</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="59"/>
@@ -7761,7 +7761,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="56"/>
       <source>Press ALT button</source>
-      <translation>Bitte ALT drücken</translation>
+      <translation>Drücken Sie die ALT-Taste</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="58"/>
@@ -8549,8 +8549,8 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <translation>Exportiert als PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Nicht gespeichertes Dokument</translation>
     </message>
@@ -10340,8 +10340,8 @@ the current copy will be lost.
       <translation>Neues Dokument erstellen</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="393"/>
       <location filename="../MainWindow.cpp" line="2053"/>
+      <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>

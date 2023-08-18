@@ -125,10 +125,8 @@ float SphereFit::GetStdDeviation() const
 
 void SphereFit::ProjectToSphere()
 {
-	for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-		Base::Vector3f& cPnt = *it;
-
-		// Compute unit vector from sphere centre to point.
+	for (auto & cPnt : _vPoints) {
+			// Compute unit vector from sphere centre to point.
 		// Because this vector is orthogonal to the sphere's surface at the
 		// intersection point we can easily compute the projection point on the
 		// closest surface point using the radius of the sphere

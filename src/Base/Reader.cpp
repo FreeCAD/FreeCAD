@@ -461,8 +461,8 @@ const std::vector<std::string>& Base::XMLReader::getFilenames() const
 bool Base::XMLReader::isRegistered(Base::Persistence *Object) const
 {
     if (Object) {
-        for (std::vector<FileEntry>::const_iterator it = FileList.begin(); it != FileList.end(); ++it) {
-            if (it->Object == Object)
+        for (const auto & it : FileList) {
+            if (it.Object == Object)
                 return true;
         }
     }

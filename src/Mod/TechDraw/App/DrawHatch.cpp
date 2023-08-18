@@ -192,27 +192,13 @@ void DrawHatch::unsetupObject(void)
 bool DrawHatch::isSvgHatch(void) const
 {
     Base::FileInfo fi(HatchPattern.getValue());
-    if (fi.extension() == "svg" ||
-        fi.extension() == "SVG") {
-        return true;
-    }
-    return false;
+    return fi.hasExtension("svg");
 }
 
 bool DrawHatch::isBitmapHatch(void) const
 {
     Base::FileInfo fi(HatchPattern.getValue());
-    if (fi.extension() == "bmp" ||
-        fi.extension() == "BMP" ||
-        fi.extension() == "png" ||
-        fi.extension() == "PNG" ||
-        fi.extension() == "jpg" ||
-        fi.extension() == "JPG" ||
-        fi.extension() == "jpeg" ||
-        fi.extension() == "JPEG" ) {
-        return true;
-    }
-    return false;
+    return fi.hasExtension({"bmp", "png", "jpg", "jpeg"});
 }
 
 //standard preference getters

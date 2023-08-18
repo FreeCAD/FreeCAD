@@ -111,8 +111,7 @@ void TaskScaledParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcScaled->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -208,7 +207,7 @@ void TaskScaledParameters::onUpdateView(bool on)
     }
 }
 
-void TaskScaledParameters::onFeatureDeleted(void)
+void TaskScaledParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -223,12 +222,12 @@ void TaskScaledParameters::onFeatureDeleted(void)
     recomputeFeature();
 }
 
-double TaskScaledParameters::getFactor(void) const
+double TaskScaledParameters::getFactor() const
 {
     return ui->spinFactor->value().getValue();
 }
 
-unsigned TaskScaledParameters::getOccurrences(void) const
+unsigned TaskScaledParameters::getOccurrences() const
 {
     return ui->spinOccurrences->value();
 }

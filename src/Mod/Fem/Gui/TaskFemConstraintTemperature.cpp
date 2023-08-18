@@ -70,14 +70,14 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
 
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Temperature") {
-        ui->rb_temperature->setChecked(1);
+        ui->rb_temperature->setChecked(true);
         ui->if_temperature->setValue(pcConstraint->Temperature.getQuantityValue());
 
         ui->if_temperature->bind(pcConstraint->Temperature);
         ui->if_temperature->setUnit(pcConstraint->Temperature.getUnit());
     }
     else if (constraint_type == "CFlux") {
-        ui->rb_cflux->setChecked(1);
+        ui->rb_cflux->setChecked(true);
         std::string str = "Concentrated heat flux";
         ui->if_temperature->setValue(pcConstraint->CFlux.getQuantityValue());
         ui->if_temperature->bind(pcConstraint->CFlux);
@@ -156,24 +156,22 @@ void TaskFemConstraintTemperature::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        std::vector<std::string> subNames = it->getSubNames();
+        std::vector<std::string> subNames = it.getSubNames();
         App::DocumentObject* obj =
-            ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+            ConstraintView->getObject()->getDocument()->getObject(it.getFeatName());
+        for (const auto & subName : subNames) {// for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(
@@ -186,8 +184,8 @@ void TaskFemConstraintTemperature::addToSelection()
             if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->lw_references->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -209,23 +207,21 @@ void TaskFemConstraintTemperature::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto & subName : subNames) {// for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(

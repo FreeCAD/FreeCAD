@@ -82,7 +82,9 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> ed
     std::string dimName = doc->getUniqueObjectName("DimExtent");
     Base::Interpreter().runStringArg(
         "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
-    Base::Interpreter().runStringArg(
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());    Base::Interpreter().runStringArg(
         "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
@@ -135,7 +137,9 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
     std::string dimName = doc->getUniqueObjectName("DimExtent");
     Base::Interpreter().runStringArg(
         "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
-    Base::Interpreter().runStringArg(
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());    Base::Interpreter().runStringArg(
         "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
@@ -426,11 +430,16 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
     if (extent) {
         Base::Interpreter().runStringArg(
             "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimExtent', 'DimExtent', '%s')",
+              dimName.c_str(), dimName.c_str());
     }
     else {
-
         Base::Interpreter().runStringArg(
             "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().%s.translateLabel('DrawViewDimimension', 'Dimension', '%s')",
+              dimName.c_str(), dimName.c_str());
     }
 
     Base::Interpreter().runStringArg(

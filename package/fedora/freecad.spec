@@ -232,7 +232,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 %endif
        -DPACKAGE_WCREF="%{release} (Git)" \
        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git master" \
-       -DBUILD_TEST=FALSE \
+       -DENABLE_DEVELOPER_TESTS=FALSE \
        ../
 
 make fc_version
@@ -315,7 +315,7 @@ done
 
 %check
 desktop-file-validate \
-    %{buildroot}%{_datadir}/applications/org.freecadweb.FreeCAD.desktop
+    %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
 %{?fedora:appstream-util validate-relax --nonet \
     %{buildroot}%{_metainfodir}/*.appdata.xml}
 

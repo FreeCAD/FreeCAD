@@ -1138,7 +1138,7 @@ Specificare un altro file, per favore.</translation>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="118"/>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
-      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
+      <translation>FEM Elmer: Non adatto per multithreading</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="119"/>
@@ -1342,7 +1342,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Risolutore predefinito</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -2626,15 +2626,15 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>Materiale FEM</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Materiale</translation>
     </message>
@@ -2659,9 +2659,9 @@ Specificare un altro file, per favore.</translation>
       <translation>Nome del materiale</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Etichetta Testo</translation>
     </message>
@@ -2880,7 +2880,7 @@ Specificare un altro file, per favore.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation type="unfinished">Contracted Area</translation>
+      <translation>Area Contrattata</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -3007,17 +3007,17 @@ Specificare un altro file, per favore.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -3032,18 +3032,18 @@ Specificare un altro file, per favore.</translation>
       <translation type="unfinished">Centrif parameter</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametro</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="43"/>
       <source>Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</source>
-      <translation type="unfinished">Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
+      <translation>Frequenza di rotazione f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="74"/>
@@ -3066,13 +3066,13 @@ Specificare un altro file, per favore.</translation>
       <translation type="unfinished">SectionPrint parameter</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Constraint Properties</source>
       <translation>Proprietà del vincolo</translation>
     </message>
@@ -3087,12 +3087,9 @@ Specificare un altro file, per favore.</translation>
       <translation>Potential:</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3105,15 +3102,18 @@ Specificare un altro file, per favore.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>non specificato</translation>
     </message>
@@ -3140,16 +3140,16 @@ with a harmonic/oscillating driving force</source>
 con una forza motrice armonica/oscillante</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Reale</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Immaginario</translation>
     </message>
@@ -3169,9 +3169,9 @@ con una forza motrice armonica/oscillante</translation>
       <translation>Parte immaginaria del potenziale scalare</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3190,9 +3190,9 @@ Note: has no effect if a solid was selected</source>
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3211,9 +3211,9 @@ Note: has no effect if a solid was selected</source>
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3278,8 +3278,8 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <translation>Parametro sezione trave</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Parametro sezione trasversale</translation>
     </message>
@@ -3307,7 +3307,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Parametro spessore guscio</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
@@ -3330,30 +3330,30 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <translation>Rotazione:     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>formula</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Velocità x:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Velocità y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Velocità z:</translation>
     </message>
@@ -3415,7 +3415,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation type="unfinished">Current density:</translation>
+      <translation>Densità attuale:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -3483,14 +3483,14 @@ Note: for 2D only setting for x is possible,
       <translation type="unfinished">Imaginary part of potential y-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation type="unfinished">Real part of potential z-component</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation type="unfinished">Imaginary part of potential z-component</translation>
     </message>
@@ -3615,26 +3615,26 @@ Note: for 2D only setting for x is possible,
       <translation>Modifica vincolo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="319"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="807"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="808"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
       <source>Do you want to close this dialog?</source>
       <translation>Vuoi chiudere questa finestra di dialogo?</translation>
     </message>
@@ -4040,7 +4040,7 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
     <message>
       <location filename="../ui/SolverCalculix.ui" line="84"/>
       <source>Thermo mechanical</source>
-      <translation type="unfinished">Thermo mechanical</translation>
+      <translation>Termo meccanico</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="91"/>
@@ -4415,7 +4415,7 @@ per il risolutore Elmer</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formula</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
@@ -5101,7 +5101,7 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Superficie con bordi</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5180,7 +5180,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Superficie con bordi</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5538,7 +5538,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="98"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Piano di ritaglio sulla faccia</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="102"/>
@@ -5625,12 +5625,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="284"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Vincolo velocità di flusso iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="288"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Crea un vincolo FEM per la velocità di flusso iniziale</translation>
     </message>
   </context>
   <context>
@@ -5638,12 +5638,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Constraint initial pressure</source>
-      <translation type="unfinished">Constraint initial pressure</translation>
+      <translation>Vincolo pressione iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates a FEM constraint initial pressure</source>
-      <translation type="unfinished">Creates a FEM constraint initial pressure</translation>
+      <translation>Crea un vincolo FEM pressione iniziale</translation>
     </message>
   </context>
   <context>
@@ -5703,12 +5703,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="403"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Sezione trasversale trave</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Crea una sezione trasversale di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -5734,7 +5734,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="441"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Crea una rotazione di una trave FEM</translation>
     </message>
   </context>
   <context>
@@ -5742,12 +5742,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="505"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Equazione elettrostatica</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="509"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Crea un'equazione FEM per l'elettrostatica</translation>
     </message>
   </context>
   <context>
@@ -5761,8 +5761,8 @@ used for the Elmer solver</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for
- elasticity (stress)</translation>
+      <translation>Crea un'equazione FEM per l'elasticità
+ (stress)</translation>
     </message>
   </context>
   <context>
@@ -5896,12 +5896,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="772"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Converti mesh FEM in mesh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="776"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converte la superficie di una mesh FEM in una mesh</translation>
     </message>
   </context>
   <context>
@@ -5983,12 +5983,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Regione di mesh FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Crea una regione di mesh FEM</translation>
     </message>
   </context>
   <context>
@@ -6014,7 +6014,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1044"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Elimina tutti i risultati dall'analisi attiva</translation>
     </message>
   </context>
   <context>
@@ -6464,14 +6464,14 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="454"/>
       <source>Deformation equation</source>
-      <translation type="unfinished">Deformation equation</translation>
+      <translation>Equazione deformazione</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for
  deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for
- deformation (nonlinear elasticity)</translation>
+      <translation>Crea un'equazione FEM per la deformazione
+ (elasticità non lineare)</translation>
     </message>
   </context>
   <context>

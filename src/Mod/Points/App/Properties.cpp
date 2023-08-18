@@ -156,8 +156,8 @@ void PropertyGreyValueList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << *it;
+    for (float it : _lValueList) {
+        str << it;
     }
 }
 
@@ -167,8 +167,8 @@ void PropertyGreyValueList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<float> values(uCt);
-    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> *it;
+    for (float & value : values) {
+        str >> value;
     }
     setValues(values);
 }
@@ -330,8 +330,8 @@ void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
+    for (const auto& it : _lValueList) {
+        str << it.x << it.y << it.z;
     }
 }
 
@@ -341,8 +341,8 @@ void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Vector3f> values(uCt);
-    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
+    for (auto & value : values) {
+        str >> value.x >> value.y >> value.z;
     }
     setValues(values);
 }
@@ -466,35 +466,35 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
 
     // Mean curvature
     if (mode == MeanCurvature) {
-        for (std::vector<Points::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it) {
-            fValues.push_back( 0.5f*(it->fMaxCurvature+it->fMinCurvature) );
+        for (const auto & it : fCurvInfo) {
+            fValues.push_back( 0.5f*(it.fMaxCurvature+it.fMinCurvature) );
         }
     }
     // Gaussian curvature
     else if (mode == GaussCurvature) {
-        for (std::vector<Points::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it) {
-            fValues.push_back( it->fMaxCurvature * it->fMinCurvature );
+        for (const auto & it : fCurvInfo) {
+            fValues.push_back( it.fMaxCurvature * it.fMinCurvature );
         }
     }
     // Maximum curvature
     else if (mode == MaxCurvature) {
-        for (std::vector<Points::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it) {
-            fValues.push_back( it->fMaxCurvature );
+        for (const auto & it : fCurvInfo) {
+            fValues.push_back( it.fMaxCurvature );
         }
     }
     // Minimum curvature
     else if (mode == MinCurvature) {
-        for (std::vector<Points::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it) {
-            fValues.push_back( it->fMinCurvature );
+        for (const auto & it : fCurvInfo) {
+            fValues.push_back( it.fMinCurvature );
         }
     }
     // Absolute curvature
     else if (mode == AbsCurvature) {
-        for (std::vector<Points::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it) {
-            if (fabs(it->fMaxCurvature) > fabs(it->fMinCurvature))
-                fValues.push_back( it->fMaxCurvature );
+        for (const auto & it : fCurvInfo) {
+            if (fabs(it.fMaxCurvature) > fabs(it.fMinCurvature))
+                fValues.push_back( it.fMaxCurvature );
             else
-                fValues.push_back( it->fMinCurvature );
+                fValues.push_back( it.fMinCurvature );
         }
     }
 
@@ -597,10 +597,10 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
     if (uCt > 0)
-    for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->fMaxCurvature << it->fMinCurvature;
-        str << it->cMaxCurvDir.x << it->cMaxCurvDir.y << it->cMaxCurvDir.z;
-        str << it->cMinCurvDir.x << it->cMinCurvDir.y << it->cMinCurvDir.z;
+    for (const auto & it : _lValueList) {
+        str << it.fMaxCurvature << it.fMinCurvature;
+        str << it.cMaxCurvDir.x << it.cMaxCurvDir.y << it.cMaxCurvDir.z;
+        str << it.cMinCurvDir.x << it.cMinCurvDir.y << it.cMinCurvDir.z;
     }
 }
 
@@ -610,10 +610,10 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<CurvatureInfo> values(uCt);
-    for (std::vector<CurvatureInfo>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->fMaxCurvature >> it->fMinCurvature;
-        str >> it->cMaxCurvDir.x >> it->cMaxCurvDir.y >> it->cMaxCurvDir.z;
-        str >> it->cMinCurvDir.x >> it->cMinCurvDir.y >> it->cMinCurvDir.z;
+    for (auto & value : values) {
+        str >> value.fMaxCurvature >> value.fMinCurvature;
+        str >> value.cMaxCurvDir.x >> value.cMaxCurvDir.y >> value.cMaxCurvDir.z;
+        str >> value.cMinCurvDir.x >> value.cMinCurvDir.y >> value.cMinCurvDir.z;
     }
 
     setValues(values);

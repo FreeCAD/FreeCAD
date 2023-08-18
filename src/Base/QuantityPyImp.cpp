@@ -604,7 +604,7 @@ void QuantityPy::setUnit(Py::Object arg)
 
 Py::String QuantityPy::getUserString() const
 {
-    return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
+    return {getQuantityPtr()->getUserString().toUtf8(),"utf-8"};
 }
 
 Py::Dict QuantityPy::getFormat() const

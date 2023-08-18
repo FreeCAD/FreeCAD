@@ -1226,8 +1226,8 @@ then call this command, then choose the desired sketch.</source>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation>თითოეული მონიშნული ესკიზისთვის
-X და Y ღერძებით და საწყისი წერტილით
+      <translation>თითოეული მონიშნული ესკიზისთვის 
+X და Y ღერძებით და საწყისი წერტილით 
 ახალი სარკისებური ესკიზის შექმნა.</translation>
     </message>
     <message>
@@ -1552,7 +1552,7 @@ into driving or reference mode</translation>
       <location filename="../../Command.cpp" line="786"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation>ესკიზის შემოწმება ნაკლული დამთხვევების, არასწორი შეზღუდვების,
+      <translation>ესკიზის შემოწმება ნაკლული დამთხვევების, არასწორი შეზღუდვების, 
 დეგენერირებული გეომეტრიის და ა. შ. შემოწმებით.</translation>
     </message>
     <message>
@@ -2285,8 +2285,20 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>არ მიამაგრო</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <location filename="../../CommandAlterGeometry.cpp" line="145"/>
       <location filename="../../CommandAlterGeometry.cpp" line="154"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandConstraints.cpp" line="162"/>
       <location filename="../../CommandConstraints.cpp" line="169"/>
       <location filename="../../CommandConstraints.cpp" line="1047"/>
@@ -2412,15 +2424,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="8443"/>
       <location filename="../../CommandConstraints.cpp" line="8519"/>
       <location filename="../../CommandConstraints.cpp" line="8531"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="482"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="555"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="690"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="748"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="834"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="882"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1232"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1342"/>
       <location filename="../../CommandSketcherTools.cpp" line="93"/>
       <location filename="../../CommandSketcherTools.cpp" line="769"/>
       <location filename="../../CommandSketcherTools.cpp" line="885"/>
@@ -2436,9 +2439,6 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherTools.cpp" line="2164"/>
       <location filename="../../CommandSketcherTools.cpp" line="2174"/>
       <location filename="../../CommandSketcherTools.cpp" line="2221"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -2619,9 +2619,9 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>მონიშნული ობიექტების რიცხვი არ უდრის სამს</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="583"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="872"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1365"/>
+      <location filename="../../CommandConstraints.cpp" line="583"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
@@ -3030,9 +3030,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>აღწერეთ B-სპლაინის კუთხე, 1-დან %1-მდე:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="731"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1096"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="277"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-ის ბირთვის შეცდომა</translation>
     </message>
@@ -3901,7 +3901,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>თუ ჩარტულია, მასივის თითოეული ელემენტი შეიზღუდება სხვა
+      <translation>თუ ჩარტულია, მასივის თითოეული ელემენტი შეიზღუდება სხვა 
 ელემენტებთან შედარებით, მშენებლობის ხაზების გამოეყენებით</translation>
     </message>
     <message>
@@ -3952,7 +3952,7 @@ reflected on copies</source>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>ესკიზის ფანჯარას ამომხსნელის მოსარგებად ექნება
+      <translation>ესკიზის ფანჯარას ამომხსნელის მოსარგებად ექნება 
 დამატებითი სექცია 'ამომხსნელის დამატებითი პარამეტრები'</translation>
     </message>
     <message>
@@ -6141,39 +6141,39 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="321"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="259"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="123"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="194"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="303"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="613"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="171"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="198"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="470"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="127"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="317"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="324"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="329"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="172"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="121"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="431"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="461"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="128"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="305"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="517"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1221"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="80"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="157"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="291"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="699"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="306"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="148"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="149"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
@@ -6193,6 +6193,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>შეზღუდვას ინდექსის ინფორმაცია არასწორია და ის მიუღებელია.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandConstraints.cpp" line="253"/>
       <location filename="../../CommandConstraints.cpp" line="328"/>
       <location filename="../../CommandConstraints.cpp" line="419"/>
@@ -6200,9 +6203,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../CommandConstraints.cpp" line="573"/>
       <location filename="../../CommandConstraints.cpp" line="4461"/>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="775"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="909"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1130"/>
       <location filename="../../CommandSketcherTools.cpp" line="833"/>
       <location filename="../../CommandSketcherTools.cpp" line="1053"/>
       <source>Invalid Constraint</source>
@@ -6246,8 +6246,8 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>B-სპლაინის პოლუსის შექმნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="614"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="518"/>
       <source>Error creating B-spline</source>
       <translation>B-სპლაინის შექმნის შეცდომა</translation>
     </message>
@@ -6344,9 +6344,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>წიბოს წაკვეთის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
+      <location filename="../../EditDatumDialog.cpp" line="239"/>
       <source>Value Error</source>
       <translation>მნიშვნელობის შეცდომა</translation>
     </message>

@@ -37,10 +37,10 @@ class RobotExport RobotAlgos
 
 public:
 	/// Constructor
-	RobotAlgos(void);
+    RobotAlgos();
 	virtual ~RobotAlgos();
 
-    void Test(void);
+    void Test();
 };
 
 inline  KDL::Frame toFrame(const Base::Placement &To){

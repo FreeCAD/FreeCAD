@@ -65,7 +65,7 @@
 #include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
-#include "DlgSettingsCacheDirectory.h"
+#include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
@@ -83,6 +83,7 @@
 #include "MDIViewPy.h"
 #include "SoFCDB.h"
 #include "Selection.h"
+#include "SelectionFilterPy.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
@@ -357,6 +358,7 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
+        //NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
             std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
         App::GetApplication().signalDeleteDocument.connect(
@@ -369,6 +371,7 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+        //NOLINTEND
 
         // install the last active language
         ParameterGrp::handle hPGrp =
@@ -821,6 +824,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     auto pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
 
+    //NOLINTBEGIN
     // connect the signals to the application for the new document
     pDoc->signalNewObject.connect(std::bind(&Gui::Application::slotNewObject, this, sp::_1));
     pDoc->signalDeletedObject.connect(std::bind(&Gui::Application::slotDeletedObject,
@@ -833,6 +837,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
         this, sp::_1));
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
+    //NOLINTEND
 
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc)
@@ -1568,7 +1573,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
         if (!s.isEmpty())
             return icon.pixmap(s[0]);
     }
-    return QPixmap();
+    return {};
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
@@ -1592,7 +1597,7 @@ QString Application::workbenchToolTip(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString Application::workbenchMenuText(const QString& wb) const
@@ -1617,7 +1622,7 @@ QString Application::workbenchMenuText(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QStringList Application::workbenches() const
@@ -2129,8 +2134,9 @@ void Application::runApplication()
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
         QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
         QString title =
-            QString::fromLatin1("%1 %2.%3.%4").arg(mainApp.applicationName(), major, minor, point);
+            QString::fromLatin1("%1 %2.%3.%4%5").arg(mainApp.applicationName(), major, minor, point, suffix);
         mw.setWindowTitle(title);
     }
     else {
@@ -2530,11 +2536,21 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 void Application::checkForDeprecatedSettings()
 {
     // From 0.21, `FCBak` will be the intended default backup format
-    // TODO: Check for `FCStd#` and warn user.
-    bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension", true);
-    if (!useFCBakExtension) {
-        Base::Console().Warning("`.FCStd#` backup format is deprecated from 0.21 and may be removed in future versions. Please use `.FCBak` instead.\n");
+    bool makeBackups = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                           ->GetBool("CreateBackupFiles", true);
+    if (makeBackups) {
+        bool useFCBakExtension =
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("UseFCBakExtension", true);
+        if (!useFCBakExtension) {
+            // TODO: This should be translated
+            Base::Console().Warning("The `.FCStd#` backup format is deprecated as of v0.21 and may "
+                                    "be removed in future versions.\n"
+                                    "To update, check the 'Preferences->General->Document->Use "
+                                    "date and FCBak extension' option.\n");
+        }
     }
 }
 

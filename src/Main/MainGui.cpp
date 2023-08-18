@@ -52,7 +52,7 @@
 #include <Gui/Application.h>
 
 
-void PrintInitHelp(void);
+void PrintInitHelp();
 
 const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n"\
 "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
@@ -97,6 +97,7 @@ private:
 
 int main( int argc, char ** argv )
 {
+    setlocale(LC_ALL, ""); // use native environment settings
 #if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.

@@ -43,7 +43,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProviderGeoFeatureGroupExtension)
@@ -97,11 +97,13 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
     assert ( adoc );
     assert ( gdoc );
 
+    //NOLINTBEGIN
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, bp::_1) );
+            std::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, sp::_1) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, bp::_1) );
+            std::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, sp::_1) );
+    //NOLINTEND
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {

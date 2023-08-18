@@ -36,7 +36,7 @@
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
@@ -50,8 +50,10 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
-  conActive = Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  conDelete = Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
+  //NOLINTBEGIN
+  conActive = Application::Instance->signalActiveDocument.connect(std::bind(&View::slotActiveDocument, this, sp::_1));
+  conDelete = Application::Instance->signalDeleteDocument.connect(std::bind(&View::slotDeleteDocument, this, sp::_1));
+  //NOLINTEND
 
   //just update the dagview when the gui process is idle.
   connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::awake,

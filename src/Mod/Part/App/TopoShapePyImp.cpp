@@ -1003,8 +1003,8 @@ PyObject*  TopoShapePy::slice(PyObject *args)
         Base::Vector3d vec = Py::Vector(dir, false).toVector();
         std::list<TopoDS_Wire> slice = this->getTopoShapePtr()->slice(vec, d);
         Py::List wire;
-        for (std::list<TopoDS_Wire>::iterator it = slice.begin(); it != slice.end(); ++it) {
-            wire.append(Py::asObject(new TopoShapeWirePy(new TopoShape(*it))));
+        for (const auto & it : slice) {
+            wire.append(Py::asObject(new TopoShapeWirePy(new TopoShape(it))));
         }
 
         return Py::new_reference_to(wire);
@@ -1264,9 +1264,9 @@ static const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
 // Returns TopAbs_SHAPE if pyType is not a subclass of any of the TopoShape*Py.
 static TopAbs_ShapeEnum ShapeTypeFromPyType(PyTypeObject* pyType)
 {
-    for (auto it = vecTypeShape.begin(); it != vecTypeShape.end(); ++it) {
-        if (PyType_IsSubtype(pyType, it->first))
-            return it->second;
+    for (const auto & it : vecTypeShape) {
+        if (PyType_IsSubtype(pyType, it.first))
+            return it.second;
     }
     return TopAbs_SHAPE;
 }
@@ -1938,17 +1938,15 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
         getTopoShapePtr()->getFaces(Points, Facets,tolerance);
         Py::Tuple tuple(2);
         Py::List vertex;
-        for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
-            it != Points.end(); ++it)
-            vertex.append(Py::asObject(new Base::VectorPy(*it)));
+        for (const auto & Point : Points)
+            vertex.append(Py::asObject(new Base::VectorPy(Point)));
         tuple.setItem(0, vertex);
         Py::List facet;
-        for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-            it = Facets.begin(); it != Facets.end(); ++it) {
+        for (const auto& it : Facets) {
             Py::Tuple f(3);
-            f.setItem(0,Py::Long((long)it->I1));
-            f.setItem(1,Py::Long((long)it->I2));
-            f.setItem(2,Py::Long((long)it->I3));
+            f.setItem(0,Py::Long((long)it.I1));
+            f.setItem(1,Py::Long((long)it.I2));
+            f.setItem(2,Py::Long((long)it.I3));
             facet.append(f);
         }
         tuple.setItem(1, facet);

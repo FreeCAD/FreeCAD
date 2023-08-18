@@ -42,16 +42,16 @@ using namespace MeshCore;
 bool MeshEvalInvalids::Evaluate()
 {
   const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it )
+  for (const auto & it : rFaces)
   {
-    if ( !it->IsValid() )
+    if ( !it.IsValid() )
       return false;
   }
 
   const MeshPointArray& rPoints = _rclMesh.GetPoints();
-  for ( MeshPointArray::_TConstIterator jt = rPoints.begin(); jt != rPoints.end(); ++jt )
+  for (const auto & it : rPoints)
   {
-    if ( !jt->IsValid() )
+    if ( !it.IsValid() )
       return false;
   }
 
@@ -205,11 +205,11 @@ bool MeshFixDuplicatePoints::Fixup()
 
     // now set all facets to the correct index
     MeshFacetArray& rFacets = _rclMesh._aclFacetArray;
-    for (MeshFacetArray::_TIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        for (int i=0; i<3; i++) {
-            std::map<PointIndex, PointIndex>::iterator pt = mapPointIndex.find(it->_aulPoints[i]);
+    for (auto & it : rFacets) {
+        for (PointIndex & point : it._aulPoints) {
+            std::map<PointIndex, PointIndex>::iterator pt = mapPointIndex.find(point);
             if (pt != mapPointIndex.end())
-                it->_aulPoints[i] = pt->second;
+                point = pt->second;
         }
     }
 
@@ -225,8 +225,8 @@ bool MeshFixDuplicatePoints::Fixup()
 bool MeshEvalNaNPoints::Evaluate()
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-        if (boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))
+    for (const auto & it : rPoints) {
+        if (boost::math::isnan(it.x) || boost::math::isnan(it.y) || boost::math::isnan(it.z))
             return false;
     }
 
@@ -517,7 +517,7 @@ bool MeshRemoveNeedles::Fixup()
 
     std::priority_queue<FaceEdgePriority,
                         std::vector<FaceEdgePriority>,
-                        std::greater<FaceEdgePriority> > todo;
+                        std::greater<> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
         const MeshFacet& facet = rclFAry[index];
         MeshGeomFacet tria(_rclMesh.GetFacet(facet));
@@ -615,7 +615,7 @@ bool MeshFixCaps::Fixup()
 
     std::priority_queue<FaceVertexPriority,
                         std::vector<FaceVertexPriority>,
-                        std::greater<FaceVertexPriority> > todo;
+                        std::greater<> > todo;
     for (std::size_t index = 0; index < facetCount; index++) {
         for (int i=0; i<3; i++) {
             const MeshFacet& facet = rclFAry[index];
@@ -818,21 +818,20 @@ bool MeshEvalDentsOnSurface::Evaluate()
         std::set<PointIndex> nb = clPt2Facets.NeighbourPoints(point,1);
         const std::set<FacetIndex>& faces = clPt2Facets[index];
 
-        for (std::set<PointIndex>::iterator pt = nb.begin(); pt != nb.end(); ++pt) {
-            const MeshPoint& mp = rPntAry[*pt];
-            for (std::set<FacetIndex>::const_iterator
-                ft = faces.begin(); ft != faces.end(); ++ft) {
+        for (PointIndex pt : nb) {
+            const MeshPoint& mp = rPntAry[pt];
+            for (FacetIndex ft : faces) {
                     // the point must not be part of the facet we test
-                    if (f_beg[*ft]._aulPoints[0] == *pt)
+                    if (f_beg[ft]._aulPoints[0] == pt)
                         continue;
-                    if (f_beg[*ft]._aulPoints[1] == *pt)
+                    if (f_beg[ft]._aulPoints[1] == pt)
                         continue;
-                    if (f_beg[*ft]._aulPoints[2] == *pt)
+                    if (f_beg[ft]._aulPoints[2] == pt)
                         continue;
                     // is the point projectable onto the facet?
-                    rTriangle = _rclMesh.GetFacet(f_beg[*ft]);
+                    rTriangle = _rclMesh.GetFacet(f_beg[ft]);
                     if (rTriangle.IntersectWithLine(mp,rTriangle.GetNormal(),tmp)) {
-                        const std::set<FacetIndex>& f = clPt2Facets[*pt];
+                        const std::set<FacetIndex>& f = clPt2Facets[pt];
                         this->indices.insert(this->indices.end(), f.begin(), f.end());
                         break;
                     }
@@ -923,10 +922,10 @@ bool MeshEvalFoldsOnBoundary::Evaluate()
     const MeshFacetArray& rFacAry = _rclMesh.GetFacets();
     for (MeshFacetArray::_TConstIterator it = rFacAry.begin(); it != rFacAry.end(); ++it) {
         if (it->CountOpenEdges() == 2) {
-            for (int i=0; i<3; i++) {
-                if (it->_aulNeighbours[i] != FACET_INDEX_MAX) {
+            for (FacetIndex nbIndex : it->_aulNeighbours) {
+                if (nbIndex != FACET_INDEX_MAX) {
                     MeshGeomFacet f1 = _rclMesh.GetFacet(*it);
-                    MeshGeomFacet f2 = _rclMesh.GetFacet(it->_aulNeighbours[i]);
+                    MeshGeomFacet f2 = _rclMesh.GetFacet(nbIndex);
                     float cos_angle = f1.GetNormal() * f2.GetNormal();
                     if (cos_angle <= 0.5f) // ~ 60 degree
                         indices.push_back(it-rFacAry.begin());
@@ -999,8 +998,7 @@ bool MeshEvalBorderFacet::Evaluate()
 
     for (f_it = facets.begin(); f_it != f_end; ++f_it) {
         bool ok = true;
-        for (int i=0; i<3; i++) {
-            PointIndex index = f_it->_aulPoints[i];
+        for (PointIndex index : f_it->_aulPoints) {
             if (vv_it[index].size() == vf_it[index].size()) {
                 ok = false;
                 break;
@@ -1021,9 +1019,9 @@ bool MeshEvalRangeFacet::Evaluate()
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     FacetIndex ulCtFacets = rFaces.size();
 
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
-        for (int i = 0; i < 3; i++) {
-            if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < FACET_INDEX_MAX)) {
+    for (const auto & it : rFaces) {
+        for (FacetIndex nbFacet : it._aulNeighbours) {
+            if ((nbFacet >= ulCtFacets) && (nbFacet < FACET_INDEX_MAX)) {
                 return false;
             }
         }
@@ -1040,8 +1038,8 @@ std::vector<FacetIndex> MeshEvalRangeFacet::GetIndices() const
 
     FacetIndex ind=0;
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
-        for (int i = 0; i < 3; i++) {
-            if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < FACET_INDEX_MAX)) {
+        for (FacetIndex nbIndex : it->_aulNeighbours) {
+            if ((nbIndex >= ulCtFacets) && (nbIndex < FACET_INDEX_MAX)) {
                 aInds.push_back(ind);
                 break;
             }
@@ -1064,10 +1062,10 @@ bool MeshEvalRangePoint::Evaluate()
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     PointIndex ulCtPoints = _rclMesh.CountPoints();
 
-    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](PointIndex i) {
+    for (const auto & it : rFaces) {
+        if (std::find_if(it._aulPoints, it._aulPoints + 3, [ulCtPoints](PointIndex i) {
             return i >= ulCtPoints;
-        }) < it->_aulPoints + 3)
+        }) < it._aulPoints + 3)
             return false;
     }
 
@@ -1103,8 +1101,8 @@ bool MeshFixRangePoint::Fixup()
         // 'DeleteFacets' will segfault. But setting all point indices to 0 works.
         std::vector<PointIndex> invalid = eval.GetIndices();
         if (!invalid.empty()) {
-            for (std::vector<PointIndex>::iterator it = invalid.begin(); it != invalid.end(); ++it) {
-                _rclMesh.SetFacetPoints(*it, 0, 0, 0);
+            for (PointIndex it : invalid) {
+                _rclMesh.SetFacetPoints(it, 0, 0, 0);
             }
 
             _rclMesh.DeleteFacets(invalid);
@@ -1119,9 +1117,9 @@ bool MeshEvalCorruptedFacets::Evaluate()
 {
   const MeshFacetArray& rFaces = _rclMesh.GetFacets();
 
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it ) {
+  for (const auto & it : rFaces) {
     // dupicated point indices
-    if (it->IsDegenerated())
+    if (it.IsDegenerated())
       return false;
   }
 

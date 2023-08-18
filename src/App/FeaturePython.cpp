@@ -480,7 +480,7 @@ std::string FeaturePythonImp::getViewProviderName()
         e.ReportException();
     }
 
-    return std::string();
+    return {};
 }
 
 FeaturePythonImp::ValueT

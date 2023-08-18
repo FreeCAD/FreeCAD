@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformar</translation>
     </message>
@@ -2209,12 +2209,12 @@ la pantalla de bienvenida</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="454"/>
       <source>Apply the %1 preference pack</source>
-      <translation>Aplicar el paquete de preferencias %1</translation>
+      <translation>Aplicar el %1 paquete de preferencias</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="515"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation>Elija un archivo de configuración de FreeCAD para importar</translation>
+      <translation>Elige un archivo de configuración de FreeCAD para importar</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="526"/>
@@ -2386,7 +2386,7 @@ Este archivo ya existe.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="447"/>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>¿Realmente quiere borrar la macro '%1'?</translation>
+      <translation>¿Realmente desea eliminar la macro '%1'?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="476"/>
@@ -8553,8 +8553,8 @@ Do you want to specify another directory?</source>
       <translation>Exportando a PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
@@ -10344,8 +10344,8 @@ la copia actual se perderá.
       <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="393"/>
       <location filename="../MainWindow.cpp" line="2053"/>
+      <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>

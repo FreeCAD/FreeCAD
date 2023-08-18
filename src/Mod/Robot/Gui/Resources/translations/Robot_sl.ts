@@ -332,7 +332,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="380"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Ustvari izpopolnitveni predmet, ki preglasi nekatere vidike poti</translation>
+      <translation>Ustvari dodelovalni predmet, ki preglasi nekatere lastnosti poti</translation>
     </message>
   </context>
   <context>
@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>Izberite enega robota</translation>
     </message>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Izberite enega robota in eno pot</translation>
     </message>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="407"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Izberite pot, ki jo želite prilagoditi.</translation>
+      <translation>Izberite pot, ki jo želite dodelati.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="149"/>

@@ -39,7 +39,7 @@ public:
     ViewProviderHelixParametric();
     /// destructor
     ~ViewProviderHelixParametric() override;
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:
@@ -55,7 +55,7 @@ public:
     ViewProviderSpiralParametric();
     /// destructor
     ~ViewProviderSpiralParametric() override;
-    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<std::string> getDisplayModes() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:

@@ -1081,7 +1081,7 @@ Restart:
                                 static_cast<const Part::GeomCircle*>(geo1);
                             const Part::GeomCircle* circle2 =
                                 static_cast<const Part::GeomCircle*>(geo2);
-                            // tangency between two cicles
+                            // tangency between two circles
                             Base::Vector3d dir =
                                 (circle2->getCenter() - circle1->getCenter()).Normalize();
                             pos = circle1->getCenter() + dir * circle1->getRadius();
@@ -2114,15 +2114,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) const
 {
-#if (COIN_MAJOR_VERSION >= 3)
     SbVec3s iconSize = iconPtr->image.getValue().getSize();
-#else
-    SbVec2s size;
-    int nc;
-    const unsigned char* bytes = iconPtr->image.getValue(size, nc);
-    SbImage img(bytes, size, nc);
-    SbVec3s iconSize = img.getSize();
-#endif
+
     if (iconPtr->width.getValue() != -1)
         iconSize[0] = iconPtr->width.getValue();
     if (iconPtr->height.getValue() != -1)

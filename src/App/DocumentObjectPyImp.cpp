@@ -55,12 +55,12 @@ Py::String DocumentObjectPy::getName() const
     if (!internal) {
         throw Py::RuntimeError(std::string("This object is currently not part of a document"));
     }
-    return Py::String(std::string(internal));
+    return {std::string(internal)};
 }
 
 Py::String DocumentObjectPy::getFullName() const
 {
-    return Py::String(getDocumentObjectPtr()->getFullName());
+    return {getDocumentObjectPtr()->getFullName()};
 }
 
 Py::Object DocumentObjectPy::getDocument() const
@@ -114,11 +114,11 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        Base::BaseClass *data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -253,8 +253,8 @@ Py::List DocumentObjectPy::getInList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (auto It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -265,8 +265,8 @@ Py::List DocumentObjectPy::getInListRecursive() const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInListRecursive();
 
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (auto It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -279,8 +279,8 @@ Py::List DocumentObjectPy::getOutList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (auto It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -292,8 +292,8 @@ Py::List DocumentObjectPy::getOutListRecursive() const
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
         // create the python list for the output
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (auto It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -694,7 +694,7 @@ PyObject*  DocumentObjectPy::getParent(PyObject *args)
 Py::Boolean DocumentObjectPy::getMustExecute() const
 {
     try {
-        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+        return {getDocumentObjectPtr()->mustExecute() ? true : false};
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -741,7 +741,7 @@ Py::Int DocumentObjectPy::getID() const {
 }
 
 Py::Boolean DocumentObjectPy::getRemoving() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
 PyObject *DocumentObjectPy::resolve(PyObject *args)
@@ -813,11 +813,11 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
 }
 
 Py::String DocumentObjectPy::getOldLabel() const {
-    return Py::String(getDocumentObjectPtr()->getOldLabel());
+    return {getDocumentObjectPtr()->getOldLabel()};
 }
 
 Py::Boolean DocumentObjectPy::getNoTouch() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch)};
 }
 
 void DocumentObjectPy::setNoTouch(Py::Boolean value) {

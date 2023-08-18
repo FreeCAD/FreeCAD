@@ -174,7 +174,7 @@ def _create_involute_profile(
         # To get rid of the sin(t) part we assume phi "very small", i.e. sin(phi) becomes 0.
         # This is justyfied because Rci is much larger than fi and the parallax error is
         # neglectable. Next we substitute the parameter t by pi/2-q-pi. For one to account for the
-        # tangent angle definitions (see above), and then to turn our cicle by 180° as for the
+        # tangent angle definitions (see above), and then to turn our circle by 180° as for the
         # inner fillet we need the third quadrant of the circle (NB: we are looking at the upper
         # half of the right most tooth, i.e. the involute grows downwards!). This results in
         # sqrt(2*fi*Rci*cos(-1/2*pi - q) + fi**2 + Rci**2) which simplifies to

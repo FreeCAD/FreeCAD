@@ -119,7 +119,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="170"/>
       <source>Kuka IR125</source>
-      <translation>库卡IR125</translation>
+      <translation>库卡 IR125</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="171"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="89"/>
       <source>Kuka IR16</source>
-      <translation>库卡IR16</translation>
+      <translation>库卡 IR16</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="90"/>
@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>选择一个机器人</translation>
     </message>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>选择一个机器人和一个轨迹对象.</translation>
     </message>

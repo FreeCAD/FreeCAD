@@ -196,6 +196,7 @@ class Metadata:
     version: Version = None
     date: str = ""
     description: str = ""
+    type: str = ""
     maintainer: List[Contact] = field(default_factory=list)
     license: List[License] = field(default_factory=list)
     url: List[Url] = field(default_factory=list)
@@ -269,7 +270,7 @@ class MetadataReader:
         metadata object."""
 
         tag = child.tag[len(namespace) :]
-        if tag in ["name", "date", "description", "icon", "classname", "subdirectory"]:
+        if tag in ["name", "date", "description", "type", "icon", "classname", "subdirectory"]:
             # Text-only elements
             metadata.__dict__[tag] = child.text
         elif tag in ["version", "freecadmin", "freecadmax", "pythonmin"]:

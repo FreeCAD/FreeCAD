@@ -190,7 +190,7 @@ public:
         getWindowParameter()->Attach(this);
     }
 
-    ~DimensionWidget()
+    ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
     }
@@ -214,7 +214,7 @@ public:
     }
 
 private:
-    void unitChanged(void)
+    void unitChanged()
     {
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
         auto actions = menu()->actions();
@@ -1170,9 +1170,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     auto view = dynamic_cast<MDIView*>(w->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
-
+    if (view)
+    {
+        d->activeView = view;
+        Application::Instance->viewActivated(view);
+    }
+    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1688,6 +1691,59 @@ QPixmap MainWindow::aboutImage() const
     return about_image;
 }
 
+/**
+ * Displays a warning about this being a developer build. Designed for display in the Splashscreen.
+ * \param painter The painter to draw the warning into
+ * \param startPosition The painter-space coordinates to start the warning box at.
+ * \param maxSize The maximum extents for the box that is drawn. If the text exceeds this size it
+ * will be scaled down to fit.
+ * \note The text string is translatable, so its length is somewhat unpredictable. It is always
+ * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
+ * width is considered, the height simply follows from the font size.
+ */
+void MainWindow::renderDevBuildWarning(
+    QPainter &painter,
+    const QPoint startPosition,
+    const QSize maxSize)
+{
+    // Create a background box that fades out the artwork for better legibility
+    QColor fader (Qt::black);
+    constexpr float halfDensity (0.5);
+    fader.setAlphaF(halfDensity);
+    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
+    painter.setBrush(fillBrush);
+
+    // Construct the lines of text and figure out how much space they need
+    const auto devWarningLine1 = tr("WARNING: This is a development version.");
+    const auto devWarningLine2 = tr("Please do not use in a production environment.");
+    QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
+    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
+    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
+    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
+    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
+    int lineHeight = fontMetrics.lineSpacing();
+    if (boxWidth > maxSize.width()) {
+        // Especially if the text was translated, there is a chance that using the existing font
+        // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
+        // how long the text strings are.
+        float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
+        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
+        padding *= reductionFactor;
+        QFont newFont = painter.font();
+        newFont.setPointSize(newFontSize);
+        painter.setFont(newFont);
+        lineHeight = painter.fontMetrics().lineSpacing();
+        boxWidth = maxSize.width();
+    }
+    constexpr float lineExpansionFactor(2.3);
+    int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
+
+    // Draw the background rectangle and the text
+    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
+}
+
 QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
@@ -1709,12 +1765,14 @@ QPixmap MainWindow::splashImage() const
     }
 
     // now try the icon paths
+    float pixelRatio (1.0);
     if (splash_image.isNull()) {
         if (qApp->devicePixelRatio() > 1.0) {
             // For HiDPI screens, we have a double-resolution version of the splash image
             splash_path += "2x";
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
             splash_image.setDevicePixelRatio(2.0);
+            pixelRatio = 2.0;
         }
         else {
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
@@ -1728,7 +1786,8 @@ QPixmap MainWindow::splashImage() const
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3").arg(major, minor, point);
+        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
@@ -1790,6 +1849,13 @@ QPixmap MainWindow::splashImage() const
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
+            if (suffix == QLatin1String("dev")) {
+                const int lineHeight = metricVer.lineSpacing();
+                const int padding {10}; // Distance from the edge of the graphic's bounding box
+                QPoint startPosition(padding, y + lineHeight);
+                QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
+                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize);
+            }
             painter.end();
         }
     }

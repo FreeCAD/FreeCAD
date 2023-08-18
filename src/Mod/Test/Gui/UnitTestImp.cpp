@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QFontMetrics>
 # include <QMessageBox>
 #endif
 
@@ -307,7 +308,9 @@ bool UnitTestDialog::runCurrentTest()
  */
 void UnitTestDialog::setStatusText(const QString& text)
 {
-    ui->textLabelStatus->setText(text);
+    QFontMetrics fm(font());
+    int labelWidth = ui->textLabelStatus->width() - 10;
+    ui->textLabelStatus->setText(fm.elidedText(text, Qt::ElideMiddle, labelWidth));
 }
 
 /**

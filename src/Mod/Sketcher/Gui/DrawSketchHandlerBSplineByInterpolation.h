@@ -50,7 +50,7 @@ public:
         applyCursor();
     }
 
-    virtual ~DrawSketchHandlerBSplineByInterpolation() = default;
+    ~DrawSketchHandlerBSplineByInterpolation() override = default;
 
     /// modes
     enum SELECT_MODE

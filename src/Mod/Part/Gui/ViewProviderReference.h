@@ -29,6 +29,7 @@
 #include <TopoDS_Shape.hxx>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
+#include <Mod/Part/PartGlobal.h>
 #include <map>
 
 class TopoDS_Shape;
@@ -51,13 +52,13 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPartReference : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPartReference);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartReference);
 
 public:
     /// constructor
     ViewProviderPartReference();
     /// destructor
-    virtual ~ViewProviderPartReference();
+    ~ViewProviderPartReference() override;
 
     // Display properties
     //App::PropertyFloatConstraint LineWidth;
@@ -70,18 +71,18 @@ public:
     //App::PropertyEnumeration Lighting;
 
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
     /// Update the view representation
     void reload();
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     //bool loadParameter();
 
     // nodes for the data representation

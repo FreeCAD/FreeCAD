@@ -194,8 +194,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
@@ -2339,7 +2339,7 @@ wyświetli ekran powitalny</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
       <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="372"/>
@@ -4532,7 +4532,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
@@ -6802,7 +6802,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="383"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1146"/>
@@ -8560,8 +8560,8 @@ Do you want to specify another directory?</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1189"/>
       <location filename="../MainWindow.cpp" line="692"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
@@ -10352,8 +10352,8 @@ bieżącej kopii zostaną utracone.
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="393"/>
       <location filename="../MainWindow.cpp" line="2053"/>
+      <location filename="../DocumentRecovery.cpp" line="393"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -11590,7 +11590,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1607"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1608"/>
@@ -11828,7 +11828,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1670"/>
       <location filename="../CommandView.cpp" line="1672"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11836,7 +11836,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1639"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1640"/>
@@ -11870,7 +11870,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1579"/>
       <location filename="../CommandView.cpp" line="1581"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -12189,7 +12189,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="547"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="548"/>

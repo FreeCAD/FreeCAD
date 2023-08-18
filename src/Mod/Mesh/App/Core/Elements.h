@@ -873,8 +873,8 @@ inline bool MeshGeomFacet::ContainedByOrIntersectBoundingBox ( const Base::Bound
         return true;
 
     // Test, whether one of the corner points is in BB
-    for (int i=0;i<3;i++) {
-        if (rclBB.IsInBox(_aclPoints[i]))
+    for (auto pnt : _aclPoints) {
+        if (rclBB.IsInBox(pnt))
             return true;
     }
 

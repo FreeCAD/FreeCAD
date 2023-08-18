@@ -35,9 +35,10 @@
 #include "ui_TaskSketcherMessages.h"
 
 
+// clang-format off
 using namespace SketcherGui;
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Solver messages"), true, nullptr)
@@ -51,8 +52,10 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
-    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(
-        &SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2, bp::_3, bp::_4));
+    //NOLINTBEGIN
+    connectionSetUp = sketchView->signalSetUp.connect(std::bind(
+        &SketcherGui::TaskSketcherMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
+    //NOLINTEND
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
 
@@ -187,3 +190,4 @@ void TaskSketcherMessages::onManualUpdateClicked(bool checked)
 }
 
 #include "moc_TaskSketcherMessages.cpp"
+// clang-format on

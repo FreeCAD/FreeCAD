@@ -142,8 +142,7 @@ void TaskLinearPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -359,7 +358,7 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskLinearPatternParameters::onFeatureDeleted(void)
+void TaskLinearPatternParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -382,17 +381,17 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
     sub = lnk.getSubValues();
 }
 
-bool TaskLinearPatternParameters::getReverse(void) const
+bool TaskLinearPatternParameters::getReverse() const
 {
     return ui->checkReverse->isChecked();
 }
 
-double TaskLinearPatternParameters::getLength(void) const
+double TaskLinearPatternParameters::getLength() const
 {
     return ui->spinLength->value().getValue();
 }
 
-unsigned TaskLinearPatternParameters::getOccurrences(void) const
+unsigned TaskLinearPatternParameters::getOccurrences() const
 {
     return ui->spinOccurrences->value();
 }

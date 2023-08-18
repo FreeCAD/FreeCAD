@@ -25,6 +25,7 @@
 
 #include <Gui/Workbench.h>
 #include <Gui/TaskView/TaskWatcher.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 
 namespace RobotGui {
@@ -34,21 +35,21 @@ namespace RobotGui {
  */
 class RobotGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
       /** Run some actions when the workbench gets activated. */
-    virtual void activated();
+    void activated() override;
     /** Run some actions when the workbench gets deactivated. */
-    virtual void deactivated();
+    void deactivated() override;
 
 
 protected:
-    Gui::ToolBarItem* setupToolBars() const;
-    Gui::MenuItem*    setupMenuBar() const;
+    Gui::ToolBarItem* setupToolBars() const override;
+    Gui::MenuItem*    setupMenuBar() const override;
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 };

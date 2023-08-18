@@ -73,9 +73,9 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     ui->checkIntersection->setChecked(i);
 
     std::vector<std::string> strings = pcThickness->Base.getSubValues();
-    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+    for (const auto & string : strings)
     {
-        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+        ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
 
     QMetaObject::connectSlotsByName(this);
@@ -134,7 +134,7 @@ void TaskThicknessParameters::setButtons(const selectionModes mode)
     ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
 }
 
-void TaskThicknessParameters::onRefDeleted(void)
+void TaskThicknessParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
@@ -172,7 +172,7 @@ void TaskThicknessParameters::onModeChanged(int mode) {
     hideOnError();
 }
 
-double TaskThicknessParameters::getValue(void) const
+double TaskThicknessParameters::getValue() const
 {
     return ui->Value->value().getValue();
 }
@@ -187,7 +187,7 @@ void TaskThicknessParameters::onReversedChanged(const bool on) {
     hideOnError();
 }
 
-bool TaskThicknessParameters::getReversed(void) const
+bool TaskThicknessParameters::getReversed() const
 {
     return ui->checkReverse->isChecked();
 }
@@ -201,17 +201,17 @@ void TaskThicknessParameters::onIntersectionChanged(const bool on) {
     hideOnError();
 }
 
-bool TaskThicknessParameters::getIntersection(void) const
+bool TaskThicknessParameters::getIntersection() const
 {
     return ui->checkIntersection->isChecked();
 }
 
-int TaskThicknessParameters::getJoinType(void) const {
+int TaskThicknessParameters::getJoinType() const {
 
     return ui->joinComboBox->currentIndex();
 }
 
-int TaskThicknessParameters::getMode(void) const {
+int TaskThicknessParameters::getMode() const {
 
     return ui->modeComboBox->currentIndex();
 }

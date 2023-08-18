@@ -187,7 +187,7 @@ static inline bool isLinkSub(const QList<App::SubObjectT>& links)
 QString DlgPropertyLink::formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links)
 {
     if(!ownerDoc || links.empty())
-        return QString();
+        return {};
 
     auto obj = links.front().getObject();
     if(!obj)

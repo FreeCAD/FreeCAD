@@ -625,12 +625,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // File
     auto file = new MenuItem( menuBar );
     file->setCommand("&File");
-    *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
+    *file << "Std_New" << "Std_Open" << "Std_RecentFiles" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
           << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import"
           << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
-          << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
+          << "Separator" << "Std_Quit";
 
     // Edit
     auto edit = new MenuItem( menuBar );

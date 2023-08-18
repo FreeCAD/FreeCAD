@@ -23,5 +23,12 @@
         <UserDocu>setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="translateLabel">
+      <Documentation>
+        <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
+         No return value.  Replace the current label with a translated version where possible.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

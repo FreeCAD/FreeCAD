@@ -518,7 +518,7 @@ def get_femelement_sets(
     # get remaining femelements for the fem_objects
     if has_remaining_femelements:
         femelement_table_array = np.zeros_like(referenced_femelements)
-        femelement_table_array[list(femelement_table.keys())] = 1
+        femelement_table_array[list(femelement_table)] = 1
         remaining_femelements_array = femelement_table_array > referenced_femelements
         remaining_femelements = [
             i.item() for i in np.nditer(remaining_femelements_array.nonzero())

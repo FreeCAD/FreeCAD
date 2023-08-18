@@ -164,10 +164,10 @@ public:
 #endif
         setFormat(surfaceFormat);
     }
-    ~CustomGLWidget()
+    ~CustomGLWidget() override
     {
     }
-    void initializeGL()
+    void initializeGL() override
     {
         QOpenGLContext *context = QOpenGLContext::currentContext();
 #if defined (_DEBUG) && 0
@@ -193,7 +193,7 @@ public:
     // gl = mdi.findChild(QtWidgets.QOpenGLWidget)
     // img = gl.grabFramebuffer()
     // \endcode
-    void paintGL()
+    void paintGL() override
     {
         QuarterWidget* qw = qobject_cast<QuarterWidget*>(parentWidget());
         if (qw) {
@@ -211,7 +211,7 @@ public:
             Qt::DirectConnection,
             QGenericReturnArgument());
     }
-    bool event(QEvent *e)
+    bool event(QEvent *e) override
     {
         // If a debug logger is activated then Qt's default implementation
         // first releases the context before stopping the logger. However,
@@ -233,7 +233,7 @@ public:
     {
         qDebug() << message;
     }
-    void showEvent(QShowEvent*)
+    void showEvent(QShowEvent*) override
     {
         update(); // force update when changing window mode
     }
@@ -1062,10 +1062,10 @@ QuarterWidget::backgroundColor() const
 {
   SbColor4f bg = PRIVATE(this)->sorendermanager->getBackgroundColor();
 
-  return QColor(SbClamp(int(bg[0] * 255.0), 0, 255),
+  return {SbClamp(int(bg[0] * 255.0), 0, 255),
                 SbClamp(int(bg[1] * 255.0), 0, 255),
                 SbClamp(int(bg[2] * 255.0), 0, 255),
-                SbClamp(int(bg[3] * 255.0), 0, 255));
+                SbClamp(int(bg[3] * 255.0), 0, 255)};
 }
 
 /*!
@@ -1142,7 +1142,7 @@ QuarterWidget::removeStateMachine(SoScXMLStateMachine * statemachine)
 QSize
 QuarterWidget::minimumSizeHint() const
 {
-  return QSize(50, 50);
+  return {50, 50};
 }
 
 /*!  Returns a list of grouped actions that corresponds to the

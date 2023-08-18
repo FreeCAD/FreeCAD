@@ -53,7 +53,7 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes() const
 {
     // empty
-    return std::vector<std::string>();
+    return {};
 }
 
 bool ViewProviderDocumentObjectGroup::isShow() const

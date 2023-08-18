@@ -535,12 +535,12 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
     double y = scale0 * q0.quat[1] + scale1 * q1.quat[1];
     double z = scale0 * q0.quat[2] + scale1 * q1.quat[2];
     double w = scale0 * q0.quat[3] + scale1 * q1.quat[3];
-    return Rotation(x, y, z, w);
+    return {x, y, z, w};
 }
 
 Rotation Rotation::identity()
 {
-    return Rotation(0.0, 0.0, 0.0, 1.0);
+    return {0.0, 0.0, 0.0, 1.0};
 }
 
 Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
@@ -684,7 +684,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
         m[2][i] = finaldirs[i].z;
     }
 
-    return Rotation(m);
+    return {m};
 }
 
 void Rotation::setYawPitchRoll(double y, double p, double r)
@@ -848,12 +848,12 @@ EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence t
 
     switch (theSeq)
     {
-    case Rotation::Extrinsic_XYZ: return Params (1, F, F, T);
-    case Rotation::Extrinsic_XZY: return Params (1, T, F, T);
-    case Rotation::Extrinsic_YZX: return Params (2, F, F, T);
-    case Rotation::Extrinsic_YXZ: return Params (2, T, F, T);
-    case Rotation::Extrinsic_ZXY: return Params (3, F, F, T);
-    case Rotation::Extrinsic_ZYX: return Params (3, T, F, T);
+    case Rotation::Extrinsic_XYZ: return {1, F, F, T};
+    case Rotation::Extrinsic_XZY: return {1, T, F, T};
+    case Rotation::Extrinsic_YZX: return {2, F, F, T};
+    case Rotation::Extrinsic_YXZ: return {2, T, F, T};
+    case Rotation::Extrinsic_ZXY: return {3, F, F, T};
+    case Rotation::Extrinsic_ZYX: return {3, T, F, T};
 
     // Conversion of intrinsic angles is made by the same code as for extrinsic,
     // using equivalence rule: intrinsic rotation is equivalent to extrinsic
@@ -861,30 +861,30 @@ EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence t
     // Swapping of angles (Alpha <-> Gamma) is done inside conversion procedure;
     // sequence of axes is inverted by setting appropriate parameters here.
     // Note that proper Euler angles (last block below) are symmetric for sequence of axes.
-    case Rotation::Intrinsic_XYZ: return Params (3, T, F, F);
-    case Rotation::Intrinsic_XZY: return Params (2, F, F, F);
-    case Rotation::Intrinsic_YZX: return Params (1, T, F, F);
-    case Rotation::Intrinsic_YXZ: return Params (3, F, F, F);
-    case Rotation::Intrinsic_ZXY: return Params (2, T, F, F);
-    case Rotation::Intrinsic_ZYX: return Params (1, F, F, F);
+    case Rotation::Intrinsic_XYZ: return {3, T, F, F};
+    case Rotation::Intrinsic_XZY: return {2, F, F, F};
+    case Rotation::Intrinsic_YZX: return {1, T, F, F};
+    case Rotation::Intrinsic_YXZ: return {3, F, F, F};
+    case Rotation::Intrinsic_ZXY: return {2, T, F, F};
+    case Rotation::Intrinsic_ZYX: return {1, F, F, F};
 
-    case Rotation::Extrinsic_XYX: return Params (1, F, T, T);
-    case Rotation::Extrinsic_XZX: return Params (1, T, T, T);
-    case Rotation::Extrinsic_YZY: return Params (2, F, T, T);
-    case Rotation::Extrinsic_YXY: return Params (2, T, T, T);
-    case Rotation::Extrinsic_ZXZ: return Params (3, F, T, T);
-    case Rotation::Extrinsic_ZYZ: return Params (3, T, T, T);
+    case Rotation::Extrinsic_XYX: return {1, F, T, T};
+    case Rotation::Extrinsic_XZX: return {1, T, T, T};
+    case Rotation::Extrinsic_YZY: return {2, F, T, T};
+    case Rotation::Extrinsic_YXY: return {2, T, T, T};
+    case Rotation::Extrinsic_ZXZ: return {3, F, T, T};
+    case Rotation::Extrinsic_ZYZ: return {3, T, T, T};
 
-    case Rotation::Intrinsic_XYX: return Params (1, F, T, F);
-    case Rotation::Intrinsic_XZX: return Params (1, T, T, F);
-    case Rotation::Intrinsic_YZY: return Params (2, F, T, F);
-    case Rotation::Intrinsic_YXY: return Params (2, T, T, F);
-    case Rotation::Intrinsic_ZXZ: return Params (3, F, T, F);
-    case Rotation::Intrinsic_ZYZ: return Params (3, T, T, F);
+    case Rotation::Intrinsic_XYX: return {1, F, T, F};
+    case Rotation::Intrinsic_XZX: return {1, T, T, F};
+    case Rotation::Intrinsic_YZY: return {2, F, T, F};
+    case Rotation::Intrinsic_YXY: return {2, T, T, F};
+    case Rotation::Intrinsic_ZXZ: return {3, F, T, F};
+    case Rotation::Intrinsic_ZYZ: return {3, T, T, F};
 
     default:
-    case Rotation::EulerAngles : return Params (3, F, T, F); // = Intrinsic_ZXZ
-    case Rotation::YawPitchRoll: return Params (1, F, F, F); // = Intrinsic_ZYX
+    case Rotation::EulerAngles : return {3, F, T, F}; // = Intrinsic_ZXZ
+    case Rotation::YawPitchRoll: return {1, F, F, F}; // = Intrinsic_ZYX
     };
 }
 

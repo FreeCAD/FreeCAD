@@ -45,7 +45,7 @@ public:
         , arcAngle_t(0)
     {}
 
-    virtual ~DrawSketchHandlerArcOfHyperbola() = default;
+    ~DrawSketchHandlerArcOfHyperbola() override = default;
     /// mode table
     enum SelectMode
     {

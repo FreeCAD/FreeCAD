@@ -92,7 +92,7 @@ public:
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    bool isAllowedAlterDocument(void) const override
+    bool isAllowedAlterDocument() const override
     { return true; }
     void modifyStandardButtons(QDialogButtonBox*) override;
 

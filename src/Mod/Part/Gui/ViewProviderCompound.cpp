@@ -46,7 +46,7 @@ ViewProviderCompound::~ViewProviderCompound()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {
     return static_cast<Part::Compound*>(getObject())->Links.getValues();
 }
@@ -56,9 +56,9 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pLinks.begin(); it != pLinks.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto pLink : pLinks) {
+        if (pLink)
+            Gui::Application::Instance->showViewProvider(pLink);
     }
 
     return true;
@@ -78,8 +78,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             // See also Compound::execute
             std::set<App::DocumentObject*> tempSources;
             std::vector<App::DocumentObject*> filter;
-            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
-                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            for (auto source : sources) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(source);
                 if (objBase) {
                     auto pos = tempSources.insert(objBase);
                     if (pos.second) {
@@ -135,8 +135,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
-            if (*it) Gui::Application::Instance->hideViewProvider(*it);
+        for (auto pBase : pBases) {
+            if (pBase) Gui::Application::Instance->hideViewProvider(pBase);
         }
     }
 }
