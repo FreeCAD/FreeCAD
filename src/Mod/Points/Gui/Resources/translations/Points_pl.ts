@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Points</source>
-      <translation>Punkty</translation>
+      <translation>Tylko punkty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
-      <translation>Punkty</translation>
+      <translation>Tylko punkty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Points</source>
-      <translation>Punkty</translation>
+      <translation>Tylko punkty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>

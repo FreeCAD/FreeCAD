@@ -313,7 +313,7 @@ Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</tra
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Nedavne datoteke</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

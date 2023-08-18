@@ -169,7 +169,7 @@ This command only works with a &apos;mesh&apos; object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CrossSections.cpp" line="366"/>
+        <location filename="../../CrossSections.cpp" line="368"/>
         <source>Failure</source>
         <translation type="unfinished"></translation>
     </message>

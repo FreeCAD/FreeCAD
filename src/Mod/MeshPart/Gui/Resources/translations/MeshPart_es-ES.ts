@@ -170,7 +170,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Conectar aristas si la distancia es inferior a</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Fallo</translation>
     </message>

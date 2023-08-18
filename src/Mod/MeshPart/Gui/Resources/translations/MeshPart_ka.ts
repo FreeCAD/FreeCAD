@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
-      <translation>განივი-გადანაჭრები...</translation>
+      <translation>განივი კვეთები...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
-      <translation>განივი-გადანაჭრები</translation>
+      <translation>განივი კვეთები</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="306"/>
@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,12 +62,12 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>მრავალკუთხა ბადისა და სიბრტყისაგან სექციის შექმნა</translation>
+      <translation>ბადით და სიბრტყის სექციის შექმნა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -80,18 +80,18 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>მრავალკუთხა ბადის სიბრტყით ჩამოჭრა</translation>
+      <translation>ბადის გაკვეთა სიბრტყით</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation>მრავალკუთხა ბადის სიბრტყით ჩამოჭრა</translation>
+      <translation>ბადის გაკვეთა სიბრტყით</translation>
     </message>
   </context>
   <context>
@@ -112,12 +112,12 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>განივი გადანაჭრები</translation>
+      <translation>განივი კვეთები</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>მიმმართველი სიბრტყე</translation>
+      <translation>წამყვანი სიბრტყე</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -162,7 +162,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
-      <translation>პარამეტრები</translation>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>წიბოების დაკავშირება, თუ დაშორება ნაკლებია, ვიდრე</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>შეცდომა</translation>
     </message>
@@ -205,7 +205,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation>წერტილები არჩეული არაა</translation>
+      <translation>წერტილი არჩეული არაა</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>მავთული</translation>
+      <translation>პოლიხაზი</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -285,7 +285,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>ჩვეულებრივი</translation>
+      <translation>სტანდარტული</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
@@ -388,7 +388,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation>სიზუსტე:</translation>
+      <translation>სიწმინდე:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -403,7 +403,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>მისაღები</translation>
+      <translation>საშუალო</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>

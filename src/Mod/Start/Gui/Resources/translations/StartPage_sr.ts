@@ -313,7 +313,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Недавне датотеке</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1005"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1006"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1170"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1171"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="964"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="351"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="352"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1448"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1408"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1409"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1301"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1302"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="427"/>
@@ -267,12 +267,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh from shape...</source>
-      <translation>Créer un maillage à partir d'une forme...</translation>
+      <translation>Créer un maillage à partir de la forme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1267"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1268"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="229"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="230"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1561"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1562"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="702"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="703"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="909"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1093"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1094"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1126"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1127"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1048"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1651"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="853"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="854"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1525"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1526"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1208"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1209"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="824"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="825"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
@@ -782,34 +782,34 @@
       <translation>Supprimer la sélection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
-      <translation>Soustraction</translation>
+      <translation>Couper</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
-      <translation>Ajuster</translation>
+      <translation>Rogner</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
-      <translation>Scinder</translation>
+      <translation>Éclater</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Remplir le trou</translation>
     </message>
@@ -829,7 +829,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Rien</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -1154,7 +1154,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Réglages</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1613,7 +1613,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -1696,7 +1696,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1706,7 +1706,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Parcours</translation>
+      <translation>Chemin d'accès</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -1900,7 +1900,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Tolérance</translation>
+      <translation>Tolérance </translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
@@ -1933,7 +1933,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
       <source>Axis</source>
-      <translation>Axe</translation>
+      <translation>Axes</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="380"/>
@@ -1944,7 +1944,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Centrer</translation>
     </message>
   </context>
   <context>
@@ -2095,7 +2095,7 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
     <message>
       <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation>Importer/Exporter</translation>
+      <translation>Importer-Exporter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -2281,43 +2281,43 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <translation>Afficher les composants</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Afficher les segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Couleurs d'affichage</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Quitter le mode d'information</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Index : %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Quitter le mode remplissage des trous</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Quitter le mode suppression</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Supprimer les faces sélectionnées</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Dé-sélectionner les faces sélectionnées</translation>
     </message>

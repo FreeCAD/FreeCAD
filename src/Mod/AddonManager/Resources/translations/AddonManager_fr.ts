@@ -209,7 +209,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL du dépôt</translation>
+      <translation>URL du répertoire</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -792,7 +792,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
   </context>
   <context>
@@ -833,7 +833,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Ateliers</translation>
+      <translation>Atelier</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1027,7 +1027,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation>Nom:</translation>
+      <translation>Nom :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1269,18 +1269,18 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1496,8 +1496,8 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>Les bindings Python de QtWebEngine ne sont pas installés -- utilisation de l'affichage README de remplacement.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Opération réussie</translation>
@@ -1629,9 +1629,9 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>Sélectionner un fichier d'icône pour cet élément de contenu</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} n'est pas un sous-répertoire de {}</translation>
     </message>
@@ -1648,7 +1648,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="453"/>
       <source>Workbench</source>
-      <translation>Ateliers</translation>
+      <translation>Atelier</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="454"/>
@@ -1840,7 +1840,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>Lancer</translation>
+      <translation>Exécuter</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1984,7 +1984,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>Attaches</translation>
+      <translation>Mots-clés</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2069,7 +2069,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="818"/>
       <source>Any</source>
-      <translation>Quelconque</translation>
+      <translation>N’importe le quel</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="826"/>
@@ -2118,7 +2118,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>Attache</translation>
+      <translation>Mot-clé</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2136,7 +2136,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>Crénage</translation>
+      <translation>Suivi</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>

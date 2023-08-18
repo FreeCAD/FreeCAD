@@ -62,7 +62,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Parçacık</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -170,7 +170,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
       <translation>Mesafe şundan azsa kenarları birleştirin</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Başarısız</translation>
     </message>

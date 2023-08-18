@@ -7,14 +7,13 @@
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Enregistre le dernier choix de l'utilisateur concernant l'application de la configuration CopyOnChange à tous les liens qui font référence au même objet configurable
-</translation>
+      <translation>Enregistre le dernier choix de l'utilisateur concernant l'application de la configuration CopyOnChange à tous les liens qui font référence au même objet configurable</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="441"/>
+      <location filename="../../Application.cpp" line="446"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -24,32 +23,32 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../Origin.cpp" line="140"/>
       <source>X-axis</source>
-      <translation>Axe-X</translation>
+      <translation>Axe X</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="141"/>
       <source>Y-axis</source>
-      <translation>Axe-Y</translation>
+      <translation>Axe Y</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>Z-axis</source>
-      <translation>Axe-Z</translation>
+      <translation>Axe Z</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>XY-plane</source>
-      <translation>Plan-XY</translation>
+      <translation>Plan XY</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>XZ-plane</source>
-      <translation>Plan-XZ</translation>
+      <translation>Plan XZ</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>YZ-plane</source>
-      <translation>Plan-YZ</translation>
+      <translation>Plan YZ</translation>
     </message>
   </context>
   <context>

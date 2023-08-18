@@ -170,7 +170,7 @@ Este comando só funciona com um objeto 'malha'.</translation>
       <translation>Conectar as arestas se distância for menor que</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Falha</translation>
     </message>

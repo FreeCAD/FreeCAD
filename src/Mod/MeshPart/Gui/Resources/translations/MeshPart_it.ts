@@ -170,7 +170,7 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
       <translation>Collega i bordi se la distanza è inferiore a</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Fallito</translation>
     </message>

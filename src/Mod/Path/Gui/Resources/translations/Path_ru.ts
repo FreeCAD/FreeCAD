@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation>Траектория</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation>Траектория</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Compound</source>
-      <translation>Соединить</translation>
+      <translation>Составные</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation>Траектория</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -131,12 +131,12 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
       <source>Solids</source>
-      <translation>Массивы</translation>
+      <translation>Твердотельные объекты</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
       <source>2D</source>
-      <translation>двумерный</translation>
+      <translation>2D</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
@@ -355,7 +355,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
       <source>Reverse</source>
-      <translation>Развернуть</translation>
+      <translation>Реверс</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="244"/>
@@ -490,7 +490,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="272"/>
@@ -523,7 +523,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
       <source>Destination</source>
-      <translation>Куда:</translation>
+      <translation>Папка для сохранения</translation>
     </message>
   </context>
   <context>
@@ -547,31 +547,31 @@ For stock from the Base object's bounding box it means the extra material in all
   <context>
     <name>Form</name>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
-      <location filename="../panels/ToolEditor.ui" line="14"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="14"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="14"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="14"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
       <location filename="../panels/DressupPathBoundary.ui" line="14"/>
-      <location filename="../panels/SetupOp.ui" line="14"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="20"/>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="14"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="14"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="14"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
       <location filename="../panels/PageDepthsEdit.ui" line="17"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="14"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="14"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="14"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="14"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="14"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="14"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketExtEdit.ui" line="14"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="14"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="14"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="14"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="14"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="14"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="14"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="14"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="14"/>
+      <location filename="../panels/SetupOp.ui" line="14"/>
+      <location filename="../panels/ToolEditor.ui" line="14"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
@@ -742,19 +742,19 @@ For stock from the Base object's bounding box it means the extra material in all
       <translation>Очищает список базовых геометрий</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
-      <location filename="../panels/PropertyBag.ui" line="48"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
+      <location filename="../panels/PropertyBag.ui" line="48"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
@@ -804,11 +804,11 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
       <source>Reset</source>
-      <translation>Сброс</translation>
+      <translation>Сбросить</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
       <source>All objects will be processed using the same operation properties.</source>
       <translation>Все объекты будут обработаны с использованием одинаковых свойств операции.</translation>
     </message>
@@ -853,32 +853,32 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Все места будут обработаны с использованием одинаковых операционных свойств.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
+      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
       <translation>Начальная глубина</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation>Начальная глубина операции. Самая высокая точка по оси Z, которую необходимо обработать.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
       <translation>Передайте значение Z выбранного объекта в качестве начальной глубины операции.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>Глубина операции, которая соответствует наименьшему значению по оси Z, которое необходимо обработать операции.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
       <translation>Передайте значение Z выбранного объекта в качестве конечной глубины операции.</translation>
     </message>
@@ -893,14 +893,14 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Глубина окончательного разреза операции. Может использоваться для получения более чистой отделки.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="52"/>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
+      <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final Depth</source>
       <translation>Конечная глубина</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step Down</source>
       <translation>Шаг вниз</translation>
     </message>
@@ -940,34 +940,34 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Высота зазора</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <source>The tool and its settings to be used for this operation.</source>
       <translation>Инструмент и его настройки, которые будут использоваться для этой операции.</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation>Режим охлаждения</translation>
     </message>
@@ -977,28 +977,28 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>G Code</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+      <location filename="../panels/SetupGlobal.ui" line="180"/>
       <source>Tool Controller</source>
       <translation>Контроллер инструмента</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="249"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="249"/>
       <source>Coolant</source>
       <translation>Охлаждающая жидкость</translation>
     </message>
@@ -1018,8 +1018,8 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Тип операции</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <source>Step Over Percent</source>
       <translation>Процент шага(подачи)</translation>
     </message>
@@ -1069,8 +1069,8 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Отделочное (чистовое) профилирование</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <source>Use Outline</source>
       <translation>Использовать контур</translation>
     </message>
@@ -1125,10 +1125,10 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Остановить</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
       <source>Direction</source>
       <translation>Направление</translation>
     </message>
@@ -1138,17 +1138,17 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Направление, в котором выполняется профиль, по часовой или против часовой стрелки.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <source>CW</source>
-      <translation>ПЧ</translation>
+      <translation>По часовой</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <source>CCW</source>
-      <translation>ПРЧ</translation>
+      <translation>Против часовой стрелки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -1171,6 +1171,8 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Угловое соединение</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
       <location filename="../panels/ToolEditor.ui" line="77"/>
       <location filename="../panels/ToolEditor.ui" line="134"/>
       <location filename="../panels/ToolEditor.ui" line="144"/>
@@ -1180,8 +1182,6 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/ToolEditor.ui" line="223"/>
       <location filename="../panels/ToolEditor.ui" line="240"/>
       <location filename="../panels/ToolEditor.ui" line="280"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
@@ -1389,7 +1389,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
       <source>Conventional</source>
-      <translation>Соглашения</translation>
+      <translation>Общепринятый</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
@@ -1397,11 +1397,11 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Шаблон</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <source>The tool and its settings to be used for this operation</source>
@@ -1492,9 +1492,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Допуск материала</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <source>Use Start Point</source>
       <translation>Использовать начальную точку</translation>
     </message>
@@ -1750,9 +1750,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Завершение траектории</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Layer Mode</source>
       <translation>Режим слоя</translation>
     </message>
@@ -1792,8 +1792,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Тип сканирования</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <source>Cut Pattern</source>
       <translation>Вырезать шаблон</translation>
     </message>
@@ -1808,14 +1808,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Избегать последних X фасок</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>Bounding Box</source>
       <translation>Габариты</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Выберите общую границу операции.</translation>
     </message>
@@ -1825,14 +1825,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Планарное: плоское, трехмерной сканирование поверхности.  Вращательное: 4-осное вращательное сканирование.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Завершите операцию за один проход на глубину или за несколько проходов до конечной глубины.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Установить шаблон геометрической очистки (чистовой обработки) для использования в операции.</translation>
     </message>
@@ -1857,25 +1857,25 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Линии отреза создаются параллельно этой оси.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
       <translation>Установите смещение глубины по оси Z от целевой поверхности.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>Установите разрешение выборки. Меньшие значения быстро увеличивают время обработки.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="254"/>
       <source>Make True, if specifying a Start Point</source>
-      <translation>Установить в Истину, если указывается начальная точка</translation>
+      <translation>Установить в Истину если указывается начальная точка</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>Включить оптимизацию линейных путей (коллинеарных точек). Удаляет ненужные коллинеарные точки из вывода G-кода.</translation>
     </message>
@@ -1910,14 +1910,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Смещение Глубины</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <source>Step over</source>
       <translation>Шаг с обходом</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
@@ -1926,14 +1926,14 @@ A step over of 100% results in no overlap between two different cycles.</source>
 Шаг свыше 100% приводит к отсутствию перекрытия между двумя разными циклами.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <source>Sample interval</source>
       <translation>Пример интервала</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <source>Optimize Linear Paths</source>
       <translation>Оптимизация Линейных путей</translation>
     </message>
@@ -2059,12 +2059,12 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
       <source>Horizontal</source>
-      <translation>По горизонтали</translation>
+      <translation>Горизонталь</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="212"/>
       <source>Vertical</source>
-      <translation>По вертикали</translation>
+      <translation>Вертикальный</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="32"/>
@@ -2077,15 +2077,15 @@ Default: 3 mm</source>
       <translation>Ориентация</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="43"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
+      <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
       <source>Fit</source>
-      <translation>подогнать</translation>
+      <translation>Посадка</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
@@ -2100,7 +2100,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation>Шаг</translation>
+      <translation>Шаг подачи</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2108,8 +2108,8 @@ Default: 3 mm</source>
       <translation>Шаг на дюйм</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
+      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>Операция</translation>
     </message>
@@ -2352,7 +2352,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
       <source>General</source>
-      <translation>Основные</translation>
+      <translation>Главный</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="38"/>
@@ -2362,7 +2362,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation>Траектория</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="67"/>
@@ -2576,17 +2576,17 @@ If left empty no template will be preselected.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
       <source>Ext. X</source>
-      <translation>Ext. X</translation>
+      <translation>Удлинённый Х</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="449"/>
       <source>Ext. Y</source>
-      <translation>Ext. Y</translation>
+      <translation>Удлинённый Y</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="462"/>
       <source>Ext. Z</source>
-      <translation>Ext. Z</translation>
+      <translation>Удлинённый Z</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="481"/>
@@ -2627,7 +2627,7 @@ If left empty no template will be preselected.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="603"/>
       <source>Position</source>
-      <translation>Положение</translation>
+      <translation>Позиция</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="647"/>
@@ -2688,7 +2688,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="110"/>
       <source>The default color for new shapes</source>
-      <translation>Цвет по умолчанию для новой формы</translation>
+      <translation>Цвет по умолчанию для новых фигур</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="156"/>
@@ -2708,7 +2708,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="29"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Толщина линии по умолчанию для новой формы</translation>
+      <translation>Толщина линии по умолчанию для новых деталей</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="32"/>
@@ -2728,7 +2728,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../../DlgSettingsPathColor.ui" line="255"/>
       <location filename="../../DlgSettingsPathColor.ui" line="275"/>
       <source>The default line color for new shapes</source>
-      <translation>Цвет линий по умолчанию для новой формы</translation>
+      <translation>Цвет линии по умолчанию для новых фигур</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="169"/>
@@ -2753,7 +2753,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="336"/>
       <source>Shape</source>
-      <translation>Фигура(ы)</translation>
+      <translation>Фигура</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="341"/>
@@ -2793,7 +2793,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../preferences/Advanced.ui" line="14"/>
       <source>Advanced</source>
-      <translation>Дополнительно</translation>
+      <translation>Расширенные</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="20"/>
@@ -2984,7 +2984,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="677"/>
       <source>LeadInOut</source>
-      <translation>отвода/подвода</translation>
+      <translation>Подача/Отвод</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="681"/>
@@ -3028,8 +3028,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation>Использовать маппинг осей</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <source>Radius</source>
       <translation>Радиус</translation>
     </message>
@@ -3102,7 +3102,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation>Стяжка</translation>
+      <translation>Собачья кость</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
@@ -3162,12 +3162,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
       <source>custom</source>
-      <translation>произвольный, пользовательский</translation>
+      <translation>произвольный</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>fixed</source>
-      <translation>неподвижно закрепленный</translation>
+      <translation>зафиксировано</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
@@ -3197,17 +3197,17 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="27"/>
       <source>Angles less than filter angle will not receive corner actions</source>
-      <translation>Углы меньше угла фильтра не будут получать угловые действия</translation>
+      <translation>Углы, меньше угла фильтра, не будут обрабатываться действиями</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="44"/>
       <source>Distance the point trails behind the spindle</source>
-      <translation>Расстояние, на котором точка следует за шпинделем</translation>
+      <translation>Расстояние от точки до шпинделя</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="70"/>
       <source>Height to raise during corner action</source>
-      <translation>Высота подъема при повороте</translation>
+      <translation>Высота поднимается во время угловой операции</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
@@ -3328,7 +3328,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
@@ -3444,8 +3444,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>Симулятор пути</translation>
     </message>
@@ -3467,7 +3467,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
-      <translation>Начать просмотр</translation>
+      <translation>Воспроизвести</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
@@ -3550,7 +3550,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
       <source>Shape</source>
-      <translation>Фигура(ы)</translation>
+      <translation>Фигура</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
@@ -3565,7 +3565,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation>Показать имя</translation>
+      <translation>Отображаемое имя</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
@@ -3666,7 +3666,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
       <source>General</source>
-      <translation>Основные</translation>
+      <translation>Главный</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="39"/>
@@ -3772,7 +3772,7 @@ FreeCAD не знает, где находится конкретная сист
     <message>
       <location filename="../panels/PathEdit.ui" line="433"/>
       <source>Setup</source>
-      <translation>Конфигурация</translation>
+      <translation>Настройка</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="451"/>
@@ -3802,7 +3802,7 @@ FreeCAD не знает, где находится конкретная сист
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
       <source>Use Existing Solid</source>
-      <translation>Использовать существующий твердый</translation>
+      <translation>Использовать существующее твердое тело</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="501"/>
@@ -3812,17 +3812,17 @@ FreeCAD не знает, где находится конкретная сист
     <message>
       <location filename="../panels/PathEdit.ui" line="535"/>
       <source>Ext. X</source>
-      <translation>Ext. X</translation>
+      <translation>удлинённый Х</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Y</source>
-      <translation>Ext. Y</translation>
+      <translation>Удлинённый Y</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="568"/>
       <source>Ext. Z</source>
-      <translation>Ext. Z</translation>
+      <translation>Удлинённый Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="587"/>
@@ -3923,7 +3923,7 @@ FreeCAD не знает, где находится конкретная сист
     <message>
       <location filename="../panels/PathEdit.ui" line="958"/>
       <source>Compound</source>
-      <translation>Соединить</translation>
+      <translation>Компаунд</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1018"/>
@@ -4165,7 +4165,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1268"/>
       <source>Spindle</source>
-      <translation>Обороты</translation>
+      <translation>Шпиндель</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1288"/>
@@ -4175,7 +4175,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1298"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1325"/>
@@ -4185,12 +4185,12 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1334"/>
       <source>Horizontal</source>
-      <translation>По горизонтали</translation>
+      <translation>Горизонталь</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Vertical</source>
-      <translation>По вертикали</translation>
+      <translation>Вертикальный</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1395"/>
@@ -4320,12 +4320,12 @@ For example:
     <message>
       <location filename="../../../InitGui.py" line="284"/>
       <source>Warning</source>
-      <translation>Предупреждения</translation>
+      <translation>Предупреждение</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="286"/>
       <source>Ok</source>
-      <translation>Да</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="288"/>
@@ -4333,10 +4333,9 @@ For example:
       <translation>Больше не показывать</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <source>Edit</source>
-      <extracomment>int = field(default=None)</extracomment>
       <translation>Редактировать</translation>
     </message>
     <message>
@@ -4459,12 +4458,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="184"/>
       <source>CW</source>
-      <translation>ПЧ</translation>
+      <translation>По часовой</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="185"/>
       <source>CCW</source>
-      <translation>ПРЧ</translation>
+      <translation>Против часовой стрелки</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="333"/>
@@ -4478,8 +4477,8 @@ For example:
       <translation>Непланарный адаптивный пуск также недоступен.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s не является базовым объектом для задания %s</translation>
     </message>
@@ -4499,10 +4498,10 @@ For example:
       <translation>Обработать всю модель, выбранные грани или выбранные края</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <location filename="../../../Path/Post/Command.py" line="561"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
-      <translation>Выбрать задание Path</translation>
+      <translation>Выбрать задание Path (траектория обработки детали)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
@@ -4604,6 +4603,7 @@ For example:
     <message>
       <location filename="../../../Path/Base/PropertyBag.py" line="75"/>
       <source>List of custom property groups</source>
+      <extracomment>int = field(default=None)</extracomment>
       <translation>Список групп пользовательских свойств</translation>
     </message>
     <message>
@@ -4666,12 +4666,12 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="53"/>
       <location filename="../../../Path/Dressup/Tags.py" line="943"/>
+      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
-      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
       <source>The base path to modify</source>
       <translation>Базовый путь для модификации</translation>
     </message>
@@ -4965,9 +4965,9 @@ For example:
       <translation>Коллекция всех контроллеров инструментов для обработки</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Job.py" line="501"/>
       <location filename="../../../Path/Op/Base.py" line="192"/>
       <location filename="../../../Path/Op/Base.py" line="463"/>
-      <location filename="../../../Path/Main/Job.py" line="501"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Оценка времени цикла операций</translation>
     </message>
@@ -5014,7 +5014,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Stock.py" line="170"/>
       <source>A material for this object</source>
-      <translation>Материал объекта</translation>
+      <translation>Материал для этого объекта</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="242"/>
@@ -5052,8 +5052,8 @@ For example:
       <translation>Номер отступа крепления</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="172"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="63"/>
+      <location filename="../../../Path/Op/Base.py" line="172"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Установите значение в False, чтобы предотвратить генерацию G-кода для операции</translation>
     </message>
@@ -5073,8 +5073,8 @@ For example:
       <translation>Влияет на точность и производительность</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="127"/>
       <location filename="../../../Path/Op/Adaptive.py" line="983"/>
+      <location filename="../../../Path/Op/Helix.py" line="127"/>
       <location filename="../../../Path/Op/PocketBase.py" line="151"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Процент диаметра фрезы, который необходимо преодолеть при каждом проходе</translation>
@@ -5250,10 +5250,10 @@ For example:
       <translation>Начальная точка этой траектории</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="431"/>
-      <location filename="../../../Path/Op/Slot.py" line="236"/>
-      <location filename="../../../Path/Op/Waterline.py" line="460"/>
       <location filename="../../../Path/Op/Base.py" line="314"/>
+      <location filename="../../../Path/Op/Slot.py" line="236"/>
+      <location filename="../../../Path/Op/Surface.py" line="431"/>
+      <location filename="../../../Path/Op/Waterline.py" line="460"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Установить в Истину, если указывается начальная точка</translation>
     </message>
@@ -5367,9 +5367,9 @@ For example:
       <translation>Применение отвода G99: отвод только на высоту отвода между отверстиями в этой операции</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="214"/>
       <location filename="../../../Path/Op/Engrave.py" line="71"/>
       <location filename="../../../Path/Op/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="214"/>
       <source>Additional base objects to be engraved</source>
       <translation>Дополнительные базовые объекты для гравировки</translation>
     </message>
@@ -5410,9 +5410,9 @@ For example:
       <translation>Радиус начала</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="143"/>
       <location filename="../../../Path/Op/Helix.py" line="142"/>
       <location filename="../../../Path/Op/Helix.py" line="167"/>
+      <location filename="../../../Path/Op/Profile.py" line="143"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Дополнительное расстояние на котором нужно оставаться от финального профиля - хорош для черновых обработок</translation>
     </message>
@@ -5432,9 +5432,9 @@ For example:
       <translation>Исключить фрезеровку частей детали, приподнятых относительно выбранной поверхности.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="247"/>
-      <location filename="../../../Path/Op/Profile.py" line="117"/>
       <location filename="../../../Path/Op/Pocket.py" line="66"/>
+      <location filename="../../../Path/Op/Profile.py" line="117"/>
+      <location filename="../../../Path/Op/Surface.py" line="247"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Выберите способ обработки нескольких элементов базовой геометрии.</translation>
@@ -5455,8 +5455,8 @@ For example:
       <translation>Обработать модель и заготовку без учета ранее заданных припусков, размеров заготовки.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="108"/>
       <location filename="../../../Path/Op/PocketBase.py" line="128"/>
+      <location filename="../../../Path/Op/Profile.py" line="108"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Направление, в котором траектория должна проходить вокруг детали по часовой стрелке (по часовой стрелке) или против часовой стрелки (против часовой стрелки)</translation>
     </message>
@@ -5557,8 +5557,8 @@ For example:
       <translation>Установить в Истину, если используется компенсация радиуса инструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="127"/>
       <location filename="../../../Path/Op/Slot.py" line="122"/>
+      <location filename="../../../Path/Op/Surface.py" line="127"/>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>Показать объекты построения временного пути обработки, когда модуль находится в режиме DEBUG.</translation>
@@ -5574,8 +5574,8 @@ For example:
       <translation>Задать конечную точку для траектории паза.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="291"/>
       <location filename="../../../Path/Op/Slot.py" line="147"/>
+      <location filename="../../../Path/Op/Surface.py" line="291"/>
       <location filename="../../../Path/Op/Waterline.py" line="329"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Установить шаблон геометрической очистки (чистовой обработки) для использования в операции.</translation>
@@ -5591,8 +5591,8 @@ For example:
       <translation>Положительные расширяют конец траектории, отрицательные сокращают.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="326"/>
       <location filename="../../../Path/Op/Slot.py" line="174"/>
+      <location filename="../../../Path/Op/Surface.py" line="326"/>
       <location filename="../../../Path/Op/Waterline.py" line="372"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Завершите операцию за один проход на глубину или за несколько проходов до конечной глубины.</translation>
@@ -5623,8 +5623,8 @@ For example:
       <translation>Включить обратное направление пути выреза паза.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="423"/>
       <location filename="../../../Path/Op/Slot.py" line="228"/>
+      <location filename="../../../Path/Op/Surface.py" line="423"/>
       <location filename="../../../Path/Op/Waterline.py" line="452"/>
       <source>The custom start point for the path of this operation</source>
       <translation>Пользовательская начальная точка пути этой операции</translation>
@@ -6067,7 +6067,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="305"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="263"/>
@@ -6095,7 +6095,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1360"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1365"/>
@@ -6105,12 +6105,12 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="94"/>
       <source>Holding Tag</source>
-      <translation>технологическая перемычка</translation>
+      <translation>Технологическая перемычка</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="566"/>
       <source>Tag</source>
-      <translation>Метка</translation>
+      <translation>Перемычка</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="569"/>
@@ -6139,24 +6139,24 @@ For example:
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="368"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="368"/>
       <source>Please select one path object
 </source>
       <translation>Пожалуйста выберете один объект пути
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="373"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="289"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="373"/>
       <source>The selected object is not a path
 </source>
       <translation>Выделенный объект не является траекторией обработки
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="378"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="378"/>
       <source>Please select a Path object</source>
       <translation>Пожалуйста выберите траекторию</translation>
     </message>
@@ -6180,7 +6180,7 @@ For example:
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1361"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="329"/>
       <source>Dogbone</source>
-      <translation>Стяжка</translation>
+      <translation>Собачья кость</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1365"/>
@@ -6198,7 +6198,7 @@ For example:
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1388"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="356"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
   </context>
   <context>
@@ -6221,7 +6221,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="628"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="634"/>
@@ -6277,12 +6277,12 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="149"/>
       <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <translation>Произвольный</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="898"/>
       <source>RampEntry</source>
-      <translation>RampEntry</translation>
+      <translation>Ступенчатый ввод инструмента (Ramp Entry)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="902"/>
@@ -6297,7 +6297,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="925"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="931"/>
@@ -6313,8 +6313,8 @@ For example:
       <translation>Выберите файл точки измерения</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="295"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
       <source>All Files (*.*)</source>
       <translation>Все файлы (*.*)</translation>
     </message>
@@ -6368,7 +6368,7 @@ For example:
       <location filename="../../../Path/Main/Job.py" line="260"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="61"/>
       <source>2D</source>
-      <translation>двумерный</translation>
+      <translation>2D</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="261"/>
@@ -6433,7 +6433,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1600"/>
       <source>Ok</source>
-      <translation>Да</translation>
+      <translation>OK</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1602"/>
@@ -6463,7 +6463,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="60"/>
       <source>Solids</source>
-      <translation>Массивы</translation>
+      <translation>Твердотельные объекты</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
@@ -6679,7 +6679,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="331"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>Ссылка</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="332"/>
@@ -6896,7 +6896,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="188"/>
       <source>Round</source>
-      <translation>Круглый</translation>
+      <translation>Скругление</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="189"/>
@@ -6947,12 +6947,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
       <source>CW</source>
-      <translation>ПЧ</translation>
+      <translation>По часовой</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="72"/>
       <source>CCW</source>
-      <translation>ПРЧ</translation>
+      <translation>Против часовой стрелки</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="112"/>
@@ -6968,26 +6968,26 @@ For example:
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="209"/>
       <location filename="../../../Path/Op/Helix.py" line="75"/>
+      <location filename="../../../Path/Op/Profile.py" line="209"/>
       <source>Outside</source>
       <translation>Снаружи</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="210"/>
       <location filename="../../../Path/Op/Helix.py" line="76"/>
+      <location filename="../../../Path/Op/Profile.py" line="210"/>
       <source>Inside</source>
       <translation>Внутри</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="196"/>
       <source>CW</source>
-      <translation>ПЧ</translation>
+      <translation>По часовой</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="197"/>
       <source>CCW</source>
-      <translation>ПРЧ</translation>
+      <translation>Против часовой стрелки</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="200"/>
@@ -7002,7 +7002,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Profile.py" line="204"/>
       <source>Round</source>
-      <translation>Круглый</translation>
+      <translation>Скругление</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="205"/>
@@ -7012,7 +7012,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Profile.py" line="206"/>
       <source>Miter</source>
-      <translation>Срез</translation>
+      <translation>Скос</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="385"/>
@@ -7070,7 +7070,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
       <source>Conventional</source>
-      <translation>Соглашения</translation>
+      <translation>Общепринятый</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
@@ -7085,7 +7085,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="69"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Зигзаг</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
@@ -7095,7 +7095,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation>ZigZag смещение</translation>
+      <translation>Смещение зигзага</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7118,7 +7118,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="179"/>
       <source>Normal</source>
-      <translation>Обычные</translation>
+      <translation>Обычный (либо Нормаль)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
@@ -7161,7 +7161,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="255"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Зигзаг</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="258"/>
@@ -7181,7 +7181,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="263"/>
       <source>Perpendicular</source>
-      <translation>Перпендикулярно</translation>
+      <translation>Нормаль</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="266"/>
@@ -7210,12 +7210,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="273"/>
       <source>Long Edge</source>
-      <translation>По длинной стороне</translation>
+      <translation>Длинный край</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="274"/>
       <source>Short Edge</source>
-      <translation>По короткой стороне</translation>
+      <translation>Короткий край</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="275"/>
@@ -7445,12 +7445,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="456"/>
       <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <translation>Произвольный</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="459"/>
       <source>Conventional</source>
-      <translation>Соглашения</translation>
+      <translation>Общепринятый</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="460"/>
@@ -7460,7 +7460,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
       <source>Circular</source>
-      <translation>Окружность</translation>
+      <translation>Круговой</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>
@@ -7485,7 +7485,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="468"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Зигзаг</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="471"/>
@@ -7532,7 +7532,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="485"/>
       <source>First</source>
-      <translation>ГОСТ/Европа (First-angle projection)</translation>
+      <translation>Первый</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="486"/>
@@ -7668,7 +7668,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Conventional</source>
-      <translation>Соглашения</translation>
+      <translation>Общепринятый</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -7757,7 +7757,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="109"/>
       <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <translation>Произвольный</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="112"/>
@@ -7768,7 +7768,7 @@ For example:
       <location filename="../../../Path/Op/Waterline.py" line="113"/>
       <location filename="../../../Path/Op/Waterline.py" line="126"/>
       <source>Circular</source>
-      <translation>Окружность</translation>
+      <translation>Круговой</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
@@ -7798,12 +7798,12 @@ For example:
       <location filename="../../../Path/Op/Waterline.py" line="118"/>
       <location filename="../../../Path/Op/Waterline.py" line="131"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Зигзаг</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
       <source>Conventional</source>
-      <translation>Соглашения</translation>
+      <translation>Общепринятый</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="122"/>
@@ -7841,7 +7841,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="189"/>
       <source>New property added to</source>
-      <translation>Добавлено новое свойство</translation>
+      <translation>Новое свойство добавлено в</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="191"/>
@@ -7887,7 +7887,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="772"/>
       <source>No JOB</source>
-      <translation>Нет заданий</translation>
+      <translation>Нет задания обработки</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="797"/>
@@ -8035,7 +8035,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="103"/>
       <source>Comment</source>
-      <translation>Закомментировать</translation>
+      <translation>Комментарий</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="106"/>
@@ -8048,7 +8048,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="93"/>
       <source>Copy</source>
-      <translation>Копировать</translation>
+      <translation>Скопировать</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="96"/>
@@ -8115,7 +8115,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Hop.py" line="123"/>
       <source>The selected object is not a path</source>
-      <translation>Выделенный объект не является траекторией</translation>
+      <translation>Выделенный объект не является траекторией обработки</translation>
     </message>
   </context>
   <context>
@@ -8186,7 +8186,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="113"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation>Добавить необязательную или обязательную остановку в программу</translation>
+      <translation>Добавить вспомогательную или обязательную точку остановки программы</translation>
     </message>
   </context>
   <context>
@@ -8238,7 +8238,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="132"/>
       <source>Reverse</source>
-      <translation>Развернуть</translation>
+      <translation>Реверс</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="133"/>
@@ -8394,7 +8394,7 @@ Aborting op creation</source>
       <location filename="../../../InitGui.py" line="267"/>
       <location filename="../../AppPathGui.cpp" line="90"/>
       <source>Path</source>
-      <translation>Path</translation>
+      <translation>Траектория</translation>
     </message>
   </context>
   <context>

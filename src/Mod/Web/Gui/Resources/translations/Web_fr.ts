@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="815"/>
       <location filename="../../AppWebGui.cpp" line="93"/>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <source>Browser</source>
       <translation>Navigateur</translation>
     </message>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation>Il y a eu de sérieuses erreurs lors du chargement du fichier. Certaines données ont peut-être été modifiées ou pas du tout récupérées. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
+      <translation>De graves erreurs se sont produites lors du chargement du fichier. Certaines données ont pu être modifiées ou n'ont pas été récupérées du tout. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="783"/>

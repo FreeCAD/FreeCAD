@@ -14,7 +14,7 @@ uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="441"/>
+      <location filename="../../Application.cpp" line="446"/>
       <source>Unnamed</source>
       <translation>Adsız</translation>
     </message>

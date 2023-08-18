@@ -67,7 +67,7 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>Utwórz przekrój siatki płaszczyzną</translation>
+      <translation>Utwórz przekrój z siatki i płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -85,7 +85,7 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>Przytnij siatkę płaszczyzną</translation>
+      <translation>Przytnij siatkę za pomocą płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -170,7 +170,7 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
       <translation>Połącz krawędzie, jeśli odległość jest mniejsza niż</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Niepowodzenie</translation>
     </message>
@@ -285,7 +285,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Standardowy</translation>
+      <translation>Standardowe</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
@@ -408,7 +408,7 @@ Najmniejszą wartością jest 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Drobno</translation>
+      <translation>Drobne</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

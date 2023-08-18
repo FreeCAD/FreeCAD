@@ -170,7 +170,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
       <translation>Verbind de randen als afstand kleiner is dan</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Mislukt</translation>
     </message>

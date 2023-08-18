@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Annotation</source>
-      <translation>Adnotacja</translation>
+      <translation>Opisy</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>

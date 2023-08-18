@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Cross-sections...</source>
-      <translation>Przekrój poprzeczny ...</translation>
+      <translation>Przekroje poprzeczne ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <location filename="../../Command.cpp" line="885"/>
       <source>Cross-sections</source>
-      <translation>Przekrój poprzeczny</translation>
+      <translation>Przekroje poprzeczne</translation>
     </message>
   </context>
   <context>
@@ -782,34 +782,34 @@
       <translation>Usuń zaznaczone</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
       <translation>Przytnij</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
       <translation>Rozdziel</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Wypełnij otwór</translation>
     </message>
@@ -1280,7 +1280,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
       <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <translation>Alt + C</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
@@ -1613,7 +1613,7 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Zakończ</translation>
     </message>
@@ -1658,7 +1658,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
       <source>No selection</source>
-      <translation>Nie wybrano</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="288"/>
@@ -1928,7 +1928,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="353"/>
       <source>Normal</source>
-      <translation>Normalny</translation>
+      <translation>Normalna</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="379"/>
@@ -1944,7 +1944,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Środek</translation>
     </message>
   </context>
   <context>
@@ -2281,43 +2281,43 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <translation>Wyświetl fragmenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Wyświetl segmenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Wyświetlane kolory</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Opuść tryb informacyjny</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Indeks :%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Opuść tryb wypełniania otworu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Opuść tryb usuwania</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Usuń zaznaczone powierzchnie</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Wyczyść zaznaczone powierzchnie</translation>
     </message>
@@ -2372,7 +2372,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Segmentacja siatki</translation>
+      <translation>Siatka — segmentacja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

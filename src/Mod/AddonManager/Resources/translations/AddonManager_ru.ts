@@ -31,7 +31,7 @@
       <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
-      <translation>Значок</translation>
+      <translation>Иконка</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="81"/>
@@ -165,7 +165,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
       <source>Icon</source>
-      <translation>Значок</translation>
+      <translation>Иконка</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
@@ -430,7 +430,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
-      <translation>Значок</translation>
+      <translation>Иконка</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="120"/>
@@ -556,7 +556,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation>Дополнительно</translation>
+      <translation>Опционально</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
@@ -591,7 +591,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>Скачать метаданные макроса (примерно 10 МБ)</translation>
+      <translation>Скачать метаданные макроса (примерно 10 Мб)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
@@ -821,7 +821,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
       <source>Macro</source>
-      <translation>Макрос</translation>
+      <translation>Макрокоманда</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
@@ -888,7 +888,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
       <source>Icon</source>
-      <translation>Значок</translation>
+      <translation>Иконка</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
@@ -943,7 +943,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation>Показать имя</translation>
+      <translation>Отображаемое имя</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
@@ -1267,18 +1267,18 @@ installed addons will be checked for available updates
       <translation>Не удалось выполнить макрос. Подробности об ошибке смотрите в консоли.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
-      <translation>Сопровождающий</translation>
+      <translation>Разработчик</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
       <translation>Автор</translation>
     </message>
@@ -1494,8 +1494,8 @@ installed addons will be checked for available updates
       <translation>Привязки QtWebEngine Python не установлены — используется резервный экран README.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="682"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="682"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Успешно</translation>
@@ -1627,9 +1627,9 @@ installed addons will be checked for available updates
       <translation>Выберите файл значка для этого элемента содержимого</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} не является подкаталогом {}</translation>
     </message>
@@ -1868,7 +1868,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Class</source>
-      <translation>Поле допуска</translation>
+      <translation>Класс</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>
@@ -1982,7 +1982,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>Метки</translation>
+      <translation>Теги</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2067,7 +2067,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="818"/>
       <source>Any</source>
-      <translation>Любая</translation>
+      <translation>Любой</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="826"/>
@@ -2134,7 +2134,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="272"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation>Межсимвольное расстояние</translation>
+      <translation>Отслеживание</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="278"/>

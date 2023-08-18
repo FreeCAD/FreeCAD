@@ -166,7 +166,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -184,7 +184,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -202,12 +202,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>Boolean operation</source>
-      <translation>ბულევური ოპერაცია</translation>
+      <translation>ლოგიკური ოპერაცია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
@@ -220,7 +220,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -238,7 +238,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -256,7 +256,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
@@ -274,12 +274,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
-      <translation>წყალშიგი</translation>
+      <translation>მონახაზი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -292,7 +292,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -310,7 +310,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -328,7 +328,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -346,7 +346,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -364,7 +364,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -382,7 +382,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
@@ -400,7 +400,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
@@ -418,7 +418,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
@@ -436,7 +436,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
@@ -454,7 +454,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
@@ -472,7 +472,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
@@ -490,7 +490,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
@@ -508,7 +508,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="503"/>
@@ -526,7 +526,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="991"/>
@@ -544,7 +544,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -562,7 +562,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -580,7 +580,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -598,7 +598,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -616,7 +616,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -634,7 +634,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
@@ -652,7 +652,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -670,7 +670,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -684,7 +684,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -702,7 +702,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
@@ -720,7 +720,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -738,7 +738,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
@@ -756,7 +756,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -810,7 +810,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>ნაწილის დაპროექტება</translation>
+      <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -882,8 +882,8 @@ so that self intersection is avoided.</source>
       <translation>ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>ასლის გადაღება</translation>
     </message>
@@ -908,8 +908,8 @@ so that self intersection is avoided.</source>
       <translation>ბულევის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation>სხეულის დამატება</translation>
     </message>
@@ -1197,12 +1197,12 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <source>U parameter:</source>
-      <translation>პარამეტრი U:</translation>
+      <translation>U პარამეტრი:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters:</source>
-      <translation>პარამეტრები V:</translation>
+      <translation>V პარამეტრები:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1230,7 +1230,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter:</source>
-      <translation>პარამეტრი V:</translation>
+      <translation>V პარამეტრი:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
@@ -1245,7 +1245,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U Parameter:</source>
-      <translation>პარამეტრი U:</translation>
+      <translation>U პარამეტრი:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
@@ -1257,7 +1257,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius:</source>
-      <translation>რადიუსი:</translation>
+      <translation>წრეწირის რადიუსი:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
@@ -1287,7 +1287,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>ტანგაჟი:</translation>
+      <translation>ხმის სიმაღლე:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1297,12 +1297,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>მარჯვნიდან</translation>
+      <translation>მარჯვენახელიანი</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>მარცხნივ</translation>
+      <translation>ცაცია</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1339,7 +1339,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius:</source>
-      <translation>მცირე რადიუსი:</translation>
+      <translation>დამხმარე რადიუსი:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -1370,7 +1370,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation>საბოლოო წერტილი</translation>
+      <translation>ბოლო წერტლი</translation>
     </message>
   </context>
   <context>
@@ -1378,7 +1378,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>ბმა</translation>
+      <translation>მითითება</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1449,7 +1449,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -1514,7 +1514,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1620,7 +1620,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>შეყვანის შეცდომა</translation>
     </message>
   </context>
   <context>
@@ -1640,7 +1640,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1682,12 +1682,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="84"/>
       <source>Preview</source>
-      <translation>გადახედვა</translation>
+      <translation>მინიატურა</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1702,7 +1702,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -1790,7 +1790,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="61"/>
       <source>Valid</source>
-      <translation>ჭეშმარიტი</translation>
+      <translation>სწორი</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="62"/>
@@ -1855,7 +1855,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -1897,7 +1897,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>ჭეშმარიტი</translation>
+      <translation>სწორი</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
@@ -1944,7 +1944,7 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>აირჩიეთ მიმართვა...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2140,7 +2140,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
@@ -2150,7 +2150,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
@@ -2168,7 +2168,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation>დახაზული ზედაპირი</translation>
+      <translation>გაზომილი ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
@@ -2198,7 +2198,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation>სიის გადალაგება შეგიძლიათ გადათრევით</translation>
+      <translation>სიის გადალაგება გადათრევით შეგიძლიათ</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2213,7 +2213,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -2231,22 +2231,22 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>თვისების მოცილება</translation>
+      <translation>თვისების წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>სიის გადალაგება შეგიძლიათ გადათრევით</translation>
+      <translation>სიის გადალაგება გადათრევით შეგიძლიათ</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
@@ -2256,7 +2256,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -2279,12 +2279,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>თვისების მოცილება</translation>
+      <translation>თვისების წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>სიის გადალაგება შეგიძლიათ გადათრევით</translation>
+      <translation>სიის გადალაგება გადათრევით შეგიძლიათ</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2299,7 +2299,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
@@ -2339,7 +2339,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
-      <translation>დაწევა</translation>
+      <translation>ქვემოთ ჩამოწევა</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
@@ -2367,7 +2367,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2382,7 +2382,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to face</source>
-      <translation>სიბრტყემდე</translation>
+      <translation>ზედაპირამდე</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="76"/>
@@ -2405,7 +2405,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2437,12 +2437,12 @@ from the model as reference</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
       <source>Sketch normal</source>
-      <translation>ნორმალური ესკიზი</translation>
+      <translation>ესკიზის ნორმალი</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>აირჩიეთ მიმართვა...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2516,7 +2516,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="263"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>შებრუნებულია</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
@@ -2565,12 +2565,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>ჩვეულებრივი</translation>
+      <translation>სტანდარტული</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>დამაგრებული</translation>
+      <translation>ფიქსირებული</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2640,7 +2640,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -2694,7 +2694,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation>წიბოს მოცილება</translation>
+      <translation>წიბოს წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="68"/>
@@ -2704,13 +2704,13 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
@@ -2753,7 +2753,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>სიის გადალაგება შეგიძლიათ გადათრევით</translation>
+      <translation>სიის გადალაგება გადათრევით შეგიძლიათ</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="802"/>
@@ -2763,7 +2763,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -2786,7 +2786,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
@@ -2801,7 +2801,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>სიბრტყემდე</translation>
+      <translation>ზედაპირამდე</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="77"/>
@@ -2824,12 +2824,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>თვისების მოცილება</translation>
+      <translation>თვისების წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation>სიის გადალაგება შეგიძლიათ გადათრევით</translation>
+      <translation>სიის გადალაგება გადათრევით შეგიძლიათ</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2849,12 +2849,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
       <source>Occurrences</source>
-      <translation>მოვლენები</translation>
+      <translation>გამოვლენები</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
@@ -2864,7 +2864,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
@@ -2877,7 +2877,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
-      <translation>მიმაგრება</translation>
+      <translation>დანართი</translation>
     </message>
   </context>
   <context>
@@ -2913,18 +2913,18 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>თარაზული ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>შვეული ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>აირჩიეთ მიმართვა...</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
@@ -2934,12 +2934,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation type="unfinished">Symmetric to plane</translation>
+      <translation>სიბრტყის სიმეტრიული</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>შებრუნებულია</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
@@ -2967,7 +2967,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>თვისების მოცილება</translation>
+      <translation>თვისების წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="53"/>
@@ -2977,12 +2977,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="67"/>
       <source>Occurrences</source>
-      <translation>მოვლენები</translation>
+      <translation>გამოვლენები</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="81"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
@@ -2992,7 +2992,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -3025,7 +3025,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="132"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
   </context>
   <context>
@@ -3033,7 +3033,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
   </context>
   <context>
@@ -3053,7 +3053,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
@@ -3075,7 +3075,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="84"/>
       <source>Skin</source>
-      <translation>გაფორმების თემა</translation>
+      <translation>გარეგნობა</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="89"/>
@@ -3129,23 +3129,23 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="250"/>
       <source>Normal sketch axis</source>
-      <translation type="unfinished">Normal sketch axis</translation>
+      <translation>ნორმალის ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="251"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>შვეული ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="252"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>თარაზული ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="254"/>
       <location filename="../../TaskTransformedParameters.cpp" line="290"/>
       <source>Construction line %1</source>
-      <translation>დამხმარე ხაზი %1</translation>
+      <translation>კონსტრუქციის ხაზი %1</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="268"/>
@@ -3166,7 +3166,7 @@ click again to end selection</source>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
       <location filename="../../TaskTransformedParameters.cpp" line="313"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>აირჩიეთ მიმართვა...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
@@ -3187,7 +3187,7 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>სხეულის აქტიურობის ჩართ/გამორთ</translation>
     </message>
@@ -3484,30 +3484,30 @@ click again to end selection</source>
       <translation>ჯერ საჭიროა სიბრტყის შექმნა ან სახაზავი ზედაპირის არჩევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="911"/>
-      <location filename="../../Command.cpp" line="1930"/>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>ფანჯარა უკვე ღიაა ამოცანების პანელზე</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>Do you want to close this dialog?</source>
-      <translation type="unfinished">Do you want to close this dialog?</translation>
+      <translation>ნამდვილად გსურთ ამ ფანჯრის დახურვა?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="791"/>
@@ -3543,7 +3543,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="1579"/>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Wrong selection</source>
-      <translation>არასწორი არჩევანი</translation>
+      <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1580"/>
@@ -3694,7 +3694,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="857"/>
       <location filename="../../CommandBody.cpp" line="864"/>
       <source>Selection error</source>
-      <translation>მონიშვნის შეცდომა</translation>
+      <translation>მონიშნულის შეცდომა</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
@@ -3773,26 +3773,26 @@ This may lead to unexpected results.</source>
       <translation>საბაზისო ელემემენტის გარეშე გამოკლებადი თვისების შექმნა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>შვეული ესკიზის ღერძი</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>თარაზული ესკიზის ღერძი</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
       <source>Construction line %1</source>
-      <translation>დამხმარე ხაზი %1</translation>
+      <translation>კონსტრუქციის ხაზი %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="138"/>
@@ -3834,10 +3834,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>ამ თვისების გამოსაყენებლად ის დოკუმენტში ნაწლის ობიექტს უნდა ეკუთვნოდეს.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>ჩასწორება %1</translation>
     </message>
@@ -3962,27 +3962,27 @@ This feature is broken and can't be edited.</source>
       <translation>გარდაქმნა წარმატებულია</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
       <translation>დოკუმენტი %1, რომელსაც თქვენ ახლა ასწორებთ, შექმნილ იყო ნაწილის დიზაინის ძველ ვერსიაში.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
       <translation>გსურთ მიგრაცია, რათა გამოიყენოთ თანამედროვე PartDesign-ის ფუნქციები?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
       <translation>როგორც ჩანს, დოკუმენტი %1 ან შუა მიგრაციაშია ნაწილის დიზაინის მოძველებული ვერსიიდან ან აქვს ოდნავ გაფუჭებული სტრუქტურა.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>გნებავთ მიგრაცია ავტომატურად მოხდეს?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
@@ -3991,7 +3991,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
 მიგრაცია ნებისმიერ მომენტში შეგიძლიათ მენიუში "ნაწილის დიზაინი -&gt; მიგრაცია" არჩევით.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>მიგრაცია ხელით</translation>
     </message>
@@ -4244,12 +4244,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>მდებარეობა</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
       <source>Face</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>
@@ -4287,7 +4287,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation>ჩაძირვა</translation>
+      <translation>კონუსური სიღრუვე</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
@@ -4307,7 +4307,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation>დაშვება</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
@@ -4462,20 +4462,20 @@ Only available for holes without thread</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
-      <translation>ჩვეულებრივი</translation>
+      <translation>სტანდარტული</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
       <translation>დახურვა</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>სიგანე</translation>
     </message>
@@ -4510,7 +4510,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4626,15 +4626,15 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>შებრუნებულია</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Normal</source>
       <translation>ნორმალური</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation>Loose (მაქს. დაშვება)</translation>
     </message>
@@ -4707,7 +4707,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Measure</source>
-      <translation>საზომი</translation>
+      <translation>გაზომვა</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -4717,7 +4717,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation>3D-ის ჩართ/გამორთ</translation>
+      <translation>3D-ის გადართვა</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -4748,7 +4748,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation>ჟაჭვური...</translation>
+      <translation>ვარსკვლავას კბილი...</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
@@ -4904,7 +4904,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
-      <translation> Part::Feature და მისი წარმოებულების გარდა ლოგიკურ ოპერაციას ვერაფერზე გამოიყენებთ</translation>
+      <translation>Part::Feature და მისი წარმოებულების გარდა ლოგიკურ ოპერაციას ვერაფერზე გამოიყენებთ</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="99"/>
@@ -4932,17 +4932,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>ხელსაწყოების შერწყმის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="217"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="104"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="161"/>
       <source>Resulting shape is not a solid</source>
       <translation>მიღებული მონახაზი მყარი სხეული არაა</translation>
     </message>
@@ -4957,22 +4957,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>საერთო ოპერაციის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="221"/>
-      <location filename="../../../App/FeaturePad.cpp" line="230"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="152"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="221"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="168"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>შედეგს ერთზე მეტი მყარი სხეული გააჩნია: ეს ამჟამად მხარდაჭერილი არაა.</translation>
     </message>
@@ -5035,8 +5035,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>კილოს კუთხე მეტისმეტად მცირეა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -5047,14 +5047,14 @@ over 90: larger hole radius at the bottom</source>
    - არჩეული ესკიზი არ ეკუთვნის აქტიურ სხეულს.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <location filename="../../../App/FeatureGroove.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
       <source>Creating a face from sketch failed</source>
       <translation>ესკიზიდან ზედაპირის შექმნა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <location filename="../../../App/FeatureGroove.cpp" line="140"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>ბრუნვის ღერძი ესკიზს კვეთს</translation>
     </message>
@@ -5064,14 +5064,14 @@ over 90: larger hole radius at the bottom</source>
       <translation>საბაზისო თვისებიდან ამოჭრის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <location filename="../../../App/FeatureGroove.cpp" line="173"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
       <source>Could not revolve the sketch!</source>
       <translation>ესკიზის მოტრიალება შეუძლებელია!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <location filename="../../../App/FeatureGroove.cpp" line="180"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ესკიზიდან ზედაპირის შექმნის შეცდომა.
@@ -5126,10 +5126,10 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>შეცდომა: აგება შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <location filename="../../../App/FeatureHelix.cpp" line="330"/>
       <location filename="../../../App/FeatureHelix.cpp" line="360"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Result is not a solid</source>
       <translation>შეცდომა: შედეგი მყარი სხეული არაა</translation>
     </message>
@@ -5231,15 +5231,15 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>შეცდომა: კუთხვილის დამატების შეცდომა</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>ლოგიკური ოპერაციის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>ესკიზიდან ზედაპირის შექმნის შეცდომა.
@@ -5405,7 +5405,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation>მულტისექციებს შიდა მავთულების იგივე რაოდენობა უნდა ჰქონდეს, რაც საბაზისო სექციას</translation>
+      <translation>მულტისექციებს შიდა პოლიხაზების იგივე რაოდენობა უნდა ჰქონდეს, რაც საბაზისო სექციას</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
@@ -5450,7 +5450,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="561"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation>ელემენტი კარკასში არც წიბოა, არც მავთული.</translation>
+      <translation>ელემენტი კარკასში არც წიბოა, არც პოლიხაზი.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="574"/>
@@ -5460,7 +5460,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="578"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation>კარკასი არც წიბოა, არც მავთული.</translation>
+      <translation>კარკასი არც წიბოა, არც პოლიხაზი.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="582"/>

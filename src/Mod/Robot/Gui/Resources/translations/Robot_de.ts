@@ -356,17 +356,17 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="220"/>
       <location filename="../../Command.cpp" line="249"/>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="123"/>
+      <location filename="../../CommandInsertRobot.cpp" line="229"/>
+      <location filename="../../CommandTrajectory.cpp" line="104"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
+      <location filename="../../CommandTrajectory.cpp" line="177"/>
+      <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -381,11 +381,11 @@
       <translation>Einen Roboter auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="221"/>
       <location filename="../../Command.cpp" line="250"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="124"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Wählen Sie einen Roboter und eine Bewegungsbahn.</translation>
     </message>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Sie benötigen mindestens zwei Wegpunkte, um eine Bewegungsbahn zu simulieren.</translation>
+      <translation>Sie benötigen für die Simulation mindestens zwei Wegpunkte auf der Bewegungsbahn.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="84"/>
@@ -452,7 +452,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="272"/>
       <source>Set default continuity</source>
-      <translation>Setze Vorgabe zur Dauer</translation>
+      <translation>Setze Standart Dauer</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="273"/>
@@ -690,7 +690,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Art</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="322"/>

@@ -313,7 +313,7 @@ Usando ";;" para separar caminhos, podem ser adicionadas várias pastas aqui</tr
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Ficheiros Recentes</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

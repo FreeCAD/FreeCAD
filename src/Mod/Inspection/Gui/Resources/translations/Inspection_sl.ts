@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Pokrožen pravokotnik</translation>
+      <translation>Pregled</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Pokrožen pravokotnik</translation>
+      <translation>Pregled</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Annotation</source>
-      <translation>Opis</translation>
+      <translation>Pripis</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>

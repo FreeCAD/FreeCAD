@@ -170,7 +170,7 @@ Ova naredba radi samo s 'mrežnim' objektom.</translation>
       <translation>Spojite rubove ako je udaljenost manja od</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Neuspjeh</translation>
     </message>

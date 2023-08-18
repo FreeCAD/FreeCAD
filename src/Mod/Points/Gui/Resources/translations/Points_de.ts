@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="312"/>
       <location filename="../../Command.cpp" line="314"/>
       <source>Merge several point clouds into one</source>
-      <translation>Führt mehrere Punktwolken zu einer zusammen</translation>
+      <translation>Fügt mehrere Punktwolken zu einer zusammen</translation>
     </message>
   </context>
   <context>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Convert to points</source>
-      <translation>In Punkte umwandeln</translation>
+      <translation>Zu Punkten umwandeln</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="456"/>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Distance</source>
-      <translation>Abstand</translation>
+      <translation>Entfernung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="209"/>

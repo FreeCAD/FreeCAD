@@ -313,7 +313,7 @@ Z ločevanjem poti z znaki ";;", lahko dodate več map</translation>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Nedavne datoteke</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

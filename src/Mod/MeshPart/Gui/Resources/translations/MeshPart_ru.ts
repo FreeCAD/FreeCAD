@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -72,7 +72,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
-      <translation>Разделить</translation>
+      <translation>Разрез (Сечение)</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation>Сеть</translation>
+      <translation>Полигональная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -137,7 +137,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Расположение:</translation>
+      <translation>Позиция:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>Подключите рёбра, если расстояние меньше, чем</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Сбой</translation>
     </message>
@@ -403,7 +403,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Приемлемо</translation>
+      <translation>Умеренно</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
