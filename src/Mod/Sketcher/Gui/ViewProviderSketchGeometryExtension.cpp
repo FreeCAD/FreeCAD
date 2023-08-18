@@ -34,19 +34,21 @@
 using namespace SketcherGui;
 
 //---------- Geometry Extension
-TYPESYSTEM_SOURCE(SketcherGui::ViewProviderSketchGeometryExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(SketcherGui::ViewProviderSketchGeometryExtension,
+                  Part::GeometryPersistenceExtension)
 
 
-ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension():RepresentationFactor(1.0), VisualLayerId(0)
-{
+ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension()
+    : RepresentationFactor(1.0)
+    , VisualLayerId(0)
+{}
 
-}
-
-void ViewProviderSketchGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
+void ViewProviderSketchGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
 {
     Part::GeometryExtension::copyAttributes(cpy);
-    static_cast<ViewProviderSketchGeometryExtension *>(cpy)->RepresentationFactor = this->RepresentationFactor;
-    static_cast<ViewProviderSketchGeometryExtension *>(cpy)->VisualLayerId = this->VisualLayerId;
+    static_cast<ViewProviderSketchGeometryExtension*>(cpy)->RepresentationFactor =
+        this->RepresentationFactor;
+    static_cast<ViewProviderSketchGeometryExtension*>(cpy)->VisualLayerId = this->VisualLayerId;
 }
 
 std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy() const
@@ -55,30 +57,31 @@ std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::co
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+#if defined(__GNUC__) && (__GNUC__ <= 4)
     return std::move(cpy);
 #else
     return cpy;
 #endif
 }
 
-void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
+void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    if(reader.hasAttribute("visualLayerId"))
+    if (reader.hasAttribute("visualLayerId"))
         VisualLayerId = reader.getAttributeAsInteger("visualLayerId");
 }
 
-void ViewProviderSketchGeometryExtension::saveAttributes(Base::Writer &writer) const
+void ViewProviderSketchGeometryExtension::saveAttributes(Base::Writer& writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
 
-    writer.Stream() << "\" visualLayerId=\""  << VisualLayerId;
+    writer.Stream() << "\" visualLayerId=\"" << VisualLayerId;
 }
 
 
-PyObject * ViewProviderSketchGeometryExtension::getPyObject()
+PyObject* ViewProviderSketchGeometryExtension::getPyObject()
 {
-    return new ViewProviderSketchGeometryExtensionPy(new ViewProviderSketchGeometryExtension(*this));
+    return new ViewProviderSketchGeometryExtensionPy(
+        new ViewProviderSketchGeometryExtension(*this));
 }

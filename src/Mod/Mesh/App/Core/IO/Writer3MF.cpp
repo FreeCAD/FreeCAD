@@ -128,10 +128,10 @@ bool Writer3MF::SaveObject(std::ostream &str, int id, const MeshKernel& mesh) co
 
     // facet indices
     str << Base::blanks(4) << "<triangles>\n";
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        str << Base::blanks(5) << "<triangle v1=\"" << it->_aulPoints[0]
-                                      << "\" v2=\"" << it->_aulPoints[1]
-                                      << "\" v3=\"" << it->_aulPoints[2]
+    for (const auto & it : rFacets) {
+        str << Base::blanks(5) << "<triangle v1=\"" << it._aulPoints[0]
+                                      << "\" v2=\"" << it._aulPoints[1]
+                                      << "\" v3=\"" << it._aulPoints[2]
                                       << "\" />\n";
     }
     str << Base::blanks(4) << "</triangles>\n";

@@ -205,14 +205,14 @@ def removeComponents(objectsList,host=None):
                         a.remove(o)
                         h.Objects = a
 
-def makeComponent(baseobj=None,name="Component",delete=False):
-    '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
+def makeComponent(baseobj=None,name=None,delete=False):
+    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric Arch
     component from the given base object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Component")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Component")
     ArchComponent.Component(obj)
     if FreeCAD.GuiUp:
         ArchComponent.ViewProviderComponent(obj.ViewObject)
@@ -1142,7 +1142,7 @@ def toggleIfcBrepFlag(obj):
         FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
     else:
         d = obj.IfcData
-        if "FlagForceBrep" in d.keys():
+        if "FlagForceBrep" in d:
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
                 FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")

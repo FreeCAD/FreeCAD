@@ -113,9 +113,10 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
 
     // if abort command deleted the object the bodies are visible again
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        if (*b && Gui::Application::Instance->getViewProvider(*b))
-        Gui::Application::Instance->getViewProvider(*b)->show();
+    for (auto body : bodies) {
+        if (auto vp = Gui::Application::Instance->getViewProvider(body)) {
+            vp->show();
+        }
     }
 
     return ViewProvider::onDelete(s);

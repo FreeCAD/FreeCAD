@@ -90,7 +90,7 @@ def open(filename):
 
     if not checkCollada():
         return
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     FreeCAD.ActiveDocument = doc
@@ -138,7 +138,7 @@ def read(filename):
                         if tnode is not None:
                             mnode = tnode.find(bt+"instance_material")
                             if mnode is not None:
-                                if "target" in mnode.keys():
+                                if "target" in mnode:
                                     mname = mnode.get("target").strip("#")
                                     for m in col.materials:
                                         if m.id == mname:

@@ -63,7 +63,7 @@ void ViewProviderPlacement::onChanged(const App::Property* prop)
         ViewProviderGeometryObject::onChanged(prop);
 }
 
-std::vector<std::string> ViewProviderPlacement::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPlacement::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
@@ -84,7 +84,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
     if(!Axis) {
-        Axis.reset(new AxisOrigin);
+        Axis = std::make_unique<AxisOrigin>();
         std::map<std::string,std::string> labels;
         labels["O"] = "Origin";
         labels["X"] = "X-Axis";
@@ -126,7 +126,7 @@ bool ViewProviderPlacement::getDetailPath(
     return true;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const
+bool ViewProviderPlacement::isSelectable() const
 {
     return true;
 }

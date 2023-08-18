@@ -36,7 +36,7 @@ class View3DInventorViewer;
  *
  * The interface does not offer all methods the c++ View3DInventorViewer counterpart has, respectively
  * also not everything the QuarterWidget and the SoQtQuarterAdaptor offers. It only exposes
- * methods with additioanl functionality in comparison to the View3DInventorPy class. Everything that
+ * methods with additional functionality in comparison to the View3DInventorPy class. Everything that
  * can be done from there has no interface here.
  */
 class View3DInventorViewerPy : public Py::PythonExtension<View3DInventorViewerPy>
@@ -72,6 +72,7 @@ public:
     Py::Object setBackgroundColor(const Py::Tuple& args);
     Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
     Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
+    Py::Object grabFramebuffer(const Py::Tuple& args);
 
     // NaviCube handling
     Py::Object setEnabledNaviCube(const Py::Tuple& args);

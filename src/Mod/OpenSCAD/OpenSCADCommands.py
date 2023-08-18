@@ -548,7 +548,7 @@ class OpenSCADMeshBoolean:
 
 class Hull:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part
@@ -568,7 +568,7 @@ class Hull:
 
 class Minkowski:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part

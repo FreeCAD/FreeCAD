@@ -25,16 +25,19 @@
 #ifndef APP_MAPPED_NAME_H
 #define APP_MAPPED_NAME_H
 
-
+#include <memory>
 #include <string>
 
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <QByteArray>
 #include <QHash>
+#include <QVector>
+#include <utility>
 
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "IndexedName.h"
+#include "StringHasher.h"
 
 
 namespace Data
@@ -62,8 +65,8 @@ public:
         if (!name) {
             return;
         }
-        if (boost::starts_with(name, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX_SIZE;
         }
 
         data = size < 0 ? QByteArray(name) : QByteArray(name, size);
@@ -78,9 +81,9 @@ public:
     {
         auto size = nameString.size();
         const char* name = nameString.c_str();
-        if (boost::starts_with(nameString, ComplexGeoData::elementMapPrefix())) {
-            name += ComplexGeoData::elementMapPrefix().size();
-            size -= ComplexGeoData::elementMapPrefix().size();
+        if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
+            name += ELEMENT_MAP_PREFIX_SIZE;
+            size -= ELEMENT_MAP_PREFIX_SIZE;
         }
         data = QByteArray(name, static_cast<int>(size));
     }
@@ -89,13 +92,20 @@ public:
     /// is appended as text to the MappedName. In that case the memory is *not* shared between the
     /// original IndexedName and the MappedName.
     explicit MappedName(const IndexedName& element)
-        : data(QByteArray::fromRawData(element.getType(), qstrlen(element.getType()))),
-          raw(true)
+        : data(QByteArray::fromRawData(element.getType(),
+                                       static_cast<int>(qstrlen(element.getType()))))
+        , raw(true)
     {
         if (element.getIndex() > 0) {
             this->data += QByteArray::number(element.getIndex());
             this->raw = false;
         }
+    }
+
+    explicit MappedName(const App::StringIDRef& sid)
+        : raw(false)
+    {
+        sid.toBytes(this->data);
     }
 
     MappedName()
@@ -121,16 +131,16 @@ public:
     /// \param other The mapped name to copy. Its data and postfix become the new MappedName's data
     /// \param postfix The postfix for the new MappedName
     MappedName(const MappedName& other, const char* postfix)
-        : data(other.data + other.postfix),
-          postfix(postfix),
-          raw(false)
+        : data(other.data + other.postfix)
+        , postfix(postfix)
+        , raw(false)
     {}
 
     /// Move constructor
     MappedName(MappedName&& other) noexcept
-        : data(std::move(other.data)),
-          postfix(std::move(other.postfix)),
-          raw(other.raw)
+        : data(std::move(other.data))
+        , postfix(std::move(other.postfix))
+        , raw(other.raw)
     {}
 
     ~MappedName() = default;
@@ -622,7 +632,7 @@ public:
     const char* appendToBufferWithPrefix(std::string& buf) const
     {
         if (!toIndexedName()) {
-            buf += ComplexGeoData::elementMapPrefix();
+            buf += ELEMENT_MAP_PREFIX;
         }
         appendToBuffer(buf);
         return buf.c_str();
@@ -714,7 +724,7 @@ public:
     }
 
     /// Ensure that this data is unshared, making a copy if necessary.
-    void compact();
+    void compact() const;
 
     /// Boolean conversion is the inverse of empty(), returning true if there is data in either the
     /// data or postfix, and false if there is nothing in either.
@@ -786,8 +796,7 @@ public:
         if (!searchTarget) {
             return -1;
         }
-        if (startPosition < 0
-            || startPosition >= this->data.size()) {
+        if (startPosition < 0 || startPosition >= this->data.size()) {
             if (startPosition >= data.size()) {
                 startPosition -= data.size();
             }
@@ -887,6 +896,23 @@ public:
             offset);
     }
 
+    /// Extract tagOut and other information from a encoded element name
+    ///
+    /// \param tagOut: optional pointer to receive the extracted tagOut
+    /// \param lenOut: optional pointer to receive the length field after the tagOut field.
+    ///             This gives the length of the previous hashed element name starting
+    ///             from the beginning of the give element name.
+    /// \param postfixOut: optional pointer to receive the postfixOut starting at the found tagOut field.
+    /// \param typeOut: optional pointer to receive the element typeOut character
+    /// \param negative: return negative tagOut as it is. If disabled, then always return positive tagOut.
+    ///                  Negative tagOut is sometimes used for element disambiguation.
+    /// \param recursive: recursively find the last non-zero tagOut
+    ///
+    /// \return Return the end position of the tagOut field, or return -1 if not found.
+    int findTagInElementName(long* tagOut = nullptr, int* lenOut = nullptr, std::string* postfixOut = nullptr,
+                             char* typeOut = nullptr, bool negative = false,
+                             bool recursive = true) const;
+
     /// Get a hash for this MappedName
     std::size_t hash() const
     {
@@ -898,6 +924,121 @@ private:
     QByteArray postfix;
     bool raw;
 };
+
+
+using ElementIDRefs = QVector<::App::StringIDRef>;
+
+struct MappedNameRef
+{
+    MappedName name;
+    ElementIDRefs sids;
+    std::unique_ptr<MappedNameRef> next;
+
+    MappedNameRef() = default;
+
+    ~MappedNameRef() = default;
+
+    MappedNameRef(MappedName name, ElementIDRefs sids = ElementIDRefs())
+        : name(std::move(name))
+        , sids(std::move(sids))
+    {
+        compact();
+    }
+
+    MappedNameRef(const MappedNameRef& other)
+        : name(other.name)
+        , sids(other.sids)
+    {}
+
+    MappedNameRef(MappedNameRef&& other) noexcept
+        : name(std::move(other.name))
+        , sids(std::move(other.sids))
+        , next(std::move(other.next))
+    {}
+
+    MappedNameRef& operator=(const MappedNameRef& other) noexcept
+    {
+        name = other.name;
+        sids = other.sids;
+        return *this;
+    }
+
+    MappedNameRef& operator=(MappedNameRef&& other) noexcept
+    {
+        name = std::move(other.name);
+        sids = std::move(other.sids);
+        next = std::move(other.next);
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        return !name.empty();
+    }
+
+    void append(const MappedName& _name, const ElementIDRefs _sids = ElementIDRefs())
+    {
+        if (!_name) {
+            return;
+        }
+        if (!this->name) {
+            this->name = _name;
+            this->sids = _sids;
+            compact();
+            return;
+        }
+        std::unique_ptr<MappedNameRef> mappedName(new MappedNameRef(_name, _sids));
+        if (!this->next) {
+            this->next = std::move(mappedName);
+        }
+        else {
+            this->next.swap(mappedName);
+            this->next->next = std::move(mappedName);
+        }
+    }
+
+    void compact()
+    {
+        if (sids.size() > 1) {
+            std::sort(sids.begin(), sids.end());
+            sids.erase(std::unique(sids.begin(), sids.end()), sids.end());
+        }
+    }
+
+    bool erase(const MappedName& _name)
+    {
+        if (this->name == _name) {
+            this->name.clear();
+            this->sids.clear();
+            if (this->next) {
+                this->name = std::move(this->next->name);
+                this->sids = std::move(this->next->sids);
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(this->next);
+                this->next = std::move(tmp->next);
+            }
+            return true;
+        }
+
+        for (std::unique_ptr<MappedNameRef>* ptr = &this->next; *ptr; ptr = &(*ptr)->next) {
+            if ((*ptr)->name == _name) {
+                std::unique_ptr<MappedNameRef> tmp;
+                tmp.swap(*ptr);
+                *ptr = std::move(tmp->next);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void clear()
+    {
+        this->name.clear();
+        this->sids.clear();
+        this->next.reset();
+    }
+};
+
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 

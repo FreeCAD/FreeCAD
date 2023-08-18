@@ -92,6 +92,9 @@ class Draft_SetStyle_TaskPanel:
         self.form.saveButton.setIcon(QtGui.QIcon.fromTheme("gtk-save", QtGui.QIcon(":/icons/document-save.svg")))
         self.form.TextSpacing.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("dimspacing",1),FreeCAD.Units.Length).UserString)
         self.form.LineSpacing.setValue(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("LineSpacing",1))
+        self.form.DimOvershoot.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("dimovershoot",0),FreeCAD.Units.Length).UserString)
+        self.form.ExtLines.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("extlines",0),FreeCAD.Units.Length).UserString)
+        self.form.ExtOvershoot.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("extovershoot",0),FreeCAD.Units.Length).UserString)
         self.form.saveButton.clicked.connect(self.onSaveStyle)
         self.form.applyButton.clicked.connect(self.onApplyStyle)
         self.form.annotButton.clicked.connect(self.onApplyAnnot)
@@ -103,12 +106,13 @@ class Draft_SetStyle_TaskPanel:
         presets = [self.form.comboPresets.itemText(0)]
         self.form.comboPresets.clear()
         pdict = self.load()
-        presets.extend(pdict.keys())
+        pdict_keys = list(pdict)
+        presets.extend(pdict_keys)
         self.form.comboPresets.addItems(presets)
         current = self.getValues()
-        for name,preset in pdict.items():
+        for name, preset in pdict.items():
             if all(item in current.items() for item in preset.items()): #if preset == current:
-                self.form.comboPresets.setCurrentIndex(1+(list(pdict.keys()).index(name)))
+                self.form.comboPresets.setCurrentIndex(1 + (pdict_keys.index(name)))
                 break
 
     def getPrefColor(self,group,prop,default):
@@ -139,6 +143,9 @@ class Draft_SetStyle_TaskPanel:
         preset["UnitOverride"] = self.form.UnitOverride.text()
         preset["TextSpacing"] = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
         preset["LineSpacing"] = self.form.LineSpacing.value()
+        preset["DimOvershoot"] = FreeCAD.Units.Quantity(self.form.DimOvershoot.text()).Value
+        preset["ExtLines"] = FreeCAD.Units.Quantity(self.form.ExtLines.text()).Value
+        preset["ExtOvershoot"] = FreeCAD.Units.Quantity(self.form.ExtOvershoot.text()).Value
         return preset
 
     def setValues(self,preset):
@@ -159,6 +166,9 @@ class Draft_SetStyle_TaskPanel:
         self.form.ArrowSize.setText(FreeCAD.Units.Quantity(preset.get("ArrowSize",5),FreeCAD.Units.Length).UserString)
         self.form.TextSpacing.setText(FreeCAD.Units.Quantity(preset.get("TextSpacing",25),FreeCAD.Units.Length).UserString)
         self.form.LineSpacing.setValue(preset.get("LineSpacing",3))
+        self.form.DimOvershoot.setText(FreeCAD.Units.Quantity(preset.get("DimOvershoot",0),FreeCAD.Units.Length).UserString)
+        self.form.ExtLines.setText(FreeCAD.Units.Quantity(preset.get("ExtLines",0),FreeCAD.Units.Length).UserString)
+        self.form.ExtOvershoot.setText(FreeCAD.Units.Quantity(preset.get("ExtOvershoot",0),FreeCAD.Units.Length).UserString)
 
     def reject(self):
 
@@ -186,6 +196,9 @@ class Draft_SetStyle_TaskPanel:
         param_draft.SetString("overrideUnit",self.form.UnitOverride.text())
         param_draft.SetFloat("dimspacing",FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value)
         param_draft.SetFloat("LineSpacing",self.form.LineSpacing.value())
+        param_draft.SetFloat("dimovershoot",FreeCAD.Units.Quantity(self.form.DimOvershoot.text()).Value)
+        param_draft.SetFloat("extlines",FreeCAD.Units.Quantity(self.form.ExtLines.text()).Value)
+        param_draft.SetFloat("extovershoot",FreeCAD.Units.Quantity(self.form.ExtOvershoot.text()).Value)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.setStyleButton()
         self.reject()
@@ -250,12 +263,18 @@ class Draft_SetStyle_TaskPanel:
             vobj.TextSpacing = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
         if "LineSpacing" in properties:
             vobj.LineSpacing = self.form.LineSpacing.value()
+        if "DimOvershoot" in properties:
+            vobj.DimOvershoot = FreeCAD.Units.Quantity(self.form.DimOvershoot.text()).Value
+        if "ExtLines" in properties:
+            vobj.ExtLines = FreeCAD.Units.Quantity(self.form.ExtLines.text()).Value
+        if "ExtOvershoot" in properties:
+            vobj.ExtOvershoot = FreeCAD.Units.Quantity(self.form.ExtOvershoot.text()).Value
 
     def onLoadStyle(self,index):
 
         if index > 0:
             pdict = self.load()
-            if self.form.comboPresets.itemText(index) in pdict.keys():
+            if self.form.comboPresets.itemText(index) in pdict:
                 preset = pdict[self.form.comboPresets.itemText(index)]
                 self.setValues(preset)
 
@@ -269,7 +288,7 @@ class Draft_SetStyle_TaskPanel:
             name = reply[0]
             pdict = self.load()
             if pdict:
-                if name in pdict.keys():
+                if name in pdict:
                     reply = QtGui.QMessageBox.question(None,
                                                        translate("Draft","Warning"),
                                                        translate("Draft","Name exists. Overwrite?"),
@@ -291,6 +310,7 @@ class Draft_SetStyle_TaskPanel:
             import json
             from json.decoder import JSONDecodeError
         except Exception:
+            FreeCAD.Console.PrintError(translate("Draft","Error: json module not found. Unable to load style")+"\n")
             return
         if os.path.exists(PRESETPATH):
             with open(PRESETPATH,"r") as f:

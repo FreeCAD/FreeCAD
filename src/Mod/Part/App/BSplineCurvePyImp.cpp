@@ -775,9 +775,9 @@ PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
         arcs = curve->toBiArcs(tolerance);
 
         Py::List list;
-        for (std::list<Geometry*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
-            list.append(Py::asObject((*it)->getPyObject()));
-            delete (*it);
+        for (auto arc : arcs) {
+            list.append(Py::asObject(arc->getPyObject()));
+            delete arc;
         }
 
         return Py::new_reference_to(list);
@@ -1043,12 +1043,12 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 
         std::unique_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
-            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
-                Base::asBoolean(periodic), tol3d));
+            aBSplineInterpolation = std::make_unique<GeomAPI_Interpolate>(interpolationPoints,
+                Base::asBoolean(periodic), tol3d);
         }
         else {
-            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints, parameters,
-                Base::asBoolean(periodic), tol3d));
+            aBSplineInterpolation = std::make_unique<GeomAPI_Interpolate>(interpolationPoints, parameters,
+                Base::asBoolean(periodic), tol3d);
         }
 
         if (t1 && t2) {

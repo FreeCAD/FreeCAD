@@ -121,17 +121,8 @@ DocumentObjectExecReturn* FemPostPipeline::execute() {
 
 bool FemPostPipeline::canRead(Base::FileInfo File) {
 
-    if (File.hasExtension("vtk") ||
-        // from FemResult only unstructural mesh is supported in femvtktoools.cpp
-        File.hasExtension("vtp") ||
-        File.hasExtension("vts") ||
-        File.hasExtension("vtr") ||
-        File.hasExtension("vti") ||
-        File.hasExtension("vtu") ||
-        File.hasExtension("pvtu"))
-        return true;
-
-    return false;
+    // from FemResult only unstructural mesh is supported in femvtktoools.cpp
+    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu"});
 }
 
 void FemPostPipeline::read(Base::FileInfo File) {

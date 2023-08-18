@@ -41,7 +41,7 @@ class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 
 public:
     DrawWeldSymbol();
-    ~DrawWeldSymbol() = default;
+    ~DrawWeldSymbol() override = default;
 
     App::PropertyLink         Leader;
     App::PropertyBool         AllAround;

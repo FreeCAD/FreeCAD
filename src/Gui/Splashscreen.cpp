@@ -27,12 +27,14 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QFile>
+# include <QFileInfo>
 # include <QLocale>
 # include <QMutex>
 # include <QProcessEnvironment>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QScreen>
+# include <QSettings>
 # include <QSysInfo>
 # include <QTextBrowser>
 # include <QTextStream>
@@ -59,6 +61,57 @@ using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
 
 namespace Gui {
+
+QString prettyProductInfoWrapper()
+{
+    auto productName = QSysInfo::prettyProductName();
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#ifdef FC_OS_MACOSX
+    auto macosVersionFile = QString::fromUtf8("/System/Library/CoreServices/.SystemVersionPlatform.plist");
+    auto fi = QFileInfo (macosVersionFile);
+    if (fi.exists() && fi.isReadable()) {
+        auto plistFile = QFile(macosVersionFile);
+        plistFile.open(QIODevice::ReadOnly);
+        while (!plistFile.atEnd()) {
+            auto line = plistFile.readLine();
+            if (line.contains("ProductUserVisibleVersion")) {
+                auto nextLine = plistFile.readLine();
+                if (nextLine.contains("<string>")) {
+                    QRegularExpression re(QString::fromUtf8("\\s*<string>(.*)</string>"));
+                    auto matches = re.match(QString::fromUtf8(nextLine));
+                    if (matches.hasMatch()) {
+                        productName = QString::fromUtf8("macOS ") + matches.captured(1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+#endif
+#endif
+#ifdef FC_OS_WIN64
+    QSettings regKey {QString::fromUtf8("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), QSettings::NativeFormat};
+    if (regKey.contains(QString::fromUtf8("CurrentBuildNumber"))) {
+        auto buildNumber = regKey.value(QString::fromUtf8("CurrentBuildNumber")).toInt();
+        if (buildNumber > 0) {
+            if (buildNumber < 9200) {
+                productName = QString::fromUtf8("Windows 7 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 10240) {
+                productName = QString::fromUtf8("Windows 8 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 22000) {
+                productName = QString::fromUtf8("Windows 10 build %1").arg(buildNumber);
+            }
+            else {
+                productName = QString::fromUtf8("Windows 11 build %1").arg(buildNumber);
+            }
+        }
+    }
+#endif
+    return productName;
+}
+
 /** Displays all messages at startup inside the splash screen.
  * \author Werner Mayer
  */
@@ -123,10 +176,13 @@ public:
     {
         return "SplashObserver";
     }
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override
     {
         Q_UNUSED(notifiername)
-        
+        Q_UNUSED(recipient)
+        Q_UNUSED(content)
+
 #ifdef FC_DEBUG
         Log(msg.c_str());
         Q_UNUSED(level)
@@ -148,7 +204,7 @@ public:
         }
         else {
             // ignore activation of commands
-            rx.setPattern(QLatin1String("^\\s*(\\+App::|Create|CmdC:|CmdG:|Act:)\\s*"));
+            rx.setPattern(QLatin1String(R"(^\s*(\+App::|Create|CmdC:|CmdG:|Act:)\s*)"));
             match = rx.match(msg);
             if (match.hasMatch() && match.capturedStart() == 0)
                 return;
@@ -319,6 +375,7 @@ void AboutDialog::setupLabels()
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString point  = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+    QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
     QString disda  = QString::fromLatin1(config["BuildRevisionDate"].c_str());
     QString mturl  = QString::fromLatin1(config["MaintainerUrl"].c_str());
@@ -337,7 +394,7 @@ void AboutDialog::setupLabels()
     }
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2.%3").arg(major, minor, point));
+    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
@@ -349,7 +406,7 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromLatin1("Unknown"), QSysInfo::prettyProductName());
+    os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
@@ -676,9 +733,9 @@ void AboutDialog::showLibraryInformation()
     QTextStream out(&html);
     out << "<html><head/><body style=\" font-size:8.25pt; font-weight:400; font-style:normal;\">"
         << "<p>" << msg << "<br/></p>\n<ul>\n";
-    for (QList<LibraryInfo>::iterator it = libInfo.begin(); it != libInfo.end(); ++it) {
-        out << "<li><p>" << it->name << " " << it->version << "</p>"
-               "<p><a href=\"" << it->href << "\">" << it->url
+    for (const auto & it : libInfo) {
+        out << "<li><p>" << it.name << " " << it.version << "</p>"
+               "<p><a href=\"" << it.href << "\">" << it.url
             << "</a><br/></p></li>\n";
     }
     out << "</ul>\n</body>\n</html>";
@@ -731,6 +788,7 @@ void AboutDialog::copyToClipboard()
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString point  = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+    QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
 
     QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"), QString());
@@ -745,9 +803,9 @@ void AboutDialog::copyToClipboard()
     }
 
     str << "[code]\n";
-    str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
+    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
-    str << "Version: " << major << "." << minor << "." << point << "." << build;
+    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
     char *appimage = getenv("APPIMAGE");
     if (appimage)
         str << " AppImage";

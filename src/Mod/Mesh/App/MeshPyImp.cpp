@@ -267,7 +267,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
         std::unique_ptr<MeshCore::Material> mat;
         if (List) {
-            mat.reset(new MeshCore::Material);
+            mat = std::make_unique<MeshCore::Material>();
             Py::Sequence list(List);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);
@@ -382,12 +382,12 @@ PyObject*  MeshPy::crossSections(PyObject *args)
 
     // convert to Python objects
     Py::List crossSections;
-    for (std::vector<MeshObject::TPolylines>::iterator it = sections.begin(); it != sections.end(); ++it) {
+    for (const auto & it : sections) {
         Py::List section;
-        for (MeshObject::TPolylines::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
+        for (const auto & jt : it) {
             Py::List polyline;
-            for (std::vector<Base::Vector3f>::const_iterator kt = jt->begin(); kt != jt->end(); ++kt) {
-                polyline.append(Py::asObject(new Base::VectorPy(*kt)));
+            for (auto kt : jt) {
+                polyline.append(Py::asObject(new Base::VectorPy(kt)));
             }
             section.append(polyline);
         }
@@ -669,10 +669,10 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                 else {
                     // 9 consecutive floats expected
                     int index=0;
-                    for (int i=0; i<3; i++) {
-                        facet._aclPoints[i].x = (float)(double)Py::Float(seq[index++]);
-                        facet._aclPoints[i].y = (float)(double)Py::Float(seq[index++]);
-                        facet._aclPoints[i].z = (float)(double)Py::Float(seq[index++]);
+                    for (auto & point : facet._aclPoints) {
+                        point.x = (float)(double)Py::Float(seq[index++]);
+                        point.y = (float)(double)Py::Float(seq[index++]);
+                        point.z = (float)(double)Py::Float(seq[index++]);
                     }
                     facet.CalcNormal();
                     facets.push_back(facet);
@@ -749,8 +749,8 @@ PyObject* MeshPy::getInternalFacets(PyObject *args)
     const std::vector<FacetIndex>& indices = eval.GetIndices();
     Py::List ary(indices.size());
     Py::List::size_type pos=0;
-    for (std::vector<FacetIndex>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
-        ary[pos++] = Py::Long(*it);
+    for (FacetIndex index : indices) {
+        ary[pos++] = Py::Long(index);
     }
 
     return Py::new_reference_to(ary);
@@ -881,8 +881,8 @@ PyObject* MeshPy::getSegment(PyObject *args)
 
     Py::List ary;
     const std::vector<FacetIndex>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
-    for (std::vector<FacetIndex>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
-        ary.append(Py::Long(*it));
+    for (FacetIndex it : segm) {
+        ary.append(Py::Long(it));
     }
 
     return Py::new_reference_to(ary);
@@ -896,8 +896,8 @@ PyObject* MeshPy::getSeparateComponents(PyObject *args)
     Py::List meshesList;
     std::vector<std::vector<FacetIndex> > segs;
     segs = getMeshObjectPtr()->getComponents();
-    for (unsigned int i=0; i<segs.size(); i++) {
-        MeshObject* mesh = getMeshObjectPtr()->meshFromSegment(segs[i]);
+    for (const auto & it : segs) {
+        MeshObject* mesh = getMeshObjectPtr()->meshFromSegment(it);
         meshesList.append(Py::Object(new MeshPy(mesh),true));
     }
     return Py::new_reference_to(meshesList);
@@ -911,8 +911,8 @@ PyObject* MeshPy::getFacetSelection(PyObject *args)
     Py::List ary;
     std::vector<FacetIndex> facets;
     getMeshObjectPtr()->getFacetsFromSelection(facets);
-    for (std::vector<FacetIndex>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
-        ary.append(Py::Long((int)*it));
+    for (FacetIndex facet : facets) {
+        ary.append(Py::Long(int(facet)));
     }
 
     return Py::new_reference_to(ary);
@@ -926,8 +926,8 @@ PyObject* MeshPy::getPointSelection(PyObject *args)
     Py::List ary;
     std::vector<PointIndex> points;
     getMeshObjectPtr()->getPointsFromSelection(points);
-    for (std::vector<PointIndex>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        ary.append(Py::Long((int)*it));
+    for (PointIndex point : points) {
+        ary.append(Py::Long(int(point)));
     }
 
     return Py::new_reference_to(ary);
@@ -1688,8 +1688,8 @@ PyObject*  MeshPy::cut(PyObject *args)
 
     Base::ViewProjMatrix proj(mat);
     Base::Polygon2d polygon2d;
-    for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
-        polygon2d.Add(Base::Vector2d(it->x, it->y));
+    for (auto it : polygon)
+        polygon2d.Add(Base::Vector2d(it.x, it.y));
     getMeshObjectPtr()->cut(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return;
@@ -1722,8 +1722,8 @@ PyObject*  MeshPy::trim(PyObject *args)
 
     Base::ViewOrthoProjMatrix proj(mat);
     Base::Polygon2d polygon2d;
-    for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
-        polygon2d.Add(Base::Vector2d(it->x, it->y));
+    for (auto it : polygon)
+        polygon2d.Add(Base::Vector2d(it.x, it.y));
     getMeshObjectPtr()->trim(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return;
@@ -1861,11 +1861,11 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
         (Mesh::MeshObject::PLANE, dev, minFacets);
 
     Py::List s;
-    for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<FacetIndex>& segm = it->getIndices();
+    for (const auto & segment : segments) {
+        const std::vector<FacetIndex>& segm = segment.getIndices();
         Py::List ary;
-        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-            ary.append(Py::Long(*jt));
+        for (FacetIndex jt : segm) {
+            ary.append(Py::Long(jt));
         }
         s.append(ary);
     }
@@ -1901,11 +1901,11 @@ PyObject*  MeshPy::getSegmentsOfType(PyObject *args)
         (geoType, dev, minFacets);
 
     Py::List s;
-    for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<FacetIndex>& segm = it->getIndices();
+    for (const auto & segment : segments) {
+        const std::vector<FacetIndex>& segm = segment.getIndices();
         Py::List ary;
-        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-            ary.append(Py::Long((int)*jt));
+        for (FacetIndex jt : segm) {
+            ary.append(Py::Long(int(jt)));
         }
         s.append(ary);
     }
@@ -1939,12 +1939,12 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
     finder.FindSegments(segm);
 
     Py::List list;
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
-        const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
-        for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+    for (const auto & segmIt : segm) {
+        const std::vector<MeshCore::MeshSegment>& data = segmIt->GetSegments();
+        for (const auto & it : data) {
             Py::List ary;
-            for (MeshCore::MeshSegment::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
-                ary.append(Py::Long((int)*jt));
+            for (FacetIndex jt : it) {
+                ary.append(Py::Long(int(jt)));
             }
             list.append(ary);
         }
@@ -2047,17 +2047,15 @@ Py::Tuple MeshPy::getTopology() const
     getMeshObjectPtr()->getFaces(Points, Facets, 0.0);
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
-        it != Points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & Point : Points)
+        vertex.append(Py::asObject(new Base::VectorPy(Point)));
     tuple.setItem(0, vertex);
     Py::List facet;
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-        it = Facets.begin(); it != Facets.end(); ++it) {
+    for (auto it : Facets) {
         Py::Tuple f(3);
-        f.setItem(0,Py::Long((int)it->I1));
-        f.setItem(1,Py::Long((int)it->I2));
-        f.setItem(2,Py::Long((int)it->I3));
+        f.setItem(0,Py::Long((int)it.I1));
+        f.setItem(1,Py::Long((int)it.I2));
+        f.setItem(2,Py::Long((int)it.I3));
         facet.append(f);
     }
     tuple.setItem(1, facet);

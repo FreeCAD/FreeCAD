@@ -46,7 +46,7 @@ TrajectoryObject::~TrajectoryObject()
 {
 }
 
-short TrajectoryObject::mustExecute(void) const
+short TrajectoryObject::mustExecute() const
 {
     return 0;
 }

@@ -68,9 +68,9 @@ Presets = [None,
 
 
 
-def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
+def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=None):
 
-    '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
+    '''makePanel([baseobj],[length],[width],[thickness],[placement],[name]): creates a
     panel element based on the given profile object and the given
     extrusion thickness. If no base object is given, you can also specify
     length and width for a simple cubic object.'''
@@ -79,7 +79,7 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Panel")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Panel")
     _Panel(obj)
     if FreeCAD.GuiUp:
         _ViewProviderPanel(obj.ViewObject)
@@ -96,26 +96,27 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
     return obj
 
 
-def makePanelCut(panel,name="PanelCut"):
+def makePanelCut(panel,name=None):
 
-    """makePanelCut(panel) : Creates a 2D view of the given panel
+    """makePanelCut(panel,[name]) : Creates a 2D view of the given panel
     in the 3D space, positioned at the origin."""
 
-    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelCut")
+    view.Label = name if name else translate("Arch","View of")+" "+panel.Label
     PanelCut(view)
     view.Source = panel
-    view.Label = translate("Arch","View of")+" "+panel.Label
     if FreeCAD.GuiUp:
         ViewProviderPanelCut(view.ViewObject)
     return view
 
 
-def makePanelSheet(panels=[],name="PanelSheet"):
+def makePanelSheet(panels=[],name=None):
 
-    """makePanelSheet([panels]) : Creates a sheet with the given panel cuts
+    """makePanelSheet([panels],[name]) : Creates a sheet with the given panel cuts
     in the 3D space, positioned at the origin."""
 
-    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PanelSheet")
+    sheet.Label = name if name else translate("Arch","PanelSheet")
     PanelSheet(sheet)
     if panels:
         sheet.Group = panels
@@ -1081,6 +1082,11 @@ class ViewProviderPanelCut(Draft.ViewProviderDraft):
             self.onChanged(obj.ViewObject,"Margin")
         Draft.ViewProviderDraft.updateData(self,obj,prop)
 
+    def doubleClicked(self,vobj):
+
+        # See setEdit in ViewProviderDraft.
+        FreeCADGui.runCommand("Std_TransformManip")
+        return True
 
 class PanelSheet(Draft.DraftObject):
 

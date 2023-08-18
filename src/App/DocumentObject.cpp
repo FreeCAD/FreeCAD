@@ -34,7 +34,7 @@
 #include <Base/Writer.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
@@ -312,7 +312,7 @@ int DocumentObject::isExporting() const {
 
 std::string DocumentObject::getExportName(bool forced) const {
     if(!pcNameInDocument)
-        return std::string();
+        return {};
 
     if(!forced && !isExporting())
         return *pcNameInDocument;
@@ -897,6 +897,17 @@ std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getPar
     return ret;
 }
 
+App::DocumentObject* DocumentObject::getFirstParent() const
+{
+    for (auto obj : getInList()) {
+        if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), true)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
+}
+
 DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
@@ -1083,7 +1094,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     // following it. So finding the last dot will give us the end of the last
     // object name.
     const char *dot=nullptr;
-    if(Data::ComplexGeoData::isMappedElement(subname) ||
+    if(Data::isMappedElement(subname) ||
        !(dot=strrchr(subname,'.')) ||
        dot == subname) 
     {
@@ -1106,7 +1117,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             if(!elementMapChecked) {
                 elementMapChecked = true;
                 const char *sub = dot==subname?dot:dot+1;
-                if(Data::ComplexGeoData::isMappedElement(sub)) {
+                if(Data::isMappedElement(sub)) {
                     lastDot = dot;
                     if(dot==subname) 
                         break;
@@ -1119,7 +1130,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             auto sobj = getSubObject(std::string(subname,dot-subname+1).c_str());
             if(sobj!=obj) {
                 if(parent) {
-                    // Link/LinkGroup has special visiblility handling of plain
+                    // Link/LinkGroup has special visibility handling of plain
                     // group, so keep ascending
                     if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
                         *parent = sobj;

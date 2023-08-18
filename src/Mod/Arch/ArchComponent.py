@@ -543,7 +543,7 @@ class Component(ArchIFC.IfcProduct):
 
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
-                if obj.Base.Base:
+                if obj.Base.Base and len(obj.Base.Base.Shape.Wires) == 1:
                     base,placement = self.rebase(obj.Base.Base.Shape)
                     extrusion = FreeCAD.Vector(obj.Base.Dir).normalize()
                     if extrusion.Length == 0:
@@ -1983,7 +1983,7 @@ class ComponentTaskPanel:
         import ArchIFCSchema
 
         # get presets
-        self.ptypes = list(ArchIFCSchema.IfcTypes.keys())
+        self.ptypes = list(ArchIFCSchema.IfcTypes)
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")

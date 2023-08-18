@@ -707,6 +707,8 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
+                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+                    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
                     view->print(&printer);
@@ -976,7 +978,7 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         }
 
         PyDict_SetItemString(Instance->_pcWorkbenchDictionary,item.c_str(),object.ptr());
-        Instance->signalAddWorkbench(item.c_str());
+        Instance->signalRefreshWorkbenches();
     }
     catch (const Py::Exception&) {
         return nullptr;
@@ -997,9 +999,9 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
         return nullptr;
     }
 
-    Instance->signalRemoveWorkbench(psKey);
     WorkbenchManager::instance()->removeWorkbench(psKey);
     PyDict_DelItemString(Instance->_pcWorkbenchDictionary,psKey);
+    Instance->signalRefreshWorkbenches();
 
     Py_Return;
 }

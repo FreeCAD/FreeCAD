@@ -25,10 +25,10 @@
 #pragma warning(disable : 4996)
 #endif
 
-//#define _GCS_DEBUG
-//#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-//#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
-//#define PROFILE_DIAGNOSE
+// #define _GCS_DEBUG
+// #define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+// #define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
+// #define PROFILE_DIAGNOSE
 #undef _GCS_DEBUG
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #undef _DEBUG_TO_FILE
@@ -36,7 +36,7 @@
 // This has to be included BEFORE any EIGEN include
 // This format is Sage compatible, so you can just copy/paste the matrix into Sage
 #ifdef _GCS_DEBUG
-#define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
+#define EIGEN_DEFAULT_IO_FORMAT Eigen::IOFormat(3, 0, ",", ",\n", "[", "]", "[", "]")
 /* Parameters:
  *
  * StreamPrecision,
@@ -49,11 +49,11 @@
  * const std::string &     _matSuffix = "" )*/
 #endif
 
-#include <iostream>
 #include <algorithm>
 #include <cfloat>
-#include <limits>
 #include <future>
+#include <iostream>
+#include <limits>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -65,7 +65,6 @@
 // eigen3.3
 
 
-
 // Extraction of Q matrix for Debugging used to crash
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #if EIGEN_VERSION >= 30304
@@ -73,20 +72,19 @@
 #endif
 #endif
 
-#if EIGEN_VERSION > 30290 // This regulates that only starting in Eigen 3.3, the problem with
-                          // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
-                          // was solved in Eigen:
-                          // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
-                          // https://forum.kde.org/viewtopic.php?f=74&t=129439
+#if EIGEN_VERSION > 30290// This regulates that only starting in Eigen 3.3, the problem with
+                         // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
+                         // was solved in Eigen:
+                         // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                         // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
 
-//#undef EIGEN_SPARSEQR_COMPATIBLE
-
+// #undef EIGEN_SPARSEQR_COMPATIBLE
 
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-    #include <Eigen/OrderingMethods>
+#include <Eigen/OrderingMethods>
 #endif
 
 // _GCS_EXTRACT_SOLVER_SUBSYSTEM_ to be enabled in Constraints.h when needed.
@@ -100,117 +98,119 @@
     }
 #endif
 
-#include <FCConfig.h>
 #include <Base/Console.h>
+#include <FCConfig.h>
 
-#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 using MatrixIndexType = Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType;
 
 #ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
-namespace Eigen {
+namespace Eigen
+{
 
-    using MatrixdType = Matrix<double,-1,-1,0,-1,-1>;
+using MatrixdType = Matrix<double, -1, -1, 0, -1, -1>;
 
-    template<>
-    FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
-    {
-        m_isInitialized = true;
-        m_lu = matrix;
+template<>
+FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
+{
+    m_isInitialized = true;
+    m_lu = matrix;
 
-        const Index size = matrix.diagonalSize();
-        const Index rows = matrix.rows();
-        const Index cols = matrix.cols();
+    const Index size = matrix.diagonalSize();
+    const Index rows = matrix.rows();
+    const Index cols = matrix.cols();
 
-        // will store the transpositions, before we accumulate them at the end.
-        // can't accumulate on-the-fly because that will be done in reverse order for the rows.
-        m_rowsTranspositions.resize(matrix.rows());
-        m_colsTranspositions.resize(matrix.cols());
-        Index number_of_transpositions =
-            0;// number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+    // will store the transpositions, before we accumulate them at the end.
+    // can't accumulate on-the-fly because that will be done in reverse order for the rows.
+    m_rowsTranspositions.resize(matrix.rows());
+    m_colsTranspositions.resize(matrix.cols());
+    // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+    Index number_of_transpositions = 0;
 
-        m_nonzero_pivots =
-            size;// the generic case is that in which all pivots are nonzero (invertible case)
-        m_maxpivot = RealScalar(0);
-        RealScalar cutoff(0);
+    // the generic case is that in which all pivots are nonzero (invertible case)
+    m_nonzero_pivots = size;
+    m_maxpivot = RealScalar(0);
+    RealScalar cutoff(0);
 
-        for (Index k = 0; k < size; ++k) {
-            // First, we need to find the pivot.
+    for (Index k = 0; k < size; ++k) {
+        // First, we need to find the pivot.
 
-            // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
-            Index row_of_biggest_in_corner, col_of_biggest_in_corner;
-            RealScalar biggest_in_corner;
-            biggest_in_corner = m_lu.bottomRightCorner(rows - k, cols - k)
-                                    .cwiseAbs()
-                                    .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
-            row_of_biggest_in_corner +=
-                k;// correct the values! since they were computed in the corner,
-            col_of_biggest_in_corner += k;// need to add k to them.
+        // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
+        Index row_of_biggest_in_corner, col_of_biggest_in_corner;
+        RealScalar biggest_in_corner;
+        biggest_in_corner = m_lu.bottomRightCorner(rows - k, cols - k)
+                                .cwiseAbs()
+                                .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
 
-            // when k==0, biggest_in_corner is the biggest coeff absolute value in the original
-            // matrix
-            if (k == 0)
-                cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
+        // correct the values! since they were computed in the corner,
+        row_of_biggest_in_corner += k;
+        col_of_biggest_in_corner += k;// need to add k to them.
 
-            // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf
-            // values. Notice that using an exact comparison (biggest_in_corner==0) here, as
-            // Golub-van Loan do in their pseudo-code, results in numerical instability! The cutoff
-            // here has been validated by running the unit test 'lu' with many repetitions.
-            if (biggest_in_corner < cutoff) {
-                // before exiting, make sure to initialize the still uninitialized transpositions
-                // in a sane state without destroying what we already have.
-                m_nonzero_pivots = k;
-                for (Index i = k; i < size; ++i) {
-                    m_rowsTranspositions.coeffRef(i) = i;
-                    m_colsTranspositions.coeffRef(i) = i;
-                }
-                break;
+        // when k==0, biggest_in_corner is the biggest coeff absolute value in the original
+        // matrix
+        if (k == 0)
+            cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
+
+        // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf
+        // values. Notice that using an exact comparison (biggest_in_corner==0) here, as
+        // Golub-van Loan do in their pseudo-code, results in numerical instability! The cutoff
+        // here has been validated by running the unit test 'lu' with many repetitions.
+        if (biggest_in_corner < cutoff) {
+            // before exiting, make sure to initialize the still uninitialized transpositions
+            // in a sane state without destroying what we already have.
+            m_nonzero_pivots = k;
+            for (Index i = k; i < size; ++i) {
+                m_rowsTranspositions.coeffRef(i) = i;
+                m_colsTranspositions.coeffRef(i) = i;
             }
-
-            if (biggest_in_corner > m_maxpivot)
-                m_maxpivot = biggest_in_corner;
-
-            // Now that we've found the pivot, we need to apply the row/col swaps to
-            // bring it to the location (k,k).
-
-            m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
-            m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
-            if (k != row_of_biggest_in_corner) {
-                m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
-                ++number_of_transpositions;
-            }
-            if (k != col_of_biggest_in_corner) {
-                m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
-                ++number_of_transpositions;
-            }
-
-            // Now that the pivot is at the right location, we update the remaining
-            // bottom-right corner by Gaussian elimination.
-
-            if (k < rows - 1)
-                m_lu.col(k).tail(rows - k - 1) /= m_lu.coeff(k, k);
-            if (k < size - 1)
-                m_lu.block(k + 1, k + 1, rows - k - 1, cols - k - 1).noalias() -=
-                    m_lu.col(k).tail(rows - k - 1) * m_lu.row(k).tail(cols - k - 1);
+            break;
         }
 
-        // the main loop is over, we still have to accumulate the transpositions to find the
-        // permutations P and Q
+        if (biggest_in_corner > m_maxpivot)
+            m_maxpivot = biggest_in_corner;
 
-        m_p.setIdentity(rows);
-        for(Index k = size-1; k >= 0; --k)
-            m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
+        // Now that we've found the pivot, we need to apply the row/col swaps to
+        // bring it to the location (k,k).
 
-        m_q.setIdentity(cols);
-        for(Index k = 0; k < size; ++k)
-            m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
+        m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
+        m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
+        if (k != row_of_biggest_in_corner) {
+            m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
+            ++number_of_transpositions;
+        }
+        if (k != col_of_biggest_in_corner) {
+            m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
+            ++number_of_transpositions;
+        }
 
-        m_det_pq = (number_of_transpositions%2) ? -1 : 1;
-        return *this;
+        // Now that the pivot is at the right location, we update the remaining
+        // bottom-right corner by Gaussian elimination.
+
+        if (k < rows - 1)
+            m_lu.col(k).tail(rows - k - 1) /= m_lu.coeff(k, k);
+        if (k < size - 1)
+            m_lu.block(k + 1, k + 1, rows - k - 1, cols - k - 1).noalias() -=
+                m_lu.col(k).tail(rows - k - 1) * m_lu.row(k).tail(cols - k - 1);
     }
 
-} // Eigen
+    // the main loop is over, we still have to accumulate the transpositions to find the
+    // permutations P and Q
+
+    m_p.setIdentity(rows);
+    for (Index k = size - 1; k >= 0; --k)
+        m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
+
+    m_q.setIdentity(cols);
+    for (Index k = 0; k < size; ++k)
+        m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
+
+    m_det_pq = (number_of_transpositions % 2) ? -1 : 1;
+    return *this;
+}
+
+}// namespace Eigen
 #endif
 
 namespace GCS
@@ -222,7 +222,7 @@ public:
     SolverReportingManager(SolverReportingManager const&) = delete;
     SolverReportingManager(SolverReportingManager&&) = delete;
     SolverReportingManager& operator=(SolverReportingManager const&) = delete;
-    SolverReportingManager& operator=(SolverReportingManager &&) = delete;
+    SolverReportingManager& operator=(SolverReportingManager&&) = delete;
 
     static SolverReportingManager& Manager();
 
@@ -252,9 +252,9 @@ private:
     inline void flushStream();
 
 private:
-    #ifdef _DEBUG_TO_FILE
+#ifdef _DEBUG_TO_FILE
     std::ofstream stream;
-    #endif
+#endif
 };
 
 SolverReportingManager::SolverReportingManager()
@@ -264,28 +264,28 @@ SolverReportingManager::SolverReportingManager()
 
 SolverReportingManager::~SolverReportingManager()
 {
-    #ifdef _DEBUG_TO_FILE
+#ifdef _DEBUG_TO_FILE
     stream.flush();
     stream.close();
-    #endif
+#endif
 }
 
 void SolverReportingManager::initStream()
 {
-    #ifdef _DEBUG_TO_FILE
-    if(!stream.is_open()) {
+#ifdef _DEBUG_TO_FILE
+    if (!stream.is_open()) {
         stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
     }
-    #endif
+#endif
 }
 
 void SolverReportingManager::flushStream()
 {
-    // Akwardly in some systems flushing does not force the write to the file, requiring a close
-    #ifdef _DEBUG_TO_FILE
+// Akwardly in some systems flushing does not force the write to the file, requiring a close
+#ifdef _DEBUG_TO_FILE
     stream.flush();
     stream.close();
-    #endif
+#endif
 }
 
 SolverReportingManager& SolverReportingManager::Manager()
@@ -302,25 +302,25 @@ void SolverReportingManager::LogToConsole(const std::string& str)
 
 void SolverReportingManager::LogToFile(const std::string& str)
 {
-    #ifdef _DEBUG_TO_FILE
+#ifdef _DEBUG_TO_FILE
     initStream();
 
     stream << str << std::endl;
 
     flushStream();
-    #else
-    (void)(str); // silence unused parameter
+#else
+    (void)(str);// silence unused parameter
     LogToConsole("Debugging to file not enabled!");
-    #endif
+#endif
 }
 
 void SolverReportingManager::LogString(const std::string& str)
 {
     LogToConsole(str);
 
-    #ifdef _DEBUG_TO_FILE
+#ifdef _DEBUG_TO_FILE
     LogToFile(str);
-    #endif
+#endif
 }
 
 void SolverReportingManager::LogQRSystemInformation(const System& system, int paramsNum,
@@ -369,7 +369,7 @@ void SolverReportingManager::LogGroupOfConstraints(
         tempstream << "[";
 
         for (auto c : group)
-                tempstream << c->getTag() << " ";
+            tempstream << c->getTag() << " ";
 
         tempstream << "]" << '\n';
     }
@@ -403,7 +403,7 @@ void SolverReportingManager::LogGroupOfParameters(const std::string& str,
         tempstream << "[";
 
         for (auto p : parametergroups[i])
-                tempstream << std::hex << p << " ";
+            tempstream << std::hex << p << " ";
 
         tempstream << "]" << '\n';
     }
@@ -422,7 +422,6 @@ void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd ma
     tempstream << "]" << '\n';
 
     LogString(tempstream.str());
-
 }
 
 void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix)
@@ -439,7 +438,7 @@ void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType ma
 #endif
 
 
-using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
 
 ///////////////////////////////////////
 // Solver
@@ -447,42 +446,42 @@ using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirected
 
 // System
 System::System()
-  : plist(0)
-  , pdrivenlist(0)
-  , pDependentParameters(0)
-  , clist(0)
-  , c2p()
-  , p2c()
-  , subSystems(0)
-  , subSystemsAux(0)
-  , reference(0)
-  , dofs(0)
-  , hasUnknowns(false)
-  , hasDiagnosis(false)
-  , isInit(false)
-  , emptyDiagnoseMatrix(true)
-  , maxIter(100)
-  , maxIterRedundant(100)
-  , sketchSizeMultiplier(false)
-  , sketchSizeMultiplierRedundant(false)
-  , convergence(1e-10)
-  , convergenceRedundant(1e-10)
-  , qrAlgorithm(EigenSparseQR)
-  , dogLegGaussStep(FullPivLU)
-  , qrpivotThreshold(1E-13)
-  , debugMode(Minimal)
-  , LM_eps(1E-10)
-  , LM_eps1(1E-80)
-  , LM_tau(1E-3)
-  , DL_tolg(1E-80)
-  , DL_tolx(1E-80)
-  , DL_tolf(1E-10)
-  , LM_epsRedundant(1E-10)
-  , LM_eps1Redundant(1E-80)
-  , LM_tauRedundant(1E-3)
-  , DL_tolgRedundant(1E-80)
-  , DL_tolxRedundant(1E-80)
-  , DL_tolfRedundant(1E-10)
+    : plist(0),
+      pdrivenlist(0),
+      pDependentParameters(0),
+      clist(0),
+      c2p(),
+      p2c(),
+      subSystems(0),
+      subSystemsAux(0),
+      reference(0),
+      dofs(0),
+      hasUnknowns(false),
+      hasDiagnosis(false),
+      isInit(false),
+      emptyDiagnoseMatrix(true),
+      maxIter(100),
+      maxIterRedundant(100),
+      sketchSizeMultiplier(false),
+      sketchSizeMultiplierRedundant(false),
+      convergence(1e-10),
+      convergenceRedundant(1e-10),
+      qrAlgorithm(EigenSparseQR),
+      dogLegGaussStep(FullPivLU),
+      qrpivotThreshold(1E-13),
+      debugMode(Minimal),
+      LM_eps(1E-10),
+      LM_eps1(1E-80),
+      LM_tau(1E-3),
+      DL_tolg(1E-80),
+      DL_tolx(1E-80),
+      DL_tolf(1E-10),
+      LM_epsRedundant(1E-10),
+      LM_eps1Redundant(1E-80),
+      LM_tauRedundant(1E-3),
+      DL_tolgRedundant(1E-80),
+      DL_tolxRedundant(1E-80),
+      DL_tolfRedundant(1E-10)
 {
     // currently Eigen only supports multithreading for multiplications
     // There is no appreciable gain from using more threads
@@ -540,9 +539,8 @@ System::System(std::vector<Constraint *> clist_)
                 break;
             }
             case Perpendicular: {
-                ConstraintPerpendicular *oldconstr = static_cast<ConstraintPerpendicular *>(*constr);
-                newconstr = new ConstraintPerpendicular(*oldconstr);
-                break;
+                ConstraintPerpendicular *oldconstr = static_cast<ConstraintPerpendicular
+*>(*constr); newconstr = new ConstraintPerpendicular(*oldconstr); break;
             }
             case L2LAngle: {
                 ConstraintL2LAngle *oldconstr = static_cast<ConstraintL2LAngle *>(*constr);
@@ -550,9 +548,8 @@ System::System(std::vector<Constraint *> clist_)
                 break;
             }
             case MidpointOnLine: {
-                ConstraintMidpointOnLine *oldconstr = static_cast<ConstraintMidpointOnLine *>(*constr);
-                newconstr = new ConstraintMidpointOnLine(*oldconstr);
-                break;
+                ConstraintMidpointOnLine *oldconstr = static_cast<ConstraintMidpointOnLine
+*>(*constr); newconstr = new ConstraintMidpointOnLine(*oldconstr); break;
             }
             case None:
                 break;
@@ -594,45 +591,46 @@ void System::clear()
 
 void System::invalidatedDiagnosis()
 {
-    hasDiagnosis=false;
+    hasDiagnosis = false;
     pDependentParameters.clear();
     pDependentParametersGroups.clear();
 }
 
 void System::clearByTag(int tagId)
 {
-    std::vector<Constraint *> constrvec;
-    for (std::vector<Constraint *>::const_iterator
-         constr=clist.begin(); constr != clist.end(); ++constr) {
+    std::vector<Constraint*> constrvec;
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
         if ((*constr)->getTag() == tagId)
             constrvec.push_back(*constr);
     }
-    for (std::vector<Constraint *>::const_iterator
-         constr=constrvec.begin(); constr != constrvec.end(); ++constr) {
+    for (std::vector<Constraint*>::const_iterator constr = constrvec.begin();
+         constr != constrvec.end();
+         ++constr) {
         removeConstraint(*constr);
     }
 }
 
-int System::addConstraint(Constraint *constr)
+int System::addConstraint(Constraint* constr)
 {
     isInit = false;
-    if (constr->getTag() >= 0) // negatively tagged constraints have no impact
-        hasDiagnosis = false;  // on the diagnosis
+    if (constr->getTag() >= 0)// negatively tagged constraints have no impact
+        hasDiagnosis = false; // on the diagnosis
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
-    for (VEC_pD::const_iterator param=constr_params.begin();
-         param != constr_params.end(); ++param) {
-//        jacobi.set(constr, *param, 0.);
+    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
+         ++param) {
+        //        jacobi.set(constr, *param, 0.);
         c2p[constr].push_back(*param);
         p2c[*param].push_back(constr);
     }
-    return clist.size()-1;
+    return clist.size() - 1;
 }
 
-void System::removeConstraint(Constraint *constr)
+void System::removeConstraint(Constraint* constr)
 {
-    std::vector<Constraint *>::iterator it;
+    std::vector<Constraint*>::iterator it;
     it = std::find(clist.begin(), clist.end(), constr);
     if (it == clist.end())
         return;
@@ -643,15 +641,15 @@ void System::removeConstraint(Constraint *constr)
     clearSubSystems();
 
     VEC_pD constr_params = c2p[constr];
-    for (VEC_pD::const_iterator param=constr_params.begin();
-         param != constr_params.end(); ++param) {
-        std::vector<Constraint *> &constraints = p2c[*param];
+    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
+         ++param) {
+        std::vector<Constraint*>& constraints = p2c[*param];
         it = std::find(constraints.begin(), constraints.end(), constr);
         constraints.erase(it);
     }
     c2p.erase(constr);
 
-    delete(constr);
+    delete (constr);
 }
 
 // basic constraints
@@ -675,10 +673,10 @@ int System::addConstraintProportional(double* param1, double* param2, double rat
     return addConstraint(constr);
 }
 
-int System::addConstraintDifference(double *param1, double *param2,
-                                    double *difference, int tagId, bool driving)
+int System::addConstraintDifference(double* param1, double* param2, double* difference, int tagId,
+                                    bool driving)
 {
-    Constraint *constr = new ConstraintDifference(param1, param2, difference);
+    Constraint* constr = new ConstraintDifference(param1, param2, difference);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -693,147 +691,158 @@ int System::addConstraintP2PDistance(Point& p1, Point& p2, double* distance, int
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PAngle(Point &p1, Point &p2, double *angle,
-                                  double incrAngle, int tagId, bool driving)
+int System::addConstraintP2PAngle(Point& p1, Point& p2, double* angle, double incrAngle, int tagId,
+                                  bool driving)
 {
-    Constraint *constr = new ConstraintP2PAngle(p1, p2, angle, incrAngle);
+    Constraint* constr = new ConstraintP2PAngle(p1, p2, angle, incrAngle);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PAngle(Point &p1, Point &p2, double *angle, int /*tagId*/, bool driving)
+int System::addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int /*tagId*/, bool driving)
 {
     return addConstraintP2PAngle(p1, p2, angle, 0., 0, driving);
 }
 
-int System::addConstraintP2LDistance(Point &p, Line &l, double *distance, int tagId, bool driving)
+int System::addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintP2LDistance(p, l, distance);
+    Constraint* constr = new ConstraintP2LDistance(p, l, distance);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnLine(Point &p, Line &l, int tagId, bool driving)
+int System::addConstraintPointOnLine(Point& p, Line& l, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnLine(p, l);
+    Constraint* constr = new ConstraintPointOnLine(p, l);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnLine(Point &p, Point &lp1, Point &lp2, int tagId, bool driving)
+int System::addConstraintPointOnLine(Point& p, Point& lp1, Point& lp2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnLine(p, lp1, lp2);
+    Constraint* constr = new ConstraintPointOnLine(p, lp1, lp2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnPerpBisector(Point &p, Line &l, int tagId, bool driving)
+int System::addConstraintPointOnPerpBisector(Point& p, Line& l, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnPerpBisector(p, l);
+    Constraint* constr = new ConstraintPointOnPerpBisector(p, l);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2, int tagId, bool driving)
+int System::addConstraintPointOnPerpBisector(Point& p, Point& lp1, Point& lp2, int tagId,
+                                             bool driving)
 {
-    Constraint *constr = new ConstraintPointOnPerpBisector(p, lp1, lp2);
+    Constraint* constr = new ConstraintPointOnPerpBisector(p, lp1, lp2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintParallel(Line &l1, Line &l2, int tagId, bool driving)
+int System::addConstraintParallel(Line& l1, Line& l2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintParallel(l1, l2);
+    Constraint* constr = new ConstraintParallel(l1, l2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPerpendicular(Line &l1, Line &l2, int tagId, bool driving)
+int System::addConstraintPerpendicular(Line& l1, Line& l2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPerpendicular(l1, l2);
+    Constraint* constr = new ConstraintPerpendicular(l1, l2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPerpendicular(Point &l1p1, Point &l1p2,
-                                       Point &l2p1, Point &l2p2, int tagId, bool driving)
+int System::addConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2,
+                                       int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPerpendicular(l1p1, l1p2, l2p1, l2p2);
+    Constraint* constr = new ConstraintPerpendicular(l1p1, l1p2, l2p1, l2p2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintL2LAngle(Line &l1, Line &l2, double *angle, int tagId, bool driving)
+int System::addConstraintL2LAngle(Line& l1, Line& l2, double* angle, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintL2LAngle(l1, l2, angle);
+    Constraint* constr = new ConstraintL2LAngle(l1, l2, angle);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintL2LAngle(Point &l1p1, Point &l1p2,
-                                  Point &l2p1, Point &l2p2, double *angle, int tagId, bool driving)
+int System::addConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* angle,
+                                  int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintL2LAngle(l1p1, l1p2, l2p1, l2p2, angle);
+    Constraint* constr = new ConstraintL2LAngle(l1p1, l1p2, l2p1, l2p2, angle);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintAngleViaPoint(Curve &crv1, Curve &crv2, Point &p, double *angle, int tagId, bool driving)
+int System::addConstraintAngleViaPoint(Curve& crv1, Curve& crv2, Point& p, double* angle, int tagId,
+                                       bool driving)
 {
-    Constraint *constr = new ConstraintAngleViaPoint(crv1, crv2, p, angle);
+    Constraint* constr = new ConstraintAngleViaPoint(crv1, crv2, p, angle);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintMidpointOnLine(Line &l1, Line &l2, int tagId, bool driving)
+int System::addConstraintMidpointOnLine(Line& l1, Line& l2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintMidpointOnLine(l1, l2);
+    Constraint* constr = new ConstraintMidpointOnLine(l1, l2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintMidpointOnLine(Point &l1p1, Point &l1p2,
-                                        Point &l2p1, Point &l2p2, int tagId, bool driving)
+int System::addConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2,
+                                        int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintMidpointOnLine(l1p1, l1p2, l2p1, l2p2);
+    Constraint* constr = new ConstraintMidpointOnLine(l1p1, l1p2, l2p1, l2p2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintTangentCircumf(Point &p1, Point &p2, double *rad1, double *rad2,
+int System::addConstraintTangentCircumf(Point& p1, Point& p2, double* rad1, double* rad2,
                                         bool internal, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintTangentCircumf(p1, p2, rad1, rad2, internal);
+    Constraint* constr = new ConstraintTangentCircumf(p1, p2, rad1, rad2, internal);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintTangentAtBSplineKnot(BSpline &b, Line &l, unsigned int knotindex, int tagId, bool driving)
+int System::addConstraintTangentAtBSplineKnot(BSpline& b, Line& l, unsigned int knotindex,
+                                              int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintSlopeAtBSplineKnot(b, l, knotindex);
+    Constraint* constr = new ConstraintSlopeAtBSplineKnot(b, l, knotindex);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int tagId, bool driving)
+int System::addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintC2CDistance(c1, c2, dist);
+    Constraint* constr = new ConstraintC2CDistance(c1, c2, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintC2LDistance(c, l, dist);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -841,80 +850,81 @@ int System::addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int t
 
 // derived constraints
 
-int System::addConstraintP2PCoincident(Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintP2PCoincident(Point& p1, Point& p2, int tagId, bool driving)
 {
     addConstraintEqual(p1.x, p2.x, tagId, driving);
     return addConstraintEqual(p1.y, p2.y, tagId, driving);
 }
 
-int System::addConstraintHorizontal(Line &l, int tagId, bool driving)
+int System::addConstraintHorizontal(Line& l, int tagId, bool driving)
 {
     return addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
 }
 
-int System::addConstraintHorizontal(Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintHorizontal(Point& p1, Point& p2, int tagId, bool driving)
 {
     return addConstraintEqual(p1.y, p2.y, tagId, driving);
 }
 
-int System::addConstraintVertical(Line &l, int tagId, bool driving)
+int System::addConstraintVertical(Line& l, int tagId, bool driving)
 {
     return addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
 }
 
-int System::addConstraintVertical(Point &p1, Point &p2, int tagId, bool driving)
+int System::addConstraintVertical(Point& p1, Point& p2, int tagId, bool driving)
 {
     return addConstraintEqual(p1.x, p2.x, tagId, driving);
 }
 
-int System::addConstraintCoordinateX(Point &p, double *x, int tagId, bool driving)
+int System::addConstraintCoordinateX(Point& p, double* x, int tagId, bool driving)
 {
     return addConstraintEqual(p.x, x, tagId, driving);
 }
 
-int System::addConstraintCoordinateY(Point &p, double *y, int tagId, bool driving)
+int System::addConstraintCoordinateY(Point& p, double* y, int tagId, bool driving)
 {
     return addConstraintEqual(p.y, y, tagId, driving);
 }
 
-int System::addConstraintArcRules(Arc &a, int tagId, bool driving)
+int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
     return addConstraintCurveValue(a.end, a, a.endAngle, tagId, driving);
 }
 
-int System::addConstraintPointOnCircle(Point &p, Circle &c, int tagId, bool driving)
+int System::addConstraintPointOnCircle(Point& p, Circle& c, int tagId, bool driving)
 {
     return addConstraintP2PDistance(p, c.center, c.rad, tagId, driving);
 }
 
-int System::addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId, bool driving)
+int System::addConstraintPointOnEllipse(Point& p, Ellipse& e, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnEllipse(p, e);
+    Constraint* constr = new ConstraintPointOnEllipse(p, e);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int tagId, bool driving)
+int System::addConstraintPointOnHyperbolicArc(Point& p, ArcOfHyperbola& e, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnHyperbola(p, e);
+    Constraint* constr = new ConstraintPointOnHyperbola(p, e);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnParabolicArc(Point &p, ArcOfParabola &e, int tagId, bool driving)
+int System::addConstraintPointOnParabolicArc(Point& p, ArcOfParabola& e, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintPointOnParabola(p, e);
+    Constraint* constr = new ConstraintPointOnParabola(p, e);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintPointOnBSpline(Point &p, BSpline &b, double* pointparam, int tagId, bool driving)
+int System::addConstraintPointOnBSpline(Point& p, BSpline& b, double* pointparam, int tagId,
+                                        bool driving)
 {
-    Constraint *constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
+    Constraint* constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
     constr->setTag(tagId);
     constr->setDriving(driving);
     addConstraint(constr);
@@ -925,43 +935,43 @@ int System::addConstraintPointOnBSpline(Point &p, BSpline &b, double* pointparam
     return addConstraint(constr);
 }
 
-int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId, bool driving)
+int System::addConstraintArcOfEllipseRules(ArcOfEllipse& a, int tagId, bool driving)
 {
-    addConstraintCurveValue(a.start,a,a.startAngle, tagId, driving);
-    return addConstraintCurveValue(a.end,a,a.endAngle, tagId, driving);
+    addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
+    return addConstraintCurveValue(a.end, a, a.endAngle, tagId, driving);
 }
 
-int System::addConstraintCurveValue(Point &p, Curve &a, double *u, int tagId, bool driving)
+int System::addConstraintCurveValue(Point& p, Curve& a, double* u, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintCurveValue(p,p.x,a,u);
+    Constraint* constr = new ConstraintCurveValue(p, p.x, a, u);
     constr->setTag(tagId);
     constr->setDriving(driving);
     addConstraint(constr);
-    constr = new ConstraintCurveValue(p,p.y,a,u);
+    constr = new ConstraintCurveValue(p, p.y, a, u);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId, bool driving)
+int System::addConstraintArcOfHyperbolaRules(ArcOfHyperbola& a, int tagId, bool driving)
 {
-    addConstraintCurveValue(a.start,a,a.startAngle, tagId, driving);
-    return addConstraintCurveValue(a.end,a,a.endAngle, tagId, driving);
+    addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
+    return addConstraintCurveValue(a.end, a, a.endAngle, tagId, driving);
 }
 
-int System::addConstraintArcOfParabolaRules(ArcOfParabola &a, int tagId, bool driving)
+int System::addConstraintArcOfParabolaRules(ArcOfParabola& a, int tagId, bool driving)
 {
-    addConstraintCurveValue(a.start,a,a.startAngle, tagId, driving);
-    return addConstraintCurveValue(a.end,a,a.endAngle, tagId, driving);
+    addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
+    return addConstraintCurveValue(a.end, a, a.endAngle, tagId, driving);
 }
 
-int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId, bool driving)
+int System::addConstraintPointOnArc(Point& p, Arc& a, int tagId, bool driving)
 {
     return addConstraintP2PDistance(p, a.center, a.rad, tagId, driving);
 }
 
-int System::addConstraintPerpendicularLine2Arc(Point &p1, Point &p2, Arc &a,
-                                               int tagId, bool driving)
+int System::addConstraintPerpendicularLine2Arc(Point& p1, Point& p2, Arc& a, int tagId,
+                                               bool driving)
 {
     addConstraintP2PCoincident(p2, a.start, tagId, driving);
     double dx = *(p2.x) - *(p1.x);
@@ -972,8 +982,8 @@ int System::addConstraintPerpendicularLine2Arc(Point &p1, Point &p2, Arc &a,
         return addConstraintP2PAngle(p1, p2, a.startAngle, M_PI, tagId, driving);
 }
 
-int System::addConstraintPerpendicularArc2Line(Arc &a, Point &p1, Point &p2,
-                                               int tagId, bool driving)
+int System::addConstraintPerpendicularArc2Line(Arc& a, Point& p1, Point& p2, int tagId,
+                                               bool driving)
 {
     addConstraintP2PCoincident(p1, a.end, tagId, driving);
     double dx = *(p2.x) - *(p1.x);
@@ -984,11 +994,11 @@ int System::addConstraintPerpendicularArc2Line(Arc &a, Point &p1, Point &p2,
         return addConstraintP2PAngle(p1, p2, a.endAngle, M_PI, tagId, driving);
 }
 
-int System::addConstraintPerpendicularCircle2Arc(Point &center, double *radius,
-                                                 Arc &a, int tagId, bool driving)
+int System::addConstraintPerpendicularCircle2Arc(Point& center, double* radius, Arc& a, int tagId,
+                                                 bool driving)
 {
     addConstraintP2PDistance(a.start, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? M_PI/2 : -M_PI/2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? M_PI / 2 : -M_PI / 2;
     double tangAngle = *a.startAngle + incrAngle;
     double dx = *(a.start.x) - *(center.x);
     double dy = *(a.start.y) - *(center.y);
@@ -998,11 +1008,11 @@ int System::addConstraintPerpendicularCircle2Arc(Point &center, double *radius,
         return addConstraintP2PAngle(center, a.start, a.startAngle, -incrAngle, tagId, driving);
 }
 
-int System::addConstraintPerpendicularArc2Circle(Arc &a, Point &center,
-                                                 double *radius, int tagId, bool driving)
+int System::addConstraintPerpendicularArc2Circle(Arc& a, Point& center, double* radius, int tagId,
+                                                 bool driving)
 {
     addConstraintP2PDistance(a.end, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -M_PI/2 : M_PI/2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -M_PI / 2 : M_PI / 2;
     double tangAngle = *a.endAngle + incrAngle;
     double dx = *(a.end.x) - *(center.x);
     double dy = *(a.end.y) - *(center.y);
@@ -1012,150 +1022,147 @@ int System::addConstraintPerpendicularArc2Circle(Arc &a, Point &center,
         return addConstraintP2PAngle(center, a.end, a.endAngle, -incrAngle, tagId, driving);
 }
 
-int System::addConstraintPerpendicularArc2Arc(Arc &a1, bool reverse1,
-                                              Arc &a2, bool reverse2, int tagId, bool driving)
+int System::addConstraintPerpendicularArc2Arc(Arc& a1, bool reverse1, Arc& a2, bool reverse2,
+                                              int tagId, bool driving)
 {
-    Point &p1 = reverse1 ? a1.start : a1.end;
-    Point &p2 = reverse2 ? a2.end : a2.start;
+    Point& p1 = reverse1 ? a1.start : a1.end;
+    Point& p2 = reverse2 ? a2.end : a2.start;
     addConstraintP2PCoincident(p1, p2, tagId, driving);
     return addConstraintPerpendicular(a1.center, p1, a2.center, p2, tagId, driving);
 }
 
-int System::addConstraintTangent(Line &l, Circle &c, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Circle& c, int tagId, bool driving)
 {
     return addConstraintP2LDistance(c.center, l, c.rad, tagId, driving);
 }
 
-int System::addConstraintTangent(Line &l, Ellipse &e, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Ellipse& e, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintEllipseTangentLine(l, e);
+    Constraint* constr = new ConstraintEllipseTangentLine(l, e);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintTangent(Line &l, Arc &a, int tagId, bool driving)
+int System::addConstraintTangent(Line& l, Arc& a, int tagId, bool driving)
 {
     return addConstraintP2LDistance(a.center, l, a.rad, tagId, driving);
 }
 
-int System::addConstraintTangent(Circle &c1, Circle &c2, int tagId, bool driving)
+int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving)
 {
     double dx = *(c2.center.x) - *(c1.center.x);
     double dy = *(c2.center.y) - *(c1.center.y);
-    double d = sqrt(dx*dx + dy*dy);
-    return addConstraintTangentCircumf(c1.center, c2.center, c1.rad, c2.rad,
-                                       (d < *c1.rad || d < *c2.rad), tagId, driving);
+    double d = sqrt(dx * dx + dy * dy);
+    return addConstraintTangentCircumf(
+        c1.center, c2.center, c1.rad, c2.rad, (d < *c1.rad || d < *c2.rad), tagId, driving);
 }
 
-int System::addConstraintTangent(Arc &a1, Arc &a2, int tagId, bool driving)
+int System::addConstraintTangent(Arc& a1, Arc& a2, int tagId, bool driving)
 {
     double dx = *(a2.center.x) - *(a1.center.x);
     double dy = *(a2.center.y) - *(a1.center.y);
-    double d = sqrt(dx*dx + dy*dy);
-    return addConstraintTangentCircumf(a1.center, a2.center, a1.rad, a2.rad,
-                                       (d < *a1.rad || d < *a2.rad), tagId, driving);
+    double d = sqrt(dx * dx + dy * dy);
+    return addConstraintTangentCircumf(
+        a1.center, a2.center, a1.rad, a2.rad, (d < *a1.rad || d < *a2.rad), tagId, driving);
 }
 
-int System::addConstraintTangent(Circle &c, Arc &a, int tagId, bool driving)
+int System::addConstraintTangent(Circle& c, Arc& a, int tagId, bool driving)
 {
     double dx = *(a.center.x) - *(c.center.x);
     double dy = *(a.center.y) - *(c.center.y);
-    double d = sqrt(dx*dx + dy*dy);
-    return addConstraintTangentCircumf(c.center, a.center, c.rad, a.rad,
-                                       (d < *c.rad || d < *a.rad), tagId, driving);
+    double d = sqrt(dx * dx + dy * dy);
+    return addConstraintTangentCircumf(
+        c.center, a.center, c.rad, a.rad, (d < *c.rad || d < *a.rad), tagId, driving);
 }
 
-int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId, bool driving)
+int System::addConstraintCircleRadius(Circle& c, double* radius, int tagId, bool driving)
 {
     return addConstraintEqual(c.rad, radius, tagId, driving);
 }
 
-int System::addConstraintArcRadius(Arc &a, double *radius, int tagId, bool driving)
+int System::addConstraintArcRadius(Arc& a, double* radius, int tagId, bool driving)
 {
     return addConstraintEqual(a.rad, radius, tagId, driving);
 }
 
-int System::addConstraintCircleDiameter(Circle &c, double *diameter, int tagId, bool driving)
+int System::addConstraintCircleDiameter(Circle& c, double* diameter, int tagId, bool driving)
 {
     return addConstraintProportional(c.rad, diameter, 0.5, tagId, driving);
 }
 
-int System::addConstraintArcDiameter(Arc &a, double *diameter, int tagId, bool driving)
+int System::addConstraintArcDiameter(Arc& a, double* diameter, int tagId, bool driving)
 {
     return addConstraintProportional(a.rad, diameter, 0.5, tagId, driving);
 }
 
-int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
+int System::addConstraintEqualLength(Line& l1, Line& l2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintEqualLineLength(l1, l2);
+    Constraint* constr = new ConstraintEqualLineLength(l1, l2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId, bool driving)
+int System::addConstraintEqualRadius(Circle& c1, Circle& c2, int tagId, bool driving)
 {
     return addConstraintEqual(c1.rad, c2.rad, tagId, driving);
 }
 
-int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId, bool driving)
+int System::addConstraintEqualRadii(Ellipse& e1, Ellipse& e2, int tagId, bool driving)
 {
     addConstraintEqual(e1.radmin, e2.radmin, tagId, driving);
 
-    Constraint *constr = new ConstraintEqualMajorAxesConic(&e1,&e2);
+    Constraint* constr = new ConstraintEqualMajorAxesConic(&e1, &e2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId, bool driving)
+int System::addConstraintEqualRadii(ArcOfHyperbola& a1, ArcOfHyperbola& a2, int tagId, bool driving)
 {
     addConstraintEqual(a1.radmin, a2.radmin, tagId, driving);
 
-    Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
+    Constraint* constr = new ConstraintEqualMajorAxesConic(&a1, &a2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintEqualFocus(ArcOfParabola &a1, ArcOfParabola &a2, int tagId, bool driving)
+int System::addConstraintEqualFocus(ArcOfParabola& a1, ArcOfParabola& a2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintEqualFocalDistance(&a1,&a2);
+    Constraint* constr = new ConstraintEqualFocalDistance(&a1, &a2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
 }
 
-int System::addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId, bool driving)
+int System::addConstraintEqualRadius(Circle& c1, Arc& a2, int tagId, bool driving)
 {
     return addConstraintEqual(c1.rad, a2.rad, tagId, driving);
 }
 
-int System::addConstraintEqualRadius(Arc &a1, Arc &a2, int tagId, bool driving)
+int System::addConstraintEqualRadius(Arc& a1, Arc& a2, int tagId, bool driving)
 {
     return addConstraintEqual(a1.rad, a2.rad, tagId, driving);
 }
 
-int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId, bool driving)
+int System::addConstraintP2PSymmetric(Point& p1, Point& p2, Line& l, int tagId, bool driving)
 {
     addConstraintPerpendicular(p1, p2, l.p1, l.p2, tagId, driving);
     return addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tagId, driving);
 }
 
-int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId, bool driving)
+int System::addConstraintP2PSymmetric(Point& p1, Point& p2, Point& p, int tagId, bool driving)
 {
     addConstraintPointOnPerpBisector(p, p1, p2, tagId, driving);
     return addConstraintPointOnLine(p, p1, p2, tagId, driving);
 }
 
-int System::addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
-                                   Curve &boundary, Point p,
-                                   double *n1, double *n2,
-                                   bool flipn1, bool flipn2,
-                                   int tagId, bool driving)
+int System::addConstraintSnellsLaw(Curve& ray1, Curve& ray2, Curve& boundary, Point p, double* n1,
+                                   double* n2, bool flipn1, bool flipn2, int tagId, bool driving)
 {
-    Constraint *constr = new ConstraintSnell(ray1,ray2,boundary,p,n1,n2,flipn1,flipn2);
+    Constraint* constr = new ConstraintSnell(ray1, ray2, boundary, p, n1, n2, flipn1, flipn2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -1539,29 +1546,28 @@ void System::calculateNormalAtPoint(const Curve& crv, const Point& p, double& rt
 
 double System::calculateConstraintErrorByTag(int tagId)
 {
-    int cnt = 0; //how many constraints have been accumulated
-    double sqErr = 0.0; //accumulator of squared errors
-    double err = 0.0;//last computed signed error value
+    int cnt = 0;       // how many constraints have been accumulated
+    double sqErr = 0.0;// accumulator of squared errors
+    double err = 0.0;  // last computed signed error value
 
-    for (std::vector<Constraint *>::const_iterator
-         constr=clist.begin(); constr != clist.end(); ++constr) {
-        if ((*constr)->getTag() == tagId){
+    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
+        if ((*constr)->getTag() == tagId) {
             err = (*constr)->error();
-            sqErr += err*err;
+            sqErr += err * err;
             cnt++;
         };
     }
     switch (cnt) {
-        case 0: //constraint not found!
+        case 0:// constraint not found!
             return std::numeric_limits<double>::quiet_NaN();
-        break;
+            break;
         case 1:
             return err;
-        break;
+            break;
         default:
-            return sqrt(sqErr/(double)cnt);
+            return sqrt(sqErr / (double)cnt);
     }
-
 }
 
 void System::rescaleConstraint(int id, double coeff)
@@ -1572,16 +1578,16 @@ void System::rescaleConstraint(int id, double coeff)
         clist[id]->rescale(coeff);
 }
 
-void System::declareUnknowns(VEC_pD &params)
+void System::declareUnknowns(VEC_pD& params)
 {
     plist = params;
     pIndex.clear();
-    for (int i=0; i < int(plist.size()); ++i)
+    for (int i = 0; i < int(plist.size()); ++i)
         pIndex[plist[i]] = i;
     hasUnknowns = true;
 }
 
-void System::declareDrivenParams(VEC_pD &params)
+void System::declareDrivenParams(VEC_pD& params)
 {
     pdrivenlist = params;
 }
@@ -1612,12 +1618,12 @@ void System::initSolution(Algorithm alg)
         if (!hasDiagnosis)
             return;
     }
-    std::vector<Constraint *> clistR;
+    std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
         for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
              ++constr) {
             if (redundant.count(*constr) == 0)
-                    clistR.push_back(*constr);
+                clistR.push_back(*constr);
         }
     }
     else {
@@ -1626,15 +1632,14 @@ void System::initSolution(Algorithm alg)
 
     // partitioning into decoupled components
     Graph g;
-    for (int i=0; i < int(plist.size() + clistR.size()); i++)
+    for (int i = 0; i < int(plist.size() + clistR.size()); i++)
         boost::add_vertex(g);
 
     int cvtid = int(plist.size());
-    for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
-         constr != clistR.end(); ++constr, cvtid++) {
-        VEC_pD &cparams = c2p[*constr];
-        for (VEC_pD::const_iterator param=cparams.begin();
-             param != cparams.end(); ++param) {
+    for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
+         ++constr, cvtid++) {
+        VEC_pD& cparams = c2p[*constr];
+        for (VEC_pD::const_iterator param = cparams.begin(); param != cparams.end(); ++param) {
             MAP_pD_I::const_iterator it = pIndex.find(*param);
             if (it != pIndex.end())
                 boost::add_edge(cvtid, it->second, g);
@@ -1647,63 +1652,65 @@ void System::initSolution(Algorithm alg)
         componentsSize = boost::connected_components(g, &components[0]);
 
     // identification of equality constraints and parameter reduction
-    std::set<Constraint *> reducedConstrs;  // constraints that will be eliminated through reduction
-    reductionmaps.clear(); // destroy any maps
-    reductionmaps.resize(componentsSize); // create empty maps to be filled in
+    std::set<Constraint*> reducedConstrs;// constraints that will be eliminated through reduction
+    reductionmaps.clear();               // destroy any maps
+    reductionmaps.resize(componentsSize);// create empty maps to be filled in
     {
-        VEC_pD reducedParams=plist;
+        VEC_pD reducedParams = plist;
 
-        for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
-            constr != clistR.end(); ++constr) {
+        for (std::vector<Constraint*>::const_iterator constr = clistR.begin();
+             constr != clistR.end();
+             ++constr) {
             if ((*constr)->getTag() >= 0 && (*constr)->getTypeId() == Equal) {
-                MAP_pD_I::const_iterator it1,it2;
+                MAP_pD_I::const_iterator it1, it2;
                 it1 = pIndex.find((*constr)->params()[0]);
                 it2 = pIndex.find((*constr)->params()[1]);
                 if (it1 != pIndex.end() && it2 != pIndex.end()) {
                     reducedConstrs.insert(*constr);
-                    double *p_kept = reducedParams[it1->second];
-                    double *p_replaced = reducedParams[it2->second];
-                    for (int i=0; i < int(plist.size()); ++i) {
-                       if (reducedParams[i] == p_replaced)
-                           reducedParams[i] = p_kept;
+                    double* p_kept = reducedParams[it1->second];
+                    double* p_replaced = reducedParams[it2->second];
+                    for (int i = 0; i < int(plist.size()); ++i) {
+                        if (reducedParams[i] == p_replaced)
+                            reducedParams[i] = p_kept;
                     }
                 }
             }
         }
-        for (int i=0; i < int(plist.size()); ++i)
+        for (int i = 0; i < int(plist.size()); ++i)
             if (plist[i] != reducedParams[i]) {
                 int cid = components[i];
                 reductionmaps[cid][plist[i]] = reducedParams[i];
             }
     }
 
-    clists.clear(); // destroy any lists
-    clists.resize(componentsSize); // create empty lists to be filled in
+    clists.clear();               // destroy any lists
+    clists.resize(componentsSize);// create empty lists to be filled in
     int i = int(plist.size());
-    for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
-         constr != clistR.end(); ++constr, i++) {
+    for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
+         ++constr, i++) {
         if (reducedConstrs.count(*constr) == 0) {
             int cid = components[i];
             clists[cid].push_back(*constr);
         }
     }
 
-    plists.clear(); // destroy any lists
-    plists.resize(componentsSize); // create empty lists to be filled in
-    for (int i=0; i < int(plist.size()); ++i) {
+    plists.clear();               // destroy any lists
+    plists.resize(componentsSize);// create empty lists to be filled in
+    for (int i = 0; i < int(plist.size()); ++i) {
         int cid = components[i];
         plists[cid].push_back(plist[i]);
     }
 
     // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
     clearSubSystems();
-    for (std::size_t cid=0; cid < clists.size(); cid++) {
-        std::vector<Constraint *> clist0, clist1;
-        for (std::vector<Constraint *>::const_iterator constr=clists[cid].begin();
-             constr != clists[cid].end(); ++constr) {
+    for (std::size_t cid = 0; cid < clists.size(); cid++) {
+        std::vector<Constraint*> clist0, clist1;
+        for (std::vector<Constraint*>::const_iterator constr = clists[cid].begin();
+             constr != clists[cid].end();
+             ++constr) {
             if ((*constr)->getTag() >= 0)
                 clist0.push_back(*constr);
-            else // move or distance from reference constraints
+            else// move or distance from reference constraints
                 clist1.push_back(*constr);
         }
 
@@ -1722,22 +1729,21 @@ void System::setReference()
 {
     reference.clear();
     reference.reserve(plist.size());
-    for (VEC_pD::const_iterator param=plist.begin();
-         param != plist.end(); ++param)
+    for (VEC_pD::const_iterator param = plist.begin(); param != plist.end(); ++param)
         reference.push_back(**param);
 }
 
 void System::resetToReference()
 {
     if (reference.size() == plist.size()) {
-        VEC_D::const_iterator ref=reference.begin();
-        VEC_pD::iterator param=plist.begin();
+        VEC_D::const_iterator ref = reference.begin();
+        VEC_pD::iterator param = plist.begin();
         for (; ref != reference.end(); ++ref, ++param)
             **param = *ref;
     }
 }
 
-int System::solve(VEC_pD &params, bool isFine, Algorithm alg, bool isRedundantsolving)
+int System::solve(VEC_pD& params, bool isFine, Algorithm alg, bool isRedundantsolving)
 {
     declareUnknowns(params);
     initSolution();
@@ -1753,27 +1759,28 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
     int res = Success;
-    for (int cid=0; cid < int(subSystems.size()); cid++) {
+    for (int cid = 0; cid < int(subSystems.size()); cid++) {
         if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
-             resetToReference();
-             isReset = true;
+            resetToReference();
+            isReset = true;
         }
         if (subSystems[cid] && subSystemsAux[cid])
-             res = std::max(res,
-                            solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
+            res = std::max(res,
+                           solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
         else if (subSystems[cid])
             res = std::max(res, solve(subSystems[cid], isFine, alg, isRedundantsolving));
         else if (subSystemsAux[cid])
             res = std::max(res, solve(subSystemsAux[cid], isFine, alg, isRedundantsolving));
     }
     if (res == Success) {
-        for (std::set<Constraint *>::const_iterator constr=redundant.begin();
-             constr != redundant.end(); ++constr){
-            //DeepSOIC: there used to be a comparison of signed error value to
-            //convergence, which makes no sense. Potentially I fixed bug, and
-            //chances are low I've broken anything.
+        for (std::set<Constraint*>::const_iterator constr = redundant.begin();
+             constr != redundant.end();
+             ++constr) {
+            // DeepSOIC: there used to be a comparison of signed error value to
+            // convergence, which makes no sense. Potentially I fixed bug, and
+            // chances are low I've broken anything.
             double err = (*constr)->error();
-            if (err*err > (isRedundantsolving?convergenceRedundant:convergence)) {
+            if (err * err > (isRedundantsolving ? convergenceRedundant : convergence)) {
                 res = Converged;
                 return res;
             }
@@ -1782,7 +1789,7 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
     return res;
 }
 
-int System::solve(SubSystem *subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
+int System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
 {
     if (alg == BFGS)
         return solve_BFGS(subsys, isFine, isRedundantsolving);
@@ -1794,11 +1801,11 @@ int System::solve(SubSystem *subsys, bool isFine, Algorithm alg, bool isRedundan
         return Failed;
 }
 
-int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolving)
+int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
 {
-    #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
-    #endif
+#endif
 
     int xsize = subsys->pSize();
     if (xsize == 0)
@@ -1825,46 +1832,44 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
     h = x;
     subsys->getParams(x);
-    h = x - h; // = x - xold
+    h = x - h;// = x - xold
 
-    //double convergence = isFine ? convergence : XconvergenceRough;
-    int maxIterNumber = (isRedundantsolving?
-        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter));
+    // double convergence = isFine ? convergence : XconvergenceRough;
+    int maxIterNumber =
+        (isRedundantsolving
+             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
+             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
 
-    if(debugMode==IterationLevel) {
+    if (debugMode == IterationLevel) {
         std::stringstream stream;
-        stream  << "BFGS: convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
-                << ", xsize: "              << xsize
-                << ", maxIter: "            << maxIterNumber  << "\n";
+        stream << "BFGS: convergence: " << (isRedundantsolving ? convergenceRedundant : convergence)
+               << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
         Base::Console().Log(tmp.c_str());
     }
 
-    double divergingLim = 1e6*err + 1e12;
+    double divergingLim = 1e6 * err + 1e12;
     double h_norm;
 
-    for (int iter=1; iter < maxIterNumber; iter++) {
+    for (int iter = 1; iter < maxIterNumber; iter++) {
         h_norm = h.norm();
-        if (h_norm <= (isRedundantsolving?convergenceRedundant:convergence) || err <= smallF){
-           if(debugMode==IterationLevel) {
+        if (h_norm <= (isRedundantsolving ? convergenceRedundant : convergence) || err <= smallF) {
+            if (debugMode == IterationLevel) {
                 std::stringstream stream;
-                stream  << "BFGS Converged!!: "
-                        << ", err: "              << err
-                        << ", h_norm: "           << h_norm  << "\n";
+                stream << "BFGS Converged!!: "
+                       << ", err: " << err << ", h_norm: " << h_norm << "\n";
 
                 const std::string tmp = stream.str();
                 Base::Console().Log(tmp.c_str());
             }
             break;
         }
-        if (err > divergingLim || err != err) { // check for diverging and NaN
-            if(debugMode==IterationLevel) {
+        if (err > divergingLim || err != err) {// check for diverging and NaN
+            if (debugMode == IterationLevel) {
                 std::stringstream stream;
-                stream  << "BFGS Failed: Diverging!!: "
-                        << ", err: "              << err
-                        << ", divergingLim: "            << divergingLim  << "\n";
+                stream << "BFGS Failed: Diverging!!: "
+                       << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
                 Base::Console().Log(tmp.c_str());
@@ -1874,10 +1879,10 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
         y = grad;
         subsys->calcGrad(grad);
-        y = grad - y; // = grad - gradold
+        y = grad - y;// = grad - gradold
 
         double hty = h.dot(y);
-        //make sure that hty is never 0
+        // make sure that hty is never 0
         if (hty == 0)
             hty = .0000000001;
 
@@ -1885,9 +1890,9 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
         double ytDy = y.dot(Dy);
 
-        //Now calculate the BFGS update on D
-        D += (1.+ytDy/hty)/hty * h * h.transpose();
-        D -= 1./hty * (h * Dy.transpose() + Dy * h.transpose());
+        // Now calculate the BFGS update on D
+        D += (1. + ytDy / hty) / hty * h * h.transpose();
+        D -= 1. / hty * (h * Dy.transpose() + Dy * h.transpose());
 
         xdir = -D * grad;
         lineSearch(subsys, xdir);
@@ -1895,13 +1900,12 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
         h = x;
         subsys->getParams(x);
-        h = x - h; // = x - xold
+        h = x - h;// = x - xold
 
-        if(debugMode==IterationLevel) {
+        if (debugMode == IterationLevel) {
             std::stringstream stream;
-            stream  << "BFGS, Iteration: "          << iter
-                    << ", err: "                    << err
-                    << ", h_norm: "                 << h_norm << "\n";
+            stream << "BFGS, Iteration: " << iter << ", err: " << err << ", h_norm: " << h_norm
+                   << "\n";
 
             const std::string tmp = stream.str();
             Base::Console().Log(tmp.c_str());
@@ -1912,7 +1916,7 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
     if (err <= smallF)
         return Success;
-    if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence))
+    if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence))
         return Converged;
     return Failed;
 }
@@ -1939,55 +1943,54 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
     subsys->getParams(x);
     subsys->calcResidual(e);
-    e*=-1;
+    e *= -1;
 
-    int maxIterNumber = (isRedundantsolving?
-        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter));
+    int maxIterNumber =
+        (isRedundantsolving
+             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
+             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
 
-    double divergingLim = 1e6*e.squaredNorm() + 1e12;
+    double divergingLim = 1e6 * e.squaredNorm() + 1e12;
 
-    double eps=(isRedundantsolving?LM_epsRedundant:LM_eps);
-    double eps1=(isRedundantsolving?LM_eps1Redundant:LM_eps1);
-    double tau=(isRedundantsolving?LM_tauRedundant:LM_tau);
+    double eps = (isRedundantsolving ? LM_epsRedundant : LM_eps);
+    double eps1 = (isRedundantsolving ? LM_eps1Redundant : LM_eps1);
+    double tau = (isRedundantsolving ? LM_tauRedundant : LM_tau);
 
-    if(debugMode==IterationLevel) {
+    if (debugMode == IterationLevel) {
         std::stringstream stream;
-        stream  << "LM: eps: "          << eps
-                << ", eps1: "           << eps1
-                << ", tau: "            << tau
-                << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
-                << ", xsize: "          << xsize
-                << ", maxIter: "        << maxIterNumber  << "\n";
+        stream << "LM: eps: " << eps << ", eps1: " << eps1 << ", tau: " << tau
+               << ", convergence: " << (isRedundantsolving ? convergenceRedundant : convergence)
+               << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
         Base::Console().Log(tmp.c_str());
     }
 
-    double nu=2, mu=0;
-    int iter=0, stop=0;
-    for (iter=0; iter < maxIterNumber && !stop; ++iter) {
+    double nu = 2, mu = 0;
+    int iter = 0, stop = 0;
+    for (iter = 0; iter < maxIterNumber && !stop; ++iter) {
 
         // check error
-        double err=e.squaredNorm();
-        if (err <= eps*eps) { // error is small, Success
+        double err = e.squaredNorm();
+        if (err <= eps * eps) {// error is small, Success
             stop = 1;
             break;
         }
-        else if (err > divergingLim || err != err) { // check for diverging and NaN
+        else if (err > divergingLim || err != err) {// check for diverging and NaN
             stop = 6;
             break;
         }
 
         // J^T J, J^T e
-        subsys->calcJacobi(J);;
+        subsys->calcJacobi(J);
+        ;
 
-        A = J.transpose()*J;
-        g = J.transpose()*e;
+        A = J.transpose() * J;
+        g = J.transpose() * e;
 
         // Compute ||J^T e||_inf
         double g_inf = g.lpNorm<Eigen::Infinity>();
-        diag_A = A.diagonal(); // save diagonal entries so that augmentation can be later canceled
+        diag_A = A.diagonal();// save diagonal entries so that augmentation can be later canceled
 
         // check for convergence
         if (g_inf <= eps1) {
@@ -2001,15 +2004,15 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         double h_norm;
         // determine increment using adaptive damping
-        int k=0;
+        int k = 0;
         while (k < 50) {
             // augment normal equations A = A+uI
-            for (int i=0; i < xsize; ++i)
-                A(i,i) += mu;
+            for (int i = 0; i < xsize; ++i)
+                A(i, i) += mu;
 
-            //solve augmented functions A*h=-g
+            // solve augmented functions A*h=-g
             h = A.fullPivLu().solve(g);
-            double rel_error = (A*h - g).norm() / g.norm();
+            double rel_error = (A * h - g).norm() / g.norm();
 
             // check if solving works
             if (rel_error < 1e-5) {
@@ -2023,11 +2026,12 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 x_new = x + h;
                 h_norm = h.squaredNorm();
 
-                if (h_norm <= eps1*eps1*x.norm()) { // relative change in p is small, stop
+                if (h_norm <= eps1 * eps1 * x.norm()) {// relative change in p is small, stop
                     stop = 3;
                     break;
                 }
-                else if (h_norm >= (x.norm()+eps1)/(DBL_EPSILON*DBL_EPSILON)) { // almost singular
+                else if (h_norm
+                         >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {// almost singular
                     stop = 4;
                     break;
                 }
@@ -2037,12 +2041,12 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 e_new *= -1;
 
                 double dF = e.squaredNorm() - e_new.squaredNorm();
-                double dL = h.dot(mu*h+g);
+                double dL = h.dot(mu * h + g);
 
-                if (dF>0. && dL>0.) { // reduction in error, increment is accepted
-                    double tmp=2*dF/dL-1.;
-                    mu *= std::max(1./3., 1.-tmp*tmp*tmp);
-                    nu=2;
+                if (dF > 0. && dL > 0.) {// reduction in error, increment is accepted
+                    double tmp = 2 * dF / dL - 1.;
+                    mu *= std::max(1. / 3., 1. - tmp * tmp * tmp);
+                    nu = 2;
 
                     // update par's estimate
                     x = x_new;
@@ -2054,10 +2058,10 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
             // if this point is reached, either the linear system could not be solved or
             // the error did not reduce; in any case, the increment must be rejected
 
-            mu*=nu;
-            nu*=2.0;
-            for (int i=0; i < xsize; ++i) // restore diagonal J^T J entries
-                A(i,i) = diag_A(i);
+            mu *= nu;
+            nu *= 2.0;
+            for (int i = 0; i < xsize; ++i)// restore diagonal J^T J entries
+                A(i, i) = diag_A(i);
 
             k++;
         }
@@ -2066,13 +2070,11 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
             break;
         }
 
-        if(debugMode==IterationLevel) {
+        if (debugMode == IterationLevel) {
             std::stringstream stream;
             // Iteration: 1, residual: 1e-3, tolg: 1e-5, tolx: 1e-3
-            stream  << "LM, Iteration: "            << iter
-                    << ", err(eps): "               << err
-                    << ", g_inf(eps1): "            << g_inf
-                    << ", h_norm: "                 << h_norm << "\n";
+            stream << "LM, Iteration: " << iter << ", err(eps): " << err
+                   << ", g_inf(eps1): " << g_inf << ", h_norm: " << h_norm << "\n";
 
             const std::string tmp = stream.str();
             Base::Console().Log(tmp.c_str());
@@ -2094,9 +2096,9 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     extractSubsystem(subsys, isRedundantsolving);
 #endif
 
-    double tolg=(isRedundantsolving?DL_tolgRedundant:DL_tolg);
-    double tolx=(isRedundantsolving?DL_tolxRedundant:DL_tolx);
-    double tolf=(isRedundantsolving?DL_tolfRedundant:DL_tolf);
+    double tolg = (isRedundantsolving ? DL_tolgRedundant : DL_tolg);
+    double tolx = (isRedundantsolving ? DL_tolxRedundant : DL_tolx);
+    double tolf = (isRedundantsolving ? DL_tolfRedundant : DL_tolf);
 
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
@@ -2104,9 +2106,10 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     if (xsize == 0)
         return Success;
 
-    int maxIterNumber = (isRedundantsolving?
-        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter));
+    int maxIterNumber =
+        (isRedundantsolving
+             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
+             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -2136,82 +2139,82 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     subsys->calcResidual(fx, err);
     subsys->calcJacobi(Jx);
 
-    g = Jx.transpose()*(-fx);
+    g = Jx.transpose() * (-fx);
 
     // get the infinity norm fx_inf and g_inf
     double g_inf = g.lpNorm<Eigen::Infinity>();
     double fx_inf = fx.lpNorm<Eigen::Infinity>();
 
-    double divergingLim = 1e6*err + 1e12;
+    double divergingLim = 1e6 * err + 1e12;
 
-    double delta=0.1;
-    double alpha=0.;
-    double nu=2.;
-    int iter=0, stop=0, reduce=0;
+    double delta = 0.1;
+    double alpha = 0.;
+    double nu = 2.;
+    int iter = 0, stop = 0, reduce = 0;
     while (!stop) {
 
         // check if finished
-        if (fx_inf <= tolf) // Success
+        if (fx_inf <= tolf)// Success
             stop = 1;
         else if (g_inf <= tolg)
             stop = 2;
-        else if (delta <= tolx*(tolx + x.norm()))
+        else if (delta <= tolx * (tolx + x.norm()))
             stop = 2;
         else if (iter >= maxIterNumber)
             stop = 4;
-        else if (err > divergingLim || err != err) { // check for diverging and NaN
+        else if (err > divergingLim || err != err) {// check for diverging and NaN
             stop = 6;
         }
         else {
             // get the steepest descent direction
-            alpha = g.squaredNorm()/(Jx*g).squaredNorm();
-            h_sd  = alpha*g;
+            alpha = g.squaredNorm() / (Jx * g).squaredNorm();
+            h_sd = alpha * g;
 
             // get the gauss-newton step
             // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
             // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
-            switch (dogLegGaussStep){
+            switch (dogLegGaussStep) {
                 case FullPivLU:
                     h_gn = Jx.fullPivLu().solve(-fx);
                     break;
                 case LeastNormFullPivLU:
-                    h_gn = Jx.adjoint()*(Jx*Jx.adjoint()).fullPivLu().solve(-fx);
+                    h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).fullPivLu().solve(-fx);
                     break;
                 case LeastNormLdlt:
-                    h_gn = Jx.adjoint()*(Jx*Jx.adjoint()).ldlt().solve(-fx);
+                    h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).ldlt().solve(-fx);
                     break;
             }
 
-            double rel_error = (Jx*h_gn + fx).norm() / fx.norm();
+            double rel_error = (Jx * h_gn + fx).norm() / fx.norm();
             if (rel_error > 1e15)
                 break;
 
             // compute the dogleg step
             if (h_gn.norm() < delta) {
                 h_dl = h_gn;
-                if  (h_dl.norm() <= tolx*(tolx + x.norm())) {
+                if (h_dl.norm() <= tolx * (tolx + x.norm())) {
                     stop = 5;
                     break;
                 }
             }
-            else if (alpha*g.norm() >= delta) {
-                h_dl = (delta/(alpha*g.norm()))*h_sd;
+            else if (alpha * g.norm() >= delta) {
+                h_dl = (delta / (alpha * g.norm())) * h_sd;
             }
             else {
-                //compute beta
+                // compute beta
                 double beta = 0;
                 Eigen::VectorXd b = h_gn - h_sd;
-                double bb = (b.transpose()*b).norm();
-                double gb = (h_sd.transpose()*b).norm();
-                double c = (delta + h_sd.norm())*(delta - h_sd.norm());
+                double bb = (b.transpose() * b).norm();
+                double gb = (h_sd.transpose() * b).norm();
+                double c = (delta + h_sd.norm()) * (delta - h_sd.norm());
 
                 if (gb > 0)
                     beta = c / (gb + sqrt(gb * gb + c * bb));
                 else
-                    beta = (sqrt(gb * gb + c * bb) - gb)/bb;
+                    beta = (sqrt(gb * gb + c * bb) - gb) / bb;
 
                 // and update h_dl and dL with beta
-                h_dl = h_sd + beta*b;
+                h_dl = h_sd + beta * b;
             }
         }
 
@@ -2219,11 +2222,11 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         if (stop)
             break;
 
-// it didn't work in some tests
-//        // restrict h_dl according to maxStep
-//        double scale = subsys->maxStep(h_dl);
-//        if (scale < 1.)
-//            h_dl *= scale;
+        // it didn't work in some tests
+        //        // restrict h_dl according to maxStep
+        //        double scale = subsys->maxStep(h_dl);
+        //        if (scale < 1.)
+        //            h_dl *= scale;
 
         // get the new values
         double err_new;
@@ -2233,17 +2236,17 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         subsys->calcJacobi(Jx_new);
 
         // calculate the linear model and the update ratio
-        double dL = err - 0.5*(fx + Jx*h_dl).squaredNorm();
+        double dL = err - 0.5 * (fx + Jx * h_dl).squaredNorm();
         double dF = err - err_new;
-        double rho = dL/dF;
+        double rho = dL / dF;
 
         if (dF > 0 && dL > 0) {
-            x  = x_new;
+            x = x_new;
             Jx = Jx_new;
             fx = fx_new;
             err = err_new;
 
-            g = Jx.transpose()*(-fx);
+            g = Jx.transpose() * (-fx);
 
             // get infinity norms
             g_inf = g.lpNorm<Eigen::Infinity>();
@@ -2253,27 +2256,25 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             rho = -1;
 
         // update delta
-        if (fabs(rho-1.) < 0.2 && h_dl.norm() > delta/3. && reduce <= 0) {
-            delta = 3*delta;
+        if (fabs(rho - 1.) < 0.2 && h_dl.norm() > delta / 3. && reduce <= 0) {
+            delta = 3 * delta;
             nu = 2;
             reduce = 0;
         }
         else if (rho < 0.25) {
-            delta = delta/nu;
-            nu = 2*nu;
+            delta = delta / nu;
+            nu = 2 * nu;
             reduce = 2;
         }
         else
             reduce--;
 
-        if(debugMode==IterationLevel) {
+        if (debugMode == IterationLevel) {
             std::stringstream stream;
             // Iteration: 1, residual: 1e-3, tolg: 1e-5, tolx: 1e-3
-            stream  << "DL, Iteration: "        << iter
-                    << ", fx_inf(tolf): "       << fx_inf
-                    << ", g_inf(tolg): "        << g_inf
-                    << ", delta(f(tolx)): "     << delta
-                    << ", err(divergingLim): "  << err  << "\n";
+            stream << "DL, Iteration: " << iter << ", fx_inf(tolf): " << fx_inf
+                   << ", g_inf(tolg): " << g_inf << ", delta(f(tolx)): " << delta
+                   << ", err(divergingLim): " << err << "\n";
 
             const std::string tmp = stream.str();
             Base::Console().Log(tmp.c_str());
@@ -2285,9 +2286,9 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 
     subsys->revertParams();
 
-    if(debugMode==IterationLevel) {
+    if (debugMode == IterationLevel) {
         std::stringstream stream;
-        stream  << "DL: stopcode: "     << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
+        stream << "DL: stopcode: " << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
 
         const std::string tmp = stream.str();
         Base::Console().Log(tmp.c_str());
@@ -2318,8 +2319,8 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
     subsystemfile << "GCS::VEC_pD plist_;" << std::endl;                   // all SYSTEM params
     subsystemfile << "std::vector<GCS::Constraint *> clist_;" << std::endl;// SUBSYSTEM constraints
     subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;                // all SUBSYSTEM params
-    subsystemfile << "GCS::VEC_pD clist_params_;"
-                  << std::endl;// constraint params not within SYSTEM params
+    // constraint params not within SYSTEM params
+    subsystemfile << "GCS::VEC_pD clist_params_;" << std::endl;
 
     // these are all the parameters, including those not in the subsystem to
     // which constraints in the subsystem may make reference.
@@ -2359,14 +2360,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2378,14 +2379,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2412,14 +2413,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2431,14 +2432,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2450,14 +2451,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -2490,14 +2491,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2509,14 +2510,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2528,14 +2529,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -2547,14 +2548,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -2566,14 +2567,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -2622,14 +2623,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2641,14 +2642,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2660,14 +2661,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -2679,14 +2680,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -2698,14 +2699,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -2758,14 +2759,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2777,14 +2778,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2796,14 +2797,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -2815,14 +2816,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -2834,14 +2835,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -2853,14 +2854,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -2872,14 +2873,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -2937,14 +2938,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -2956,14 +2957,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -2975,14 +2976,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -2994,14 +2995,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3013,14 +3014,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3032,14 +3033,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -3093,14 +3094,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -3112,14 +3113,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -3131,14 +3132,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -3150,14 +3151,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3169,14 +3170,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3188,14 +3189,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -3253,14 +3254,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -3272,14 +3273,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -3291,14 +3292,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -3310,14 +3311,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3329,14 +3330,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3348,14 +3349,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -3367,14 +3368,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -3386,14 +3387,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i8 == plist.size()) {
                     if (ni8 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[7]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[7]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                      << std::endl;
+                        icp++;
                     }
                     npb8 = true;
                 }
@@ -3458,14 +3459,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -3477,14 +3478,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -3496,14 +3497,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -3515,14 +3516,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3534,14 +3535,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3553,14 +3554,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -3572,14 +3573,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -3591,14 +3592,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i8 == plist.size()) {
                     if (ni8 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[7]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[7]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                      << std::endl;
+                        icp++;
                     }
                     npb8 = true;
                 }
@@ -3665,14 +3666,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -3684,14 +3685,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -3703,14 +3704,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -3722,14 +3723,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3741,14 +3742,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3760,14 +3761,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -3779,14 +3780,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -3798,14 +3799,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i8 == plist.size()) {
                     if (ni8 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[7]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[7]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                      << std::endl;
+                        icp++;
                     }
                     npb8 = true;
                 }
@@ -3817,14 +3818,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i9 == plist.size()) {
                     if (ni9 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[8]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[8])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[8]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[8]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[8])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[8]
+                                      << std::endl;
+                        icp++;
                     }
                     npb9 = true;
                 }
@@ -3892,14 +3893,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -3911,14 +3912,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -3930,14 +3931,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -3949,14 +3950,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -3968,14 +3969,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -3987,14 +3988,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -4006,14 +4007,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -4025,14 +4026,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i8 == plist.size()) {
                     if (ni8 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[7]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[7]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[7])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[7]
+                                      << std::endl;
+                        icp++;
                     }
                     npb8 = true;
                 }
@@ -4093,14 +4094,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -4112,14 +4113,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -4131,14 +4132,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -4150,14 +4151,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -4169,14 +4170,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -4188,14 +4189,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -4255,14 +4256,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i1 == plist.size()) {
                     if (ni1 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[0]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[0]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[0])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[0]
+                                      << std::endl;
+                        icp++;
                     }
                     npb1 = true;
                 }
@@ -4274,14 +4275,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i2 == plist.size()) {
                     if (ni2 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[1]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[1]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[1])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[1]
+                                      << std::endl;
+                        icp++;
                     }
                     npb2 = true;
                 }
@@ -4293,14 +4294,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i3 == plist.size()) {
                     if (ni3 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[2]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[2]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[2])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[2]
+                                      << std::endl;
+                        icp++;
                     }
                     npb3 = true;
                 }
@@ -4312,14 +4313,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i4 == plist.size()) {
                     if (ni4 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[3]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[3]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[3])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[3]
+                                      << std::endl;
+                        icp++;
                     }
                     npb4 = true;
                 }
@@ -4331,14 +4332,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i5 == plist.size()) {
                     if (ni5 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[4]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[4]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[4])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[4]
+                                      << std::endl;
+                        icp++;
                     }
                     npb5 = true;
                 }
@@ -4350,14 +4351,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i6 == plist.size()) {
                     if (ni6 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[5]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[5]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[5])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[5]
+                                      << std::endl;
+                        icp++;
                     }
                     npb6 = true;
                 }
@@ -4369,14 +4370,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
                 if (i7 == plist.size()) {
                     if (ni7 == clist_params_.size()) {
-                       subsystemfile
-                           << "// Address not in System params...rebuilding into clist_params_"
-                           << std::endl;
-                       clist_params_.push_back((*it)->pvec[6]);
-                       subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
-                                     << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
-                                     << std::endl;
-                       icp++;
+                        subsystemfile
+                            << "// Address not in System params...rebuilding into clist_params_"
+                            << std::endl;
+                        clist_params_.push_back((*it)->pvec[6]);
+                        subsystemfile << "clist_params_.push_back(new double(" << *((*it)->pvec[6])
+                                      << ")); // " << icp << " address: " << (void*)(*it)->pvec[6]
+                                      << std::endl;
+                        icp++;
                     }
                     npb7 = true;
                 }
@@ -4429,31 +4430,31 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool isRedundantsolving)
+int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool isRedundantsolving)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();
     int csizeA = subsysA->cSize();
 
-    VEC_pD plistAB(xsizeA+xsizeB);
+    VEC_pD plistAB(xsizeA + xsizeB);
     {
         VEC_pD plistA, plistB;
         subsysA->getParamList(plistA);
         subsysB->getParamList(plistB);
 
-        std::sort(plistA.begin(),plistA.end());
-        std::sort(plistB.begin(),plistB.end());
+        std::sort(plistA.begin(), plistA.end());
+        std::sort(plistB.begin(), plistB.end());
 
         VEC_pD::const_iterator it;
-        it = std::set_union(plistA.begin(),plistA.end(),
-                            plistB.begin(),plistB.end(),plistAB.begin());
-        plistAB.resize(it-plistAB.begin());
+        it = std::set_union(
+            plistA.begin(), plistA.end(), plistB.begin(), plistB.end(), plistAB.begin());
+        plistAB.resize(it - plistAB.begin());
     }
     int xsize = plistAB.size();
 
     Eigen::MatrixXd B = Eigen::MatrixXd::Identity(xsize, xsize);
     Eigen::MatrixXd JA(csizeA, xsize);
-    Eigen::MatrixXd Y,Z;
+    Eigen::MatrixXd Y, Z;
 
     Eigen::VectorXd resA(csizeA);
     Eigen::VectorXd lambda(csizeA), lambda0(csizeA), lambdadir(csizeA);
@@ -4467,24 +4468,25 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
     subsysA->redirectParams();
     subsysB->redirectParams();
 
-    subsysB->getParams(plistAB,x);
-    subsysA->getParams(plistAB,x);
-    subsysB->setParams(plistAB,x);  // just to ensure that A and B are synchronized
+    subsysB->getParams(plistAB, x);
+    subsysA->getParams(plistAB, x);
+    subsysB->setParams(plistAB, x);// just to ensure that A and B are synchronized
 
-    subsysB->calcGrad(plistAB,grad);
-    subsysA->calcJacobi(plistAB,JA);
+    subsysB->calcGrad(plistAB, grad);
+    subsysA->calcJacobi(plistAB, JA);
     subsysA->calcResidual(resA);
 
-    //double convergence = isFine ? XconvergenceFine : XconvergenceRough;
-    int maxIterNumber = (isRedundantsolving?
-        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter));
+    // double convergence = isFine ? XconvergenceFine : XconvergenceRough;
+    int maxIterNumber =
+        (isRedundantsolving
+             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
+             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
 
-    double divergingLim = 1e6*subsysA->error() + 1e12;
+    double divergingLim = 1e6 * subsysA->error() + 1e12;
 
     double mu = 0;
     lambda.setZero();
-    for (int iter=1; iter < maxIterNumber; iter++) {
+    for (int iter = 1; iter < maxIterNumber; iter++) {
         int status = qp_eq(B, grad, JA, resA, xdir, Y, Z);
         if (status)
             break;
@@ -4496,11 +4498,11 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
 
         // line search
         {
-            double eta=0.25;
-            double tau=0.5;
-            double rho=0.5;
-            double alpha=1;
-            alpha = std::min(alpha, subsysA->maxStep(plistAB,xdir));
+            double eta = 0.25;
+            double tau = 0.5;
+            double rho = 0.5;
+            double alpha = 1;
+            alpha = std::min(alpha, subsysA->maxStep(plistAB, xdir));
 
             // From the book "Numerical Optimization - Jorge Nocedal, Stephen J. Wright".
             // See https://forum.freecad.org/viewtopic.php?f=10&t=35469.
@@ -4509,9 +4511,9 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
             // Eq. 18.33
             // double mu =  grad.dot(xdir) / ( (1.-rho) * resA.lpNorm<1>());
             // Eq. 18.36
-            mu =  std::max(mu,
-                           (grad.dot(xdir) +  std::max(0., 0.5*xdir.dot(B*xdir))) /
-                           ( (1. - rho) * resA.lpNorm<1>() ) );
+            mu = std::max(mu,
+                          (grad.dot(xdir) + std::max(0., 0.5 * xdir.dot(B * xdir)))
+                              / ((1. - rho) * resA.lpNorm<1>()));
 
             // Eq. 18.27
             double f0 = subsysB->error() + mu * resA.lpNorm<1>();
@@ -4520,71 +4522,71 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
             double deriv = grad.dot(xdir) - mu * resA.lpNorm<1>();
 
             x = x0 + alpha * xdir;
-            subsysA->setParams(plistAB,x);
-            subsysB->setParams(plistAB,x);
+            subsysA->setParams(plistAB, x);
+            subsysB->setParams(plistAB, x);
             subsysA->calcResidual(resA);
             double f = subsysB->error() + mu * resA.lpNorm<1>();
 
             // line search, Eq. 18.28
             bool first = true;
             while (f > f0 + eta * alpha * deriv) {
-                if (first) { // try a second order step
-//                    xdir1 = JA.jacobiSvd(Eigen::ComputeThinU |
-//                                         Eigen::ComputeThinV).solve(-resA);
-                    xdir1 = -Y*resA;
-                    x += xdir1; // = x0 + alpha * xdir + xdir1
-                    subsysA->setParams(plistAB,x);
-                    subsysB->setParams(plistAB,x);
+                if (first) {
+                    // try a second order step
+                    // xdir1 = JA.jacobiSvd(Eigen::ComputeThinU |
+                    // Eigen::ComputeThinV).solve(-resA);
+                    xdir1 = -Y * resA;
+                    x += xdir1;// = x0 + alpha * xdir + xdir1
+                    subsysA->setParams(plistAB, x);
+                    subsysB->setParams(plistAB, x);
                     subsysA->calcResidual(resA);
                     f = subsysB->error() + mu * resA.lpNorm<1>();
                     if (f < f0 + eta * alpha * deriv)
                         break;
                 }
                 alpha = tau * alpha;
-                if (alpha < 1e-8) // let the linesearch fail
+                if (alpha < 1e-8)// let the linesearch fail
                     alpha = 0.;
                 x = x0 + alpha * xdir;
-                subsysA->setParams(plistAB,x);
-                subsysB->setParams(plistAB,x);
+                subsysA->setParams(plistAB, x);
+                subsysB->setParams(plistAB, x);
                 subsysA->calcResidual(resA);
                 f = subsysB->error() + mu * resA.lpNorm<1>();
-                if (alpha < 1e-8) // let the linesearch fail
+                if (alpha < 1e-8)// let the linesearch fail
                     break;
             }
             lambda = lambda0 + alpha * lambdadir;
-
         }
         h = x - x0;
 
         y = grad - JA.transpose() * lambda;
         {
-            subsysB->calcGrad(plistAB,grad);
-            subsysA->calcJacobi(plistAB,JA);
+            subsysB->calcGrad(plistAB, grad);
+            subsysA->calcJacobi(plistAB, JA);
             subsysA->calcResidual(resA);
         }
-        y = grad - JA.transpose() * lambda - y; // Eq. 18.13
+        y = grad - JA.transpose() * lambda - y;// Eq. 18.13
 
         if (iter > 1) {
             double yTh = y.dot(h);
             if (yTh != 0) {
                 Bh = B * h;
-                //Now calculate the BFGS update on B
-                B += 1./yTh * y * y.transpose();
-                B -= 1./h.dot(Bh) * (Bh * Bh.transpose());
+                // Now calculate the BFGS update on B
+                B += 1. / yTh * y * y.transpose();
+                B -= 1. / h.dot(Bh) * (Bh * Bh.transpose());
             }
         }
 
         double err = subsysA->error();
-        if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence) && err <= smallF)
+        if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence) && err <= smallF)
             break;
-        if (err > divergingLim || err != err) // check for diverging and NaN
+        if (err > divergingLim || err != err)// check for diverging and NaN
             break;
     }
 
     int ret;
     if (subsysA->error() <= smallF)
         ret = Success;
-    else if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence))
+    else if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence))
         ret = Converged;
     else
         ret = Failed;
@@ -4592,18 +4594,18 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
     subsysA->revertParams();
     subsysB->revertParams();
     return ret;
-
 }
 
 void System::applySolution()
 {
-    for (int cid=0; cid < int(subSystems.size()); cid++) {
+    for (int cid = 0; cid < int(subSystems.size()); cid++) {
         if (subSystemsAux[cid])
             subSystemsAux[cid]->applySolution();
         if (subSystems[cid])
             subSystems[cid]->applySolution();
-        for (MAP_pD_pD::const_iterator it=reductionmaps[cid].begin();
-             it != reductionmaps[cid].end(); ++it)
+        for (MAP_pD_pD::const_iterator it = reductionmaps[cid].begin();
+             it != reductionmaps[cid].end();
+             ++it)
             *(it->first) = *(it->second);
     }
 }
@@ -4613,13 +4615,11 @@ void System::undoSolution()
     resetToReference();
 }
 
-void System::makeReducedJacobian(Eigen::MatrixXd &J,
-                                 std::map<int,int> &jacobianconstraintmap,
-                                 GCS::VEC_pD &pdiagnoselist,
-                                 std::map< int , int> &tagmultiplicity)
+void System::makeReducedJacobian(Eigen::MatrixXd& J, std::map<int, int>& jacobianconstraintmap,
+                                 GCS::VEC_pD& pdiagnoselist, std::map<int, int>& tagmultiplicity)
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
-    for (int j=0; j < int(plist.size()); j++) {
+    for (int j = 0; j < int(plist.size()); j++) {
         auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
 
         if (result1 == std::end(pdrivenlist)) {
@@ -4630,29 +4630,30 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
 
     J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
 
-    int jacobianconstraintcount=0;
-    int allcount=0;
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
+    int jacobianconstraintcount = 0;
+    int allcount = 0;
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
         (*constr)->revertParams();
         ++allcount;
         if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
             jacobianconstraintcount++;
-            for (int j=0; j < int(pdiagnoselist.size()); j++) {
-                J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
+            for (int j = 0; j < int(pdiagnoselist.size()); j++) {
+                J(jacobianconstraintcount - 1, j) = (*constr)->grad(pdiagnoselist[j]);
             }
 
             // parallel processing: create tag multiplicity map
-            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
+            if (tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
                 tagmultiplicity[(*constr)->getTag()] = 0;
             else
                 tagmultiplicity[(*constr)->getTag()]++;
 
-            jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
+            jacobianconstraintmap[jacobianconstraintcount - 1] = allcount - 1;
         }
     }
 
-    if(jacobianconstraintcount == 0) // only driven constraints
-        J.resize(0,0);
+    if (jacobianconstraintcount == 0)// only driven constraints
+        J.resize(0, 0);
 }
 
 int System::diagnose(Algorithm alg)
@@ -4674,7 +4675,7 @@ int System::diagnose(Algorithm alg)
     }
 
 #ifdef _DEBUG_TO_FILE
-SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
+    SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 #endif
 
     // Input parameters' lists:
@@ -4710,7 +4711,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     // maps the index of the rows of the reduced jacobian matrix (solver constraints) to
     // the index those constraints would have in a full size Jacobian matrix
-    std::map<int,int> jacobianconstraintmap;
+    std::map<int, int> jacobianconstraintmap;
 
     // list of parameters to be diagnosed in this routine (removes value parameters from driven
     // constraints)
@@ -4729,63 +4730,69 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
 
-    if(J.rows() > 0)
+    if (J.rows() > 0)
         emptyDiagnoseMatrix = false;
 
-    // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
-    // consideration taken in that decisions. I see that:
-    // - QR decomposition is able to provide information about the rank and redundant/conflicting
-    //   constraints
-    // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated
-    //   (for reasons see below):
-    //   https://mathoverflow.net/questions/338729/translate-between-qr-decomposition-of-a-and-a-transpose
-    // - QR is cheaper than a SVD decomposition
-    // - QR is more expensive than a rank revealing LU factorization
-    // - QR is less stable than SVD with respect to rank
-    // - It is unclear whether it is possible to obtain information about redundancy with SVD and LU
+        // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
+        // consideration taken in that decisions. I see that:
+        // - QR decomposition is able to provide information about the rank and
+        // redundant/conflicting
+        //   constraints
+        // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated
+        //   (for reasons see below):
+        //   https://mathoverflow.net/questions/338729/translate-between-qr-decomposition-of-a-and-a-transpose
+        // - QR is cheaper than a SVD decomposition
+        // - QR is more expensive than a rank revealing LU factorization
+        // - QR is less stable than SVD with respect to rank
+        // - It is unclear whether it is possible to obtain information about redundancy with SVD
+        // and LU
 
-    // Given this legacy decision, the following is observed:
-    // - A = QR decomposition can be used for the diagonise of dependency of the "columns" of A. the
-    // reason is that matrix R is upper triangular with columns of A showing the dependencies.
-    // - The same does not apply to the "rows".
-    // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be done
-    //   on the transpose of the Jacobian matrix (J), this is JT.
+        // Given this legacy decision, the following is observed:
+        // - A = QR decomposition can be used for the diagonise of dependency of the "columns" of A.
+        // the reason is that matrix R is upper triangular with columns of A showing the
+        // dependencies.
+        // - The same does not apply to the "rows".
+        // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be
+        // done
+        //   on the transpose of the Jacobian matrix (J), this is JT.
 
-    // Eigen capabilities:
-    // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT
-    //   during the decomposition. This can be leveraged to identify a set of independent rows of
-    //   JT (geometry) that form a rank N basis. However, because the R matrix is of the JT
-    //   decomposition and not the J decomposition, it is not possible to reduce the system to
-    //   identify exactly which rows are dependent.
-    // - The effect is that it provides a set of parameters of geometry that are not constraint,
-    //   but it does not identify ALL geometries that are not fixed.
-    // - If SpareQR is used, then it is not possible to track the rows of JT during decomposition.
-    //   I do not know if it is still possible to obtain geometry information at all from SparseQR.
-    //   After several years these questions remain open:
-    //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
-    //      https://forum.kde.org/viewtopic.php?f=74&t=151239
-    //
-    // Implementation below:
-    //
-    // Two QR decompositions are used below. One for diagnosis of constraints and a second one for
-    // diagnosis of parameters, i.e. to identify whether the parameter is fully constraint
-    // (independent) or not (i.e. it is dependent).
+        // Eigen capabilities:
+        // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT
+        //   during the decomposition. This can be leveraged to identify a set of independent rows
+        //   of JT (geometry) that form a rank N basis. However, because the R matrix is of the JT
+        //   decomposition and not the J decomposition, it is not possible to reduce the system to
+        //   identify exactly which rows are dependent.
+        // - The effect is that it provides a set of parameters of geometry that are not constraint,
+        //   but it does not identify ALL geometries that are not fixed.
+        // - If SpareQR is used, then it is not possible to track the rows of JT during
+        // decomposition.
+        //   I do not know if it is still possible to obtain geometry information at all from
+        //   SparseQR. After several years these questions remain open:
+        //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
+        //      https://forum.kde.org/viewtopic.php?f=74&t=151239
+        //
+        // Implementation below:
+        //
+        // Two QR decompositions are used below. One for diagnosis of constraints and a second one
+        // for diagnosis of parameters, i.e. to identify whether the parameter is fully constraint
+        // (independent) or not (i.e. it is dependent).
 
-    // QR decomposition method selection: SparseQR vs DenseQR
+        // QR decomposition method selection: SparseQR vs DenseQR
 
 #ifndef EIGEN_SPARSEQR_COMPATIBLE
-    if(qrAlgorithm==EigenSparseQR){
-        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
-        qrAlgorithm=EigenDenseQR;
+    if (qrAlgorithm == EigenSparseQR) {
+        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It "
+                                "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
+        qrAlgorithm = EigenDenseQR;
     }
 #endif
 
-    if(qrAlgorithm==EigenDenseQR){
-    #ifdef PROFILE_DIAGNOSE
+    if (qrAlgorithm == EigenDenseQR) {
+#ifdef PROFILE_DIAGNOSE
         Base::TimeInfo DenseQR_start_time;
-    #endif
+#endif
         if (J.rows() > 0) {
-            int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
+            int rank = 0;// rank is not cheap to retrieve from qrJT in DenseQR
             Eigen::MatrixXd R;
             Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
             // Here we give the system the possibility to run the two QR decompositions in parallel,
@@ -4800,9 +4807,14 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             //
             // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
-            auto fut = std::async(&System::identifyDependentParametersDenseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
+            auto fut = std::async(&System::identifyDependentParametersDenseQR,
+                                  this,
+                                  J,
+                                  jacobianconstraintmap,
+                                  pdiagnoselist,
+                                  true);
 
-            makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
+            makeDenseQRDecomposition(J, jacobianconstraintmap, qrJT, rank, R);
 
             int paramsNum = qrJT.rows();
             int constrNum = qrJT.cols();
@@ -4813,9 +4825,9 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT,
             // pdiagnoselist, paramsNum, rank);
 
-            fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
+            fut.wait();// wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;// unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) {// conflicting or redundant constraints
@@ -4833,24 +4845,24 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
-    #ifdef PROFILE_DIAGNOSE
+#ifdef PROFILE_DIAGNOSE
         Base::TimeInfo DenseQR_end_time;
 
-        auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time,DenseQR_end_time);
+        auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
         Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
-    #endif
+#endif
     }
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-    else if(qrAlgorithm==EigenSparseQR){
-    #ifdef PROFILE_DIAGNOSE
+    else if (qrAlgorithm == EigenSparseQR) {
+#ifdef PROFILE_DIAGNOSE
         Base::TimeInfo SparseQR_start_time;
-    #endif
+#endif
         if (J.rows() > 0) {
             int rank = 0;
             Eigen::MatrixXd R;
-            Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
+            Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJT;
             // Here we give the system the possibility to run the two QR decompositions in parallel,
             // depending on the load of the system so we are using the default std::launch::async |
             // std::launch::deferred policy, as nobody better than the system nows if it can run the
@@ -4865,8 +4877,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             //
             // Debug:
             // auto fut =
-            // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap,
-            // pdiagnoselist, false);
+            // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR, this,
+            // J, jacobianconstraintmap, pdiagnoselist, false);
             auto fut = std::async(&System::identifyDependentParametersSparseQR,
                                   this,
                                   J,
@@ -4885,7 +4897,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             dofs = paramsNum - rank;// unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
-            if (constrNum > rank) {// conflicting or redundant constraints
+            if (constrNum > rank) {
 
                 int nonredundantconstrNum;
 
@@ -4904,28 +4916,28 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             }
         }
 
-        #ifdef PROFILE_DIAGNOSE
+#ifdef PROFILE_DIAGNOSE
         Base::TimeInfo SparseQR_end_time;
 
-        auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time,SparseQR_end_time);
+        auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
         Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
-        #endif
+#endif
     }
 #endif
 
     return dofs;
 }
 
-void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
-                                        const std::map<int,int> &jacobianconstraintmap,
-                                        Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                                        int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
+void System::makeDenseQRDecomposition(const Eigen::MatrixXd& J,
+                                      const std::map<int, int>& jacobianconstraintmap,
+                                      Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT, int& rank,
+                                      Eigen::MatrixXd& R, bool transposeJ, bool silent)
 {
 
 #ifdef _GCS_DEBUG
-    if(!silent)
-        SolverReportingManager::Manager().LogMatrix("J",J);
+    if (!silent)
+        SolverReportingManager::Manager().LogMatrix("J", J);
 #endif
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
@@ -4941,7 +4953,7 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 
     if (J.rows() > 0) {
         Eigen::MatrixXd JG;
-        if(transposeJ)
+        if (transposeJ)
             JG = J.topRows(jacobianconstraintmap.size()).transpose();
         else
             JG = J.topRows(jacobianconstraintmap.size());
@@ -4958,8 +4970,7 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
             if (colsNum >= rowsNum)
                 R = qrJT.matrixQR().triangularView<Eigen::Upper>();
             else
-                R = qrJT.matrixQR().topRows(colsNum)
-                                .triangularView<Eigen::Upper>();
+                R = qrJT.matrixQR().topRows(colsNum).triangularView<Eigen::Upper>();
         }
         else {
             rowsNum = JG.rows();
@@ -4972,7 +4983,7 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 #endif
     }
 
-    if(debugMode==IterationLevel && !silent) {
+    if (debugMode == IterationLevel && !silent) {
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
     }
 
@@ -5074,28 +5085,26 @@ void System::makeSparseQRDecomposition(
 }
 #endif// EIGEN_SPARSEQR_COMPATIBLE
 
-void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
-                                                  const std::map<int,int> &jacobianconstraintmap,
-                                                  const GCS::VEC_pD &pdiagnoselist,
-                                                  bool silent)
+void System::identifyDependentParametersDenseQR(const Eigen::MatrixXd& J,
+                                                const std::map<int, int>& jacobianconstraintmap,
+                                                const GCS::VEC_pD& pdiagnoselist, bool silent)
 {
     Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJ;
     Eigen::MatrixXd Rparams;
 
     int rank;
 
-    makeDenseQRDecomposition( J, jacobianconstraintmap, qrJ, rank, Rparams, false, true);
+    makeDenseQRDecomposition(J, jacobianconstraintmap, qrJ, rank, Rparams, false, true);
 
     identifyDependentParameters(qrJ, Rparams, rank, pdiagnoselist, silent);
 }
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
-                                                  const std::map<int,int> &jacobianconstraintmap,
-                                                  const GCS::VEC_pD &pdiagnoselist,
-                                                  bool silent)
+void System::identifyDependentParametersSparseQR(const Eigen::MatrixXd& J,
+                                                 const std::map<int, int>& jacobianconstraintmap,
+                                                 const GCS::VEC_pD& pdiagnoselist, bool silent)
 {
-    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJ;
+    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJ;
     Eigen::MatrixXd Rparams;
 
     int nontransprank;
@@ -5112,39 +5121,36 @@ void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
 }
 #endif
 
-template <typename T>
-void System::identifyDependentParameters(   T & qrJ,
-                                            Eigen::MatrixXd &Rparams,
-                                            int rank,
-                                            const GCS::VEC_pD &pdiagnoselist,
-                                            bool silent)
+template<typename T>
+void System::identifyDependentParameters(T& qrJ, Eigen::MatrixXd& Rparams, int rank,
+                                         const GCS::VEC_pD& pdiagnoselist, bool silent)
 {
     (void)silent;// silent is only used in debug code, but it is important as Base::Console is not
                  // thread-safe. Removes warning in non Debug mode.
 
-    //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
-    //int paramsNum = SqrJ.cols();
+    // int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
+    // int paramsNum = SqrJ.cols();
 
     eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
 
 #ifdef _GCS_DEBUG
-    if(!silent)
+    if (!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
 #endif
 
-    pDependentParametersGroups.resize(qrJ.cols()-rank);
-    for (int j=rank; j < qrJ.cols(); j++) {
-        for (int row=0; row < rank; row++) {
-            if (fabs(Rparams(row,j)) > 1e-10) {
+    pDependentParametersGroups.resize(qrJ.cols() - rank);
+    for (int j = rank; j < qrJ.cols(); j++) {
+        for (int row = 0; row < rank; row++) {
+            if (fabs(Rparams(row, j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
+        pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 
@@ -5161,9 +5167,8 @@ void System::identifyDependentParameters(   T & qrJ,
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
-                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                        const GCS::VEC_pD &pdiagnoselist,
-                        int paramsNum, int rank)
+    const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT, const GCS::VEC_pD& pdiagnoselist,
+    int paramsNum, int rank)
 {
     // DETECTING CONSTRAINT SOLVER PARAMETERS
     //
@@ -5184,7 +5189,7 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
     // P.J.P' = Q.R see https://eigen.tuxfamily.org/dox/classEigen_1_1FullPivHouseholderQR.html
     const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
 
-    for(int k = 0; k < rank; ++k)
+    for (int k = 0; k < rank; ++k)
         rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
@@ -5215,9 +5220,9 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 #endif
 
     // If not independent, must be dependent
-    for(int j=0; j < paramsNum; j++) {
+    for (int j = 0; j < paramsNum; j++) {
         auto result = indepParamCols.find(j);
-        if(result == indepParamCols.end()) {
+        if (result == indepParamCols.end()) {
             depParamCols.insert(j);
         }
     }
@@ -5226,12 +5231,12 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
     stream.flush();
 
     stream << "Indep params: [";
-    for(auto indep :indepParamCols)
+    for (auto indep : indepParamCols)
         stream << indep;
     stream << "]" << std::endl;
 
     stream << "Dep params: [";
-    for(auto dep :depParamCols)
+    for (auto dep : depParamCols)
         stream << dep;
     stream << "]" << std::endl;
 
@@ -5240,28 +5245,28 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 #endif
 
 
-    for( auto param : depParamCols) {
+    for (auto param : depParamCols) {
         pDependentParameters.push_back(pdiagnoselist[param]);
     }
-
 }
 
-void System::eliminateNonZerosOverPivotInUpperTriangularMatrix( Eigen::MatrixXd &R, int rank)
+void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& R, int rank)
 {
-    for (int i=1; i < rank; i++) {
+    for (int i = 1; i < rank; i++) {
         // eliminate non zeros above pivot
-        assert(R(i,i) != 0);
-        for (int row=0; row < i; row++) {
-            if (R(row,i) != 0) {
-                double coef=R(row,i)/R(i,i);
-                R.block(row,i+1,1,R.cols()-i-1) -= coef * R.block(i,i+1,1,R.cols()-i-1);
-                R(row,i) = 0;
+        assert(R(i, i) != 0);
+        for (int row = 0; row < i; row++) {
+            if (R(row, i) != 0) {
+                double coef = R(row, i) / R(i, i);
+                R.block(row, i + 1, 1, R.cols() - i - 1) -=
+                    coef * R.block(i, i + 1, 1, R.cols() - i - 1);
+                R(row, i) = 0;
             }
         }
     }
 }
 
-template <typename T>
+template<typename T>
 void System::identifyConflictingRedundantConstraints(
     Algorithm alg, const T& qrJT, const std::map<int, int>& jacobianconstraintmap,
     const std::map<int, int>& tagmultiplicity, GCS::VEC_pD& pdiagnoselist, Eigen::MatrixXd& R,
@@ -5269,18 +5274,18 @@ void System::identifyConflictingRedundantConstraints(
 {
     eliminateNonZerosOverPivotInUpperTriangularMatrix(R, rank);
 
-    std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
-    for (int j=rank; j < constrNum; j++) {
-        for (int row=0; row < rank; row++) {
-            if (fabs(R(row,j)) > 1e-10) {
+    std::vector<std::vector<Constraint*>> conflictGroups(constrNum - rank);
+    for (int j = rank; j < constrNum; j++) {
+        for (int row = 0; row < rank; row++) {
+            if (fabs(R(row, j)) > 1e-10) {
                 int origCol = qrJT.colsPermutation().indices()[row];
 
-                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+                conflictGroups[j - rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
             }
         }
         int origCol = qrJT.colsPermutation().indices()[j];
 
-        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+        conflictGroups[j - rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
     }
 
     // Augment the information regarding the group of constraints that are conflicting or redundant.
@@ -5292,7 +5297,7 @@ void System::identifyConflictingRedundantConstraints(
     // try to remove the conflicting constraints and solve the
     // system in order to check if the removed constraints were
     // just redundant but not really conflicting
-    std::set<Constraint *> skipped;
+    std::set<Constraint*> skipped;
     SET_I satisfiedGroups;
     while (1) {
         // conflictingMap contains all the eligible constraints of conflict groups not yet
@@ -5363,51 +5368,62 @@ void System::identifyConflictingRedundantConstraints(
             }
         }
         if (maxPopularity > 0) {
-            skipped.insert(mostPopular);
-            for (SET_I::const_iterator it = conflictingMap[mostPopular].begin();
-                 it != conflictingMap[mostPopular].end();
-                 ++it)
-                satisfiedGroups.insert(*it);
+            // adding for skipping not only the mostPopular, but also any other constraint in the
+            // conflicting map associated with the same tag (namely any other solver
+            // constraint associated with the same sketcher constraint that is also conflicting)
+            auto maxPopularityTag = mostPopular->getTag();
+
+            for (const auto& c : conflictingMap) {
+                if (c.first->getTag() == maxPopularityTag) {
+                    skipped.insert(c.first);
+                    for (SET_I::const_iterator it = conflictingMap[c.first].begin();
+                         it != conflictingMap[c.first].end();
+                         ++it) {
+                        satisfiedGroups.insert(*it);
+                    }
+                }
+            }
         }
     }
 
     // Augment information regarding the choice made by popularity contest
-    if(debugMode==IterationLevel) {
+    if (debugMode == IterationLevel) {
         SolverReportingManager::Manager().LogSetOfConstraints("Chosen redundants", skipped);
     }
 
-    std::vector<Constraint *> clistTmp;
+    std::vector<Constraint*> clistTmp;
     clistTmp.reserve(clist.size());
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-        constr != clist.end(); ++constr) {
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
+         ++constr) {
         if ((*constr)->isDriving() && skipped.count(*constr) == 0)
             clistTmp.push_back(*constr);
     }
 
-    SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-    int res = solve(subSysTmp,true,alg,true);
+    SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
+    int res = solve(subSysTmp, true, alg, true);
 
-    if(debugMode==Minimal || debugMode==IterationLevel) {
+    if (debugMode == Minimal || debugMode == IterationLevel) {
         std::string solvername;
         switch (alg) {
             case 0:
                 solvername = "BFGS";
                 break;
-            case 1: // solving with the LevenbergMarquardt solver
+            case 1:// solving with the LevenbergMarquardt solver
                 solvername = "LevenbergMarquardt";
                 break;
-            case 2: // solving with the BFGS solver
+            case 2:// solving with the BFGS solver
                 solvername = "DogLeg";
                 break;
         }
 
-        Base::Console().Log("Sketcher::RedundantSolving-%s-\n",solvername.c_str());
+        Base::Console().Log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
     }
 
     if (res == Success) {
         subSysTmp->applySolution();
-        for (std::set<Constraint *>::const_iterator constr=skipped.begin();
-                constr != skipped.end(); ++constr) {
+        for (std::set<Constraint*>::const_iterator constr = skipped.begin();
+             constr != skipped.end();
+             ++constr) {
             double err = (*constr)->error();
             if (err * err < convergenceRedundant)
                 redundant.insert(*constr);
@@ -5458,8 +5474,7 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     conflictingTags.resize(conflictingTagsSet.size());
-    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
-                conflictingTags.begin());
+    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(), conflictingTags.begin());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
@@ -5470,20 +5485,20 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     // remove tags represented at least in one non-redundant constraint
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr)
+    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end(); ++constr)
         if (redundant.count(*constr) == 0)
             redundantTagsSet.erase((*constr)->getTag());
 
     redundantTags.resize(redundantTagsSet.size());
-    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
-                redundantTags.begin());
+    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(), redundantTags.begin());
 
-    for(auto r : redundantTagsSet)
+    for (auto r : redundantTagsSet)
         partiallyRedundantTagsSet.erase(r);
 
     partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::copy(partiallyRedundantTagsSet.begin(), partiallyRedundantTagsSet.end(),
-                partiallyRedundantTags.begin());
+    std::copy(partiallyRedundantTagsSet.begin(),
+              partiallyRedundantTagsSet.end(),
+              partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }
@@ -5498,39 +5513,39 @@ void System::clearSubSystems()
     subSystemsAux.clear();
 }
 
-double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
+double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
 {
-    double f1,f2,f3,alpha1,alpha2,alpha3,alphaStar;
+    double f1, f2, f3, alpha1, alpha2, alpha3, alphaStar;
 
     double alphaMax = subsys->maxStep(xdir);
 
     Eigen::VectorXd x0, x;
 
-    //Save initial values
+    // Save initial values
     subsys->getParams(x0);
 
-    //Start at the initial position alpha1 = 0
+    // Start at the initial position alpha1 = 0
     alpha1 = 0.;
     f1 = subsys->error();
 
-    //Take a step of alpha2 = 1
+    // Take a step of alpha2 = 1
     alpha2 = 1.;
     x = x0 + alpha2 * xdir;
     subsys->setParams(x);
     f2 = subsys->error();
 
-    //Take a step of alpha3 = 2*alpha2
-    alpha3 = alpha2*2;
+    // Take a step of alpha3 = 2*alpha2
+    alpha3 = alpha2 * 2;
     x = x0 + alpha3 * xdir;
     subsys->setParams(x);
     f3 = subsys->error();
 
-    //Now reduce or lengthen alpha2 and alpha3 until the minimum is
-    //Bracketed by the triplet f1>f2<f3
+    // Now reduce or lengthen alpha2 and alpha3 until the minimum is
+    // Bracketed by the triplet f1>f2<f3
     while (f2 > f1 || f2 > f3) {
         if (f2 > f1) {
-            //If f2 is greater than f1 then we shorten alpha2 and alpha3 closer to f1
-            //Effectively both are shortened by a factor of two.
+            // If f2 is greater than f1 then we shorten alpha2 and alpha3 closer to f1
+            // Effectively both are shortened by a factor of two.
             alpha3 = alpha2;
             f3 = f2;
             alpha2 = alpha2 / 2;
@@ -5541,8 +5556,8 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
         else if (f2 > f3) {
             if (alpha3 >= alphaMax)
                 break;
-            //If f2 is greater than f3 then we increase alpha2 and alpha3 away from f1
-            //Effectively both are lengthened by a factor of two.
+            // If f2 is greater than f3 then we increase alpha2 and alpha3 away from f1
+            // Effectively both are lengthened by a factor of two.
             alpha2 = alpha3;
             f2 = f3;
             alpha3 = alpha3 * 2;
@@ -5551,10 +5566,10 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
             f3 = subsys->error();
         }
     }
-    //Get the alpha for the minimum f of the quadratic approximation
-    alphaStar = alpha2 + ((alpha2-alpha1)*(f1-f3))/(3*(f1-2*f2+f3));
+    // Get the alpha for the minimum f of the quadratic approximation
+    alphaStar = alpha2 + ((alpha2 - alpha1) * (f1 - f3)) / (3 * (f1 - 2 * f2 + f3));
 
-    //Guarantee that the new alphaStar is within the bracket
+    // Guarantee that the new alphaStar is within the bracket
     if (alphaStar >= alpha3 || alphaStar <= alpha1)
         alphaStar = alpha2;
 
@@ -5564,7 +5579,7 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
     if (alphaStar != alphaStar)
         alphaStar = 0.;
 
-    //Take a final step to alphaStar
+    // Take a final step to alphaStar
     x = x0 + alphaStar * xdir;
     subsys->setParams(x);
 
@@ -5572,50 +5587,50 @@ double lineSearch(SubSystem *subsys, Eigen::VectorXd &xdir)
 }
 
 
-void free(VEC_pD &doublevec)
+void free(VEC_pD& doublevec)
 {
-    for (VEC_pD::iterator it = doublevec.begin();
-        it != doublevec.end(); ++it) {
-        if (*it) delete *it;
+    for (VEC_pD::iterator it = doublevec.begin(); it != doublevec.end(); ++it) {
+        if (*it)
+            delete *it;
     }
     doublevec.clear();
 }
 
-void free(std::vector<Constraint *> &constrvec)
+void free(std::vector<Constraint*>& constrvec)
 {
-    for (std::vector<Constraint *>::iterator constr=constrvec.begin();
-         constr != constrvec.end(); ++constr) {
+    for (std::vector<Constraint*>::iterator constr = constrvec.begin(); constr != constrvec.end();
+         ++constr) {
         if (*constr) {
             switch ((*constr)->getTypeId()) {
                 case Equal:
-                    delete static_cast<ConstraintEqual *>(*constr);
+                    delete static_cast<ConstraintEqual*>(*constr);
                     break;
                 case Difference:
-                    delete static_cast<ConstraintDifference *>(*constr);
+                    delete static_cast<ConstraintDifference*>(*constr);
                     break;
                 case P2PDistance:
-                    delete static_cast<ConstraintP2PDistance *>(*constr);
+                    delete static_cast<ConstraintP2PDistance*>(*constr);
                     break;
                 case P2PAngle:
-                    delete static_cast<ConstraintP2PAngle *>(*constr);
+                    delete static_cast<ConstraintP2PAngle*>(*constr);
                     break;
                 case P2LDistance:
-                    delete static_cast<ConstraintP2LDistance *>(*constr);
+                    delete static_cast<ConstraintP2LDistance*>(*constr);
                     break;
                 case PointOnLine:
-                    delete static_cast<ConstraintPointOnLine *>(*constr);
+                    delete static_cast<ConstraintPointOnLine*>(*constr);
                     break;
                 case Parallel:
-                    delete static_cast<ConstraintParallel *>(*constr);
+                    delete static_cast<ConstraintParallel*>(*constr);
                     break;
                 case Perpendicular:
-                    delete static_cast<ConstraintPerpendicular *>(*constr);
+                    delete static_cast<ConstraintPerpendicular*>(*constr);
                     break;
                 case L2LAngle:
-                    delete static_cast<ConstraintL2LAngle *>(*constr);
+                    delete static_cast<ConstraintL2LAngle*>(*constr);
                     break;
                 case MidpointOnLine:
-                    delete static_cast<ConstraintMidpointOnLine *>(*constr);
+                    delete static_cast<ConstraintMidpointOnLine*>(*constr);
                     break;
                 case None:
                 default:
@@ -5626,13 +5641,13 @@ void free(std::vector<Constraint *> &constrvec)
     constrvec.clear();
 }
 
-void free(std::vector<SubSystem *> &subsysvec)
+void free(std::vector<SubSystem*>& subsysvec)
 {
-    for (std::vector<SubSystem *>::iterator it=subsysvec.begin();
-        it != subsysvec.end(); ++it) {
-        if (*it) delete *it;
+    for (std::vector<SubSystem*>::iterator it = subsysvec.begin(); it != subsysvec.end(); ++it) {
+        if (*it)
+            delete *it;
     }
 }
 
 
-} //namespace GCS
+}// namespace GCS

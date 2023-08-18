@@ -374,7 +374,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.",
+                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.",
                 ),
             ),
             (
@@ -392,7 +392,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.",
+                    "Convert co-planar arcs to G2/G3 G-code commands for `Circular` and `CircularZigZag` cut patterns.",
                 ),
             ),
             (
@@ -1193,7 +1193,7 @@ class ObjectSurface(PathOp.ObjectOp):
             SCANDATA.extend(profScan)
 
         if len(SCANDATA) == 0:
-            msg = translate("PathSurface", "No scan data to convert to Gcode.")
+            msg = translate("PathSurface", "No scan data to convert to G-code.")
             Path.Log.error(msg)
             return []
 

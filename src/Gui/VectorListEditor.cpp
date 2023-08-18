@@ -41,15 +41,15 @@ QVariant VectorTableModel::headerData(int section, Qt::Orientation orientation, 
         return section + 1;
 
     if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
-        return QVariant();
+        return {};
     if (section == 0)
-        return QVariant(QLatin1Char('x'));
+        return {QLatin1Char('x')};
     if (section == 1)
-        return QVariant(QLatin1Char('y'));
+        return {QLatin1Char('y')};
     if (section == 2)
-        return QVariant(QLatin1Char('z'));
+        return {QLatin1Char('z')};
     else
-        return QVariant();
+        return {};
 }
 
 int VectorTableModel::columnCount(const QModelIndex&) const
@@ -117,12 +117,12 @@ QVariant VectorTableModel::data(const QModelIndex &index, int role) const
         }
     }
 
-    return QVariant();
+    return {};
 }
 
 QModelIndex VectorTableModel::parent(const QModelIndex &) const
 {
-    return QModelIndex();
+    return {};
 }
 
 void VectorTableModel::setValues(const QList<Base::Vector3d>& d)

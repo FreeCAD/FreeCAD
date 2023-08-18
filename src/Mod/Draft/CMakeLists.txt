@@ -53,6 +53,7 @@ SET(Draft_tests
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
     drafttests/test_pivy.py
+    drafttests/test_array.py
     drafttests/test_creation.py
     drafttests/test_modification.py
     drafttests/test_svg.py
@@ -233,7 +234,6 @@ SET(Modifier_tools
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
     draftguitools/gui_arrays.py
-    draftguitools/gui_array_simple.py
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_patharray.py

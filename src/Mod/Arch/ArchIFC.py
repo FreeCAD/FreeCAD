@@ -134,7 +134,7 @@ class IfcRoot:
             IfcData["complex_attributes"] = "{}"
         ifcComplexAttributes = json.loads(IfcData["complex_attributes"])
         for attribute in ifcTypeSchema["complex_attributes"]:
-            if attribute["name"] not in ifcComplexAttributes.keys():
+            if attribute["name"] not in ifcComplexAttributes:
                 ifcComplexAttributes[attribute["name"]] = {}
         IfcData["complex_attributes"] = json.dumps(ifcComplexAttributes)
         obj.IfcData = IfcData

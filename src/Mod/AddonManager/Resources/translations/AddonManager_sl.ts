@@ -22,37 +22,41 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="77"/>
       <location filename="../../compact_view.ui" line="20"/>
       <source>Form</source>
       <translation>Oblika</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="78"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Ikona</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
       <translation>&lt;b&gt;Naziv paketa&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="82"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Različica</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="91"/>
+      <location filename="../../compact_view.py" line="85"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="94"/>
+      <location filename="../../compact_view.py" line="88"/>
+      <source>Update Available</source>
+      <translation>Na voljo je nadgradnja</translation>
+    </message>
+    <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
       <translation>Posodobitev na voljo</translation>
@@ -73,7 +77,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
       <source>Name</source>
-      <translation>Ime</translation>
+      <translation>Naziv</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
@@ -267,8 +271,8 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
-      <source>Pause cache update</source>
-      <translation>Premor posodabljanja predpomnilnika</translation>
+      <source>Stop the cache update</source>
+      <translation>Zaustavi posodobitev predpomnilnika</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -417,49 +421,53 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
   <context>
     <name>ExpandedView</name>
     <message>
-      <location filename="../../expanded_view.py" line="130"/>
+      <location filename="../../expanded_view.py" line="116"/>
       <location filename="../../expanded_view.ui" line="20"/>
       <source>Form</source>
       <translation>Oblika</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="131"/>
+      <location filename="../../expanded_view.py" line="117"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
       <translation>Ikona</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="134"/>
+      <location filename="../../expanded_view.py" line="120"/>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
       <translation>&lt;h1&gt;Naziv paketa&lt;/h1&gt;</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="137"/>
+      <location filename="../../expanded_view.py" line="121"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
       <translation>Različica</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="140"/>
+      <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
       <translation>(značke)</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="143"/>
+      <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="149"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="146"/>
+      <location filename="../../expanded_view.py" line="126"/>
       <location filename="../../expanded_view.ui" line="171"/>
       <source>Maintainer</source>
       <translation>Vzdrževalec</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="149"/>
+      <location filename="../../expanded_view.py" line="129"/>
+      <source>Update Available</source>
+      <translation>Na voljo je nadgradnja</translation>
+    </message>
+    <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
       <translation>Posodobitev na voljo</translation>
@@ -585,7 +593,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>Prenesite samopodatke o makrih (približno 10 MB)</translation>
+      <translation>Prenesi samopodatke o makrih (približno 10 MB)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
@@ -649,18 +657,18 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Python executable (optional):</source>
-      <translation>Pythonova izvršljiva datoteka (možnostno):</translation>
+      <source>Path to Python executable (optional):</source>
+      <translation>Pot do Pythonove izvršljive datoteke (možnostno):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>Path to git executable (optional):</source>
+      <translation>Pot do git izvršljive datoteke (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
       <translation>Pot do Pythonove izvršljive datoteke za namestitev paketov s sliko v sliki. Samodejni popravki, če so potrebni niso določeni.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
-      <source>git executable (optional):</source>
-      <translation>git izvršljiva datoteka (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -718,7 +726,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>Posodobi</translation>
+      <translation>Posodobitev</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -779,7 +787,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pog. okno</translation>
+      <translation>Pogovorno okno</translation>
     </message>
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
@@ -885,11 +893,6 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>Ikona</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_add_content.ui" line="179"/>
-      <source>actualIcon</source>
-      <translation type="unfinished">actualIcon</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
       <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
@@ -932,7 +935,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Podprta sta Semantic (1.2.3.-beta) ali CalVer (2022.08.30) sloga</translation>
+      <translation>Podprta sta sloga Semantic (1.2.3.-beta) ali CalVer (2022.08.30)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
@@ -942,7 +945,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation>Prikaz imena</translation>
+      <translation>Prikazano ime</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
@@ -1171,135 +1174,130 @@ preveril razpoložljivost posodobitev za nameščene dodatke
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="125"/>
-      <source>Addon Manager</source>
+      <location filename="../../AddonManager.py" line="229"/>
+      <source>Starting up...</source>
+      <translation>Pričenjanje ...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="268"/>
+      <source>Loading addon information</source>
+      <translation>Nalaganje podatkov o dodatku</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="294"/>
+      <source>Worker process {} is taking a long time to stop...</source>
+      <translation>Delovni proces {} se predolgo zaustavlja ...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="350"/>
+      <source>Previous cache process was interrupted, restarting...
+</source>
+      <translation>Predhodno predpomnenje je bilo prekinjeno, ponovni zagon ...
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="369"/>
+      <source>Custom repo list changed, forcing recache...
+</source>
+      <translation>Skladiščni seznam po meri se je spremenil, prisilno ponovno predpomnenje ...
+</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="422"/>
+      <source>Addon manager</source>
       <translation>Upravljalnik dodatkov</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="236"/>
-      <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="279"/>
-      <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="305"/>
-      <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="363"/>
-      <source>Previous cache process was interrupted, restarting...
-</source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
-</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="382"/>
-      <source>Custom repo list changed, forcing recache...
-</source>
-      <translation type="unfinished">Custom repo list changed, forcing recache...
-</translation>
+      <location filename="../../AddonManager.py" line="429"/>
+      <source>You must restart FreeCAD for changes to take effect.</source>
+      <translation>Da bi spremembe stopile v veljavo, morate ponovno zagnati FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="435"/>
-      <source>Addon manager</source>
-      <translation type="unfinished">Addon manager</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="442"/>
-      <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="448"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Takojšnji pozagon</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="449"/>
+      <location filename="../../AddonManager.py" line="436"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Pozaženi pozneje</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="516"/>
-      <location filename="../../AddonManager.py" line="987"/>
+      <location filename="../../AddonManager.py" line="501"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Refresh local cache</source>
       <translation>Osveži krajevni predpomnilnik</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="662"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
+      <translation>Posodabljanje predpomnilnika ...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="706"/>
+      <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Dodatka &apos;{}&apos; za označitev ni mogoče najti
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="736"/>
-      <location filename="../../AddonManager.py" line="771"/>
+      <location filename="../../AddonManager.py" line="691"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>Preverjanje za posodobitve …</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="766"/>
+      <location filename="../../AddonManager.py" line="719"/>
       <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
+      <translation>Uporabi {} posodobitve</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="775"/>
+      <location filename="../../AddonManager.py" line="728"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Na voljo ni novih posodobitev</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="912"/>
-      <location filename="../../AddonManager.py" line="938"/>
-      <location filename="../../AddonManager.py" line="1041"/>
+      <location filename="../../AddonManager.py" line="861"/>
+      <location filename="../../AddonManager.py" line="887"/>
+      <location filename="../../AddonManager.py" line="988"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
-      <translation type="unfinished">Cannot launch a new installer until the previous one has finished.</translation>
+      <translation>Novega namestilnika ni mogoče zagnati, dokler se prejšnji ne konča.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="1027"/>
+      <location filename="../../AddonManager.py" line="974"/>
       <source>Execution of macro failed. See console for failure details.</source>
-      <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
+      <translation>Izvedba makra spodletela. Podrobnosti o napaki si poglejte na ukazni mizi.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="398"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="88"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
       <translation>Vzdrževalec</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode.py" line="117"/>
-      <location filename="../../package_list.py" line="435"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="89"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="50"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Author</source>
-      <translation>Avtor</translation>
+      <translation>Ustvarjalec</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="166"/>
       <source>New Python Version Detected</source>
-      <translation type="unfinished">New Python Version Detected</translation>
+      <translation>Zaznana je nova Pythonova različica</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="170"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
-      <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
+      <translation>Kaže, da je tokrat ta različica Pythona prvič uporabljena z Upravljalnikom dodatkov (Addon Manager). Ali želite zanjo samodejno namestiti enako odvisnost?</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="202"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>V obdelavi, prosimo, počakajte ...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="253"/>
@@ -1310,7 +1308,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Posodabljanje ...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
@@ -1320,63 +1318,63 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../NetworkManager.py" line="221"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
-      <translation type="unfinished">Failed to convert the specified proxy port &apos;{}&apos; to a port number</translation>
+      <translation>Pretvarjanje izbranih vrat posredniškega strežnika &apos;{}&apos; v številko vrat je spodletela</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="252"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Napaka določilke: nastavljene medsebojno izključuječe možnosti posredniškega strežnika. Ponastavljanje na privzeto.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="267"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Napaka določilke: posredniški strežnik nakazan, vendar ni na voljo. Ponastavljanje na privzeto.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="406"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
+      <translation>Upravljalnik dodatkov: Nepričakovan {} odziv strežnika</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="506"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>Napaka kodirane povezave</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="84"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="75"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Potrdi odstranitev</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="87"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>Ali res želite odmestiti  {}?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="91"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="108"/>
       <source>Removing Addon</source>
-      <translation type="unfinished">Removing Addon</translation>
+      <translation>Odmeščanje dodatka</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="96"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>Odmešča se {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="131"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>Odmestitev zaključena</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="135"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="144"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>Odmestitev spodletela</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="63"/>
@@ -1386,17 +1384,17 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../package_details.py" line="187"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>Različica {version} nameščena {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="192"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>Različica {version} nameščena</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="196"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Nameščeno {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="200"/>
@@ -1404,7 +1402,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../package_list.py" line="507"/>
       <location filename="../../package_list.py" line="822"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Nameščeno</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="210"/>
@@ -1444,7 +1442,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../package_details.py" line="276"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Samodejno preverjanje posodobitev onemogočeno</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="298"/>
@@ -1498,8 +1496,8 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="682"/>
-      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1606,12 +1604,12 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Location for new license file</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
       <translation type="unfinished">Received {} response code from server</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="508"/>
+      <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
       <translation type="unfinished">Failed to install macro {}</translation>
     </message>
@@ -1631,9 +1629,9 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="732"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="293"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="332"/>
-      <location filename="../../addonmanager_devmode.py" line="732"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1660,7 +1658,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="455"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="465"/>
@@ -1670,204 +1668,204 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="521"/>
       <source>Internal Workbench</source>
-      <translation type="unfinished">Internal Workbench</translation>
+      <translation>Notranje delovno okolje</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="524"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>Zunanji dodatek</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="527"/>
       <source>Python Package</source>
-      <translation type="unfinished">Python Package</translation>
+      <translation>Pythonov paket</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="597"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="610"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>Drugo ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="152"/>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Ta dodatek potrebuje Pythonove pakete, ki še niso nameščeni, niti jih ni mogoče samodejno namestiti. Če želite uporabljati to delovno okolje, morate ročno namestiti naslednje Pythonove pakete:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="161"/>
+      <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Preveč za navedbo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="167"/>
-      <location filename="../../addonmanager_installer_gui.py" line="204"/>
+      <location filename="../../addonmanager_installer_gui.py" line="164"/>
+      <location filename="../../addonmanager_installer_gui.py" line="201"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="146"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="163"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="178"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="193"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Neizpolnjen pogoj</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="187"/>
+      <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</translation>
+      <translation>Dodatek &apos;{}&apos; potrebuje &apos;{}&apos;, ki za vašo različico FreeCADa ni na voljo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="195"/>
+      <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</translation>
+      <translation>Dodatek &apos;{}&apos; potrebuje naslednja delovna okolja, ki pa za vašo različico FreeCADa niso na voljo:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="202"/>
+      <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
+      <translation>Pritisnite V redu, če želite vseeno namestiti.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="248"/>
+      <location filename="../../addonmanager_installer_gui.py" line="243"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="231"/>
       <source>Incompatible Python version</source>
-      <translation type="unfinished">Incompatible Python version</translation>
+      <translation>Nezdružljiva različica Pythona</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="252"/>
+      <location filename="../../addonmanager_installer_gui.py" line="247"/>
       <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Ta dodatek (ali katera izmed njegovih odvisnosti) potrebuje Python {}.{}, medtem ko je na vašem sistemu {}.{}. Nameščanje preklicano.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="273"/>
+      <location filename="../../addonmanager_installer_gui.py" line="268"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>Neobvezna odvisnost od {} prezrta, saj ni na seznamu dopustnih</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="321"/>
-      <location filename="../../addonmanager_installer_gui.py" line="322"/>
+      <location filename="../../addonmanager_installer_gui.py" line="314"/>
+      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Nameščanje odvisnosti</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="340"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
+      <source>Cannot execute Python</source>
+      <translation>Pythona ni mogoče izvesti</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="345"/>
+      <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
+      <translation>Pythonove izvršljive datoteke ni mogoče samodejno najti ali pa je pot napačno nastavljena. Preverite pot do Pythona v prednastavitvah Upravljalnika dodatkov.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
-      <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="354"/>
-      <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation type="unfinished">Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="358"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Dependencies could not be installed. Continue with installation of {} anyway?</translation>
+      <translation>Odvisnosti ni bilo mogoče namestiti. Ali želite vseeno nadaljevati z namestitvijo {}?</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="364"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="98"/>
+      <source>Cannot execute pip</source>
+      <translation>Slike v sliki ni mogoče izvesti</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
+      <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
+      <translation>Slike v sliki ni mogoče izvesti, ker lahko manjka v vaši Pythonovi namestitvi. Poskrbite, da bo na vašem računalniku slika v sliki nameščena in poskusite ponovno. Spodleteli ukaz je bil: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="98"/>
-      <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="378"/>
-      <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
-      <translation type="unfinished">Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="382"/>
-      <location filename="../../addonmanager_installer_gui.py" line="409"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Continue with installation of {} anyway?</translation>
+      <translation>Ali želite vseeno nadaljevati z namestitvijo {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="401"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="112"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Namestitev paketa spodletela</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="405"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Za podrobnejši zapisnik o napaki poglejte Poročevalni pogled.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="446"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>Nameščanje dodatka</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="447"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Installing FreeCAD Addon &apos;{}&apos;</translation>
+      <translation>Nameščanje FreeCADovega dodatka &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="461"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>Preklic</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="462"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation type="unfinished">Cancelling installation of &apos;{}&apos;</translation>
+      <translation>Preklicevanje nameščanja &apos;{}&apos;</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
+      <source>{} was installed successfully</source>
+      <translation>{} je bil uspešno nameščen</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
+      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="68"/>
+      <source>Installation Failed</source>
+      <translation>Namestitev spodletela</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
-      <source>{} was installed successfully</source>
-      <translation type="unfinished">{} was installed successfully</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="502"/>
-      <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="68"/>
-      <source>Installation Failed</source>
-      <translation type="unfinished">Installation Failed</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_installer_gui.py" line="503"/>
       <source>Failed to install {}</source>
-      <translation type="unfinished">Failed to install {}</translation>
+      <translation>Spodletelo nameščanje {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="630"/>
+      <location filename="../../addonmanager_installer_gui.py" line="607"/>
       <location filename="../../install_to_toolbar.py" line="102"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Ustvari novo orodno vrstico</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="760"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
       <location filename="../../install_to_toolbar.py" line="245"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>Makro nameščen s FreeCAD-ovim Upravljalnikom dodatkov</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="762"/>
+      <location filename="../../addonmanager_installer_gui.py" line="735"/>
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>Zaženi (postopek), </translation>
+      <translation>Zaženi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>Podatkov na GitHubu ni mogoče brati: preverite spletno povezavo in nastavitve posredniškega strežnika ter poskusite ponovno.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="197"/>
       <source>XML failure while reading metadata from file {}</source>
-      <translation type="unfinished">XML failure while reading metadata from file {}</translation>
+      <translation>XML napaka pri branju samopodatkov iz datoteke {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="204"/>
       <source>Invalid metadata in file {}</source>
-      <translation type="unfinished">Invalid metadata in file {}</translation>
+      <translation>Neveljavni samopodatki v datoteki {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="246"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
+      <translation>OPOZORILO: Pot, določena v samopodatkih package.xml, se ne sklada s trenutno prevzeto vejo.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Name</source>
-      <translation>Ime</translation>
+      <translation>Naziv</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
@@ -1892,7 +1890,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_devmode.py" line="464"/>
       <source>Select the folder containing your Addon</source>
-      <translation type="unfinished">Select the folder containing your Addon</translation>
+      <translation>Izberite mapo z vašim dodatkom</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="593"/>
@@ -1903,22 +1901,22 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_devmode.py" line="600"/>
       <source>Scanning Addon for Python version compatibility</source>
-      <translation type="unfinished">Scanning Addon for Python version compatibility</translation>
+      <translation>Pregledovanje združljivosti dodatka s Pythonovo različico</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="631"/>
       <source>Minimum Python Version Detected</source>
-      <translation type="unfinished">Minimum Python Version Detected</translation>
+      <translation>Zaznana je minimalna Pythonova različica</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="635"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
-      <translation type="unfinished">Vermin auto-detected a required version of Python 3.{}</translation>
+      <translation>Vermin je samodejno zaznal zahtevano različico Pythona 3.{}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="647"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>Želite namestiti Vermin?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="651"/>
@@ -1928,13 +1926,13 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_devmode.py" line="658"/>
       <source>Attempting to install Vermin from PyPi</source>
-      <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
+      <translation>Poskus namestitve Vermina s PyPi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="685"/>
       <location filename="../../addonmanager_devmode.py" line="700"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Nameščanje spodletelo</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="690"/>
@@ -2120,7 +2118,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>značka, mostiček (povezovalni ostanke pri CNC izrezovanju)</translation>
+      <translation>značka, mostiček (povezovalni ostanek pri CNC izrezovanju)</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2132,7 +2130,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="266"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Krajevno ime</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="272"/>
@@ -2144,13 +2142,13 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Krajevno posodobljeno</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Daljinsko posodobljeno</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="129"/>
@@ -2233,23 +2231,23 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="355"/>
+      <location filename="../../Addon.py" line="348"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation type="unfinished">{}: Unrecognized internal workbench &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="388"/>
+      <location filename="../../Addon.py" line="381"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation type="unfinished">Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="396"/>
+      <location filename="../../Addon.py" line="389"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation type="unfinished">Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="778"/>
-      <location filename="../../Addon.py" line="794"/>
+      <location filename="../../Addon.py" line="767"/>
+      <location filename="../../Addon.py" line="783"/>
       <source>Got an error when trying to import {}</source>
       <translation type="unfinished">Got an error when trying to import {}</translation>
     </message>
@@ -2363,7 +2361,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="765"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
+      <translation>Upravljalnik dodatkov: delovni proces je med pridobivanjem {name} spodletel</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="780"/>
@@ -2373,7 +2371,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Upravljalnik dodatkov: delovni proces se ni mogel zaustaviti ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="843"/>
@@ -2463,12 +2461,12 @@ preveril razpoložljivost posodobitev za nameščene dodatke
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="151"/>
       <source>&amp;Addon manager</source>
       <translation type="unfinished">&amp;Addon manager</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="155"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
     </message>
@@ -2492,6 +2490,22 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <location filename="../../addonmanager_update_all_gui.py" line="197"/>
       <source>Finished updating the following addons</source>
       <translation type="unfinished">Finished updating the following addons</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="652"/>
+      <source>Auto-Created Macro Toolbar</source>
+      <translation type="unfinished">Auto-Created Macro Toolbar</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AddonManager.py" line="124"/>
+      <source>Addon Manager</source>
+      <translation>Upravljalnik dodatkov</translation>
     </message>
   </context>
 </TS>

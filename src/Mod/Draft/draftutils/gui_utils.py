@@ -123,33 +123,40 @@ def autogroup(obj):
                 return
 
     # autogroup code
+    active_group = None
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
         if active_group:
-            found = False
-            for o in active_group.Group:
-                if o.Name == obj.Name:
-                    found = True
-            if not found:
-                gr = active_group.Group
+            gr = active_group.Group
+            if not obj in gr:
                 gr.append(obj)
                 active_group.Group = gr
 
-    else:
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
+        # NativeIFC handling
+        try:
+            import ifc_tools
+            parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+            if parent != active_group:
+                ifc_tools.aggregate(obj, parent)
+        except:
+            pass
 
-        if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
-            # add object to active Arch Container
-            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+        # add object to active Arch Container
+        active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        if active_arch_obj != active_group:
             if obj in active_arch_obj.InListRecursive:
                 # do not autogroup if obj points to active_arch_obj to prevent cyclic references
                 return
             active_arch_obj.addObject(obj)
 
-        elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
-            # add object to active part and change it's placement accordingly
-            # so object does not jump to different position, works with App::Link
-            # if not scaled. Modified accordingly to realthunder suggestions
-            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+        # add object to active part and change it's placement accordingly
+        # so object does not jump to different position, works with App::Link
+        # if not scaled. Modified accordingly to realthunder suggestions
+        active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+        if active_part != active_group:
             if obj in active_part.InListRecursive:
                 # do not autogroup if obj points to active_part to prevent cyclic references
                 return
@@ -339,8 +346,6 @@ removeHidden = remove_hidden
 
 def get_diffuse_color(objs):
     """Get a (cumulative) diffuse color from one or more objects.
-    Part::Feature objects are processed. Objects with Groups are recursively
-    checked for those objects.
 
     If all tuples in the result are identical a list with a single tuple is
     returned. In theory all faces of an object can be set to the same diffuse
@@ -357,7 +362,49 @@ def get_diffuse_color(objs):
         The list will be empty if no valid object is found.
     """
     def _get_color(obj):
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj, "ColoredElements"):
+            if hasattr(obj, "Count") or hasattr(obj, "ElementCount"):
+                # Link and Link array.
+                if hasattr(obj, "Count"):
+                    count = obj.Count
+                    base = obj.Base
+                else:
+                    count = obj.ElementCount if obj.ElementCount > 0 else 1
+                    base = obj.LinkedObject
+                if base is None:
+                    return []
+                cols = _get_color(base) * count
+                if obj.ColoredElements is None:
+                    return cols
+                face_num = len(base.Shape.Faces)
+                for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                    if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
+                        if "." in elm:
+                            elm0, elm1 = elm.split(".")
+                            i = (int(elm0) * face_num) + int(elm1[4:]) - 1
+                            cols[i] = overide
+                        else:
+                            i = int(elm[4:]) - 1
+                            for j in range(count):
+                                cols[(j * face_num) + i] = overide
+                return cols
+            elif hasattr(obj, "ElementList"):
+                # LinkGroup
+                cols = []
+                for sub in obj.ElementList:
+                    sub_cols = _get_color(sub)
+                    if obj.ColoredElements is None:
+                        cols += sub_cols
+                    else:
+                        for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                            if sub.Name + ".Face" in elm:
+                                i = int(elm[(len(sub.Name) + 5):]) - 1
+                                sub_cols[i] = overide
+                        cols += sub_cols
+                return cols
+            else:
+                return []
+        elif hasattr(obj.ViewObject, "DiffuseColor"):
             if len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces):
                 return obj.ViewObject.DiffuseColor
             else:
@@ -375,7 +422,8 @@ def get_diffuse_color(objs):
     if not isinstance(objs, list):
         # Quick check to avoid processing a single object:
         obj = objs
-        if obj.isDerivedFrom("Part::Feature") \
+        if not hasattr(obj, "ColoredElements") \
+                and hasattr(obj.ViewObject, "DiffuseColor") \
                 and (len(obj.ViewObject.DiffuseColor) == 1 \
                         or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
             return obj.ViewObject.DiffuseColor

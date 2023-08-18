@@ -46,21 +46,21 @@ Q_OBJECT
 
 public:
     explicit QGMText(void);
-    ~QGMText() {}
+    ~QGMText() override = default;
 
     enum {Type = QGraphicsItem::UserType + 300};
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = nullptr ) override;
+    void paint( QPainter * painter,
+                const QStyleOptionGraphicsItem * option,
+                QWidget * widget = nullptr ) override;
 
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void showBox(bool b) { m_showBox = b; }
-    virtual bool showBox(void) { return m_showBox; }
+    virtual bool showBox() { return m_showBox; }
 
-    virtual void setPrettyNormal() override;
-    virtual void setPrettyPre() override;
-    virtual void setPrettySel() override;
+    void setPrettyNormal() override;
+    void setPrettyPre() override;
+    void setPrettySel() override;
 
 Q_SIGNALS:
     void dragging();
@@ -69,9 +69,9 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
     bool m_showBox;

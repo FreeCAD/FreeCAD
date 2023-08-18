@@ -64,6 +64,7 @@ void loadMeshResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Mesh);
+    Q_INIT_RESOURCE(Mesh_translation);
     Gui::Translator::instance()->refresh();
 }
 
@@ -155,7 +156,7 @@ PyMOD_INIT_FUNC(MeshGui)
     }
 
     // register preferences pages
-    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
+    (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> (QT_TRANSLATE_NOOP("QObject", "Display"));
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
 
     Mesh::Extension3MFFactory::addProducer(new MeshGui::ThumbnailExtensionProducer);

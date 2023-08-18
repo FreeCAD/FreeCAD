@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="285"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="545"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="818"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="671"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="745"/>
@@ -347,7 +347,7 @@
       <translation>უჯრედის თვისებების დაყენება</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>უჯრედის ჩასწორება</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>უჯრედ(ებ)ის გასუფთავება</translation>
     </message>
@@ -476,7 +476,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
   </context>
   <context>
@@ -561,7 +561,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
   </context>
   <context>
@@ -625,7 +625,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>ძირზე</translation>
+      <translation>ქვედა</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -719,16 +719,21 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>კოპირებისა და ჩასმის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
       <translation>ფსევდონიმი დაუშვებელ სიმბოლოებს შეიცავს!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>მაგალითად, მიუთითეთ უჯრედი მეტსახელით
 Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
+    </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>ელცხრილი</translation>
     </message>
   </context>
   <context>
@@ -906,7 +911,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1121,12 +1126,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>PDF-ად გატანა</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>PDF ფაილი</translation>
     </message>
@@ -1136,7 +1141,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>ცხრილი</translation>
+      <translation>ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1146,7 +1151,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;სწორება</translation>
+      <translation>&amp;Სწორება</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1157,7 +1162,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>

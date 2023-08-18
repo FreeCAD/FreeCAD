@@ -47,12 +47,12 @@ __url__    = "https://www.freecad.org"
 #  This module provides tools to build grid systems
 
 
-def makeGrid(name="Grid"):
+def makeGrid(name=None):
 
-    '''makeGrid(): makes a grid object'''
+    '''makeGrid([name]): makes a grid object'''
 
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Grid")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Grid")
     ArchGrid(obj)
     if FreeCAD.GuiUp:
         ViewProviderArchGrid(obj.ViewObject)

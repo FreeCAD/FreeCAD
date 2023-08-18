@@ -72,6 +72,7 @@ import json
 import os
 import sys
 import shutil
+import subprocess
 import tempfile
 import zipfile
 import re
@@ -88,6 +89,18 @@ TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
 LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 
+# Locations that require QM file generation (predominantly Python workbenches)
+GENERATE_QM = {
+    "AddonManager",
+    "Arch",
+    "Cloud",
+    "Draft",
+    "Inspection",
+    "Material",
+    "OpenSCAD",
+    "Tux",
+}
+
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
 
 locations = [
@@ -103,6 +116,7 @@ locations = [
         "../Mod/Draft/Resources/translations",
         "../Mod/Draft/Resources/Draft.qrc",
     ],
+    ["Base", "../Base/Resources/translations", "../Base/Resources/Base.qrc"],
     [
         "Drawing",
         "../Mod/Drawing/Gui/Resources/translations",
@@ -153,11 +167,6 @@ locations = [
         "Points",
         "../Mod/Points/Gui/Resources/translations",
         "../Mod/Points/Gui/Resources/Points.qrc",
-    ],
-    [
-        "Raytracing",
-        "../Mod/Raytracing/Gui/Resources/translations",
-        "../Mod/Raytracing/Gui/Resources/Raytracing.qrc",
     ],
     [
         "ReverseEngineering",
@@ -427,18 +436,29 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
     basename = os.path.basename(tsfilepath)[:-3]
     # filename fixes
     if basename + ".ts" in LEGACY_NAMING_MAP.values():
-        basename = list(LEGACY_NAMING_MAP.keys())[
+        basename = list(LEGACY_NAMING_MAP)[
             list(LEGACY_NAMING_MAP.values()).index(basename + ".ts")
         ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
     shutil.copyfile(tsfilepath, newpath)
-    os.system("lrelease " + newpath + " >/dev/null 2>&1")
-    newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
-    if not os.path.exists(newqm):
-        print("ERROR: impossible to create " + newqm + ", aborting")
-        sys.exit()
-    updateqrc(qrcpath, lncode)
+    if basename in GENERATE_QM:
+        print(f"Generating QM for {basename}")
+        try:
+            subprocess.run(
+                [
+                    "lrelease",
+                    newpath,
+                ],
+                timeout=5,
+            )
+        except Exception as e:
+            print(e)
+        newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
+        if not os.path.exists(newqm):
+            print("ERROR: failed to create " + newqm + ", aborting")
+            sys.exit()
+        updateqrc(qrcpath, lncode)
 
 
 def doLanguage(lncode):

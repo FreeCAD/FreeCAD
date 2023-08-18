@@ -74,10 +74,6 @@ if(BUILD_POINTS)
   add_subdirectory(Points)
 endif(BUILD_POINTS)
 
-if(BUILD_RAYTRACING)
-  add_subdirectory(Raytracing)
-endif(BUILD_RAYTRACING)
-
 if(BUILD_REVERSEENGINEERING)
   add_subdirectory(ReverseEngineering)
 endif(BUILD_REVERSEENGINEERING)

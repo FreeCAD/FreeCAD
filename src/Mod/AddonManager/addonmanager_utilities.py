@@ -149,9 +149,7 @@ def restart_freecad():
 
     args = QtWidgets.QApplication.arguments()[1:]
     if fci.FreeCADGui.getMainWindow().close():
-        QtCore.QProcess.startDetached(
-            QtWidgets.QApplication.applicationFilePath(), args
-        )
+        QtCore.QProcess.startDetached(QtWidgets.QApplication.applicationFilePath(), args)
 
 
 def get_zip_url(repo):
@@ -237,9 +235,7 @@ def get_readme_html_url(repo):
         return f"{repo.url}/blob/{repo.branch}/README.md"
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
-    fci.Console.PrintLog(
-        "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
-    )
+    fci.Console.PrintLog("Unrecognized git repo location '' -- guessing it is a GitLab instance...")
     return f"{repo.url}/-/blob/{repo.branch}/README.md"
 
 
@@ -324,9 +320,7 @@ def update_macro_installation_details(repo) -> None:
         fci.Console.PrintLog("Requested macro details for non-macro object\n")
         return
     test_file_one = os.path.join(fci.DataPaths().macro_dir, repo.macro.filename)
-    test_file_two = os.path.join(
-        fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename
-    )
+    test_file_two = os.path.join(fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename)
     if os.path.exists(test_file_one):
         repo.updated_timestamp = os.path.getmtime(test_file_one)
         repo.installed_version = get_macro_version_from_file(test_file_one)
@@ -408,7 +402,11 @@ def blocking_get(url: str, method=None) -> bytes:
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-        p = p.data()
+        if p:
+            try:
+                p = p.data()
+            except AttributeError:
+                pass
     elif requests and method is None or method == "requests":
         response = requests.get(url)
         if response.status_code == 200:
@@ -442,7 +440,7 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     return_code = None
     while return_code is None:
         try:
-            stdout, stderr = p.communicate(timeout=0.1)
+            stdout, stderr = p.communicate(timeout=10)
             return_code = p.returncode
         except subprocess.TimeoutExpired:
             if QtCore.QThread.currentThread().isInterruptionRequested():

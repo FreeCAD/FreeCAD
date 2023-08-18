@@ -70,7 +70,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "Path_Custom",
     QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-    QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+    QT_TRANSLATE_NOOP("Path_Custom", "Create custom G-code snippet"),
     PathCustom.SetupProperties,
 )
 

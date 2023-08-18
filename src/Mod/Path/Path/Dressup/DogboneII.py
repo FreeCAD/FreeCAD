@@ -184,10 +184,10 @@ class BoneState(object):
         return self.bone.tip()
 
     def boneIDs(self):
-        return list(sorted(self.bones.keys()))
+        return sorted(self.bones)
 
     def zLevels(self):
-        return list(sorted([bone.position().z for bone in self.bones.values()]))
+        return sorted([bone.position().z for bone in self.bones.values()])
 
     def length(self):
         return self.bone.length
@@ -245,7 +245,7 @@ class Proxy(object):
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if Incision == Incision.Custom"
+                "App::Property", "Dressup length if incision is set to 'custom'"
             ),
         )
         obj.Custom = 0.0

@@ -196,6 +196,7 @@ class Metadata:
     version: Version = None
     date: str = ""
     description: str = ""
+    type: str = ""
     maintainer: List[Contact] = field(default_factory=list)
     license: List[License] = field(default_factory=list)
     url: List[Url] = field(default_factory=list)
@@ -269,11 +270,17 @@ class MetadataReader:
         metadata object."""
 
         tag = child.tag[len(namespace) :]
-        if tag in ["name", "date", "description", "icon", "classname", "subdirectory"]:
+        if tag in ["name", "date", "description", "type", "icon", "classname", "subdirectory"]:
             # Text-only elements
             metadata.__dict__[tag] = child.text
         elif tag in ["version", "freecadmin", "freecadmax", "pythonmin"]:
-            metadata.__dict__[tag] = Version(from_string=child.text)
+            try:
+                metadata.__dict__[tag] = Version(from_string=child.text)
+            except ValueError:
+                print(
+                    f"Invalid version specified for tag {tag} in Addon {metadata.name}: {child.text}"
+                )
+                metadata.__dict__[tag] = Version(from_list=[0, 0, 0])
         elif tag in ["tag", "file"]:
             # Lists of strings
             if child.text:
@@ -321,9 +328,7 @@ class MetadataReader:
         v_gte = child.attrib["version_gte"] if "version_gte" in child.attrib else ""
         v_gt = child.attrib["version_gt"] if "version_gt" in child.attrib else ""
         condition = child.attrib["condition"] if "condition" in child.attrib else ""
-        optional = (
-            "optional" in child.attrib and child.attrib["optional"].lower() == "true"
-        )
+        optional = "optional" in child.attrib and child.attrib["optional"].lower() == "true"
         dependency_type = DependencyType.automatic
         if "type" in child.attrib and child.attrib["type"] in DependencyType.__dict__:
             dependency_type = DependencyType[child.attrib["type"]]
@@ -349,17 +354,13 @@ class MetadataReader:
             if content_type in known_content_types:
                 if content_type not in metadata.content:
                     metadata.content[content_type] = []
-                metadata.content[content_type].append(
-                    MetadataReader._create_node(namespace, child)
-                )
+                metadata.content[content_type].append(MetadataReader._create_node(namespace, child))
 
     @staticmethod
     def _create_node(namespace, child) -> Metadata:
         new_content_item = Metadata()
         for content_child in child:
-            MetadataReader._parse_child_element(
-                namespace, content_child, new_content_item
-            )
+            MetadataReader._parse_child_element(namespace, content_child, new_content_item)
         return new_content_item
 
 

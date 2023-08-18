@@ -155,7 +155,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 try {
                     STEPCAFControl_Reader aReader;
                     aReader.SetColorMode(true);
@@ -184,7 +184,7 @@ private:
                     pcDoc->recompute();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
 
@@ -332,7 +332,7 @@ private:
             }
 
             Base::FileInfo file(Utf8Name.c_str());
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 STEPCAFControl_Writer writer;
                 Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
                 writer.Transfer(hDoc, STEPControl_AsIs);
@@ -353,7 +353,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
@@ -368,7 +368,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+            else if (file.hasExtension({"glb", "gltf"})) {
 #if OCC_VERSION_HEX >= 0x070500
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));

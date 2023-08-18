@@ -75,7 +75,7 @@
       <item>
        <widget class="QTreeView" name="tools">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Available Tool Bits to choose from.</string>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
@@ -98,7 +98,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Create ToolControllers for the selected toolbits and add them to the Job</string>
         </property>
         <property name="text">
          <string>Add To Job</string>

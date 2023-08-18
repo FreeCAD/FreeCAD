@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Interpreter.h>
 
 #include "PropertyVisualLayerList.h"
 
@@ -36,7 +36,7 @@ using namespace std;
 using namespace SketcherGui;
 
 
-TYPESYSTEM_SOURCE(SketcherGui::PropertyVisualLayerList , App::PropertyLists)
+TYPESYSTEM_SOURCE(SketcherGui::PropertyVisualLayerList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -48,29 +48,30 @@ PropertyVisualLayerList::~PropertyVisualLayerList() = default;
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyVisualLayerList::getPyObject()
+PyObject* PropertyVisualLayerList::getPyObject()
 {
     THROWM(Base::NotImplementedError, "PropertyVisualLayerList has no python counterpart");
 }
 
-VisualLayer PropertyVisualLayerList::getPyValue(PyObject *item) const {
+VisualLayer PropertyVisualLayerList::getPyValue(PyObject* item) const
+{
 
-    (void) item;
+    (void)item;
     THROWM(Base::NotImplementedError, "PropertyVisualLayerList has no python counterpart");
 }
 
-void PropertyVisualLayerList::Save (Base::Writer &writer) const
+void PropertyVisualLayerList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<VisualLayerList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<VisualLayerList count=\"" << getSize() << "\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         _lValueList[i].Save(writer);
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</VisualLayerList>" << endl ;
+    writer.Stream() << writer.ind() << "</VisualLayerList>" << endl;
 }
 
-void PropertyVisualLayerList::Restore(Base::XMLReader &reader)
+void PropertyVisualLayerList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VisualLayerList");
     // get the value of my attribute
@@ -90,19 +91,19 @@ void PropertyVisualLayerList::Restore(Base::XMLReader &reader)
     setValues(std::move(layers));
 }
 
-Property *PropertyVisualLayerList::Copy() const
+Property* PropertyVisualLayerList::Copy() const
 {
-    PropertyVisualLayerList *p= new PropertyVisualLayerList();
+    PropertyVisualLayerList* p = new PropertyVisualLayerList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyVisualLayerList::Paste(const Property &from)
+void PropertyVisualLayerList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyVisualLayerList&>(from)._lValueList);
 }
 
-unsigned int PropertyVisualLayerList::getMemSize () const
+unsigned int PropertyVisualLayerList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(VisualLayer));
 }

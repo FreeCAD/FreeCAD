@@ -61,7 +61,7 @@ short Circle::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Circle::execute(void)
+App::DocumentObjectExecReturn *Circle::execute()
 {
     gp_Circ circle;
     circle.SetRadius(this->Radius.getValue());

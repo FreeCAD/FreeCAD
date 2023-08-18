@@ -116,12 +116,14 @@ void Matrix4D::nullify()
 
 bool Matrix4D::isNull() const
 {
+    //NOLINTBEGIN
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (dMtrx4D[i][j] != 0.0)
                 return false;
         }
     }
+    //NOLINTEND
 
     return true;
 }
@@ -626,9 +628,11 @@ unsigned long Matrix4D::getMemSpace ()
 
 void Matrix4D::Print () const
 {
-    short i;
-    for (i = 0; i < 4; i++)
+    //NOLINTBEGIN
+    for (short i = 0; i < 4; i++) {
         printf("%9.3f %9.3f %9.3f %9.3f\n", dMtrx4D[i][0], dMtrx4D[i][1], dMtrx4D[i][2], dMtrx4D[i][3]);
+    }
+    //NOLINTEND
 }
 
 void Matrix4D::transpose ()
@@ -650,11 +654,12 @@ void Matrix4D::transpose ()
 std::string Matrix4D::toString() const
 {
   std::stringstream str;
-  for (int i = 0; i < 4; i++)
-  {
+  //NOLINTBEGIN
+  for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++)
       str << dMtrx4D[i][j] << " ";
   }
+  //NOLINTEND
 
   return str.str();
 }
@@ -665,11 +670,12 @@ void Matrix4D::fromString(const std::string &str)
   std::stringstream input;
   input.str(str);
 
-  for (int i = 0; i < 4; i++)
-  {
+  //NOLINTBEGIN
+  for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++)
       input >> dMtrx4D[i][j];
   }
+  //NOLINTEND
 }
 
 // Analyse the a transformation Matrix and describe the transformation

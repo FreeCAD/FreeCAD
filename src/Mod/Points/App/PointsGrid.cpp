@@ -74,8 +74,8 @@ PointsGrid::PointsGrid (const PointKernel &rclM, double fGridLen)
   _fMinX(0.0f), _fMinY(0.0f), _fMinZ(0.0f)
 {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts.Add(*it);
+  for (const auto & pnt : *_pclPoints)
+    clBBPts.Add(pnt);
   Rebuild(std::max<unsigned long>((unsigned long)(clBBPts.LengthX() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthY() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthZ() / fGridLen), 1));
@@ -131,8 +131,8 @@ void PointsGrid::InitGrid ()
   //
   {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts.Add(*it);
+  for (const auto & pnt : *_pclPoints)
+    clBBPts.Add(pnt);
 
   double fLengthX = clBBPts.LengthX();
   double fLengthY = clBBPts.LengthY();
@@ -289,8 +289,8 @@ void PointsGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMa
     // There should be about 10 (?!?!) facets per grid
     // or max grids should not exceed 10000
     Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
-    for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-        clBBPtsEnlarged.Add(*it);
+    for (const auto & pnt : *_pclPoints)
+        clBBPtsEnlarged.Add(pnt);
     double fVolElem;
 
     if (_ulCtElements > (ulMaxGrids * ulCtGrid))
@@ -326,8 +326,8 @@ void PointsGrid::CalculateGridLength (int iCtGridPerAxis)
   // There should be about 10 (?!?!) facets per grid
   // or max grids should not exceed 10000
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts.Add(*it);
+  for (const auto & pnt : *_pclPoints)
+    clBBPts.Add(pnt);
 
   double fLenghtX = clBBPts.LengthX();
   double fLenghtY = clBBPts.LengthY();
@@ -669,9 +669,9 @@ bool PointsGrid::Verify() const
   {
     std::vector<unsigned long> aulElements;
     it.GetElements( aulElements );
-    for ( std::vector<unsigned long>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
+    for (unsigned long element : aulElements)
     {
-      const Base::Vector3d& cP = _pclPoints->getPoint(*itP);
+      const Base::Vector3d& cP = _pclPoints->getPoint(element);
       if (!it.GetBoundBox().IsInBox(cP))
         return false; // point doesn't lie inside the grid element
     }
@@ -689,9 +689,9 @@ void PointsGrid::RebuildGrid ()
   // Fill data structure
 
   unsigned long i = 0;
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
+  for (const auto & pnt : *_pclPoints)
   {
-    AddPoint(*it, i++);
+    AddPoint(pnt, i++);
   }
 }
 

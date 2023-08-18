@@ -32,8 +32,8 @@ import shlex
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a smoothieboard. This postprocessor, once placed
+take a pseudo-G-code fragment outputted by a Path object, and output
+real G-code suitable for a smoothieboard. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 

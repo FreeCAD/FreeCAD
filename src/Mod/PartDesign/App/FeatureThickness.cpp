@@ -88,8 +88,8 @@ App::DocumentObjectExecReturn *Thickness::execute()
 
     TopTools_ListOfShape closingFaces;
 
-    for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
-        TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it->c_str()));
+    for (const auto & it : subStrings) {
+        TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it.c_str()));
         closingFaces.Append(face);
     }
 

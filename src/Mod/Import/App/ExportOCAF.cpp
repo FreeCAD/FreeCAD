@@ -184,7 +184,7 @@ void ExportOCAF::createNode(App::Part* part, int& root_id,
 {
     TDF_Label shapeLabel = aShapeTool->NewShape();
     Handle(TDataStd_Name) N;
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
     Base::Placement pl = part->Placement.getValue();
     Base::Rotation rot(pl.getRotation());
@@ -241,7 +241,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     TDF_Label shapeLabel = aShapeTool->NewShape();
     aShapeTool->SetShape(shapeLabel, baseShape);
 
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
 
 /*

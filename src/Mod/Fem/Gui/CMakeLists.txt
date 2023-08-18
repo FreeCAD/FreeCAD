@@ -186,7 +186,11 @@ SET(FemGui_DLG_SRCS
 )
 SOURCE_GROUP("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
-qt_add_resources(FemResource_SRCS Resources/Fem.qrc)
+set (Fem_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Fem_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Fem_TR_QRC} ${QM_SRCS})
+qt_add_resources(FemResource_SRCS Resources/Fem.qrc ${Fem_TR_QRC})
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 
 

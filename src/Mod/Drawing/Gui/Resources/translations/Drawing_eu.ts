@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="476"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Oharpena</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Oharpen-bista bat txertatzen du marrazki aktiboan</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="523"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="524"/>
+      <location filename="../../Command.cpp" line="525"/>
       <source>&amp;Clip</source>
       <translation>&amp;Ebaki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="528"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Txertatu ebaketa talde bat marrazki aktiboan</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Zirriborratu bista</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Txertatu marrazki aktiboan hautatutako objektu(ar)en Zirriborro ikuspegi bat</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>File</source>
       <translation>Fitxategia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="627"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Esportatu orria...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Export a page to an SVG file</source>
       <translation>Esportatu orri bat SVG fitxategi batera</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
       <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Insert new A3 landscape drawing</source>
       <translation>Txertatu A3 tamainako marrazki horizontala</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Insert view in drawing</source>
       <translation>Txertatu bista marrazkian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Txertatu zati baten bista berria marrazki aktiboan</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Open &amp;browser view</source>
       <translation>Ireki &amp;nabigatzailearen ikuspegia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Hautatutako orria nabigatzaile batean irekitzen du</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Insert orthographic views</source>
       <translation>Txertatu bista ortografikoak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Txertatu zati baten proiekzio ortografiko bat marrazki aktiboan</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="678"/>
+      <location filename="../../Command.cpp" line="679"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="679"/>
+      <location filename="../../Command.cpp" line="680"/>
       <source>Project shape...</source>
       <translation>Proiektatu forma...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
       <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="682"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Proiektatu forma erabiltzaileak definitutako plano baten gainean</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>&amp;Spreadsheet View</source>
       <translation>&amp;Kalkulu-orria ikuspegia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="747"/>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="750"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Hautatutako kalkulu-orri baten bista bat txertatzen du marrazki aktiboan</translation>
     </message>
@@ -219,18 +219,18 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Drawing</source>
       <translation>Marrazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>&amp;Symbol</source>
       <translation>I&amp;kurra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>SVG fitxategi bateko ikur bat txertatzen du marrazki aktiboan</translation>
     </message>
@@ -635,32 +635,37 @@ Jarraitu nahi duzu?</translation>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="104"/>
+      <source>Page</source>
+      <translation>Orrialdea</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Landscape</source>
       <translation>Horizontala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Portrait</source>
       <translation>Bertikala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="229"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Txertatu %1%2 %3 marrazki berria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Txertatu %1%2 %3 (%4) marrazki berria</translation>
     </message>
@@ -669,40 +674,30 @@ Jarraitu nahi duzu?</translation>
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Choose an SVG file to open</source>
       <translation>Hautatu SVG fitxategi bat irekitzeko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="590"/>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="645"/>
       <source>Scalable Vector Graphic</source>
       <translation>Grafiko bektorial eskalagarria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="400"/>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="638"/>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="323"/>
       <source>Select a Part object.</source>
       <translation>Hautatu objektu zati bat.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="330"/>
-      <location filename="../../Command.cpp" line="409"/>
-      <location filename="../../Command.cpp" line="490"/>
-      <location filename="../../Command.cpp" line="538"/>
-      <location filename="../../Command.cpp" line="583"/>
-      <location filename="../../Command.cpp" line="764"/>
-      <source>No page found</source>
-      <translation>Ez da orririk aurkitu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="331"/>
@@ -711,32 +706,42 @@ Jarraitu nahi duzu?</translation>
       <location filename="../../Command.cpp" line="539"/>
       <location filename="../../Command.cpp" line="584"/>
       <location filename="../../Command.cpp" line="765"/>
+      <source>No page found</source>
+      <translation>Ez da orririk aurkitu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="332"/>
+      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="540"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="766"/>
       <source>Create a page first.</source>
       <translation>Aldez aurretik sortu orri bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Select exactly one Part object.</source>
       <translation>Hautatu objektu zati zehatz bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Select one Page object.</source>
       <translation>Hautatu objektu-orri bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="646"/>
       <source>All Files</source>
       <translation>Fitxategi guztiak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="648"/>
       <source>Export page</source>
       <translation>Esportatu orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="759"/>
+      <location filename="../../Command.cpp" line="760"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Hautatu kalkulu-orri objektu zehatz bat.</translation>
     </message>

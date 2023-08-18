@@ -1,7 +1,9 @@
 target_sources(
     Tests_run
         PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Branding.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/ComplexGeoData.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Expression.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ElementMap.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/IndexedName.cpp
@@ -9,5 +11,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/MappedElement.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/MappedName.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Metadata.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/StringHasher.cpp
 )

@@ -848,8 +848,8 @@ PyObject* TopoShapeFacePy::cutHoles(PyObject *args)
             if (!wires.empty()) {
                 const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
                 BRepBuilderAPI_MakeFace mkFace(f);
-                for (std::vector<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it)
-                    mkFace.Add(*it);
+                for (const auto & wire : wires)
+                    mkFace.Add(wire);
                 if (!mkFace.IsDone()) {
                     switch (mkFace.Error()) {
                     case BRepBuilderAPI_NoFace:

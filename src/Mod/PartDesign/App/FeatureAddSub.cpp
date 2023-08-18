@@ -97,10 +97,10 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &s
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureAddSubPython, PartDesign::FeatureAddSub)
-template<> const char* PartDesign::FeatureAddSubPython::getViewProviderName(void) const {
+template<> const char* PartDesign::FeatureAddSubPython::getViewProviderName() const {
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject(void) {
+template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);

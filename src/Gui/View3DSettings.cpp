@@ -442,28 +442,20 @@ NaviCubeSettings::NaviCubeSettings(ParameterGrp::handle hGrp,
         [this](ParameterGrp*, ParameterGrp::ParamType, const char *Name, const char *) {
             parameterChanged(Name);
     });
-
 }
 
 NaviCubeSettings::~NaviCubeSettings()
 {
     connectParameterChanged.disconnect();
 }
-QString NaviCubeSettings::getDefaultSansserifFont()
-{
-    // "FreeCAD NaviCube" family susbtitutions are set in MainWindow::MainWindow
-    QFont font(QStringLiteral("FreeCAD NaviCube"));
-    font.setStyleHint(QFont::SansSerif);
-    // QFontInfo is required to get the actually matched font family
-    return QFontInfo(font).family();
-    // return QStringLiteral("FreeCAD NaviCube");
-}
+
 void NaviCubeSettings::applySettings()
 {
     parameterChanged("BaseColor");
     parameterChanged("EmphaseColor");
     parameterChanged("HiliteColor");
     parameterChanged("CornerNaviCube");
+    parameterChanged("OffsetX"); // Updates OffsetY too
     parameterChanged("CubeSize");
     parameterChanged("ChamferSize");
     parameterChanged("NaviRotateToNearest");
@@ -504,9 +496,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setFontZoom(hGrp->GetFloat("FontZoom", 0.3));
     }
     else if (strcmp(Name, "FontString") == 0) {
-        std::string font =
-            hGrp->GetASCII("FontString", getDefaultSansserifFont().toStdString().c_str());
-        nc->setFont(font);
+        nc->setFont(hGrp->GetASCII("FontString"));
     }
     else if (strcmp(Name, "FontWeight") == 0) {
         nc->setFontWeight(hGrp->GetInt("FontWeight", 0));
@@ -519,7 +509,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
         // update default contrast colors
         parameterChanged("EmphaseColor");
-   }
+    }
     else if (strcmp(Name, "EmphaseColor") == 0) {
         App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
         unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;
@@ -534,7 +524,7 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));
     }
     else if (strcmp(Name, "ShowCS") == 0) {
-        nc->setShowCS(hGrp->GetBool("ShowCS", 1));
+        nc->setShowCS(hGrp->GetBool("ShowCS", true));
     }
     else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
              || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0

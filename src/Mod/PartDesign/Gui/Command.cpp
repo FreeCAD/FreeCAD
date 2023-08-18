@@ -145,7 +145,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QApplication::translate("Exception", e.what()));
     } catch (Standard_Failure &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.GetMessageString()));
     }
@@ -406,7 +406,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     } catch (Base::Exception &e) {
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(),
-                QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
+                QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
     }
 }
@@ -444,25 +444,41 @@ void CmdPartDesignClone::activated(int iMsg)
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
+
         auto obj = objs[0];
-        std::string FeatName = getUniqueObjectName("Clone",obj);
-        std::string BodyName = getUniqueObjectName("Body",obj);
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::Body','" << BodyName << "')");
-        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::FeatureBase','" << FeatName << "')");
-        auto Feat = obj->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(obj);
-        FCMD_OBJ_CMD(Feat,"BaseFeature = " << objCmd);
-        FCMD_OBJ_CMD(Feat,"Placement = " << objCmd << ".Placement");
-        FCMD_OBJ_CMD(Feat,"setEditorMode('Placement',0)");
+        std::string cloneName = getUniqueObjectName("Clone", obj);
+        std::string bodyName = getUniqueObjectName("Body", obj);
 
-        auto Body = obj->getDocument()->getObject(BodyName.c_str());
-        FCMD_OBJ_CMD(Body,"Group = [" << getObjectCmd(Feat) << "]");
+        // Create body and clone
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::Body','" << bodyName << "')");
+        Gui::cmdAppDocument(obj, std::stringstream()
+                            << "addObject('PartDesign::FeatureBase','" << cloneName << "')");
 
-        // Set the tip of the body
-        FCMD_OBJ_CMD(Body,"Tip = " << getObjectCmd(Feat));
+        auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
+        auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
+
+        // In the first step set the group link and tip of the body
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Group = [" << getObjectCmd(cloneObj) << "]");
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "Tip = " << getObjectCmd(cloneObj));
+
+        // In the second step set the link of the base feature
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "BaseFeature = " << objCmd);
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "Placement = " << objCmd << ".Placement");
+        Gui::cmdAppObject(cloneObj, std::stringstream()
+                          << "setEditorMode('Placement', 0)");
+
         updateActive();
-        copyVisual(Feat, "Transparency", obj);
-        copyVisual(Feat, "DisplayMode", obj);
+        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "LineColor", obj);
+        copyVisual(cloneObj, "PointColor", obj);
+        copyVisual(cloneObj, "Transparency", obj);
+        copyVisual(cloneObj, "DisplayMode", obj);
         commitCommand();
     }
 }
@@ -786,8 +802,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty()) {
         bool onlyAllowed = true;
-        for (auto it = selection.begin(); it!=selection.end(); ++it){
-            if (PartDesign::Body::findBodyOf((*it).getObject()) != pcActiveBody) {  // the selected objects must belong to the body
+        for (const auto & it : selection) {
+            if (PartDesign::Body::findBodyOf(it.getObject()) != pcActiveBody) {  // the selected objects must belong to the body
                 onlyAllowed = false;
                 break;
             }
@@ -1617,8 +1633,8 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
 {
     std::ostringstream str;
     str << '(' << Gui::Command::getObjectCmd(base) << ",[";
-    for (std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
-        str << "'" << *it << "',";
+    for (const auto & SubName : SubNames){
+        str << "'" << SubName << "',";
     }
     str << "])";
 
@@ -1871,8 +1887,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::stringstream str;
         str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
-        for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it) {
-            str << cmd->getObjectCmd(*it) << ",";
+        for (auto feature : features) {
+            str << cmd->getObjectCmd(feature) << ",";
         }
         str << "]";
 
@@ -1936,8 +1952,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     }
 
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
-    for (std::size_t i = 0; i < features.size(); i++) {
-        if (activeBody != PartDesignGui::getBodyFor(features[i], false)) {
+    for (auto feature : features) {
+        if (activeBody != PartDesignGui::getBodyFor(feature, false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
                 QObject::tr("Please select only one feature in an active body."));
             return;
@@ -2352,11 +2368,10 @@ void CmdPartDesignBoolean::activated(int iMsg)
     bool updateDocument = false;
     if (BodyFilter.match() && !BodyFilter.Result.empty()) {
         std::vector<App::DocumentObject*> bodies;
-        std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
-        for (; i != BodyFilter.Result.end(); i++) {
-            for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
-                if (j->getObject() != pcActiveBody)
-                    bodies.push_back(j->getObject());
+        for (auto& results : BodyFilter.Result) {
+            for (auto & result : results) {
+                if (result.getObject() != pcActiveBody)
+                    bodies.push_back(result.getObject());
             }
         }
         if (!bodies.empty()) {

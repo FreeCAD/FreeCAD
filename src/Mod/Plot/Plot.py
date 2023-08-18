@@ -30,14 +30,20 @@ try:
     import matplotlib
     matplotlib.use('Qt5Agg')
 
-    import matplotlib.pyplot as plt
+    # Force matplotlib to use PySide backend by temporarily unloading PyQt
+    if 'PyQt5.QtCore' in sys.modules:
+        del sys.modules['PyQt5.QtCore']
+        import matplotlib.pyplot as plt
+        import PyQt5.QtCore
+    else:
+        import matplotlib.pyplot as plt
 
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
     from matplotlib.figure import Figure
 except ImportError:
-    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
+    FreeCAD.Console.PrintWarning("The 'matplotlib' Python package was not found. Plot module cannot be loaded\n")
     raise ImportError("matplotlib not installed")
 
 

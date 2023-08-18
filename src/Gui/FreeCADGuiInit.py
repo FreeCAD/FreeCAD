@@ -57,7 +57,7 @@ class Workbench:
 
     def Initialize(self):
         """Initializes this workbench."""
-        App.PrintWarning(str(self) + ": Workbench.Initialize() not implemented in subclass!")
+        App.Console.PrintWarning(str(self) + ": Workbench.Initialize() not implemented in subclass!")
     def ContextMenu(self, recipient):
         pass
     def appendToolbar(self,name,cmds):

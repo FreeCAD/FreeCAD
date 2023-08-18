@@ -130,6 +130,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/comparams_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
+    Path/Post/scripts/estlcam_post.py
     Path/Post/scripts/example_pre.py
     Path/Post/scripts/fablin_post.py
     Path/Post/scripts/fanuc_post.py
@@ -279,6 +280,7 @@ SET(PathTests_SRCS
     PathTests/drill_test1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
+    PathTests/test_profile.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_filenaming.fcstd
     PathTests/test_geomop.fcstd
@@ -306,6 +308,7 @@ SET(PathTests_SRCS
     PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
+    PathTests/TestPathProfile.py
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathRotationGenerator.py
     PathTests/TestPathSetupSheet.py

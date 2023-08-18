@@ -609,7 +609,7 @@ protected:
     /** @name Attributes
      *  Set by the inherited constructor to set up the most important properties
      *  of the command. In the Command constructor are set default values!
-     *  The real values should be set in the constructor of the inhereting class.
+     *  The real values should be set in the constructor of the inheriting class.
      */
     //@{
     const char* sAppModule;

@@ -1,5 +1,0 @@
-/** \defgroup RAYTRACING Raytracing
- *  \ingroup CWORKBENCHES
- *  \brief Provides tools to generate rendered images using external renderers
- */
-

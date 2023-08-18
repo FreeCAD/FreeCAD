@@ -13,9 +13,50 @@ that reference the same configurable object</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="441"/>
+      <location filename="../../Application.cpp" line="446"/>
       <source>Unnamed</source>
       <translation>Безымянный</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::Origin</name>
+    <message>
+      <location filename="../../Origin.cpp" line="140"/>
+      <source>X-axis</source>
+      <translation>Ось X</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="141"/>
+      <source>Y-axis</source>
+      <translation>Ось-Y</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="142"/>
+      <source>Z-axis</source>
+      <translation>Ось-Z</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="143"/>
+      <source>XY-plane</source>
+      <translation>XY плоскость</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="144"/>
+      <source>XZ-plane</source>
+      <translation>XZ-плоскость</translation>
+    </message>
+    <message>
+      <location filename="../../Origin.cpp" line="145"/>
+      <source>YZ-plane</source>
+      <translation>YZ-плоскость</translation>
+    </message>
+  </context>
+  <context>
+    <name>App::OriginGroupExtension</name>
+    <message>
+      <location filename="../../OriginGroupExtension.cpp" line="134"/>
+      <source>Origin</source>
+      <translation>Начало координат</translation>
     </message>
   </context>
 </TS>

@@ -409,8 +409,8 @@ PyResource::PyResource() : myDlg(nullptr)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
-        SignalConnect* sc = *it;
+    for (auto it : mySignals) {
+        SignalConnect* sc = it;
         delete sc;
     }
 }
@@ -582,7 +582,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Float(v.toDouble());
         break;
     case QMetaType::Bool:
-        item = Py::Boolean(v.toBool() ? 1 : 0);
+        item = Py::Boolean(v.toBool());
         break;
     case QMetaType::UInt:
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));

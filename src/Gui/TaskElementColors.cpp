@@ -28,7 +28,7 @@
 # include <sstream>
 #endif
 
-#include <App/ComplexGeoData.h>
+#include <App/ElementNamingUtils.h>
 #include <App/Document.h>
 
 #include "TaskElementColors.h"
@@ -47,7 +47,7 @@
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 class ElementColors::Private: public Gui::SelectionGate
 {
@@ -84,7 +84,7 @@ public:
                 auto obj = vpParent->getObject();
                 editDoc = obj->getDocument()->getName();
                 editObj = obj->getNameInDocument();
-                editSub = Data::ComplexGeoData::noElementName(editSub.c_str());
+                editSub = Data::noElementName(editSub.c_str());
             }
         }
         if(editDoc.empty()) {
@@ -162,7 +162,7 @@ public:
             c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
             auto item = new QListWidgetItem(QIcon(px),
-                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()),
+                    QString::fromLatin1(Data::oldElementName(v.first.c_str()).c_str()),
                     ui->elementList);
             item->setData(Qt::UserRole,c);
             item->setData(Qt::UserRole+1,QString::fromLatin1(v.first.c_str()));
@@ -332,10 +332,12 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
-    d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ElementColors::slotDeleteDocument, this, bp::_1));
-    d->connectDelObj = Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ElementColors::slotDeleteObject, this, bp::_1));
+    //NOLINTBEGIN
+    d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(std::bind
+        (&ElementColors::slotDeleteDocument, this, sp::_1));
+    d->connectDelObj = Application::Instance->signalDeletedObject.connect(std::bind
+        (&ElementColors::slotDeleteObject, this, sp::_1));
+    //NOLINTEND
 
     d->populate();
 }
@@ -419,7 +421,7 @@ void ElementColors::onHideSelectionClicked() {
         if(!subs.empty()) {
             for(auto &sub : subs) {
                 if(boost::starts_with(sub,d->editSub)) {
-                    auto name = Data::ComplexGeoData::noElementName(sub.c_str()+d->editSub.size());
+                    auto name = Data::noElementName(sub.c_str()+d->editSub.size());
                     name += ViewProvider::hiddenMarker();
                     d->addItem(-1,name.c_str());
                 }

@@ -71,7 +71,7 @@ def move(objectslist, vector, copy=False):
         doc = App.ActiveDocument
         for obj in objectslist:
             if obj.isDerivedFrom("App::DocumentObjectGroup") \
-                    and obj.Name not in newgroups.keys():
+                    and obj.Name not in newgroups:
                 newgroups[obj.Name] = doc.addObject(obj.TypeId,
                                                     utils.get_real_name(obj.Name))
 

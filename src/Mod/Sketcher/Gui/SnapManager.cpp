@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#endif  // #ifndef _PreComp_
+#endif// #ifndef _PreComp_
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -52,7 +52,8 @@ inline int ViewProviderSketchSnapAttorney::getPreselectCurve(const ViewProviderS
 }
 
 /**************************** ParameterObserver nested class *****************************/
-SnapManager::ParameterObserver::ParameterObserver(SnapManager& client) : client(client)
+SnapManager::ParameterObserver::ParameterObserver(SnapManager& client)
+    : client(client)
 {
     initParameters();
     subscribeToParameters();
@@ -71,13 +72,21 @@ void SnapManager::ParameterObserver::initParameters()
     // key->second              => Update function to be called for the parameter,
     str2updatefunction = {
         {"Snap",
-            [this](const std::string& param) {updateSnapParameter(param); }},
+         [this](const std::string& param) {
+             updateSnapParameter(param);
+         }},
         {"SnapToObjects",
-            [this](const std::string& param) {updateSnapToObjectParameter(param); }},
+         [this](const std::string& param) {
+             updateSnapToObjectParameter(param);
+         }},
         {"SnapToGrid",
-            [this](const std::string& param) {updateSnapToGridParameter(param); }},
+         [this](const std::string& param) {
+             updateSnapToGridParameter(param);
+         }},
         {"SnapAngle",
-            [this](const std::string& param) {updateSnapAngleParameter(param); }},
+         [this](const std::string& param) {
+             updateSnapAngleParameter(param);
+         }},
     };
 
     for (auto& val : str2updatefunction) {
@@ -122,8 +131,9 @@ void SnapManager::ParameterObserver::subscribeToParameters()
         ParameterGrp::handle hGrp = getParameterGrpHandle();
         hGrp->Attach(this);
     }
-    catch (const Base::ValueError& e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
-        Base::Console().Error("SnapManager: Malformed parameter string: %s\n", e.what());
+    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
+                                       // exception is not propagated
+        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
@@ -133,12 +143,15 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
         ParameterGrp::handle hGrp = getParameterGrpHandle();
         hGrp->Detach(this);
     }
-    catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
-        Base::Console().Error("SnapManager: Malformed parameter string: %s\n", e.what());
+    catch (const Base::ValueError&
+               e) {// ensure that if parameter strings are not well-formed, the program is not
+                   // terminated when calling the noexcept destructor.
+        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
-void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
+void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller,
+                                              const char* sReason)
 {
     (void)rCaller;
 
@@ -153,27 +166,32 @@ void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCalle
 
 ParameterGrp::handle SnapManager::ParameterObserver::getParameterGrpHandle()
 {
-    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    return App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
 }
 
 //**************************** SnapManager class ******************************
 
-SnapManager::SnapManager(ViewProviderSketch &vp):viewProvider(vp), angleSnapRequested(false), referencePoint(Base::Vector2d(0.,0.)), lastMouseAngle(0.0)
+SnapManager::SnapManager(ViewProviderSketch& vp)
+    : viewProvider(vp)
+    , angleSnapRequested(false)
+    , referencePoint(Base::Vector2d(0., 0.))
+    , lastMouseAngle(0.0)
 {
     // Create parameter observer and initialise watched parameters
     pObserver = std::make_unique<SnapManager::ParameterObserver>(*this);
 }
 
-SnapManager::~SnapManager() {}
+SnapManager::~SnapManager()
+{}
 
 bool SnapManager::snap(double& x, double& y)
 {
-    if (!snapRequested)
-    {
+    if (!snapRequested) {
         return false;
     }
 
-    //In order of priority :
+    // In order of priority :
 
     // 1 - Snap at an angle
     if (angleSnapRequested && QApplication::keyboardModifiers() == Qt::ControlModifier) {
@@ -184,13 +202,14 @@ bool SnapManager::snap(double& x, double& y)
     }
 
     // 2 - Snap to objects
-    if (snapToObjectsRequested
-        && snapToObject(x, y)) {
+    if (snapToObjectsRequested && snapToObject(x, y)) {
         return true;
     }
-    
+
     // 3 - Snap to grid
-    if (snapToGridRequested /*&& viewProvider.ShowGrid.getValue() */ ) { //Snap to grid is enabled even if the grid is not visible.
+    if (snapToGridRequested /*&& viewProvider.ShowGrid.getValue() */) {// Snap to grid is enabled
+                                                                       // even if the grid is not
+                                                                       // visible.
         return snapToGrid(x, y);
     }
 
@@ -237,15 +256,15 @@ bool SnapManager::snapToObject(double& x, double& y)
         y = Obj->getPoint(geoId, posId).y;
         return true;
     }
-    else if (CrsId == 1) { //H_Axis
+    else if (CrsId == 1) {// H_Axis
         y = 0;
         return true;
     }
-    else if (CrsId == 2) { //V_Axis
+    else if (CrsId == 2) {// V_Axis
         x = 0;
         return true;
     }
-    else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) { //Curves
+    else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {// Curves
 
         const Part::Geometry* geo = Obj->getGeometry(CrvId);
 
@@ -263,13 +282,13 @@ bool SnapManager::snapToObject(double& x, double& y)
                 return false;
             }
 
-            //If it is a line, then we check if we need to snap to the middle.
+            // If it is a line, then we check if we need to snap to the middle.
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment* line = static_cast<const Part::GeomLineSegment*>(geo);
                 snapToLineMiddle(pointToOverride, line);
             }
 
-            //If it is an arc, then we check if we need to snap to the middle (not the center).
+            // If it is an arc, then we check if we need to snap to the middle (not the center).
             if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 snapToArcMiddle(pointToOverride, arc);
@@ -298,26 +317,27 @@ bool SnapManager::snapToGrid(double& x, double& y)
 
     // Check if x within snap tolerance
     if (x < tmpX + snapTol && x > tmpX - snapTol) {
-        x = tmpX; // Snap X Mouse Position
+        x = tmpX;// Snap X Mouse Position
         snapped = true;
     }
 
-     // Check if y within snap tolerance
+    // Check if y within snap tolerance
     if (y < tmpY + snapTol && y > tmpY - snapTol) {
-        y = tmpY; // Snap Y Mouse Position
+        y = tmpY;// Snap Y Mouse Position
         snapped = true;
     }
 
     return snapped;
 }
 
-bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride, const Part::GeomLineSegment* line)
+bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride,
+                                   const Part::GeomLineSegment* line)
 {
     Base::Vector3d startPoint = line->getStartPoint();
     Base::Vector3d endPoint = line->getEndPoint();
     Base::Vector3d midPoint = (startPoint + endPoint) / 2;
 
-    //Check if we are at middle of the line and if so snap to it.
+    // Check if we are at middle of the line and if so snap to it.
     if ((pointToOverride - midPoint).Length() < (endPoint - startPoint).Length() * 0.05) {
         pointToOverride = midPoint;
         return true;
@@ -353,8 +373,9 @@ bool SnapManager::snapToArcMiddle(Base::Vector3d& pointToOverride, const Part::G
     int revert = angle < M_PI ? 1 : -1;
 
     /*To know if we are close to the middle of the arc, we are going to compare the angle of the
-    * (mouse cursor - center) to the angle of the middle of the arc. If it's less than 10% of the arc angle, then we snap.
-    */
+     * (mouse cursor - center) to the angle of the middle of the arc. If it's less than 10% of the
+     * arc angle, then we snap.
+     */
     if (fabs(pVec.Angle() - (revert * mVec).Angle()) < 0.10 * angle) {
         pointToOverride = centerPoint + middleVec * revert;
         return true;

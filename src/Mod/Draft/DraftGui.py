@@ -851,7 +851,7 @@ class DraftToolBar:
         from draftobjects.label import get_label_types
         types = get_label_types()
         for s in types:
-            combo.addItem(s)
+            combo.addItem(translate("Draft", s), userData=s)
         combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
@@ -1100,19 +1100,18 @@ class DraftToolBar:
                     print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     num_vec = FreeCAD.Vector(numx, numy, numz)
-                    ref_vec = FreeCAD.Vector(0,0,0)
                     if self.pointcallback:
-                        self.pointcallback(num_vec, self.relativeMode)
+                        self.pointcallback(num_vec, self.globalMode, self.relativeMode)
                     else:
+                        ref_vec = FreeCAD.Vector(0, 0, 0)
                         if FreeCAD.DraftWorkingPlane and not self.globalMode:
                             num_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(num_vec)
                             ref_vec = FreeCAD.DraftWorkingPlane.getGlobalCoords(ref_vec)
-                        if self.relativeMode:
-                            if self.sourceCmd.node:
-                                ref_vec = self.sourceCmd.node[-1]
+                        if self.relativeMode and self.sourceCmd.node:
+                            ref_vec = self.sourceCmd.node[-1]
 
                         numx, numy, numz = num_vec + ref_vec
-                        self.sourceCmd.numericInput(numx,numy,numz)
+                        self.sourceCmd.numericInput(numx, numy, numz)
 
             elif self.textValue.isVisible():
                 return False

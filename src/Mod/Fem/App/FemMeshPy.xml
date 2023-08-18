@@ -168,7 +168,7 @@
                 <UserDocu>Add a group to mesh with specific name and type
                     addGroup(name, typestring, [id])
                     name: string
-                    typestring: \"All\", \"Node\", \"Edge\", \"Face\", \"Volume\", \"0DElement\", \"Ball\"
+                    typestring: "All", "Node", "Edge", "Face", "Volume", "0DElement", "Ball"
                     id: int
                     Optional id is used to force specific id for group, but does
                     not work, yet.

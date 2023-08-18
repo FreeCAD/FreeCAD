@@ -55,6 +55,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/Link.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -65,9 +66,8 @@
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
 
-
 using namespace Part;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -121,7 +121,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 {
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
-    if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.'))
+    if(subname && !Data::isMappedElement(subname) && strchr(subname,'.'))
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     Base::Matrix4D _mat;
@@ -207,12 +207,14 @@ struct ShapeCache {
         if(inited)
             return;
         inited = true;
+        //NOLINTBEGIN
         App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, bp::_1));
+                std::bind(&ShapeCache::slotDeleteDocument, this, sp::_1));
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, bp::_1));
+                std::bind(&ShapeCache::slotClear, this, sp::_1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, bp::_1,bp::_2));
+                std::bind(&ShapeCache::slotChanged, this, sp::_1,sp::_2));
+        //NOLINTEND
     }
 
     void slotDeleteDocument(const App::Document &doc) {
@@ -270,6 +272,8 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         bool resolveLink, bool noElementMap, std::vector<App::DocumentObject*> &linkStack)
 
 {
+    (void) noElementMap;
+
     TopoShape shape;
 
     if(!obj)
@@ -280,7 +284,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(powner) *powner = nullptr;
 
     std::string _subname;
-    auto subelement = Data::ComplexGeoData::findElementName(subname);
+    auto subelement = Data::findElementName(subname);
     if(!needSubElement && subname) {
         // strip out element name if not needed
         if(subelement && *subelement) {
@@ -413,7 +417,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                     continue;
             }else{
                 if(link && !link->getShowElementValue())
-                    shape = baseShape.makeTransform(mat,(TopoShape::indexPostfix()+childName).c_str());
+                    shape = baseShape.makeTransform(mat,(Data::POSTFIX_INDEX + childName).c_str());
                 else {
                     shape = baseShape.makeTransform(mat);
                 }
@@ -595,12 +599,12 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     ShapeHistory join;
     join.type = oldH.type;
 
-    for (ShapeHistory::MapList::const_iterator it = oldH.shapeMap.begin(); it != oldH.shapeMap.end(); ++it) {
-        int old_shape_index = it->first;
-        if (it->second.empty())
+    for (const auto & it : oldH.shapeMap) {
+        int old_shape_index = it.first;
+        if (it.second.empty())
             join.shapeMap[old_shape_index] = ShapeHistory::List();
-        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
+        for (const auto& jt : it.second) {
+            const auto& kt = newH.shapeMap.find(jt);
             if (kt != newH.shapeMap.end()) {
                 ShapeHistory::List& ary = join.shapeMap[old_shape_index];
                 ary.insert(ary.end(), kt->second.begin(), kt->second.end());

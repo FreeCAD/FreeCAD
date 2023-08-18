@@ -189,7 +189,7 @@ Command = PathOpGui.SetupOperation(
     QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
     QtCore.QT_TRANSLATE_NOOP(
         "Path_Drilling",
-        "Creates a Path Drilling object from a features of a base object",
+        "Creates a Path Drilling object from the features of a base object",
     ),
     PathDrilling.SetupProperties,
 )

@@ -41,14 +41,16 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 SheetModel::SheetModel(Sheet* _sheet, QObject* parent) : QAbstractTableModel(parent), sheet(_sheet)
 {
+    //NOLINTBEGIN
     cellUpdatedConnection =
-        sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, bp::_1));
+        sheet->cellUpdated.connect(std::bind(&SheetModel::cellUpdated, this, sp::_1));
     rangeUpdatedConnection =
-        sheet->rangeUpdated.connect(bind(&SheetModel::rangeUpdated, this, bp::_1));
+        sheet->rangeUpdated.connect(std::bind(&SheetModel::rangeUpdated, this, sp::_1));
+    //NOLINTEND
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
@@ -220,12 +222,12 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     if (role == Qt::FontRole && cell->getStyle(style)) {
         QFont f;
 
-        for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
-            if (*i == "bold")
+        for (const auto& i : style) {
+            if (i == "bold")
                 f.setBold(true);
-            else if (*i == "italic")
+            else if (i == "italic")
                 f.setItalic(true);
-            else if (*i == "underline")
+            else if (i == "underline")
                 f.setUnderline(true);
         }
 

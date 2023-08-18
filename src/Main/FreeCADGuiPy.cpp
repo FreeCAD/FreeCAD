@@ -65,7 +65,7 @@ public:
     QtApplication(int &argc, char **argv)
         : QApplication(argc, argv) {
     }
-    bool notify (QObject * receiver, QEvent * event) {
+    bool notify (QObject * receiver, QEvent * event) override {
         try {
             return QApplication::notify(receiver, event);
         }
@@ -287,19 +287,29 @@ QWidget* setupMainWindow()
         }
 
         Base::PyGILStateLocker lock;
-        PyObject* input = PySys_GetObject("stdin");
+        // It's sufficient to create the config key
+        App::Application::Config()["DontOverrideStdIn"] = "";
         Gui::MainWindow *mw = new Gui::MainWindow();
         hasMainWindow = true;
 
         QIcon icon = qApp->windowIcon();
-        if (icon.isNull())
+        if (icon.isNull()) {
             qApp->setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
+        }
         mw->setWindowIcon(qApp->windowIcon());
         QString appName = qApp->applicationName();
-        if (!appName.isEmpty())
+        if (!appName.isEmpty()) {
             mw->setWindowTitle(appName);
-        else
+        }
+        else {
             mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
+        }
+
+        // set toolbar icon size
+        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("General");
+        int size = hGrp->GetInt("ToolbarIconSize", 0);
+        if (size >= 16) // must not be lower than this
+            mw->setIconSize(QSize(size,size));
 
         if (!SoDB::isInitialized()) {
             // init the Inventor subsystem
@@ -350,7 +360,6 @@ QWidget* setupMainWindow()
 
         Gui::Application::Instance->activateWorkbench(start.c_str());
         mw->loadWindowSettings();
-        PySys_SetObject("stdin", input);
     }
     else {
         Gui::getMainWindow()->show();

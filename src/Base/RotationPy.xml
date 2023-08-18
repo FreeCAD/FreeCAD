@@ -16,42 +16,52 @@
         <Documentation>
             <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
             <DeveloperDocu>This is the Rotation export class</DeveloperDocu>
-            <UserDocu>Base.Rotation class.\n
-A Rotation using a quaternion.\n
-The following constructors are supported:\n
+            <UserDocu>Base.Rotation class.
+
+A Rotation using a quaternion.
+
+The following constructors are supported:
+
 Rotation()
-Empty constructor.\n
+Empty constructor.
+
 Rotation(rotation)
-Copy constructor.\n
+Copy constructor.
+
 Rotation(Axis, Radian)
 Rotation(Axis, Degree)
 Define from an axis and an angle (in radians or degrees according to the keyword).
 Axis : Base.Vector
 Radian : float
-Degree : float\n
+Degree : float
+
 Rotation(vector_start, vector_end)
 Define from two vectors (rotation from/to vector).
 vector_start : Base.Vector
-vector_end : Base.Vector\n
+vector_end : Base.Vector
+
 Rotation(angle1, angle2, angle3)
 Define from three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention.
 angle1 : float
 angle2 : float
-angle3 : float\n
+angle3 : float
+
 Rotation(seq, angle1, angle2, angle3)
 Define from one string and three floats (Euler angles) as Euler rotation
 of a given type. Call toEulerAngles() for supported sequence types.
 seq : str
 angle1 : float
 angle2 : float
-angle3 : float\n
+angle3 : float
+
 Rotation(x, y, z, w)
 Define from four floats (quaternion) where the quaternion is specified as:
 q = xi+yj+zk+w, i.e. the last parameter is the real part.
 x : float
 y : float
 z : float
-w : float\n
+w : float
+
 Rotation(dir1, dir2, dir3, seq)
 Define from three vectors that define rotated axes directions plus an optional
 3-characher string of capital letters 'X', 'Y', 'Z' that sets the order of
@@ -60,10 +70,12 @@ x is used but corrected if necessary, y is ignored).
 dir1 : Base.Vector
 dir2 : Base.Vector
 dir3 : Base.Vector
-seq : str\n
+seq : str
+
 Rotation(matrix)
 Define from a matrix rotation in the 4D representation.
-matrix : Base.Matrix\n
+matrix : Base.Matrix
+
 Rotation(*coef)
 Define from 16 or 9 elements which represent the rotation in the 4D matrix
 representation or in the 3D matrix representation, respectively.
@@ -71,68 +83,91 @@ coef : sequence of float</UserDocu>
         </Documentation>
         <Methode Name="invert">
             <Documentation>
-                <UserDocu>invert() -> None\n
+                <UserDocu>invert() -> None
+
 Sets the rotation to its inverse.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="inverted">
             <Documentation>
-                <UserDocu>inverted() -> Base.Rotation\n
+                <UserDocu>inverted() -> Base.Rotation
+
 Returns the inverse of the rotation.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isSame">
             <Documentation>
-                <UserDocu>isSame(rotation, tol=0) -> bool\n
-Checks if `rotation` perform the same transformation as this rotation.\n
+                <UserDocu>isSame(rotation, tol=0) -> bool
+
+Checks if `rotation` perform the same transformation as this rotation.
+
 rotation : Base.Rotation
-tol : float\n    Tolerance used to compare both rotations.
+tol : float
+    Tolerance used to compare both rotations.
     If tol is negative or zero, no tolerance is used.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="multiply" Const="true">
             <Documentation>
-                <UserDocu>multiply(rotation) -> Base.Rotation\n
-Right multiply this rotation with another rotation.\n
-rotation : Base.Rotation\n    Rotation by which to multiply this rotation.</UserDocu>
+                <UserDocu>multiply(rotation) -> Base.Rotation
+
+Right multiply this rotation with another rotation.
+
+rotation : Base.Rotation
+    Rotation by which to multiply this rotation.</UserDocu>
             </Documentation>
         </Methode>
                 <Methode Name="multVec" Const="true">
             <Documentation>
-                <UserDocu>multVec(vector) -> Base.Vector\n
-Compute the transformed vector using the rotation.\n
-vector : Base.Vector\n    Vector to be transformed.</UserDocu>
+                <UserDocu>multVec(vector) -> Base.Vector
+
+Compute the transformed vector using the rotation.
+
+vector : Base.Vector
+    Vector to be transformed.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="slerp" Const="true">
             <Documentation>
-                <UserDocu>slerp(rotation2, t) -> Base.Rotation\n
-Spherical Linear Interpolation (SLERP) of this rotation and `rotation2`.\n
-t : float\n    Parameter of the path. t=0 returns this rotation, t=1 returns `rotation2`.</UserDocu>
+                <UserDocu>slerp(rotation2, t) -> Base.Rotation
+
+Spherical Linear Interpolation (SLERP) of this rotation and `rotation2`.
+
+t : float
+    Parameter of the path. t=0 returns this rotation, t=1 returns `rotation2`.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setYawPitchRoll">
             <Documentation>
-                <UserDocu>setYawPitchRoll(angle1, angle2, angle3) -> None\n
-Set the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.\n
-angle1 : float\n    Angle around yaw axis in degrees.
-angle2 : float\n    Angle around pitch axis in degrees.
-angle3 : float\n    Angle around roll axis in degrees.</UserDocu>
+                <UserDocu>setYawPitchRoll(angle1, angle2, angle3) -> None
+
+Set the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
+
+angle1 : float
+    Angle around yaw axis in degrees.
+angle2 : float
+    Angle around pitch axis in degrees.
+angle3 : float
+    Angle around roll axis in degrees.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getYawPitchRoll" Const="true">
             <Documentation>
-                <UserDocu>getYawPitchRoll() -> tuple\n
+                <UserDocu>getYawPitchRoll() -> tuple
+
 Get the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
 The angles are given in degrees.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setEulerAngles">
             <Documentation>
-                <UserDocu>setEulerAngles(seq, angle1, angle2, angle3) -> None\n
+                <UserDocu>setEulerAngles(seq, angle1, angle2, angle3) -> None
+
 Set the Euler angles in a given sequence for this rotation.
-The angles must be given in degrees.\n
-seq : str\n    Euler sequence name. All possible values given by toEulerAngles().
+The angles must be given in degrees.
+
+seq : str
+    Euler sequence name. All possible values given by toEulerAngles().
 angle1 : float
 angle2 : float
 angle3 : float </UserDocu>
@@ -140,29 +175,36 @@ angle3 : float </UserDocu>
         </Methode>
         <Methode Name="toEulerAngles" Const="true">
             <Documentation>
-                <UserDocu>toEulerAngles(seq) -> list\n
-Get the Euler angles in a given sequence for this rotation.\n
-seq : str\n    Euler sequence name. If not given, the function returns
+                <UserDocu>toEulerAngles(seq) -> list
+
+Get the Euler angles in a given sequence for this rotation.
+
+seq : str
+    Euler sequence name. If not given, the function returns
     all possible values of `seq`. Optional.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toMatrix" Const="true">
             <Documentation>
-                <UserDocu>toMatrix() -> Base.Matrix\n
+                <UserDocu>toMatrix() -> Base.Matrix
+
 Convert the rotation to a 4D matrix representation.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isNull" Const="true">
             <Documentation>
-                <UserDocu>isNull() -> bool\n
+                <UserDocu>isNull() -> bool
+
 Returns True if all values in the quaternion representation are zero.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isIdentity" Const="true">
             <Documentation>
-                <UserDocu>isIdentity(tol=0) -> bool\n
+                <UserDocu>isIdentity(tol=0) -> bool
+
 Returns True if the rotation equals the 4D identity matrix.
-tol : float\n    Tolerance used to check for identity.
+tol : float
+    Tolerance used to check for identity.
     If tol is negative or zero, no tolerance is used.</UserDocu>
             </Documentation>
         </Methode>

@@ -61,29 +61,29 @@ UnitSystem    UnitsApi::currentSystem = UnitSystem::SI1;
 
 int UnitsApi::UserPrefDecimals = 2;
 
-const char* UnitsApi::getDescription(UnitSystem system)
+QString UnitsApi::getDescription(UnitSystem system)
 {
     switch (system) {
     case UnitSystem::SI1:
-        return "Standard (mm/kg/s/degree)";
+        return tr("Standard (mm, kg, s, degree)");
     case UnitSystem::SI2:
-        return "MKS (m/kg/s/degree)";
+        return tr("MKS (m, kg, s, degree)");
     case UnitSystem::Imperial1:
-        return "US customary (in/lb)";
+        return tr("US customary (in, lb)");
     case UnitSystem::ImperialDecimal:
-        return "Imperial decimal (in/lb)";
+        return tr("Imperial decimal (in, lb)");
     case UnitSystem::Centimeters:
-        return "Building Euro (cm/m²/m³)";
+        return tr("Building Euro (cm, m², m³)");
     case UnitSystem::ImperialBuilding:
-        return "Building US (ft-in/sqft/cft)";
+        return tr("Building US (ft-in, sqft, cft)");
     case UnitSystem::MmMin:
-        return "Metric small parts & CNC(mm, mm/min)";
+        return tr("Metric small parts & CNC(mm, mm/min)");
     case UnitSystem::ImperialCivil:
-        return "Imperial for Civil Eng (ft, ft/sec)";
+        return tr("Imperial for Civil Eng (ft, ft/sec)");
     case UnitSystem::FemMilliMeterNewton:
-        return "FEM (mm, N, s)";
+        return tr("FEM (mm, N, s)");
     default:
-        return "Unknown schema";
+        return tr("Unknown schema");
     }
 }
 

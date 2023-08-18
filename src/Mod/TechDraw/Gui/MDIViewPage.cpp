@@ -76,10 +76,9 @@
 #include "Rez.h"
 #include "ViewProviderPage.h"
 
-
 using namespace TechDrawGui;
 using namespace TechDraw;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
@@ -115,10 +114,12 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     tabText += QString::fromUtf8("[*]");
     setWindowTitle(tabText);
 
+    //NOLINTBEGIN
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
-    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
+    auto bnd = std::bind(&MDIViewPage::onDeleteObject, this, sp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+    //NOLINTEND
 }
 
 MDIViewPage::~MDIViewPage() { connectDeletedObject.disconnect(); }
@@ -194,6 +195,7 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
+        fixSceneDependencies();    // check QGraphicsScene item parenting
         return true;
     }
     else if (strcmp("Redo", pMsg) == 0) {
@@ -246,6 +248,14 @@ void MDIViewPage::setTabText(std::string tabText)
     }
 }
 
+// advise the page to check QGraphicsScene parent/child relationships after undo
+void MDIViewPage::fixSceneDependencies()
+{
+    if (getViewProviderPage()) {
+        getViewProviderPage()->fixSceneDependencies();
+    }
+}
+
 //**** printing routines
 
 void MDIViewPage::getPaperAttributes()
@@ -280,7 +290,9 @@ void MDIViewPage::printPdf()
 
     Gui::WaitCursor wc;
     std::string utf8Content = fn.toUtf8().constData();
+    m_scene->setExportingPdf(true);
     printPdf(utf8Content);
+    m_scene->setExportingPdf(false);
 }
 
 void MDIViewPage::printPdf(std::string file)
@@ -293,6 +305,8 @@ void MDIViewPage::printPdf(std::string file)
 
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
 
@@ -503,10 +517,14 @@ void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 //static routine to print all pages in a document to pdf
 void MDIViewPage::printAllPdf(QPrinter* printer, App::Document* doc)
 {
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     //    Base::Console().Message("MDIVP::printAllPdf()\n");
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
+    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     pdfWriter.setTitle(documentName);
     pdfWriter.setResolution(printer->resolution());
     QPainter painter(&pdfWriter);

@@ -39,6 +39,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -49,7 +50,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
-
+// Hint: this is to prevent to re-format big parts of the file. Remove it later again.
+// clang-format off
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -88,9 +90,10 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(doc->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
@@ -161,8 +164,9 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
     SketcherGui::ViewProviderSketch* vp =
         static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj = vp->getSketchObject();
-    //    ViewProviderSketch * vp = static_cast<ViewProviderSketch *>(Gui::Application::Instance->getViewProvider(docobj));
-    //    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    //    ViewProviderSketch * vp = static_cast<ViewProviderSketch
+    //    *>(Gui::Application::Instance->getViewProvider(docobj)); Sketcher::SketchObject* Obj =
+    //    vp->getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -623,9 +627,9 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     }
 
     if (elementSubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("No constraint selected"),
-                             QObject::tr("At least one constraint must be selected"));
+        Gui::TranslatedUserWarning(Obj,
+                                   QObject::tr("No constraint selected"),
+                                   QObject::tr("At least one constraint must be selected"));
     }
     else {
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
@@ -703,8 +707,8 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
                 if (solvext->getGeometry()
                     == Sketcher::SolverGeometryExtension::NotFullyConstraint) {
-                    // Coded for consistency with getGeometryWithDependentParameters, read the comments
-                    // on that function
+                    // Coded for consistency with getGeometryWithDependentParameters, read the
+                    // comments on that function
                     if (solvext->getEdge() == SolverGeometryExtension::Dependent)
                         testselectedge(geoid);
                     if (solvext->getStart() == SolverGeometryExtension::Dependent)
@@ -762,9 +766,10 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(doc->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
@@ -802,7 +807,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // Handle highest GeoIds first to minimize GeoIds changing
     // TODO: this might not completely resolve GeoIds changing
-    std::sort(SubGeoIds.begin(), SubGeoIds.end(), std::greater<int>());
+    std::sort(SubGeoIds.begin(), SubGeoIds.end(), std::greater<>());
     // Keep unique
     SubGeoIds.erase(std::unique(SubGeoIds.begin(), SubGeoIds.end()), SubGeoIds.end());
 
@@ -825,7 +830,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Gui::NotifyUserError(
+                Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
             Gui::Command::abortCommand();
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));
@@ -876,18 +882,19 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
@@ -992,21 +999,22 @@ void CmdSketcherSymmetry::activated(int iMsg)
     }
 
     if (geoids == 0 || (geoids == 1 && LastGeoId >= 0 && !lastvertexoraxis)) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("A symmetric construction requires "
-                                         "at least two geometric elements, "
-                                         "the last geometric element being the reference "
-                                         "for the symmetry construction."));
+        Gui::TranslatedUserWarning(Obj,
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("A symmetric construction requires "
+                                               "at least two geometric elements, "
+                                               "the last geometric element being the reference "
+                                               "for the symmetry construction."));
         return;
     }
 
     if (lastgeotype == invalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("The last element must be a point "
-                                         "or a line serving as reference "
-                                         "for the symmetry construction."));
+        Gui::TranslatedUserWarning(Obj,
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("The last element must be a point "
+                                               "or a line serving as reference "
+                                               "for the symmetry construction."));
+
         return;
     }
 
@@ -1042,7 +1050,8 @@ void CmdSketcherSymmetry::activated(int iMsg)
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(
+            Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
         Gui::Command::abortCommand();
     }
     tryAutoRecomputeIfNotSolve(Obj);
@@ -1112,15 +1121,15 @@ class DrawSketchHandlerCopy: public DrawSketchHandler
 public:
     DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos,
                           int nelements, SketcherCopy::Op op)
-        : Mode(STATUS_SEEK_First),
-          snapMode(SnapMode::Free),
-          geoIdList(geoidlist),
-          Origin(),
-          OriginGeoId(origingeoid),
-          OriginPos(originpos),
-          nElements(nelements),
-          Op(op),
-          EditCurve(2)
+        : Mode(STATUS_SEEK_First)
+        , snapMode(SnapMode::Free)
+        , geoIdList(geoidlist)
+        , Origin()
+        , OriginGeoId(origingeoid)
+        , OriginPos(originpos)
+        , nElements(nelements)
+        , Op(op)
+        , EditCurve(2)
     {}
 
     ~DrawSketchHandlerCopy() override
@@ -1209,7 +1218,8 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(
+                    sketchgui->getObject(), QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
                 Gui::Command::abortCommand();
             }
 
@@ -1258,18 +1268,20 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
@@ -1327,10 +1339,11 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     }
 
     if (geoids < 1) {
-        QMessageBox::warning(
-            Gui::getMainWindow(),
+        Gui::TranslatedUserWarning(
+            Obj,
             QObject::tr("Wrong selection"),
             QObject::tr("A copy requires at least one selected non-external geometric element"));
+
         return;
     }
 
@@ -1343,7 +1356,8 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     geoIdList.append(1, ']');
 
     // if the last element is not a point serving as a reference for the copy process
-    // then make the start point of the last element the copy reference (if it exists, if not the center point)
+    // then make the start point of the last element the copy reference (if it exists, if not the
+    // center point)
     if (LastPointPos == Sketcher::PointPos::none) {
         if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId()
             || LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
@@ -1356,9 +1370,10 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 
     // Ask the user if they want to clone or to simple copy
     /*
-    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
-                                    QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),
-                                    QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric
+    constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
+    constraints by geometric constraints?"), QMessageBox::Yes, QMessageBox::No,
+    QMessageBox::Cancel);
     // use an equality constraint
     if (ret == QMessageBox::Yes) {
         clone = true;
@@ -1679,18 +1694,18 @@ public:
                                       Sketcher::PointPos originpos, int nelements, bool clone,
                                       int rows, int cols, bool constraintSeparation,
                                       bool equalVerticalHorizontalSpacing)
-        : Mode(STATUS_SEEK_First),
-          snapMode(SnapMode::Free),
-          geoIdList(geoidlist),
-          OriginGeoId(origingeoid),
-          OriginPos(originpos),
-          nElements(nelements),
-          Clone(clone),
-          Rows(rows),
-          Cols(cols),
-          ConstraintSeparation(constraintSeparation),
-          EqualVerticalHorizontalSpacing(equalVerticalHorizontalSpacing),
-          EditCurve(2)
+        : Mode(STATUS_SEEK_First)
+        , snapMode(SnapMode::Free)
+        , geoIdList(geoidlist)
+        , OriginGeoId(origingeoid)
+        , OriginPos(originpos)
+        , nElements(nelements)
+        , Clone(clone)
+        , Rows(rows)
+        , Cols(cols)
+        , ConstraintSeparation(constraintSeparation)
+        , EqualVerticalHorizontalSpacing(equalVerticalHorizontalSpacing)
+        , EditCurve(2)
     {}
 
     ~DrawSketchHandlerRectangularArray() override
@@ -1780,7 +1795,8 @@ public:
                 Gui::Command::commitCommand();
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
+                Gui::NotifyUserError(
+                    sketchgui, QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
                 Gui::Command::abortCommand();
             }
 
@@ -1853,18 +1869,19 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
         return;
     }
 
@@ -1925,10 +1942,11 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 
     if (geoids < 1) {
-        QMessageBox::warning(
-            Gui::getMainWindow(),
+        Gui::TranslatedUserWarning(
+            Obj,
             QObject::tr("Wrong selection"),
             QObject::tr("A copy requires at least one selected non-external geometric element"));
+
         return;
     }
 
@@ -1941,7 +1959,8 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     geoIdList.append(1, ']');
 
     // if the last element is not a point serving as a reference for the copy process
-    // then make the start point of the last element the copy reference (if it exists, if not the center point)
+    // then make the start point of the last element the copy reference (if it exists, if not the
+    // center point)
     if (LastPointPos == Sketcher::PointPos::none) {
         if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId()
             || LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
@@ -2018,7 +2037,8 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Failed to delete all geometry: %s\n", e.what());
+            Gui::NotifyUserError(
+                Obj, QT_TRANSLATE_NOOP("Notifications", "Failed to delete all geometry"), e.what());
             Gui::Command::abortCommand();
         }
 
@@ -2085,7 +2105,10 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Failed to delete All Constraints: %s\n", e.what());
+            Gui::NotifyUserError(
+                Obj,
+                QT_TRANSLATE_NOOP("Notifications", "Failed to delete all constraints"),
+                e.what());
             Gui::Command::abortCommand();
         }
 
@@ -2138,18 +2161,19 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
+
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select elements from a single sketch."));
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select elements from a single sketch."));
         return;
     }
 
@@ -2193,10 +2217,12 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     }
 
     if (geoids < 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Removal of axes alignment requires at least one selected "
-                                         "non-external geometric element"));
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr("Removal of axes alignment requires at least one selected "
+                        "non-external geometric element"));
+
         return;
     }
 
@@ -2215,7 +2241,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Gui::NotifyUserError(Obj, QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
         Gui::Command::abortCommand();
     }
 
@@ -2252,3 +2278,4 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
     rcCmdMgr.addCommand(new CmdSketcherRemoveAxesAlignment());
 }
+// clang-format on

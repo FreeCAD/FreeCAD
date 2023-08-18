@@ -151,7 +151,7 @@ def getInfo(filename):
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
                 try:
-                    doc = str(zfile.read(files[0]))
+                    doc = zfile.read(files[0]).decode('utf-8')
                 except OSError as e:
                     print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
                     return None
@@ -248,6 +248,38 @@ def getDefaultIcon():
         defaulticon = image
 
     return defaulticon
+
+
+
+def build_new_file_card(template):
+
+    "builds an html <li> element respresenting a new file template"
+
+    templates = {
+        "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
+        "import_file": [TranslationTexts.T_TEMPLATE_IMPORTFILE_NAME, TranslationTexts.T_TEMPLATE_IMPORTFILE_DESC],
+        "parametric_part": [TranslationTexts.T_TEMPLATE_PARAMETRICPART_NAME, TranslationTexts.T_TEMPLATE_PARAMETRICPART_DESC],
+        "csg_part": [TranslationTexts.T_TEMPLATE_CSGPART_NAME, TranslationTexts.T_TEMPLATE_CSGPART_DESC],
+        "2d_draft": [TranslationTexts.T_TEMPLATE_2DDRAFT_NAME, TranslationTexts.T_TEMPLATE_2DDRAFT_DESC],
+        "architecture": [TranslationTexts.T_TEMPLATE_ARCHITECTURE_NAME, TranslationTexts.T_TEMPLATE_ARCHITECTURE_DESC]
+    }
+
+    if template not in templates:
+        return
+
+    image = 'file:///'+os.path.join(os.path.join(FreeCAD.getResourceDir(), "Mod", "Start", "StartPage"), 'images/new_'+template+".png").replace('\\','/')
+
+    result = ""
+    result += '<li class="icon-new-template">'
+    result += '<a href="LoadNew.py?template='+urllib.parse.quote(template)+'">'
+    result += '<img src="'+image+'" alt="'+template+'">'
+    result += '<div class="caption">'
+    result += '<h3>'+templates[template][0]+'</h3>'
+    result += '<p>'+templates[template][1]+'</p>'
+    result += '</div>'
+    result += '</a>'
+    result += '</li>'
+    return result
 
 
 
@@ -391,23 +423,25 @@ def handle():
         i.save(createimg)
         iconbank["createimg"] = createimg
 
+    # build SECTION_NEW_FILE
+
+    SECTION_NEW_FILE = "<h2>"+TranslationTexts.T_NEWFILE+"</h2>"
+    SECTION_NEW_FILE += "<ul>"
+    SECTION_NEW_FILE += build_new_file_card("empty_file")
+    SECTION_NEW_FILE += build_new_file_card("import_file")
+    SECTION_NEW_FILE += build_new_file_card("parametric_part")
+    SECTION_NEW_FILE += build_new_file_card("csg_part")
+    SECTION_NEW_FILE += build_new_file_card("2d_draft")
+    SECTION_NEW_FILE += build_new_file_card("architecture")
+    SECTION_NEW_FILE += '</ul>'
+    HTML = HTML.replace("SECTION_NEW_FILE",SECTION_NEW_FILE)
+
     # build SECTION_RECENTFILES
 
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
     SECTION_RECENTFILES = "<h2>"+TranslationTexts.T_RECENTFILES+"</h2>"
     SECTION_RECENTFILES += "<ul>"
-    SECTION_RECENTFILES += '<li class="icon">'
-    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="file:///'+iconbank["createimg"].replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
-    else:
-        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
-    SECTION_RECENTFILES += '<div class="caption">'
-    SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
-    SECTION_RECENTFILES += '</div>'
-    SECTION_RECENTFILES += '</a>'
-    SECTION_RECENTFILES += '</li>'
     for i in range(rfcount):
         filename = rf.GetString("MRU%d" % (i))
         SECTION_RECENTFILES += buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i))
@@ -618,20 +652,21 @@ def exportTestFile():
 
 
 
-def postStart():
+def postStart(switch_wb = True):
 
     "executes needed operations after loading a file"
 
     param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
 
     # switch workbench
-    wb = param.GetString("AutoloadModule","")
-    if "$LastModule" == wb:
-        wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
-    if wb:
-        # don't switch workbenches if we are not in Start anymore
-        if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
-            FreeCADGui.activateWorkbench(wb)
+    if switch_wb:
+        wb = param.GetString("AutoloadModule","")
+        if "$LastModule" == wb:
+            wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
+        if wb:
+            # don't switch workbenches if we are not in Start anymore
+            if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
+                FreeCADGui.activateWorkbench(wb)
 
     # close start tab
     cl = param.GetBool("closeStart",False)

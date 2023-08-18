@@ -14,7 +14,8 @@
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the BoundBox export class</DeveloperDocu>
-      <UserDocu>Base.BoundBox class.\n
+      <UserDocu>Base.BoundBox class.
+
 This class represents a bounding box.
 A bounding box is a rectangular cuboid which is a way to describe outer
 boundaries and is obtained from a lot of 3D types.
@@ -22,85 +23,118 @@ It is often used to check if a 3D entity lies in the range of another object.
 Checking for bounding interference first can save a lot of computing time!
 An invalid BoundBox is represented by inconsistent values at each direction:
 The maximum float value of the system at the minimum coordinates, and the
-opposite value at the maximum coordinates.\n
-The following constructors are supported:\n
+opposite value at the maximum coordinates.
+
+The following constructors are supported:
+
 BoundBox()
-Empty constructor. Returns an invalid BoundBox.\n
+Empty constructor. Returns an invalid BoundBox.
+
 BoundBox(boundBox)
 Copy constructor.
-boundBox : Base.BoundBox\n
+boundBox : Base.BoundBox
+
 BoundBox(xMin, yMin=0, zMin=0, xMax=0, yMax=0, zMax=0)
 Define from the minimum and maximum values at each direction.
-xMin : float\n    Minimum value at x-coordinate.
-yMin : float\n    Minimum value at y-coordinate.
-zMin : float\n    Minimum value at z-coordinate.
-xMax : float\n    Maximum value at x-coordinate.
-yMax : float\n    Maximum value at y-coordinate.
-zMax : float\n    Maximum value at z-coordinate.\n
+xMin : float
+    Minimum value at x-coordinate.
+yMin : float
+    Minimum value at y-coordinate.
+zMin : float
+    Minimum value at z-coordinate.
+xMax : float
+    Maximum value at x-coordinate.
+yMax : float
+    Maximum value at y-coordinate.
+zMax : float
+    Maximum value at z-coordinate.
+
 App.BoundBox(min, max)
 Define from two containers representing the minimum and maximum values of the
 coordinates in each direction.
-min : Base.Vector, tuple\n    Minimum values of the coordinates.
-max : Base.Vector, tuple\n    Maximum values of the coordinates.</UserDocu>
+min : Base.Vector, tuple
+    Minimum values of the coordinates.
+max : Base.Vector, tuple
+    Maximum values of the coordinates.</UserDocu>
     </Documentation>
     <Methode Name="setVoid">
       <Documentation>
-        <UserDocu>setVoid() -> None\n
+        <UserDocu>setVoid() -> None
+
 Invalidate the bounding box.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isValid">
       <Documentation>
-        <UserDocu>isValid() -> bool\n
+        <UserDocu>isValid() -> bool
+
 Checks if the bounding box is valid.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="add">
       <Documentation>
         <UserDocu>add(minMax) -> None
-add(x, y, z) -> None\n
+add(x, y, z) -> None
+
 Increase the maximum values or decrease the minimum values of this BoundBox by
 replacing the current values with the given values, so the bounding box can grow
-but not shrink.\n
-minMax : Base.Vector, tuple\n    Values to enlarge at each direction.
-x : float\n    Value to enlarge at x-direction.
-y : float\n    Value to enlarge at y-direction.
-z : float\n    Value to enlarge at z-direction.</UserDocu>
+but not shrink.
+
+minMax : Base.Vector, tuple
+    Values to enlarge at each direction.
+x : float
+    Value to enlarge at x-direction.
+y : float
+    Value to enlarge at y-direction.
+z : float
+    Value to enlarge at z-direction.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPoint">
       <Documentation>
-        <UserDocu>getPoint(index) ->Base.Vector\n
+        <UserDocu>getPoint(index) ->Base.Vector
+
 Get the point of the given index.
-The index must be in the range of [0, 7].\n
+The index must be in the range of [0, 7].
+
 index : int</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getEdge">
       <Documentation>
-        <UserDocu>getEdge(index) -> tuple of Base.Vector\n
+        <UserDocu>getEdge(index) -> tuple of Base.Vector
+
 Get the edge points of the given index.
-The index must be in the range of [0, 11].\n
+The index must be in the range of [0, 11].
+
 index : int</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="closestPoint">
       <Documentation>
         <UserDocu>closestPoint(point) -> Base.Vector
-closestPoint(x, y, z) -> Base.Vector\n
-Get the closest point of the bounding box to the given point.\n
-point : Base.Vector, tuple\n    Coordinates of the given point.
-x : float\n    X-coordinate of the given point.
-y : float\n    Y-coordinate of the given point.
-z : float\n    Z-coordinate of the given point.</UserDocu>
+closestPoint(x, y, z) -> Base.Vector
+
+Get the closest point of the bounding box to the given point.
+
+point : Base.Vector, tuple
+    Coordinates of the given point.
+x : float
+    X-coordinate of the given point.
+y : float
+    Y-coordinate of the given point.
+z : float
+    Z-coordinate of the given point.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="intersect">
       <Documentation>
         <UserDocu>intersect(boundBox2) -> bool
-intersect(base, dir) -> bool\n
+intersect(base, dir) -> bool
+
 Checks if the given object intersects with this bounding box. That can be
-another bounding box or a line specified by base and direction.\n
+another bounding box or a line specified by base and direction.
+
 boundBox2 : Base.BoundBox
 base : Base.Vector, tuple
 dir : Base.Vector, tuple</UserDocu>
@@ -108,72 +142,100 @@ dir : Base.Vector, tuple</UserDocu>
     </Methode>
     <Methode Name="intersected">
       <Documentation>
-        <UserDocu>intersected(boundBox2) -> Base.BoundBox\n
-Returns the intersection of this and the given bounding box.\n
+        <UserDocu>intersected(boundBox2) -> Base.BoundBox
+
+Returns the intersection of this and the given bounding box.
+
 boundBox2 : Base.BoundBox</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="united">
       <Documentation>
-        <UserDocu>united(boundBox2) -> Base.BoundBox\n
-Returns the union of this and the given bounding box.\n
+        <UserDocu>united(boundBox2) -> Base.BoundBox
+
+Returns the union of this and the given bounding box.
+
 boundBox2 : Base.BoundBox</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="enlarge">
         <Documentation>
-            <UserDocu>enlarge(variation) -> None\n
+            <UserDocu>enlarge(variation) -> None
+
 Decrease the minimum values and increase the maximum values by the given value.
-A negative value shrinks the bounding box.\n
+A negative value shrinks the bounding box.
+
 variation : float</UserDocu>
         </Documentation>
     </Methode>
 
       <Methode Name="getIntersectionPoint">
           <Documentation>
-              <UserDocu>getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector\n
+              <UserDocu>getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector
+
 Calculate the intersection point of a line with the bounding box.
-The base point must lie inside the bounding box, if not an exception is thrown.\n
-base : Base.Vector\n    Base point of the line.
-dir : Base.Vector\n    Direction of the line.
-epsilon : float\n    Bounding box size tolerance.</UserDocu>
+The base point must lie inside the bounding box, if not an exception is thrown.
+
+base : Base.Vector
+    Base point of the line.
+dir : Base.Vector
+    Direction of the line.
+epsilon : float
+    Bounding box size tolerance.</UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="move">
           <Documentation>
               <UserDocu>move(displacement) -> None
-move(x, y, z) -> None\n
-Move the bounding box by the given values.\n
-displacement : Base.Vector, tuple\n    Displacement at each direction.
-x : float\n    Displacement at x-direction.
-y : float\n    Displacement at y-direction.
-z : float\n    Displacement at z-direction.</UserDocu>
+move(x, y, z) -> None
+
+Move the bounding box by the given values.
+
+displacement : Base.Vector, tuple
+    Displacement at each direction.
+x : float
+    Displacement at x-direction.
+y : float
+    Displacement at y-direction.
+z : float
+    Displacement at z-direction.</UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="scale">
           <Documentation>
               <UserDocu>scale(factor) -> None
-scale(x, y, z) -> None\n
-Scale the bounding box by the given values.\n
-factor : Base.Vector, tuple\n    Factor scale at each direction.
-x : float\n    Scale at x-direction.
-y : float\n    Scale at y-direction.
-z : float\n    Scale at z-direction.</UserDocu>
+scale(x, y, z) -> None
+
+Scale the bounding box by the given values.
+
+factor : Base.Vector, tuple
+    Factor scale at each direction.
+x : float
+    Scale at x-direction.
+y : float
+    Scale at y-direction.
+z : float
+    Scale at z-direction.</UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="transformed">
           <Documentation>
-              <UserDocu>transformed(matrix) -> Base.BoundBox\n
+              <UserDocu>transformed(matrix) -> Base.BoundBox
+
 Returns a new BoundBox containing the transformed rectangular cuboid
-represented by this BoundBox.\n
-matrix : Base.Matrix\n    Transformation matrix.</UserDocu>
+represented by this BoundBox.
+
+matrix : Base.Matrix
+    Transformation matrix.</UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="isCutPlane">
       <Documentation>
-        <UserDocu>isCutPlane(base, normal) -> bool\n
+        <UserDocu>isCutPlane(base, normal) -> bool
+
 Check if the plane specified by base and normal intersects (cuts) this bounding
-box.\n
+box.
+
 base : Base.Vector
 normal : Base.Vector</UserDocu>
       </Documentation>
@@ -181,12 +243,18 @@ normal : Base.Vector</UserDocu>
         <Methode Name="isInside">
             <Documentation>
                 <UserDocu>isInside(object) -> bool
-isInside(x, y, z) -> bool\n
-Check if a point or a bounding box is inside this bounding box.\n
-object : Base.Vector, Base.BoundBox\n    Object to check if it is inside this bounding box.
-x : float\n    X-coordinate of the point to check.
-y : float\n    Y-coordinate of the point to check.
-z : float\n    Z-coordinate of the point to check.</UserDocu>
+isInside(x, y, z) -> bool
+
+Check if a point or a bounding box is inside this bounding box.
+
+object : Base.Vector, Base.BoundBox
+    Object to check if it is inside this bounding box.
+x : float
+    X-coordinate of the point to check.
+y : float
+    Y-coordinate of the point to check.
+z : float
+    Z-coordinate of the point to check.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Center" ReadOnly="true">

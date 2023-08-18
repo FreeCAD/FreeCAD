@@ -57,6 +57,9 @@ public:
 
     QString processTemplate();
 
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+
+
 protected:
     void replaceFileIncluded(std::string newTemplateFileName);
     std::map<std::string, std::string> getEditableTextsFromTemplate();

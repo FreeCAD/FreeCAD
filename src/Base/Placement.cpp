@@ -60,7 +60,7 @@ Placement Placement::fromDualQuaternion(DualQuat qq)
 {
     Rotation rot(qq.x.re, qq.y.re, qq.z.re, qq.w.re);
     DualQuat mvq = 2 * qq.dual() * qq.real().conj();
-    return Placement(Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot);
+    return {Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot};
 }
 
 Base::Matrix4D Placement::toMatrix() const
@@ -217,7 +217,7 @@ Placement Placement::slerp(const Placement & p0, const Placement & p1, double t)
 {
     Rotation rot = Rotation::slerp(p0.getRotation(), p1.getRotation(), t);
     Vector3d pos = p0.getPosition() * (1.0-t) + p1.getPosition() * t;
-    return Placement(pos, rot);
+    return {pos, rot};
 }
 
 Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, bool shorten)

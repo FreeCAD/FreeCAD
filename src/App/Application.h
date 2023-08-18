@@ -332,7 +332,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList(void) const;
+    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}

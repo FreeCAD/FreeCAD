@@ -17,7 +17,7 @@
    <item>
     <widget class="QTableWidget" name="baseList">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>List of locations to be processed.</string>
      </property>
      <column>
       <property name="text">
@@ -37,7 +37,7 @@
       <item row="0" column="1">
        <widget class="QPushButton" name="addLocation">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Opens a dialog to add arbitrary locations.</string>
         </property>
         <property name="text">
          <string>Add</string>
@@ -47,7 +47,7 @@
       <item row="0" column="2">
        <widget class="QPushButton" name="removeLocation">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Remove selected location from the list. The operation is no longer applied to them.</string>
         </property>
         <property name="text">
          <string>Remove</string>
@@ -57,7 +57,7 @@
       <item row="0" column="3">
        <widget class="QPushButton" name="editLocation">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Edit selected location.</string>
         </property>
         <property name="text">
          <string>Edit</string>

@@ -50,11 +50,10 @@ TaskWatcher::TaskWatcher(const char* Filter)
 
 TaskWatcher::~TaskWatcher()
 {
-    for (std::vector<QWidget*>::iterator it=Content.begin();it!=Content.end();++it){
-        delete(*it);
-        *it = 0;
+    for (auto it : Content) {
+        delete it;
+        it = nullptr;
     }
-
 }
 
 //==== implementer ===========================================================================

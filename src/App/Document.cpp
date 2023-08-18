@@ -560,7 +560,7 @@ int Document::getTransactionID(bool undo, unsigned pos) const {
     if(pos>=mRedoTransactions.size())
         return 0;
     auto rit = mRedoTransactions.rbegin();
-    for(;pos;++rit,--pos);
+    for(;pos;++rit,--pos){}
     return (*rit)->getID();
 }
 
@@ -903,7 +903,11 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
+#if QT_VERSION < QT_VERSION_CHECK(6,3,0)
     hash.addData(filename.c_str(), filename.size());
+#else
+    hash.addData(QByteArrayView(filename.c_str(), filename.size()));
+#endif
     s << App::Application::getUserCachePath() << App::Application::getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
@@ -917,7 +921,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
@@ -1068,11 +1072,11 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
-                        << App::Application::Config()["BuildVersionMajor"] << "."
-                        << App::Application::Config()["BuildVersionMinor"] << "R"
-                        << App::Application::Config()["BuildRevision"]
-                        << "\" FileVersion=\"1\">" << endl;
+    writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
+                    << App::Application::Config()["BuildVersionMajor"] << "."
+                    << App::Application::Config()["BuildVersionMinor"] << "R"
+                    << App::Application::Config()["BuildRevision"]
+                    << R"(" FileVersion="1">)" << endl;
     // Add this block to have the same layout as for normal documents
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
@@ -1556,7 +1560,7 @@ public:
     BackupPolicy() {
         policy = Standard;
         numberOfFiles = 1;
-        useFCBakExtension = false;
+        useFCBakExtension = true;
         saveBackupDateFormat = "%Y%m%d-%H%M%S";
     }
     ~BackupPolicy() = default;
@@ -1594,8 +1598,8 @@ private:
                 Base::FileInfo di(fi.dirPath());
                 std::vector<Base::FileInfo> backup;
                 std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    std::string file = it->fileName();
+                for (const Base::FileInfo& it : files) {
+                    std::string file = it.fileName();
                     if (file.substr(0,fn.length()) == fn) {
                         // starts with the same file name
                         std::string suf(file.substr(fn.length()));
@@ -1603,7 +1607,7 @@ private:
                             std::string::size_type nPos = suf.find_first_not_of("0123456789");
                             if (nPos==std::string::npos) {
                                 // store all backup files
-                                backup.push_back(*it);
+                                backup.push_back(it);
                                 nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
                             }
                         }
@@ -1613,9 +1617,9 @@ private:
                 if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
                     // delete the oldest backup file we found
                     Base::FileInfo del = backup.front();
-                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        if (it->lastModified() < del.lastModified())
-                            del = *it;
+                    for (const Base::FileInfo& it : backup) {
+                        if (it.lastModified() < del.lastModified())
+                            del = it;
                     }
 
                     del.deleteFile();
@@ -1669,10 +1673,10 @@ private:
                     Base::FileInfo di(fi.dirPath());
                     std::vector<Base::FileInfo> backup;
                     std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                    for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                        if (it->isFile()) {
-                            std::string file = it->fileName();
-                            std::string fext = it->extension();
+                    for (const Base::FileInfo& it : files) {
+                        if (it.isFile()) {
+                            std::string file = it.fileName();
+                            std::string fext = it.extension();
                             std::string fextUp = fext;
                             std::transform(fextUp.begin(), fextUp.end(), fextUp.begin(),(int (*)(int))toupper);
                             // re-enforcing identification of the backup file
@@ -1686,7 +1690,7 @@ private:
                                  // + complement with no "." + ".FCBak"
                                  ((fextUp == "FCBAK") && startsWith(file, pbn) &&
                                  (checkValidComplement(file, pbn, fext)))) {
-                                backup.push_back(*it);
+                                backup.push_back(it);
                             }
                         }
                     }
@@ -1696,18 +1700,18 @@ private:
                         // delete the oldest backup file we found
                         // Base::FileInfo del = backup.front();
                         int nb = 0;
-                        for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
+                        for (Base::FileInfo& it : backup) {
                             nb++;
                             if (nb >= numberOfFiles) {
                                 try {
-                                    if (!it->deleteFile()) {
+                                    if (!it.deleteFile()) {
                                         backupManagementError = true;
-                                        Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                                        Base::Console().Warning("Cannot remove backup file : %s\n", it.fileName().c_str());
                                     }
                                 }
                                 catch (...) {
                                     backupManagementError = true;
-                                    Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                                    Base::Console().Warning("Cannot remove backup file : %s\n", it.fileName().c_str());
                                 }
                             }
                         }
@@ -1928,7 +1932,7 @@ bool Document::saveToFile(const char* filename) const
             count_bak = -1;
         }
         bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",true);
         std::string saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
 
@@ -2188,15 +2192,17 @@ const char* Document::getFileName() const
 /// Remove all modifications. After this call The document becomes valid again.
 void Document::purgeTouched()
 {
-    for (std::vector<DocumentObject*>::iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        (*It)->purgeTouched();
+    for (auto It : d->objectArray)
+        It->purgeTouched();
 }
 
 bool Document::isTouched() const
 {
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched())
+    for (auto It : d->objectArray) {
+        if (It->isTouched()) {
             return true;
+        }
+    }
     return false;
 }
 
@@ -2204,9 +2210,11 @@ vector<DocumentObject*> Document::getTouched() const
 {
     vector<DocumentObject*> result;
 
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched())
-            result.push_back(*It);
+    for (auto It : d->objectArray) {
+        if (It->isTouched()) {
+            result.push_back(It);
+        }
+    }
 
     return result;
 }
@@ -2300,13 +2308,14 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     // result list
     std::vector<App::DocumentObject*> result;
     // go through all objects
-    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (const auto & It : d->objectMap) {
         // get the outList and search if me is in that list
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-            if (*It2 && *It2 == me)
+        std::vector<DocumentObject*> OutList = It.second->getOutList();
+        for (auto obj : OutList) {
+            if (obj && obj == me)
                 // add the parent object
-                result.push_back(It->second);
+                result.push_back(It.second);
+        }
     }
     return result;
 }
@@ -2532,7 +2541,9 @@ void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*> &o
  * @param paths Map with current and new names
  */
 
-void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths, const std::function<bool(const App::DocumentObject*)> & selector)
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier,
+                                       App::ObjectIdentifier> &paths,
+                                       const std::function<bool(const App::DocumentObject*)> & selector)
 {
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
 
@@ -2542,9 +2553,11 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
         ++it;
     }
 
-    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
-        if (selector(*it))
-            (*it)->renameObjectIdentifiers(extendedPaths);
+    for (auto it : d->objectArray) {
+        if (selector(it)) {
+            it->renameObjectIdentifiers(extendedPaths);
+        }
+    }
 }
 
 #ifdef USE_OLD_DAG
@@ -2753,8 +2766,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         // maximum two passes to allow some form of dependency inversion
         for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
             std::unique_ptr<Base::SequencerLauncher> seq;
-            if(canAbort)
-                seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
+            if(canAbort) {
+                seq = std::make_unique<Base::SequencerLauncher>("Recompute...", topoSortedObjects.size());
+            }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
@@ -2826,18 +2840,32 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     FC_TIME_LOG(t,"Recompute total");
 
     if (!d->_RecomputeLog.empty()) {
-        d->pendingRemove.clear();
-        if (!testStatus(Status::IgnoreErrorOnRecompute))
-            Base::Console().Error("Recompute failed! Please check report view.\n");
-    }
-    else {
-        for(auto &o : d->pendingRemove) {
-            auto obj = o.getObject();
-            if (obj)
-                obj->getDocument()->removeObject(obj->getNameInDocument());
+        if (!testStatus(Status::IgnoreErrorOnRecompute)) {
+            for (auto it : topoSortedObjects) {
+                if (it->isError()) {
+                    const char* text = getErrorDescription(it);
+                    if (text) {
+                        Base::Console().Error("%s: %s\n", it->Label.getValue(), text);
+                    }
+                }
+            }
         }
     }
 
+    for (auto doc : GetApplication().getDocuments()) {
+        decltype(doc->d->pendingRemove) objs;
+        objs.swap(doc->d->pendingRemove);
+        for(auto &o : objs) {
+            try {
+                if (auto obj = o.getObject()) {
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
+                }
+            } catch (Base::Exception & e) {
+                e.ReportException();
+                FC_ERR("error when removing object " << o.getDocumentName() << '#' << o.getObjectName());
+            }
+        }
+    }
     return objectCount;
 }
 
@@ -3194,8 +3222,8 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
     // get all existing object names
     std::vector<std::string> reservedNames;
     reservedNames.reserve(d->objectMap.size());
-    for (auto pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
-        reservedNames.push_back(pos->first);
+    for (const auto & pos : d->objectMap) {
+        reservedNames.push_back(pos.first);
     }
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
@@ -3369,7 +3397,7 @@ void Document::removeObject(const char* sName)
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
-        FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
+        FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
         d->pendingRemove.emplace_back(pos->second);
         return;
     }
@@ -3557,8 +3585,8 @@ std::vector<DocumentObject*> Document::copyObject(
     md.setVerbose(recursive);
 
     unsigned int memsize=1000; // ~ for the meta-information
-    for (std::vector<App::DocumentObject*>::iterator it = deps.begin(); it != deps.end(); ++it)
-        memsize += (*it)->getMemSize();
+    for (auto it : deps)
+        memsize += it->getMemSize();
 
     // if less than ~10 MB
     bool use_buffer=(memsize < 0xA00000);
@@ -3750,8 +3778,8 @@ DocumentObject * Document::getObjectByID(long id) const
 // Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
 bool Document::isIn(const DocumentObject *pFeat) const
 {
-    for (auto o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
-        if (o->second == pFeat)
+    for (const auto & pos : d->objectMap) {
+        if (pos.second == pFeat)
             return true;
     }
 
@@ -3760,9 +3788,9 @@ bool Document::isIn(const DocumentObject *pFeat) const
 
 const char * Document::getObjectName(DocumentObject *pFeat) const
 {
-    for (auto pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
-        if (pos->second == pFeat)
-            return pos->first.c_str();
+    for (const auto & pos : d->objectMap) {
+        if (pos.second == pFeat)
+            return pos.first.c_str();
     }
 
     return nullptr;
@@ -3771,7 +3799,7 @@ const char * Document::getObjectName(DocumentObject *pFeat) const
 std::string Document::getUniqueObjectName(const char *Name) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
@@ -3806,8 +3834,8 @@ std::string Document::getStandardObjectName(const char *Name, int d) const
     std::vector<std::string> labels;
     labels.reserve(mm.size());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it = mm.begin(); it != mm.end(); ++it) {
-        std::string label = (*it)->Label.getValue();
+    for (auto it : mm) {
+        std::string label = it->Label.getValue();
         labels.push_back(label);
     }
     return Base::Tools::getUniqueName(Name, labels, d);
@@ -3827,9 +3855,9 @@ const std::vector<DocumentObject*> &Document::getObjects() const
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
     std::vector<DocumentObject*> Objects;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(typeId))
-            Objects.push_back(*it);
+    for (auto it : d->objectArray) {
+        if (it->getTypeId().isDerivedFrom(typeId))
+            Objects.push_back(it);
     }
     return Objects;
 }
@@ -3837,9 +3865,9 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
 std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId, bool derived) const {
 
     std::vector<DocumentObject*> Objects;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->hasExtension(typeId, derived))
-            Objects.push_back(*it);
+    for (auto it : d->objectArray) {
+        if (it->hasExtension(typeId, derived))
+            Objects.push_back(it);
     }
     return Objects;
 }
@@ -3858,14 +3886,14 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
 
     std::vector<DocumentObject*> Objects;
     DocumentObject* found = nullptr;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(typeId)) {
-            found = *it;
+    for (auto it : d->objectArray) {
+        if (it->getTypeId().isDerivedFrom(typeId)) {
+            found = it;
 
-            if (!rx_name.empty() && !boost::regex_search((*it)->getNameInDocument(), what, rx_name))
+            if (!rx_name.empty() && !boost::regex_search(it->getNameInDocument(), what, rx_name))
                 found = nullptr;
 
-            if (!rx_label.empty() && !boost::regex_search((*it)->Label.getValue(), what, rx_label))
+            if (!rx_label.empty() && !boost::regex_search(it->Label.getValue(), what, rx_label))
                 found = nullptr;
 
             if (found)
@@ -3878,8 +3906,8 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
     int ct=0;
-    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
-        if (it->second->getTypeId().isDerivedFrom(typeId))
+    for (const auto & it : d->objectMap) {
+        if (it.second->getTypeId().isDerivedFrom(typeId))
             ct++;
     }
 
@@ -3952,11 +3980,11 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     std::vector<Path> all_paths;
     DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
-    for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
-        Path::iterator jt = std::find(it->begin(), it->end(), index_to);
-        if (jt != it->end()) {
+    for (const Path& it : all_paths) {
+        Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
+        if (jt != it.end()) {
             std::list<App::DocumentObject*> path;
-            for (Path::iterator kt = it->begin(); kt != jt; ++kt) {
+            for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
@@ -3980,8 +4008,9 @@ bool Document::mustExecute() const
         return touched;
     }
 
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched() || (*It)->mustExecute()==1)
+    for (auto It : d->objectArray) {
+        if (It->isTouched() || It->mustExecute()==1)
             return true;
+    }
     return false;
 }

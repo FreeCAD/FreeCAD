@@ -46,7 +46,7 @@ ViewProviderHelixParametric::~ViewProviderHelixParametric()
 
 }
 
-std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderHelixParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;
@@ -77,7 +77,7 @@ ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
 
 }
 
-std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes() const
 {
     // add your own modes
     std::vector<std::string> StrList;

@@ -30,9 +30,12 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
+import Part
 
+from draftgeoutils import faces
+from draftutils.messages import _wrn
 from draftutils.translate import translate
+
 from draftobjects.base import DraftObject
 
 
@@ -40,22 +43,77 @@ class ShapeString(DraftObject):
     """The ShapeString object"""
 
     def __init__(self, obj):
-        super(ShapeString, self).__init__(obj, "ShapeString")
+        super().__init__(obj, "ShapeString")
+        self.set_properties(obj)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
-        obj.addProperty("App::PropertyString", "String", "Draft", _tip)
+    def set_properties(self, obj):
+        """Add properties to the object and set them."""
+        properties = obj.PropertiesList
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
-        obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
+        if "String" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
+            obj.addProperty("App::PropertyString", "String", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
-        obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
+        if "FontFile" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
+            obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
-        obj.addProperty("App::PropertyLength", "Tracking", "Draft", _tip)
+        if "Size" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
+            obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
-        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
+        if "Justification" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal and vertical alignment")
+            obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip)
+            obj.Justification = ["Top-Left", "Top-Center", "Top-Right",
+                                 "Middle-Left", "Middle-Center", "Middle-Right",
+                                 "Bottom-Left", "Bottom-Center", "Bottom-Right"]
+            obj.Justification = "Bottom-Left"
+
+        if "JustificationReference" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Height reference used for justification")
+            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip)
+            obj.JustificationReference = ["Cap Height", "Shape Height"]
+            obj.JustificationReference = "Cap Height"
+
+        if "KeepLeftMargin" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Keep left margin and leading white space when justification is left")
+            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip).KeepLeftMargin = False
+
+        if "ScaleToSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Scale to ensure cap height is equal to size")
+            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip).ScaleToSize = True
+
+        if "Tracking" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
+            obj.addProperty("App::PropertyDistance", "Tracking", "Draft", _tip)
+
+        if "MakeFace" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
+            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
+
+        if "Fuse" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Fuse faces if faces overlap, usually not required (can be very slow)")
+            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip).Fuse = False
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        if hasattr(obj, "Justification"): # several more properties were added
+            return
+        self.update_properties_0v22(obj)
+
+    def update_properties_0v22(self, obj):
+        """Update view properties."""
+        old_tracking = obj.Tracking # no need for obj.getTypeIdOfProperty("Tracking")
+        obj.removeProperty("Tracking")
+        self.set_properties(obj)
+        obj.KeepLeftMargin = True
+        obj.ScaleToSize = False
+        obj.Tracking = old_tracking
+        _wrn("v0.22, " + obj.Label + ", "
+             + translate("draft", "added 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ScaleToSize' and 'Fuse' properties"))
+        _wrn("v0.22, " + obj.Label + ", "
+             + translate("draft", "changed 'Tracking' property type"))
 
     def execute(self, obj):
         if self.props_changed_placement_only():
@@ -63,141 +121,148 @@ class ShapeString(DraftObject):
             self.props_changed_clear()
             return
 
-        import Part
-        # import OpenSCAD2Dgeom
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
 
-            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
-            if len(CharList) == 0:
-                App.Console.PrintWarning(translate("draft","ShapeString: string has no wires")+"\n")
-                return
-            SSChars = []
-
-            # test a simple letter to know if we have a sticky font or not
-            sticky = False
-            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
-            if testWire.isClosed:
-                try:
-                    testFace = Part.Face(testWire)
-                except Part.OCCError:
-                    sticky = True
+            fill = obj.MakeFace
+            if fill is True:
+                # test a simple letter to know if we have a sticky font or not
+                # if font is sticky change fill to `False`
+                test_wire = Part.makeWireString("L", obj.FontFile, obj.Size, obj.Tracking)[0][0]
+                if test_wire.isClosed:
+                    try:
+                        test_face = Part.Face(test_wire)
+                    except Part.OCCError:
+                        fill = False
+                    else:
+                        fill = test_face.isValid() and test_face.Area > 1e-7
                 else:
-                    if not testFace.isValid():
-                        sticky = True
+                    fill = False
+
+            chars = Part.makeWireString(obj.String, obj.FontFile, obj.Size, obj.Tracking)
+            shapes = []
+
+            for char in chars:
+                if fill is False:
+                    shapes.extend(char)
+                elif char:
+                    shapes.extend(self.make_faces(char))
+            if shapes:
+                if obj.MakeFace and obj.Fuse:
+                    ss_shape = shapes[0].fuse(shapes[1:])
+                    ss_shape = faces.concatenate(ss_shape)
+                else:
+                    ss_shape = Part.Compound(shapes)
+                cap_char = Part.makeWireString("M", obj.FontFile, obj.Size, obj.Tracking)[0]
+                cap_height = Part.Compound(cap_char).BoundBox.YMax
+                if obj.ScaleToSize:
+                    ss_shape.scale(obj.Size / cap_height)
+                    cap_height = obj.Size
+                obj.Shape = self.justification(ss_shape,
+                                               cap_height,
+                                               obj.Justification,
+                                               obj.JustificationReference,
+                                               obj.KeepLeftMargin)
             else:
-                sticky = True
+                App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
-            fill = True
-            if hasattr(obj, "MakeFace"):
-                fill = obj.MakeFace
-
-            for char in CharList:
-                if sticky or (not fill):
-                    for CWire in char:
-                        SSChars.append(CWire)
-                else:
-                    CharFaces = []
-                    for CWire in char:
-                        f = Part.Face(CWire)
-                        if f:
-                            CharFaces.append(f)
-                    # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
-                    if CharFaces:
-                        # s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                        # s = self.makeGlyph(CharFaces)
-                        s = self.makeFaces(char)
-                        SSChars.append(s)
-            shape = Part.Compound(SSChars)
-            obj.Shape = shape
             if plm:
                 obj.Placement = plm
+
         obj.positionBySupport()
         self.props_changed_clear()
 
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
-    def makeFaces(self, wireChar):
-        import Part
-        compFaces=[]
-        allEdges = [] # unused variable?
-        wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
-        fixedwire = []
-        for w in wirelist:
+    def justification(self, ss_shape, cap_height, just, just_ref, keep_left_margin): # ss_shape is a compound
+        shapes = ss_shape.SubShapes
+        box = ss_shape.BoundBox
+        if keep_left_margin is True:
+            vec = App.Vector(0, 0, 0)
+        else:
+            vec = App.Vector(-box.XMin, 0, 0) # remove left margin caused by kerning and white space characters
+        width  = box.XLength
+        if "Shape" in just_ref:
+            vec = vec + App.Vector(0, -box.YMin, 0)
+            height = box.YLength
+        else:
+            height = cap_height
+        if "Top" in just:
+            vec = vec + App.Vector(0, -height, 0)
+        elif "Middle" in just:
+            vec = vec + App.Vector(0, -height/2, 0)
+        if "Right" in just:
+            vec = vec + App.Vector(-width, 0, 0)
+        elif "Center" in just:
+            vec = vec + App.Vector(-width/2, 0, 0)
+        for shape in shapes:
+            shape.translate(vec)
+        return Part.Compound(shapes)
+
+    def make_faces(self, wireChar):
+        wrn = translate("draft", "ShapeString: face creation failed for one character") + "\n"
+
+        wirelist = []
+        for w in wireChar:
             compEdges = Part.Compound(w.Edges)
             compEdges = compEdges.connectEdgesToWires()
-            fixedwire.append(compEdges.Wires[0])
-        wirelist = fixedwire
-        sep_wirelist = []
-        while len(wirelist) > 0:
-            wire2Face = [wirelist[0]]
-            face = Part.Face(wirelist[0])
-            for w in wirelist[1:]:
-                p = w.Vertexes[0].Point
-                u,v = face.Surface.parameter(p)
-                if face.isPartOfDomain(u,v):
-                    f = Part.Face(w)
-                    if face.Orientation == f.Orientation:
-                        if f.Surface.Axis * face.Surface.Axis < 0:
-                            w.reverse()
-                    else:
-                        if f.Surface.Axis * face.Surface.Axis > 0:
-                            w.reverse()
-                    wire2Face.append(w)
-                else:
-                    sep_wirelist.append(w)
-            wirelist = sep_wirelist
-            sep_wirelist = []
-            face = Part.Face(wire2Face)
-            face.validate()
+            if compEdges.Wires[0].isClosed():
+                wirelist.append(compEdges.Wires[0])
+
+        if not wirelist:
+            App.Console.PrintWarning(wrn)
+            return []
+
+        # Some test fonts:
+        # https://raw.githubusercontent.com/FreeCAD/FPA/main/images/freecad_logo_official.svg
+        #     https://evolventa.github.io/
+        #     not a problem font, but it is used by FreeCAD
+        # https://forum.freecad.org/viewtopic.php?t=57774
+        #     https://www.dafont.com/mutlu-ornamental.font
+        # https://forum.freecad.org/viewtopic.php?t=65110&p=559810#p559886
+        #     http://www.atelier-des-fougeres.fr/Cambam/Aide/Plugins/stickfonts.html
+
+        # 1CamBam_Stick_0.ttf is actually not a stick font.
+
+        # FaceMakerBullseye:
+        #     1CamBam_Stick_0.ttf face validation problem with A, E, F, H, K, R, Y and y.
+        # FaceMakerCheese:
+        #     1CamBam_Stick_0.ttf face creation problem with: A, E, F, H, Q, R, e and y.
+        #     All fonts: face creation problem in case of double-nested wires f.e. with: ©.
+        # FaceMakerSimple:
+        #     All fonts: overlapping faces in case of nested wires f.e. with: O.
+        try:
+            # print("try Bullseye")
+            faces = Part.makeFace(wirelist, "Part::FaceMakerBullseye").Faces
+            for face in faces:
+                face.validate()
+        except Part.OCCError:
+            try:
+                # print("try Cheese")
+                faces = Part.makeFace(wirelist, "Part::FaceMakerCheese").Faces
+                for face in faces:
+                    face.validate()
+            except Part.OCCError:
+                try:
+                    # print("try Simple")
+                    faces = Part.makeFace(wirelist, "Part::FaceMakerSimple").Faces
+                    for face in faces:
+                        face.validate()
+                except Part.OCCError:
+                    App.Console.PrintWarning(wrn)
+                    return []
+
+        for face in faces:
             try:
                 # some fonts fail here
-                if face.Surface.Axis.z < 0.0:
+                if face.normalAt(0, 0).z < 0: # Does not seem to occur for FaceMakerBullseye.
                     face.reverse()
             except Exception:
                 pass
-            compFaces.append(face)
-        ret = Part.Compound(compFaces)
-        return ret
 
-    def makeGlyph(self, facelist):
-        ''' turn list of simple contour faces into a compound shape representing a glyph '''
-        ''' remove cuts, fuse overlapping contours, retain islands '''
-        import Part
-        if len(facelist) == 1:
-            return facelist[0]
-
-        sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
-
-        biggest = sortedfaces[0]
-        result = biggest
-        islands =[]
-        for face in sortedfaces[1:]:
-            bcfA = biggest.common(face).Area
-            fA = face.Area
-            difA = abs(bcfA - fA)
-            eps = utils.epsilon()
-            # if biggest.common(face).Area == face.Area:
-            if difA <= eps:                              # close enough to zero
-                # biggest completely overlaps current face ==> cut
-                result = result.cut(face)
-            # elif biggest.common(face).Area == 0:
-            elif bcfA <= eps:
-                # island
-                islands.append(face)
-            else:
-                # partial overlap - (font designer error?)
-                result = result.fuse(face)
-        #glyphfaces = [result]
-        wl = result.Wires
-        for w in wl:
-            w.fixWire()
-        glyphfaces = [Part.Face(wl)]
-        glyphfaces.extend(islands)
-        ret = Part.Compound(glyphfaces) # should we fuse these instead of making compound?
-        return ret
+        return faces
 
 
 # Alias for compatibility with v0.18 and earlier

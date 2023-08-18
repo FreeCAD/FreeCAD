@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="211"/>
       <source>Add tool</source>
-      <translation>Add tool</translation>
+      <translation>Tambahkan alat</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="212"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Add a tool shape to the robot</translation>
+      <translation>Tambahkan bentuk alat ke robot</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Buat lintasan kosong baru</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="211"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Atur orientasi default untuk perintah selanjutnya untuk pembuatan waypoint</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="250"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Tetapkan nilai default untuk kecepatan, akselerasi, dan kontinuitas untuk perintah pembuatan titik arah berikutnya</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Anda memerlukan setidaknya dua titik arah dalam lintasan untuk disimulasikan.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="84"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="262"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Tetapkan kecepatan default</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="263"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="272"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Mengatur kontinuitas default</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="273"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Mengatur akselerasi default</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="280"/>

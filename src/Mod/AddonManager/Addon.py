@@ -55,7 +55,6 @@ INTERNAL_WORKBENCHES = {
     "path": "Path",
     "plot": "Plot",
     "points": "Points",
-    "raytracing": "Raytracing",
     "robot": "Robot",
     "sketcher": "Sketcher",
     "spreadsheet": "Spreadsheet",
@@ -176,9 +175,7 @@ class Addon:
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
         if parsed_url.path.endswith(".git"):
-            self.url = (
-                parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
-            )
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
             if parsed_url.query:
                 self.url += "?" + parsed_url.query
             if parsed_url.fragment:
@@ -212,9 +209,7 @@ class Addon:
         result = f"FreeCAD {self.repo_type}\n"
         result += f"Name: {self.name}\n"
         result += f"URL: {self.url}\n"
-        result += (
-            "Has metadata\n" if self.metadata is not None else "No metadata found\n"
-        )
+        result += "Has metadata\n" if self.metadata is not None else "No metadata found\n"
         if self.macro is not None:
             result += "Has linked Macro object\n"
         return result
@@ -243,9 +238,7 @@ class Addon:
             status = Addon.Status.UNCHECKED
         else:
             status = Addon.Status.NOT_INSTALLED
-        instance = Addon(
-            cache_dict["name"], cache_dict["url"], status, cache_dict["branch"]
-        )
+        instance = Addon(cache_dict["name"], cache_dict["url"], status, cache_dict["branch"])
 
         for key, value in cache_dict.items():
             instance.__dict__[key] = value
@@ -517,9 +510,7 @@ class Addon:
 
         _, file_extension = os.path.splitext(real_icon)
         store = os.path.join(self.cache_directory, "PackageMetadata")
-        self.cached_icon_filename = os.path.join(
-            store, self.name, "cached_icon" + file_extension
-        )
+        self.cached_icon_filename = os.path.join(store, self.name, "cached_icon" + file_extension)
 
         return self.cached_icon_filename
 
@@ -668,9 +659,7 @@ class Addon:
         wb_name = ""
 
         if self.repo_type == Addon.Kind.PACKAGE:
-            for wb in self.metadata.content[
-                "workbench"
-            ]:  # we may have more than one wb.
+            for wb in self.metadata.content["workbench"]:  # we may have more than one wb.
                 if wb_name != "":
                     wb_name += ","
                 wb_name += wb.classname
@@ -801,7 +790,5 @@ class MissingDependencies:
         self.python_requires.sort()
         self.python_optional.sort()
         self.python_optional = [
-            option
-            for option in self.python_optional
-            if option not in self.python_requires
+            option for option in self.python_optional if option not in self.python_requires
         ]

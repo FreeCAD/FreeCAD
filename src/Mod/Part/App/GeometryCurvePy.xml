@@ -136,13 +136,13 @@ of the nearest orthogonal projection of the point.</UserDocu>
                 <UserDocu>
 Computes the projection of a point on the curve
 
-projectPoint(Point=Vector,[Method=\"NearestPoint\"])
-projectPoint(Vector,\"NearestPoint\") -> Vector
-projectPoint(Vector,\"LowerDistance\") -> float
-projectPoint(Vector,\"LowerDistanceParameter\") -> float
-projectPoint(Vector,\"Distance\") -> list of floats
-projectPoint(Vector,\"Parameter\") -> list of floats
-projectPoint(Vector,\"Point\") -> list of points
+projectPoint(Point=Vector,[Method="NearestPoint"])
+projectPoint(Vector,"NearestPoint") -> Vector
+projectPoint(Vector,"LowerDistance") -> float
+projectPoint(Vector,"LowerDistanceParameter") -> float
+projectPoint(Vector,"Distance") -> list of floats
+projectPoint(Vector,"Parameter") -> list of floats
+projectPoint(Vector,"Point") -> list of points
 </UserDocu>
             </Documentation>
         </Methode>

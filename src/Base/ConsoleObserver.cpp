@@ -58,9 +58,14 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
+void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                                  IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to log file
+    if(recipient == IntendedRecipient::User || content == ContentType::Translated)
+        return;
     
     std::string prefix;
     switch(level){
@@ -101,9 +106,14 @@ ConsoleObserverStd::ConsoleObserverStd() :
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
+void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
+                                 IntendedRecipient recipient, ContentType content)
 {
     (void) notifiername;
+
+    // Do not log translated messages, or messages intended only to the user to std log
+    if(recipient == IntendedRecipient::User || content == ContentType::Translated)
+        return;
     
     switch(level){
         case LogStyle::Warning:

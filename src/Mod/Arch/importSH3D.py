@@ -49,7 +49,7 @@ if open.__module__ in ['__builtin__','io']:
 
 def open(filename):
     "called when freecad wants to open a file"
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
+    docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     FreeCAD.ActiveDocument = doc
@@ -142,7 +142,7 @@ class SH3DHandler(xml.sax.ContentHandler):
             mat.rotateX(math.pi/2)
             mat.rotateZ(math.pi)
             if DEBUG: print("Creating furniture: ",name)
-            if "angle" in attributes.keys():
+            if "angle" in attributes:
                 mat.rotateZ(float(attributes["angle"]))
             m.transform(mat)
             os.remove(tf)
@@ -186,13 +186,13 @@ class SH3DHandler(xml.sax.ContentHandler):
                 shape = shape.removeSplitter()
             if shape:
                 if DEBUG: print("Creating window: ",name)
-                if "angle" in attributes.keys():
+                if "angle" in attributes:
                     shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
                     sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
                 p = shape.BoundBox.Center.negative()
                 p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
                 p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
-                if "elevation" in attributes.keys():
+                if "elevation" in attributes:
                     p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
                 shape.translate(p)
                 sub.translate(p)

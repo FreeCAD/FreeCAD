@@ -65,14 +65,16 @@
 
 
 using namespace FemGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view)
 {
+    //NOLINTBEGIN
     m_view = view;
     m_object = static_cast<Fem::FemPostFunction*>(view->getObject());
     m_connection = m_object->getDocument()->signalChangedObject.connect(
-        boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
+        std::bind(&FunctionWidget::onObjectsChanged, this, sp::_1, sp::_2));
+    //NOLINTEND
 }
 
 void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App::Property& p) {
@@ -121,13 +123,12 @@ void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop)
 void ViewProviderFemPostFunctionProvider::updateSize()
 {
     std::vector<App::DocumentObject*> vec = claimChildren();
-    for (std::vector<App::DocumentObject*>::iterator it = vec.begin(); it != vec.end(); ++it) {
-
-        if (!(*it)->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
+    for (auto it : vec) {
+        if (!it->isDerivedFrom(Fem::FemPostFunction::getClassTypeId()))
             continue;
 
         ViewProviderFemPostFunction* vp = static_cast<FemGui::ViewProviderFemPostFunction*>(
-            Gui::Application::Instance->getViewProvider(*it));
+            Gui::Application::Instance->getViewProvider(it));
         vp->AutoScaleFactorX.setValue(SizeX.getValue());
         vp->AutoScaleFactorY.setValue(SizeY.getValue());
         vp->AutoScaleFactorZ.setValue(SizeZ.getValue());

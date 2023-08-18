@@ -45,7 +45,7 @@ FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
 using namespace App;
 using namespace Base;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -147,7 +147,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
         const char *subname, App::DocumentObject *obj, const std::string &ref, const char *newLabel)
 {
     if(!obj || !obj->getNameInDocument() || !parent || !parent->getNameInDocument())
-        return std::string();
+        return {};
 
     // Because the label is allowed to be the same across different
     // hierarchies, we have to search for all occurrences, and make sure the
@@ -162,7 +162,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
             return sub;
         }
     }
-    return std::string();
+    return {};
 }
 
 std::vector<std::pair<Property*, std::unique_ptr<Property> > >
@@ -192,7 +192,7 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
 
 static std::string propertyName(const Property *prop) {
     if(!prop)
-        return std::string();
+        return {};
     if(!prop->getContainer() || !prop->hasName()) {
         auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
         if(xlink)
@@ -983,9 +983,11 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
     (void)newStyle;
 
     std::vector<std::string> temp;
-    for(std::vector<std::string>::const_iterator it=_cSubList.begin();it!=_cSubList.end();++it)
-        if(strncmp(starter,it->c_str(),strlen(starter))==0)
-            temp.push_back(*it);
+    for(const auto & it : _cSubList) {
+        if(strncmp(starter, it.c_str(), strlen(starter)) == 0) {
+            temp.push_back(it);
+        }
+    }
     return temp;
 }
 
@@ -1161,7 +1163,7 @@ const char *PropertyLinkBase::exportSubName(std::string &output,
         if(!dot)
             return res;
         const char *hash;
-        for(hash=sub;hash<dot && *hash!='#';++hash);
+        for(hash=sub;hash<dot && *hash!='#';++hash) {}
         App::Document *doc = nullptr;
         if(*hash == '#')
             doc = GetApplication().getDocument(std::string(sub,hash-sub).c_str());
@@ -1236,7 +1238,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         const App::Document *doc, const std::map<std::string,std::string> &nameMap)
 {
     if(!doc || !obj || !obj->getNameInDocument())
-        return std::string();
+        return {};
 
     std::ostringstream ss;
     std::string subname(_subname);
@@ -1247,7 +1249,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         auto sobj = obj->getSubObject(subname.c_str());
         if(!sobj) {
             FC_ERR("Failed to restore label reference " << obj->getFullName() << '.' << subname);
-            return std::string();
+            return {};
         }
         dot[0] = 0;
         if(next[0] == '$') {
@@ -1271,7 +1273,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
     }
     if(sub!=subname.c_str())
         return ss.str();
-    return std::string();
+    return {};
 }
 
 #define ATTR_SHADOWED "shadowed"
@@ -1884,10 +1886,10 @@ DocumentObject *PropertyLinkSubList::getValue() const
 {
     App::DocumentObject* ret = nullptr;
     //FIXME: cache this to avoid iterating each time, to improve speed
-    for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
+    for (auto i : this->_lValueList) {
         if (!ret)
-            ret = this->_lValueList[i];
-        if (ret != this->_lValueList[i])
+            ret = i;
+        if (ret != i)
             return nullptr;
     }
     return ret;
@@ -1922,10 +1924,10 @@ void PropertyLinkSubList::setSubListValues(const std::vector<PropertyLinkSubList
     std::vector<DocumentObject*> links;
     std::vector<std::string> subs;
 
-    for (std::vector<PropertyLinkSubList::SubSet>::const_iterator it = values.begin(); it != values.end(); ++it) {
-        for (std::vector<std::string>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            links.push_back(it->first);
-            subs.push_back(*jt);
+    for (const auto & value : values) {
+        for (const auto& jt : value.second) {
+            links.push_back(value.first);
+            subs.push_back(jt);
         }
     }
 
@@ -2661,14 +2663,16 @@ public:
         myPos = pos;
         myPath = myPos->first.toUtf8().constData();
         App::Application &app = App::GetApplication();
+        //NOLINTBEGIN
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
-            boost::bind(&DocInfo::slotFinishRestoreDocument,this,bp::_1));
+            std::bind(&DocInfo::slotFinishRestoreDocument,this,sp::_1));
         connPendingReloadDocument = app.signalPendingReloadDocument.connect(
-            boost::bind(&DocInfo::slotFinishRestoreDocument,this,bp::_1));
+            std::bind(&DocInfo::slotFinishRestoreDocument,this,sp::_1));
         connDeleteDocument = app.signalDeleteDocument.connect(
-            boost::bind(&DocInfo::slotDeleteDocument,this,bp::_1));
+            std::bind(&DocInfo::slotDeleteDocument,this,sp::_1));
         connSaveDocument = app.signalSaveDocument.connect(
-            boost::bind(&DocInfo::slotSaveDocument,this,bp::_1));
+            std::bind(&DocInfo::slotSaveDocument,this,sp::_1));
+        //NOLINTEND
 
         QString fullpath(getFullPath());
         if(fullpath.isEmpty())
@@ -3704,9 +3708,11 @@ std::vector<std::string> PropertyXLink::getSubValuesStartsWith(const char* start
     (void)newStyle;
 
     std::vector<std::string> temp;
-    for(std::vector<std::string>::const_iterator it=_SubList.begin();it!=_SubList.end();++it)
-        if(strncmp(starter,it->c_str(),strlen(starter))==0)
-            temp.push_back(*it);
+    for(const auto & it : _SubList) {
+        if(strncmp(starter, it.c_str(), strlen(starter)) == 0) {
+            temp.push_back(it);
+        }
+    }
     return temp;
 }
 
@@ -4623,7 +4629,7 @@ void PropertyXLinkContainer::Save (Base::Writer &writer) const {
 void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     reader.readElement("XLinks");
     auto count = reader.getAttributeAsUnsigned("count");
-    _XLinkRestores.reset(new std::vector<RestoreInfo>(count));
+    _XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
 
     if(reader.hasAttribute("hidden")) {
         std::istringstream iss(reader.getAttribute("hidden"));

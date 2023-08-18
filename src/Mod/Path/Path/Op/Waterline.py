@@ -412,7 +412,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.",
+                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.",
                 ),
             ),
             (

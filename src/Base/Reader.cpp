@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <memory>
 # include <xercesc/sax2/XMLReaderFactory.hpp>
 #endif
 
@@ -42,6 +43,7 @@
 #include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
+#include <boost/iostreams/filtering_stream.hpp>
 
 
 XERCES_CPP_NAMESPACE_USE
@@ -283,6 +285,85 @@ void Base::XMLReader::readCharacters()
 {
 }
 
+std::streamsize Base::XMLReader::read(char_type* s, std::streamsize n)
+{
+
+    char_type* buf = s;
+    if (CharacterOffset < 0) {
+        return -1;
+    }
+
+    for (;;) {
+        std::streamsize copy_size =
+            static_cast<std::streamsize>(Characters.size()) - CharacterOffset;
+        if (n < copy_size) {
+            copy_size = n;
+        }
+        std::memcpy(s, Characters.c_str() + CharacterOffset, copy_size);
+        n -= copy_size;
+        s += copy_size;
+        CharacterOffset += copy_size;
+
+        if (!n) {
+            break;
+        }
+
+        if (ReadType == Chars) {
+            read();
+        }
+        else {
+            CharacterOffset = -1;
+            break;
+        }
+    }
+
+    return s - buf;
+}
+
+void Base::XMLReader::endCharStream()
+{
+    CharacterOffset = -1;
+    CharStream.reset();
+}
+
+std::istream& Base::XMLReader::charStream()
+{
+    if (!CharStream) {
+        throw Base::XMLParseException("no current character stream");
+    }
+    return *CharStream;
+}
+
+std::istream& Base::XMLReader::beginCharStream()
+{
+    if (CharStream) {
+        throw Base::XMLParseException("recursive character stream");
+    }
+
+    // TODO: An XML element can actually contain a mix of child elements and
+    // characters. So we should not actually demand 'StartElement' here. But
+    // with the current implementation of character stream, we cannot track
+    // child elements and character content at the same time.
+    if (ReadType == StartElement) {
+        CharacterOffset = 0;
+        read();
+    }
+    else if (ReadType == StartEndElement) {
+        // If we are currently at a self-closing element, just leave the offset
+        // as negative and do not read any characters. This will result in an
+        // empty input stream for the caller.
+        CharacterOffset = -1;
+    }
+    else {
+        throw Base::XMLParseException("invalid state while reading character stream");
+    }
+
+    CharStream = std::make_unique<boost::iostreams::filtering_istream>();
+    auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
+    filteringStream->push(boost::ref(*this));
+    return *CharStream;
+}
+
 void Base::XMLReader::readBinFile(const char* filename)
 {
     Base::FileInfo fi(filename);
@@ -380,8 +461,8 @@ const std::vector<std::string>& Base::XMLReader::getFilenames() const
 bool Base::XMLReader::isRegistered(Base::Persistence *Object) const
 {
     if (Object) {
-        for (std::vector<FileEntry>::const_iterator it = FileList.begin(); it != FileList.end(); ++it) {
-            if (it->Object == Object)
+        for (const auto & it : FileList) {
+            if (it.Object == Object)
                 return true;
         }
     }

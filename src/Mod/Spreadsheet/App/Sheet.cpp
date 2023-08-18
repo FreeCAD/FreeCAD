@@ -106,16 +106,18 @@ void Sheet::clearAll()
 
     std::vector<std::string> propNames = props.getDynamicPropertyNames();
 
-    for (std::vector<std::string>::const_iterator i = propNames.begin(); i != propNames.end(); ++i)
-        this->removeDynamicProperty((*i).c_str());
+    for (const auto & propName : propNames) {
+        this->removeDynamicProperty(propName.c_str());
+    }
 
     propAddress.clear();
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
 
-    for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
-        delete i->second;
+    for (auto & observer : observers) {
+        delete observer.second;
+    }
     observers.clear();
 }
 
@@ -230,8 +232,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
 
 static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, std::ostream & out) {
   out << quoteChar;
-  for (std::string::const_iterator i = s.begin(), end = s.end(); i != end; ++i) {
-    unsigned char c = *i;
+  for (unsigned char c : s) {
     if (c != quoteChar)
         out << c;
     else {
@@ -408,7 +409,7 @@ void Sheet::setCell(CellAddress address, const char * value)
   * @returns The Python object.
   */
 
-PyObject *Sheet::getPyObject(void)
+PyObject *Sheet::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -675,7 +676,7 @@ void Sheet::updateProperty(CellAddress key)
             std::string s;
 
             if (cell->getStringContent(s) && !s.empty())
-                output.reset(new StringExpression(this, s));
+                output = std::make_unique<StringExpression>(this, s);
             else {
                 this->removeDynamicProperty(key.toString().c_str());
                 return;
@@ -901,7 +902,7 @@ void Sheet::updateBindings()
   *
   */
 
-DocumentObjectExecReturn *Sheet::execute(void)
+DocumentObjectExecReturn *Sheet::execute()
 {
     updateBindings();
 
@@ -909,9 +910,9 @@ DocumentObjectExecReturn *Sheet::execute(void)
     std::set<CellAddress> dirtyCells = cells.getDirty();
 
     // Always recompute cells that have failed
-    for (std::set<CellAddress>::const_iterator i = cellErrors.begin(); i != cellErrors.end(); ++i) {
-         cells.recomputeDependencies(*i);
-         dirtyCells.insert(*i);
+    for (auto cellError : cellErrors) {
+         cells.recomputeDependencies(cellError);
+         dirtyCells.insert(cellError);
     }
 
     DependencyList graph;
@@ -1005,8 +1006,9 @@ DocumentObjectExecReturn *Sheet::execute(void)
             std::list<Vertex> make_order;
             try {
                 boost::topological_sort(graph, std::front_inserter(make_order));
-            } catch (std::exception&) {
+            } catch (std::exception&) { //TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
+                Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n", *pcNameInDocument);
                 std::ostringstream ss;
                 ss << "Cyclic dependency";
                 int count = 0;
@@ -1032,14 +1034,15 @@ DocumentObjectExecReturn *Sheet::execute(void)
     // Signal update of column widths
     const std::set<int> & dirtyColumns = columnWidths.getDirty();
 
-    for (std::set<int>::const_iterator i = dirtyColumns.begin(); i != dirtyColumns.end(); ++i)
-        columnWidthChanged(*i, columnWidths.getValue(*i));
+    for (int dirtyColumn : dirtyColumns) {
+        columnWidthChanged(dirtyColumn, columnWidths.getValue(dirtyColumn));
+    }
 
     // Signal update of row heights
     const std::set<int> & dirtyRows = rowHeights.getDirty();
 
-    for (std::set<int>::const_iterator i = dirtyRows.begin(); i != dirtyRows.end(); ++i)
-        rowHeightChanged(*i, rowHeights.getValue(*i));
+    for (int dirtyRow : dirtyRows)
+        rowHeightChanged(dirtyRow, rowHeights.getValue(dirtyRow));
 
     //cells.clearDirty();
     rowHeights.clearDirty();
@@ -1056,7 +1059,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
   *
   */
 
-short Sheet::mustExecute(void) const
+short Sheet::mustExecute() const
 {
     if (!cellErrors.empty() || cells.isDirty())
         return 1;
@@ -1459,8 +1462,9 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
     std::string fullName = getFullName() + ".";
     std::set<CellAddress> tmpResult = cells.getDeps(fullName + address.toString());
 
-    for (std::set<CellAddress>::const_iterator i = tmpResult.begin(); i != tmpResult.end(); ++i)
-        result.insert(fullName + i->toString());
+    for (const auto& i : tmpResult) {
+        result.insert(fullName + i.toString());
+    }
 }
 
 /**

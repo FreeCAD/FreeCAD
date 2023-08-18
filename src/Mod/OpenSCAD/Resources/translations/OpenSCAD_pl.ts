@@ -110,6 +110,11 @@
       <translation>Maksymalny rozmiar fragmentu</translation>
     </message>
     <message>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <source>angle (fa)</source>
+      <translation>kąt (fa)</translation>
+    </message>
+    <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
       <translation>Wypukłość</translation>
@@ -119,11 +124,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="296"/>
       <source>Minimum angle for a fragment</source>
       <translation>Wartość minimalna kąta dla fragmentu</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
-      <source>angular (fa)</source>
-      <translation>kąt (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Open...</source>
-      <translation>Otwórz...</translation>
+      <translation>Otwórz ...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
@@ -303,7 +303,7 @@
       <location filename="../../importCSG.py" line="550"/>
       <location filename="../../importCSG.py" line="1432"/>
       <source>Press OK</source>
-      <translation>Naciśnij przycisk OK</translation>
+      <translation>Naciśnij OK</translation>
     </message>
   </context>
   <context>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="156"/>
       <source>Refine Shape Feature</source>
-      <translation>Udoskonalenie cechy kształtu</translation>
+      <translation>Udoskonal kształt cechy</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Stwórz udoskonaloną cechę kształtu</translation>
+      <translation>Tworzy udoskonaloną cechę kształtu</translation>
     </message>
   </context>
   <context>
@@ -475,7 +475,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="566"/>
       <source>Hull</source>
-      <translation>Kadłub</translation>
+      <translation>Powłoka</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>
@@ -493,7 +493,7 @@
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Często używane narzędzia środowiska pracy Część</translation>
+      <translation>Często używane narzędzia środowiska Część</translation>
     </message>
   </context>
   <context>

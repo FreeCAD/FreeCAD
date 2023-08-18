@@ -950,8 +950,8 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
-    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
-        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+    for (auto it : clPoly)
+        polygon.Add(Base::Vector2d(it[0], it[1]));
 
 
     std::vector<App::DocumentObject*> docObj =
@@ -1699,7 +1699,7 @@ CmdFemPostClipFilter::CmdFemPostClipFilter()
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Region clip filter");
     sToolTipText =
-        QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
+        QT_TR_NOOP("Define/create a clip filter which uses functions to define the clipped region");
     sWhatsThis = "FEM_PostFilterClipRegion";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterClipRegion";
@@ -2364,12 +2364,11 @@ void CmdFemPostPipelineFromResult::activated(int)
     const std::vector<App::DocumentObject*> obj =
         app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end();
-         ++it) {
+    for (auto it : obj) {
         doCommand(Gui,
                   "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
                   app->getName(),
-                  (*it)->getNameInDocument());
+                  it->getNameInDocument());
     }
 
     // we need single result object to attach the pipeline to

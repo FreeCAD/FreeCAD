@@ -76,14 +76,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
         (!UpToFace.getValue() && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
-    // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
-
     double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Pocket: Second length of pocket too small");
 
     TopoDS_Shape profileshape;
     try {
@@ -98,10 +92,10 @@ App::DocumentObjectExecReturn *Pocket::execute()
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+        std::string text(QT_TRANSLATE_NOOP("Exception", ("The requested feature cannot be created. The reason may be that:\n"
                                     "  - the active Body does not contain a base shape, so there is no\n"
                                     "  material to be removed;\n"
-                                    "  - the selected sketch does not belong to the active Body."));
+                                    "  - the selected sketch does not belong to the active Body.")));
         return new App::DocumentObjectExecReturn(text);
     }
 
@@ -135,7 +129,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
         // factor would be zero if vectors are orthogonal
         if (factor < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Pocket: Creation failed because direction is orthogonal to sketch's normal vector");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Creation failed because direction is orthogonal to sketch's normal vector"));
 
         // perform the length correction if not along custom vector
         if (AlongSketchNormal.getValue()) {
@@ -146,13 +140,13 @@ App::DocumentObjectExecReturn *Pocket::execute()
         dir.Transform(invObjLoc.Transformation());
 
         if (profileshape.IsNull())
-            return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Creating a face from sketch failed"));
         profileshape.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
             if (base.IsNull())
-                return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Extruding up to a face is only possible if the sketch is located on a face"));
 
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
@@ -187,14 +181,14 @@ App::DocumentObjectExecReturn *Pocket::execute()
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Up to face: Could not get SubShape!"));
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
 
             int prismCount = countSolids(prism);
             if (prismCount > 1) {
-                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             this->Shape.setValue(getSolid(prism));
@@ -211,7 +205,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             }
 
             if (prism.IsNull())
-                return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Resulting shape is empty"));
 
             // set the subtractive shape property for later usage in e.g. pattern
             prism = refineShapeIfActive(prism);
@@ -220,16 +214,16 @@ App::DocumentObjectExecReturn *Pocket::execute()
             // Cut the SubShape out of the base feature
             BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Cut out of base feature failed"));
             TopoDS_Shape result = mkCut.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
             int solidCount = countSolids(result);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
 
             }
             solRes = refineShapeIfActive(solRes);
@@ -245,9 +239,9 @@ App::DocumentObjectExecReturn *Pocket::execute()
     catch (Standard_Failure& e) {
         if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
             (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
-            return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
-                "for making a pocket up to a face.");
+                "for making a pocket up to a face."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }

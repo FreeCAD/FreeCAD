@@ -1263,7 +1263,7 @@ void StatusWidget::showText(int ms)
 
 QSize StatusWidget::sizeHint () const
 {
-    return QSize(250,100);
+    return {250,100};
 }
 
 void StatusWidget::showEvent(QShowEvent* event)
@@ -1285,7 +1285,7 @@ public:
     }
 
     QSize sizeHint() const override {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+        return {codeEditor->lineNumberAreaWidth(), 0};
     }
 
 protected:
@@ -1597,7 +1597,7 @@ void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 
@@ -1664,7 +1664,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 

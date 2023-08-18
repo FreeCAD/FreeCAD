@@ -55,6 +55,23 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
+// TODO: Refactor DocumentObjectItem::getSubName() that has similar logic
+App::DocumentObject* getParent(App::DocumentObject* obj, std::string& subname)
+{
+    auto inlist = obj->getInList();
+    for (auto it : inlist) {
+        if (it->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            std::string parent;
+            parent += obj->getNameInDocument();
+            parent += '.';
+            subname = parent + subname;
+            return getParent(it, subname);
+        }
+    }
+
+    return obj;
+}
+
 bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
     if (!obj || !obj->getNameInDocument()) {
         FC_ERR("invalid object");
@@ -72,13 +89,12 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if (activeBody != body) {
         parent = obj;
-        subname.clear();
-    } else {
-        subname += obj->getNameInDocument();
-        subname += '.';
+    }
+    else {
+        parent = getParent(obj, subname);
     }
 
     Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
@@ -164,7 +180,7 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
     return dynamic_cast<PartDesign::Body*>(body);
 }
 
-void needActiveBodyError(void)
+void needActiveBodyError()
 {
     QMessageBox::warning( Gui::getMainWindow(),
         QObject::tr("Active Body Required"),
@@ -263,7 +279,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         return; // Sketch is on a face of a solid, do nothing
 
     const App::Document* doc = sketch->getDocument();
-    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
+    PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ false);
     if (!body) {
         throw Base::RuntimeError ("Couldn't find body for the sketch");
     }
@@ -438,6 +454,9 @@ void relinkToBody (PartDesign::Feature *feature) {
 
 bool isFeatureMovable(App::DocumentObject* const feat)
 {
+    if (!feat)
+        return false;
+
     if (feat->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         auto prim = static_cast<PartDesign::Feature*>(feat);
         App::DocumentObject* bf = prim->BaseFeature.getValue();

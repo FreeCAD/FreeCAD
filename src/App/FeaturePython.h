@@ -175,7 +175,7 @@ public:
         // cannot move this to the initializer list to avoid warning
         imp = new FeaturePythonImp(this);
     }
-    virtual ~FeaturePythonT() {
+    ~FeaturePythonT() override {
         delete imp;
     }
 

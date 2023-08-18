@@ -73,7 +73,7 @@ public:
     virtual bool isMultiUnitAngle() const {return false;}
 
     //return the basic length unit for this schema
-    virtual std::string getBasicLengthUnit() const { return std::string("mm"); }
+    virtual std::string getBasicLengthUnit() const { return {"mm"}; }
 };
 
 

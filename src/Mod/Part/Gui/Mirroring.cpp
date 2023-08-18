@@ -105,17 +105,17 @@ void Mirroring::findShapes()
     this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape shape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape shape = Part::Feature::getTopoShape(obj);
         if (!shape.isNull()) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
 
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp) child->setIcon(0, vp->getIcon());
             ui->shapes->addTopLevelItem(child);
         }
@@ -142,7 +142,7 @@ bool Mirroring::accept()
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label;
-    QRegularExpression rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
+    QRegularExpression rx(QString::fromLatin1(R"( \(Mirror #\d+\)$)"));
     QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
     float normx=0, normy=0, normz=0;
     int index = ui->comboBox->currentIndex();
@@ -155,9 +155,9 @@ bool Mirroring::accept()
     double basex = ui->baseX->value().getValue();
     double basey = ui->baseY->value().getValue();
     double basez = ui->baseZ->value().getValue();
-    for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-        shape = (*it)->data(0, Qt::UserRole).toString();
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8((*it)->text(0).toUtf8());
+    for (auto item : items) {
+        shape = item->data(0, Qt::UserRole).toString();
+        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(item->text(0).toUtf8());
         label = QString::fromStdString(escapedstr);
 
         // if we already have the suffix " (Mirror #<number>)" remove it

@@ -37,7 +37,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -76,11 +76,13 @@ private:
 
 MergeDocuments::MergeDocuments(App::Document* doc) : stream(nullptr), appdoc(doc)
 {
+    //NOLINTBEGIN
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
+        (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     document = Gui::Application::Instance->getDocument(doc);
+    //NOLINTEND
 }
 
 MergeDocuments::~MergeDocuments()
@@ -111,8 +113,8 @@ MergeDocuments::importObjects(std::istream& input)
 void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r)
 {
     objects = o;
-    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-        Gui::ViewProvider* vp = document->getViewProvider(*it);
+    for (auto it : objects) {
+        Gui::ViewProvider* vp = document->getViewProvider(it);
         if (vp) vp->hide();
     }
     Restore(r);

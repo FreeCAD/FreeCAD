@@ -407,16 +407,16 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
         if (!it->getSubNames().empty() )
         {
           auto parentShape = currentShapeStore.inputShape;
-          for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
+          for (const auto & itName : selObj.front().getSubNames())
           {
-            auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
+            auto currentShape =  aPart->Shape.getShape().getSubShape(itName.c_str());
 
             transform_shape_to_global_position(currentShape, aPart);
 
             currentShapeStore.inputShape = currentShape;
-            currentShapeStore.partName = *itName;
+            currentShapeStore.partName = itName;
             auto store = store_part_in_vector(currentShapeStore, iStoreVec);
-            higlight_object(aPart, *itName, store, iColor);
+            higlight_object(aPart, itName, store, iColor);
             store_wire_in_vector(currentShapeStore, parentShape, iStoreVec, iColor);
           }
         }

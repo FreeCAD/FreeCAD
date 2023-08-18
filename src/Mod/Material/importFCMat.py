@@ -190,7 +190,7 @@ def write(filename, dictionary, write_group_section=True):
     user = {}
     template_data = get_material_template()
     for group in template_data:
-        groupName = list(group.keys())[0]  # group dict has only one key
+        groupName = list(group)[0]  # group dict has only one key
         contents.append({"keyname": groupName})
         if groupName == "Meta":
             header = contents[-1]
@@ -202,7 +202,7 @@ def write(filename, dictionary, write_group_section=True):
         found = False
         for group in contents:
             if not found:
-                if k in group.keys():
+                if k in group:
                     group[k] = i
                     found = True
         if not found:
@@ -211,7 +211,7 @@ def write(filename, dictionary, write_group_section=True):
     for group in contents:
         # iterating over a dict and changing it is not allowed
         # thus it is iterated over a list of the keys
-        for k in list(group.keys()):
+        for k in list(group):
             if group[k] == '':
                 del group[k]
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>400</height>
+    <height>448</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -177,7 +177,7 @@
         <item row="9" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbLightOnDark">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</string>
           </property>
           <property name="text">
            <string>Light on dark</string>
@@ -617,7 +617,9 @@
         <item row="10" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbMonochrome">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>If checked FreeCAD will use a single color for all text and lines. 
+
+</string>
           </property>
           <property name="text">
            <string>Monochrome</string>
