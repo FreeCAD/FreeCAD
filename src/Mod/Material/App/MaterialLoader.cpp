@@ -91,7 +91,7 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std
     if (yamlModel["Inherits"]) {
         auto inherits = yamlModel["Inherits"];
         for(auto it = inherits.begin(); it != inherits.end(); it++) {
-            std::string nodeName = (*it)["UUID"].as<std::string>();
+            std::string nodeName = it->second["UUID"].as<std::string>();
 
             finalModel->setParentUUID(QString::fromStdString(nodeName)); // Should only be one. Need to check
         }
@@ -115,7 +115,11 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setPhysicalValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
+                if (finalModel->hasPhysicalProperty(QString::fromStdString(propertyName))) {
+                    finalModel->setPhysicalValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
+                } else if (propertyName != "UUID") {
+                    Base::Console().Log("\tProperty '%s' is not described by any model. Ignored\n", propertyName.c_str());
+                }
             }
         }
     }
@@ -138,7 +142,11 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std
                 std::string propertyName = (itp->first).as<std::string>();
                 std::string propertyValue = (itp->second).as<std::string>();
 
-                finalModel->setAppearanceValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
+                if (finalModel->hasAppearanceProperty(QString::fromStdString(propertyName))) {
+                    finalModel->setAppearanceValue(QString::fromStdString(propertyName), QString::fromStdString(propertyValue));
+                } else if (propertyName != "UUID") {
+                    Base::Console().Log("\tProperty '%s' is not described by any model. Ignored\n", propertyName.c_str());
+                }
             }
         }
     }

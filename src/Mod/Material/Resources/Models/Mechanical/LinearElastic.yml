@@ -74,3 +74,8 @@ Model:
     Units: 'N/m'
     URL: 'https://en.wikipedia.org/wiki/Stiffness'
     Description: "Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]"
+  Hardness:
+    Type: 'Quantity'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Mohs_scale'
+    Description: "Hardness. FreeCAD does not currently support hardness units"

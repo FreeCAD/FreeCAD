@@ -173,7 +173,7 @@ def yamMechanical(card):
         elif param in ["BulkModulus", "PoissonRatio", "ShearModulus", "YoungsModulus"]:
             useIso = True
         elif param in ["AngleOfFriction", "CompressiveStrength", "FractureToughness", 
-                       "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness"]:
+                       "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness", "Hardness"]:
             useLinearElastic = True
 
     yam = ""
