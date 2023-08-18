@@ -100,14 +100,14 @@ unsigned long MeshKernel::VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rcl
             for (int i = 0; i < 3; i++) {
                 const MeshFacet &rclFacet = raclFAry[*pCurrFacet];
                 const std::set<FacetIndex>& raclNB = clRPF[rclFacet._aulPoints[i]];
-                for (std::set<FacetIndex>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
-                    if (!pFBegin[*pINb].IsFlag(MeshFacet::VISIT)) {
+                for (FacetIndex pINb : raclNB) {
+                    if (!pFBegin[pINb].IsFlag(MeshFacet::VISIT)) {
                         // only visit if VISIT Flag not set
                         ulVisited++;
-                        FacetIndex ulFInd = *pINb;
+                        FacetIndex ulFInd = pINb;
                         aclNextLevel.push_back(ulFInd);
-                        pFBegin[*pINb].SetFlag(MeshFacet::VISIT);
-                        if (!rclFVisitor.Visit(pFBegin[*pINb], raclFAry[*pCurrFacet], ulFInd, ulLevel))
+                        pFBegin[pINb].SetFlag(MeshFacet::VISIT);
+                        if (!rclFVisitor.Visit(pFBegin[pINb], raclFAry[*pCurrFacet], ulFInd, ulLevel))
                             return ulVisited;
                     }
                 }
@@ -136,14 +136,14 @@ unsigned long MeshKernel::VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, P
         // visit all neighbours of the current level
         for (clCurrIter = aclCurrentLevel.begin(); clCurrIter < aclCurrentLevel.end(); ++clCurrIter) {
             const std::set<PointIndex>& raclNB = clNPs[*clCurrIter];
-            for (std::set<PointIndex>::const_iterator pINb = raclNB.begin(); pINb != raclNB.end(); ++pINb) {
-                if (!pPBegin[*pINb].IsFlag(MeshPoint::VISIT)) {
+            for (PointIndex pINb : raclNB) {
+                if (!pPBegin[pINb].IsFlag(MeshPoint::VISIT)) {
                     // only visit if VISIT Flag not set
                     ulVisited++;
-                    PointIndex ulPInd = *pINb;
+                    PointIndex ulPInd = pINb;
                     aclNextLevel.push_back(ulPInd);
-                    pPBegin[*pINb].SetFlag(MeshPoint::VISIT);
-                    if (!rclPVisitor.Visit(pPBegin[*pINb], *(pPBegin + (*clCurrIter)), ulPInd, ulLevel))
+                    pPBegin[pINb].SetFlag(MeshPoint::VISIT);
+                    if (!rclPVisitor.Visit(pPBegin[pINb], *(pPBegin + (*clCurrIter)), ulPInd, ulLevel))
                         return ulVisited;
                 }
             }
@@ -200,8 +200,8 @@ bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
     if (!fitter->Done())
         fitter->Fit();
     MeshGeomFacet triangle = mesh.GetFacet(face);
-    for (int i=0; i<3; i++) {
-        if (fabs(fitter->GetDistanceToPlane(triangle._aclPoints[i])) > max_deviation)
+    for (const auto& pnt : triangle._aclPoints) {
+        if (fabs(fitter->GetDistanceToPlane(pnt)) > max_deviation)
             return false;
     }
     return true;

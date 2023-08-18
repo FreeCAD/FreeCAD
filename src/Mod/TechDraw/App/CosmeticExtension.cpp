@@ -30,7 +30,7 @@
 #include "Cosmetic.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
-
+#include "GeometryObject.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -53,11 +53,10 @@ CosmeticExtension::~CosmeticExtension()
 {
 }
 
-//void CosmeticExtension::extHandleChangedPropertyName(Base::XMLReader &reader,
-//                                                     const char* TypeName,
-//                                                     const char* PropName)
-//{
-//}
+TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
+{
+    return static_cast<TechDraw::DrawViewPart*>(getExtendedObject());
+}
 
 //==============================================================================
 //CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
@@ -65,6 +64,85 @@ CosmeticExtension::~CosmeticExtension()
 //unscale x, y before creation.
 //if you are creating a CV based on calculations of mirrored geometry, you need to
 //mirror again before creation.
+
+void CosmeticExtension::clearCosmeticVertexes()
+{
+    std::vector<CosmeticVertex*> noVerts;
+    CosmeticVertexes.setValues(noVerts);
+}
+
+//add the cosmetic verts to owner's geometry vertex list
+void CosmeticExtension::addCosmeticVertexesToGeom()
+{
+    //    Base::Console().Message("CE::addCosmeticVertexesToGeom()\n");
+    const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
+    for (auto& cv : cVerts) {
+        double scale = getOwner()->getScale();
+        int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cv->scaled(scale), cv->getTagAsString());
+        cv->linkGeom = iGV;
+    }
+}
+
+int CosmeticExtension::add1CVToGV(std::string tag)
+{
+    //    Base::Console().Message("CE::add1CVToGV(%s)\n", tag.c_str());
+    TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
+    if (!cv) {
+        Base::Console().Message("CE::add1CVToGV - cv %s not found\n", tag.c_str());
+        return 0;
+    }
+    double scale = getOwner()->getScale();
+    int iGV = getOwner()->getGeometryObject()->addCosmeticVertex(cv->scaled(scale), cv->getTagAsString());
+    cv->linkGeom = iGV;
+    return iGV;
+}
+
+//update Vertex geometry with current CV's
+void CosmeticExtension::refreshCVGeoms()
+{
+    //    Base::Console().Message("CE::refreshCVGeoms()\n");
+
+    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> newGVerts;
+    for (auto& gv : gVerts) {
+        if (gv->getCosmeticTag().empty()) {//keep only non-cv vertices
+            newGVerts.push_back(gv);
+        }
+    }
+    getOwner()->getGeometryObject()->setVertexGeometry(newGVerts);
+    addCosmeticVertexesToGeom();
+}
+
+//what is the CV's position in the big geometry q
+int CosmeticExtension::getCVIndex(std::string tag)
+{
+    //    Base::Console().Message("CE::getCVIndex(%s)\n", tag.c_str());
+    std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
+    std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
+
+    int i = 0;
+    for (auto& gv : gVerts) {
+        if (gv->getCosmeticTag() == tag) {
+            return i;
+        }
+        i++;
+    }
+
+    // Nothing found
+    int base = gVerts.size();
+    i = 0;
+    for (auto& cv : cVerts) {
+        //        Base::Console().Message("CE::getCVIndex - cv tag: %s\n",
+        //                                cv->getTagAsString().c_str());
+        if (cv->getTagAsString() == tag) {
+            return base + i;
+        }
+        i++;
+    }
+
+    //    Base::Console().Message("CE::getCVIndex - returns: %d\n", result);
+    return -1;
+}
 
 //returns unique CV id
 //only adds cv to cvlist property.  does not add to display geometry until dvp executes.
@@ -144,6 +222,56 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 }
 
 //********** Cosmetic Edge *****************************************************
+
+void CosmeticExtension::clearCosmeticEdges()
+{
+    std::vector<CosmeticEdge*> noEdges;
+    CosmeticEdges.setValues(noEdges);
+}
+
+//add the cosmetic edges to geometry edge list
+void CosmeticExtension::addCosmeticEdgesToGeom()
+{
+    //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
+    const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    for (auto& ce : cEdges) {
+        double scale = getOwner()->getScale();
+        TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(scale);
+        if (!scaledGeom)
+            continue;
+        //        int iGE =
+        getOwner()->getGeometryObject()->addCosmeticEdge(scaledGeom, ce->getTagAsString());
+    }
+}
+
+int CosmeticExtension::add1CEToGE(std::string tag)
+{
+    //    Base::Console().Message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
+    TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
+    if (!ce) {
+        Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
+        return -1;
+    }
+    TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getOwner()->getScale());
+    int iGE = getOwner()->getGeometryObject()->addCosmeticEdge(scaledGeom, tag);
+
+    return iGE;
+}
+
+//update Edge geometry with current CE's
+void CosmeticExtension::refreshCEGeoms()
+{
+    //    Base::Console().Message("CEx::refreshCEGeoms()\n");
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> oldGEdges;
+    for (auto& ge : gEdges) {
+        if (ge->source() != SourceType::COSEDGE) {
+            oldGEdges.push_back(ge);
+        }
+    }
+    getOwner()->getGeometryObject()->setEdgeGeometry(oldGEdges);
+    addCosmeticEdgesToGeom();
+}
 
 //returns unique CE id
 //only adds ce to celist property.  does not add to display geometry until dvp executes.
@@ -234,6 +362,57 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
 }
 
 //********** Center Line *******************************************************
+
+void CosmeticExtension::clearCenterLines()
+{
+    std::vector<CenterLine*> noLines;
+    CenterLines.setValues(noLines);
+}
+
+int CosmeticExtension::add1CLToGE(std::string tag)
+{
+    //    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
+    TechDraw::CenterLine* cl = getCenterLine(tag);
+    if (!cl) {
+        Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
+        return -1;
+    }
+    TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
+    int iGE = getOwner()->getGeometryObject()->addCenterLine(scaledGeom, tag);
+
+    return iGE;
+}
+
+//update Edge geometry with current CL's
+void CosmeticExtension::refreshCLGeoms()
+{
+    //    Base::Console().Message("CE::refreshCLGeoms()\n");
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> newGEdges;
+    for (auto& ge : gEdges) {
+        if (ge->source() != SourceType::CENTERLINE) {
+            newGEdges.push_back(ge);
+        }
+    }
+    getOwner()->getGeometryObject()->setEdgeGeometry(newGEdges);
+    addCenterLinesToGeom();
+}
+
+//add the center lines to geometry Edges list
+void CosmeticExtension::addCenterLinesToGeom()
+{
+    //   Base::Console().Message("CE::addCenterLinesToGeom()\n");
+    const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
+    for (auto& cl : lines) {
+        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
+        if (!scaledGeom) {
+            Base::Console().Error("CE::addCenterLinesToGeom - scaledGeometry is null\n");
+            continue;
+        }
+        //        int idx =
+        getOwner()->getGeometryObject()->addCenterLine(scaledGeom, cl->getTagAsString());
+    }
+}
 
 //returns unique CL id
 //only adds cl to cllist property.  does not add to display geometry until dvp executes.
@@ -334,6 +513,17 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
 
 
 //********** Geometry Formats **************************************************
+
+void CosmeticExtension::clearGeomFormats()
+{
+    std::vector<GeomFormat*> noFormats;
+    std::vector<GeomFormat*> fmts = GeomFormats.getValues();
+    GeomFormats.setValues(noFormats);
+    for (auto& f : fmts) {
+        delete f;
+    }
+}
+
 //returns unique GF id
 //only adds gf to gflist property.  does not add to display geometry until dvp repaints.
 std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)

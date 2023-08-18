@@ -45,8 +45,8 @@ Breakpoint::Breakpoint()
 Breakpoint::Breakpoint(const Breakpoint& rBp)
 {
     setFilename(rBp.filename());
-    for (std::set<int>::const_iterator it = rBp._linenums.begin(); it != rBp._linenums.end(); ++it)
-        _linenums.insert(*it);
+    for (int it : rBp._linenums)
+        _linenums.insert(it);
 }
 
 Breakpoint& Breakpoint::operator= (const Breakpoint& rBp)
@@ -55,8 +55,8 @@ Breakpoint& Breakpoint::operator= (const Breakpoint& rBp)
         return *this;
     setFilename(rBp.filename());
     _linenums.clear();
-    for (std::set<int>::const_iterator it = rBp._linenums.begin(); it != rBp._linenums.end(); ++it)
-        _linenums.insert(*it);
+    for (int it : rBp._linenums)
+        _linenums.insert(it);
     return *this;
 }
 
@@ -88,10 +88,10 @@ bool Breakpoint::checkLine(int line)
 int Breakpoint::lineIndex(int ind)const
 {
     int i = 0;
-    for (std::set<int>::const_iterator it = _linenums.begin(); it != _linenums.end(); ++it)
+    for (int it : _linenums)
     {
         if (ind == i++)
-            return *it;
+            return it;
     }
     return -1;
 }
@@ -320,7 +320,7 @@ namespace Gui {
 class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
-    PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
+    explicit PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
     ~PythonDebuggerPy() override {}
     PythonDebugger* dbg;
     int depth;
@@ -329,7 +329,7 @@ public:
 class RunningState
 {
 public:
-    RunningState(bool& s) : state(s)
+    explicit RunningState(bool& s) : state(s)
     { state = true; }
     ~RunningState()
     { state = false; }
@@ -350,7 +350,7 @@ struct PythonDebuggerP {
     PyObject* pydbg;
     std::vector<Breakpoint> bps;
 
-    PythonDebuggerP(PythonDebugger* that) :
+    explicit PythonDebuggerP(PythonDebugger* that) :
         init(false), trystop(false), running(false)
     {
         out_o = nullptr;
@@ -388,25 +388,25 @@ PythonDebugger::~PythonDebugger()
 
 Breakpoint PythonDebugger::getBreakpoint(const QString& fn) const
 {
-    for (std::vector<Breakpoint>::const_iterator it = d->bps.begin(); it != d->bps.end(); ++it) {
-        if (fn == it->filename()) {
-            return *it;
+    for (const Breakpoint& it : d->bps) {
+        if (fn == it.filename()) {
+            return it;
         }
     }
 
-    return Breakpoint();
+    return {};
 }
 
 bool PythonDebugger::toggleBreakpoint(int line, const QString& fn)
 {
-    for (std::vector<Breakpoint>::iterator it = d->bps.begin(); it != d->bps.end(); ++it) {
-        if (fn == it->filename()) {
-            if (it->checkLine(line)) {
-                it->removeLine(line);
+    for (Breakpoint& it : d->bps) {
+        if (fn == it.filename()) {
+            if (it.checkLine(line)) {
+                it.removeLine(line);
                 return false;
             }
             else {
-                it->addLine(line);
+                it.addLine(line);
                 return true;
             }
         }

@@ -295,7 +295,7 @@ std::string FileInfo::extension() const
 {
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 
@@ -303,7 +303,7 @@ std::string FileInfo::completeExtension() const
 {
     std::string::size_type pos = FileName.find_first_of('.');
     if (pos == std::string::npos)
-        return std::string();
+        return {};
     return FileName.substr(pos+1);
 }
 
@@ -314,6 +314,16 @@ bool FileInfo::hasExtension(const char* Ext) const
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return strcasecmp(Ext,extension().c_str()) == 0;
 #endif
+}
+
+bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
+{
+    for (const char* Ext : Exts) {
+        if (hasExtension(Ext)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool FileInfo::exists() const
@@ -570,19 +580,19 @@ bool FileInfo::deleteDirectoryRecursive() const
         return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
-    for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
-        if (It->isDir()) {
+    for (Base::FileInfo& fi : List) {
+        if (fi.isDir()) {
             // At least on Linux, directory needs execute permission to be
             // deleted. We don't really need to set permission for directory
             // anyway, since FC code does not touch directory permission.
             //
             // It->setPermissions(FileInfo::ReadWrite);
 
-            It->deleteDirectoryRecursive();
+            fi.deleteDirectoryRecursive();
         }
-        else if (It->isFile()) {
-            It->setPermissions(FileInfo::ReadWrite);
-            It->deleteFile();
+        else if (fi.isFile()) {
+            fi.setPermissions(FileInfo::ReadWrite);
+            fi.deleteFile();
         }
         else {
             throw Base::FileException("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");

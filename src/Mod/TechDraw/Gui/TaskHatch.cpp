@@ -195,15 +195,22 @@ void TaskHatch::createHatch()
 {
 //    Base::Console().Message("TH::createHatch()\n");
     App::Document* doc = m_dvp->getDocument();
-    std::string FeatName = doc->getUniqueObjectName("Hatch");
-    std::stringstream featLabel;
-    featLabel << FeatName << "F" <<
-                    TechDraw::DrawUtil::getIndexFromName(m_subs.at(0)); //use 1st face# for label
+
+    // TODO: the structured label for Hatch (and GeomHatch) should be retired.
+    const std::string objectName("Hatch");
+    std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
+//    std::string generatedSuffix {FeatName.substr(objectName.length())};
+//    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+//    std::stringstream featLabel;
+//    featLabel << translatedObjectName << generatedSuffix << "F" <<
+//                    TechDraw::DrawUtil::getIndexFromName(m_subs.at(0)); //use 1st face# for label
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
 
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+//    Command::doCommand(Command::Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawHatch', 'Hatch', '%s')",
+              FeatName.c_str(), FeatName.c_str());
 
     m_hatch = static_cast<TechDraw::DrawHatch *>(doc->getObject(FeatName.c_str()));
     m_hatch->Source.setValue(m_dvp, m_subs);

@@ -576,8 +576,10 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 
 bool DocumentRecoveryFinder::checkForPreviousCrashes()
 {
+    //NOLINTBEGIN
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
+    //NOLINTEND
 
     return showRecoveryDialogIfNeeded();
 }

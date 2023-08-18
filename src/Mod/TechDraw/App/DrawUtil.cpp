@@ -61,6 +61,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -1592,6 +1593,18 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
         Base::Console().Message(
             "DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(), outSpec.c_str());
     }
+}
+
+//! static method that provides a translated std::string for objects that are not derived from DrawView
+std::string DrawUtil::translateArbitrary(std::string context, std::string baseName, std::string uniqueName)
+{
+    std::string suffix("");
+    if (uniqueName.length() > baseName.length()) {
+        suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
+    }
+    QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
+    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
+    return ssTranslated + suffix;
 }
 
 

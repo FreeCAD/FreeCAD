@@ -131,8 +131,8 @@ ConsoleSingleton::ConsoleSingleton()
 ConsoleSingleton::~ConsoleSingleton()
 {
     ConsoleOutput::destruct();
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
-        delete (*Iter);
+    for (ILogger* Iter : _aclObservers)
+        delete Iter;
 }
 
 
@@ -282,9 +282,9 @@ void ConsoleSingleton::DetachObserver(ILogger *pcObserver)
 void Base::ConsoleSingleton::notifyPrivate(LogStyle category, IntendedRecipient recipient,
                    ContentType content, const std::string& notifiername, const std::string& msg)
 {
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if ((*Iter)->isActive(category)) {
-            (*Iter)->SendLog(notifiername, msg, category, recipient, content);   // send string to the listener
+    for (ILogger* Iter : _aclObservers) {
+        if (Iter->isActive(category)) {
+            Iter->SendLog(notifiername, msg, category, recipient, content);   // send string to the listener
         }
     }
 }
@@ -298,10 +298,10 @@ void ConsoleSingleton::postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, 
 ILogger *ConsoleSingleton::Get(const char *Name) const
 {
     const char* OName;
-    for (std::set<ILogger * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        OName = (*Iter)->Name();   // get the name
+    for (ILogger* Iter : _aclObservers) {
+        OName = Iter->Name();   // get the name
         if (OName && strcmp(OName,Name) == 0)
-            return *Iter;
+            return Iter;
     }
     return nullptr;
 }

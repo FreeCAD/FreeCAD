@@ -482,7 +482,7 @@ Razpon vrednosti je 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Pusti ploščo odprto</translation>
+      <translation>Ohrani odprto podokno</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>

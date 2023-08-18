@@ -25,10 +25,12 @@
 #ifndef APP_FEATURECUSTOM_H
 #define APP_FEATURECUSTOM_H
 
+#include <App/PropertyContainer.h>
 
 namespace App
 {
 
+class DocumentObjectExecReturn;
 class Property;
 
 /**
@@ -40,50 +42,51 @@ class Property;
  * @author Werner Mayer
  */
 template <class FeatureT>
-class FeatureCustomT : public FeatureT
+class FeatureCustomT : public FeatureT //NOLINT
 {
-    PROPERTY_HEADER(App::FeatureCustomT<FeatureT>);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureCustomT<FeatureT>);
 
 public:
     FeatureCustomT() = default;
 
-    virtual ~FeatureCustomT() = default;
+    ~FeatureCustomT() override = default;
 
     /** @name methods override DocumentObject */
     //@{
-    short mustExecute() const {
+    short mustExecute() const override {
         return FeatureT::mustExecute();
     }
     /// recalculate the Feature
-    virtual DocumentObjectExecReturn *execute() {
+    DocumentObjectExecReturn *execute() override {
         return FeatureT::execute();
     }
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return FeatureT::getViewProviderName();
     }
 
-    PyObject *getPyObject() {
+    PyObject *getPyObject() override {
         return FeatureT::getPyObject();
     }
-    void setPyObject(PyObject *obj) {
+    void setPyObject(PyObject *obj) override {
         FeatureT::setPyObject(obj);
     }
 
 protected:
-    virtual void onBeforeChange(const Property* prop) {
+    void onBeforeChange(const Property* prop) override {
         FeatureT::onBeforeChange(prop);
     }
-    virtual void onChanged(const Property* prop) {
+    void onChanged(const Property* prop) override {
         FeatureT::onChanged(prop);
     }
-    virtual void onDocumentRestored() {
+    void onDocumentRestored() override {
         FeatureT::onDocumentRestored();
     }
-    virtual void onSettingDocument() {
+    void onSettingDocument() override {
         FeatureT::onSettingDocument();
     }
 
+public:
     FeatureCustomT(const FeatureCustomT&) = delete;
     FeatureCustomT(FeatureCustomT&&) = delete;
     FeatureCustomT& operator= (const FeatureCustomT&) = delete;

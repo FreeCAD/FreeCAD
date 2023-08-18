@@ -3310,7 +3310,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to import invisible objects.</source>
-      <translation type="unfinished">Select this to import invisible objects.</translation>
+      <translation>非表示オブジェクトをインポートする場合はこれを選択します。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>

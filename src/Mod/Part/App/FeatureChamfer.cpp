@@ -42,7 +42,7 @@ Chamfer::Chamfer()
 {
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute(void)
+App::DocumentObjectExecReturn *Chamfer::execute()
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)
@@ -57,10 +57,10 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
 
         std::vector<FilletElement> values = Edges.getValues();
-        for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
-            int id = it->edgeid;
-            double radius1 = it->radius1;
-            double radius2 = it->radius2;
+        for (const auto & value : values) {
+            int id = value.edgeid;
+            double radius1 = value.radius1;
+            double radius2 = value.radius2;
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             mkChamfer.Add(radius1, radius2, edge, face);

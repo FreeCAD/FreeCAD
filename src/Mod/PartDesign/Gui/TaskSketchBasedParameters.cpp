@@ -194,9 +194,9 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     // go through all objects and check the labels
     std::string name = label.toUtf8().data();
     std::vector<App::DocumentObject*> objs = doc->getObjects();
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (name == (*it)->Label.getValue()) {
-            return QVariant(QByteArray((*it)->getNameInDocument()));
+    for (auto obj : objs) {
+        if (name == obj->Label.getValue()) {
+            return QVariant(QByteArray(obj->getNameInDocument()));
         }
     }
 
@@ -211,7 +211,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     if (o.isEmpty())
         return QString();
 
-    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
+    return QString::fromLatin1(R"((App.getDocument("%1").%2, ["%3"]))")
             .arg(QString::fromLatin1(doc->getName()), o, sub);
 }
 

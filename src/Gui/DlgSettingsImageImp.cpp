@@ -131,7 +131,7 @@ void DlgSettingsImageImp::setImageSize( const QSize& s )
  */
 QSize DlgSettingsImageImp::imageSize() const
 {
-    return QSize( ui->spinWidth->value(), ui->spinHeight->value() );
+    return { ui->spinWidth->value(), ui->spinHeight->value() };
 }
 
 /**
@@ -157,7 +157,7 @@ int DlgSettingsImageImp::imageHeight() const
 QString DlgSettingsImageImp::comment() const
 {
     if ( !ui->textEditComment->isEnabled() )
-        return QString();
+        return {};
     else
         return ui->textEditComment->toPlainText();
 }
@@ -237,7 +237,7 @@ void DlgSettingsImageImp::onStandardSizeBoxActivated(int index)
     else {
         // try to extract from the string
         QString text = ui->standardSizeBox->itemText(index);
-        QRegularExpression rx(QLatin1String("\\b\\d{2,5}\\b"));
+        QRegularExpression rx(QLatin1String(R"(\b\d{2,5}\b)"));
         int pos = 0;
         auto match = rx.match(text, pos);
         if (match.hasMatch()) {

@@ -46,14 +46,14 @@ class TechDrawGuiExport  QGIDrawingTemplate : public QGITemplate
 
 public:
     explicit QGIDrawingTemplate(QGSPage *);
-    ~QGIDrawingTemplate();
+    ~QGIDrawingTemplate() override;
 
     enum {Type = QGraphicsItem::UserType + 151};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     void clearContents();
-    void draw();
-    virtual void updateView(bool update = false);
+    void draw() override;
+    void updateView(bool update = false) override;
 
 protected:
   TechDraw::DrawParametricTemplate * getParametricTemplate();

@@ -332,6 +332,9 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
         }
     }
 
+    // save the detail shape for further processing
+    m_detailShape = pieces;
+
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");     //debug
         BRepTools::Write(copyShape, "DVDCopy.brep");//debug

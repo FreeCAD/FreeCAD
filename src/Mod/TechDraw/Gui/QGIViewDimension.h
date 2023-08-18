@@ -62,7 +62,7 @@ Q_OBJECT
 
 public:
     QGIDatumLabel();
-    ~QGIDatumLabel() = default;
+    ~QGIDatumLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
     int type() const override { return Type;}
@@ -159,7 +159,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 106};
 
     QGIViewDimension();
-    ~QGIViewDimension() = default;
+    ~QGIViewDimension() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}

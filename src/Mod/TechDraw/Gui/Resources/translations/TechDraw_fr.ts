@@ -1636,7 +1636,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="238"/>
       <source>Insert Bitmap Image</source>
-      <translation>Insérer une image Bitmap</translation>
+      <translation>Insérer une image bitmap</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="239"/>
@@ -1753,7 +1753,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Modèle (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -1898,7 +1898,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1324"/>
       <source>Show/Hide Invisible Edges</source>
-      <translation>Afficher/masquer les arrêtes cachées</translation>
+      <translation>Afficher/masquer les arrêtes invisibles</translation>
     </message>
   </context>
   <context>
@@ -4313,7 +4313,7 @@ Ce répertoire sera utilisé pour la sélection des symboles.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="17"/>
       <source>Page Chooser</source>
-      <translation>Sélecteur de page</translation>
+      <translation>Sélecteur de pages</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
@@ -6054,7 +6054,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="284"/>
       <source>Weight</source>
-      <translation>Poids</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="304"/>
@@ -6258,7 +6258,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.ui" line="66"/>
       <location filename="../../TaskCosVertex.cpp" line="114"/>
       <source>Point Picker</source>
-      <translation>Sélectionneur de Point</translation>
+      <translation>Sélectionneur de points</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="95"/>
@@ -6284,7 +6284,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="158"/>
       <location filename="../../TaskCosVertex.cpp" line="244"/>
       <source>Pick Points</source>
-      <translation>Choisir des Points</translation>
+      <translation>Choisir des points</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="172"/>
@@ -7033,7 +7033,7 @@ Utilise des angles standards si cette case n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskLineDecor.cpp" line="442"/>
       <source>Restore Invisible Lines</source>
-      <translation>Restaurer les lignes cachées</translation>
+      <translation>Restaurer les lignes invisibles</translation>
     </message>
   </context>
   <context>
@@ -7212,7 +7212,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
       <location filename="../../TaskLeaderLine.ui" line="118"/>
       <location filename="../../TaskLeaderLine.cpp" line="467"/>
       <source>Pick Points</source>
-      <translation>Choisir des Points</translation>
+      <translation>Choisir des points</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="149"/>
@@ -7287,7 +7287,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="224"/>
       <source>Pick points</source>
-      <translation>Choisir les points</translation>
+      <translation>Choisir des points</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="273"/>
@@ -7345,7 +7345,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLineDecor.ui" line="26"/>
       <source>Line Decoration</source>
-      <translation>Esthétique de ligne</translation>
+      <translation>Apparence des lignes</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="34"/>
@@ -7395,7 +7395,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLineDecor.ui" line="151"/>
       <source>Weight</source>
-      <translation>Poids</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="158"/>
@@ -7745,7 +7745,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="14"/>
       <source>Restore Invisible Lines</source>
-      <translation>Restaurer les lignes cachées</translation>
+      <translation>Restaurer les lignes invisibles</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="22"/>

@@ -219,6 +219,7 @@ public:
     //////////////////////////////////////////////////////////////
 
     std::string name() const;     //< A short name for this package, often used as a menu entry.
+    std::string type() const;     //< The type for this package.
     Meta::Version version() const;//< Version string in semantic triplet format, e.g. "1.2.3".
     std::string date()
         const;//< Date string -- currently arbitrary (when C++20 is well-supported we can revisit)
@@ -285,6 +286,7 @@ public:
 
     // Setters
     void setName(const std::string& name);
+    void setType(const std::string& type);
     void setVersion(const Meta::Version& version);
     void setDate(const std::string& date);
     void setDescription(const std::string& description);
@@ -348,6 +350,7 @@ public:
 
 private:
     std::string _name;
+    std::string _type;
     Meta::Version _version;
     std::string _date;
     std::string _description;

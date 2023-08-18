@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1345"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Objekt des Draft-Arbeitsbereiches einfügen</translation>
+      <translation>Objekt des Arbeitsbereichs Draft einfügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1346"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Ansicht eines Objekts des Draft-Arbeitsbereichs einfügen</translation>
+      <translation>Fügt die Ansicht eines Objekts des Arbeitsbereichs Draft ein</translation>
     </message>
   </context>
   <context>
@@ -1111,12 +1111,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1408"/>
       <source>Lock/Unlock View</source>
-      <translation>Ansicht fixieren/lösen</translation>
+      <translation>Ansicht sperren/entsperren</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1409"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation>Die Position einer Ansicht fixieren/lösen:&lt;br&gt;- Eine einzige Ansicht auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
+      <translation>Die Position einer Ansicht sperren/entsperren:&lt;br&gt;- Eine einzelne Ansicht auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
   </context>
   <context>
@@ -1602,7 +1602,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Vorlage (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -2389,7 +2389,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1425"/>
       <source>Lock/Unlock View</source>
-      <translation>Ansicht fixieren/lösen</translation>
+      <translation>Ansicht sperren/entsperren</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1527"/>
@@ -2728,7 +2728,7 @@
       <location filename="../../Command.cpp" line="602"/>
       <location filename="../../Command.cpp" line="768"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation>Wähle mindestens 1 DrawViewPart-Objekt als Basis aus</translation>
+      <translation>Mindestens 1 DrawViewPart-Objekt als Basis auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -2847,7 +2847,7 @@
     <message>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Select at least one object.</source>
-      <translation>Wähle mindestens ein Objekt.</translation>
+      <translation>Mindestens ein Objekt auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1440"/>
@@ -8668,7 +8668,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
       <source>Tick</source>
-      <translation>Senkrechter Strich</translation>
+      <translation>Schrägstrich</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>

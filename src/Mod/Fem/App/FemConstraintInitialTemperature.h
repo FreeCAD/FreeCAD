@@ -56,7 +56,7 @@ public:
 
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
-                                   App::Property* prop);
+                                   App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
 };

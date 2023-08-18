@@ -642,7 +642,7 @@ void  ViewProviderPy::setSwitchNode(Py::Object)
 Py::String ViewProviderPy::getIV() const
 {
     std::string buf = Gui::SoFCDB::writeNodesToString(getViewProviderPtr()->getRoot());
-    return Py::String(buf);
+    return {buf};
 }
 
 Py::Object ViewProviderPy::getIcon() const
@@ -666,12 +666,12 @@ void ViewProviderPy::setDefaultMode(Py::Int arg)
 
 Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const
 {
-    return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
+    return {getViewProviderPtr()->canRemoveChildrenFromRoot()};
 }
 
 Py::Boolean ViewProviderPy::getLinkVisibility() const
 {
-    return Py::Boolean(getViewProviderPtr()->isLinkVisible());
+    return {getViewProviderPtr()->isLinkVisible()};
 }
 
 void ViewProviderPy::setLinkVisibility(Py::Boolean arg)
@@ -681,5 +681,5 @@ void ViewProviderPy::setLinkVisibility(Py::Boolean arg)
 
 Py::String ViewProviderPy::getDropPrefix() const
 {
-    return Py::String(getViewProviderPtr()->getDropPrefix());
+    return {getViewProviderPtr()->getDropPrefix()};
 }

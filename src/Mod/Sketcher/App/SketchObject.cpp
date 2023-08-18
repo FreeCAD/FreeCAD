@@ -89,9 +89,10 @@
 #undef DEBUG
 // #define DEBUG
 
+// clang-format off
 using namespace Sketcher;
 using namespace Base;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
@@ -151,13 +152,15 @@ SketchObject::SketchObject()
 
     noRecomputes = false;
 
+    //NOLINTBEGIN
     ExpressionEngine.setValidator(
-        boost::bind(&Sketcher::SketchObject::validateExpression, this, bp::_1, bp::_2));
+        std::bind(&Sketcher::SketchObject::validateExpression, this, sp::_1, sp::_2));
 
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(
-        boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, bp::_1));
+        std::bind(&Sketcher::SketchObject::constraintsRemoved, this, sp::_1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(
-        boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, bp::_1));
+        std::bind(&Sketcher::SketchObject::constraintsRenamed, this, sp::_1));
+    //NOLINTEND
 
     analyser = new SketchAnalysis(this);
 
@@ -9648,3 +9651,4 @@ PyObject* Sketcher::SketchObjectPython::getPyObject()
 // explicit template instantiation
 template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
+// clang-format on

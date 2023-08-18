@@ -472,7 +472,7 @@ PyObject*  DocumentPy::commitTransaction(PyObject * args)
 }
 
 Py::Boolean DocumentPy::getHasPendingTransaction() const {
-    return Py::Boolean(getDocumentPtr()->hasPendingTransaction());
+    return {getDocumentPtr()->hasPendingTransaction()};
 }
 
 PyObject*  DocumentPy::undo(PyObject * args)
@@ -614,7 +614,7 @@ PyObject* DocumentPy::getObject(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "a string or integer is required");
         return nullptr;
     }
-    while (0);
+    while (false);
 
     if (obj)
         return obj->getPyObject();
@@ -631,9 +631,9 @@ PyObject*  DocumentPy::getObjectsByLabel(PyObject *args)
     Py::List list;
     std::string name = sName;
     std::vector<DocumentObject*> objs = getDocumentPtr()->getObjects();
-    for (std::vector<DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (name == (*it)->Label.getValue())
-            list.append(Py::asObject((*it)->getPyObject()));
+    for (auto obj : objs) {
+        if (name == obj->Label.getValue())
+            list.append(Py::asObject(obj->getPyObject()));
     }
 
     return Py::new_reference_to(list);
@@ -687,8 +687,8 @@ PyObject*  DocumentPy::supportedTypes(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it)
-        res.append(Py::String(it->getName()));
+    for (const auto & it : ary)
+        res.append(Py::String(it.getName()));
     return Py::new_reference_to(res);
 }
 
@@ -697,9 +697,9 @@ Py::List DocumentPy::getObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->getObjects();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin();It != objs.end();++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -709,9 +709,9 @@ Py::List DocumentPy::getTopologicalSortedObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -721,9 +721,9 @@ Py::List DocumentPy::getRootObjects() const
     std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
     Py::List res;
 
-    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+    for (auto obj : objs)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
-        res.append(Py::Object((*It)->getPyObject(), true));
+        res.append(Py::Object(obj->getPyObject(), true));
 
     return res;
 }
@@ -759,8 +759,8 @@ Py::List DocumentPy::getUndoNames() const
     std::vector<std::string> vList = getDocumentPtr()->getAvailableUndoNames();
     Py::List res;
 
-    for (std::vector<std::string>::const_iterator It = vList.begin();It!=vList.end();++It)
-        res.append(Py::String(*It));
+    for (const auto & It : vList)
+        res.append(Py::String(It));
 
     return res;
 }
@@ -770,8 +770,8 @@ Py::List DocumentPy::getRedoNames() const
     std::vector<std::string> vList = getDocumentPtr()->getAvailableRedoNames();
     Py::List res;
 
-    for (std::vector<std::string>::const_iterator It = vList.begin();It!=vList.end();++It)
-        res.append(Py::String(*It));
+    for (const auto & It : vList)
+        res.append(Py::String(It));
 
     return res;
 }
@@ -780,17 +780,17 @@ Py::String  DocumentPy::getDependencyGraph() const
 {
     std::stringstream out;
     getDocumentPtr()->exportGraphviz(out);
-    return Py::String(out.str());
+    return {out.str()};
 }
 
 Py::String DocumentPy::getName() const
 {
-    return Py::String(getDocumentPtr()->getName());
+    return {getDocumentPtr()->getName()};
 }
 
 Py::Boolean DocumentPy::getRecomputesFrozen() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::SkipRecompute));
+    return {getDocumentPtr()->testStatus(Document::Status::SkipRecompute)};
 }
 
 void DocumentPy::setRecomputesFrozen(Py::Boolean arg)
@@ -942,35 +942,35 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
 
 Py::Boolean DocumentPy::getRestoring() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
+    return {getDocumentPtr()->testStatus(Document::Status::Restoring)};
 }
 
 Py::Boolean DocumentPy::getPartial() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::PartialDoc));
+    return {getDocumentPtr()->testStatus(Document::Status::PartialDoc)};
 }
 
 Py::Boolean DocumentPy::getImporting() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
+    return {getDocumentPtr()->testStatus(Document::Status::Importing)};
 }
 
 Py::Boolean DocumentPy::getRecomputing() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
+    return {getDocumentPtr()->testStatus(Document::Status::Recomputing)};
 }
 
 Py::Boolean DocumentPy::getTransacting() const
 {
-    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+    return {getDocumentPtr()->isPerformingTransaction()};
 }
 
 Py::String DocumentPy::getOldLabel() const
 {
-    return Py::String(getDocumentPtr()->getOldLabel());
+    return {getDocumentPtr()->getOldLabel()};
 }
 
 Py::Boolean DocumentPy::getTemporary() const
 {
-    return Py::Boolean(getDocumentPtr()->testStatus(Document::TempDoc));
+    return {getDocumentPtr()->testStatus(Document::TempDoc)};
 }

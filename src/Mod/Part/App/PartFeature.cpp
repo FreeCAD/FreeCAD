@@ -67,7 +67,7 @@
 #include "TopoShapePy.h"
 
 using namespace Part;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -207,12 +207,14 @@ struct ShapeCache {
         if(inited)
             return;
         inited = true;
+        //NOLINTBEGIN
         App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, bp::_1));
+                std::bind(&ShapeCache::slotDeleteDocument, this, sp::_1));
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, bp::_1));
+                std::bind(&ShapeCache::slotClear, this, sp::_1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, bp::_1,bp::_2));
+                std::bind(&ShapeCache::slotChanged, this, sp::_1,sp::_2));
+        //NOLINTEND
     }
 
     void slotDeleteDocument(const App::Document &doc) {
@@ -597,12 +599,12 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     ShapeHistory join;
     join.type = oldH.type;
 
-    for (ShapeHistory::MapList::const_iterator it = oldH.shapeMap.begin(); it != oldH.shapeMap.end(); ++it) {
-        int old_shape_index = it->first;
-        if (it->second.empty())
+    for (const auto & it : oldH.shapeMap) {
+        int old_shape_index = it.first;
+        if (it.second.empty())
             join.shapeMap[old_shape_index] = ShapeHistory::List();
-        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
+        for (const auto& jt : it.second) {
+            const auto& kt = newH.shapeMap.find(jt);
             if (kt != newH.shapeMap.end()) {
                 ShapeHistory::List& ary = join.shapeMap[old_shape_index];
                 ary.insert(ary.end(), kt->second.begin(), kt->second.end());

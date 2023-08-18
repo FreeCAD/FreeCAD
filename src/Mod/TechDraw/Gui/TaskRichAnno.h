@@ -58,7 +58,7 @@ public:
     TaskRichAnno(TechDraw::DrawView* baseFeat,
                  TechDraw::DrawPage* page);
     explicit TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP);
-    ~TaskRichAnno() = default;
+    ~TaskRichAnno() override = default;
 
     virtual bool accept();
     virtual bool reject();

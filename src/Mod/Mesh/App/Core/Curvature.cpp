@@ -72,20 +72,22 @@ void MeshCurvature::ComputePerFace(bool parallel)
 
     if (!parallel) {
         Base::SequencerLauncher seq("Curvature estimation", mySegment.size());
-        for (std::vector<FacetIndex>::iterator it = mySegment.begin(); it != mySegment.end(); ++it) {
-            CurvatureInfo info = face.Compute(*it);
+        for (FacetIndex it : mySegment) {
+            CurvatureInfo info = face.Compute(it);
             myCurvature.push_back(info);
             seq.next();
         }
     }
     else {
+        //NOLINTBEGIN
         QFuture<CurvatureInfo> future = QtConcurrent::mapped
             (mySegment, std::bind(&FacetCurvature::Compute, &face, sp::_1));
+        //NOLINTEND
         QFutureWatcher<CurvatureInfo> watcher;
         watcher.setFuture(future);
         watcher.waitForFinished();
-        for (QFuture<CurvatureInfo>::const_iterator it = future.begin(); it != future.end(); ++it) {
-            myCurvature.push_back(*it);
+        for (const auto & it : future) {
+            myCurvature.push_back(it);
         }
     }
 }
@@ -306,9 +308,9 @@ void MeshCurvature::ComputePerVertex()
     std::vector<int> aIdx;
     aIdx.reserve(3*myKernel.CountFacets());
     const MeshFacetArray& raFts = myKernel.GetFacets();
-    for (MeshFacetArray::const_iterator jt = raFts.begin(); jt != raFts.end(); ++jt) {
-        for (int i=0; i<3; i++) {
-            aIdx.push_back((int)jt->_aulPoints[i]);
+    for (const auto & it : raFts) {
+        for (PointIndex point : it._aulPoints) {
+            aIdx.push_back(int(point));
         }
     }
 
@@ -391,8 +393,8 @@ CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
     std::vector<Base::Vector3f> fitPoints;
     const MeshPointArray& verts = myKernel.GetPoints();
     fitPoints.reserve(point_indices.size());
-    for (std::set<PointIndex>::iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
-        fitPoints.push_back(verts[*it] - face_gravity);
+    for (PointIndex it : point_indices) {
+        fitPoints.push_back(verts[it] - face_gravity);
     }
 
     float fMin, fMax;

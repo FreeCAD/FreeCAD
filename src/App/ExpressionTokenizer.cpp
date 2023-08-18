@@ -67,7 +67,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
 
     // No tokens
     if (tokens.empty()) {
-        return QString();
+        return {};
     }
 
     prefixEnd = prefix.size();
@@ -114,7 +114,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     if (!stringing && !prefix.isEmpty() &&
             prefixEnd > 0 && prefixEnd <= prefix.size() &&
             prefix[prefixEnd-1] == QChar(32)) {
-        return QString();
+        return {};
     }
 
     if (!stringing) {

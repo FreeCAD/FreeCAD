@@ -70,7 +70,7 @@
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -160,60 +160,62 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_editingViewer = nullptr;
     d->_editMode = 0;
 
+    //NOLINTBEGIN
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
-        (boost::bind(&Gui::Document::slotNewObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotNewObject, this, sp::_1));
     d->connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&Gui::Document::slotDeletedObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotDeletedObject, this, sp::_1));
     d->connectCngObject = pcDocument->signalChangedObject.connect
-        (boost::bind(&Gui::Document::slotChangedObject, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotChangedObject, this, sp::_1, sp::_2));
     d->connectRenObject = pcDocument->signalRelabelObject.connect
-        (boost::bind(&Gui::Document::slotRelabelObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotRelabelObject, this, sp::_1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
-        (boost::bind(&Gui::Document::slotActivatedObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotActivatedObject, this, sp::_1));
     d->connectActObjectBlocker = boost::signals2::shared_connection_block
         (d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
-        (boost::bind(&Gui::Document::Save, this, bp::_1));
+        (std::bind(&Gui::Document::Save, this, sp::_1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
-        (boost::bind(&Gui::Document::Restore, this, bp::_1));
+        (std::bind(&Gui::Document::Restore, this, sp::_1));
     d->connectStartLoadDocument = App::GetApplication().signalStartRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotStartRestoreDocument, this, bp::_1));
+        (std::bind(&Gui::Document::slotStartRestoreDocument, this, sp::_1));
     d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, bp::_1));
+        (std::bind(&Gui::Document::slotFinishRestoreDocument, this, sp::_1));
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
-        (boost::bind(&Gui::Document::slotShowHidden, this, bp::_1));
+        (std::bind(&Gui::Document::slotShowHidden, this, sp::_1));
 
     d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
-        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
     d->connectChangeDocument = d->_pcDocument->signalChanged.connect // use the same slot function
-        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
     d->connectChangeDocumentBlocker = boost::signals2::shared_connection_block
         (d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
-        (boost::bind(&Gui::Document::slotFinishRestoreObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotFinishRestoreObject, this, sp::_1));
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
-        (boost::bind(&Gui::Document::exportObjects, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::exportObjects, this, sp::_1, sp::_2));
     d->connectImportObjects = pcDocument->signalImportViewObjects.connect
-        (boost::bind(&Gui::Document::importObjects, this, bp::_1, bp::_2, bp::_3));
+        (std::bind(&Gui::Document::importObjects, this, sp::_1, sp::_2, sp::_3));
     d->connectFinishImportObjects = pcDocument->signalFinishImportObjects.connect
-        (boost::bind(&Gui::Document::slotFinishImportObjects, this, bp::_1));
+        (std::bind(&Gui::Document::slotFinishImportObjects, this, sp::_1));
 
     d->connectUndoDocument = pcDocument->signalUndo.connect
-        (boost::bind(&Gui::Document::slotUndoDocument, this, bp::_1));
+        (std::bind(&Gui::Document::slotUndoDocument, this, sp::_1));
     d->connectRedoDocument = pcDocument->signalRedo.connect
-        (boost::bind(&Gui::Document::slotRedoDocument, this, bp::_1));
+        (std::bind(&Gui::Document::slotRedoDocument, this, sp::_1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
-        (boost::bind(&Gui::Document::slotRecomputed, this, bp::_1));
+        (std::bind(&Gui::Document::slotRecomputed, this, sp::_1));
     d->connectSkipRecompute = pcDocument->signalSkipRecompute.connect
-        (boost::bind(&Gui::Document::slotSkipRecompute, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotSkipRecompute, this, sp::_1, sp::_2));
     d->connectTouchedObject = pcDocument->signalTouchedObject.connect
-        (boost::bind(&Gui::Document::slotTouchedObject, this, bp::_1));
+        (std::bind(&Gui::Document::slotTouchedObject, this, sp::_1));
 
     d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
-        (boost::bind(&Gui::Document::slotTransactionAppend, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotTransactionAppend, this, sp::_1, sp::_2));
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
-        (boost::bind(&Gui::Document::slotTransactionRemove, this, bp::_1, bp::_2));
+        (std::bind(&Gui::Document::slotTransactionRemove, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -2436,8 +2438,8 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             backGroup->addChild(childBackNode);
 
                         // cycling to all views of the document to remove the viewprovider from the viewer itself
-                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                            auto activeView = dynamic_cast<View3DInventor *>(*vIt);
+                        for (Gui::BaseView* vIt : d->baseViews) {
+                            auto activeView = dynamic_cast<View3DInventor *>(vIt);
                             if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
                                 // @Note hasViewProvider()
                                 // remove the viewprovider serves the purpose of detaching the inventor nodes from the

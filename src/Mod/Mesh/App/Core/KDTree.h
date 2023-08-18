@@ -55,8 +55,9 @@ private:
     class Private;
     Private* d;
 
-    MeshKDTree(const MeshKDTree&);
-    void operator= (const MeshKDTree&);
+public:
+    MeshKDTree(const MeshKDTree&) = delete;
+    void operator= (const MeshKDTree&) = delete;
 };
 
 } // namespace MeshCore

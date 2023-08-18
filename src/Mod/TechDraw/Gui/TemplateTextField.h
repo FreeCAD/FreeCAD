@@ -45,10 +45,10 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
                           TechDraw::DrawTemplate *myTmplte,
                           const std::string &myFieldName);
 
-        virtual ~TemplateTextField() = default;
+        ~TemplateTextField() override = default;
 
         enum {Type = QGraphicsItem::UserType + 160};
-        int type() const { return Type;}
+        int type() const override { return Type;}
 
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
@@ -58,10 +58,10 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
         std::string fieldNameStr;
 
         /// Need this to properly handle mouse release
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
         /// Trigger the dialog for editing template text
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 };
 }   // namespace TechDrawGui
 

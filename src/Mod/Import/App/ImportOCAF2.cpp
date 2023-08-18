@@ -346,7 +346,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
     std::vector<App::DocumentObject*> objs;
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
-        for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
+        for(TopoDS_Iterator it(shape,Standard_False,Standard_False);it.More();it.Next()) {
             TDF_Label childLabel;
             if(!label.IsNull())
                 aShapeTool->FindSubShape(label,it.Value(),childLabel);
@@ -671,7 +671,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
         // appendFirst tells us whether we shall append the object name of the first label
         bool skipFirst = !appendFirst;
         ss.str("");
-        while(1) {
+        while(true) {
             if(skipFirst)
                 skipFirst = false;
             else {
@@ -798,7 +798,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
     if(newDoc)
         doc = getDocument(_doc,label);
 
-    for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
+    for(TopoDS_Iterator it(shape,Standard_False,Standard_False);it.More();it.Next()) {
         TopoDS_Shape childShape = it.Value();
         if(childShape.IsNull())
             continue;
@@ -940,7 +940,7 @@ void ExportOCAF2::setName(TDF_Label label, App::DocumentObject *obj, const char 
             return;
         name = obj->Label.getValue();
     }
-    TDataStd_Name::Set(label, TCollection_ExtendedString(name, 1));
+    TDataStd_Name::Set(label, TCollection_ExtendedString(name, true));
 }
 
 // Similar to XCAFDoc_ShapeTool::FindSHUO but return only main SHUO, i.e. SHUO
@@ -1219,7 +1219,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     int depth = 0;
     auto linked = obj;
     auto linkedShape = shape;
-    while(1) {
+    while(true) {
         auto s = Part::Feature::getTopoShape(linked);
         if(s.isNull() || !s.getShape().IsPartner(shape.getShape()))
             break;

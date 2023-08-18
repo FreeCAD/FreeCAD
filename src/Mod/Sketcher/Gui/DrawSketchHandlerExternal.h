@@ -43,7 +43,7 @@ public:
         , object(obj)
     {}
 
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override
     {
         Sketcher::SketchObject* sketch = static_cast<Sketcher::SketchObject*>(object);
 
@@ -102,7 +102,7 @@ class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerExternal() = default;
-    virtual ~DrawSketchHandlerExternal()
+    ~DrawSketchHandlerExternal() override
     {
         Gui::Selection().rmvSelectionGate();
     }

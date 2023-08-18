@@ -6116,7 +6116,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="566"/>
       <source>Tag</source>
-      <translation>Markierung</translation>
+      <translation>Haltesteg</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="569"/>
@@ -6589,7 +6589,7 @@ Zum Beispiel:
       <location filename="../../../Path/Main/Gui/Sanity.py" line="120"/>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="124"/>
       <source>Check the path job for common errors</source>
-      <translation>Prüfe den Path-Auftrag auf typische Fehler</translation>
+      <translation>Path-Auftrag auf typische Fehler überprüfen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="245"/>

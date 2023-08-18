@@ -28,6 +28,7 @@
 
 #include <Mod/Path/App/Command.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Path/PathGlobal.h>
 
 #include "VolSim.h"
 

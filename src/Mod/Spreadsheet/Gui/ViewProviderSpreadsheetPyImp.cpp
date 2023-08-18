@@ -30,7 +30,7 @@
 using namespace SpreadsheetGui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ViewProviderSpreadsheetPy::representation(void) const
+std::string ViewProviderSpreadsheetPy::representation() const
 {
     return std::string("<ViewProviderSpreadsheet object>");
 }

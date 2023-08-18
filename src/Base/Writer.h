@@ -156,10 +156,11 @@ protected:
     bool forceXML;
     int fileVersion;
 
-private:
-    Writer(const Writer&);
-    Writer& operator=(const Writer&);
+public:
+    Writer(const Writer&) = delete;
+    Writer& operator=(const Writer&) = delete;
 
+private:
     std::unique_ptr<std::ostream> CharStream;
 };
 

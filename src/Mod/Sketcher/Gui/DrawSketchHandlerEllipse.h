@@ -97,7 +97,7 @@ public:
         , editCurve(33)
         , fixedAxisLength(0)
     {}
-    virtual ~DrawSketchHandlerEllipse()
+    ~DrawSketchHandlerEllipse() override
     {}
     /// Mode table, describes what step of the process we are in
     enum SelectMode

@@ -170,6 +170,9 @@ public:
         if (locale.positiveSign() != plus)
             copy.replace(locale.positiveSign(), plus);
 
+        QString reverseUnitStr = unitStr;
+        std::reverse(reverseUnitStr.begin(), reverseUnitStr.end());
+
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
         QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
@@ -187,17 +190,30 @@ public:
             static const std::string regexConstants = "e|ip|lomm|lom";
             static const std::string regexNumber = "\\d+\\s*\\.?\\s*\\d*|\\.\\s*\\d+";
 
-            //Find units and replace 1/2mm -> 1/2*(1mm), 1^2mm -> 1^2*(1mm)
-            copyChunk.replace(QRegularExpression(QString::fromStdString("("+regexUnits+")(\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+[\\/\\^](?!("+regexUnits+")))")), QString::fromUtf8(")\\11(*\\2"));
+            // If expression does not contain /*() or ^, this regex will not find anything
+            if (copy.contains(QLatin1Char('/')) || copy.contains(QLatin1Char('*')) || copy.contains(QLatin1Char('(')) || copy.contains(QLatin1Char(')')) || copy.contains(QLatin1Char('^'))){
+                //Find units and replace 1/2mm -> 1/2*(1mm), 1^2mm -> 1^2*(1mm)
+                QRegularExpression fixUnits(QString::fromStdString("("+regexUnits+")(\\s*\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+(?:[\\/\\^]|(.*$))(?!("+regexUnits+")))"));
+                QRegularExpressionMatch fixUnitsMatch = fixUnits.match(copyChunk);
+
+                //3rd capture group being filled indicates regex bailed out; no match.
+                if (fixUnitsMatch.lastCapturedIndex() == 2 || (fixUnitsMatch.lastCapturedIndex() == 3 && fixUnitsMatch.captured(3).isEmpty())){
+                    QString matchUnits = fixUnitsMatch.captured(1);
+                    QString matchNumbers = fixUnitsMatch.captured(2);
+                    copyChunk.replace(matchUnits+matchNumbers, QString::fromUtf8(")")+matchUnits+QString::fromUtf8("1(*")+matchNumbers);
+                }
+            }
 
             //Add default units to string if none are present
-            QRegularExpression unitsRe(QString::fromStdString("(?<=\\b|[^a-zA-Z])("+regexUnits+")(?=\\b|[^a-zA-Z])|°|″|′|\"|'|\\p{L}\\.\\p{L}|\\[\\p{L}"));
+            if (!copyChunk.contains(reverseUnitStr)){ // Fast check
+                QRegularExpression unitsRe(QString::fromStdString("(?<=\\b|[^a-zA-Z])("+regexUnits+")(?=\\b|[^a-zA-Z])|°|″|′|\"|'|\\p{L}\\.\\p{L}|\\[\\p{L}"));
 
-            QRegularExpressionMatch match = unitsRe.match(copyChunk);
-            std::reverse(copyChunk.begin(), copyChunk.end());
-            if (!match.hasMatch() && !copyChunk.isEmpty()){ //If no units are found, use default units
-                copyChunk.append(QString::fromUtf8("*(1")+unitStr+QString::fromUtf8(")")); // Add units to the end of chunk *(1unit)
+                QRegularExpressionMatch match = unitsRe.match(copyChunk);
+                if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
+                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
             }
+
+            std::reverse(copyChunk.begin(), copyChunk.end());
 
             copy.replace(matchChunk.capturedStart() + lengthOffset,
                     matchChunk.capturedEnd() - matchChunk.capturedStart(), copyChunk);
@@ -298,7 +314,7 @@ QString QuantitySpinBox::boundToName() const
         std::string path = getPath().toString();
         return QString::fromStdString(path);
     }
-    return QString();
+    return {};
 }
 
 /**
@@ -361,7 +377,7 @@ QString Gui::QuantitySpinBox::expressionText() const
     catch (const Base::Exception& e) {
         qDebug() << e.what();
     }
-    return QString();
+    return {};
 }
 
 void QuantitySpinBox::evaluateExpression()

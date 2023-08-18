@@ -292,6 +292,8 @@ private:
     bool setupReportView(const std::string&);
     bool setupPythonConsole(const std::string&);
 
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
+
 private Q_SLOTS:
     /**
      * \internal

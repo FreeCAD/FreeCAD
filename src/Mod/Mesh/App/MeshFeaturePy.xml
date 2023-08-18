@@ -14,7 +14,7 @@
 			<UserDocu>The Mesh::Feature class handles meshes.
 The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
 Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
-d.addObject(\"Mesh::Feature\").
+d.addObject("Mesh::Feature").
 			</UserDocu>
 		</Documentation>
 		<Methode Name="countPoints">

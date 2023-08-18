@@ -45,7 +45,7 @@ public:
         , r(0)
         , EditCurve(35)
     {}
-    virtual ~DrawSketchHandlerSlot()
+    ~DrawSketchHandlerSlot() override
     {}
     /// mode table
     enum BoxMode

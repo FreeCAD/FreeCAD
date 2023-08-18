@@ -50,7 +50,7 @@ class TaskGeomHatch : public QWidget
 
 public:
     TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskGeomHatch() = default;
+    ~TaskGeomHatch() override = default;
 
     virtual bool accept();
     virtual bool reject();

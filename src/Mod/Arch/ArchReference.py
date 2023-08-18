@@ -680,11 +680,12 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.parts
         else:
             parts = self.obj.Proxy.getPartsList(self.obj)
-        for k in sorted(parts.keys()):
+        sortedkeys = sorted(parts)
+        for k in sortedkeys:
             self.partCombo.addItem(parts[k][0],k)
         if self.obj.Part:
-            if self.obj.Part in parts.keys():
-                self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
+            if self.obj.Part in sortedkeys:
+                self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
@@ -722,11 +723,12 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.getPartsList(self.obj,self.filename)
             if parts:
                 self.partCombo.clear()
-                for k in sorted(parts.keys()):
+                sortedkeys = sorted(parts)
+                for k in sortedkeys:
                     self.partCombo.addItem(parts[k][0],k)
                 if self.obj.Part:
-                    if self.obj.Part in parts.keys():
-                        self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
+                    if self.obj.Part in sortedkeys:
+                        self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
 
     def openFile(self):
 

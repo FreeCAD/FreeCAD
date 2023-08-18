@@ -48,7 +48,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
-#include "DlgSettingsWorkbenchesImp.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
 #include "FileDialog.h"
@@ -66,7 +66,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /**
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
@@ -644,7 +644,9 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 {
     refreshWorkbenchList();
 
-    Application::Instance->signalRefreshWorkbenches.connect(boost::bind(&WorkbenchGroup::refreshWorkbenchList, this));
+    //NOLINTBEGIN
+    Application::Instance->signalRefreshWorkbenches.connect(std::bind(&WorkbenchGroup::refreshWorkbenchList, this));
+    //NOLINTEND
 
     connect(getMainWindow(), &MainWindow::workbenchActivated,
         this, &WorkbenchGroup::onWorkbenchActivated);
@@ -818,7 +820,7 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
   , visibleItems(4)
   , maximumItems(20)
 {
-    _pimpl.reset(new Private(this, "User parameter:BaseApp/Preferences/RecentFiles"));
+    _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
 }
 
@@ -1050,7 +1052,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     // Raise a single warning no matter how many conflicts
     if (!existingCommands.isEmpty()) {
         auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
-        for (int index = 0; index < accel_col.count(); index++) {
+        for (int index = 0; index < accel_col.size(); index++) {
             msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }
         msgMain += QStringLiteral(" disabled because of conflicts with");

@@ -37,7 +37,7 @@ using namespace Base;
 // returns a string which represent the object e.g. when printed in python
 std::string PersistencePy::representation() const
 {
-    return std::string("<persistence object>");
+    return {"<persistence object>"};
 }
 
 
@@ -48,7 +48,7 @@ Py::String PersistencePy::getContent() const
     writer.setForceXML(true);
     getPersistencePtr()->Save(writer);
 
-    return  Py::String (writer.getString());
+    return  {writer.getString()};
 }
 
 Py::Int PersistencePy::getMemSize() const

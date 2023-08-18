@@ -87,6 +87,7 @@ public:
                                       gp_Dir& projDir);
 
     std::vector<DrawViewDetail*> getDetailRefs() const override;
+    TopoDS_Shape getDetailShape() const { return m_detailShape; }
 
 public Q_SLOTS:
     void onMakeDetailFinished(void);
@@ -106,6 +107,8 @@ protected:
 
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;
+
+    TopoDS_Shape m_detailShape;
 };
 
 using DrawViewDetailPython = App::FeaturePythonT<DrawViewDetail>;

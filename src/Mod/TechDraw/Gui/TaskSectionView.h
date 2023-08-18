@@ -48,7 +48,7 @@ class TaskSectionView : public QWidget
 public:
     explicit TaskSectionView(TechDraw::DrawViewPart* base);
     explicit TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView() = default;
+    ~TaskSectionView() override = default;
 
     virtual bool accept();
     virtual bool reject();

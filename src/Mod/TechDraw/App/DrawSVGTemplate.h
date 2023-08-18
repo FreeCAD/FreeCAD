@@ -58,6 +58,9 @@ public:
     //! Fills the editable text fields with values from preferences
     void fillEditableTexts();
 
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+
+
 protected:
     void checkFilepath();
     void processTemplate();

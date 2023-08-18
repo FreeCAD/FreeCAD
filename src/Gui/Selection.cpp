@@ -47,6 +47,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "SelectionFilter.h"
+#include "SelectionFilterPy.h"
 #include "SelectionObserverPython.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
@@ -56,7 +57,7 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
 using namespace Gui;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 SelectionGateFilterExternal::SelectionGateFilterExternal(const char *docName, const char *objName) {
     if(docName) {
@@ -131,8 +132,10 @@ void SelectionObserver::attachSelection()
         auto &signal = newStyle ? Selection().signalSelectionChanged3 :
                        oldStyle ? Selection().signalSelectionChanged2 :
                                   Selection().signalSelectionChanged  ;
-        connectSelection = signal.connect(boost::bind
-            (&SelectionObserver::_onSelectionChanged, this, bp::_1));
+        //NOLINTBEGIN
+        connectSelection = signal.connect(std::bind
+            (&SelectionObserver::_onSelectionChanged, this, sp::_1));
+        //NOLINTEND
 
         if (!filterDocName.empty()) {
             Selection().addSelectionGate(
@@ -515,7 +518,7 @@ std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const cha
 {
     Base::Type typeId = Base::Type::fromName(typeName);
     if (typeId == Base::Type::badType())
-        return std::vector<App::DocumentObject*>();
+        return {};
     return getObjectsOfType(typeId, pDocName, resolve);
 }
 
@@ -1011,7 +1014,7 @@ void SelectionSingleton::selStackGoForward(int count) {
     }
     std::deque<SelStackItem> tmpStack;
     _SelStackForward.swap(tmpStack);
-    while(1) {
+    while(true) {
         bool found = false;
         for(auto &sobjT : _SelStackBack.back()) {
             if(sobjT.getSubObject()) {
@@ -1148,8 +1151,7 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj, bool clearPres
     }
     else if (!subNames.empty()) {
         bool ok = true;
-        for (std::size_t i=0; i<subNames.size(); i++) {
-            const std::string& name = subNames[i];
+        for (const std::string& name : subNames) {
             ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str());
         }
         return ok;
@@ -1613,8 +1615,10 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = nullptr;
     gateResolve = ResolveMode::OldStyleElement;
-    App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, bp::_1));
-    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, bp::_1));
+    //NOLINTBEGIN
+    App::GetApplication().signalDeletedObject.connect(std::bind(&Gui::SelectionSingleton::slotDeletedObject, this, sp::_1));
+    signalSelectionChanged.connect(std::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, sp::_1));
+    //NOLINTEND
 }
 
 /**

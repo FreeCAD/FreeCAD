@@ -55,7 +55,7 @@ using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
@@ -98,8 +98,10 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cellAlias, &ExpressionLineEdit::editingFinished, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
-    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
-    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
+    //NOLINTBEGIN
+    columnWidthChangedConnection = sheet->columnWidthChanged.connect(std::bind(&SheetView::resizeColumn, this, sp::_1, sp::_2));
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(std::bind(&SheetView::resizeRow, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     connect( model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
 
@@ -255,6 +257,8 @@ void SheetView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);

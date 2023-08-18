@@ -435,8 +435,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (const auto & It : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict, It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
@@ -526,8 +526,8 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -535,20 +535,20 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getImportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 
@@ -590,8 +590,8 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -599,20 +599,20 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getExportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 

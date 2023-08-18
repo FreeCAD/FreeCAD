@@ -114,6 +114,7 @@ public:
 public:
     NavigationStyle();
     ~NavigationStyle() override;
+    NavigationStyle(const NavigationStyle&) = delete;
 
     NavigationStyle& operator = (const NavigationStyle& ns);
     void setViewer(View3DInventorViewer*);
@@ -172,6 +173,8 @@ public:
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
 
+    SbVec3f getRotationCenter(SbBool&) const;
+
 protected:
     void initialize();
     void finalize();
@@ -187,7 +190,6 @@ protected:
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     SbBool lookAtPoint(const SbVec2s screenpos);
-    SbVec3f getRotationCenter(SbBool*) const;
 
     void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,
@@ -264,7 +266,6 @@ protected:
     //@}
 
 private:
-    NavigationStyle(const NavigationStyle&);
     struct NavigationStyleP* pimpl;
     friend struct NavigationStyleP;
 };

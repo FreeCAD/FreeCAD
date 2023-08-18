@@ -139,8 +139,8 @@ void VRMLObject::Save (Base::Writer &writer) const
 
     // save also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        writer.addFile(it->c_str(), this);
+    for (const auto & url : urls) {
+        writer.addFile(url.c_str(), this);
     }
 
     this->index = 0;
@@ -153,8 +153,8 @@ void VRMLObject::Restore(Base::XMLReader &reader)
 
     // restore also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for(std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        reader.addFile(it->c_str(), this);
+    for(const auto & url : urls) {
+        reader.addFile(url.c_str(), this);
     }
 
     this->index = 0;

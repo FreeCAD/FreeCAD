@@ -113,8 +113,8 @@ View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
 View3DInventorViewerPy::~View3DInventorViewerPy()
 {
     Base::PyGILStateLocker lock;
-    for (std::list<PyObject*>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
-        Py_DECREF(*it);
+    for (auto it : callbacks)
+        Py_DECREF(it);
 }
 
 

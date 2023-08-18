@@ -62,16 +62,3 @@ def addCommands():
     JoinFeatures.addCommands()
     SplitFeatures.addCommands()
 
-def generalFuseIsAvailable():
-    """generalFuseIsAvailable(): returns True if FreeCAD's Part.Shape.generalFuse is functional.
-    True if Part.OCC_VERSION >= 7.0.0."""
-    import Part
-    if not hasattr(Part, "OCC_VERSION"):
-        return False
-    else:
-        ver_string = Part.OCC_VERSION
-        import re
-        match = re.match(r"([0-9]+)\.([0-9]+)\.([0-9]+)",ver_string)
-        major,minor,rev = match.groups()
-        major = int(major); minor = int(minor); rev = int(rev)
-        return (major,minor,rev)>=(7,0,0)

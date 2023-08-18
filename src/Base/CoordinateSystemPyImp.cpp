@@ -35,7 +35,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string CoordinateSystemPy::representation() const
 {
-    return std::string("<CoordinateSystem object>");
+    return {"<CoordinateSystem object>"};
 }
 
 PyObject *CoordinateSystemPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

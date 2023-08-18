@@ -46,8 +46,6 @@
 #include "XMLQuery.h"
 #include "Preferences.h"
 
-#include <csignal>
-
 using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawSVGTemplate, TechDraw::DrawTemplate)
@@ -223,6 +221,12 @@ void DrawSVGTemplate::fillEditableTexts() {
     }
 }
 
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawSVGTemplate::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+    Label.setValue(DrawUtil::translateArbitrary(context, baseName, uniqueName));
+}
 
 // Python Template feature ---------------------------------------------------------
 namespace App {
