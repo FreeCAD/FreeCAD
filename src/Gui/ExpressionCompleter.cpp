@@ -250,7 +250,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override
     {
         if (role != Qt::EditRole && role != Qt::DisplayRole && role != Qt::UserRole)
-            return QVariant();
+            return {};
         QVariant variant;
         Info info = getInfo(index);
         _data(info, index.row(), &variant, nullptr, role == Qt::UserRole);
@@ -491,7 +491,7 @@ public:
 
     QModelIndex parent(const QModelIndex & index) const override {
         if (!index.isValid())
-            return QModelIndex();
+            return {};
 
         Info parentInfo = getInfo(index);
         Info grandParentInfo = parentInfo;
@@ -524,7 +524,7 @@ public:
         }
 
 
-        return QModelIndex();
+        return {};
     }
 
     // returns true if successful, false if 'element' identifies a Leaf
@@ -597,13 +597,13 @@ public:
     QModelIndex index(int row, int column,
         const QModelIndex & parent = QModelIndex()) const override {
         if (row < 0)
-            return QModelIndex();
+            return {};
         Info myParentInfoEncoded = Info::root;
 
         // encode the parent's QModelIndex into an 'Info' structure
         bool parentCanHaveChildren = modelIndexToParentInfo(parent, myParentInfoEncoded);
         if (!parentCanHaveChildren) {
-            return QModelIndex();
+            return {};
         }
         return createIndex(row, column, infoId(myParentInfoEncoded));
     }
@@ -695,7 +695,7 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
 {
     auto m = model();
     if (!m || !index.isValid())
-        return QString();
+        return {};
 
     QString res;
     auto parent = index;
@@ -721,7 +721,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
     int retry = 0;
     std::string lastElem;  // used to recover in case of parse failure after ".".
     std::string trim;      // used to delete ._self added for another recovery path
-    while (1) {
+    while (true) {
         try {
             // this will not work for incomplete Tokens at the end
             // "Sketch." will fail to parse and complete.

@@ -74,6 +74,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -101,7 +102,6 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeWirePy.h"
-
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -598,9 +598,10 @@ public:
             "The sorted list can be used to create a Wire."
         );
         add_varargs_method("sortEdges",&Module::sortEdges2,
-            "sortEdges(list of edges) -- list of lists of edges\n"
+            "sortEdges(list of edges, [tol3d]) -- list of lists of edges\n"
             "It does basically the same as __sortEdges__ but sorts all input edges and thus returns\n"
-            "a list of lists of edges"
+            "a list of lists of edges\n"
+            "optional 3D tolerance defaults to Precision::Confusion"
         );
         add_varargs_method("__toPythonOCC__",&Module::toPythonOCC,
             "__toPythonOCC__(shape) -- Helper method to convert an internal shape to pythonocc shape"
@@ -733,14 +734,14 @@ private:
         if (file.extension().empty())
             throw Py::RuntimeError("No file extension");
 
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
+        if (file.hasExtension({"stp", "step"})) {
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument();
             ImportStepParts(pcDoc,EncodedName.c_str());
 
             pcDoc->recompute();
         }
-        else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+        else if (file.hasExtension({"igs", "iges"})) {
             App::Document *pcDoc = App::GetApplication().newDocument();
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
@@ -781,12 +782,12 @@ private:
             pcDoc = App::GetApplication().newDocument(DocName);
         }
 
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
+        if (file.hasExtension({"stp", "step"})) {
             ImportStepParts(pcDoc,EncodedName.c_str());
 
             pcDoc->recompute();
         }
-        else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+        else if (file.hasExtension({"igs", "iges"})) {
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
@@ -2123,10 +2124,10 @@ private:
         tEdgeClusterVector aclusteroutput = acluster.GetClusters();
 
         Py::List root_list;
-        for (tEdgeClusterVector::iterator it=aclusteroutput.begin(); it != aclusteroutput.end();++it) {
+        for (const auto & it : aclusteroutput) {
             Py::List add_list;
-            for (tEdgeVector::iterator it1=(*it).begin();it1 != (*it).end();++it1) {
-                add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it1)),true));
+            for (const auto& it1 : it) {
+                add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it1)),true));
             }
             root_list.append(add_list);
         }
@@ -2159,8 +2160,8 @@ private:
 
         std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
         Py::List sorted_list;
-        for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+        for (const auto & it : sorted) {
+            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it)),true));
         }
 
         return sorted_list;
@@ -2168,7 +2169,8 @@ private:
     Py::Object sortEdges2(const Py::Tuple& args)
     {
         PyObject *obj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
+        double tol3d = Precision::Confusion();
+        if (!PyArg_ParseTuple(args.ptr(), "O|d", &obj, &tol3d)) {
             throw Py::Exception(PartExceptionOCCError, "list of edges expected");
         }
 
@@ -2191,10 +2193,10 @@ private:
 
         Py::List root_list;
         while(!edges.empty()) {
-            std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
+            std::list<TopoDS_Edge> sorted = sort_Edges(tol3d, edges);
             Py::List sorted_list;
-            for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
+            for (const auto & it : sorted) {
+                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(it)),true));
             }
             root_list.append(sorted_list);
         }
@@ -2286,14 +2288,14 @@ private:
         const char *subname;
         if (!PyArg_ParseTuple(args.ptr(), "s",&subname))
             throw Py::Exception();
-        auto element = Data::ComplexGeoData::findElementName(subname);
+        auto element = Data::findElementName(subname);
         std::string sub(subname,element-subname);
         Py::List list;
         list.append(Py::String(sub));
         const char *dot = strchr(element,'.');
         if(!dot)
             dot = element+strlen(element);
-        const char *mapped = Data::ComplexGeoData::isMappedElement(element);
+        const char *mapped = Data::isMappedElement(element);
         if(mapped)
             list.append(Py::String(std::string(mapped,dot-mapped)));
         else
@@ -2317,8 +2319,8 @@ private:
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
         if (mapped && mapped[0]) {
-            if (!Data::ComplexGeoData::isMappedElement(mapped))
-                subname += Data::ComplexGeoData::elementMapPrefix();
+            if (!Data::isMappedElement(mapped))
+                subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
         if (element && element[0]) {

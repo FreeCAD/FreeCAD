@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg8" width="594mm" height="420mm" version="1.1" viewBox="0 0 594 420" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata id="metadata5">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" fill="none" stroke="#000" stroke-linecap="round">
+  <path id="path104" d="m448.96 398.69v-7.9753" stroke-dasharray="1.05303, 0.526508, 0.263254, 0.526508" stroke-width=".26325"/>
+  <path id="path106" d="m436.49 394.71h16.92" stroke-dasharray="1.05303, 0.526508, 0.263254, 0.526508" stroke-width=".26325"/>
+  <g id="g1347" transform="matrix(.26458 0 0 .26458 -527.5 96)" stroke-width="1.32">
+   <path id="path1271" d="m3703.6 1128.9a13.205 13.196 0 1 0-26.41 0 13.205 13.196 0 1 0 26.41 0z"/>
+   <path id="path1273" d="m3697 1128.9a6.6025 6.5981 0 1 0-13.205 0 6.6025 6.5981 0 1 0 13.205 0z"/>
+   <path id="path1275" d="m3646.8 1122.3 26.41-6.5981"/>
+   <path id="path1277" d="m3673.3 1115.7v26.392"/>
+   <path id="path1279" d="m3673.3 1142.1-26.41-6.598"/>
+   <path id="path1281" d="m3646.8 1135.5v-13.196"/>
+   <path id="path1283" d="m3673.3 1115.7v26.392"/>
+  </g>
+  <g id="g1467" transform="matrix(.26442 0 0 .26436 .18717 123.07)">
+   <path id="path1323" d="m2207.2 1084.7v-1511.8" stroke-width="2.6476"/>
+   <path id="path1325" d="m94.488 1084.7h2112.8" stroke-width="2.6476"/>
+   <path id="path1327" d="m94.488-427.09h2112.8" stroke-width="2.6476"/>
+   <path id="path1329" d="m94.488 1084.7v-1511.8" stroke-width="2.6476"/>
+   <path id="path1331" d="m1545.8 857.95h661.42" stroke-width="2.6476"/>
+   <path id="path1333" d="m1644.1 1084.7v-226.77" stroke-width="1.3228"/>
+   <path id="path1335" d="m1719.7 1084.7v-226.77" stroke-width="1.3228"/>
+   <path id="path1337" d="m1999.4 1084.7v-226.77" stroke-width="1.3228"/>
+   <path id="path1339" d="m1644.1 933.54h563.15" stroke-width="1.3228"/>
+   <path id="path1341" d="m1644.1 895.75h200.31" stroke-width="1.3228"/>
+   <path id="path1343" d="m1644.1 876.85h200.31" stroke-width="1.3228"/>
+   <path id="path1345" d="m1644.1 914.65h200.31" stroke-width="1.3228"/>
+   <path id="path1347" d="m1999.4 895.75h207.87" stroke-width="1.3228"/>
+   <path id="path1349" d="m1768.8 933.54v-75.591" stroke-width="1.3228"/>
+   <path id="path1351" d="m1844.4 933.54v-75.591" stroke-width="1.3228"/>
+   <path id="path1353" d="m1644.1 1009.1h75.59" stroke-width="1.3228"/>
+   <path id="path1355" d="m1644.1 1046.9h75.59" stroke-width="1.3228"/>
+   <path id="path1357" d="m1999.4 1009.1h207.87" stroke-width="1.3228"/>
+   <path id="path1359" d="m1999.4 1046.9h207.87" stroke-width="1.3228"/>
+   <path id="path1361" d="m2169.4 1084.7v-37.795" stroke-width="1.3228"/>
+   <path id="path1381" d="m1545.8 1084.7v-226.77" stroke-width="2.6476"/>
+   <path id="path1383" d="m75.591 1103.6h2150.6" stroke-width="1.3228"/>
+   <path id="path1385" d="m75.591 1103.6v-1549.6" stroke-width="1.3228"/>
+   <path id="path1387" d="m2226.1 1103.6v-1549.6" stroke-width="1.3228"/>
+   <path id="path1389" d="m75.591-445.98h2150.6" stroke-width="1.3228"/>
+   <path id="path1391" d="m75.591 328.82h37.795" stroke-width="1.3228"/>
+   <path id="path1393" d="m2226.1 328.82h-37.795" stroke-width="1.3228"/>
+   <path id="path1395" d="m1150.9-445.98v37.795" stroke-width="2.6476"/>
+   <path id="path1397" d="m1150.9 1103.6v-37.795" stroke-width="2.6476"/>
+   <path id="path1399" d="m75.591 328.82h37.795" stroke-width="1.3228"/>
+   <path id="path1401" d="m75.591 328.82h37.795" stroke-width="2.6476"/>
+   <path id="path1403" d="m75.591 139.84h18.898" stroke-width="1.3228"/>
+   <path id="path1405" d="m75.591 517.8h18.898" stroke-width="1.3228"/>
+   <path id="path1407" d="m961.89-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1409" d="m1339.8-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1411" d="m2226.1 517.8h-18.898" stroke-width="1.3228"/>
+   <path id="path1413" d="m2226.1 139.84h-18.898" stroke-width="1.3228"/>
+   <path id="path1415" d="m961.89 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1417" d="m1339.8 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1419" d="m1528.8 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1421" d="m1717.8 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1423" d="m1906.8 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1425" d="m2095.7 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1427" d="m2226.1 706.77h-18.898" stroke-width="1.3228"/>
+   <path id="path1429" d="m2226.1 895.75h-18.898" stroke-width="1.3228"/>
+   <path id="path1431" d="m2226.1-49.134h-18.898" stroke-width="1.3228"/>
+   <path id="path1433" d="m2226.1-238.11h-18.898" stroke-width="1.3228"/>
+   <path id="path1435" d="m1528.8-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1437" d="m1717.8-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1439" d="m1906.8-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1441" d="m2095.7-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1443" d="m772.91-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1445" d="m583.94-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1447" d="m394.96-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1449" d="m205.98-445.98v18.898" stroke-width="1.3228"/>
+   <path id="path1451" d="m75.591-49.134h18.898" stroke-width="1.3228"/>
+   <path id="path1453" d="m75.591-238.11h18.898" stroke-width="1.3228"/>
+   <path id="path1455" d="m75.591 706.77h18.898" stroke-width="1.3228"/>
+   <path id="path1457" d="m75.591 895.75h18.898" stroke-width="1.3228"/>
+   <path id="path1459" d="m772.91 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1461" d="m583.94 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1463" d="m394.96 1103.6v-18.898" stroke-width="1.3228"/>
+   <path id="path1465" d="m205.98 1103.6v-18.898" stroke-width="1.3228"/>
+  </g>
+ </g>
+ <g id="layer2" font-family="osifont" stroke-width=".26412" text-anchor="middle">
+  <text id="text781" x="461.97504" y="353.52032" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="FECHA1"><tspan id="tspan783" x="461.97504" y="353.52032" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">FECHA1</tspan></text>
+  <text id="text781-4" x="461.99741" y="358.29517" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="FECHA2"><tspan id="tspan783-3" x="461.99741" y="358.29517" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">FECHA2</tspan></text>
+  <text id="text781-5" x="462.11313" y="363.20526" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="FECHA3"><tspan id="tspan783-1" x="462.11313" y="363.20526" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">FECHA3</tspan></text>
+  <text id="text781-7" x="462.13846" y="368.0564" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="FECHA4"><tspan id="tspan783-4" x="462.13846" y="368.0564" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">FECHA4</tspan></text>
+  <text id="text781-3" x="478.46075" y="353.1344" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="APELLIDO1"><tspan id="tspan783-14" x="478.46075" y="353.1344" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">APELLIDO1</tspan></text>
+  <text id="text781-3-6" x="478.43564" y="357.98352" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="APELLIDO2"><tspan id="tspan783-14-9" x="478.43564" y="357.98352" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">APELLIDO2</tspan></text>
+  <text id="text781-3-4" x="478.40714" y="363.03766" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="APELLIDO3"><tspan id="tspan783-14-2" x="478.40714" y="363.03766" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">APELLIDO3</tspan></text>
+  <text id="text781-3-2" x="478.4541" y="368.01782" font-size="3px" text-align="center" style="line-height:3.74999px" freecad:editable="APELLIDO4"><tspan id="tspan783-14-6" x="478.4541" y="368.01782" font-size="3px" stroke-width=".26412" text-align="center" text-anchor="middle">APELLIDO4</tspan></text>
+  <text id="text781-3-41" x="445.42212" y="381.42249" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="ESCALA"><tspan id="tspan783-14-28" x="445.42212" y="381.42249" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">ESCALA</tspan></text>
+  <text id="text781-3-8" x="445.31879" y="407.7132" font-size="3.4939px" text-align="center" style="line-height:4.36743px" freecad:editable="FORMATO"><tspan id="tspan783-14-92" x="445.31879" y="407.7132" font-size="3.4939px" stroke-width=".26412" text-align="center" text-anchor="middle">FORMATO</tspan></text>
+  <text id="text781-3-88" x="492.48154" y="388.151" font-size="5px" text-align="center" style="line-height:6.25px" freecad:editable="TITULO"><tspan id="tspan783-14-8" x="492.48154" y="388.151" font-size="5px" stroke-width=".26412" text-align="center" text-anchor="middle">TITULO</tspan></text>
+  <text id="text781-3-68" x="422.71442" y="363.18512" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="TOLERANCIAS"><tspan id="tspan783-14-3" x="422.71442" y="363.18512" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">TOLERANCIAS</tspan></text>
+  <text id="text781-3-83" x="508.88879" y="361.18854" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="CLIENTE"><tspan id="tspan783-14-33" x="508.88879" y="361.18854" dy="0 0 0 0 0" rotate="0 0 0 0 0 0" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">CLIENTE</tspan></text>
+  <text id="text781-3-80" x="556.43286" y="356.22681" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="NUM_REPRESENTADO"><tspan id="tspan783-14-4" x="556.43286" y="356.22681" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">NUM_REPRESENTADO</tspan></text>
+  <text id="text781-3-7" x="556.466" y="365.88348" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="NOMBRE_ARCHIVO"><tspan id="tspan783-14-68" x="556.466" y="365.88348" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">NOMBRE_ARCHIVO</tspan></text>
+  <text id="text781-3-9" x="556.50769" y="381.45667" font-size="5px" text-align="center" style="line-height:6.25px" freecad:editable="EMPRESA"><tspan id="tspan783-14-0" x="556.50769" y="381.45667" font-size="5px" stroke-width=".26412" text-align="center" text-anchor="middle">EMPRESA</tspan></text>
+  <text id="text781-3-7-6" x="557.70697" y="397.43903" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="NUM_PLANO_CLIENTE"><tspan id="tspan783-14-68-8" x="557.70697" y="397.43903" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">NUM_PLANO_CLIENTE</tspan></text>
+  <text id="text781-3-7-7" x="552.70221" y="407.30573" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="NUM_PLANO"><tspan id="tspan783-14-68-9" x="552.70221" y="407.30573" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">NUM_PLANO</tspan></text>
+  <text id="text781-3-7-6-0" x="578.97198" y="407.6795" font-size="3.5px" text-align="center" style="line-height:4.375px" freecad:editable="NUM"><tspan id="tspan783-14-68-8-3" x="578.97198" y="407.6795" font-size="3.5px" stroke-width=".26412" text-align="center" text-anchor="middle">NUM</tspan></text>
+  <text id="text781-3-88-3" x="492.41367" y="394.81519" font-size="5px" text-align="center" style="line-height:6.25px" freecad:editable="SUBTITULO"><tspan id="tspan783-14-8-3" x="492.41367" y="394.81519" font-size="5px" stroke-width=".26412" text-align="center" text-anchor="middle">SUBTITULO</tspan></text>
+ </g>
+ <g id="layer3" font-family="osifont">
+  <text id="text322-9-4-4" x="36.662632" y="8.7655668" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2" x="36.662632" y="8.7655668" rotate="0 0" font-size="3.5px" stroke-width=".31628">1</tspan></text>
+  <text id="text532-2" x="79.551239" y="8.6235666" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2" x="79.551239" y="8.6235666" font-size="3.5px" stroke-width=".60895">2</tspan></text>
+  <text id="text532-9-0" x="129.73601" y="8.63659" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5" x="129.73601" y="8.63659" font-size="3.5px" stroke-width=".60895">3</tspan></text>
+  <text id="text532-1-5" x="176.03386" y="8.7245874" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2" x="176.03386" y="8.7245874" font-size="3.5px" stroke-width=".60895">4</tspan></text>
+  <text id="text322" x="436.11429" y="373.30029" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320" x="436.11429" y="373.30029" font-size="3.5px" stroke-width=".31628">Escala</tspan></text>
+  <text id="text322-0" x="436.11429" y="353.29034" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-4" x="436.11429" y="353.29034" font-size="3.5px" stroke-width=".31628">Proyectó</tspan></text>
+  <text id="text322-6" x="436.11429" y="358.20148" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-2" x="436.11429" y="358.20148" font-size="3.5px" stroke-width=".31628">Dibujó</tspan></text>
+  <text id="text322-67" x="436.11429" y="363.45441" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-5" x="436.11429" y="363.45441" font-size="3.5px" stroke-width=".31628">Revisó</tspan></text>
+  <text id="text322-69" x="436.19958" y="368.10687" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-8" x="436.19958" y="368.10687" font-size="3.5px" stroke-width=".31628">Aprobó</tspan></text>
+  <text id="text322-61" x="411.24286" y="353.78638" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-3" x="411.24286" y="353.78638" font-size="3.5px" stroke-width=".31628">Tolerancias</tspan></text>
+  <text id="text322-21" x="411.15756" y="358.00836" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-59" x="411.15756" y="358.00836" font-size="3.5px" stroke-width=".31628">Generales</tspan></text>
+  <text id="text322-9" x="436.1962" y="403.021" font-size="3.4939px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-6" x="436.1962" y="403.021" font-size="3.4939px" stroke-width=".31628">Formato</tspan></text>
+  <text id="text322-02" x="456.48148" y="373.33795" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-7" x="456.48148" y="373.33795" font-size="3.5px" stroke-width=".31628">Denominación</tspan></text>
+  <text id="text322-91" x="489.55176" y="353.58868" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-49" x="489.55176" y="353.58868" font-size="3.5px" stroke-width=".31628">Cliente</tspan></text>
+  <text id="text322-9-4-4-9-96" x="21.577068" y="284.17239" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-2" x="21.577068" y="284.17239" rotate="0 0" font-size="3.5px" stroke-width=".31628">F</tspan></text>
+  <text id="text322-1" x="530.07513" y="393.14166" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-0" x="530.07513" y="393.14166" font-size="3.5px" stroke-width=".31628">N° plano cliente</tspan></text>
+  <text id="text322-75" x="530.11475" y="403.16394" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-87" x="530.11475" y="403.16394" font-size="3.5px" stroke-width=".31628">N° plano</tspan></text>
+  <text id="text322-04" x="575.91125" y="403.15833" font-size="3.5px" stroke-width=".31628" style="line-height:1.25"><tspan id="tspan320-80" x="575.91125" y="403.15833" font-size="3.5px" stroke-width=".31628">Pág.</tspan></text>
+  <text id="text322-9-4-4-9" x="21.488102" y="33.834484" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0" x="21.488102" y="33.834484" rotate="0 0" font-size="3.5px" stroke-width=".31628">A</tspan></text>
+  <text id="text322-9-4-4-9-2" x="21.480015" y="85.833763" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-8" x="21.480015" y="85.833763" rotate="0 0" font-size="3.5px" stroke-width=".31628">B</tspan></text>
+  <text id="text322-9-4-4-9-3" x="21.551258" y="135.08249" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-80" x="21.551258" y="135.08249" rotate="0 0" font-size="3.5px" stroke-width=".31628">C</tspan></text>
+  <text id="text322-9-4-4-9-4" x="21.480015" y="185.61847" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-0" x="21.480015" y="185.61847" rotate="0 0" font-size="3.5px" stroke-width=".31628">D</tspan></text>
+  <text id="text322-9-4-4-9-9" x="21.649082" y="234.98813" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-1" x="21.649082" y="234.98813" rotate="0 0" font-size="3.5px" stroke-width=".31628">E</tspan></text>
+  <text id="text322-9-4-4-3" x="230.02797" y="8.7615137" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-5" x="230.02797" y="8.7615137" rotate="0 0" font-size="3.5px" stroke-width=".31628">5</tspan></text>
+  <text id="text532-2-6" x="278.74054" y="8.8192072" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2-2" x="278.74054" y="8.8192072" font-size="3.5px" stroke-width=".60895">6</tspan></text>
+  <text id="text532-9-0-9" x="328.92783" y="8.8322763" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5-1" x="328.92783" y="8.8322763" font-size="3.5px" stroke-width=".60895">7</tspan></text>
+  <text id="text532-1-5-2" x="378.93256" y="8.9202433" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2-7" x="378.93256" y="8.9202433" font-size="3.5px" stroke-width=".60895">8</tspan></text>
+  <text id="text322-9-4-4-3-5" x="428.39023" y="8.8189487" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-5-6" x="428.39023" y="8.8189487" rotate="0 0" font-size="3.5px" stroke-width=".31628">9</tspan></text>
+  <text id="text532-2-6-2" x="478.16116" y="8.8766422" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2-2-9" x="478.16116" y="8.8766422" font-size="3.5px" stroke-width=".60895">10</tspan></text>
+  <text id="text532-9-0-9-1" x="528.34845" y="8.8897114" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5-1-2" x="528.34845" y="8.8897114" font-size="3.5px" stroke-width=".60895">11</tspan></text>
+  <text id="text532-1-5-2-7" x="570.41553" y="8.9776783" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2-7-0" x="570.41553" y="8.9776783" font-size="3.5px" stroke-width=".60895">12</tspan></text>
+  <text id="text322-9-4-4-9-96-9" x="21.606653" y="387.40176" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-2-3" x="21.606653" y="387.40176" rotate="0 0" font-size="3.5px" stroke-width=".31628">H</tspan></text>
+  <text id="text322-9-4-4-9-9-6" x="21.578651" y="335.04245" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-1-06" x="21.578651" y="335.04245" rotate="0 0" font-size="3.5px" stroke-width=".31628">G</tspan></text>
+  <text id="text322-9-4-4-2" x="36.266136" y="413.53653" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-6" x="36.266136" y="413.53653" rotate="0 0" font-size="3.5px" stroke-width=".31628">1</tspan></text>
+  <text id="text532-2-1" x="79.155357" y="413.39456" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2-8" x="79.155357" y="413.39456" font-size="3.5px" stroke-width=".60895">2</tspan></text>
+  <text id="text532-9-0-7" x="129.3403" y="413.40756" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5-9" x="129.3403" y="413.40756" font-size="3.5px" stroke-width=".60895">3</tspan></text>
+  <text id="text532-1-5-20" x="175.63747" y="413.49554" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2-2" x="175.63747" y="413.49554" font-size="3.5px" stroke-width=".60895">4</tspan></text>
+  <text id="text322-9-4-4-3-3" x="229.63078" y="413.53247" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-5-7" x="229.63078" y="413.53247" rotate="0 0" font-size="3.5px" stroke-width=".31628">5</tspan></text>
+  <text id="text532-2-6-5" x="278.34338" y="413.59018" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2-2-92" x="278.34338" y="413.59018" font-size="3.5px" stroke-width=".60895">6</tspan></text>
+  <text id="text532-9-0-9-2" x="328.53143" y="413.60324" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5-1-8" x="328.53143" y="413.60324" font-size="3.5px" stroke-width=".60895">7</tspan></text>
+  <text id="text532-1-5-2-9" x="378.53732" y="413.69125" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2-7-7" x="378.53732" y="413.69125" font-size="3.5px" stroke-width=".60895">8</tspan></text>
+  <text id="text322-9-4-4-3-5-3" x="427.99643" y="413.5899" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-5-6-6" x="427.99643" y="413.5899" rotate="0 0" font-size="3.5px" stroke-width=".31628">9</tspan></text>
+  <text id="text532-2-6-2-1" x="477.76877" y="413.64761" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-2-2-9-2" x="477.76877" y="413.64761" font-size="3.5px" stroke-width=".60895">10</tspan></text>
+  <text id="text532-9-0-9-1-9" x="527.95605" y="413.66071" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-6-5-1-2-3" x="527.95605" y="413.66071" font-size="3.5px" stroke-width=".60895">11</tspan></text>
+  <text id="text532-1-5-2-7-1" x="570.02307" y="413.74866" font-size="3.5px" stroke-width=".60895" style="line-height:4.37503px"><tspan id="tspan530-0-2-7-0-9" x="570.02307" y="413.74866" font-size="3.5px" stroke-width=".60895">12</tspan></text>
+  <text id="text322-9-4-4-9-96-4" x="585.49011" y="283.86014" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-2-7" x="585.49011" y="283.86014" rotate="0 0" font-size="3.5px" stroke-width=".31628">F</tspan></text>
+  <text id="text322-9-4-4-9-8" x="585.40112" y="33.521984" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-45" x="585.40112" y="33.521984" rotate="0 0" font-size="3.5px" stroke-width=".31628">A</tspan></text>
+  <text id="text322-9-4-4-9-2-0" x="585.39307" y="85.521286" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-8-3" x="585.39307" y="85.521286" rotate="0 0" font-size="3.5px" stroke-width=".31628">B</tspan></text>
+  <text id="text322-9-4-4-9-3-6" x="585.46429" y="134.76988" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-80-1" x="585.46429" y="134.76988" rotate="0 0" font-size="3.5px" stroke-width=".31628">C</tspan></text>
+  <text id="text322-9-4-4-9-4-0" x="585.39307" y="185.30542" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-0-6" x="585.39307" y="185.30542" rotate="0 0" font-size="3.5px" stroke-width=".31628">D</tspan></text>
+  <text id="text322-9-4-4-9-9-3" x="585.56213" y="234.67508" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-1-2" x="585.56213" y="234.67508" rotate="0 0" font-size="3.5px" stroke-width=".31628">E</tspan></text>
+  <text id="text322-9-4-4-9-96-9-0" x="585.51965" y="387.08987" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-2-3-6" x="585.51965" y="387.08987" rotate="0 0" font-size="3.5px" stroke-width=".31628">H</tspan></text>
+  <text id="text322-9-4-4-9-9-6-1" x="585.4917" y="334.73056" font-size="3.5px" stroke-width=".31628" style="line-height:4.375px"><tspan id="tspan528-2-0-1-06-5" x="585.4917" y="334.73056" rotate="0 0" font-size="3.5px" stroke-width=".31628">G</tspan></text>
+ </g>
+</svg>

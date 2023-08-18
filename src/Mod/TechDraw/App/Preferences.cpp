@@ -42,6 +42,7 @@
 using namespace TechDraw;
 
 const double Preferences::DefaultFontSizeInMM = 5.0;
+const double Preferences::DefaultArrowSize = 3.5;
 
 //! Returns the TechDraw preference group
 Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
@@ -68,6 +69,11 @@ double Preferences::labelFontSizeMM()
 double Preferences::dimFontSizeMM()
 {
     return getPreferenceGroup("Dimensions")->GetFloat("FontSize", DefaultFontSizeInMM);
+}
+
+double Preferences::dimArrowSize()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", DefaultArrowSize);
 }
 
 App::Color Preferences::normalColor()
@@ -297,6 +303,7 @@ double Preferences::GapASME()
     return factor;
 }
 
+//! current setting for reporting progress of HLR/face finding
 bool Preferences::reportProgress()
 {
     return getPreferenceGroup("General")->GetBool("ReportProgress", false);
@@ -312,11 +319,13 @@ void Preferences::lightOnDark(bool state)
     getPreferenceGroup("Colors")->SetBool("LightOnDark", state);
 }
 
+//! current setting (on/off) for monochrome display
 bool Preferences::monochrome()
 {
     return getPreferenceGroup("Colors")->GetBool("Monochrome", false);
 }
 
+//! set monochrome display on/off
 void Preferences::monochrome(bool state)
 {
     Base::Console().Message("Pref::useLightText - set to %d\n", state);
@@ -330,6 +339,8 @@ App::Color Preferences::lightTextColor()
     return result;
 }
 
+//! attempt to lighten the give color
+// not currently used
 App::Color Preferences::lightenColor(App::Color orig)
 {
     // get component colours on [0, 255]
@@ -360,6 +371,7 @@ App::Color Preferences::lightenColor(App::Color orig)
     return App::Color(redF, greenF, blueF, orig.a);
 }
 
+//! color to use for monochrome display
 App::Color Preferences::getAccessibleColor(App::Color orig)
 {
     if (Preferences::lightOnDark() && Preferences::monochrome()) {
@@ -371,12 +383,22 @@ App::Color Preferences::getAccessibleColor(App::Color orig)
     return orig;
 }
 
+//! automatic correction of dimension references on/off
 bool Preferences::autoCorrectDimRefs()
 {
     return getPreferenceGroup("Dimensions")->GetBool("AutoCorrectRefs", true);
 }
 
+//! number of times to clean the output edges from HLR
 int Preferences::scrubCount()
 {
     return getPreferenceGroup("General")->GetInt("ScrubCount", 0);
 }
+
+//! Returns the factor for the overlap of svg tiles when hatching faces
+double Preferences::svgHatchFactor()
+{
+    double factor = getPreferenceGroup("Decorations")->GetFloat("SvgOverlapFactor", 1.25);
+    return factor;
+}
+

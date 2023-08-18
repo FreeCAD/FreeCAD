@@ -30,7 +30,7 @@ if FreeCAD.GuiUp:
 
 __title__="PartDesign SprocketObject management"
 __author__ = "Adam Spontarelli"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 
 def makeSprocket(name):
@@ -125,7 +125,7 @@ class Sprocket:
         obj.addProperty("App::PropertyEnumeration","SprocketReference","Sprocket","Sprocket Reference")
         obj.addProperty("App::PropertyLength","Thickness","Sprocket","Thickness as stated in the reference specification")
 
-        obj.SprocketReference = list(self.SprocketReferenceRollerTable.keys())
+        obj.SprocketReference = list(self.SprocketReferenceRollerTable)
 
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in"

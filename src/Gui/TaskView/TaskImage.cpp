@@ -302,24 +302,45 @@ void TaskImage::restore(const Base::Placement& plm)
 
     double tol = 1.0e-5;
     bool reverse = false;
-    if (fabs(pitch) < tol && (fabs(roll) < tol || fabs(roll - 180.) < tol)) {
-        if (fabs(roll - 180.) < tol)
-            reverse = true;
+
+    auto isTopOrBottom = [=](bool& reverse) {
+        if (fabs(pitch) < tol && (fabs(roll) < tol || fabs(roll - 180.) < tol)) {
+            if (fabs(roll - 180.) < tol)
+                reverse = true;
+            return true;
+        }
+
+        return false;
+    };
+    auto isFrontOrRear = [=](bool& reverse) {
+        if (fabs(roll - 90.) < tol && (fabs(yaw) < tol || fabs(yaw - 180.) < tol)) {
+            if (fabs(yaw - 180.) < tol)
+                reverse = true;
+            return true;
+        }
+
+        return false;
+    };
+    auto isRightOrLeft = [=](bool& reverse) {
+        if (fabs(roll - 90.) < tol && (fabs(yaw - 90.) < tol || fabs(yaw + 90.) < tol)) {
+            if (fabs(yaw + 90.) < tol)
+                reverse = true;
+            return true;
+        }
+
+        return false;
+    };
+
+    if (isTopOrBottom(reverse)) {
         int inv = reverse ? -1 : 1;
         ui->XY_radioButton->setChecked(true);
         ui->spinBoxRotation->setValue(yaw * inv);
     }
-    else if (fabs(roll - 90.) < tol && (fabs(yaw) < tol || fabs(yaw - 180.) < tol)) {
-        if (fabs(yaw - 180.) < tol)
-            reverse = true;
-        int inv = reverse ? -1 : 1;
+    else if (isFrontOrRear(reverse)) {
         ui->XZ_radioButton->setChecked(true);
-        ui->spinBoxRotation->setValue(- pitch);
+        ui->spinBoxRotation->setValue(-pitch);
     }
-    else if (fabs(roll - 90.) < tol && (fabs(yaw - 90.) < tol || fabs(yaw + 90.) < tol)) {
-        if (fabs(yaw + 90.) < tol)
-            reverse = true;
-        int inv = reverse ? -1 : 1;
+    else if (isRightOrLeft(reverse)) {
         ui->YZ_radioButton->setChecked(true);
         ui->spinBoxRotation->setValue(-pitch);
     }
@@ -419,7 +440,8 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     root->addChild(transform);
     setPlacement(placement);
 
-    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    QWidget* mdi = view->parentWidget();
+
     distanceBox = new QuantitySpinBox(mdi);
     distanceBox->setUnit(Base::Unit::Length);
     distanceBox->setMinimum(0.0);
@@ -432,6 +454,7 @@ InteractiveScale::InteractiveScale(View3DInventorViewer* view, ViewProvider* vp,
     //track camera movements to update spinbox position.
     NodeData* info = new NodeData{ this };
     cameraSensor = new SoNodeSensor([](void* data, SoSensor* sensor) {
+        Q_UNUSED(sensor)
         NodeData* info = static_cast<NodeData*>(data);
         info->scale->positionWidget();
     }, info);
@@ -491,6 +514,20 @@ double InteractiveScale::getDistance(const SbVec3f& pt) const
     return (points[0] - pt).length();
 }
 
+void InteractiveScale::setDistance(const SbVec3f& pos3d)
+{
+    Base::Quantity quantity;
+    quantity.setValue(getDistance(pos3d));
+    quantity.setUnit(Base::Unit::Length);
+
+    //Update the displayed distance
+    double factor;
+    QString unitStr, valueStr;
+    valueStr = quantity.getUserString(factor, unitStr);
+    measureLabel->string = SbString(valueStr.toUtf8().constData());
+    measureLabel->setPoints(getCoordsOnImagePlane(points[0]), getCoordsOnImagePlane(pos3d));
+}
+
 void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
 {
     const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ecb->getEvent());
@@ -516,16 +553,10 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
         if (distance > Base::Precision::Confusion()) {
             points.push_back(pos3d);
 
-            midPoint = points[0] + (points[1] - points[0]) / 2;
+            midPoint = (points[0] + points[1]) / 2;
 
             measureLabel->string = "";
-            distanceBox->show();
-            QSignalBlocker block(distanceBox);
-            distanceBox->setValue((points[1] - points[0]).length());
-            distanceBox->adjustSize();
-            positionWidget();
-            distanceBox->selectNumber();
-            distanceBox->setFocus();
+            showDistanceField();
 
             Q_EMIT enableApplyBtn();
         }
@@ -533,6 +564,17 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
         }
     }
+}
+
+void InteractiveScale::showDistanceField()
+{
+    distanceBox->show();
+    QSignalBlocker block(distanceBox);
+    distanceBox->setValue(getDistance(points[1]));
+    distanceBox->adjustSize();
+    positionWidget();
+    distanceBox->selectNumber();
+    distanceBox->setFocus();
 }
 
 void InteractiveScale::positionWidget()
@@ -552,27 +594,12 @@ void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
 
     if (scale->points.size() == 1) {
         ecb->setHandled();
-        SbVec3f pos3d;
 
         std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
         if (pp.get()) {
-            pos3d = pp->getPoint();
+            SbVec3f pos3d = pp->getPoint();
+            scale->setDistance(pos3d);
         }
-        else {
-            return;
-        }
-
-        Base::Quantity quantity;
-        quantity.setValue((pos3d - scale->points[0]).length());
-        quantity.setUnit(Base::Unit::Length);
-
-        //Update the displayed distance
-        double factor;
-        QString unitStr, valueStr;
-        valueStr = quantity.getUserString(factor, unitStr);
-        scale->measureLabel->string = SbString(valueStr.toUtf8().constData());
-
-        scale->measureLabel->setPoints(scale->getCoordsOnImagePlane(scale->points[0]), scale->getCoordsOnImagePlane(pos3d));
     }
 }
 
@@ -582,12 +609,11 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
 
     const SoEvent* soEvent = ecb->getEvent();
     if (soEvent->isOfType(SoKeyboardEvent::getClassTypeId())) {
-        /* If user press escape, then we cancel the tool.*/
+        /* If user presses escape, then we cancel the tool.*/
         const auto kbe = static_cast<const SoKeyboardEvent*>(soEvent);
 
         if (kbe->getKey() == SoKeyboardEvent::ESCAPE && kbe->getState() == SoButtonEvent::UP) {
             ecb->setHandled();
-            ecb->getAction()->setHandled();
             Q_EMIT scale->scaleCanceled();
         }
     }
@@ -613,7 +639,8 @@ bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
         /* If user press enter in the spinbox, then we validate the tool.*/
-        if (keyEvent->key() == Qt::Key_Enter && dynamic_cast<QuantitySpinBox*>(object)) {
+        if ((keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return)
+                && dynamic_cast<QuantitySpinBox*>(object)) {
             Q_EMIT scaleRequired();
         }
 
@@ -650,7 +677,8 @@ SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
     RY = tmp.multVec(RY);
     Base::Vector3d pos = placement.getPosition();
 
-    //we use pos as the Base because in setPlacement we set transform->translation using placement.getPosition() to fix the Zoffset. But this applies the X & Y translation too.
+    // we use pos as the Base because in setPlacement we set transform->translation using
+    // placement.getPosition() to fix the Zoffset. But this applies the X & Y translation too.
     Base::Vector3d S(point[0], point[1], point[2]);
     S.TransformToCoordinateSystem(pos, RX, RY);
 

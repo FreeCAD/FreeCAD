@@ -344,9 +344,8 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
         if (! this->modeEnabled[iMode])
             continue;
         const refTypeStringList &listStrings = modeRefTypes[iMode];
-        for (std::size_t iStr = 0; iStr < listStrings.size(); ++iStr) {
+        for (const auto & str : listStrings) {
             int score = 1; //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
-            const refTypeString &str = listStrings[iStr];
             for (std::size_t iChr = 0; iChr < str.size() && iChr < typeStr.size(); ++iChr) {
                 int match = AttachEngine::isShapeOfType(typeStr[iChr], str[iChr]);
                 switch(match){
@@ -1284,7 +1283,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             try{
                 adapt.D2(u,p,d,dd);
             } catch (Standard_Failure &e){
-                //ignore. This is brobably due to insufficient continuity.
+                //ignore. This is probably due to insufficient continuity.
                 dd = gp_Vec(0., 0., 0.);
                 Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement: can't calculate second derivative of curve. OCC error: %s\n", e.GetMessageString());
             }
@@ -1345,8 +1344,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
 
         std::vector<gp_Pnt> points;
 
-        for (std::size_t i = 0; i < shapes.size(); i++) {
-            const TopoDS_Shape &sh = *shapes[i];
+        for (const auto & shape : shapes) {
+            const TopoDS_Shape &sh = *shape;
             if (sh.IsNull())
                 throw Base::ValueError("Null shape in AttachEngine3D::calculateAttachedPlacement()!");
             if (sh.ShapeType() == TopAbs_VERTEX){
@@ -1593,7 +1592,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     //DeepSOIC: this hardcore math can probably be replaced with a couple of
     //clever OCC calls... See forum thread "Sketch mapping enhancement" for a
     //picture on how this math was derived.
-    //http://forum.freecadweb.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
+    //http://forum.freecad.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
     axA.Normalize();
     axB.Normalize();
     edA.Normalize();
@@ -1807,8 +1806,8 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         case mm1TwoPoints:{
             std::vector<gp_Pnt> points;
 
-            for (std::size_t i = 0; i < shapes.size(); i++) {
-                const TopoDS_Shape &sh = *shapes[i];
+            for (const auto & shape : shapes) {
+                const TopoDS_Shape &sh = *shape;
                 if (sh.IsNull())
                     throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
                 if (sh.ShapeType() == TopAbs_VERTEX){

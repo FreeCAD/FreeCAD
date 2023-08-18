@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>RészekKapcsolása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Keresztmetszet...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Keresztmetszet</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>Görbe a hálón...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Közelítő ívet hoz létre a háló tetején.
@@ -60,17 +60,17 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>Létrehoz egy szakaszt a hálóból és a síkból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Szakasz</translation>
     </message>
@@ -97,12 +97,12 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
       <translation>Síkkal metsz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>Síkkal szakaszt</translation>
     </message>
@@ -170,7 +170,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
       <translation>Csatlakoztassa az éleket, ha a távolság kisebb, mint</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Hiba</translation>
     </message>
@@ -491,27 +491,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh ( http://gmsh.info/ )</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Kiválasztott egy csúcs nélküli testet.
 Kérem állítsa be a test csúcsát, vagy válasszon egy másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Felületek nélküli alakzatot választott.
 Válasszon másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>
@@ -519,12 +519,12 @@ Válasszon másik alakzatot.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Sík kijelölése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Kérjük válasszon egy síkot, mellyel a szakaszolja a hálótestet.</translation>
     </message>

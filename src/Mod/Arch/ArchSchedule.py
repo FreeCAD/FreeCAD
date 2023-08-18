@@ -44,7 +44,7 @@ else:
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 verbose = True # change this for silent recomputes

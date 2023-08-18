@@ -31,7 +31,7 @@ from os.path import join
 
 __title__ = "ImportCSG OpenSCAD App unit tests"
 __author__ = "Chris Hennes"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class TestImportCSG(unittest.TestCase):
@@ -121,6 +121,10 @@ class TestImportCSG(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_text(self):
+        # This uses the DXF importer that may pop-up modal dialogs
+        # if not all 3rd party libraries are installed
+        if FreeCAD.GuiUp:
+            return
         try:
             doc = self.utility_create_scad("text(\"X\");","text") # Keep it short to keep the test fast-ish
             text = doc.getObject("text")
@@ -205,7 +209,7 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 2412.7431, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        # Bug #4353 - https://tracker.freecadweb.org/view.php?id=4353
+        # Bug #4353 - https://tracker.freecad.org/view.php?id=4353
         doc = self.utility_create_scad("rotate_extrude($fn=4, angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn")
         object = doc.ActiveObject
         self.assertTrue (object is not None)

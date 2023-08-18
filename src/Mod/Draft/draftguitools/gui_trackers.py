@@ -49,7 +49,7 @@ from draftutils.messages import _msg
 
 __title__ = "FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Tracker:
@@ -58,7 +58,8 @@ class Tracker:
     def __init__(self, dotted=False, scolor=None, swidth=None,
                  children=[], ontop=False, name=None):
         global Part, DraftGeomUtils
-        import Part, DraftGeomUtils
+        import Part
+        import DraftGeomUtils
         self.ontop = ontop
         self.color = coin.SoBaseColor()
         self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
@@ -1266,7 +1267,8 @@ class boxTracker(Tracker):
 
     def update(self, line=None, normal=None):
         """Update the tracker."""
-        import WorkingPlane, DraftGeomUtils
+        import WorkingPlane
+        import DraftGeomUtils
         if not normal:
             normal = FreeCAD.DraftWorkingPlane.axis
         if line:

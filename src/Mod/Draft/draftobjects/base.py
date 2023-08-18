@@ -182,12 +182,34 @@ class DraftObject(object):
         if hasattr(self, "props_changed"):
             delattr(self, "props_changed")
 
-    def props_changed_placement_only(self):
+    def props_changed_placement_only(self, obj=None):
         """Return `True` if the self.props_changed list, after removing `Shape`
         and `_LinkTouched` items, only contains `Placement` items.
+
+        Parameters
+        ----------
+        obj : the scripted object. Need only be supplied if the Shape of obj
+            is, or can be, derived from other objects.
+
         """
         if not hasattr(self, "props_changed"):
             return False
+
+        # For an attached object whose Shape depends on one or more source
+        # objects the situation can occur that when those source objects
+        # change its Placement is also changed, but for no apparent reason:
+        # the new Placement is identical to the old. For such an object a
+        # `placement_only` change cannot be detected reliably and therefore
+        # this function should return `False`.
+        # https://github.com/FreeCAD/FreeCAD/issues/8771
+        if obj is not None \
+                and obj.OutList \
+                and hasattr(obj, "Support") \
+                and hasattr(obj, "MapMode") \
+                and obj.Support \
+                and obj.MapMode != "Deactivated":
+            return False
+
         props = set(self.props_changed)
         if "Shape" in props:
             props.remove("Shape")

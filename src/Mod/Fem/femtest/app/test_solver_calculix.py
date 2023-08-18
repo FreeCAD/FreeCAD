@@ -23,7 +23,7 @@
 
 __title__ = "Solver calculix FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 from os.path import join
@@ -338,22 +338,6 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.thermomech_bimetall import setup
-        setup(self.document, "calculix")
-        self.input_file_writing_test(get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_thermomech_flow1D(
-        self
-    ):
-        from femexamples.thermomech_flow1d import setup
-        setup(self.document, "calculix")
-        self.input_file_writing_test(get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_thermomech_spine(
-        self
-    ):
-        from femexamples.thermomech_spine import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 

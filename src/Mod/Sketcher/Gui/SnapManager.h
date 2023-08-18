@@ -28,14 +28,15 @@
 #include <App/Application.h>
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class ViewProviderSketch;
 
 
-class ViewProviderSketchSnapAttorney {
+class ViewProviderSketchSnapAttorney
+{
 private:
-
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
@@ -44,23 +45,23 @@ private:
 };
 
 /* This class is used to manage the overriding of mouse pointer coordinates in Sketcher
-*  (in Edit-Mode) depending on the situation. Those situations are in priority order :
-*  1 - Snap at angle: For tools like Slot, Arc, Line, Ellipse, this enables to constrain the angle at steps of 5° (or customized angle).
-*  This is useful to make features at a certain angle (45° for example)
-*  2 - Snap to object: This snaps the mouse pointer onto objects.
-*  3 - Snap to grid: This snaps the mouse pointer on the grid.
-*/
+ *  (in Edit-Mode) depending on the situation. Those situations are in priority order :
+ *  1 - Snap at angle: For tools like Slot, Arc, Line, Ellipse, this enables to constrain the angle
+ * at steps of 5° (or customized angle). This is useful to make features at a certain angle (45° for
+ * example) 2 - Snap to object: This snaps the mouse pointer onto objects. 3 - Snap to grid: This
+ * snaps the mouse pointer on the grid.
+ */
 class SnapManager
 {
 
     /** @brief      Class for monitoring changes in parameters affecting Snapping
-    *  @details
-    *
-    * This nested class is a helper responsible for attaching to the parameters relevant for
-    * SnapManager, initialising the SnapManager to the current configuration
-    * and handle in real time any change to their values.
-    */
-    class ParameterObserver : public ParameterGrp::ObserverType
+     *  @details
+     *
+     * This nested class is a helper responsible for attaching to the parameters relevant for
+     * SnapManager, initialising the SnapManager to the current configuration
+     * and handle in real time any change to their values.
+     */
+    class ParameterObserver: public ParameterGrp::ObserverType
     {
     public:
         explicit ParameterObserver(SnapManager& client);
@@ -88,7 +89,7 @@ class SnapManager
     };
 
 public:
-    explicit SnapManager(ViewProviderSketch &vp);
+    explicit SnapManager(ViewProviderSketch& vp);
     ~SnapManager();
 
     bool snap(double& x, double& y);
@@ -103,7 +104,7 @@ public:
 
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
-    ViewProviderSketch & viewProvider;
+    ViewProviderSketch& viewProvider;
 
     bool angleSnapRequested;
     bool snapRequested;
@@ -120,8 +121,7 @@ private:
 };
 
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_SnapManager_H
-
+#endif// SKETCHERGUI_SnapManager_H

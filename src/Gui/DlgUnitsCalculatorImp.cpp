@@ -53,7 +53,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i=0; i<num; i++) {
-        QString item = qApp->translate("Gui::Dialog::DlgGeneralImp", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBoxScheme->addItem(item, i);
     }
 
@@ -124,8 +124,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient
           << Base::Unit::Work;
-    for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
-        ui->unitsBox->addItem(it->getTypeString());
+    for (const Base::Unit& it : units) {
+        ui->unitsBox->addItem(it.getTypeString());
     }
 
     ui->quantitySpinBox->setValue(1.0);

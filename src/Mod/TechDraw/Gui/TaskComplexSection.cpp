@@ -169,9 +169,7 @@ void TaskComplexSection::setUiPrimary()
     //don't allow updates until a direction is picked
     ui->pbUpdateNow->setEnabled(false);
     ui->cbLiveUpdate->setEnabled(false);
-    QString msgLiteral =
-        QString::fromUtf8(QT_TRANSLATE_NOOP("TaskComplexSection", "No direction set"));
-    ui->lPendingUpdates->setText(msgLiteral);
+    ui->lPendingUpdates->setText(tr("No direction set"));
 }
 
 void TaskComplexSection::setUiEdit()
@@ -558,11 +556,16 @@ void TaskComplexSection::createComplexSection()
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ComplexSection"));
     if (!m_section) {
-        m_sectionName = m_page->getDocument()->getUniqueObjectName("ComplexSection");
-        std::string sectionType = "TechDraw::DrawComplexSection";
+        const std::string objectName{QT_TR_NOOP("ComplexSection")};
+        m_sectionName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('TechDraw::DrawComplexSection', '%s')",
+                           m_sectionName.c_str());
 
-        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
-                           sectionType.c_str(), m_sectionName.c_str());
+        std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
+        std::string uniqueLabel = "Section" + uniqueSuffix;
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawComplexSection', 'Section', '%s')",
+              m_sectionName.c_str(), uniqueLabel.c_str());
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_page->getNameInDocument(), m_sectionName.c_str());
 
@@ -570,9 +573,6 @@ void TaskComplexSection::createComplexSection()
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
-        std::string lblText = "Section " + temp + " - " + temp;
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
-                           m_sectionName.c_str(), lblText.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value());
@@ -627,6 +627,7 @@ void TaskComplexSection::createComplexSection()
         double rotation = requiredRotation(viewDirectionAngle);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+
     }
     Gui::Command::commitCommand();
 }
@@ -645,9 +646,10 @@ void TaskComplexSection::updateComplexSection()
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
-        std::string lblText = "Section " + temp + " - " + temp;
+        std::string lblText = std::string(m_section->Label.getValue()) + " " + temp + " - " + temp;
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(), lblText.c_str());
+
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value());

@@ -45,7 +45,7 @@ class TechDrawGuiExport QGMarker : public QObject, public QGIVertex
     Q_OBJECT
 public:
     explicit QGMarker(int idx);
-    ~QGMarker() = default;
+    ~QGMarker() override = default;
 
     enum {Type = QGraphicsItem::UserType + 302};
     int type() const override { return Type;}
@@ -78,7 +78,7 @@ class TechDrawGuiExport QGEPath : public QObject, public QGIPrimPath
 
 public:
     explicit QGEPath(QGILeaderLine* leader);
-    ~QGEPath() = default;
+    ~QGEPath() override = default;
 
     enum {Type = QGraphicsItem::UserType + 301};
     int type() const override { return Type;}

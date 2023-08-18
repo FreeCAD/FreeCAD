@@ -353,12 +353,12 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             // for Py2 but silently accepts it for Py3.
             //
             // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+            // https://forum.freecad.org/viewtopic.php?f=22&t=18105
+            // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
+            // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
             //
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
+            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
             Py::Object attr = obj.getAttr(name);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
@@ -688,7 +688,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     if (!sel.isEmpty()) {
         // in case the cursor moved too far on the right side
         const QChar underscore =  QLatin1Char('_');
-        const QChar ch = sel.at(sel.count()-1);
+        const QChar ch = sel.at(sel.size()-1);
         if (!ch.isLetterOrNumber() && ch != underscore)
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
     }
@@ -707,7 +707,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
       argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
       if (argumentMatcher.match( callTip.description ).hasMatch())
       {
@@ -734,16 +734,16 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     int minspace=INT_MAX;
     int line=0;
     for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
-        if (it->count() > 0 && line > 0) {
+        if (it->size() > 0 && line > 0) {
             int space = 0;
-            for (int i=0; i<it->count(); i++) {
+            for (int i=0; i<it->size(); i++) {
                 if ((*it)[i] == QLatin1Char('\t'))
                     space++;
                 else
                     break;
             }
 
-            if (it->count() > space)
+            if (it->size() > space)
                 minspace = std::min<int>(minspace, space);
         }
     }
@@ -756,7 +756,7 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
             if (line == 0 && !it->isEmpty()) {
                 strippedlines << *it;
             }
-            else if (it->count() > 0 && line > 0) {
+            else if (it->size() > 0 && line > 0) {
                 strippedlines << it->mid(minspace);
             }
         }

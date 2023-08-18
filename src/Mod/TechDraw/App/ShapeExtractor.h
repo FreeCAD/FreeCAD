@@ -44,6 +44,7 @@ public:
     static std::vector<TopoDS_Shape> getXShapes(const App::Link* xLink);
     static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);
     static TopoDS_Shape getShapesFused(const std::vector<App::DocumentObject*> links);
+    static TopoDS_Shape getShapeFromXLink(const App::Link* xLink);
 
     static bool is2dObject(App::DocumentObject* obj);
     static bool isEdgeType(App::DocumentObject* obj);

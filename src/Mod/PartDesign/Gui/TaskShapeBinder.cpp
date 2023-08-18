@@ -222,8 +222,8 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -410,7 +410,7 @@ bool TaskDlgShapeBinder::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 

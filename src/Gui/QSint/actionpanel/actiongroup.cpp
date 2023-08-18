@@ -251,7 +251,7 @@ void ActionGroup::setHeaderText(const QString & headerText)
 
 QSize ActionGroup::minimumSizeHint() const
 {
-    return QSize(200,65);
+    return {200,65};
 }
 
 

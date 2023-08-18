@@ -36,14 +36,20 @@ namespace Gui {
 class GuiExport ToolBarItem
 {
 public:
-    enum class HideStyle {
-        VISIBLE,
-        HIDDEN, // toolbar hidden by default
-        FORCE_HIDE // Force a toolbar to be hidden. For when all elements are disabled at some point in a workbench.
+    /** Manages the default visibility status of a toolbar item, as well as the default status
+     * of the toggleViewAction usable by the contextual menu to enable and disable its visibility
+    */
+    enum class DefaultVisibility {
+        Visible,     // toolbar is hidden by default, visibility toggle action is enabled
+        Hidden,      // toolbar hidden by default, visibility toggle action is enabled
+        Unavailable, // toolbar visibility is managed independently by client code and defaults to
+                     // hidden, visibility toggle action is disabled by default (it is unavailable
+                     // to the UI). Upon being forced to be available, these toolbars default to
+                     // visible.
     };
 
     ToolBarItem();
-    explicit ToolBarItem(ToolBarItem* item, HideStyle visibility = HideStyle::VISIBLE);
+    explicit ToolBarItem(ToolBarItem* item, DefaultVisibility visibilityPolicy = DefaultVisibility::Visible);
     ~ToolBarItem();
 
     void setCommand(const std::string&);
@@ -63,7 +69,7 @@ public:
     ToolBarItem& operator << (const std::string& command);
     QList<ToolBarItem*> getItems() const;
 
-    HideStyle visibility;
+    DefaultVisibility visibilityPolicy;
 
 private:
     std::string _name;
@@ -80,6 +86,14 @@ private:
 class GuiExport ToolBarManager
 {
 public:
+
+    enum class State {
+        ForceHidden,    // Forces a toolbar to hide and hides the toggle action
+        ForceAvailable, // Forces a toolbar toggle action to show, visibility depends on user config
+        RestoreDefault, // Restores a toolbar toggle action default, visibility as user config
+        SaveState,      // Saves the state of the toolbars
+    };
+
     /// The one and only instance.
     static ToolBarManager* getInstance();
     static void destruct();
@@ -90,11 +104,15 @@ public:
     void retranslate() const;
 
     void setMovable(bool movable) const;
-    void setToolbarVisibility(bool show, const QList<QString>& names);
-    void setToolbarVisibility(bool show, const QString& name);
+
+    void setState(const QList<QString>& names, State state);
+    void setState (const QString& name, State state);
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
+
+    ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
+
     /** Returns a list of all currently existing toolbars. */
     QList<QToolBar*> toolBars() const;
     QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;

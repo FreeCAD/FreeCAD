@@ -23,11 +23,11 @@
 #ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
-#include <memory>
-#include <QCoreApplication>
-#include <boost_signals2.hpp>
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <QCoreApplication>
+#include <boost_signals2.hpp>
+#include <memory>
 
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
@@ -35,8 +35,8 @@
 #include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
-#include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "PropertyVisualLayerList.h"
@@ -68,21 +68,25 @@ class SoTranslation;
 class SbString;
 class SbTime;
 
-namespace Part {
-    class Geometry;
+namespace Part
+{
+class Geometry;
 }
 
-namespace Gui {
-    class View3DInventorViewer;
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
-namespace Sketcher {
-    class Constraint;
-    class Sketch;
-    class SketchObject;
-}
+namespace Sketcher
+{
+class Constraint;
+class Sketch;
+class SketchObject;
+}// namespace Sketcher
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class EditModeCoinManager;
 class SnapManager;
@@ -131,18 +135,18 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * markers necessary to enable visual feedback to the user, as well as the UI interaction during
  * such edits. This is its exclusive responsibility under the Single Responsibility Principle.
  *
- * A plethora of speciliased handlers derive from DrawSketchHandler for each specialised editing (see
- * for example all the handlers for creation of new geometry). These derived classes do * not * have
- * direct access to the ViewProviderSketchDrawSketchHandlerAttorney. This is intended to keep coupling
- * under control. However, generic functionality requiring access to the Attorney can be implemented
- * in DrawSketchHandler and used from its derived classes by virtue of the inheritance. This promotes a
- * concentrating the coupling in a single point (and code reuse).
+ * A plethora of speciliased handlers derive from DrawSketchHandler for each specialised editing
+ * (see for example all the handlers for creation of new geometry). These derived classes do * not *
+ * have direct access to the ViewProviderSketchDrawSketchHandlerAttorney. This is intended to keep
+ * coupling under control. However, generic functionality requiring access to the Attorney can be
+ * implemented in DrawSketchHandler and used from its derived classes by virtue of the inheritance.
+ * This promotes a concentrating the coupling in a single point (and code reuse).
  *
  */
-class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObject
-                                           , public PartGui::ViewProviderGridExtension
-                                           , public PartGui::ViewProviderAttachExtension
-                                           , public Gui::SelectionObserver
+class SketcherGuiExport ViewProviderSketch: public PartGui::ViewProvider2DObject,
+                                            public PartGui::ViewProviderGridExtension,
+                                            public PartGui::ViewProviderAttachExtension,
+                                            public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
 
@@ -155,11 +159,11 @@ private:
      * ViewProviderSketch, initialising the ViewProviderSketch to the current configuration
      * and handle in real time any change to their values.
      */
-    class ParameterObserver : public ParameterGrp::ObserverType
+    class ParameterObserver: public ParameterGrp::ObserverType
     {
     public:
-        explicit ParameterObserver(ViewProviderSketch & client);
-        ~ParameterObserver();
+        explicit ParameterObserver(ViewProviderSketch& client);
+        ~ParameterObserver() override;
 
         void initParameters();
 
@@ -168,25 +172,31 @@ private:
         void unsubscribeToParameters();
 
         /** Observer for parameter group. */
-        void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+        void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
     private:
+        void updateBoolProperty(const std::string& string, App::Property* property,
+                                bool defaultvalue);
+        void updateGridSize(const std::string& string, App::Property* property);
 
-        void updateBoolProperty(const std::string & string, App::Property * property, bool defaultvalue);
-        void updateGridSize(const std::string & string, App::Property * property);
+        // Only for colors outside of edit mode, edit mode colors are handled by
+        // EditModeCoinManager.
+        void updateColorProperty(const std::string& string, App::Property* property, float r,
+                                 float g, float b);
 
-        // Only for colors outside of edit mode, edit mode colors are handled by EditModeCoinManager.
-        void updateColorProperty(const std::string & string, App::Property * property, float r, float g, float b);
+        void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
-        void updateEscapeKeyBehaviour(const std::string & string, App::Property * property);
+        void updateAutoRecompute(const std::string& string, App::Property* property);
 
-        void updateAutoRecompute(const std::string & string, App::Property * property);
-
-        void updateRecalculateInitialSolutionWhileDragging(const std::string & string, App::Property * property);
+        void updateRecalculateInitialSolutionWhileDragging(const std::string& string,
+                                                           App::Property* property);
 
     private:
-        ViewProviderSketch &Client;
-        std::map<std::string, std::tuple<std::function<void(const std::string & string, App::Property *)>, App::Property * >> parameterMap;
+        ViewProviderSketch& Client;
+        std::map<std::string,
+                 std::tuple<std::function<void(const std::string& string, App::Property*)>,
+                            App::Property*>>
+            parameterMap;
     };
 
     /** @name Classes storing the state of Dragging, Selection and Preselection
@@ -212,108 +222,131 @@ private:
      * (2) In SketchObject.cpp, the actual document object, both {GeoId, PointPos} and VertexId
      * are used (see VertexId2GeoId and VertexId2GeoPosId).
      *
-     * (3) In ViewProviderSketch, both {GeoId, PointPos} an Point indices are used (see these structures)
+     * (3) In ViewProviderSketch, both {GeoId, PointPos} an Point indices are used (see these
+     * structures)
      *
-     * (4) At CoinManager level, {GeoId, PointPos}, Point indices (for selection) and MultiFieldIds (specific
-     * structure defining a coin multifield index and layer) are used.
+     * (4) At CoinManager level, {GeoId, PointPos}, Point indices (for selection) and MultiFieldIds
+     * (specific structure defining a coin multifield index and layer) are used.
      *
-     * Using a single index instead of a multi-index field, allows mappings to be implemented via std::vectors
-     * instead of std::maps. Direct mappings using std::vectors are accessed in constant time. Multi-index mappings
-     * relying on std::maps involve a search for the key. This leads to a drop in performance.
+     * Using a single index instead of a multi-index field, allows mappings to be implemented via
+     * std::vectors instead of std::maps. Direct mappings using std::vectors are accessed in
+     * constant time. Multi-index mappings relying on std::maps involve a search for the key. This
+     * leads to a drop in performance.
      *
      * What are these indices and how do they relate each other?
-     * 1. PointId, VertexId depend on the order of the geometries in the sketch. GeoList and GeoListFacade enable to
-     * convert between indices.
+     * 1. PointId, VertexId depend on the order of the geometries in the sketch. GeoList and
+     * GeoListFacade enable to convert between indices.
      * 2. CurveId is basically the GeoId assuming PointPos to be PointPos::none (edge)
-     * 3. Sometimes, Axes and root point are separated into a third index or enum. Legacy reasons aside, the root point
-     * is has GeoId=-1, which is sometimes used as invalid value in positive only indices. Additionally, root point and
-     * the Horizontal Axes both have GeoId=-1 (differing in PointPos only). Following the decision not to rely on PointPos,
-     * creating a separate index, best when enum-ed, appears justified.
+     * 3. Sometimes, Axes and root point are separated into a third index or enum. Legacy reasons
+     * aside, the root point is has GeoId=-1, which is sometimes used as invalid value in positive
+     * only indices. Additionally, root point and the Horizontal Axes both have GeoId=-1 (differing
+     * in PointPos only). Following the decision not to rely on PointPos, creating a separate index,
+     * best when enum-ed, appears justified.
      */
     //@{
 
     /** @brief Class to store vector and item Id for dragging.
-      *
-      * @details
-      * Ids are zero-indexed points and curves.
-      *
-      * The DragPoint indexing matches PreselectPoint indexing.
-      *
-      */
-    class Drag {
+     *
+     * @details
+     * Ids are zero-indexed points and curves.
+     *
+     * The DragPoint indexing matches PreselectPoint indexing.
+     *
+     */
+    class Drag
+    {
     public:
-        enum SpecialValues {
+        enum SpecialValues
+        {
             InvalidPoint = -1,
             InvalidCurve = -1
         };
 
-        Drag() {
+        Drag()
+        {
             resetVector();
             resetIds();
         }
 
-        void resetVector() {
+        void resetVector()
+        {
             xInit = 0;
             yInit = 0;
             relative = false;
         }
 
-        void resetIds() {
+        void resetIds()
+        {
             DragPoint = InvalidPoint;
             DragCurve = InvalidCurve;
             DragConstraintSet.clear();
         }
 
-        bool isDragPointValid() { return DragPoint > InvalidPoint;}
-        bool isDragCurveValid() { return DragCurve > InvalidCurve;}
+        bool isDragPointValid()
+        {
+            return DragPoint > InvalidPoint;
+        }
+        bool isDragCurveValid()
+        {
+            return DragCurve > InvalidCurve;
+        }
 
-        double xInit, yInit;                // starting point of the dragging operation
-        bool relative;                      // whether the dragging move vector is relative or absolute
+        double xInit, yInit;// starting point of the dragging operation
+        bool relative;      // whether the dragging move vector is relative or absolute
 
 
-        int DragPoint;                      // dragged point id (only positive integers)
-        int DragCurve;                      // dragged curve id (only positive integers), negative external curves cannot be dragged.
-        std::set<int> DragConstraintSet;    // dragged constraints ids
+        int DragPoint;// dragged point id (only positive integers)
+        int DragCurve;// dragged curve id (only positive integers), negative external curves cannot
+                      // be dragged.
+        std::set<int> DragConstraintSet;// dragged constraints ids
     };
 
-    // TODO: Selection and Preselection should use a same structure. Probably Drag should use the same structure too. To be refactored separately.
+    // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
+    // same structure too. To be refactored separately.
 
     /** @brief Class to store preselected element ids.
-      *
-      * @details
-      *
-      * PreselectPoint is the positive VertexId.
-      *
-      * PreselectCurve is the GeoID, but without the Axes (indices -1 and -2).
-      *
-      * VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE -1 is NOT the root point)
-      *
-      * EdgeN, with N = PreselectCurve + 1 for positive values ; ExternalEdgeN, with N = -PreselectCurve - 2
-      *
-      * The PreselectPoint indexing matches DragPoint indexing (it further includes negative edges, which are
-      * not meaningful for Dragging).
-      *
-      */
-    class Preselection {
+     *
+     * @details
+     *
+     * PreselectPoint is the positive VertexId.
+     *
+     * PreselectCurve is the GeoID, but without the Axes (indices -1 and -2).
+     *
+     * VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE -1 is NOT the root
+     * point)
+     *
+     * EdgeN, with N = PreselectCurve + 1 for positive values ; ExternalEdgeN, with N =
+     * -PreselectCurve - 2
+     *
+     * The PreselectPoint indexing matches DragPoint indexing (it further includes negative edges,
+     * which are not meaningful for Dragging).
+     *
+     */
+    class Preselection
+    {
     public:
-        enum SpecialValues {
+        enum SpecialValues
+        {
             InvalidPoint = -1,
             InvalidCurve = -1,
             ExternalCurve = -3
         };
 
-        enum class Axes {
+        enum class Axes
+        {
             None = -1,
             RootPoint = 0,
             HorizontalAxis = 1,
             VerticalAxis = 2
         };
 
-        Preselection() {
+        Preselection()
+        {
             reset();
         }
 
-        void reset(){
+        void reset()
+        {
             PreselectPoint = InvalidPoint;
             PreselectCurve = InvalidCurve;
             PreselectCross = Axes::None;
@@ -321,80 +354,116 @@ private:
             blockedPreselection = false;
         }
 
-        bool isPreselectPointValid() const { return PreselectPoint > InvalidPoint;}
-        bool isPreselectCurveValid() const { return PreselectCurve > InvalidCurve || PreselectCurve <= ExternalCurve;}
-        bool isCrossPreselected() const { return PreselectCross != Axes::None;}
-        bool isEdge() const { return PreselectCurve > InvalidCurve;}
-        bool isExternalEdge() const { return PreselectCurve <= ExternalCurve;}
+        bool isPreselectPointValid() const
+        {
+            return PreselectPoint > InvalidPoint;
+        }
+        bool isPreselectCurveValid() const
+        {
+            return PreselectCurve > InvalidCurve || PreselectCurve <= ExternalCurve;
+        }
+        bool isCrossPreselected() const
+        {
+            return PreselectCross != Axes::None;
+        }
+        bool isEdge() const
+        {
+            return PreselectCurve > InvalidCurve;
+        }
+        bool isExternalEdge() const
+        {
+            return PreselectCurve <= ExternalCurve;
+        }
 
-        int getPreselectionVertexIndex() const { return PreselectPoint + 1;}
-        int getPreselectionEdgeIndex() const { return PreselectCurve + 1;}
-        int getPreselectionExternalEdgeIndex() const { return -PreselectCurve - 2;}
+        int getPreselectionVertexIndex() const
+        {
+            return PreselectPoint + 1;
+        }
+        int getPreselectionEdgeIndex() const
+        {
+            return PreselectCurve + 1;
+        }
+        int getPreselectionExternalEdgeIndex() const
+        {
+            return -PreselectCurve - 2;
+        }
 
-        int PreselectPoint;                     // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE -1 is NOT the root point)
-        int PreselectCurve;                     // EdgeN, with N = PreselectCurve + 1 for positive values ; ExternalEdgeN, with N = -PreselectCurve - 2
-        Axes PreselectCross;                    // 0 => rootPoint, 1 => HAxis, 2 => VAxis
-        std::set<int> PreselectConstraintSet;   // ConstraintN, N = index + 1
+        int PreselectPoint;// VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE
+                           // -1 is NOT the root point)
+        int PreselectCurve;// EdgeN, with N = PreselectCurve + 1 for positive values ;
+                           // ExternalEdgeN, with N = -PreselectCurve - 2
+        Axes PreselectCross;                 // 0 => rootPoint, 1 => HAxis, 2 => VAxis
+        std::set<int> PreselectConstraintSet;// ConstraintN, N = index + 1
         bool blockedPreselection;
     };
 
     /** @brief Class to store selected element ids.
-      *
-      * @details
-      * Selection follows yet a different mechanism than preselection.
-      *
-      * SelPointSet indices as PreselectPoint, with the addition that -1 is indeed the rootpoint.
-      *
-      * SelCurvSet indices as PreselectCurve, with the addition that -1 is the HAxis and -2 is the VAxis
-      *
-      */
-    class Selection {
+     *
+     * @details
+     * Selection follows yet a different mechanism than preselection.
+     *
+     * SelPointSet indices as PreselectPoint, with the addition that -1 is indeed the rootpoint.
+     *
+     * SelCurvSet indices as PreselectCurve, with the addition that -1 is the HAxis and -2 is the
+     * VAxis
+     *
+     */
+    class Selection
+    {
     public:
-        enum SpecialValues {
+        enum SpecialValues
+        {
             RootPoint = -1,
             HorizontalAxis = -1,
             VerticalAxis = -2
         };
 
-        Selection() {
+        Selection()
+        {
             reset();
         }
 
-        void reset() {
+        void reset()
+        {
             SelPointSet.clear();
             SelCurvSet.clear();
             SelConstraintSet.clear();
         }
 
-        std::set<int> SelPointSet;              // Indices as PreselectPoint (and -1 for rootpoint)
-        std::set<int> SelCurvSet;               // also holds cross axes at -1 and -2
-        std::set<int> SelConstraintSet;         // ConstraintN, N = index + 1.
+        std::set<int> SelPointSet;     // Indices as PreselectPoint (and -1 for rootpoint)
+        std::set<int> SelCurvSet;      // also holds cross axes at -1 and -2
+        std::set<int> SelConstraintSet;// ConstraintN, N = index + 1.
     };
     //@}
 
     /** @brief Private struct maintaining information necessary for detecting double click.
      */
-    struct DoubleClick {
+    struct DoubleClick
+    {
         static SbTime prvClickTime;
-        static SbVec2s prvClickPos; //used by double-click-detector
+        static SbVec2s prvClickPos;// used by double-click-detector
         static SbVec2s prvCursorPos;
         static SbVec2s newCursorPos;
     };
 
     /** @brief Private struct grouping ViewProvider parameters and internal variables
      */
-    struct ViewProviderParameters {
+    struct ViewProviderParameters
+    {
         bool handleEscapeButton = false;
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace = false; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace = false;// indicates whether the present virtual space view is the
+                                         // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
     };
 
-    /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode sensor data
+    /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode
+     * sensor data
      */
-    struct VPRender {
+    struct VPRender
+    {
         ViewProviderSketch* vp;
         SoRenderManager* renderMgr;
     };
@@ -420,42 +489,50 @@ public:
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
 
-    // TODO: It is difficult to imagine that these functions are necessary in the public interface. This requires review at a second stage and possibly
-    // refactor it.
+    // TODO: It is difficult to imagine that these functions are necessary in the public interface.
+    // This requires review at a second stage and possibly refactor it.
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
-    void activateHandler(DrawSketchHandler *newHandler);
+    void activateHandler(DrawSketchHandler* newHandler);
     /// removes the active handler
     void purgeHandler();
     //@}
 
 
-    // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions should access this mode via the DrawSketchHandler
-    // Attorney. I will not refactor this at this moment, as the refactor will be even more extensive and difficult to review. But this should be done
-    // in a second stage.
+    // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
+    // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
+    // moment, as the refactor will be even more extensive and difficult to review. But this should
+    // be done in a second stage.
 
     /** @name modus handling */
     //@{
     /// mode table
-    enum SketchMode{
-        STATUS_NONE,              /**< enum value View provider is in neutral. */
-        STATUS_SELECT_Point,      /**< enum value a point was selected. */
-        STATUS_SELECT_Edge,       /**< enum value an edge was selected. */
-        STATUS_SELECT_Constraint, /**< enum value a constraint was selected. */
-        STATUS_SELECT_Cross,      /**< enum value the base coordinate system was selected. */
-        STATUS_SKETCH_DragPoint,  /**< enum value while dragging a point. */
-        STATUS_SKETCH_DragCurve,  /**< enum value while dragging a curve. */
+    enum SketchMode
+    {
+        STATUS_NONE,                   /**< enum value View provider is in neutral. */
+        STATUS_SELECT_Point,           /**< enum value a point was selected. */
+        STATUS_SELECT_Edge,            /**< enum value an edge was selected. */
+        STATUS_SELECT_Constraint,      /**< enum value a constraint was selected. */
+        STATUS_SELECT_Cross,           /**< enum value the base coordinate system was selected. */
+        STATUS_SKETCH_DragPoint,       /**< enum value while dragging a point. */
+        STATUS_SKETCH_DragCurve,       /**< enum value while dragging a curve. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
-        STATUS_SKETCH_UseHandler, /**< enum value a DrawSketchHandler is in control. */
+        STATUS_SKETCH_UseHandler,      /**< enum value a DrawSketchHandler is in control. */
         STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
-        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection */
+        STATUS_SKETCH_UseRubberBand    /**< enum value when making a rubber band selection */
     };
 
     /// is called by GuiCommands to set the drawing mode
-    void setSketchMode(SketchMode mode) {Mode = mode;}
+    void setSketchMode(SketchMode mode)
+    {
+        Mode = mode;
+    }
     /// get the sketch mode
-    SketchMode getSketchMode() const {return Mode;}
+    SketchMode getSketchMode() const
+    {
+        return Mode;
+    }
     //@}
 
     /** @name Drawing functions */
@@ -463,7 +540,7 @@ public:
     /// draw the sketch in the inventor nodes
     /// temp => use temporary solver solution in SketchObject
     /// recreateinformationscenography => forces a rebuild of the information overlay scenography
-    void draw(bool temp=false, bool rebuildinformationoverlay=true);
+    void draw(bool temp = false, bool rebuildinformationoverlay = true);
 
     /// helper change the color of the sketch according to selection and solver status
     void updateColor();
@@ -486,19 +563,22 @@ public:
     /** @name Access to Sketch and Solver objects */
     //@{
     /// get the pointer to the sketch document object
-    Sketcher::SketchObject *getSketchObject() const;
+    Sketcher::SketchObject* getSketchObject() const;
 
     /** returns a const reference to the last solved sketch object. It guarantees that
      *  the solver object does not lose synchronisation with the SketchObject properties.
      *
      * NOTE: Operations requiring * write * access to the solver must be done via SketchObject
      * interface. See for example functions:
-     * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+     * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool
+     * recalculateInitialSolutionWhileMovingPoint)
      * -> inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
-     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false)
-     * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool
+     * relative=false)
+     * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> &&
+     * ext)
      */
-    const Sketcher::Sketch &getSolvedSketch() const;
+    const Sketcher::Sketch& getSolvedSketch() const;
     //@}
 
     /** @name miscelanea utilities */
@@ -515,7 +595,8 @@ public:
     //@{
     /// updates the visibility of the virtual space of constraints
     void updateVirtualSpace();
-    /// determines whether the constraints in the normal space or the ones in the virtual are to be shown
+    /// determines whether the constraints in the normal space or the ones in the virtual are to be
+    /// shown
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     /// returns whether the virtual space is being shown
     bool getIsShownVirtualSpace() const;
@@ -523,39 +604,46 @@ public:
 
     /** @name base class implementer */
     //@{
-    void attach(App::DocumentObject *) override;
-    void updateData(const App::Property *) override;
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
 
-    void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    const char* getTransactionText() const override { return nullptr; }
+    const char* getTransactionText() const override
+    {
+        return nullptr;
+    }
     /// is called by the tree if the user double clicks on the object
     bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
-    bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
+    bool mouseMove(const SbVec2s& pos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
-    bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
+    bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
+                            const Gui::View3DInventorViewer* viewer) override;
+    bool mouseWheelEvent(int delta, const SbVec2s& cursorPos,
+                         const Gui::View3DInventorViewer* viewer) override;
     //@}
 
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
-    QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+    QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
     /// signals if the constraints list has changed
-    boost::signals2::signal<void ()> signalConstraintsChanged;
+    boost::signals2::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<void (const QString &state, const QString &msg, const QString &url, const QString &linkText)> signalSetUp;
+    boost::signals2::signal<void(const QString& state, const QString& msg, const QString& url,
+                                 const QString& linkText)>
+        signalSetUp;
     /// signals if the elements list has changed
-    boost::signals2::signal<void ()> signalElementsChanged;
+    boost::signals2::signal<void()> signalElementsChanged;
     //@}
 
     /** @name Attorneys for collaboration with helper classes */
@@ -572,7 +660,7 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void *data, SoSensor *); // camera sensor callback
+    static void camSensCB(void* data, SoSensor*);// camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 
@@ -589,10 +677,10 @@ protected:
     /// update solver information based on last solving at SketchObject
     void UpdateSolverInformation();
 
-    /// Auxiliary function to generate messages about conflicting, redundant and malformed constraints
-    static QString appendConstraintMsg( const QString & singularmsg,
-                                        const QString & pluralmsg,
-                                        const std::vector<int> &vector);
+    /// Auxiliary function to generate messages about conflicting, redundant and malformed
+    /// constraints
+    static QString appendConstraintMsg(const QString& singularmsg, const QString& pluralmsg,
+                                       const std::vector<int>& vector);
     //@}
 
     /** @name manage updates during undo/redo operations */
@@ -605,30 +693,28 @@ protected:
     /** @name base class implementer */
     //@{
     /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-                        GeoListFacade & geolist,
-                        bool geometrywithmemoryallocation);
+        GeoListFacade& geolist, bool geometrywithmemoryallocation);
 
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f &point, const SbVec3f &normal, double &u, double &v) const;
+    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u,
+                                double& v) const;
 
     /// give projecting line of position
-    void getProjectingLine(const SbVec2s&,
-                           const Gui::View3DInventorViewer *viewer,
-                           SbLine&) const;
+    void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
     //@}
 
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection (SoPickedPoint * Point, const SbVec2s &cursorPos);
+    bool detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -636,29 +722,29 @@ private:
     void setPreselectRootPoint();
     void resetPreselectPoint();
 
-    bool setPreselect(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool setPreselect(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
 
     /** @name Selection functions */
     //@{
     /// box selection method
-    void doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
-                        const Gui::View3DInventorViewer *viewer);
+    void doBoxSelection(const SbVec2s& startPos, const SbVec2s& endPos,
+                        const Gui::View3DInventorViewer* viewer);
 
     void addSelectPoint(int SelectPoint);
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    bool isSelected(const std::string & ss) const;
-    void rmvSelection(const std::string &subNameSuffix);
-    bool addSelection(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
-    bool addSelection2(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool isSelected(const std::string& ss) const;
+    void rmvSelection(const std::string& subNameSuffix);
+    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
 
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2d &toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
@@ -675,7 +761,7 @@ private:
 
     bool constraintHasExpression(int constrid) const;
 
-    const std::vector<Sketcher::Constraint *> getConstraints() const;
+    const std::vector<Sketcher::Constraint*> getConstraints() const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
@@ -702,15 +788,15 @@ private:
 
     bool haveConstraintsInvalidGeometry() const;
 
-    void addNodeToRoot(SoSeparator * node);
+    void addNodeToRoot(SoSeparator* node);
 
-    void removeNodeFromRoot(SoSeparator * node);
+    void removeNodeFromRoot(SoSeparator* node);
 
     bool isConstraintPreselected(int constraintId) const;
 
     bool isPointSelected(int pointId) const;
 
-    void executeOnSelectionPointSet(std::function<void(const int)> && operation) const;
+    void executeOnSelectionPointSet(std::function<void(const int)>&& operation) const;
 
     bool isCurveSelected(int curveId) const;
 
@@ -721,15 +807,16 @@ private:
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);
-    void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
-    void setPositionText(const Base::Vector2d &Pos);
+    void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
+    void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
 
     /// draw the edit curve
-    void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
-    void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
+    void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
     /// draw the edit markers
-    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
+    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
+                         unsigned int augmentationlevel = 0);
     /// set the pick style of the sketch coordinate axes
     void setAxisPickStyle(bool on);
 
@@ -739,20 +826,21 @@ private:
     //@}
 
 private:
-   /** @name Solver message creation*/
+    /** @name Solver message creation*/
     //@{
     /* private functions to decouple Attorneys and Clients from the internal implementation of
     the ViewProvider and its members, such as sketchObject (see friend attorney classes) and
     improve encapsulation.
     */
     /// generates a warning message about constraint conflicts and appends it to the given message
-    static QString appendConflictMsg(const std::vector<int> &conflicting);
+    static QString appendConflictMsg(const std::vector<int>& conflicting);
     /// generates a warning message about redundant constraints and appends it to the given message
-    static QString appendRedundantMsg(const std::vector<int> &redundant);
-    /// generates a warning message about partially redundant constraints and appends it to the given message
-    static QString appendPartiallyRedundantMsg(const std::vector<int> &partiallyredundant);
+    static QString appendRedundantMsg(const std::vector<int>& redundant);
+    /// generates a warning message about partially redundant constraints and appends it to the
+    /// given message
+    static QString appendPartiallyRedundantMsg(const std::vector<int>& partiallyredundant);
     /// generates a warning message about redundant constraints and appends it to the given message
-    static QString appendMalformedMsg(const std::vector<int> &redundant);
+    static QString appendMalformedMsg(const std::vector<int>& redundant);
     //@}
 
 private:
@@ -787,11 +875,10 @@ private:
     ViewProviderParameters viewProviderParameters;
 
     SoNodeSensor cameraSensor;
-    int viewOrientationFactor; // stores if sketch viewed from front or back
+    int viewOrientationFactor;// stores if sketch viewed from front or back
 };
 
-} // namespace PartGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_VIEWPROVIDERSKETCH_H
-
+#endif// SKETCHERGUI_VIEWPROVIDERSKETCH_H

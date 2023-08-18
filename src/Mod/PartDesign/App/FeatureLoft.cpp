@@ -132,12 +132,12 @@ App::DocumentObjectExecReturn *Loft::execute()
         // build up multisections
         auto multisections = Sections.getSubListValues();
         if (multisections.empty())
-            return new App::DocumentObjectExecReturn("Loft: At least one section is needed");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: At least one section is needed"));
 
         TopoDS_Shape profileShape = getSectionShape(Profile.getValue(),
                                                     Profile.getSubValues());
         if (profileShape.IsNull())
-            return new App::DocumentObjectExecReturn("Loft: Could not obtain profile shape");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Could not obtain profile shape"));
 
         std::vector<std::vector<TopoDS_Shape>> wiresections;
 
@@ -150,7 +150,7 @@ App::DocumentObjectExecReturn *Loft::execute()
                 profilePoint = ex.Current();
             }
             if (i > 1)
-                return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: When using points for profile/sections, the sketch should have a single point"));
         }
 
         bool isLastSectionVertex = false;
@@ -158,12 +158,12 @@ App::DocumentObjectExecReturn *Loft::execute()
         size_t subSetCnt=0;
         for (const auto & subSet : multisections) {
             if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: All sections need to be part features"));
 
             // if the selected subvalue is a point, pick that even if we have a sketch
             TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
             if (shape.IsNull())
-                return new App::DocumentObjectExecReturn("Loft: Could not obtain section shape");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Could not obtain section shape"));
 
             size_t numWiresAdded = addWiresToWireSections(shape, wiresections);
             if (numWiresAdded == 0) {
@@ -179,18 +179,18 @@ App::DocumentObjectExecReturn *Loft::execute()
                 }
 
                 if (vertexShape.IsNull())
-                    return new App::DocumentObjectExecReturn("Loft: A section doesn't contain any wires nor is a single vertex");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: A section doesn't contain any wires nor is a single vertex"));
                 if (subSetCnt != multisections.size()-1)
-                    return new App::DocumentObjectExecReturn("Loft: Only the profile and the last section can be vertices");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Only the profile and the last section can be vertices"));
                 if (Closed.getValue())
-                    return new App::DocumentObjectExecReturn("Loft: For closed lofts only the profile can be a vertex");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: For closed lofts only the profile can be a vertex"));
 
                 // all good; push vertex to all wiresection list
                 for (auto &wires : wiresections)
                     wires.push_back(vertexShape);
                 isLastSectionVertex = true;
             } else if (numWiresAdded != wiresections.size())
-                return new App::DocumentObjectExecReturn("Loft: all loft sections need to have the same amount of inner wires");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: all loft sections need to have the same amount of inner wires"));
             subSetCnt++;
         }
 
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *Loft::execute()
 
             mkTS.Build();
             if (!mkTS.IsDone())
-                return new App::DocumentObjectExecReturn("Loft could not be built");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft could not be built"));
 
             // build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(mkTS.Shape());
@@ -262,7 +262,7 @@ App::DocumentObjectExecReturn *Loft::execute()
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
         if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn("Loft: Result is not a solid");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Result is not a solid"));
 
         TopoDS_Shape result = mkSolid.Shape();
         BRepClass3d_SolidClassifier SC(result);
@@ -275,7 +275,7 @@ App::DocumentObjectExecReturn *Loft::execute()
 
         if (base.IsNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
-                return new App::DocumentObjectExecReturn("Loft: There is nothing to subtract from\n");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: There is nothing to subtract from"));
 
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
@@ -285,15 +285,15 @@ App::DocumentObjectExecReturn *Loft::execute()
 
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Loft: Adding the loft failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Adding the loft failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Loft: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -303,15 +303,15 @@ App::DocumentObjectExecReturn *Loft::execute()
 
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Subtracting the loft failed"));
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             int solidCount = countSolids(boolOp);
             if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn("Loft: Result has multiple solids. This is not supported at this time.");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -327,7 +327,7 @@ App::DocumentObjectExecReturn *Loft::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn("Loft: A fatal error occurred when making the loft");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: A fatal error occurred when making the loft"));
     }
 }
 

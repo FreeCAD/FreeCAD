@@ -23,7 +23,7 @@
 
 /********************************
  * includes changes by wandererfan@gmail.com
- * for FreeCAD project https://www.freecadweb.org/
+ * for FreeCAD project https://www.freecad.org/
  ********************************/
 
 #include "PreCompiled.h"

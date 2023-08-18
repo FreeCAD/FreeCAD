@@ -61,10 +61,10 @@ App::DocumentObjectExecReturn *Fillet::execute()
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
 
         std::vector<FilletElement> values = Edges.getValues();
-        for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
-            int id = it->edgeid;
-            double radius1 = it->radius1;
-            double radius2 = it->radius2;
+        for (const auto & value : values) {
+            int id = value.edgeid;
+            double radius1 = value.radius1;
+            double radius2 = value.radius2;
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfShape.FindKey(id));
             mkFillet.Add(radius1, radius2, edge);
         }
@@ -74,7 +74,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         //shapefix re #4285
-        //https://www.forum.freecadweb.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
+        //https://www.forum.freecad.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
         TopoShape* ts = new TopoShape(shape);
         double minTol = 2.0 * Precision::Confusion();
         double maxTol = 4.0 * Precision::Confusion();

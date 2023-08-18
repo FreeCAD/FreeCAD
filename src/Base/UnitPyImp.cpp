@@ -213,7 +213,7 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
 
 Py::String UnitPy::getType() const
 {
-    return Py::String(getUnitPtr()->getTypeString().toUtf8(),"utf-8");
+    return {getUnitPtr()->getTypeString().toUtf8(),"utf-8"};
 }
 
 Py::Tuple UnitPy::getSignature() const

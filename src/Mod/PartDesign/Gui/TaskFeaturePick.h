@@ -123,13 +123,13 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    bool isAllowedAlterDocument(void) const override
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     void showExternal(bool val);
 
     /// returns for Close and Help button
-    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 

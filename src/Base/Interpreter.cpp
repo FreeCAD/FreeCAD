@@ -93,7 +93,7 @@ PyException::PyException()
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
-PyException::~PyException() throw() = default;
+PyException::~PyException() noexcept = default;
 
 void PyException::ThrowException()
 {
@@ -131,7 +131,7 @@ void PyException::ReportException () const
 {
     if (!_isReported) {
         _isReported = true;
-        Base::Console().Error("%s%s: %s\n",
+        Base::Console().DeveloperError("pyException","%s%s: %s\n",
             _stackTrace.c_str(), _errorType.c_str(), what());
     }
 }
@@ -243,7 +243,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
             throw SystemExitException();
         else {
             PyException::ThrowException();
-            return std::string(); // just to quieten code analyzers
+            return {}; // just to quieten code analyzers
             //throw PyException();
         }
     }
@@ -257,7 +257,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     }
     else {
         PyErr_Clear();
-        return std::string();
+        return {};
     }
 }
 

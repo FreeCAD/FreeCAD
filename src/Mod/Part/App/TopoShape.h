@@ -57,7 +57,7 @@ public:
    explicit NullShapeException(const char * sMessage);
    explicit NullShapeException(const std::string& sMessage);
    /// Destruction
-   ~NullShapeException() throw() override {}
+   ~NullShapeException() noexcept override {}
 };
 
 /* A special sub-class to indicate boolean failures
@@ -70,7 +70,7 @@ public:
    explicit BooleanException(const char * sMessage);
    explicit BooleanException(const std::string& sMessage);
    /// Destruction
-   ~BooleanException() throw() override {}
+   ~BooleanException() noexcept override {}
 };
 
 class PartExport ShapeSegment : public Data::Segment

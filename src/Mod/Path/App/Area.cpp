@@ -188,7 +188,7 @@ Area::Area(const Area& other, bool deep_copy)
     if (!deep_copy || !other.isBuilt())
         return;
     if (other.myArea)
-        myArea.reset(new CArea(*other.myArea));
+        myArea = std::make_unique<CArea>(*other.myArea);
     myShapePlane = other.myShapePlane;
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
@@ -329,7 +329,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection
     ret.push_back(curve.Value(reversed ? elast : efirst));
 
     // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
-    // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
+    // https://forum.freecad.org/viewtopic.php?f=15&t=42628
     //
     // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
     //
@@ -1637,8 +1637,8 @@ void Area::build() {
     getPlane(&trsf);
 
     try {
-        myArea.reset(new CArea());
-        myAreaOpen.reset(new CArea());
+        myArea = std::make_unique<CArea>();
+        myAreaOpen = std::make_unique<CArea>();
 
         CAreaConfig conf(myParams);
         CArea areaClip;
@@ -2203,7 +2203,7 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient) 
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
-            while (1) {
+            while (true) {
                 if (fix_arc) {
                     double d = pt.Distance(pnext);
                     double rr = r * r;

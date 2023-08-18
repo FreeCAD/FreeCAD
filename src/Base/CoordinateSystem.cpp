@@ -88,7 +88,7 @@ void CoordinateSystem::setXDirection(const Vector3d& dir)
 
 void CoordinateSystem::setYDirection(const Vector3d& dir)
 {
-    Vector3d xd = dir & axis.getDirection();
+    Vector3d xd = dir % axis.getDirection();
     if (xd.Sqr() < Base::Vector3d::epsilon())
         throw Base::ValueError("Direction is parallel to Z direction");
     xdir = xd;

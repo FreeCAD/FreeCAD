@@ -412,7 +412,7 @@ private:
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1,d2);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
 
                 if(mode<0)
                     mode = ocaf.getMode();
@@ -451,7 +451,7 @@ private:
                     pcDoc->recompute();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
 
@@ -550,7 +550,7 @@ private:
         Py::Dict options;
         Base::FileInfo file(name8bit.c_str());
 
-        if (file.hasExtension("stp") || file.hasExtension("step")) {
+        if (file.hasExtension({"stp", "step"})) {
             PartGui::TaskExportStep dlg(Gui::getMainWindow());
             if (!dlg.showDialog() || dlg.exec()) {
                 auto stepSettings = dlg.getSettings();
@@ -652,7 +652,7 @@ private:
             }
 
             Base::FileInfo file(Utf8Name.c_str());
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
                 std::string scheme = hGrp_stp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
@@ -670,7 +670,7 @@ private:
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
                 // Don't set name because STEP doesn't support UTF-8
-                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+                // https://forum.freecad.org/viewtopic.php?f=8&t=52967
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
@@ -681,7 +681,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
@@ -696,7 +696,7 @@ private:
                     throw Py::Exception();
                 }
             }
-            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+            else if (file.hasExtension({"glb", "gltf"})) {
 #if OCC_VERSION_HEX >= 0x070500
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
@@ -742,7 +742,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            if (file.hasExtension("stp") || file.hasExtension("step")) {
+            if (file.hasExtension({"stp", "step"})) {
                 STEPCAFControl_Reader aReader;
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
@@ -763,7 +763,7 @@ private:
                 pi->EndScope();
 #endif
             }
-            else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            else if (file.hasExtension({"igs", "iges"})) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
                 IGESControl_Controller::Init();

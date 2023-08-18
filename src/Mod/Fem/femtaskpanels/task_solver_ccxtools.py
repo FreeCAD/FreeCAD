@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver calculix ccx tools task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_solver_ccxtools
 #  \ingroup FEM
@@ -197,7 +197,7 @@ class _TaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
             return False
 
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
+        # https://forum.freecad.org/viewtopic.php?f=18&t=39195
         # convert QByteArray to a binary string an decode it to "utf-8"
         out = out.data().decode()  # "utf-8" can be omitted
         out = os.linesep.join([s for s in out.splitlines() if s])
@@ -266,9 +266,9 @@ class _TaskPanel:
         self.fea.inp_file_name = self.fea.inp_file_name
 
         # check if ccx is greater than 2.10, if not do not read results
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548#p183829 Point 3
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=20#p183909
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=30#p185027
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548#p183829 Point 3
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=20#p183909
+        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=30#p185027
         # https://github.com/FreeCAD/FreeCAD/commit/3dd1c9f
         majorVersion, minorVersion = self.fea.get_ccx_version()
         if majorVersion == 2 and minorVersion <= 10:

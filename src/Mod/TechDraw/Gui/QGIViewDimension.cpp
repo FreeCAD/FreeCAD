@@ -1267,7 +1267,9 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         }
 
         arrow->setStyle(QGIArrow::getPrefArrowStyle());
-        arrow->setSize(QGIArrow::getPrefArrowSize());
+        auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+        auto arrowSize = vp->Arrowsize.getValue();
+        arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);
 
         if (QGIArrow::getPrefArrowStyle() != 7) {// if not "None"
@@ -2566,7 +2568,7 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     else if (dir.IsEqual(-isoZ, FLT_EPSILON)) {
         return -isoX;
     }
-    
+
     //tarfu
     Base::Console().Message("QGIVD::findIsoExt - %s - input is not iso axis\n",
                             getViewObject()->getNameInDocument());
@@ -2624,7 +2626,13 @@ double QGIViewDimension::getDefaultArrowTailLength() const
 {
     // Arrow length shall be equal to font height and both ISO and ASME seem
     // to have arrow tail twice the arrow length, so let's make it twice arrow size
-    return QGIArrow::getPrefArrowSize() * 2.0;
+    auto arrowSize = PreferencesGui::dimArrowSize();
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if (vp) {
+        arrowSize = vp->Arrowsize.getValue();
+
+    }
+    return  arrowSize * 2.0;
 }
 
 double QGIViewDimension::getDefaultIsoDimensionLineSpacing() const

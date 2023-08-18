@@ -60,11 +60,12 @@
 #include "QGVPage.h"
 #include "ViewProviderPageExtension.h"
 #include "ViewProviderTemplate.h"
+#include "ViewProviderViewPart.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 #define _SHOWDRAWING 10
 #define _TOGGLEUPDATE 11
@@ -113,7 +114,9 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
+    //NOLINTBEGIN
+    auto bnd = std::bind(&ViewProviderPage::onGuiRepaint, this, sp::_1);
+    //NOLINTEND
     TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
@@ -557,3 +560,23 @@ ViewProviderPageExtension* ViewProviderPage::getVPPExtension() const
 }
 
 const char* ViewProviderPage::whoAmI() const { return m_pageName.c_str(); }
+
+
+void ViewProviderPage::fixSceneDependencies()
+{
+    App::Document* doc = getDrawPage()->getDocument();
+    std::vector<App::DocumentObject*> docObjs =
+        doc->getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    for (auto& obj : docObjs) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;// can't fix this one
+        }
+        TechDrawGui::ViewProviderViewPart* vpvp = dynamic_cast<TechDrawGui::ViewProviderViewPart*>(vp);
+        if (!vpvp) {
+            continue;// can't fix this one
+        }
+        vpvp->fixSceneDependencies();
+    }
+
+}

@@ -386,8 +386,8 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 
     std::string result("[");
 
-    for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
-        result += Gui::Command::getObjectCmd(*o,nullptr,",");
+    for (auto obj : objs)
+        result += Gui::Command::getObjectCmd(obj,nullptr,",");
     result += "]";
 
     return result;

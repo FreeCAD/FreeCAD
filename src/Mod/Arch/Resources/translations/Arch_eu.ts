@@ -221,33 +221,22 @@
       <translation>Propietatea</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="71"/>
-      <source>The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</source>
-      <translation>Objektu bakoitzerako atzituko den balioa.
-"Count" izan daiteke objektuak zenbatzeko, edo "Length"
-edo "Shape.Volume" bezalako propietate-izenak
-propietate jakin bat atzitzeko.</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="79"/>
+      <location filename="../ui/ArchSchedule.ui" line="76"/>
       <source>Unit</source>
       <translation>Unitatea</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="82"/>
+      <location filename="../ui/ArchSchedule.ui" line="79"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
       <translation>Aukerako unitate bat emaitza adieazteko. Adibidez: m^3 (m³ edo m3 ere idatzi daiteke)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="87"/>
+      <location filename="../ui/ArchSchedule.ui" line="84"/>
       <source>Objects</source>
       <translation>Objektuak</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="90"/>
+      <location filename="../ui/ArchSchedule.ui" line="87"/>
       <source>An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
@@ -258,92 +247,107 @@ har daitezen. Zerrendak taldeak baditu, haurrak ere gehituko dira.
 Utzi hutsik dokumentuko objektu guztiak erabili daitezen.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="98"/>
+      <location filename="../ui/ArchSchedule.ui" line="95"/>
       <source>Filter</source>
       <translation>Iragazkia</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="101"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Propietatea:balioa iragazkien zerrenda bat, puntu eta komaz (;) bereizitakoa. Erantsi aurretik ! ikurra propietate-izen bati iragazkiaren eragina alderantzikatzeko (iragazkiaren bat datozen objektuak kanpoan uzteko). Balio daukaten propietateak bat etorriko dira. Baliozko iragazkien adibideak (beti maiuskulak eta minuskulak kontuan hartzen dira):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Izena:Pareta&lt;/span&gt; - Izenean (barneko izenean) &amp;quot;pareta&amp;quot; duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Izena:Pareta&lt;/span&gt; - Izenean (barneko izenean) &amp;quot;pareta&amp;quot; EZ duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Deskribapena:Leihoa&lt;/span&gt; - Deskribapenean &amp;quot;leihoa&amp;quot; duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Etiketak:Leihoa&lt;/span&gt; - Etiketan &amp;quot;leihoa&amp;quot; EZ duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Pareta&lt;/span&gt; - Ifc mota &amp;quot;pareta&amp;quot; duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Etiketa:Pareta&lt;/span&gt; - Etiketan &amp;quot;Paerta&amp;quot; EZ duten objektuak soilik hartuko dira kontuan&lt;/p&gt;&lt;p&gt;Eremu hau hutsik uzten bada, ez da iragazkirik aplikatuko&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <location filename="../ui/ArchSchedule.ui" line="71"/>
+      <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
+      <translation>Objektu bakoitzerako atzituko den balioa. "Count" izan daiteke objektuak zenbatzeko, edo "Length" edo "Shape.Volume" bezalako propietate-izenak propietate jakin bat atzitzeko.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="111"/>
+      <location filename="../ui/ArchSchedule.ui" line="108"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
       <translation>Gaituta badago, emaitzak dituen kalkulu-orri elkartu bat mantenduko da programazio-objektuarekin batera</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="114"/>
+      <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>Associate spreadsheet</source>
       <translation>Kalkulu-orri elkartua</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="121"/>
-      <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation>Hau aktibatuta badago, lerro gehigarriak beteko dira kontuan hartutako objektu bakoitzeko. Ez badago, totalak soilik.</translation>
+      <location filename="../ui/ArchSchedule.ui" line="118"/>
+      <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
+      <translation>Hau aktibatuta badago, lerro gehigarriak kontuan hartutako objektu bakoitzeko beteko dira. Ez badago, totalak soilik.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="124"/>
+      <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>Detailed results</source>
       <translation>Emaitza xeheak</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="135"/>
+      <location filename="../ui/ArchSchedule.ui" line="128"/>
+      <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
+      <translation>Hau gaituta badago, dokumentua birkalkulatzen den bakoitzean programazioa eta hari lotutako kalkulu-orria eguneratu egingo dira.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <source>Auto update</source>
+      <translation>Eguneratu automatikoki</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="142"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>Lerro bat gehitzen du hautatutako lerroaren/gelaxkaren azpian</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="138"/>
+      <location filename="../ui/ArchSchedule.ui" line="145"/>
       <source>Add row</source>
       <translation>Gehitu errenkada</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="150"/>
+      <location filename="../ui/ArchSchedule.ui" line="156"/>
       <source>Deletes the selected line</source>
       <translation>Hautatutako lerroa ezabatzen du</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="153"/>
+      <location filename="../ui/ArchSchedule.ui" line="159"/>
       <source>Del row</source>
       <translation>Ezabatu errenkada</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="165"/>
+      <location filename="../ui/ArchSchedule.ui" line="170"/>
       <source>Clears the whole list</source>
       <translation>Zerrenda osoa garbitzen du</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="168"/>
+      <location filename="../ui/ArchSchedule.ui" line="173"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="180"/>
-      <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation>Jarri hautatutako objektuak hautatutako errenkadaren "Objektuak" zutabean</translation>
+      <location filename="../ui/ArchSchedule.ui" line="184"/>
+      <source>Put selected objects into the 'Objects' column of the selected row</source>
+      <translation>Jarri hautatutako objektuak hautatutako errenkadaren 'Objektuak' zutabean</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="183"/>
+      <location filename="../ui/ArchSchedule.ui" line="208"/>
+      <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
+      <translation>Honek CSV edo Markdown fitxategi batera esportatzen ditu emaitzak. Oharra CSV esportaziorako: Libreofficen, CSV fitxategi hau estekatuta mantendu daiteke 'Orriak' fitxa-barran eskuineko klik eginda eta gero 'Orri berria - Fitxategitik - Esteka' erabilita (Oharra: LibreOffice v6.x bertsiotik aurrera, bide zuzena honakoa da: 'Orria - Txertatu orria... - Fitxategitik - Arakatu...')</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="187"/>
       <source>Add selection</source>
       <translation>Gehitu hautapena</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="190"/>
+      <location filename="../ui/ArchSchedule.ui" line="98"/>
+      <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
+      <translation>Propietatea:balioa iragazkien zerrenda bat, puntu eta komaz (;) bananduta. Jarri ! aurretik propietate-izen bati, iragazkiaren efektua indargabetu nahi izanez gero (iragazkiarekin bat datozen objektuak baztertzen dira). Balioa betetzen duen propietatea duten objektuek egingo dute bat iragazkiarekin. Baliozko iragazkien adibideak (maiuskulak/minuskulak kontuan hartu gabe beti): 'Name:Wall' - Izenean (barnekoan) 'wall' duten objektuak soilik kontsideratuko ditu; '!Name:Wall' - Izenean (barnekoan) 'wal' EZ duten objektuak soilik kontsideratuko ditu; 'Description:Win' - Deskribapenean 'win' duten objektuak soilik kontsideratuko ditu; '!Label:Win' - Etiketan 'win' EZ duten objektuak soilik kontsideratuko ditu; 'ifcType:Wall' - Ifc motan 'wall' duten objektuak soilik kontsideratuko ditu; '!Tag:Wall' - Etiketan 'wall' EZ duten objektuak soilik kontsideratuko ditu. Eremua hutsik uzten bada, ez da iragazkirik aplikatuko.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="194"/>
       <source>Imports the contents of a CSV file</source>
       <translation>CSV fitxategi baten edukiak inportatzen ditu</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="193"/>
+      <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
       <translation>Inportatu</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="205"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Honek CSV edo Markdown fitxategi batera esportatzen ditu emaitzak. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Oharra CSV esportaziorako:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Libreofficen, CSV fitxategi hau estekatuta mantendu daiteke 'Orriak' fitxa-barran eskuineko klik eginda eta gero -&amp;gt;Orri berria -&amp;gt; Fitxategitik -&amp;gt; Esteka erabilita (Oharra: LibreOffice v6.x bertsiotik aurrera, bide zuzena honakoa da: Orria -&amp;gt; Txertatu orria... -&amp;gt; Fitxategitik -&amp;gt; Arakatu...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="208"/>
+      <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
       <translation>Esportatu</translation>
     </message>
@@ -1357,8 +1361,8 @@ objektu guztiak 'taldea' objektu batean kokatuko dira.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <source>Export options</source>
       <translation>Esportazio-aukerak</translation>
     </message>
@@ -1734,7 +1738,7 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchStructure.py" line="77"/>
+      <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
       <translation>Egitura</translation>
     </message>
@@ -1749,6 +1753,11 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
       <location filename="../../ArchStructure.py" line="434"/>
       <source>Column</source>
       <translation>Zutabea</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="150"/>
+      <source>StructuralSystem</source>
+      <translation>Egiturazko sistema</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="205"/>
@@ -1803,37 +1812,40 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
       <translation>Marrazte modua</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1634"/>
+      <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchStructure.py" line="444"/>
-      <location filename="../../ArchProfile.py" line="150"/>
-      <location filename="../../ArchCommands.py" line="1626"/>
       <source>Category</source>
       <translation>Kategoria</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="213"/>
+      <location filename="../../ArchProfile.py" line="159"/>
       <location filename="../../ArchStructure.py" line="451"/>
-      <location filename="../../ArchProfile.py" line="157"/>
-      <location filename="../../ArchWindow.py" line="404"/>
+      <location filename="../../ArchWindow.py" line="408"/>
       <source>Preset</source>
       <translation>Aurrezarpena</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchCommands.py" line="1016"/>
+      <location filename="../../ArchPanel.py" line="223"/>
       <location filename="../../ArchPrecast.py" line="1411"/>
+      <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchWall.py" line="508"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Length</source>
       <translation>Luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPanel.py" line="230"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
+      <location filename="../../ArchStructure.py" line="470"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
       <translation>Zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
+      <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
       <translation>Altuera</translation>
@@ -1849,6 +1861,7 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
       <translation>Trukatu luz./zab.</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="248"/>
       <location filename="../../ArchStructure.py" line="493"/>
       <location filename="../../ArchWall.py" line="534"/>
       <source>Con&amp;tinue</source>
@@ -1861,13 +1874,13 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="801"/>
-      <location filename="../../ArchWall.py" line="959"/>
+      <location filename="../../ArchWall.py" line="960"/>
       <source>This mesh is an invalid solid</source>
       <translation>Amaraun hau solido baliogabea da</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="525"/>
       <location filename="../../ArchStructure.py" line="865"/>
-      <location filename="../../ArchPanel.py" line="538"/>
       <source>Facemaker returned an error</source>
       <translation>Aurpegi-sortzaileak errorea eman du</translation>
     </message>
@@ -1980,48 +1993,53 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
       <translation>Egina</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="757"/>
       <location filename="../../ArchStructure.py" line="1441"/>
-      <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
       <translation>Ezin izan da forma bat kalkulatu</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="180"/>
+      <location filename="../../ArchEquipment.py" line="60"/>
+      <source>Equipment</source>
+      <translation>Ekipamendua</translation>
+    </message>
+    <message>
+      <location filename="../../ArchEquipment.py" line="185"/>
       <source>You must select a base shape object and optionally a mesh object</source>
       <translation>Oinarrizko forma-objektu bat eta, aukeran, amaraun-objektu bat hautatu behar dituzu</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="200"/>
+      <location filename="../../ArchEquipment.py" line="205"/>
       <source>Create Equipment</source>
       <translation>Sortu ekipamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="235"/>
+      <location filename="../../ArchEquipment.py" line="240"/>
       <source>You must select exactly one base object</source>
       <translation>Oinarri-objektu bakar bat hautatu behar duzu</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="239"/>
+      <location filename="../../ArchEquipment.py" line="244"/>
       <source>The selected object must be a mesh</source>
       <translation>Hautatutako objektuak amarauna izan behar du</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="243"/>
+      <location filename="../../ArchEquipment.py" line="248"/>
       <source>This mesh has more than 1000 facets.</source>
       <translation>Amaraun honek 1.000 alde baino gehiago ditu.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="244"/>
+      <location filename="../../ArchEquipment.py" line="249"/>
       <source>This operation can take a long time. Proceed?</source>
       <translation>Eragiketa honek denbora luzea behar dezaka. Jarraitu?</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="251"/>
+      <location filename="../../ArchEquipment.py" line="256"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
       <translation>Amaraunak 500 alde baino gehiago ditu. Minutu pare bat beharko da eragiketarako...</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="252"/>
+      <location filename="../../ArchEquipment.py" line="257"/>
       <source>Create 3 views</source>
       <translation>Sortu 3 bista</translation>
     </message>
@@ -2031,75 +2049,84 @@ dute fitxategia irekitzean zein unitatetan egingo duten lan aukeratzeko.</transl
       <translation>Eraikin zatia</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="221"/>
+      <location filename="../../ArchFloor.py" line="89"/>
+      <source>Floor</source>
+      <translation>Solairua</translation>
+    </message>
+    <message>
       <location filename="../../ArchBuildingPart.py" line="302"/>
       <source>Create BuildingPart</source>
       <translation>Sortu eraikin-zatia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="904"/>
+      <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
       <translation>Desaktibatu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="906"/>
+      <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
       <translation>Aktibatu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="914"/>
+      <location filename="../../ArchBuildingPart.py" line="915"/>
       <source>Set working plane</source>
       <translation>Ezarri laneko planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="922"/>
+      <location filename="../../ArchBuildingPart.py" line="923"/>
       <source>Write camera position</source>
       <translation>Idatzi kameraren posizioa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="929"/>
+      <location filename="../../ArchBuildingPart.py" line="930"/>
       <source>Create group...</source>
       <translation>Sortu taldea...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="936"/>
+      <location filename="../../ArchBuildingPart.py" line="937"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
       <translation>Ordenatu haurrak alfabetikoki</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="943"/>
+      <location filename="../../ArchBuildingPart.py" line="944"/>
       <source>Clone level up</source>
-      <translation type="unfinished">Clone level up</translation>
+      <translation>Klonatu maila gorantz</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
-      <location filename="../../InitGui.py" line="206"/>
-      <location filename="../../InitGui.py" line="207"/>
       <source>Arch</source>
       <translation>Arkitektura</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="138"/>
+      <location filename="../../ArchProfile.py" line="140"/>
       <source>Create profile</source>
       <translation>Sortu profila</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="146"/>
+      <location filename="../../ArchProfile.py" line="148"/>
       <source>Profile settings</source>
       <translation>Profilaren ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="192"/>
+      <location filename="../../ArchProfile.py" line="194"/>
       <source>Create Profile</source>
       <translation>Sortu profila</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="608"/>
+      <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
       <translation>Profila</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="534"/>
+      <location filename="../../ArchSite.py" line="74"/>
+      <source>Site</source>
+      <translation>Gunea</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="542"/>
       <source>Please either select only Building objects or nothing at all!
 
 Site is not allowed to accept any other object besides Building.
@@ -2116,7 +2143,7 @@ Beste objektuak kendu egingo dira hautapenetik.
 Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="537"/>
+      <location filename="../../ArchSite.py" line="545"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
@@ -2125,7 +2152,7 @@ Site creation aborted.</source>
 Gunearen sorrera utzi egin da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="544"/>
+      <location filename="../../ArchSite.py" line="552"/>
       <source>Create Site</source>
       <translation>Sortu gunea</translation>
     </message>
@@ -2142,13 +2169,14 @@ Gunearen sorrera utzi egin da.</translation>
       <translation>Ezin da teilatua sortu</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="1659"/>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchComponent.py" line="1654"/>
-      <location filename="../../ArchSpace.py" line="250"/>
+      <location filename="../../ArchSpace.py" line="255"/>
       <source>Please select a base object</source>
       <translation>Hautatu oinarri-objektu bat</translation>
     </message>
     <message>
+      <location filename="../../ArchRoof.py" line="166"/>
       <location filename="../../ArchRoof.py" line="1010"/>
       <source>Roof</source>
       <translation>Teilatua</translation>
@@ -2214,39 +2242,44 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Altuera (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="504"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Atea</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="151"/>
+      <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
       <translation>Moztea</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="185"/>
+      <location filename="../../ArchCutPlane.py" line="187"/>
       <source>Cut Plane</source>
       <translation>Mozte-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="186"/>
+      <location filename="../../ArchCutPlane.py" line="188"/>
       <source>Cut Plane options</source>
       <translation>Mozte-planoaren aukerak</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="187"/>
+      <location filename="../../ArchCutPlane.py" line="189"/>
       <source>Which side to cut</source>
       <translation>Zein alde moztuko den</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="188"/>
+      <location filename="../../ArchCutPlane.py" line="190"/>
       <source>Behind</source>
       <translation>Atzean</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="189"/>
+      <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
       <translation>Aurrekoa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReference.py" line="64"/>
+      <source>External Reference</source>
+      <translation>Kanpoko erreferentzia</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="498"/>
@@ -2259,331 +2292,330 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Ireki erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Sortu kanpoko erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../importSH3D.py" line="70"/>
-      <location filename="../../importIFClegacy.py" line="821"/>
-      <location filename="../../importDAE.py" line="126"/>
-      <location filename="../../import3DS.py" line="83"/>
-      <source>Error: Couldn't determine character encoding</source>
-      <translation>Errore: Karaktere-kodeketa ezin da zehaztu</translation>
-    </message>
-    <message>
-      <location filename="../../ArchFrame.py" line="48"/>
+      <location filename="../../ArchFrame.py" line="61"/>
       <source>Frame</source>
       <translation>Markoa</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="89"/>
+      <location filename="../../ArchFrame.py" line="92"/>
       <source>Create Frame</source>
       <translation>Sortu markoa</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="224"/>
+      <location filename="../../ArchFrame.py" line="229"/>
       <source>Crossing point not found in profile.</source>
       <translation>Zeharkatze-puntua ez da aurkitu profilean.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="69"/>
+      <location filename="../../importSHP.py" line="67"/>
       <source>Shapes elevation</source>
       <translation>Formen garaiera</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="70"/>
+      <location filename="../../importSHP.py" line="68"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation>Aukeratu zein eremuk emango dituen formen garaierak:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="111"/>
+      <location filename="../../importSHP.py" line="109"/>
       <source>No shape found in this file</source>
       <translation>Ez da formarik aurkitu fitxategi honetan</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="136"/>
+      <location filename="../../importSHP.py" line="134"/>
       <source>Shapefile module not found</source>
       <translation>Shapefile modulua ez da aurkitu</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="137"/>
+      <location filename="../../importSHP.py" line="135"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
       <translation>Pythonen shapefile liburutegia ez da aurkitu sisteman. Deskargatu nahi al duzu &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt; gunetik? Zure makroen karpetan kokatuko da.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="143"/>
+      <location filename="../../importSHP.py" line="141"/>
       <source>Error: Unable to download from:</source>
       <translation>Errorea: Ezin da deskargatu hemendik:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="155"/>
+      <location filename="../../importSHP.py" line="153"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation>Ezin izan da shapefile modulua deskargatu. Abortatzen.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="158"/>
+      <location filename="../../importSHP.py" line="156"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation>Shapefile modulua ez da deskargatu. Abortatzen.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="161"/>
+      <location filename="../../importSHP.py" line="159"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation>Shapefile modulua ez da aurkitu. Abortatzen.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="162"/>
+      <location filename="../../importSHP.py" line="160"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation>Shapefile liburutegia hurrengo URLtik deskargatu daiteke, zure makroen karpetan instalatu dadin:</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="84"/>
+      <location filename="../../ArchWindow.py" line="88"/>
       <source>Window</source>
       <translation>Leihoa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="207"/>
-      <location filename="../../ArchWindow.py" line="226"/>
-      <location filename="../../ArchWindow.py" line="271"/>
+      <location filename="../../ArchWindow.py" line="211"/>
+      <location filename="../../ArchWindow.py" line="230"/>
+      <location filename="../../ArchWindow.py" line="275"/>
       <source>Create Window</source>
       <translation>Sortu leihoa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="242"/>
+      <location filename="../../ArchWindow.py" line="246"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Aukeratu lehendik dagoen objektu baten aurpegi bat edo hautatu aurrezarpen bat</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="294"/>
+      <location filename="../../ArchWindow.py" line="298"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Leihoa ez dago zirriborroan oinarrituta. Leihoa ez dago lerrokatuta edo ez da tamainaz aldatu.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="304"/>
+      <location filename="../../ArchWindow.py" line="308"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Ez dago zabalerako eta/edo altuerako murrizketarik leiho-zirriborroan. Leihoa ez da tamainaz aldatu.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="307"/>
+      <location filename="../../ArchWindow.py" line="311"/>
       <source>No window found. Cannot continue.</source>
       <translation>Ez da leihorik aurkitu. Ezin da jarraitu.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="363"/>
+      <location filename="../../ArchWindow.py" line="367"/>
       <source>Window options</source>
       <translation>Leiho-aukerak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="367"/>
+      <location filename="../../ArchWindow.py" line="371"/>
       <source>Auto include in host object</source>
       <translation>Auto besteak beste objektu gonbidatua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="373"/>
+      <location filename="../../ArchWindow.py" line="377"/>
       <source>Sill height</source>
       <translation>Leiho-barrenaren altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1312"/>
+      <location filename="../../ArchWindow.py" line="1321"/>
       <source>This window has no defined opening</source>
       <translation>Leiho honek ez du irekierarik definituta</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1589"/>
-      <location filename="../../ArchWindow.py" line="1638"/>
-      <location filename="../../ArchWindow.py" line="1799"/>
+      <location filename="../../ArchWindow.py" line="1598"/>
+      <location filename="../../ArchWindow.py" line="1647"/>
+      <location filename="../../ArchWindow.py" line="1808"/>
       <source>Get selected edge</source>
       <translation>Hartu hautatutako ertza</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1747"/>
       <source>Unable to create component</source>
       <translation>Ezin izan da osagaia sortu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1776"/>
+      <location filename="../../ArchWindow.py" line="1785"/>
       <source>Window elements</source>
       <translation>Leiho-elementuak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1777"/>
+      <location filename="../../ArchWindow.py" line="1786"/>
       <source>Hole wire</source>
       <translation>Zulo-alanbrea</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1778"/>
+      <location filename="../../ArchWindow.py" line="1787"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Ostalari-objektuan zulo bat definitzen duen alanbrearen zenbakia. Zero balioak alanbrerik luzeena hartuko du automatikoki</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1779"/>
+      <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
       <translation>Hartu hautatua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1780"/>
-      <location filename="../../ArchAxisSystem.py" line="370"/>
-      <location filename="../../ArchAxis.py" line="802"/>
-      <location filename="../../ArchComponent.py" line="1940"/>
-      <location filename="../../ArchSectionPlane.py" line="1506"/>
-      <location filename="../../ArchSpace.py" line="793"/>
+      <location filename="../../ArchAxis.py" line="805"/>
+      <location filename="../../ArchAxisSystem.py" line="372"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSpace.py" line="799"/>
+      <location filename="../../ArchWindow.py" line="1789"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1781"/>
-      <location filename="../../ArchAxisSystem.py" line="371"/>
-      <location filename="../../ArchAxis.py" line="803"/>
-      <location filename="../../ArchComponent.py" line="1941"/>
-      <location filename="../../ArchSpace.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchAxisSystem.py" line="373"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchSpace.py" line="793"/>
+      <location filename="../../ArchWindow.py" line="1790"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="926"/>
-      <location filename="../../ArchReference.py" line="490"/>
-      <location filename="../../ArchWindow.py" line="1782"/>
-      <location filename="../../ArchIFCView.py" line="55"/>
-      <location filename="../../ArchAxisSystem.py" line="250"/>
+      <location filename="../../ArchAxis.py" line="634"/>
+      <location filename="../../ArchAxisSystem.py" line="252"/>
+      <location filename="../../ArchComponent.py" line="1501"/>
+      <location filename="../../ArchGrid.py" line="323"/>
+      <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchMaterial.py" line="493"/>
       <location filename="../../ArchMaterial.py" line="787"/>
-      <location filename="../../ArchGrid.py" line="320"/>
-      <location filename="../../ArchSchedule.py" line="378"/>
-      <location filename="../../ArchAxis.py" line="631"/>
-      <location filename="../../ArchComponent.py" line="1496"/>
-      <location filename="../../ArchSectionPlane.py" line="1237"/>
+      <location filename="../../ArchReference.py" line="490"/>
+      <location filename="../../ArchSchedule.py" line="451"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
+      <location filename="../../ArchSite.py" line="935"/>
+      <location filename="../../ArchWindow.py" line="1791"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1783"/>
+      <location filename="../../ArchWindow.py" line="1792"/>
       <source>Create/update component</source>
       <translation>Sortu/eguneratu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1784"/>
+      <location filename="../../ArchWindow.py" line="1793"/>
       <source>Base 2D object</source>
       <translation>2D oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1785"/>
-      <location filename="../../ArchWindow.py" line="1790"/>
+      <location filename="../../ArchWindow.py" line="1794"/>
+      <location filename="../../ArchWindow.py" line="1799"/>
       <source>Wires</source>
       <translation>Alanbreak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1786"/>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchWindow.py" line="1795"/>
       <source>Components</source>
       <translation>Osagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1787"/>
+      <location filename="../../ArchWindow.py" line="1796"/>
       <source>Create new component</source>
       <translation>Sortu osagai berria</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1788"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
+      <location filename="../../ArchWindow.py" line="1797"/>
       <source>Name</source>
       <translation>Izena</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1789"/>
-      <location filename="../../ArchComponent.py" line="2000"/>
-      <location filename="../../ArchCommands.py" line="1628"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
+      <location filename="../../ArchComponent.py" line="2008"/>
+      <location filename="../../ArchWindow.py" line="1798"/>
       <source>Type</source>
       <translation>Mota</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1791"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
+      <location filename="../../ArchPanel.py" line="237"/>
+      <location filename="../../ArchWindow.py" line="1800"/>
       <source>Thickness</source>
       <translation>Lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1792"/>
       <location filename="../../ArchPrecast.py" line="1417"/>
+      <location filename="../../ArchWindow.py" line="1801"/>
       <source>Offset</source>
       <translation>Desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1793"/>
+      <location filename="../../ArchWindow.py" line="1802"/>
       <source>Hinge</source>
       <translation>Gontza</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1794"/>
+      <location filename="../../ArchWindow.py" line="1803"/>
       <source>Opening mode</source>
       <translation>Irekitze modua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1795"/>
-      <location filename="../../ArchWindow.py" line="1797"/>
+      <location filename="../../ArchWindow.py" line="1804"/>
+      <location filename="../../ArchWindow.py" line="1806"/>
       <source>+ default</source>
       <translation>+ lehenetsia</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1796"/>
+      <location filename="../../ArchWindow.py" line="1805"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Hau markatuta badago, leiho honen markoaren balio lehenetsia hemen sartutako balioari gehituko zaio</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1798"/>
+      <location filename="../../ArchWindow.py" line="1807"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Hau markatuta badago, leiho honen desplazamenduaren balio lehenetsia hemen sartutako balioari gehituko zaio</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1800"/>
+      <location filename="../../ArchWindow.py" line="1809"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Sakatu hautatutako ertza atzitzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1242"/>
-      <location filename="../../ArchWindow.py" line="1801"/>
+      <location filename="../../ArchWindow.py" line="1251"/>
+      <location filename="../../ArchWindow.py" line="1810"/>
       <source>Invert opening direction</source>
       <translation>Alderantzikatu irekitze-norabidea</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1251"/>
-      <location filename="../../ArchWindow.py" line="1802"/>
+      <location filename="../../ArchWindow.py" line="1260"/>
+      <location filename="../../ArchWindow.py" line="1811"/>
       <source>Invert hinge position</source>
       <translation>Alderantzikatu gontzaren kokalekua</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="82"/>
+      <location filename="../../ArchAxisSystem.py" line="59"/>
+      <source>Axis System</source>
+      <translation>Ardatz-sistema</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxisSystem.py" line="84"/>
       <source>Only axes must be selected</source>
       <translation>Ardatzak soilik hautatu behar dira</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="86"/>
+      <location filename="../../ArchAxisSystem.py" line="88"/>
       <source>Create Axis System</source>
       <translation>Sortu ardatz-sistema</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="91"/>
+      <location filename="../../ArchAxisSystem.py" line="93"/>
       <source>Please select at least one axis</source>
       <translation>Hautatu gutxienez ardatz bat</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="369"/>
-      <location filename="../../ArchAxis.py" line="801"/>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchAxis.py" line="68"/>
+      <location filename="../../ArchAxis.py" line="804"/>
+      <location filename="../../ArchAxisSystem.py" line="371"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Axes</source>
       <translation>Ardatzak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="372"/>
+      <location filename="../../ArchAxisSystem.py" line="374"/>
       <source>Axis system components</source>
       <translation>Ardatz-sistemaren osagaiak</translation>
     </message>
     <message>
-      <location filename="../../importJSON.py" line="58"/>
-      <location filename="../../importWebGL.py" line="870"/>
-      <location filename="../../importOBJ.py" line="245"/>
-      <location filename="../../importOBJ.py" line="269"/>
+      <location filename="../../importJSON.py" line="61"/>
+      <location filename="../../importOBJ.py" line="253"/>
+      <location filename="../../importOBJ.py" line="277"/>
+      <location filename="../../importWebGL.py" line="874"/>
       <source>Successfully written</source>
       <translation>Ongi idatzi da</translation>
     </message>
@@ -2593,8 +2625,8 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Zurajea</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="94"/>
       <location filename="../../ArchCurtainWall.py" line="113"/>
+      <location filename="../../ArchTruss.py" line="94"/>
       <source>Please select only one base object or none</source>
       <translation>Hautatu oinarri-objektu bakar bat edo bat ere ez</translation>
     </message>
@@ -2620,34 +2652,49 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Ez da aurkitu IFC eskema, IFC inportazioa desgaitu da.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="943"/>
+      <location filename="../../importIFClegacy.py" line="931"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>Errorea: IfcOpenShell ez dago instalatuta</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="950"/>
+      <location filename="../../importIFClegacy.py" line="938"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>Errorea: zure IfcOpenShell bertsioa zaharregia da</translation>
     </message>
     <message>
-      <location filename="../../ArchProject.py" line="125"/>
+      <location filename="../../ArchProject.py" line="76"/>
+      <source>Project</source>
+      <translation>Proiektua</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProject.py" line="127"/>
       <source>Create Project</source>
       <translation>Sortu proiektua</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="217"/>
+      <location filename="../../ArchStairs.py" line="67"/>
+      <source>Stairs</source>
+      <translation>Eskailera</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="171"/>
+      <source>Railing</source>
+      <translation>Baranda</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="219"/>
       <source>Create Stairs</source>
       <translation>Sortu eskailera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="426"/>
+      <location filename="../../ArchStairs.py" line="428"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>'OutlineWireLeft' eta 'OutlineWireRight' propietateak kendu dira eta'RailingLeft' eta 'RailingRight' propietateak gehitu dira</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="440"/>
+      <location filename="../../ArchStairs.py" line="442"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">changed the type of properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>'RailingLeft' eta 'RailingRight' propietateen mota aldatu da</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="123"/>
@@ -2665,10 +2712,16 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Fusionatu bikoiztuak</translation>
     </message>
     <message>
+      <location filename="../../ArchMaterial.py" line="56"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
       <translation>Materiala</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="88"/>
+      <source>MultiMaterial</source>
+      <translation>Material anitzekoa</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
@@ -2686,13 +2739,13 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>objektuaren araberakoa da</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="45"/>
-      <location filename="../../importGBXML.py" line="49"/>
+      <location filename="../../importGBXML.py" line="46"/>
+      <location filename="../../importGBXML.py" line="50"/>
       <source>This exporter can currently only export one site object</source>
       <translation>Esportatzaile honek gune-objektu bat baizik ezin du esportatu une honetan</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="91"/>
+      <location filename="../../importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>Errorea: '%s' espazioak ez du zonarik. Abortatzen.</translation>
     </message>
@@ -2702,87 +2755,88 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Ez da pycollada aurkitu, collada euskarria desgaitu da.</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="328"/>
+      <location filename="../../importDAE.py" line="313"/>
       <source>file %s successfully created.</source>
       <translation>%s fitxategia zuzen sortua.</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="74"/>
+      <location filename="../../ArchGrid.py" line="77"/>
       <source>Create Grid</source>
       <translation>Sortu sareta</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="144"/>
+      <location filename="../../ArchGrid.py" line="147"/>
       <source>Auto height is larger than height</source>
       <translation>Altuera automatikoa altuera baino luzeagoa da</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="153"/>
+      <location filename="../../ArchGrid.py" line="156"/>
       <source>Total row size is larger than height</source>
       <translation>Errenkada-tamaina totala altuera baino luzeagoa da</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="175"/>
+      <location filename="../../ArchGrid.py" line="178"/>
       <source>Auto width is larger than width</source>
       <translation>Zabalera automatikoa zabalera baino luzeagoa da</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="184"/>
+      <location filename="../../ArchGrid.py" line="187"/>
       <source>Total column size is larger than width</source>
       <translation>Zutabe-tamaina totala zabalera baino luzeagoa da</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="420"/>
+      <location filename="../../ArchGrid.py" line="56"/>
+      <location filename="../../ArchGrid.py" line="423"/>
       <source>Grid</source>
       <translation>Sareta</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="421"/>
+      <location filename="../../ArchGrid.py" line="424"/>
       <source>Total width</source>
       <translation>Zabalera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="422"/>
+      <location filename="../../ArchGrid.py" line="425"/>
       <source>Total height</source>
       <translation>Altuera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="423"/>
+      <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
       <translation>Gehitu errenkada</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="424"/>
+      <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
       <translation>Ezabatu errenkada</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="425"/>
+      <location filename="../../ArchGrid.py" line="428"/>
       <source>Add col</source>
       <translation>Gehitu zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="426"/>
+      <location filename="../../ArchGrid.py" line="429"/>
       <source>Del col</source>
       <translation>Ezabatu zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="427"/>
+      <location filename="../../ArchGrid.py" line="430"/>
       <source>Create span</source>
       <translation>Sortu argia</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="428"/>
+      <location filename="../../ArchGrid.py" line="431"/>
       <source>Remove span</source>
       <translation>Kendu argia</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="429"/>
+      <location filename="../../ArchGrid.py" line="432"/>
       <source>Rows</source>
       <translation>Errenkadak</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="429"/>
+      <location filename="../../ArchGrid.py" line="432"/>
       <source>Columns</source>
       <translation>Zutabeak</translation>
     </message>
@@ -2917,50 +2971,63 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Biraketa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="103"/>
-      <source>Page</source>
-      <translation>Orrialdea</translation>
+      <location filename="../../ArchPanel.py" line="83"/>
+      <source>Panel</source>
+      <translation>Panela</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="109"/>
-      <location filename="../../ArchPanel.py" line="121"/>
-      <location filename="../../ArchSectionPlane.py" line="105"/>
+      <location filename="../../ArchPanel.py" line="105"/>
       <source>View of</source>
       <translation>Honen ikuspegia</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="170"/>
-      <location filename="../../ArchPanel.py" line="199"/>
+      <location filename="../../ArchPanel.py" line="120"/>
+      <source>PanelSheet</source>
+      <translation>Panel-orria</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="157"/>
+      <location filename="../../ArchPanel.py" line="186"/>
       <source>Create Panel</source>
       <translation>Sortu panela</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="346"/>
+      <location filename="../../ArchPanel.py" line="209"/>
+      <source>Panel options</source>
+      <translation>Panel-aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="244"/>
+      <source>Rotate</source>
+      <translation>Biratu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="333"/>
       <source>Create Panel Cut</source>
       <translation>Sortu panel-mozketa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="372"/>
+      <location filename="../../ArchPanel.py" line="359"/>
       <source>Create Panel Sheet</source>
       <translation>Sortu panel-orria</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="742"/>
+      <location filename="../../ArchPanel.py" line="729"/>
       <source>Error computing shape of</source>
       <translation>Errorea honen forma kalkulatzean: </translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1497"/>
+      <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
       <translation>Tresnak</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1501"/>
+      <location filename="../../ArchPanel.py" line="1390"/>
       <source>Edit views positions</source>
       <translation>Editatu bisten posizioak</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1591"/>
+      <location filename="../../ArchPanel.py" line="1480"/>
       <source>This object has no face</source>
       <translation>Objektu honek ez dauka aurpegirik</translation>
     </message>
@@ -2976,142 +3043,167 @@ Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboare
       <translation>Sortu errezel-pareta</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="121"/>
-      <location filename="../../ArchPipe.py" line="128"/>
+      <location filename="../../ArchPipe.py" line="59"/>
+      <source>Pipe</source>
+      <translation>Hodia</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="90"/>
+      <source>Connector</source>
+      <translation>Konektorea</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPipe.py" line="123"/>
+      <location filename="../../ArchPipe.py" line="130"/>
       <source>Create Pipe</source>
       <translation>Sortu hodia</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="158"/>
+      <location filename="../../ArchPipe.py" line="160"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
       <translation>Hautatu 2 edo 3 hodi-objektu soilik</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="163"/>
+      <location filename="../../ArchPipe.py" line="165"/>
       <source>Please select only Pipe objects</source>
       <translation>Hautatu hodi-objektuak soilik</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="167"/>
+      <location filename="../../ArchPipe.py" line="169"/>
       <source>Create Connector</source>
       <translation>Sortu konektorea</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="221"/>
+      <location filename="../../ArchPipe.py" line="225"/>
       <source>Unable to build the base path</source>
       <translation>Ezin izan da oinarri-bidea eraiki</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="237"/>
+      <location filename="../../ArchPipe.py" line="241"/>
       <source>Unable to build the profile</source>
       <translation>Ezin izan da profila eraiki</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="269"/>
+      <location filename="../../ArchPipe.py" line="273"/>
       <source>Unable to build the pipe</source>
       <translation>Ezin izan da hodia eraiki</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="288"/>
+      <location filename="../../ArchPipe.py" line="292"/>
       <source>The base object is not a Part</source>
       <translation>Oinarri-objektua ez da pieza bat</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="291"/>
+      <location filename="../../ArchPipe.py" line="295"/>
       <source>Too many wires in the base shape</source>
       <translation>Oinarri-formak alanbre gehiegi ditu</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="294"/>
+      <location filename="../../ArchPipe.py" line="298"/>
       <source>The base wire is closed</source>
       <translation>Oinarri-alanbrea itxita dago</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="308"/>
+      <location filename="../../ArchPipe.py" line="312"/>
       <source>The profile is not a 2D Part</source>
       <translation>Profila ez da 2D pieza bat</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="311"/>
+      <location filename="../../ArchPipe.py" line="315"/>
       <source>The profile is not closed</source>
       <translation>Profila ez dago itxita</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="379"/>
+      <location filename="../../ArchPipe.py" line="386"/>
       <source>Only the 3 first wires will be connected</source>
       <translation>Lehen 3 alanbreak soilik konektatuko dira</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="399"/>
-      <location filename="../../ArchPipe.py" line="446"/>
+      <location filename="../../ArchPipe.py" line="406"/>
+      <location filename="../../ArchPipe.py" line="453"/>
       <source>Common vertex not found</source>
       <translation>Ez da erpin komunik aurkitu</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="418"/>
+      <location filename="../../ArchPipe.py" line="425"/>
       <source>Pipes are already aligned</source>
       <translation>Hodiak dagoeneko lerrokatuta daude</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="458"/>
+      <location filename="../../ArchPipe.py" line="465"/>
       <source>At least 2 pipes must align</source>
       <translation>Gutxienez 2 hodik egon behar dute lerrokatuta</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="286"/>
+      <location filename="../../ArchSchedule.py" line="117"/>
+      <source>removed property 'Result', and added property 'AutoUpdate'</source>
+      <translation>'Result' propietatea kendu da eta 'AutoUpdate' propietatea gehitu da</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="119"/>
+      <source>added property 'Schedule'</source>
+      <translation>'Schedule' propietatea gehitu da</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="360"/>
       <source>Unable to retrieve value from object</source>
       <translation>Ezin izan da balio atzitu objektutik</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="386"/>
+      <location filename="../../ArchSchedule.py" line="460"/>
+      <source>Remove spreadsheet</source>
+      <translation>Ezabatu kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="462"/>
       <source>Attach spreadsheet</source>
       <translation>Erantsi kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="511"/>
+      <location filename="../../ArchSchedule.py" line="588"/>
       <source>Import CSV File</source>
       <translation>Inportatu CSV fitxategia</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="544"/>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1104"/>
+      <location filename="../../ArchSchedule.py" line="621"/>
       <source>Export CSV File</source>
       <translation>Esportatu CSV fitxategia</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="565"/>
+      <location filename="../../ArchSchedule.py" line="642"/>
       <source>Unable to recognize that file type</source>
       <translation>Ez da fitxategi mota hori ezagutzen</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="587"/>
-      <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1015"/>
+      <location filename="../../ArchSchedule.py" line="664"/>
+      <location filename="../../ArchSchedule.py" line="682"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="587"/>
-      <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchComponent.py" line="2001"/>
-      <location filename="../../ArchCommands.py" line="1629"/>
+      <location filename="../../ArchCommands.py" line="1637"/>
+      <location filename="../../ArchComponent.py" line="2009"/>
+      <location filename="../../ArchSchedule.py" line="664"/>
+      <location filename="../../ArchSchedule.py" line="682"/>
       <source>Value</source>
       <translation>Balioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="587"/>
-      <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchCommands.py" line="1630"/>
+      <location filename="../../ArchCommands.py" line="1638"/>
+      <location filename="../../ArchSchedule.py" line="664"/>
+      <location filename="../../ArchSchedule.py" line="682"/>
       <source>Unit</source>
       <translation>Unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="667"/>
+      <location filename="../../ArchSchedule.py" line="744"/>
       <source>Schedule</source>
       <translation>Programazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="150"/>
+      <location filename="../../ArchFloor.py" line="154"/>
       <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
 
 Floor object is not allowed to accept Site, Building, or Floor objects.
@@ -3128,7 +3220,7 @@ Guneak, eraikinak eta solairuak kendu egingo dira hautapenetik.
 Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="154"/>
+      <location filename="../../ArchFloor.py" line="158"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
@@ -3137,277 +3229,294 @@ Floor creation aborted.</source>
 Solairuaren sorrera utzi egin da.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="161"/>
+      <location filename="../../ArchFloor.py" line="165"/>
       <source>Create Floor</source>
       <translation>Sortu solairua</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="96"/>
+      <location filename="../../ArchAxis.py" line="99"/>
       <source>Create Axis</source>
       <translation>Sortu ardatza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="804"/>
+      <location filename="../../ArchAxis.py" line="807"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Ardatzen arteko distantziak (mm) eta angeluak (deg)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="805"/>
+      <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
       <translation>Ardatza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
       <translation>Distantzia</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="807"/>
+      <location filename="../../ArchAxis.py" line="810"/>
       <source>Angle</source>
       <translation>Angelua</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
       <translation>Etiketa</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="79"/>
-      <location filename="../../importOBJ.py" line="90"/>
+      <location filename="../../importOBJ.py" line="87"/>
+      <location filename="../../importOBJ.py" line="98"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Kurbak dituen forma bat aurkitu da, triangelukatzen</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="363"/>
+      <location filename="../../importOBJ.py" line="359"/>
       <source>Successfully imported</source>
       <translation>Ongi inportatu da</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="924"/>
+      <location filename="../../ArchComponent.py" line="928"/>
       <source>Error computing the shape of this object</source>
       <translation>Errorea objektu honen forma kalkulatzean</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="945"/>
+      <location filename="../../ArchComponent.py" line="949"/>
       <source>has no solid</source>
       <translation>ez du solidorik</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="952"/>
+      <location filename="../../ArchComponent.py" line="956"/>
       <source>has an invalid shape</source>
       <translation>baliogabeko forma du</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="958"/>
       <location filename="../../ArchPrecast.py" line="128"/>
       <location filename="../../ArchPrecast.py" line="244"/>
       <location filename="../../ArchPrecast.py" line="322"/>
       <location filename="../../ArchPrecast.py" line="454"/>
       <location filename="../../ArchPrecast.py" line="582"/>
       <location filename="../../ArchPrecast.py" line="679"/>
-      <location filename="../../ArchComponent.py" line="954"/>
       <source>has a null shape</source>
       <translation>forma nulua du</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="934"/>
-      <location filename="../../ArchComponent.py" line="1505"/>
+      <location filename="../../ArchComponent.py" line="1510"/>
+      <location filename="../../ArchSite.py" line="943"/>
       <source>Toggle subcomponents</source>
       <translation>Txandakatu azpiosagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1631"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation>Krokisaren edizioa ixten</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchCommands.py" line="216"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Component</source>
       <translation>Osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Components of this object</source>
       <translation>Objektu honen osagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Base component</source>
       <translation>Oinarrizko osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Additions</source>
       <translation>Gehiketak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Subtractions</source>
       <translation>Kenketak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
       <translation>Objektuak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Fixtures</source>
       <translation>Finkapenak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Group</source>
       <translation>Taldea</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1956"/>
       <source>Hosts</source>
       <translation>Ostalariak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1957"/>
       <source>Edit IFC properties</source>
       <translation>Editatu IFC propietateak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1958"/>
       <source>Edit standard code</source>
       <translation>Editatu kode estandarra</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
       <translation>Propietatea</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2012"/>
       <source>Add property...</source>
       <translation>Gehitu propietatea...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2013"/>
       <source>Add property set...</source>
       <translation>Gehitu propietate multzoa...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2006"/>
+      <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
       <translation>Berria...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2144"/>
+      <location filename="../../ArchComponent.py" line="2152"/>
       <source>New property</source>
       <translation>Propietate berria</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2179"/>
+      <location filename="../../ArchComponent.py" line="2187"/>
       <source>New property set</source>
       <translation>Propietate multzo berria</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="126"/>
-      <location filename="../../ArchRebar.py" line="147"/>
+      <location filename="../../ArchRebar.py" line="64"/>
+      <source>Rebar</source>
+      <translation>Armadura-barra</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRebar.py" line="130"/>
+      <location filename="../../ArchRebar.py" line="151"/>
       <source>Create Rebar</source>
       <translation>Sortu armadura-barra</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="154"/>
+      <location filename="../../ArchRebar.py" line="158"/>
       <source>Please select a base face on a structural object</source>
       <translation>Hautatu oinarri-aurpegi bat egiturazko objektu batean</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="890"/>
+      <location filename="../../ArchSectionPlane.py" line="68"/>
+      <source>Section</source>
+      <translation>Sekzioa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="839"/>
       <source>Create Section Plane</source>
       <translation>Sortu ebakidura-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1245"/>
+      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Txandakatu mozte-bista</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1505"/>
+      <location filename="../../ArchSectionPlane.py" line="1369"/>
       <source>Section plane settings</source>
       <translation>Sekzio-planoaren ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1507"/>
+      <location filename="../../ArchSectionPlane.py" line="1371"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Kendu nabarmendutako objektuak goiko zerrendatik</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1508"/>
+      <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
       <translation>Gehitu hautatuak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1509"/>
+      <location filename="../../ArchSectionPlane.py" line="1373"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Gehitu hautatutako objektua(k) sekzio-plano honen esparrura</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1510"/>
+      <location filename="../../ArchSectionPlane.py" line="1374"/>
       <source>Objects seen by this section plane:</source>
       <translation>Sekzio-plano honek ikusten dituen objektuak:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1511"/>
+      <location filename="../../ArchSectionPlane.py" line="1375"/>
       <source>Section plane placement:</source>
       <translation>Sekzio-planoaren kokapena:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Rotate X</source>
       <translation>Biratu X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1513"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Planoa X ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1514"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Rotate Y</source>
       <translation>Biratu Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1515"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Planoa Y ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1516"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate Z</source>
       <translation>Biratu Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1517"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Planoa Z ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1518"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Resize</source>
       <translation>Aldatu tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1519"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuekin doitzeko biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1520"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>Zentroa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1521"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuetan zentratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="242"/>
+      <location filename="../../ArchBuilding.py" line="204"/>
+      <location filename="../../ArchBuildingPart.py" line="231"/>
+      <source>Building</source>
+      <translation>Eraikina</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuilding.py" line="246"/>
       <source>You can put anything but Site and Building objects in a Building object.
 
 Building object is not allowed to accept Site and Building objects.
@@ -3424,7 +3533,7 @@ Guneak eta eraikinak hautapenetik kenduko dira.
 Portaera hori hobespenetan aldatu daiteke.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="246"/>
+      <location filename="../../ArchBuilding.py" line="250"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
@@ -3433,22 +3542,27 @@ Building creation aborted.</source>
 Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="253"/>
+      <location filename="../../ArchBuilding.py" line="257"/>
       <source>Create Building</source>
       <translation>Sortu eraikina</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="236"/>
+      <location filename="../../ArchSpace.py" line="186"/>
+      <source>Space</source>
+      <translation>Espazioa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="241"/>
       <source>Create Space</source>
       <translation>Sortu espazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="776"/>
+      <location filename="../../ArchSpace.py" line="782"/>
       <source>Set text position</source>
       <translation>Ezarri testuaren posizioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="780"/>
+      <location filename="../../ArchSpace.py" line="786"/>
       <source>Space boundaries</source>
       <translation>Espazio-mugak</translation>
     </message>
@@ -3531,159 +3645,159 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Fusionatu paretak</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="950"/>
+      <location filename="../../ArchWall.py" line="951"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Ezin dira blokeak kalkulatu paretarako</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1060"/>
+      <location filename="../../ArchWall.py" line="1062"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Errorea: Ezin izan da aldatu pareta honen oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1736"/>
+      <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
       <translation>Irauli norabidea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="407"/>
+      <location filename="../../ArchCommands.py" line="410"/>
       <source>Invalid cutplane</source>
       <translation>Baliogabeko mozte-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="691"/>
+      <location filename="../../ArchCommands.py" line="696"/>
       <source>is not closed</source>
       <translation>ez dago itxita</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="693"/>
+      <location filename="../../ArchCommands.py" line="698"/>
       <source>is not valid</source>
       <translation>ez da baliozkoa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="695"/>
+      <location filename="../../ArchCommands.py" line="700"/>
       <source>doesn't contain any solid</source>
       <translation>ez dauka solidorik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="701"/>
+      <location filename="../../ArchCommands.py" line="706"/>
       <source>contains a non-closed solid</source>
       <translation>itxi gabeko solidoa dauka</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="703"/>
+      <location filename="../../ArchCommands.py" line="708"/>
       <source>contains faces that are not part of any solid</source>
       <translation>inongo solidoren zati ez diren aurpegiak dauzka</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
       <translation>Lur-neurketa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Set description</source>
       <translation>Ezarri deskribapena</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Copy Length</source>
       <translation>Kopiatu luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1013"/>
       <source>Copy Area</source>
       <translation>Kopiatu area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1014"/>
       <source>Export CSV</source>
       <translation>Esportatu CSVa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
       <translation>Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
       <translation>Totala</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Object doesn't have settable IFCData</source>
       <translation>Objektuak ez du IFCData ezargarririk</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Objektuaren Brep indarraren bandera desgaitzen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1151"/>
+      <location filename="../../ArchCommands.py" line="1154"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Objektuaren Brep indarraren bandera gaitzen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1341"/>
+      <location filename="../../ArchCommands.py" line="1349"/>
       <source>Add space boundary</source>
       <translation>Gehitu espazio-muga</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1345"/>
+      <location filename="../../ArchCommands.py" line="1353"/>
       <source>Grouping</source>
       <translation>Elkartu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1373"/>
+      <location filename="../../ArchCommands.py" line="1381"/>
       <source>Remove space boundary</source>
       <translation>Kendu espazio-muga</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1377"/>
+      <location filename="../../ArchCommands.py" line="1385"/>
       <source>Ungrouping</source>
       <translation>Banandu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1408"/>
+      <location filename="../../ArchCommands.py" line="1416"/>
       <source>Split Mesh</source>
       <translation>Zatitu amarauna</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1448"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Mesh to Shape</source>
       <translation>Amarauna formara</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1529"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>All good! No problems found</source>
       <translation>Ederto! Ez dugu arazorik aurkitu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1581"/>
-      <location filename="../../ArchCommands.py" line="1606"/>
+      <location filename="../../ArchCommands.py" line="1589"/>
+      <location filename="../../ArchCommands.py" line="1614"/>
       <source>Create Component</source>
       <translation>Sortu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1627"/>
+      <location filename="../../ArchCommands.py" line="1635"/>
       <source>Key</source>
       <translation>Gakoa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1637"/>
+      <location filename="../../ArchCommands.py" line="1645"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Objektuak ez du IfcProperties atributurik. Ez sortu kalkulu-orririk honako objekturako:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1655"/>
+      <location filename="../../ArchCommands.py" line="1663"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Sortu IFC propietateen kalkulu-orria</translation>
     </message>
@@ -3697,8 +3811,8 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
-      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation>Sortu arku-egiturako objektu anitz hautatutako oinarri batetik abiatuta, hautatutako ertz bakoitza estrusio-bide gisa erabilita</translation>
+      <source>Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Sortu arku-egitura anitz hautatutako oinarri batetik abiatuta, hautatutako ertz bakoitza estrusio-bide gisa erabilita</translation>
     </message>
   </context>
   <context>
@@ -3710,8 +3824,8 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
-      <source>Create a structural system object from a selected structure and axis</source>
-      <translation>Sortu egiturazko sistemen objektu bat hautatutako egitura bat eta ardatz bat erabilita</translation>
+      <source>Create a structural system from a selected structure and axis</source>
+      <translation>Sortu egiturazko sistema bat hautatutako egitura bat eta ardatz bat erabilita</translation>
     </message>
   </context>
   <context>
@@ -3723,8 +3837,8 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
-      <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Egitura-objektu bat sortzen du, zerotik hasita edo hautatutako krokis, alanbre, aurpegi edo solido batetik</translation>
+      <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
+      <translation>Egitura bat sortzen du, zerotik hasita edo hautatutako objektu batetik (krokis, alanbre, aurpegi edo solido bat)</translation>
     </message>
   </context>
   <context>
@@ -3776,14 +3890,14 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Oinarriaren biraketa tresna-ardatzaren inguruan (BasePerpendicularToTool egia bada soilik erabilia)</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="391"/>
       <location filename="../../ArchStructure.py" line="694"/>
-      <location filename="../../ArchPanel.py" line="404"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Elementu honen luzera, profil batean oinarrituta ez badago</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="393"/>
       <location filename="../../ArchStructure.py" line="696"/>
-      <location filename="../../ArchPanel.py" line="406"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Elementu honen luzera, profil batean oinarrituta ez badago</translation>
     </message>
@@ -3793,15 +3907,15 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Elementu honen altuera edo estrusio-sakonera. Mantendu 0 balio automatikoa erabiltzeko</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="420"/>
       <location filename="../../ArchStructure.py" line="700"/>
-      <location filename="../../ArchPanel.py" line="433"/>
       <location filename="../../ArchWall.py" line="754"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Objektu honen estrusio-norabide normala (mantendu (0,0,0) normal automatikorako)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="702"/>
       <location filename="../../ArchPrecast.py" line="68"/>
+      <location filename="../../ArchStructure.py" line="702"/>
       <source>The structural nodes of this element</source>
       <translation>Elementu honen egiturazko nodoak</translation>
     </message>
@@ -3816,8 +3930,8 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Erdiko lerroaren eta nodo-lerroen arteko desplazamendu-distantzia</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="417"/>
       <location filename="../../ArchStructure.py" line="708"/>
-      <location filename="../../ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Objektu honen profila eraikitzeko erabiliko den aurpegi-sortzailearen mota</translation>
     </message>
@@ -3825,7 +3939,7 @@ Eraikinaren sorrera utzi egin da.</translation>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Oinarriko arku-zirriborroan hautatutako ertzak (edo ertz multzoa), arku-egitura honen forma sortzeko erabiliko direnak (lehenespena den oinarriaren formaren ertz guztiak erabili ordez). Sarrera ertzen edo multzoen indize-zenbakiak dira.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -3868,41 +3982,41 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Egia bada, elementuak ardatzekin lerrokatuta daude</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="307"/>
+      <location filename="../../ArchEquipment.py" line="312"/>
       <source>The model description of this equipment</source>
       <translation>Ekipamendu honen ereduaren deskribapena</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="309"/>
+      <location filename="../../ArchEquipment.py" line="314"/>
       <source>The URL of the product page of this equipment</source>
       <translation>Ekipamendu honen produktu-orriaren URLa</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="311"/>
+      <location filename="../../ArchEquipment.py" line="316"/>
       <location filename="../../ArchMaterial.py" line="296"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Kode estandarra (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="313"/>
+      <location filename="../../ArchEquipment.py" line="318"/>
       <source>Additional snap points for this equipment</source>
       <translation>Atxikitze-puntu gehigarriak ekipamendu honentzako</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="315"/>
+      <location filename="../../ArchEquipment.py" line="320"/>
       <source>The electric power needed by this equipment in Watts</source>
       <translation>Ekipamendu honek behar duen energia elektrikoa, watt-etan</translation>
     </message>
     <message>
+      <location filename="../../ArchBuilding.py" line="280"/>
       <location filename="../../ArchBuildingPart.py" line="232"/>
       <location filename="../../ArchBuildingPart.py" line="256"/>
-      <location filename="../../ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
       <translation>Eraikin honen mota</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="330"/>
-      <location filename="../../ArchFloor.py" line="204"/>
+      <location filename="../../ArchFloor.py" line="208"/>
       <source>The height of this object</source>
       <translation>Objektu honen altuera</translation>
     </message>
@@ -3918,25 +4032,25 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="337"/>
-      <location filename="../../ArchFloor.py" line="206"/>
+      <location filename="../../ArchFloor.py" line="210"/>
       <source>The computed floor area of this floor</source>
       <translation>Solairu honetan kalkulatutako zoru-area</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="339"/>
-      <location filename="../../ArchComponent.py" line="200"/>
+      <location filename="../../ArchComponent.py" line="203"/>
       <source>An optional description for this component</source>
       <translation>Osagai honen aukerako deskribapen bat</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="341"/>
-      <location filename="../../ArchComponent.py" line="202"/>
+      <location filename="../../ArchComponent.py" line="205"/>
       <source>An optional tag for this component</source>
       <translation>Osagai honentzako aukerako etiketa bat</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="343"/>
-      <location filename="../../ArchSectionPlane.py" line="913"/>
+      <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The shape of this object</source>
       <translation>Objektu honen forma</translation>
     </message>
@@ -3956,375 +4070,375 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Materialen izenak eta objektu honi beste fitxategi batzuetatik erreferentzia egiten zaionean erabiliko diren solido-indizeak erlazionatzen dituen MaterialName:SolidIndexesList mapa bat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="549"/>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The line width of this object</source>
       <translation>Objektu honen lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="552"/>
+      <location filename="../../ArchBuildingPart.py" line="553"/>
       <source>An optional unit to express levels</source>
       <translation>Mailak adierazteko aukerazko unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="554"/>
+      <location filename="../../ArchBuildingPart.py" line="555"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Mailako markari aplikatuko zaion eraldaketa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="557"/>
+      <location filename="../../ArchBuildingPart.py" line="558"/>
       <source>If true, show the level</source>
       <translation>Egia bada, erakutsi maila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="560"/>
+      <location filename="../../ArchBuildingPart.py" line="561"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Egia bada, erakutsi mailako etiketaren unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="562"/>
+      <location filename="../../ArchBuildingPart.py" line="563"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Egia bada, pantailaren desplazamenduak jatorriaren markari ere eragingo dio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="565"/>
       <source>If true, the object's label is displayed</source>
       <translation>Egia bada, objektuaren etiketa bistaratuko da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="567"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>The font to be used for texts</source>
       <translation>Testuetarako erabiliko den letra-tipoa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="570"/>
+      <location filename="../../ArchBuildingPart.py" line="571"/>
       <source>The font size of texts</source>
       <translation>Testuen letra-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="573"/>
+      <location filename="../../ArchBuildingPart.py" line="574"/>
       <source>The individual face colors</source>
       <translation>Aurpegien banakako koloreak</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="578"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Egia bada, aktibatzen denean, laneko planoa automatikoki egokituko da maila horretara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="580"/>
+      <location filename="../../ArchBuildingPart.py" line="581"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Egia ezarri bada, laneko planoa modu automatikoan mantenduko da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="582"/>
+      <location filename="../../ArchBuildingPart.py" line="583"/>
       <source>Camera position data associated with this object</source>
       <translation>Objektu honi lotutako kameraren posizioaren datuak</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="585"/>
+      <location filename="../../ArchBuildingPart.py" line="586"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Ezartzen bada, objektu honetan gordetako bista berrezarriko da klik bikoitza egitean</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="587"/>
+      <location filename="../../ArchBuildingPart.py" line="588"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Egia bada, zuhaitzean objektu honen gainean klik bikoitza eginda aktibatu egingo da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="591"/>
+      <location filename="../../ArchBuildingPart.py" line="592"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Hau gaituta badago, objektu honen asmatzaile-adierazpena FreeCAD fitxategian gordeko da, eta beste fitxategi batzuetan modu arinean erreferentziatzea ahalbidetuko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="593"/>
+      <location filename="../../ArchBuildingPart.py" line="594"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Objektu honen asmatzaile-adierazpena gordetzeko arteka bat, gaituta badago</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="598"/>
+      <location filename="../../ArchBuildingPart.py" line="599"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Egia bada, eraikin-pieza honek dituen objektuek lerro, kolore eta gardentasuneko honako ezarpenak hartuko dituzte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="600"/>
+      <location filename="../../ArchBuildingPart.py" line="601"/>
       <source>The line width of child objects</source>
       <translation>Objektu haurren lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="603"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The line color of child objects</source>
       <translation>Objektu haurren lerro-kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="607"/>
+      <location filename="../../ArchBuildingPart.py" line="608"/>
       <source>The shape color of child objects</source>
       <translation>Objektu haurren forma-kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="611"/>
+      <location filename="../../ArchBuildingPart.py" line="612"/>
       <source>The transparency of child objects</source>
       <translation>Objektu haurren gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="615"/>
+      <location filename="../../ArchBuildingPart.py" line="616"/>
       <source>Cut the view above this level</source>
       <translation>Moztu bista maila honen gainetik</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="617"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Maila-planoaren eta mozte-lerroaren arteko distantzia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Aktibatu moztea maila hau aktibatzen denean</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="624"/>
+      <location filename="../../ArchBuildingPart.py" line="625"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Sortu berri diren objektuen kaptura-koadroa [XMin,YMin,ZMin,XMax,YMax,ZMax] gisa adierazita</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="626"/>
+      <location filename="../../ArchBuildingPart.py" line="627"/>
       <source>Turns auto group box on/off</source>
       <translation>Talde automatikoen kutxa aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="628"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Automatically set size from contents</source>
       <translation>Ezarri tamaina automatikoki edukietatik</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Tamaina automatikoa aktibatuta dagoenean erabiliko den marjina</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="266"/>
+      <location filename="../../ArchProfile.py" line="268"/>
       <source>Outside Diameter</source>
       <translation>Kanpoko diametroa</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="267"/>
+      <location filename="../../ArchProfile.py" line="269"/>
       <source>Wall thickness</source>
       <translation>Pareta-lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="291"/>
-      <location filename="../../ArchProfile.py" line="325"/>
-      <location filename="../../ArchProfile.py" line="349"/>
-      <location filename="../../ArchProfile.py" line="382"/>
-      <location filename="../../ArchProfile.py" line="412"/>
-      <location filename="../../ArchProfile.py" line="439"/>
+      <location filename="../../ArchProfile.py" line="293"/>
+      <location filename="../../ArchProfile.py" line="327"/>
+      <location filename="../../ArchProfile.py" line="351"/>
+      <location filename="../../ArchProfile.py" line="384"/>
+      <location filename="../../ArchProfile.py" line="414"/>
+      <location filename="../../ArchProfile.py" line="441"/>
       <source>Width of the beam</source>
       <translation>Habearen zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="292"/>
-      <location filename="../../ArchProfile.py" line="326"/>
-      <location filename="../../ArchProfile.py" line="350"/>
-      <location filename="../../ArchProfile.py" line="383"/>
-      <location filename="../../ArchProfile.py" line="413"/>
-      <location filename="../../ArchProfile.py" line="440"/>
+      <location filename="../../ArchProfile.py" line="294"/>
+      <location filename="../../ArchProfile.py" line="328"/>
+      <location filename="../../ArchProfile.py" line="352"/>
+      <location filename="../../ArchProfile.py" line="385"/>
+      <location filename="../../ArchProfile.py" line="415"/>
+      <location filename="../../ArchProfile.py" line="442"/>
       <source>Height of the beam</source>
       <translation>Habearen altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="293"/>
-      <location filename="../../ArchProfile.py" line="441"/>
+      <location filename="../../ArchProfile.py" line="295"/>
+      <location filename="../../ArchProfile.py" line="443"/>
       <source>Thickness of the web</source>
       <translation>Sarearen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="294"/>
-      <location filename="../../ArchProfile.py" line="442"/>
+      <location filename="../../ArchProfile.py" line="296"/>
+      <location filename="../../ArchProfile.py" line="444"/>
       <source>Thickness of the flanges</source>
       <translation>Briden lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="351"/>
+      <location filename="../../ArchProfile.py" line="353"/>
       <source>Thickness of the sides</source>
-      <translation>Alboen lodiera</translation>
+      <translation>Aldeen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="384"/>
+      <location filename="../../ArchProfile.py" line="386"/>
       <source>Thickness of the webs</source>
       <translation>Sareen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="385"/>
+      <location filename="../../ArchProfile.py" line="387"/>
       <source>Thickness of the flange</source>
       <translation>Bridaren lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="414"/>
+      <location filename="../../ArchProfile.py" line="416"/>
       <source>Thickness of the legs</source>
       <translation>Hanken lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="591"/>
+      <location filename="../../ArchSite.py" line="599"/>
       <source>The base terrain of this site</source>
       <translation>Gune honen oinarri-lurrazala</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="593"/>
+      <location filename="../../ArchSite.py" line="601"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation>Gune honen kalearen eta atariaren zenbakia, posta-kodea edo etxebizitza zenbakia barne, beharrezkoa bada</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="595"/>
+      <location filename="../../ArchSite.py" line="603"/>
       <source>The postal or zip code of this site</source>
       <translation>Gune honen posta-kodea</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="597"/>
+      <location filename="../../ArchSite.py" line="605"/>
       <source>The city of this site</source>
       <translation>Gune honen hiria</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="599"/>
+      <location filename="../../ArchSite.py" line="607"/>
       <source>The region, province or county of this site</source>
       <translation>Gune honen eskualdea edo probintzia</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="601"/>
+      <location filename="../../ArchSite.py" line="609"/>
       <source>The country of this site</source>
       <translation>Gune honen herrialdea</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="603"/>
-      <location filename="../../ArchSite.py" line="605"/>
+      <location filename="../../ArchSite.py" line="611"/>
+      <location filename="../../ArchSite.py" line="613"/>
       <source>The latitude of this site</source>
       <translation>Gune honen latitudea</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="607"/>
+      <location filename="../../ArchSite.py" line="615"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>Benetako iparraren eta dokumentu honen iparraren arteko angelua</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="612"/>
+      <location filename="../../ArchSite.py" line="620"/>
       <source>The elevation of level 0 of this site</source>
       <translation>Gunen honen 0 mailaren garaiera</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="614"/>
+      <location filename="../../ArchSite.py" line="622"/>
       <source>A URL that shows this site in a mapping website</source>
       <translation>Gune hau mapatze-webgune batean erakutsiko duen URL bat</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="616"/>
-      <location filename="../../ArchComponent.py" line="196"/>
+      <location filename="../../ArchComponent.py" line="199"/>
+      <location filename="../../ArchSite.py" line="624"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Objektu honi erantsitako beste forma batzuk</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="618"/>
-      <location filename="../../ArchComponent.py" line="198"/>
+      <location filename="../../ArchComponent.py" line="201"/>
+      <location filename="../../ArchSite.py" line="626"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Objektu honi kendutako beste forma batzuk</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="620"/>
-      <location filename="../../ArchComponent.py" line="221"/>
+      <location filename="../../ArchComponent.py" line="224"/>
+      <location filename="../../ArchSite.py" line="628"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Objektu honen proiekzioaren area XY planoan</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchSite.py" line="630"/>
       <source>The perimeter length of the projected area</source>
-      <translation type="unfinished">The perimeter length of the projected area</translation>
+      <translation>Proiektatutako arearen perimetroaren luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchSite.py" line="632"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>Lurrazal honi gehituko zaion lur-bolumena</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchSite.py" line="634"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>Lurrazal honi kenduko zaion lur-bolumena</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="628"/>
+      <location filename="../../ArchSite.py" line="636"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>Boolear eragiketak egitean erabiliko den estrusio-bektore bat</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="631"/>
+      <location filename="../../ArchSite.py" line="639"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>Kendu emaitza gisa sortu den formaren zatitzaileak</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="633"/>
+      <location filename="../../ArchSite.py" line="641"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>Ereduaren (0,0,0) jatorriaren eta geokoordinatuek adierazten duten puntuaren arteko aukerako desplazamendu bat</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="637"/>
-      <location filename="../../ArchIFC.py" line="69"/>
+      <location filename="../../ArchIFC.py" line="70"/>
+      <location filename="../../ArchSite.py" line="645"/>
       <source>The type of this object</source>
       <translation>Objektu honen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="641"/>
+      <location filename="../../ArchSite.py" line="649"/>
       <source>The time zone where this site is located</source>
       <translation>Gune hau kokatutako dagoen ordu-eremua</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="643"/>
+      <location filename="../../ArchSite.py" line="651"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation>Aukerako EPW fitxategia gune honen kokalekurako. Begiratu gunearen dokumentazioa bat nola lortu jakiteko</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="846"/>
+      <location filename="../../ArchSite.py" line="855"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation>Erakutsi edo ez haize-arrosaren diagrama. Eguzki-diagramaren eskala darabil. Ladybug modulua behar du</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="848"/>
+      <location filename="../../ArchSite.py" line="857"/>
       <source>Show solar diagram or not</source>
       <translation>Erakutsi edo ez eguzki-diagrama</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="850"/>
+      <location filename="../../ArchSite.py" line="859"/>
       <source>The scale of the solar diagram</source>
       <translation>Eguzki-diagramaren eskala</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="853"/>
+      <location filename="../../ArchSite.py" line="862"/>
       <source>The position of the solar diagram</source>
       <translation>Eguzki-diagramaren posizioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="855"/>
+      <location filename="../../ArchSite.py" line="864"/>
       <source>The color of the solar diagram</source>
       <translation>Eguzki-diagramaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="859"/>
+      <location filename="../../ArchSite.py" line="868"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation>'Benetako iparra' ezarrita dagoenean, geometria osoa biratuko da gune honen benetako iparrarekin bat etortzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="863"/>
+      <location filename="../../ArchSite.py" line="872"/>
       <source>Show compass or not</source>
       <translation>Erakutsi iparrorratza edo ez</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="865"/>
+      <location filename="../../ArchSite.py" line="874"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation>Iparrorratzaren biraketa gunearekiko</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="867"/>
+      <location filename="../../ArchSite.py" line="876"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation>Iparrorratzaren posizioa gunearen kokalekuarekiko</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="869"/>
+      <location filename="../../ArchSite.py" line="878"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation>Eguneratu deklinazioaren balioa iparrorratzaren biraketan oinarrituta</translation>
     </message>
@@ -4409,142 +4523,142 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Egia bada, estekatutako fitxategiarekin koloreak eguneratuta mantenduko dira</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="111"/>
+      <location filename="../../ArchFrame.py" line="114"/>
       <source>The profile used to build this frame</source>
       <translation>Marko hau eraikitzeko erabilitako profila</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="113"/>
+      <location filename="../../ArchFrame.py" line="116"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
       <translation>Profila estrusio-alanbreekin lerrokatu behar den adierazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="116"/>
+      <location filename="../../ArchFrame.py" line="119"/>
       <source>An offset vector between the base sketch and the frame</source>
       <translation>Oinarrizko krokisaren eta markoaren arteko desplazamendu-bektore bat</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="118"/>
+      <location filename="../../ArchFrame.py" line="121"/>
       <source>Crossing point of the path on the profile.</source>
       <translation>Bideak profila zeharkatzen duen puntua.</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="120"/>
+      <location filename="../../ArchFrame.py" line="123"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
       <translation>Aukerako kokapen gehigarri bat, profilari gehituko zaiona hura estruitu baino lehen</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="122"/>
+      <location filename="../../ArchFrame.py" line="125"/>
       <source>The rotation of the profile around its extrusion axis</source>
       <translation>Profilaren biraketa bere estrusio-ardatzaren inguruan</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="124"/>
+      <location filename="../../ArchFrame.py" line="127"/>
       <source>The type of edges to consider</source>
       <translation>Kontuan hartuko den ertz mota</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="127"/>
+      <location filename="../../ArchFrame.py" line="130"/>
       <source>If true, geometry is fused, otherwise a compound</source>
       <translation>Egia bada, geometria fusionatuko da, bestela konposatu bat</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="591"/>
+      <location filename="../../ArchWindow.py" line="596"/>
       <source>The objects that host this window</source>
       <translation>Leiho honen ostalaria diren objektuak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="593"/>
+      <location filename="../../ArchWindow.py" line="598"/>
       <source>The components of this window</source>
       <translation>Leiho honen osagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="596"/>
+      <location filename="../../ArchWindow.py" line="601"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>Leiho honek bere ostalari-objektuan egiten duen zuloaren sakonera. 0 bada, balioa automatikoki kalkulatuko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="598"/>
+      <location filename="../../ArchWindow.py" line="603"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>Aukerako objektu bat, leiho honen ostalarietatik kenduko den bolumena definitzen duena</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="600"/>
+      <location filename="../../ArchWindow.py" line="605"/>
       <source>The width of this window</source>
       <translation>Leiho honen zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="602"/>
+      <location filename="../../ArchWindow.py" line="607"/>
       <source>The height of this window</source>
       <translation>Leiho honen altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="604"/>
+      <location filename="../../ArchWindow.py" line="609"/>
       <source>The normal direction of this window</source>
       <translation>Leiho honen norabide normala</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="606"/>
+      <location filename="../../ArchWindow.py" line="611"/>
       <source>The preset number this window is based on</source>
       <translation>Leiho honek oinarri gisa duen aurrezarpen-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="609"/>
+      <location filename="../../ArchWindow.py" line="614"/>
       <source>The frame size of this window</source>
       <translation>Leiho honen marko-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="611"/>
+      <location filename="../../ArchWindow.py" line="616"/>
       <source>The offset size of this window</source>
       <translation>Leiho honen desplazamendu-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="613"/>
+      <location filename="../../ArchWindow.py" line="618"/>
       <source>The area of this window</source>
       <translation>Leiho honen area</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="615"/>
+      <location filename="../../ArchWindow.py" line="620"/>
       <source>The width of louvre elements</source>
       <translation>Zursare-elementuen zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="617"/>
+      <location filename="../../ArchWindow.py" line="622"/>
       <source>The space between louvre elements</source>
       <translation>Zursare-elementuen arteko espazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="619"/>
+      <location filename="../../ArchWindow.py" line="624"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Gontz bat definituta duten azpiosagaiak irekitzen ditu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="621"/>
+      <location filename="../../ArchWindow.py" line="626"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>Zuloa definitzen duen alanbrearen zenbakia. 0 bada, balioa automatikoki kalkulatuko da</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="623"/>
+      <location filename="../../ArchWindow.py" line="628"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Erakutsi plano-irekiguneen ikurrak, erabilgarri badaude</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="625"/>
+      <location filename="../../ArchWindow.py" line="630"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Erakutsi garaiera-irekiguneen ikurrak, erabilgarri badaude</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1528"/>
+      <location filename="../../ArchWindow.py" line="1537"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Zuloa definitzen duen alanbrearen zenbakia. 0 balioak automatikoa esan nahi du</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="111"/>
+      <location filename="../../ArchAxisSystem.py" line="113"/>
       <source>The axes this system is made of</source>
       <translation>Sistema hau osatzen duten ardatzak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="113"/>
+      <location filename="../../ArchAxisSystem.py" line="115"/>
       <source>The placement of this axis system</source>
       <translation>Ardatz-sistema honen kokapena</translation>
     </message>
@@ -4624,159 +4738,159 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Nola marraztu hagak</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="263"/>
+      <location filename="../../ArchStairs.py" line="265"/>
       <source>The length of these stairs, if no baseline is defined</source>
       <translation>Eskailera honen luzera, oinarri-lerroa definitu ez bada</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="265"/>
+      <location filename="../../ArchStairs.py" line="267"/>
       <source>The width of these stairs</source>
       <translation>Eskailera honen zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="267"/>
+      <location filename="../../ArchStairs.py" line="269"/>
       <source>The total height of these stairs</source>
       <translation>Eskailera honen altuera osoa</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="269"/>
+      <location filename="../../ArchStairs.py" line="271"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
       <translation>Eskailera honen lerrokatzea bere oinarri-lerroarekin, ezarri behar bada</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="274"/>
+      <location filename="../../ArchStairs.py" line="276"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
       <translation>Eskailera-buruaren zabalera (bigarren ertza eta ondorengoak - lehen ertzak zabaleraren propietatea jarraitzen du)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="279"/>
+      <location filename="../../ArchStairs.py" line="281"/>
       <source>The number of risers in these stairs</source>
       <translation>Eskailera honen kontramailu kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="281"/>
+      <location filename="../../ArchStairs.py" line="283"/>
       <source>The depth of the treads of these stairs</source>
       <translation>Eskailera honen mailagainen sakonera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="284"/>
+      <location filename="../../ArchStairs.py" line="286"/>
       <source>The height of the risers of these stairs</source>
       <translation>Eskailera honen mailagainen altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="287"/>
+      <location filename="../../ArchStairs.py" line="289"/>
       <source>The size of the nosing</source>
       <translation>Maila-sudurraren tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="289"/>
+      <location filename="../../ArchStairs.py" line="291"/>
       <source>The thickness of the treads</source>
       <translation>Mailagainen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="291"/>
+      <location filename="../../ArchStairs.py" line="293"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
       <translation>Blondel proportzioak eskaileraren erosotasuna adierazten du eta 62 eta 64 cm artekoa izan beharko luke</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="295"/>
+      <location filename="../../ArchStairs.py" line="297"/>
       <source>The thickness of the risers</source>
       <translation>Kontramailen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="298"/>
+      <location filename="../../ArchStairs.py" line="300"/>
       <source>The depth of the landing of these stairs</source>
       <translation>Eskailera honen buruaren sakonera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="301"/>
+      <location filename="../../ArchStairs.py" line="303"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
       <translation>Eskailera hauen mailagainen sakonera - Behartua, altuera edo ertzaren altuera kontuan hartu gabe</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="303"/>
+      <location filename="../../ArchStairs.py" line="305"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>Eskailera hauen kontramailen altuera - Behartua, altuera edo ertzaren altuera kontuan hartu gabe</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="306"/>
+      <location filename="../../ArchStairs.py" line="308"/>
       <source>The direction of flight after landing</source>
       <translation>Hegaldiaren norabidea lurreratu ondoren</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="313"/>
+      <location filename="../../ArchStairs.py" line="315"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
       <translation>Eskaileren hegaldi baten goi maila 'absolutuak' hona darama: </translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="316"/>
-      <location filename="../../ArchStairs.py" line="319"/>
+      <location filename="../../ArchStairs.py" line="318"/>
+      <location filename="../../ArchStairs.py" line="321"/>
       <source>The 'left outline' of stairs</source>
       <translation>Eskaileren 'ezkerreko eskema'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="340"/>
+      <location filename="../../ArchStairs.py" line="342"/>
       <source>The 'left outline' of all segments of stairs</source>
       <translation>Eskaileraren segmentu guztien 'ezkerreko eskema'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="343"/>
+      <location filename="../../ArchStairs.py" line="345"/>
       <source>The 'right outline' of all segments of stairs</source>
       <translation>Eskaileraren segmentu guztien 'eskuineko eskema'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="369"/>
+      <location filename="../../ArchStairs.py" line="371"/>
       <source>The type of landings of these stairs</source>
       <translation>Eskailera honen buru mota</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="372"/>
+      <location filename="../../ArchStairs.py" line="374"/>
       <source>The type of winders in these stairs</source>
       <translation>Eskailera honen maila asimetrikoen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="375"/>
+      <location filename="../../ArchStairs.py" line="377"/>
       <source>The type of structure of these stairs</source>
       <translation>Eskailera honen egitura mota</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="378"/>
+      <location filename="../../ArchStairs.py" line="380"/>
       <source>The thickness of the massive structure or of the stringers</source>
       <translation>Egitura masiboaren edo zankabeen lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="380"/>
+      <location filename="../../ArchStairs.py" line="382"/>
       <source>The width of the stringers</source>
       <translation>Zankabeen zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="382"/>
+      <location filename="../../ArchStairs.py" line="384"/>
       <source>The offset between the border of the stairs and the structure</source>
       <translation>Eskailera-ertzaren eta egituraren arteko desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="384"/>
-      <location filename="../../ArchStairs.py" line="1122"/>
+      <location filename="../../ArchStairs.py" line="386"/>
+      <location filename="../../ArchStairs.py" line="1124"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Zankabeen gainjartzea mailagainen behealdearen gainetik</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="386"/>
+      <location filename="../../ArchStairs.py" line="388"/>
       <source>The thickness of the lower floor slab</source>
       <translation>Beheko solairuaren xaflaren lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="388"/>
+      <location filename="../../ArchStairs.py" line="390"/>
       <source>The thickness of the upper floor slab</source>
       <translation>Goiko solairuaren xaflaren lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="390"/>
+      <location filename="../../ArchStairs.py" line="392"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower floor slab and the start of the stairs</translation>
+      <translation>Beheko xaflaren eta eskailera-hasieraren arteko konexio mota</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="393"/>
+      <location filename="../../ArchStairs.py" line="395"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
       <translation>Eskailera-amaieraren eta goiko solairuaren xaflaren arteko konexio mota</translation>
     </message>
@@ -4852,18 +4966,18 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Geruza-lodieren zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="66"/>
+      <location filename="../../ArchIFC.py" line="67"/>
       <source>IFC data</source>
       <translation>IFC datuak</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="73"/>
+      <location filename="../../ArchIFC.py" line="74"/>
       <source>IFC properties of this object</source>
       <translation>Objektu honen IFC propietateak</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="289"/>
-      <location filename="../../ArchIFC.py" line="296"/>
+      <location filename="../../ArchIFC.py" line="290"/>
+      <location filename="../../ArchIFC.py" line="297"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation>IFC atributuen deskribapena ez da oraindik garatu</translation>
     </message>
@@ -4992,194 +5106,164 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Elementu honen mailagain-sakonera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="408"/>
+      <location filename="../../ArchPanel.py" line="395"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>Elementu honen lodiera edo estrusio-sakonera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="410"/>
+      <location filename="../../ArchPanel.py" line="397"/>
       <source>The number of sheets to use</source>
       <translation>Erabiliko den orri kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="413"/>
+      <location filename="../../ArchPanel.py" line="400"/>
       <source>The offset between this panel and its baseline</source>
       <translation>Panel honen eta bere oinarri-lerroaren arteko desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="415"/>
+      <location filename="../../ArchPanel.py" line="402"/>
       <source>The length of waves for corrugated elements</source>
       <translation>Elementu izurtuen uhin-luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="417"/>
+      <location filename="../../ArchPanel.py" line="404"/>
       <source>The height of waves for corrugated elements</source>
       <translation>Elementu izurtuen uhin-altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="419"/>
+      <location filename="../../ArchPanel.py" line="406"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>Elementu izurtuen uhinen desplazamendu horizontala</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="421"/>
+      <location filename="../../ArchPanel.py" line="408"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>Elementu izurtuen ehun-norabidea</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="423"/>
+      <location filename="../../ArchPanel.py" line="410"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Elementu izurtuen uhin mota</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="426"/>
+      <location filename="../../ArchPanel.py" line="413"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>Uhinak beheko aldeari ere eragiten dion ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="428"/>
+      <location filename="../../ArchPanel.py" line="415"/>
       <source>The area of this panel</source>
       <translation>Panel honen azalera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="839"/>
-      <location filename="../../ArchPanel.py" line="941"/>
-      <location filename="../../ArchSectionPlane.py" line="1268"/>
+      <location filename="../../ArchPanel.py" line="824"/>
       <source>The linked object</source>
       <translation>Estekatutako objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="841"/>
-      <location filename="../../ArchSectionPlane.py" line="1278"/>
-      <source>The line width of the rendered objects</source>
-      <translation>Errendatutako objektuen lerro-luzera</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="844"/>
-      <source>The color of the panel outline</source>
-      <translation>Panel-eskemaren kolorea</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="847"/>
-      <location filename="../../ArchPanel.py" line="946"/>
-      <location filename="../../ArchPanel.py" line="1221"/>
+      <location filename="../../ArchPanel.py" line="829"/>
+      <location filename="../../ArchPanel.py" line="1110"/>
       <source>The size of the tag text</source>
       <translation>Etiketa-testuaren tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="849"/>
-      <source>The color of the tag text</source>
-      <translation>Etiketa-testuaren kolorea</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="852"/>
-      <source>The X offset of the tag text</source>
-      <translation>Etiketa-testuaren X desplazamendua</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="855"/>
-      <source>The Y offset of the tag text</source>
-      <translation>Etiketa-testuaren Y desplazamendua</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="858"/>
-      <location filename="../../ArchPanel.py" line="953"/>
-      <location filename="../../ArchPanel.py" line="1228"/>
+      <location filename="../../ArchPanel.py" line="836"/>
+      <location filename="../../ArchPanel.py" line="1117"/>
       <source>The font of the tag text</source>
       <translation>Etiketa-testuaren letra-tipoa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="943"/>
+      <location filename="../../ArchPanel.py" line="826"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>Erakutsiko den testua. Hauteko bat izan daiteke: %tag%, %label% edo %description%. Panelaren etiketa (tag zein label) erakusten du</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="949"/>
-      <location filename="../../ArchPanel.py" line="1224"/>
+      <location filename="../../ArchPanel.py" line="832"/>
+      <location filename="../../ArchPanel.py" line="1113"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Etiketa-testuaren posizioa. Utzi (0,0,0) erdian kokatzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="951"/>
-      <location filename="../../ArchPanel.py" line="1226"/>
+      <location filename="../../ArchPanel.py" line="834"/>
+      <location filename="../../ArchPanel.py" line="1115"/>
       <source>The rotation of the tag text</source>
       <translation>Etiketa-testuaren biraketa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="956"/>
-      <location filename="../../ArchPanel.py" line="1240"/>
+      <location filename="../../ArchPanel.py" line="839"/>
+      <location filename="../../ArchPanel.py" line="1129"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Egia bada, objektua aurpegi modura errendatuko da, posible bada.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="958"/>
+      <location filename="../../ArchPanel.py" line="841"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>Objektu hau biratzeko erabil daitezkeen angelu baimenduak, objektua orrietan kokatzen denean</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="961"/>
+      <location filename="../../ArchPanel.py" line="844"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>Ebaketa-planoa puntu zentraletik mugitzeko desplazamendu-balioa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1133"/>
-      <location filename="../../ArchPanel.py" line="1392"/>
+      <location filename="../../ArchPanel.py" line="1017"/>
+      <location filename="../../ArchPanel.py" line="1281"/>
       <source>A margin inside the boundary</source>
       <translation>Mugen barruko marjina bat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1135"/>
-      <location filename="../../ArchPanel.py" line="1394"/>
+      <location filename="../../ArchPanel.py" line="1019"/>
+      <location filename="../../ArchPanel.py" line="1283"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Marjinaren bistaratzea aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1217"/>
+      <location filename="../../ArchPanel.py" line="1106"/>
       <source>The linked Panel cuts</source>
       <translation>Estekatutako panel-mozteak</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1219"/>
+      <location filename="../../ArchPanel.py" line="1108"/>
       <source>The tag text to display</source>
       <translation>Erakutsiko den etiketa-testua</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1229"/>
+      <location filename="../../ArchPanel.py" line="1118"/>
       <source>The font file</source>
       <translation>Letra-tipoaren fitxategia</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1231"/>
+      <location filename="../../ArchPanel.py" line="1120"/>
       <source>The width of the sheet</source>
       <translation>Orriaren zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1234"/>
+      <location filename="../../ArchPanel.py" line="1123"/>
       <source>The height of the sheet</source>
       <translation>Orriaren altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1237"/>
+      <location filename="../../ArchPanel.py" line="1126"/>
       <source>The fill ratio of this sheet</source>
       <translation>Orri honen betetze-erlazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1242"/>
+      <location filename="../../ArchPanel.py" line="1131"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Angelu bat adierazten du egur-zainetarako (erlojuaren noranzkoan, 0 iparraldea da)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1244"/>
+      <location filename="../../ArchPanel.py" line="1133"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Panel-bista bakoitzari aplikatutako eskala zehazten du.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1247"/>
+      <location filename="../../ArchPanel.py" line="1136"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Habiaratzailearen balizko biraketen zerrenda bat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1396"/>
+      <location filename="../../ArchPanel.py" line="1285"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Egur-zainen testura aktibatzen/desaktibatzen du</translation>
     </message>
@@ -5299,531 +5383,501 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Objektu honek norabide bertikalak/horizontalak ondorioztatzeko erabiliko duen erreferentziako norabide bertikala. Mantendu ezazu zure errezel-paretaren uneko norabide bertikaletik hurbil.</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="197"/>
+      <location filename="../../ArchPipe.py" line="199"/>
       <source>The diameter of this pipe, if not based on a profile</source>
       <translation>Hodi honen diametroa, profil batean oinarrituta ez badago</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="199"/>
+      <location filename="../../ArchPipe.py" line="201"/>
       <source>The length of this pipe, if not based on an edge</source>
       <translation>Hodi honen luzera, ertz batean oinarrituta ez badago</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="201"/>
+      <location filename="../../ArchPipe.py" line="203"/>
       <source>An optional closed profile to base this pipe on</source>
       <translation>Aukerako profil itxi bat, hodi honek oinarritzat izango duena</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="203"/>
+      <location filename="../../ArchPipe.py" line="205"/>
       <source>Offset from the start point</source>
       <translation>Desplazamendua hasiera-puntutik</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="205"/>
+      <location filename="../../ArchPipe.py" line="207"/>
       <source>Offset from the end point</source>
       <translation>Desplazamendua amaiera-puntutik</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="207"/>
+      <location filename="../../ArchPipe.py" line="209"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
       <translation>Hodi honen pareta-lodiera, profil batean oinarrituta ez badago</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="356"/>
+      <location filename="../../ArchPipe.py" line="360"/>
       <source>The curvature radius of this connector</source>
       <translation>Konektore honen kurbadura-erradioa</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="358"/>
+      <location filename="../../ArchPipe.py" line="362"/>
       <source>The pipes linked by this connector</source>
       <translation>Konektore honek lotzen dituen hodiak</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="360"/>
+      <location filename="../../ArchPipe.py" line="364"/>
       <source>The type of this connector</source>
       <translation>Konektore honen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="95"/>
+      <location filename="../../ArchSchedule.py" line="124"/>
       <source>The description column</source>
       <translation>Deskribapen-zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="97"/>
+      <location filename="../../ArchSchedule.py" line="126"/>
       <source>The values column</source>
       <translation>Balioen zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="99"/>
+      <location filename="../../ArchSchedule.py" line="128"/>
       <source>The units column</source>
       <translation>Unitateen zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="101"/>
+      <location filename="../../ArchSchedule.py" line="130"/>
       <source>The objects column</source>
       <translation>Objektuen zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="103"/>
+      <location filename="../../ArchSchedule.py" line="132"/>
       <source>The filter column</source>
       <translation>Iragazki-zutabea</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="105"/>
+      <location filename="../../ArchSchedule.py" line="134"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
       <translation>Egia bada, emaitzak dituen kalkulu-orri bat birsortzen da beharrezkoa denean</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="107"/>
-      <source>The spreadsheet to print the results to</source>
-      <translation>Emaitzak inprimatzeko erabiliko den kalkulu-orria</translation>
+      <location filename="../../ArchSchedule.py" line="138"/>
+      <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
+      <translation>Hau egia bada, dokumentua birkalkulatzen den bakoitzean programazioa eta hari lotutako kalkulu-orria eguneratu egingo dira</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="109"/>
+      <location filename="../../ArchSchedule.py" line="150"/>
+      <source>The Arch Schedule that uses this spreadsheet</source>
+      <translation>Kalkulu-orri hau erabiltzen duen arkitektura-programazioa</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="136"/>
       <source>If True, additional lines with each individual object are added to the results</source>
       <translation>Egia bada, banakako objektu bakoitza duten lerro gehigarria eransten zaizkie emaitzei</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="209"/>
-      <location filename="../../ArchSectionPlane.py" line="911"/>
+      <location filename="../../ArchFloor.py" line="213"/>
+      <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The placement of this object</source>
       <translation>Objektu honen kokapena</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="120"/>
+      <location filename="../../ArchAxis.py" line="123"/>
       <source>The intervals between axes</source>
       <translation>Ardatzen arteko tarteak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="122"/>
+      <location filename="../../ArchAxis.py" line="125"/>
       <source>The angles of each axis</source>
       <translation>Ardatz bakoitzaren angeluak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="124"/>
+      <location filename="../../ArchAxis.py" line="127"/>
       <source>The label of each axis</source>
       <translation>Ardatz bakoitzaren etiketa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="126"/>
+      <location filename="../../ArchAxis.py" line="129"/>
       <source>An optional custom bubble number</source>
       <translation>Burbuila-zenbaki pertsonalizatua, aukerakoa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="128"/>
+      <location filename="../../ArchAxis.py" line="131"/>
       <source>The length of the axes</source>
       <translation>Ardatzen luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="135"/>
+      <location filename="../../ArchAxis.py" line="138"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation>Zero ez bada, ardatzak ez dira irudikatuko lerro oso gisa, emandako luzera duten bi lerro gisa baizik</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="227"/>
+      <location filename="../../ArchAxis.py" line="230"/>
       <source>The size of the axis bubbles</source>
       <translation>Ardatzaren burbuilen tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="230"/>
+      <location filename="../../ArchAxis.py" line="233"/>
       <source>The numbering style</source>
       <translation>Zenbakitze-estiloa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="234"/>
+      <location filename="../../ArchAxis.py" line="237"/>
       <source>The type of line to draw this axis</source>
       <translation>Ardatz hau marrazteko erabiliko den lerro mota</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="238"/>
+      <location filename="../../ArchAxis.py" line="241"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Ardatz honetan burbuilak non gehituko diren: hasieran, amaieran, bietan edo inon ere ez</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="241"/>
+      <location filename="../../ArchAxis.py" line="244"/>
       <source>The line width to draw this axis</source>
       <translation>Ardatz hau marrazteko erabiliko den lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="244"/>
+      <location filename="../../ArchAxis.py" line="247"/>
       <source>The color of this axis</source>
       <translation>Ardatz honen kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="247"/>
+      <location filename="../../ArchAxis.py" line="250"/>
       <source>The number of the first axis</source>
       <translation>Lehen ardatzaren zenbakia</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="250"/>
+      <location filename="../../ArchAxis.py" line="253"/>
       <source>The font to use for texts</source>
       <translation>Testuetarako erabiliko den letra-tipoa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="253"/>
+      <location filename="../../ArchAxis.py" line="256"/>
       <source>The font size</source>
       <translation>Letra-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="256"/>
+      <location filename="../../ArchAxis.py" line="259"/>
       <source>If true, show the labels</source>
       <translation>Egia bada, erakutsi etiketak</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="258"/>
+      <location filename="../../ArchAxis.py" line="261"/>
       <source>A transformation to apply to each label</source>
       <translation>Etiketa bakoitzari aplikatuko zaion transformazio bat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="192"/>
+      <location filename="../../ArchComponent.py" line="195"/>
       <source>The base object this component is built upon</source>
       <translation>Osagai hau eraikitzeko erabili den oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="194"/>
+      <location filename="../../ArchComponent.py" line="197"/>
       <source>The object this component is cloning</source>
       <translation>Osagai hau klonatzen ari den objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="204"/>
+      <location filename="../../ArchComponent.py" line="207"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
       <translation>Osagai honentzako aukerako kode estandarra (OmniClass, etab.)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="206"/>
+      <location filename="../../ArchComponent.py" line="209"/>
       <source>A material for this object</source>
       <translation>Objektu honentzako material bat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="212"/>
+      <location filename="../../ArchComponent.py" line="215"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>Objektu hau mugitzeak bere oinarria mugituko duen zehazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="215"/>
+      <location filename="../../ArchComponent.py" line="218"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Objektuaren ostalaria mugitzen denean objektua ere harekin mugitu behar den adierazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="218"/>
+      <location filename="../../ArchComponent.py" line="221"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Objektu honen aurpegi bertikal guztien area</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="224"/>
+      <location filename="../../ArchComponent.py" line="227"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Area horizontalaren perimetroaren luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="227"/>
+      <location filename="../../ArchComponent.py" line="230"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Bereizmen handiagoko amaraun edo forma bat, aukerakoa, objektu honentzat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="229"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Aukerako ardatz bat, edo ardatz-sistema bat, objektu hau bikoizteko</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1171"/>
+      <location filename="../../ArchComponent.py" line="1176"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Erabili materialaren kolorea objektu honen formaren kolore gisa, erabilgarri badago</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="179"/>
       <source>The diameter of the bar</source>
       <translation>Hagaren diametroa</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="181"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>Habearen ertzaren eta lehen hagaren arteko distantzia (hormigoizko estalkia).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="183"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>Habearen ertzaren eta azken hagaren arteko distantzia (hormigoizko estalkia).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The amount of bars</source>
       <translation>Haga kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="183"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The spacing between the bars</source>
       <translation>Hagen arteko tartea</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="190"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>Armadura-barren arteko argiek izango duten distantzia osoa. Utzi 0 balioa ostalariaren formaren tamaina automatikoki erabiltzeko.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="192"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>Hagak hedatzeko erabiliko den norabidea. Mantentu (0,0,0) norabide automatikoa erabiltzeko.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="194"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>Oinarri-profilaren angeluari aplikatuko zaion biribiltzea. Balio hau hagaren diametroarekin biderkatzen da.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="196"/>
       <source>List of placement of all the bars</source>
       <translation>Barra guztien kokapen-zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="198"/>
       <source>The structure object that hosts this rebar</source>
       <translation>Armadura-barra hau ostatatzen duen egitura-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>The custom spacing of rebar</source>
       <translation>Armadura-barraren tarte pertsonalizatua</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="198"/>
+      <location filename="../../ArchRebar.py" line="202"/>
       <source>Length of a single rebar</source>
       <translation>Armadura-barra bakar baten luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="201"/>
+      <location filename="../../ArchRebar.py" line="205"/>
       <source>Total length of all rebars</source>
       <translation>Armadura-barra guztien luzera osoa</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="208"/>
+      <location filename="../../ArchRebar.py" line="212"/>
       <source>The rebar mark</source>
       <translation>Armadura-barraren marka</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="502"/>
+      <location filename="../../ArchRebar.py" line="506"/>
       <source>Shape of rebar</source>
       <translation>Armadura-barraren forma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="915"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Sekzio-plano honek kontuan hartu behar diren objektuak. Hutsik badago, dokumentu osoa hartuko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
+      <location filename="../../ArchSectionPlane.py" line="864"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Gezurra bada, solidoak ez direnak ere moztuko dira, eta emaitzak okerrak izan daitezke.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="920"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Egia bada, emaitzako bistak sekzio-planoaren areara moztuko dira.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="922"/>
+      <location filename="../../ArchSectionPlane.py" line="869"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Egia bada, objektuen materialaren kolorea mozte-areak betetzeko erabiliko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="925"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Balio honetaz haratago dagoen geometria moztu egingo da. Ezarri zero mugagabea izan dadin.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="984"/>
+      <location filename="../../ArchSectionPlane.py" line="931"/>
       <source>The display length of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="937"/>
       <source>The display height of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="996"/>
+      <location filename="../../ArchSectionPlane.py" line="943"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Sekzio-plano honen gezien tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="999"/>
+      <location filename="../../ArchSectionPlane.py" line="946"/>
       <source>The transparency of this object</source>
       <translation>Objektu honen gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1005"/>
-      <location filename="../../ArchSectionPlane.py" line="1010"/>
+      <location filename="../../ArchSectionPlane.py" line="952"/>
+      <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>Show the cut in the 3D view</source>
       <translation>Erakutsi moztea 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1007"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The color of this object</source>
       <translation>Objektu honen kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1012"/>
+      <location filename="../../ArchSectionPlane.py" line="959"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Mozte-planoaren eta uneko bistaren moztearen arteko distantzia (balio horrek oso txikia izan behar du, baina ez zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1015"/>
+      <location filename="../../ArchSectionPlane.py" line="962"/>
       <source>Show the label in the 3D view</source>
       <translation>Erakutsi etiketa 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1017"/>
-      <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSpace.py" line="515"/>
       <source>The name of the font</source>
       <translation>Letra-tipoaren izena</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1020"/>
-      <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSpace.py" line="521"/>
       <source>The size of the text font</source>
       <translation>Testuaren letra-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1270"/>
-      <source>The rendering mode to use</source>
-      <translation>Erabiliko den errendatze-modua</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1274"/>
-      <source>If cut geometry is shown or not</source>
-      <translation>Mozte-geometria erakutsiko den ala ez</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1276"/>
-      <source>If cut geometry is filled or not</source>
-      <translation>Mozte-geometria beteta dagoen ala ez</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1281"/>
-      <source>The size of the texts inside this object</source>
-      <translation>Objektu honen barruko testuen tamaina</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1284"/>
-      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation>Markatuta badago, iturburu-objektuak erakutsi egingo dira, 3D ereduan ikusgarriak izan zein ez</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1286"/>
-      <source>The line color of the projected objects</source>
-      <translation>Proiektatutako objektuen lerro-kolorea</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1288"/>
-      <source>The color of the cut faces (if turned on)</source>
-      <translation>Mozte-aurpegien kolorea (aktibatuta badago)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="270"/>
+      <location filename="../../ArchSpace.py" line="275"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>Espazio-objektu hau mugatzen dituzten objektuak</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="272"/>
+      <location filename="../../ArchSpace.py" line="277"/>
       <source>The computed floor area of this space</source>
       <translation>Espazio honetan kalkulatutako solairu-azalera</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="274"/>
+      <location filename="../../ArchSpace.py" line="279"/>
       <source>The finishing of the floor of this space</source>
       <translation>Espazio honetako zoruaren akabera</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="276"/>
+      <location filename="../../ArchSpace.py" line="281"/>
       <source>The finishing of the walls of this space</source>
       <translation>Espazio honetako pareten akabera</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="278"/>
+      <location filename="../../ArchSpace.py" line="283"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>Espazio honetako sabaiaren akabera</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="280"/>
+      <location filename="../../ArchSpace.py" line="285"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>Espazio honetan dauden objektuak, esaterako altzariak</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="282"/>
+      <location filename="../../ArchSpace.py" line="287"/>
       <source>The type of this space</source>
       <translation>Espazio honen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="285"/>
+      <location filename="../../ArchSpace.py" line="290"/>
       <source>The thickness of the floor finish</source>
       <translation>Zoru-akaberaren lodiera</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="287"/>
+      <location filename="../../ArchSpace.py" line="292"/>
       <source>The number of people who typically occupy this space</source>
       <translation>Espazio honetan normalean egoten den pertsona kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="289"/>
+      <location filename="../../ArchSpace.py" line="294"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>Espazio hau argiztatzeko behar den indar elektrikoa, watt-etan</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="291"/>
+      <location filename="../../ArchSpace.py" line="296"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>Espazio honetako ekipamenduak behar duen energia elektrikoa, watt-etan</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="293"/>
+      <location filename="../../ArchSpace.py" line="298"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>Egia bada, ekipamendu-energia automatikoki beteko da espazio honetan sartutako ekipamenduarekin</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="295"/>
+      <location filename="../../ArchSpace.py" line="300"/>
       <source>The type of air conditioning of this space</source>
       <translation>Espazio honetako aire egokituaren mota</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="298"/>
+      <location filename="../../ArchSpace.py" line="303"/>
       <source>Specifies if this space is internal or external</source>
       <translation>Espazio hau barrukoa ala kanpokoa den zehazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="506"/>
+      <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Erakutsiko den testua. Erabili $area, $label, $tag, $floor, $walls, $ceiling bakoitzari dagokion datua txertatzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="512"/>
+      <location filename="../../ArchSpace.py" line="518"/>
       <source>The color of the area text</source>
       <translation>Area-testuaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="518"/>
+      <location filename="../../ArchSpace.py" line="524"/>
       <source>The size of the first line of text</source>
       <translation>Testuaren lehen lerroaren tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="521"/>
+      <location filename="../../ArchSpace.py" line="527"/>
       <source>The space between the lines of text</source>
       <translation>Testu-lerroen arteko tartea</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="524"/>
+      <location filename="../../ArchSpace.py" line="530"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Testuaren posizioa. Utzi (0,0,0) posizio automatikorako</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="526"/>
+      <location filename="../../ArchSpace.py" line="532"/>
       <source>The justification of the text</source>
       <translation>Testuaren justifikazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="530"/>
+      <location filename="../../ArchSpace.py" line="536"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Testu kalkulatuetan erabiliko den dezimal kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="533"/>
+      <location filename="../../ArchSpace.py" line="539"/>
       <source>Show the unit suffix</source>
       <translation>Erakutsi unitate-atzizkia</translation>
     </message>
@@ -5925,27 +5979,27 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="168"/>
+      <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
       <translation>Ekipamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="172"/>
-      <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation>Ekipamendu-objektu bat sortzen du hautatutako objektu batetik (pieza edo sarea) abiatuta</translation>
+      <location filename="../../ArchEquipment.py" line="177"/>
+      <source>Creates an equipment from a selected object (Part or Mesh)</source>
+      <translation>Ekipamendu bat sortzen du hautatutako objektu batetik (pieza edo amarauna) abiatuta</translation>
     </message>
   </context>
   <context>
     <name>Arch_3Views</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="224"/>
+      <location filename="../../ArchEquipment.py" line="229"/>
       <source>3 views from mesh</source>
       <translation>Amaraunaren 3 bista</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="227"/>
+      <location filename="../../ArchEquipment.py" line="232"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation>Amaraun batean oinarritutako objektu batetik 3 bista (goikoa, aurrekoa, albokoa) sortzen ditu</translation>
+      <translation>Amaraun batean oinarritutako objektu batetik 3 bista (goikoa, aurrekoa, aldekoa) sortzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5957,122 +6011,107 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
-      <source>Creates a BuildingPart object including selected objects</source>
-      <translation>Eraikin zatia den objektu bat sortzen du hautatutako objektuak barne hartuz</translation>
+      <source>Creates a BuildingPart including selected objects</source>
+      <translation>Eraikin-zati bat sortzen du hautatutako objektuak barne hartuz</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="995"/>
+      <location filename="../../ArchBuildingPart.py" line="996"/>
       <source>Writing camera position</source>
       <translation>Kamera-kokapena idazten</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="210"/>
-      <location filename="../../InitGui.py" line="211"/>
-      <location filename="../../InitGui.py" line="212"/>
-      <location filename="../../InitGui.py" line="213"/>
-      <source>Draft</source>
-      <translation>Zirriborroa</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="249"/>
-      <location filename="../../InitGui.py" line="250"/>
-      <location filename="../../InitGui.py" line="251"/>
-      <source>Import-Export</source>
-      <translation>Inportatu-Esportatu</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="71"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
       <translation>Egitura-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="85"/>
+      <location filename="../../InitGui.py" line="92"/>
       <source>Axis tools</source>
       <translation>Ardatz-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="91"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>Panel tools</source>
       <translation>Panel-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Material tools</source>
       <translation>Material-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
+      <location filename="../../InitGui.py" line="110"/>
       <source>Pipe tools</source>
       <translation>Hodi-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>Rebar tools</source>
       <translation>Armadura-barren tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="160"/>
+      <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
       <translation>Arku-tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="163"/>
+      <location filename="../../InitGui.py" line="170"/>
       <source>Draft creation tools</source>
       <translation>Zirriborroak sortzeko tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="166"/>
+      <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
       <translation>Zirriborroetan oharpenak sortzeko tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="169"/>
+      <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
       <translation>Zirriborroak aldatzeko tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="172"/>
+      <location filename="../../InitGui.py" line="179"/>
       <source>Draft snap</source>
       <translation>Zirriborro-atxikitzea</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="177"/>
-      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="188"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arkua</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="178"/>
-      <location filename="../../InitGui.py" line="197"/>
+      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
       <translation>Utilitateak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
-      <location filename="../../InitGui.py" line="192"/>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="191"/>
+      <location filename="../../InitGui.py" line="195"/>
+      <location filename="../../InitGui.py" line="199"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>&amp;Draft</source>
       <translation>&amp;Zirriborroa</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="192"/>
       <source>Creation</source>
       <translation>Sorrera</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="189"/>
+      <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
       <translation>Oharpena</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="193"/>
+      <location filename="../../InitGui.py" line="200"/>
       <source>Modification</source>
       <translation>Aldaketa</translation>
     </message>
@@ -6080,12 +6119,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="144"/>
       <source>Rebar tools</source>
       <translation>Armadura-barren tresnak</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="142"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>Sortu armadura-barren mota desberdinak, U formakoak, L formakoak eta estribu formakoak barne</translation>
     </message>
@@ -6093,27 +6132,27 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../ArchProfile.py" line="122"/>
+      <location filename="../../ArchProfile.py" line="124"/>
       <source>Profile</source>
       <translation>Profila</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="126"/>
-      <source>Creates a profile object</source>
-      <translation>Profil-objektu bat sortzen du</translation>
+      <location filename="../../ArchProfile.py" line="128"/>
+      <source>Creates a profile</source>
+      <translation>Profil bat sortzen du</translation>
     </message>
   </context>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="506"/>
+      <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
       <translation>Gunea</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="510"/>
-      <source>Creates a site object including selected objects.</source>
-      <translation>Gune-objektu bat sortzen du hautatutako objektuak barne hartuz.</translation>
+      <location filename="../../ArchSite.py" line="518"/>
+      <source>Creates a site including selected objects.</source>
+      <translation>Gune bat sortzen du hautatutako objektuak barne hartuz.</translation>
     </message>
   </context>
   <context>
@@ -6132,12 +6171,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_CutLine</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="79"/>
+      <location filename="../../ArchCutPlane.py" line="81"/>
       <source>Cut with line</source>
       <translation>Moztu lerroarekin</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="82"/>
+      <location filename="../../ArchCutPlane.py" line="84"/>
       <source>Cut an object with a line</source>
       <translation>Moztu objektu bat lerro batekin</translation>
     </message>
@@ -6145,12 +6184,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="100"/>
+      <location filename="../../ArchCutPlane.py" line="102"/>
       <source>Cut with plane</source>
       <translation>Moztu planoarekin</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="103"/>
+      <location filename="../../ArchCutPlane.py" line="105"/>
       <source>Cut an object with a plane</source>
       <translation>Moztu objektu bat plano batekin</translation>
     </message>
@@ -6158,12 +6197,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Kanpoko erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Kanpoko erreferentzia-objektu bat sortzen du</translation>
     </message>
@@ -6171,12 +6210,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../ArchFrame.py" line="77"/>
+      <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
       <translation>Markoa</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="81"/>
+      <location filename="../../ArchFrame.py" line="84"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>Marko-objektu bat sortzen du 2D objektu planar batetik (estrusio-bide(eta)tik) eta profil batetik abiatuta. Ziurtatu objektuak ordena horretan hautatzen dituzula.</translation>
     </message>
@@ -6184,12 +6223,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="160"/>
+      <location filename="../../ArchWindow.py" line="164"/>
       <source>Window</source>
       <translation>Leihoa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="164"/>
+      <location filename="../../ArchWindow.py" line="168"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Leiho-objektu bat sortzen du hautatutako alanbre, laukizuzen edo krokis batetik</translation>
     </message>
@@ -6197,12 +6236,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="72"/>
+      <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
       <translation>Ardatz-sistema</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="76"/>
+      <location filename="../../ArchAxisSystem.py" line="78"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Ardatz-sistema bat sortzen du ardatz multzo batetik abiatuta</translation>
     </message>
@@ -6223,12 +6262,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Project</name>
     <message>
-      <location filename="../../ArchProject.py" line="96"/>
+      <location filename="../../ArchProject.py" line="98"/>
       <source>Project</source>
       <translation>Proiektua</translation>
     </message>
     <message>
-      <location filename="../../ArchProject.py" line="100"/>
+      <location filename="../../ArchProject.py" line="102"/>
       <source>Creates a project entity aggregating the selected sites.</source>
       <translation>Proiektu-entitate bat sortzen du hautatutako guneak batuta.</translation>
     </message>
@@ -6236,25 +6275,25 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../ArchStairs.py" line="206"/>
+      <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
       <translation>Eskailera</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStairs.py" line="212"/>
+      <source>Creates a flight of stairs</source>
+      <translation>Eskaileren hegaldi bat sortzen du</translation>
     </message>
   </context>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchStairs.py" line="210"/>
-      <source>Creates a stairs object</source>
-      <translation>Eskailera-objektu bat sortzen du</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSpace.py" line="226"/>
+      <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
       <translation>Espazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="230"/>
+      <location filename="../../ArchSpace.py" line="235"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Espazio-objektu bat sortzen du hautatutako muga-objektutik abiatuz</translation>
     </message>
@@ -6310,72 +6349,72 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchGrid.py" line="68"/>
+      <location filename="../../ArchGrid.py" line="71"/>
       <source>Grid</source>
       <translation>Sareta</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="72"/>
+      <location filename="../../ArchGrid.py" line="75"/>
       <source>Creates a customizable grid object</source>
       <translation>Sareta-objektu pertsonalizatua sortzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="98"/>
+      <location filename="../../ArchGrid.py" line="101"/>
       <source>The number of rows</source>
       <translation>Errenkada kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="100"/>
+      <location filename="../../ArchGrid.py" line="103"/>
       <source>The number of columns</source>
       <translation>Zutabe kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="102"/>
+      <location filename="../../ArchGrid.py" line="105"/>
       <source>The sizes for rows</source>
       <translation>Errenkaden tamainak</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="104"/>
+      <location filename="../../ArchGrid.py" line="107"/>
       <source>The sizes of columns</source>
       <translation>Zutabeen tamainak</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="106"/>
+      <location filename="../../ArchGrid.py" line="109"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Elkarrekin fusionatu diren gelaxken bitarte-barrutiak</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="108"/>
+      <location filename="../../ArchGrid.py" line="111"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Sareta-objektu honek sortutako 3D puntuen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="111"/>
+      <location filename="../../ArchGrid.py" line="114"/>
       <source>The total width of this grid</source>
       <translation>Sareta honen zabalera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="113"/>
+      <location filename="../../ArchGrid.py" line="116"/>
       <source>The total height of this grid</source>
       <translation>Sareta honen altuera totala</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="115"/>
+      <location filename="../../ArchGrid.py" line="118"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Zutabe-zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="117"/>
+      <location filename="../../ArchGrid.py" line="120"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Errenkada-zatiketa automatikoak sortzen ditu (ezarri 0 desgaitzeko)</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="119"/>
+      <location filename="../../ArchGrid.py" line="122"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Ertzen erdiko puntuen moduan egonez gero, sareta honek bere haurrak ertzen normaletan zehar orientatu behar dituen ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="121"/>
+      <location filename="../../ArchGrid.py" line="124"/>
       <source>The indices of faces to hide</source>
       <translation>Ezkutatuko diren aurpegien indizeak</translation>
     </message>
@@ -6383,12 +6422,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="148"/>
+      <location filename="../../ArchPanel.py" line="135"/>
       <source>Panel</source>
       <translation>Panela</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="152"/>
+      <location filename="../../ArchPanel.py" line="139"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Panel-objektu bat sortzen du, zerotik hasita edo hautatutako krokis, alanbre, aurpegi edo solido batetik</translation>
     </message>
@@ -6396,12 +6435,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="335"/>
+      <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
       <translation>Panel-mozketa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="339"/>
+      <location filename="../../ArchPanel.py" line="326"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Hautatutako panelen 2D bistak sortzen ditu</translation>
     </message>
@@ -6409,12 +6448,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="362"/>
+      <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
       <translation>Panel-orria</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="366"/>
+      <location filename="../../ArchPanel.py" line="353"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Panel-mozteak izan ditzakeen 2D orri bat sortzen du</translation>
     </message>
@@ -6422,12 +6461,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1520"/>
+      <location filename="../../ArchPanel.py" line="1409"/>
       <source>Nest</source>
       <translation>Habiaratu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1524"/>
+      <location filename="../../ArchPanel.py" line="1413"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Habiaratu hautatutako forma multzo bat edukiontzi batean</translation>
     </message>
@@ -6435,8 +6474,8 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1688"/>
-      <location filename="../../ArchPanel.py" line="1691"/>
+      <location filename="../../ArchPanel.py" line="1577"/>
+      <location filename="../../ArchPanel.py" line="1580"/>
       <source>Panel tools</source>
       <translation>Panel-tresnak</translation>
     </message>
@@ -6457,12 +6496,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../ArchPipe.py" line="106"/>
+      <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
       <translation>Hodia</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="110"/>
+      <location filename="../../ArchPipe.py" line="112"/>
       <source>Creates a pipe object from a given Wire or Line</source>
       <translation>Hodi-objektu bat sortzen du emandako alanbre edo lerro batetik</translation>
     </message>
@@ -6470,12 +6509,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../ArchPipe.py" line="145"/>
+      <location filename="../../ArchPipe.py" line="147"/>
       <source>Connector</source>
       <translation>Konektorea</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="149"/>
+      <location filename="../../ArchPipe.py" line="151"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Hautatutako 2 edo 3 hodiren arteko konektorea sortzen du</translation>
     </message>
@@ -6483,8 +6522,8 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../ArchPipe.py" line="513"/>
-      <location filename="../../ArchPipe.py" line="516"/>
+      <location filename="../../ArchPipe.py" line="520"/>
+      <location filename="../../ArchPipe.py" line="523"/>
       <source>Pipe tools</source>
       <translation>Hodi-tresnak</translation>
     </message>
@@ -6492,12 +6531,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../ArchSchedule.py" line="61"/>
+      <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
       <translation>Programazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="64"/>
+      <location filename="../../ArchSchedule.py" line="63"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Programazio bat sortzen du eredutik datuak biltzeko</translation>
     </message>
@@ -6505,12 +6544,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="112"/>
+      <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
       <translation>Maila</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="116"/>
+      <location filename="../../ArchFloor.py" line="120"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
       <translation>Maila bat ordezkatzen duen eraikin-pieza motako objektu bat sortzen du, hautatutako objektuak sartuta</translation>
     </message>
@@ -6518,12 +6557,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="90"/>
+      <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
       <translation>Ardatza</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="94"/>
+      <location filename="../../ArchAxis.py" line="97"/>
       <source>Creates a set of axes</source>
       <translation>Ardatz multzo bat sortzen du</translation>
     </message>
@@ -6531,8 +6570,8 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="821"/>
       <location filename="../../ArchAxis.py" line="824"/>
+      <location filename="../../ArchAxis.py" line="827"/>
       <source>Axis tools</source>
       <translation>Ardatz-tresnak</translation>
     </message>
@@ -6540,12 +6579,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="106"/>
+      <location filename="../../ArchRebar.py" line="110"/>
       <source>Custom Rebar</source>
       <translation>Armadura-barra pertsonalizatua</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="110"/>
+      <location filename="../../ArchRebar.py" line="114"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>Indartze-haga bat sortzen du egiturazko objektu eta/edo zirriborro solido batean hautatutako aurpegitik abiatuta</translation>
     </message>
@@ -6553,12 +6592,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="874"/>
+      <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>Section Plane</source>
       <translation>Sekzio-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="826"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Sekzio-plano bat sortzen du, hautatutako objektuak barne hartuz</translation>
     </message>
@@ -6566,12 +6605,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Building</name>
     <message>
-      <location filename="../../ArchBuilding.py" line="215"/>
+      <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
       <translation>Eraikina</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="219"/>
+      <location filename="../../ArchBuilding.py" line="223"/>
       <source>Creates a building object including selected objects.</source>
       <translation>Eraikin-objektu bat sortzen du hautatutako objektuak barne hartuz.</translation>
     </message>
@@ -6605,12 +6644,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1332"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Add component</source>
       <translation>Gehitu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1335"/>
+      <location filename="../../ArchCommands.py" line="1343"/>
       <source>Adds the selected components to the active object</source>
       <translation>Hautatutako osagaiak objektu aktiboari gehitzen dizkio</translation>
     </message>
@@ -6618,12 +6657,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1364"/>
+      <location filename="../../ArchCommands.py" line="1372"/>
       <source>Remove component</source>
       <translation>Kendu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1367"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Kendu hautatutako osagaiak haien gurasoetatik, edo sortu zulo bat osagai batean</translation>
     </message>
@@ -6631,12 +6670,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1399"/>
+      <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
       <translation>Zatitu amarauna</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1402"/>
+      <location filename="../../ArchCommands.py" line="1410"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Hautatutako sareak osagai independenteetan zatitzen ditu</translation>
     </message>
@@ -6644,12 +6683,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1424"/>
+      <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
       <translation>Amarauna formara</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1427"/>
+      <location filename="../../ArchCommands.py" line="1435"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Hautatutako amaraunak piezen forma-objektu bihurtzen ditu</translation>
     </message>
@@ -6657,12 +6696,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1459"/>
+      <location filename="../../ArchCommands.py" line="1467"/>
       <source>Select non-manifold meshes</source>
       <translation>Hautatu anizkoitzak ez diren amaraunak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1462"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Hautatu anizkoitzak ez diren amaraun guztiak, dokumentuan edo hautatutako taldeetan</translation>
     </message>
@@ -6670,12 +6709,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1488"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>Remove Shape from Arch</source>
       <translation>Kendu forma arkitekturatik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1491"/>
+      <location filename="../../ArchCommands.py" line="1499"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Forma kubikoak kentzen ditu arkitektura-osagaietatik</translation>
     </message>
@@ -6683,12 +6722,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1503"/>
+      <location filename="../../ArchCommands.py" line="1511"/>
       <source>Close holes</source>
       <translation>Itxi zuloak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1506"/>
+      <location filename="../../ArchCommands.py" line="1514"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Forma irekietako zuloak ixten ditu eta haiek solido bihurtzen ditu</translation>
     </message>
@@ -6696,12 +6735,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1520"/>
+      <location filename="../../ArchCommands.py" line="1528"/>
       <source>Check</source>
       <translation>Egiaztatu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1523"/>
+      <location filename="../../ArchCommands.py" line="1531"/>
       <source>Checks the selected objects for problems</source>
       <translation>Hautatutako objektuak aztertzen ditu arazoak dituzten aurkitzeko</translation>
     </message>
@@ -6709,12 +6748,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1541"/>
+      <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
       <translation>Lur-neurketa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1544"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Starts survey</source>
       <translation>Lur-neurketa abiarazten du</translation>
     </message>
@@ -6722,12 +6761,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1556"/>
+      <location filename="../../ArchCommands.py" line="1564"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Txandakatu IFC Brep bandera</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1559"/>
+      <location filename="../../ArchCommands.py" line="1567"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Behartu objektu bat Brep gisa, edo ez, esportatua izan dadin</translation>
     </message>
@@ -6735,12 +6774,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1571"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Component</source>
       <translation>Osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1583"/>
       <source>Creates an undefined architectural component</source>
       <translation>Definitu gabeko arkitektura-osagai bat sortzen du</translation>
     </message>
@@ -6748,12 +6787,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1596"/>
+      <location filename="../../ArchCommands.py" line="1604"/>
       <source>Clone component</source>
       <translation>Klonatu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1600"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Objektu bat klonatzen du arkitektura-osagai definitu gabea sortzeko</translation>
     </message>
@@ -6761,12 +6800,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1646"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Sortu IFC kalkulu-orria...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1658"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Kalkulu-orri bat sortzen du objektu baten IFC propietateak gordetzeko.</translation>
     </message>
@@ -6774,12 +6813,12 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1672"/>
+      <location filename="../../ArchCommands.py" line="1680"/>
       <source>Toggle subcomponents</source>
       <translation>Txandakatu azpiosagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1675"/>
+      <location filename="../../ArchCommands.py" line="1683"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Objektu honen azpiosagaiak erakusten edo ezkutatzen ditu</translation>
     </message>
@@ -6787,11 +6826,35 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="946"/>
-      <location filename="../../ArchIFCView.py" line="67"/>
-      <location filename="../../ArchAxis.py" line="643"/>
+      <location filename="../../ArchAxis.py" line="646"/>
+      <location filename="../../ArchIFCView.py" line="68"/>
+      <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
       <translation>Transformatu</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../InitGui.py" line="213"/>
+      <location filename="../../InitGui.py" line="214"/>
+      <source>Arch</source>
+      <translation>Arkitektura</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="217"/>
+      <location filename="../../InitGui.py" line="218"/>
+      <location filename="../../InitGui.py" line="219"/>
+      <location filename="../../InitGui.py" line="220"/>
+      <source>Draft</source>
+      <translation>Zirriborroa</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="256"/>
+      <location filename="../../InitGui.py" line="257"/>
+      <location filename="../../InitGui.py" line="258"/>
+      <source>Import-Export</source>
+      <translation>Inportatu-Esportatu</translation>
     </message>
   </context>
 </TS>

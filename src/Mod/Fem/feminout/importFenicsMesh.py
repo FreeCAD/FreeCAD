@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +23,7 @@
 
 __title__ = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importFenicsMesh
 #  \ingroup FEM
@@ -54,6 +54,7 @@ if FreeCAD.GuiUp:
         This task panel is used to write mesh groups with user defined values.
         It will called if there are mesh groups detected. Else it will be bypassed.
         """
+
         def __init__(self, fem_mesh_obj, fileString):
             self.form = FreeCADGui.PySideUic.loadUi(os.path.join(
                 FreeCAD.getHomePath(),
@@ -174,11 +175,11 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         if fileExtension.lower() == ".xml":
-            Console.PrintWarning(
-                "XML is not designed to save higher order elements.\n")
-            Console.PrintWarning(
-                "Reducing order for second order mesh.\n")
-            Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
+            if obj.ElementOrder != "1st":
+                Console.PrintWarning(
+                    "XML is not designed to save higher order elements.\n" +
+                    "Reducing order for second order mesh.\n" +
+                    "Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)

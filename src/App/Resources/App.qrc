@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/translations">
+        <file>App_be.qm</file>
+        <file>App_eu.qm</file>
+        <file>App_fr.qm</file>
+        <file>App_hu.qm</file>
+        <file>App_pl.qm</file>
+        <file>App_ru.qm</file>
+        <file>App_sl.qm</file>
+        <file>App_ka.qm</file>
+        <file>App_it.qm</file>
+        <file>App_hr.qm</file>
+        <file>App_es-ES.qm</file>
+        <file>App_zh-TW.qm</file>
+        <file>App_de.qm</file>
+        <file>App_sr.qm</file>
+        <file>App_sr-CS.qm</file>
+        <file>App_tr.qm</file>
+        <file>App_pt-BR.qm</file>
+        <file>App_ja.qm</file>
+        <file>App_ca.qm</file>
+        <file>App_nl.qm</file>
+        <file>App_uk.qm</file>
+        <file>App_cs.qm</file>
+        <file>App_zh-CN.qm</file>
+        <file>App_el.qm</file>
+        <file>App_es-AR.qm</file>
+        <file>App_sv-SE.qm</file>
+        <file>App_fi.qm</file>
+        <file>App_pt-PT.qm</file>
+        <file>App_val-ES.qm</file>
+        <file>App_ro.qm</file>
+        <file>App_gl.qm</file>
+        <file>App_ko.qm</file>
+        <file>App_id.qm</file>
+    </qresource>
+</RCC>

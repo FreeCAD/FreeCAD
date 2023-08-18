@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Approximate a cylinder</source>
-      <translation>Апроксимирај цилиндар</translation>
+      <translation>Апроксимирај ваљак</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Approximate a sphere</source>
-      <translation>Апроксимирај сферу</translation>
+      <translation>Апроксимирај лопту</translation>
     </message>
   </context>
   <context>
@@ -210,12 +210,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
-      <translation>Уклопи цилиндар</translation>
+      <translation>Уклопи ваљак</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
-      <translation>Уклопи сферу</translation>
+      <translation>Уклопи лопту</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
@@ -228,12 +228,12 @@
       <translation>Приказ триангулације</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="148"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="220"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Уклопи Б-Сплајн</translation>
     </message>
@@ -243,7 +243,7 @@
       <translation>Поасонова реконструкција</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="230"/>
+      <location filename="../../SegmentationManual.cpp" line="257"/>
       <source>Segmentation</source>
       <translation>Сегментација</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="159"/>
-      <location filename="../../FitBSplineSurface.cpp" line="227"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="199"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="200"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Изабери један објекат Положај да би добио локалну оријентацију.</translation>
     </message>
@@ -526,12 +526,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Цилиндар</translation>
+      <translation>Ваљак</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Сфера</translation>
+      <translation>Лопта</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="306"/>
+      <location filename="../../SegmentationManual.cpp" line="333"/>
       <source>Create</source>
       <translation>Направи</translation>
     </message>

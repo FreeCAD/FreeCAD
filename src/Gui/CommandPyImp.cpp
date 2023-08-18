@@ -44,7 +44,7 @@
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
 {
-    return std::string("<Command object>");
+    return {"<Command object>"};
 }
 
 PyObject* CommandPy::get(PyObject *args)

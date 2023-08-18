@@ -44,18 +44,18 @@ else:
 
 __title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
-def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
+def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
 
-    "makePipe([baseobj,diamerter,length,placement,name]): creates an pipe object from the given base object"
+    "makePipe([baseobj],[diameter],[length],[placement],[name]): creates an pipe object from the given base object"
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    obj.Label = name
+    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Pipe")
+    obj.Label = name if name else translate("Arch","Pipe")
     _ArchPipe(obj)
     if FreeCAD.GuiUp:
         _ViewProviderPipe(obj.ViewObject)
@@ -78,15 +78,15 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
     return obj
 
 
-def makePipeConnector(pipes,radius=0,name="Connector"):
+def makePipeConnector(pipes,radius=0,name=None):
 
-    "makePipeConnector(pipes,[radius,name]): creates a connector between the given pipes"
+    "makePipeConnector(pipes,[radius],[name]): creates a connector between the given pipes"
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    obj.Label = name
+    obj= FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Connector")
+    obj.Label = name if name else translate("Arch","Connector")
     _ArchPipeConnector(obj)
     obj.Pipes = pipes
     if not radius:
@@ -190,7 +190,7 @@ class _ArchPipe(ArchComponent.Component):
             obj.IfcType = "Pipe Segment"
         else:
             # IFC2x3 does not know a Pipe Segment
-            obj.IfcType = "Undefined"
+            obj.IfcType = "Building Element Proxy"
 
     def setProperties(self,obj):
 

@@ -27,6 +27,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Inventor/VRMLnodes/SoVRMLTransform.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 
 class SoDragger;
@@ -38,23 +39,23 @@ namespace RobotGui
 
 class RobotGuiExport ViewProviderRobotObject : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderRobotObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderRobotObject);
 
 public:
     /// constructor.
     ViewProviderRobotObject();
 
     /// destructor.
-    ~ViewProviderRobotObject();
+    ~ViewProviderRobotObject() override;
 
     App::PropertyBool Manipulator;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
 
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     /// for simulation without changing the document:
     void setAxisTo(float A1,float A2,float A3,float A4,float A5,float A6,const Base::Placement &Tcp);
@@ -63,8 +64,8 @@ protected:
     static void sDraggerMotionCallback(void *data, SoDragger *dragger);
     void DraggerMotionCallback(SoDragger *dragger);
 
-    void setDragger(void);
-    void resetDragger(void);
+    void setDragger();
+    void resetDragger();
 
     Gui::SoFCSelection    * pcRobotRoot;
     Gui::SoFCSelection    * pcSimpleRoot;

@@ -22,7 +22,7 @@
 
 __title__  = "FreeCAD Arch Curtain Wall"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 import math
 import FreeCAD
@@ -69,17 +69,17 @@ the facet is triangulated and receives a third mullion
 """
 
 
-def makeCurtainWall(baseobj=None,name="Curtain Wall"):
+def makeCurtainWall(baseobj=None,name=None):
 
     """
-    makeCurtainWall([baseobj]): Creates a curtain wall in the active document
+    makeCurtainWall([baseobj],[name]): Creates a curtain wall in the active document
     """
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CurtainWall")
-    obj.Label = translate("Arch","Curtain Wall")
+    obj.Label = name if name else translate("Arch","Curtain Wall")
     CurtainWall(obj)
     if FreeCAD.GuiUp:
         ViewProviderCurtainWall(obj.ViewObject)

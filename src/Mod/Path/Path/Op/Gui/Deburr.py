@@ -31,7 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Deburr Operation UI"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
 

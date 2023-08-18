@@ -30,7 +30,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "A collection of helper and utility functions for the Path GUI."
 
 

@@ -345,8 +345,8 @@ void Translator::refresh()
     std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(d->activatedLanguage);
     if (tld == d->mapLanguageTopLevelDomain.end())
         return; // no language activated
-    for (QStringList::iterator it = d->paths.begin(); it != d->paths.end(); ++it) {
-        QDir dir(*it);
+    for (const QString& it : d->paths) {
+        QDir dir(it);
         installQMFiles(dir, tld->second.c_str());
     }
 }
@@ -356,9 +356,9 @@ void Translator::refresh()
  */
 void Translator::removeTranslators()
 {
-    for (std::list<QTranslator*>::iterator it = d->translators.begin(); it != d->translators.end(); ++it) {
-        qApp->removeTranslator(*it);
-        delete *it;
+    for (QTranslator* it : d->translators) {
+        qApp->removeTranslator(it);
+        delete it;
     }
 
     d->translators.clear();
@@ -396,6 +396,10 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
 
 void Translator::enableDecimalPointConversion(bool on)
 {
+    if (!qApp) {
+        return;
+    }
+
     if (!on) {
         decimalPointConverter.reset();
         return;

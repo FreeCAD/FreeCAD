@@ -57,7 +57,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 #undef CS_FUTURE // multi-threading causes some problems
 
 namespace PartGui {
@@ -91,7 +91,7 @@ public:
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const override
+    std::vector<std::string> getDisplayModes() const override
     {
         return std::vector<std::string>();
     }
@@ -214,9 +214,9 @@ void CrossSections::apply()
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().
             getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector<App::DocumentObject*> obj;
-    for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it){
-        if (!Part::Feature::getTopoShape(*it).isNull()) {
-            obj.push_back((*it));
+    for (auto it : docobjs) {
+        if (!Part::Feature::getTopoShape(it).isNull()) {
+            obj.push_back(it);
         }
     }
 
@@ -243,7 +243,7 @@ void CrossSections::apply()
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         Part::CrossSection cs(a,b,c,static_cast<Part::Feature*>(*it)->Shape.getValue());
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, boost::bind(&Part::CrossSection::section, &cs, bp::_1));
+            (d, std::bind(&Part::CrossSection::section, &cs, sp::_1));
         future.waitForFinished();
         QFuture< std::list<TopoDS_Wire> >::const_iterator ft;
         TopoDS_Compound comp;
@@ -270,21 +270,21 @@ void CrossSections::apply()
     Base::SequencerLauncher seq("Cross-sections...", obj.size() * (d.size() +1));
     Gui::Command::runCommand(Gui::Command::App, "import Part\n");
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string s = (*it)->getNameInDocument();
+    for (auto it : obj) {
+        App::Document* doc = it->getDocument();
+        std::string s = it->getNameInDocument();
         s += "_cs";
         Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()),
-                 QLatin1String((*it)->getNameInDocument())).toLatin1());
+                 QLatin1String(it->getNameInDocument())).toLatin1());
 
-        for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
+        for (double jt : d) {
             Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
                 "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
                 "    wires.append(i)\n"
-                ).arg(a).arg(b).arg(c).arg(*jt).toLatin1());
+                ).arg(a).arg(b).arg(c).arg(jt).toLatin1());
             seq.next();
         }
 
@@ -502,26 +502,26 @@ std::vector<double> CrossSections::getPlanes() const
 void CrossSections::makePlanes(Plane type, const std::vector<double>& d, double bound[4])
 {
     std::vector<Base::Vector3f> points;
-    for (std::vector<double>::const_iterator it = d.begin(); it != d.end(); ++it) {
+    for (double it : d) {
         Base::Vector3f v[4];
         switch (type) {
             case XY:
-                v[0].Set(bound[0],bound[2],*it);
-                v[1].Set(bound[1],bound[2],*it);
-                v[2].Set(bound[1],bound[3],*it);
-                v[3].Set(bound[0],bound[3],*it);
+                v[0].Set(bound[0],bound[2],it);
+                v[1].Set(bound[1],bound[2],it);
+                v[2].Set(bound[1],bound[3],it);
+                v[3].Set(bound[0],bound[3],it);
                 break;
             case XZ:
-                v[0].Set(bound[0],*it,bound[2]);
-                v[1].Set(bound[1],*it,bound[2]);
-                v[2].Set(bound[1],*it,bound[3]);
-                v[3].Set(bound[0],*it,bound[3]);
+                v[0].Set(bound[0],it,bound[2]);
+                v[1].Set(bound[1],it,bound[2]);
+                v[2].Set(bound[1],it,bound[3]);
+                v[3].Set(bound[0],it,bound[3]);
                 break;
             case YZ:
-                v[0].Set(*it,bound[0],bound[2]);
-                v[1].Set(*it,bound[1],bound[2]);
-                v[2].Set(*it,bound[1],bound[3]);
-                v[3].Set(*it,bound[0],bound[3]);
+                v[0].Set(it,bound[0],bound[2]);
+                v[1].Set(it,bound[1],bound[2]);
+                v[2].Set(it,bound[1],bound[3]);
+                v[3].Set(it,bound[0],bound[3]);
                 break;
         }
 

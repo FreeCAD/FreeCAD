@@ -25,6 +25,7 @@
 
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 
 class SoCoordinate3;
@@ -38,20 +39,20 @@ namespace RobotGui
 
 class RobotGuiExport ViewProviderTrajectory : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderTrajectory);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderTrajectory);
 
 public:
     /// constructor.
     ViewProviderTrajectory();
 
     /// destructor.
-    ~ViewProviderTrajectory();
+    ~ViewProviderTrajectory() override;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
 protected:
 

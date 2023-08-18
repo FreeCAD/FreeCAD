@@ -36,7 +36,7 @@ Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson)"
 
@@ -119,7 +119,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
         else:
             Path.Log.warning(
-                translate("PathAreaOp", "no job for op %s found.") % obj.Label
+                translate("PathAreaOp", "no job for operation %s found.") % obj.Label
             )
         return None
 
@@ -265,7 +265,10 @@ class ObjectOp(PathOp.ObjectOp):
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
-        self.endVector = end_vector
+
+        # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
+        if pp.Size > 0:
+            self.endVector = end_vector
 
         simobj = None
         if getsim:

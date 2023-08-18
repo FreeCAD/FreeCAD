@@ -28,6 +28,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -96,7 +97,7 @@ class GCodeEditorDialog(QtGui.QDialog):
     tool = None
 
     def __init__(self, PathObj, parent=FreeCADGui.getMainWindow()):
-        self.PathObj = PathObj.Path
+        self.PathObj = PathObj
         if hasattr(PathObj, "ToolController"):
             self.tool = PathObj.ToolController.Tool
         else:
@@ -139,7 +140,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "Path_Inspect",
-                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post-processing.",
+                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
             )
         )
         lab.setWordWrap(True)

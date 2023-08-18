@@ -56,7 +56,7 @@ using namespace Gui;
 
 using Connection = boost::signals2::connection;
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 class NotificationAreaObserver;
 
@@ -107,6 +107,14 @@ struct NotificationAreaP
     QTimer inhibitTimer;
     // The time between two consecutive messages forced by the inhibitTimer
     const unsigned int inhibitNotificationTime = 250;
+    //@}
+
+    /** @name Data source control */
+    //@{
+    /* Controls whether debug warnings and errors intended for developers should be processed or not
+     */
+    bool developerErrorSubscriptionEnabled = false;
+    bool developerWarningSubscriptionEnabled = false;
     //@}
 
     bool missedNotifications = false;
@@ -214,8 +222,8 @@ public:
 
     /// Function that is called by the console interface for this observer with the message
     /// information
-    void SendLog(const std::string& notifiername, const std::string& msg,
-                 Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// Name of the observer
     const char* Name() override
@@ -231,10 +239,9 @@ NotificationAreaObserver::NotificationAreaObserver(NotificationArea* notificatio
     : notificationArea(notificationarea)
 {
     Base::Console().AttachObserver(this);
-    bLog = false;                  // ignore log messages
-    bMsg = false;                  // ignore messages
-    bNotification = true;          // activate user notifications
-    bTranslatedNotification = true;// activate translated user notifications
+    bLog = false;        // ignore log messages
+    bMsg = false;        // ignore messages
+    bNotification = true;// activate user notifications
 }
 
 NotificationAreaObserver::~NotificationAreaObserver()
@@ -243,7 +250,8 @@ NotificationAreaObserver::~NotificationAreaObserver()
 }
 
 void NotificationAreaObserver::SendLog(const std::string& notifiername, const std::string& msg,
-                                       Base::LogStyle level)
+                                       Base::LogStyle level, Base::IntendedRecipient recipient,
+                                       Base::ContentType content)
 {
     // 1. As notification system is shared with report view and others, the expectation is that any
     // individual error and warning message will end in "\n". This means the string must be stripped
@@ -253,6 +261,22 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     // "\n", as this generates problems with the translation system. Then the string must be
     // stripped of "\n" before translation.
 
+    bool violatesBasicPolicy = (recipient == Base::IntendedRecipient::Developer
+                                || content == Base::ContentType::Untranslatable);
+
+    // We allow derogations for debug purposes according to user preferences
+    bool meetsDerogationCriteria = false;
+
+    if (violatesBasicPolicy) {
+        meetsDerogationCriteria =
+            (level == Base::LogStyle::Warning && notificationArea->areDeveloperWarningsActive())
+            || (level == Base::LogStyle::Error && notificationArea->areDeveloperErrorsActive());
+    }
+
+    if (violatesBasicPolicy && !meetsDerogationCriteria) {
+        return;
+    }
+
     auto simplifiedstring =
         QString::fromStdString(msg)
             .trimmed();// remove any leading and trailing whitespace character ('\n')
@@ -261,7 +285,7 @@ void NotificationAreaObserver::SendLog(const std::string& notifiername, const st
     if (simplifiedstring.isEmpty())
         return;
 
-    if (level == Base::LogStyle::TranslatedNotification) {
+    if (content == Base::ContentType::Translated) {
         notificationArea->pushNotification(
             QString::fromStdString(notifiername), simplifiedstring, level);
     }
@@ -329,7 +353,7 @@ public:
             return font;
         }
 
-        return QVariant();
+        return {};
     }
 
     Base::LogStyle notificationType;
@@ -356,9 +380,9 @@ public:
         : QWidgetAction(parent)
     {}
 
-    ~NotificationsAction()
+    ~NotificationsAction() override
     {
-        for (auto* item : pushedItems) {
+        for (auto* item : qAsConst(pushedItems)) {
             if (item) {
                 delete item;
             }
@@ -366,22 +390,20 @@ public:
     }
 
 public:
-    /// deletes only notifications (messages of type Notification and TranslatedNotification)
+    /// deletes only notifications (messages of type Notification)
     void deleteNotifications()
     {
         if (tableWidget) {
             for (int i = tableWidget->topLevelItemCount() - 1; i >= 0; i--) {
                 auto* item = static_cast<NotificationItem*>(tableWidget->topLevelItem(i));
-                if (item->notificationType == Base::LogStyle::Notification
-                    || item->notificationType == Base::LogStyle::TranslatedNotification) {
+                if (item->notificationType == Base::LogStyle::Notification) {
                     delete item;
                 }
             }
         }
         for (int i = pushedItems.size() - 1; i >= 0; i--) {
             auto* item = static_cast<NotificationItem*>(pushedItems.at(i));
-            if (item->notificationType == Base::LogStyle::Notification
-                || item->notificationType == Base::LogStyle::TranslatedNotification) {
+            if (item->notificationType == Base::LogStyle::Notification) {
                 delete pushedItems.takeAt(i);
             }
         }
@@ -550,7 +572,7 @@ protected:
                 QMenu menu;
 
                 QAction* del = menu.addAction(tr("Delete"), this, [&]() {
-                    for (auto it : selectedItems) {
+                    for (auto it : qAsConst(selectedItems)) {
                         delete it;
                     }
                 });
@@ -680,15 +702,15 @@ NotificationArea::ParameterObserver::ParameterObserver(NotificationArea* notific
              auto enabled = hGrp->GetBool(string.c_str(), true);
              notificationArea->pImp->preventNonIntrusiveNotificationsWhenWindowNotActive = enabled;
          }},
-        {"ErrorSubscriptionEnabled",
+        {"DeveloperErrorSubscriptionEnabled",
          [this](const std::string& string) {
-             auto enabled = hGrp->GetBool(string.c_str(), true);
-             notificationArea->pImp->observer->bErr = enabled;
+             auto enabled = hGrp->GetBool(string.c_str(), false);
+             notificationArea->pImp->developerErrorSubscriptionEnabled = enabled;
          }},
-        {"WarningSubscriptionEnabled",
+        {"DeveloperWarningSubscriptionEnabled",
          [this](const std::string& string) {
-             auto enabled = hGrp->GetBool(string.c_str(), true);
-             notificationArea->pImp->observer->bWrn = enabled;
+             auto enabled = hGrp->GetBool(string.c_str(), false);
+             notificationArea->pImp->developerWarningSubscriptionEnabled = enabled;
          }},
     };
 
@@ -803,11 +825,13 @@ NotificationArea::NotificationArea(QWidget* parent)
     });
 
 
+    //NOLINTBEGIN
     // Connection to the finish restore signal to rearm Critical messages modal mode when action is
     // user initiated
     pImp->finishRestoreDocumentConnection =
         App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind(&Gui::NotificationArea::slotRestoreFinished, this, bp::_1));
+            std::bind(&Gui::NotificationArea::slotRestoreFinished, this, sp::_1));
+    //NOLINTEND
 
     // Initialisation of the timer to inhibit continuous updates of the notification system in case
     // clusters of messages arrive (so as to delay the actual notification until the whole cluster
@@ -861,6 +885,16 @@ void NotificationArea::mousePressEvent(QMouseEvent* e)
         menu.exec(this->mapToGlobal(e->pos()));
     }
     QPushButton::mousePressEvent(e);
+}
+
+bool NotificationArea::areDeveloperWarningsActive() const
+{
+    return pImp->developerWarningSubscriptionEnabled;
+}
+
+bool NotificationArea::areDeveloperErrorsActive() const
+{
+    return pImp->developerErrorSubscriptionEnabled;
 }
 
 void NotificationArea::pushNotification(const QString& notifiername, const QString& message,
@@ -1052,9 +1086,7 @@ void NotificationArea::showInNotificationArea()
                             item->notifying = false;
 
                             if (pImp->autoRemoveUserNotifications) {
-                                if (item->notificationType == Base::LogStyle::Notification
-                                    || item->notificationType
-                                        == Base::LogStyle::TranslatedNotification) {
+                                if (item->notificationType == Base::LogStyle::Notification) {
 
                                     static_cast<NotificationsAction*>(pImp->notificationaction)
                                         ->deleteItem(item);

@@ -182,6 +182,15 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getParent">
+            <Documentation>
+                <UserDocu>Returns the group the object is in or None if it is not part of a group.
+                          Note that an object can only be in a single group, hence only a single return
+                          value.
+                          The parent can be a simple group as with getParentGroup() or a
+                          GeoFeature group as with getParentGeoFeatureGroup().</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getPathsByOutList">
             <Documentation>
                 <UserDocu>Get all paths from this object to another object following the OutList.</UserDocu>

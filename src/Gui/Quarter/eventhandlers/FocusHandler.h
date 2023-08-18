@@ -46,10 +46,10 @@ class FocusHandler : public QObject {
   Q_OBJECT
 public:
   FocusHandler(QObject * parent);
-  virtual ~FocusHandler();
+  ~FocusHandler() override;
 
 protected:
-  virtual bool eventFilter(QObject *, QEvent * event);
+  bool eventFilter(QObject *, QEvent * event) override;
 
 private:
   void focusEvent(const SbName & focusevent);

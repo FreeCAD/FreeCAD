@@ -469,7 +469,13 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stderrPy = new PythonStderr(this);
     d->_stdinPy  = new PythonStdin (this);
     d->_stdin  = PySys_GetObject("stdin");
-    PySys_SetObject("stdin", d->_stdinPy);
+
+    // Don't override stdin when running FreeCAD as Python module
+    auto& cfg = App::Application::Config();
+    auto overrideStdIn = cfg.find("DontOverrideStdIn");
+    if (overrideStdIn == cfg.end()) {
+        PySys_SetObject("stdin", d->_stdinPy);
+    }
 
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
@@ -881,8 +887,8 @@ void PythonConsole::runSource(const QString& line)
     PySys_SetObject("stdout", default_stdout);
     PySys_SetObject("stderr", default_stderr);
     d->interactive = false;
-    for (QStringList::Iterator it = d->statements.begin(); it != d->statements.end(); ++it) {
-        printStatement(*it);
+    for (const auto & it : d->statements) {
+        printStatement(it);
     }
     d->statements.clear();
 }
@@ -986,7 +992,13 @@ void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
         // Now we must amend the received event and pass forward. As e->setLocalPos() is only
         // available in Qt>=5.8, let's stop the original event propagation and generate a fake event
         // with corrected pointer position (inside the prompt line of the widget)
-        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()), e->button(), e->buttons(), e->modifiers());
+#if QT_VERSION < QT_VERSION_CHECK(6,4,0)
+        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()),
+                          e->button(), e->buttons(), e->modifiers());
+#else
+        QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()), e->globalPosition(),
+                          e->button(), e->buttons(), e->modifiers());
+#endif
         e->accept();
         QCoreApplication::sendEvent(this->viewport(), &newEv);
         return;
@@ -1131,7 +1143,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     // Some applications copy text into the clipboard with the formats
     // 'text/plain' and 'text/uri-list'. In case the url is not an existing
     // file we can handle it as normal text, then. See forum thread:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    // https://forum.freecad.org/viewtopic.php?f=3&t=34618
     if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
     }
@@ -1312,7 +1324,8 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
-    a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy, QKeySequence(QString::fromLatin1("CTRL+C")));
+    a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
     a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
@@ -1331,11 +1344,13 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     menu.addSeparator();
 
-    a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste, QKeySequence(QString::fromLatin1("CTRL+V")));
+    a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
-    a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll, QKeySequence(QString::fromLatin1("CTRL+A")));
+    a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll);
+    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
     a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);

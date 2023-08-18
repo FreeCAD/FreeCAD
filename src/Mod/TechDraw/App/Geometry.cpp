@@ -283,6 +283,7 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
     } else {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        throw Base::RuntimeError("no OCC edge in Geometry::findEndPoints");
     }
     return result;
 }
@@ -317,7 +318,7 @@ Base::Vector3d BaseGeom::getEndPoint()
 
 Base::Vector3d BaseGeom::getMidPoint()
 {
-    // Midpoint calculation - additional details here: https://forum.freecadweb.org/viewtopic.php?f=35&t=59582
+    // Midpoint calculation - additional details here: https://forum.freecad.org/viewtopic.php?f=35&t=59582
 
     BRepAdaptor_Curve curve(occEdge);
 
@@ -1266,39 +1267,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
-    BRepAdaptor_Curve c(occEdge);
-
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt e = c.Value(l);
-
-    bool samePnt = s.IsEqual(e, FLT_EPSILON);
-    if (samePnt) {
-        return false;
-    }
-
-    Base::Vector3d vs = DrawUtil::toVector3d(s);
-    Base::Vector3d ve = DrawUtil::toVector3d(e);
-    double endLength = (vs - ve).Length();
-    int low = 0;
-    int high = spline->NbPoles() - 1;
-    TColgp_Array1OfPnt poles(low, high);
-    spline->Poles(poles);
-    double lenTotal = 0.0;
-    for (int i = 0; i < high; i++) {
-        gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
-        gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
-        lenTotal += (v2-v1).Length();
-    }
-
-    if (DrawUtil::fpCompare(lenTotal, endLength)) {
-        return true;
-    }
-    return false;
+    return GeometryUtils::isLine(occEdge);
 }
 
 //used by DVDim for approximate dims
@@ -1801,4 +1770,41 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
         return TopoDS_Edge();
     }
     return result;
+}
+
+bool GeometryUtils::isLine(TopoDS_Edge occEdge)
+{
+    BRepAdaptor_Curve c(occEdge);
+
+    Handle(Geom_BSplineCurve) spline = c.BSpline();
+    double f = c.FirstParameter();
+    double l = c.LastParameter();
+    gp_Pnt s = c.Value(f);
+    gp_Pnt e = c.Value(l);
+
+    bool samePnt = s.IsEqual(e, FLT_EPSILON);
+    if (samePnt) {
+        return false;
+    }
+
+    Base::Vector3d vs = DrawUtil::toVector3d(s);
+    Base::Vector3d ve = DrawUtil::toVector3d(e);
+    double endLength = (vs - ve).Length();
+    int low = 0;
+    int high = spline->NbPoles() - 1;
+    TColgp_Array1OfPnt poles(low, high);
+    spline->Poles(poles);
+    double lenTotal = 0.0;
+    for (int i = 0; i < high; i++) {
+        gp_Pnt p1 = poles(i);
+        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
+        gp_Pnt p2 = poles(i+1);
+        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
+        lenTotal += (v2-v1).Length();
+    }
+
+    if (DrawUtil::fpCompare(lenTotal, endLength)) {
+        return true;
+    }
+    return false;
 }

@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="331"/>
       <source>Settings</source>
-      <translation>გამართვა</translation>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>

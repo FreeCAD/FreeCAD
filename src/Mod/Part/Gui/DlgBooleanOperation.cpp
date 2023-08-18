@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -47,7 +48,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace PartGui {
     class BooleanOperationItem : public QTreeWidgetItem
@@ -92,10 +93,12 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
             this, &DlgBooleanOperation::currentItemChanged);
     connect(ui->secondShape, &QTreeWidget::currentItemChanged,
             this, &DlgBooleanOperation::currentItemChanged);
-    this->connectNewObject = App::GetApplication().signalNewObject.connect(boost::bind
-        (&DlgBooleanOperation::slotCreatedObject, this, bp::_1));
-    this->connectModObject = App::GetApplication().signalChangedObject.connect(boost::bind
-        (&DlgBooleanOperation::slotChangedObject, this, bp::_1, bp::_2));
+    //NOLINTBEGIN
+    this->connectNewObject = App::GetApplication().signalNewObject.connect(std::bind
+        (&DlgBooleanOperation::slotCreatedObject, this, sp::_1));
+    this->connectModObject = App::GetApplication().signalChangedObject.connect(std::bind
+        (&DlgBooleanOperation::slotChangedObject, this, sp::_1, sp::_2));
+    //NOLINTEND
     findShapes();
 }
 
@@ -219,18 +222,18 @@ void DlgBooleanOperation::findShapes()
         (Part::Feature::getClassTypeId());
 
     QTreeWidgetItem *item_left=nullptr, *item_right=nullptr;
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+    for (auto obj : objs) {
+        const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
         if (!shape.IsNull()) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString name = QString::fromLatin1(obj->getNameInDocument());
 
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 child->setIcon(0, vp->getIcon());
 
@@ -265,7 +268,7 @@ void DlgBooleanOperation::findShapes()
             }
 
             if (!item_left || !item_right) {
-                bool selected = Gui::Selection().isSelected(*it);
+                bool selected = Gui::Selection().isSelected(obj);
                 if (!item_left && selected)
                     item_left = child;
                 else if (!item_right && selected)
@@ -405,7 +408,7 @@ void DlgBooleanOperation::accept()
         return;
     }
 
-    std::string type, objName;
+    std::string method;
     App::DocumentObject* obj1 = activeDoc->getObject(shapeOne.c_str());
     App::DocumentObject* obj2 = activeDoc->getObject(shapeTwo.c_str());
     if (!obj1 || !obj2) {
@@ -421,8 +424,7 @@ void DlgBooleanOperation::accept()
                 tr("Performing union on non-solids is not possible"));
             return;
         }
-        type = "Part::Fuse";
-        objName = activeDoc->getUniqueObjectName("Fusion");
+        method = "make_fuse";
     }
     else if (ui->interButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
@@ -430,8 +432,7 @@ void DlgBooleanOperation::accept()
                 tr("Performing intersection on non-solids is not possible"));
             return;
         }
-        type = "Part::Common";
-        objName = activeDoc->getUniqueObjectName("Common");
+        method = "make_common";
     }
     else if (ui->diffButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
@@ -439,55 +440,24 @@ void DlgBooleanOperation::accept()
                 tr("Performing difference on non-solids is not possible"));
             return;
         }
-        type = "Part::Cut";
-        objName = activeDoc->getUniqueObjectName("Cut");
+        method = "make_cut";
     }
     else if (ui->sectionButton->isChecked()) {
-        type = "Part::Section";
-        objName = activeDoc->getUniqueObjectName("Section");
+        method = "make_section";
     }
 
     try {
         Gui::WaitCursor wc;
         activeDoc->openTransaction("Boolean operation");
+        std::vector<std::string> names;
+        names.push_back(Base::Tools::quoted(shapeOne.c_str()));
+        names.push_back(Base::Tools::quoted(shapeTwo.c_str()));
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().addObject(\"%s\",\"%s\")",
-            type.c_str(), objName.c_str());
+            "from BOPTools import BOPFeatures");
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().%s.Base = App.activeDocument().%s",
-            objName.c_str(),shapeOne.c_str());
+            "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.activeDocument().%s.Tool = App.activeDocument().%s",
-            objName.c_str(),shapeTwo.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.activeDocument().hide(\"%s\")",shapeOne.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
-
-        // add/remove fromgroup if needed
-        App::DocumentObjectGroup* targetGroup = nullptr;
-
-        App::DocumentObjectGroup* group1 = obj1->getGroup();
-        if (group1) {
-            targetGroup = group1;
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group1->getNameInDocument(), obj1->getNameInDocument());
-        }
-
-        App::DocumentObjectGroup* group2 = obj2->getGroup();
-        if (group2) {
-            targetGroup = group2;
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group2->getNameInDocument(), obj2->getNameInDocument());
-        }
-
-        if (targetGroup) {
-            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                targetGroup->getNameInDocument(), objName.c_str());
-        }
-
-        Gui::Command::copyVisual(objName.c_str(), "ShapeColor", shapeOne.c_str());
-        Gui::Command::copyVisual(objName.c_str(), "DisplayMode", shapeOne.c_str());
+            "bp.%s([%s])", method.c_str(), Base::Tools::joinList(names).c_str());
         activeDoc->commitTransaction();
         activeDoc->recompute();
     }

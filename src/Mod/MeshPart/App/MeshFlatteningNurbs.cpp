@@ -200,8 +200,9 @@ void add_triplets(Eigen::VectorXd values, double row, std::vector<trip> &triplet
 {
     for (unsigned int i=0; i < values.size(); i++)
     {
-        if (values(i) != 0.)
-            triplets.push_back(trip(row, i, values(i)));
+        if (values(i) != 0.) {
+            triplets.emplace_back(trip(row, i, values(i)));
+        }
     }
 }
 

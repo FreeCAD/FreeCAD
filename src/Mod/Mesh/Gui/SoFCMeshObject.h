@@ -48,8 +48,7 @@ class MeshGuiExport SoSFMeshObject : public SoSField {
 public:
     static void initClass();
 
-private:
-    SoSFMeshObject(const SoSFMeshObject&);
+    SoSFMeshObject(const SoSFMeshObject&) = delete;
 };
 
 // -------------------------------------------------------

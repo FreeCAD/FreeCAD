@@ -457,7 +457,7 @@ void QGIView::drawBorder()
     m_font.setPixelSize(fontSize);
     m_label->setFont(m_font);
 
-    QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
+    QString labelStr = QString::fromStdString( getViewObject()->Label.getValue() );
     m_label->setPlainText(labelStr);
     QRectF labelArea = m_label->boundingRect();                //m_label coords
     double labelWidth = m_label->boundingRect().width();

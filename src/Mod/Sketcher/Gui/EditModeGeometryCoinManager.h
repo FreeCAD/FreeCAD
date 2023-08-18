@@ -36,25 +36,29 @@ class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
 
-namespace Base {
-    template< typename T >
-    class Vector3;
+namespace Base
+{
+template<typename T>
+class Vector3;
 
-    class Vector2d;
+class Vector2d;
 
-    class Placement;
+class Placement;
+}// namespace Base
+
+namespace Part
+{
+class Geometry;
 }
 
-namespace Part {
-    class Geometry;
-}
+namespace Sketcher
+{
+class Constraint;
+class PropertyConstraintList;
+};// namespace Sketcher
 
-namespace Sketcher {
-    class Constraint;
-    class PropertyConstraintList;
-};
-
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class ViewProviderSketch;
 class EditModeConstraintCoinManager;
@@ -62,10 +66,12 @@ class EditModeConstraintCoinManager;
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
 
-/** @brief      Class for managing the Edit mode coin nodes of ViewProviderSketch relating to geometry.
+/** @brief      Class for managing the Edit mode coin nodes of ViewProviderSketch relating to
+ * geometry.
  *  @details
  *
- * EditModeGeometryCoinManager is a helper of EditModeCoinManager specialised in geometry management.
+ * EditModeGeometryCoinManager is a helper of EditModeCoinManager specialised in geometry
+ * management.
  *
  * Three main functions are delegated to it:
  * 1. Creation of Edit mode coin nodes to handle Geometry representation.
@@ -80,19 +86,18 @@ class SketcherGuiExport EditModeGeometryCoinManager
 {
 
 public:
-    explicit EditModeGeometryCoinManager(   ViewProviderSketch &vp,
-                                            DrawingParameters & drawingParams,
-                                            GeometryLayerParameters & geometryLayerParams,
-                                            AnalysisResults & analysisResultStruct,
-                                            EditModeScenegraphNodes & editModeScenegraph,
-                                            CoinMapping & coinMap);
+    explicit EditModeGeometryCoinManager(ViewProviderSketch& vp, DrawingParameters& drawingParams,
+                                         GeometryLayerParameters& geometryLayerParams,
+                                         AnalysisResults& analysisResultStruct,
+                                         EditModeScenegraphNodes& editModeScenegraph,
+                                         CoinMapping& coinMap);
     ~EditModeGeometryCoinManager();
 
 
     // This function populates the coin nodes with the information of the current geometry
-    void processGeometry(const GeoListFacade & geolistfacade);
+    void processGeometry(const GeoListFacade& geolistfacade);
 
-    void updateGeometryColor(const GeoListFacade & geolistfacade, bool issketchinvalid);
+    void updateGeometryColor(const GeoListFacade& geolistfacade, bool issketchinvalid);
 
     void updateGeometryLayersConfiguration();
 
@@ -107,21 +112,19 @@ private:
     void createEditModeCurveInventorNodes();
 
 private:
-    ViewProviderSketch & viewProvider;
+    ViewProviderSketch& viewProvider;
 
-    DrawingParameters & drawingParameters;
-    GeometryLayerParameters & geometryLayerParameters;
-    AnalysisResults & analysisResults;
+    DrawingParameters& drawingParameters;
+    GeometryLayerParameters& geometryLayerParameters;
+    AnalysisResults& analysisResults;
 
-    EditModeScenegraphNodes & editModeScenegraphNodes;
+    EditModeScenegraphNodes& editModeScenegraphNodes;
 
-    CoinMapping & coinMapping;
-
+    CoinMapping& coinMapping;
 };
 
 
-} // namespace SketcherGui
+}// namespace SketcherGui
 
 
-#endif // SKETCHERGUI_EditModeGeometryCoinManager_H
-
+#endif// SKETCHERGUI_EditModeGeometryCoinManager_H

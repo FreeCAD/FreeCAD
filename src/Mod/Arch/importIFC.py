@@ -49,7 +49,7 @@ if FreeCAD.GuiUp:
 
 __title__  = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
@@ -205,7 +205,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     except ModuleNotFoundError:
         _err("IfcOpenShell was not found on this system. "
              "IFC support is disabled.\n"
-             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
 
@@ -306,7 +306,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # For the following tables it might be better to use inverse attributes
     # to find the properties, otherwise a lot of loops
     # and if testing is needed.
-    # See https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+    # See https://forum.freecad.org/viewtopic.php?f=39&t=37892
     prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
     additions = importIFCHelper.buildRelAdditions(ifcfile)
     groups = importIFCHelper.buildRelGroups(ifcfile)
@@ -323,7 +323,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         while only:
             currentid = only.pop()
             ids.append(currentid)
-            if currentid in additions.keys():
+            if currentid in additions:
                 only.extend(additions[currentid])
         products = [ifcfile[currentid] for currentid in ids]
 
@@ -346,7 +346,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
             projectImporter.execute()
         else:
-            # https://forum.freecadweb.org/viewtopic.php?f=39&t=40624
+            # https://forum.freecad.org/viewtopic.php?f=39&t=40624
             print("No IfcProject found in the ifc file. Nothing imported")
             return doc
 
@@ -370,7 +370,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 lays = product.Representation.Representations[0].LayerAssignments
                 if len(lays) > 0:
                     layer_name = lays[0].Name
-                    if layer_name not in list(layers.keys()):
+                    if layer_name not in layers:
                         layers[layer_name] = [pid]
                     else:
                         layers[layer_name].append(pid)
@@ -610,7 +610,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                     baseobj.Dir = ex[1]
                                 if FreeCAD.GuiUp:
                                     baseface.ViewObject.hide()
-                        if (not baseobj):
+                        if not baseobj:
                             baseobj = doc.addObject("Part::Feature",name+"_body")
                             baseobj.Shape = shape
         else:
@@ -921,7 +921,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y,x))-90+180) % 360)-180
-                    if (FreeCAD.GuiUp):
+                    if FreeCAD.GuiUp:
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
@@ -943,7 +943,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
                 compound = []
                 for c in children:
-                    if c in structshapes.keys():
+                    if c in structshapes:
                         compound.append(structshapes[c])
                         del structshapes[c]
                 if compound:
@@ -969,11 +969,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 # print(host, ' --> ', children)
                 obj = doc.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
-                if host in objects.keys():
+                if host in objects:
                     cobs = []
                     childs_to_delete = []
                     for child in children:
-                        if child in objects.keys():
+                        if child in objects:
                             cobs.append(objects[child])
                             childs_to_delete.append(child)
                     for c in childs_to_delete:
@@ -1009,7 +1009,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
-                if child in objects.keys():
+                if child in objects:
                     grp.addObject(objects[child])
                     swallowed.append(child)
                 else:
@@ -1025,12 +1025,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcBuildingStorey"):
                 compound = []
                 for c in children:
-                    if c in shapes.keys():
+                    if c in shapes:
                         compound.append(shapes[c])
                         del shapes[c]
-                    if c in additions.keys():
+                    if c in additions:
                         for c2 in additions[c]:
-                            if c2 in shapes.keys():
+                            if c2 in shapes:
                                 compound.append(shapes[c2])
                                 del shapes[c2]
                 if compound:
@@ -1054,7 +1054,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         if preferences['SEPARATE_OPENINGS']:
             for subtraction in subtractions:
-                if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
+                if (subtraction[0] in objects) and (subtraction[1] in objects):
                     if preferences['DEBUG'] and first:
                         print("")
                         first = False
@@ -1065,13 +1065,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # additions
 
         for host,children in additions.items():
-            if host not in objects.keys():
+            if host not in objects:
                 # print(host, 'not used')
                 # print(ifcfile[host])
                 continue
             cobs = []
             for child in children:
-                if child in objects.keys() \
+                if child in objects \
                         and child not in swallowed:  # don't add objects already in groups
                     cobs.append(objects[child])
             if not cobs:
@@ -1131,11 +1131,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # placing in container if needed
 
         if anno:
-            if aid in remaining.keys():
+            if aid in remaining:
                 remaining[aid].addObject(anno)
             else:
                 for host,children in additions.items():
-                    if (aid in children) and (host in objects.keys()):
+                    if (aid in children) and (host in objects):
                         Arch.addComponents(anno,objects[host])
 
         if preferences['DEBUG']: print("")  # add newline for 2D objects debug prints
@@ -1163,7 +1163,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if material.Name:
             name = material.Name
         # mdict["Name"] = name on duplicate material names in IFC this could result in crash
-        # https://forum.freecadweb.org/viewtopic.php?f=23&t=63260
+        # https://forum.freecad.org/viewtopic.php?f=23&t=63260
         # thus use "Description"
         mdict["Description"] = name
 
@@ -1227,7 +1227,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             # all viewers use the shape color whereas in FreeCAD the shape color will be
                             # overwritten by the material color (if there is a material with a color).
                             # In such a case FreeCAD shows a different color than all common ifc viewers
-                            # https://forum.freecadweb.org/viewtopic.php?f=39&t=38440
+                            # https://forum.freecad.org/viewtopic.php?f=39&t=38440
                             col = objects[o].ViewObject.ShapeColor[:3]
                             dig = 5
                             ma_color = sh_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)

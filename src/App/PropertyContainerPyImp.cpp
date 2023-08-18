@@ -45,7 +45,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string PropertyContainerPy::representation() const
 {
-    return std::string("<property container>");
+    return {"<property container>"};
 }
 
 PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
@@ -442,8 +442,8 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 
     std::vector<std::string> enumerations = enumProp->getEnumVector();
     Py::List ret;
-    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
-        ret.append(Py::String(*it));
+    for (const auto & it : enumerations) {
+        ret.append(Py::String(it));
     }
     return Py::new_reference_to(ret);
 }
@@ -583,8 +583,8 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         getPropertyContainerPtr()->getPropertyMap(Map);
 
         Py::Dict dict;
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            dict.setItem(it->first, Py::String(""));
+        for (const auto & it : Map) {
+            dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
     }

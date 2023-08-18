@@ -158,7 +158,7 @@ public:
 
   unsigned int getMemSize () const override;
 
-  virtual std::string getFullName() const {return std::string();}
+  virtual std::string getFullName() const {return {};}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
@@ -248,10 +248,10 @@ protected:
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
-private:
+public:
   // forbidden
-  PropertyContainer(const PropertyContainer&);
-  PropertyContainer& operator = (const PropertyContainer&);
+  PropertyContainer(const PropertyContainer&) = delete;
+  PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
   DynamicProperty dynamicProps;
@@ -296,7 +296,7 @@ private: \
   TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * getPropertyDataPtr(void); \
-  virtual const App::PropertyData &getPropertyData(void) const override; \
+  const App::PropertyData &getPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 ///

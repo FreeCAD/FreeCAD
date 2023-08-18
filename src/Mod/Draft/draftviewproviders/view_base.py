@@ -106,7 +106,7 @@ class ViewProviderDraft(object):
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
                                                "Defines an SVG pattern."))
-            patterns = list(utils.svg_patterns().keys())
+            patterns = list(utils.svg_patterns())
             patterns.sort()
             vobj.Pattern = ["None"] + patterns
 
@@ -283,7 +283,7 @@ class ViewProviderDraft(object):
                             path = vobj.TextureImage
                     if not path:
                         if hasattr(vobj, "Pattern"):
-                            if str(vobj.Pattern) in list(utils.svg_patterns().keys()):
+                            if str(vobj.Pattern) in utils.svg_patterns():
                                 path = utils.svg_patterns()[vobj.Pattern][1]
                             else:
                                 path = "None"
@@ -388,18 +388,21 @@ class ViewProviderDraft(object):
         if mode == 1 or mode == 2:
             return None
 
-        tp = utils.get_type(vobj.Object)
+        # Fillet, Point, Shape2DView and PanelCut objects rely on a doubleClicked
+        # function which takes precedence over all double-click edit modes. This
+        # is a workaround as calling Gui.runCommand("Std_TransformManip") from
+        # setEdit does not work properly. The object then seems to be put into
+        # edit mode twice (?) and Esc will not cancel the command.
 
-        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve"): # Facebinder, ShapeString, PanelSheet and Profile objects have their own setEdit.
+        # Facebinder, ShapeString, PanelSheet and Profile objects have their own
+        # setEdit and unsetEdit.
+
+        if utils.get_type(vobj.Object) in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                                           "BSpline", "BezCurve"):
             if not "Draft_Edit" in Gui.listCommands():
                 self.wb_before_edit = Gui.activeWorkbench()
                 Gui.activateWorkbench("DraftWorkbench")
             Gui.runCommand("Draft_Edit")
-            return True
-
-        if tp in ("Fillet", "Point", "Shape2DView", "PanelCut"):
-            Gui.runCommand("Std_TransformManip")
             return True
 
         return None
@@ -412,19 +415,14 @@ class ViewProviderDraft(object):
         if mode == 1 or mode == 2:
             return None
 
-        tp = utils.get_type(vobj.Object)
-
-        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve"): # Facebinder, ShapeString, PanelSheet and Profile objects have their own unsetEdit.
+        if utils.get_type(vobj.Object) in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                                           "BSpline", "BezCurve"):
             if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
                 App.activeDraftCommand.finish()
             Gui.Control.closeDialog()
             if hasattr(self, "wb_before_edit"):
                 Gui.activateWorkbench(self.wb_before_edit.name())
                 delattr(self, "wb_before_edit")
-            return True
-
-        if tp in ("Fillet", "Point", "Shape2DView", "PanelCut"):
             return True
 
         return None
@@ -542,15 +540,21 @@ class ViewProviderDraftAlt(ViewProviderDraft):
 
     The `claimChildren` method is overridden to return an empty list.
 
+    The `doubleClicked` method is defined.
+
     Only used by the `Shape2DView` object.
     """
 
     def __init__(self, vobj):
         super(ViewProviderDraftAlt, self).__init__(vobj)
 
+    def doubleClicked(self, vobj):
+        # See setEdit in ViewProviderDraft.
+        Gui.runCommand("Std_TransformManip")
+        return True
+
     def claimChildren(self):
-        objs = []
-        return objs
+        return []
 
 
 # Alias for compatibility with v0.18 and earlier

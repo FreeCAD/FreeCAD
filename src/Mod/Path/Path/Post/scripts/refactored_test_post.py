@@ -39,7 +39,7 @@ import Path.Post.UtilsExport as PostUtilsExport
 #    called to create TOOLTIP_ARGS, so they also end up having to be globals.
 #
 TOOLTIP = """This is a postprocessor file for the Path workbench. It is used to
-test the postprocessor code.  It probably isn't useful for "real" gcode.
+test the postprocessor code.  It probably isn't useful for "real" G-code.
 
 import refactored_test_post
 refactored_test_post.export(object,"/path/to/file.ncc","")

@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM command base class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package manager
 #  \ingroup FEM
@@ -346,7 +346,7 @@ class CommandManager(object):
     def add_obj_on_gui_expand_noset_edit(self, objtype):
         # like add_obj_on_gui_noset_edit but the parent object
         # is expanded in the tree to see the added obj
-        # the added obj is also selected to enable direct additons to it
+        # the added obj is also selected to enable direct additions to it
         FreeCAD.ActiveDocument.openTransaction(
             "Create Fem{}"
             .format(objtype)

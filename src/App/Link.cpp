@@ -29,7 +29,7 @@
 #include <Base/Uuid.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "ComplexGeoDataPy.h"
 #include "Document.h"
 #include "DocumentObserver.h"
@@ -47,7 +47,7 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
 using namespace Base;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 using CharRange = boost::iterator_range<const char*>;
 
@@ -1051,7 +1051,7 @@ DocumentObject *LinkBaseExtension::getLink(int depth) const{
 }
 
 int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname) {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
+    if(!subname || Data::isMappedElement(subname))
         return -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
@@ -1073,7 +1073,7 @@ int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname)
 }
 
 int LinkBaseExtension::getElementIndex(const char *subname, const char **psubname) const {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
+    if(!subname || Data::isMappedElement(subname))
         return -1;
     int idx = -1;
     const char *dot = strchr(subname,'.');
@@ -1313,7 +1313,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 return true;
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
             // do not resolve the link if this element is the last referenced object
-            if(!subname || Data::ComplexGeoData::isMappedElement(subname) || !strchr(subname,'.'))
+            if(!subname || Data::isMappedElement(subname) || !strchr(subname,'.'))
                 ret = elements[idx];
             return true;
         }
@@ -1381,7 +1381,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     std::string postfix;
     if(ret) {
         // do not resolve the link if we are the last referenced object
-        if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) {
+        if(subname && !Data::isMappedElement(subname) && strchr(subname,'.')) {
             if(mat)
                 *mat = matNext;
         }
@@ -1394,7 +1394,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         }
         else {
             if(idx) {
-                postfix = Data::ComplexGeoData::indexPostfix();
+                postfix = Data::POSTFIX_INDEX;
                 postfix += std::to_string(idx);
             }
             if(mat)
@@ -1488,7 +1488,7 @@ void LinkBaseExtension::parseSubName() const {
     }
     const auto &subs = xlink->getSubValues();
     auto subname = subs.front().c_str();
-    auto element = Data::ComplexGeoData::findElementName(subname);
+    auto element = Data::findElementName(subname);
     if(!element || !element[0]) {
         mySubName = subs[0];
         if(hasSubElement)
@@ -1499,7 +1499,7 @@ void LinkBaseExtension::parseSubName() const {
     mySubName = std::string(subname,element-subname);
     for(std::size_t i=1;i<subs.size();++i) {
         auto &sub = subs[i];
-        element = Data::ComplexGeoData::findElementName(sub.c_str());
+        element = Data::findElementName(sub.c_str());
         if(element && element[0] && boost::starts_with(sub,mySubName))
             mySubElements.emplace_back(element);
     }
@@ -1539,8 +1539,10 @@ void LinkBaseExtension::updateGroup() {
             if(!conn.connected()) {
                 FC_LOG("new group connection " << getExtendedObject()->getFullName()
                         << " -> " << group->getFullName());
+                //NOLINTBEGIN
                 conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
+                        std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
+                //NOLINTEND
             }
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
@@ -1553,8 +1555,10 @@ void LinkBaseExtension::updateGroup() {
                 if(!conn.connected()) {
                     FC_LOG("new group connection " << getExtendedObject()->getFullName()
                             << " -> " << child->getFullName());
+                    //NOLINTBEGIN
                     conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
+                            std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
+                    //NOLINTEND
                 }
             }
         }
@@ -1611,8 +1615,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             placements.reserve(objs.size());
             std::vector<Base::Vector3d> scales;
             scales.reserve(objs.size());
-            for(size_t i=0;i<objs.size();++i) {
-                auto element = freecad_dynamic_cast<LinkElement>(objs[i]);
+            for(auto obj : objs) {
+                auto element = freecad_dynamic_cast<LinkElement>(obj);
                 if(element) {
                     placements.push_back(element->Placement.getValue());
                     scales.push_back(element->getScaleVector());
@@ -1883,8 +1887,8 @@ void LinkBaseExtension::syncElementList() {
     auto owner = getContainer();
     auto ownerID = owner?owner->getID():0;
     auto elements = getElementListValue();
-    for (size_t i = 0; i < elements.size(); ++i) {
-        auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
+    for (auto i : elements) {
+        auto element = freecad_dynamic_cast<LinkElement>(i);
         if (!element
             || (element->_LinkOwner.getValue()
                 && element->_LinkOwner.getValue() != ownerID))
@@ -1938,7 +1942,7 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
         } else {
             std::set<std::string> subset(mySubElements.begin(),mySubElements.end());
             auto sub = xlink->getSubValues().front();
-            auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+            auto element = Data::findElementName(sub.c_str());
             if(element && element[0]) {
                 subset.insert(element);
                 sub.resize(element - sub.c_str());

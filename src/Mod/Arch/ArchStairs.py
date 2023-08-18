@@ -21,7 +21,7 @@
 
 __title__= "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import FreeCAD,ArchComponent,Draft,DraftVecUtils,math,ArchPipe
@@ -50,9 +50,9 @@ else:
 zeroMM = FreeCAD.Units.Quantity('0mm')
 
 
-def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="Stairs"):
+def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 
-    """makeStairs([baseobj,length,width,height,steps]): creates a Stairs
+    """makeStairs([baseobj],[length],[width],[height],[steps],[name]): creates a Stairs
     objects with given attributes."""
 
     if not FreeCAD.ActiveDocument:
@@ -62,8 +62,9 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
 
     stairs = []
     additions = []
+    label = name if name else translate("Arch","Stairs")
 
-    def setProperty(obj,length,width,height,steps,name):
+    def setProperty(obj,length,width,height,steps):
         if length:
             obj.Length = length
         else:
@@ -94,19 +95,19 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         lenSelection = len(baseobj)
         if lenSelection > 1:
             stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
-            stair.Label = translate("Arch",name)
+            stair.Label = label
             _Stairs(stair)
             stairs.append(stair)
-            stairs[0].Label = translate("Arch",name)
+            stairs[0].Label = label
             i = 1
         else:
             i = 0
         for baseobjI in baseobj:
             stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
-            stair.Label = translate("Arch",name)
+            stair.Label = label
             _Stairs(stair)
             stairs.append(stair)
-            stairs[i].Label = translate("Arch",name)
+            stairs[i].Label = label
             stairs[i].Base = baseobjI
 
             if len(baseobjI.Shape.Edges) > 1:
@@ -115,7 +116,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
                 stepsI = steps
             else:
                 stepsI = 20
-            setProperty(stairs[i],None,width,height,stepsI,name)
+            setProperty(stairs[i],None,width,height,stepsI)
 
             if i > 1:
                 additions.append(stairs[i])
@@ -129,9 +130,9 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
 
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
-        obj.Label = translate("Arch",name)
+        obj.Label = label
         _Stairs(obj)
-        setProperty(obj,length,width,height,steps,name)
+        setProperty(obj,length,width,height,steps)
         stairs.append(obj)
 
     if FreeCAD.GuiUp:
@@ -167,7 +168,7 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Rail")
+                lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break
@@ -206,7 +207,7 @@ class _CommandStairs:
         return {'Pixmap'  : 'Arch_Stairs',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
                 'Accel': "S, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
 
     def IsActive(self):
 

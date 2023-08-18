@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
+    <width>474</width>
     <height>416</height>
    </rect>
   </property>
@@ -530,7 +530,7 @@ can be a performance penalty in complex models.</string>
            <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</string>
           </property>
           <property name="text">
-           <string>Use New Face Finder</string>
+           <string>Use New Face Finder Algorithm</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -571,7 +571,7 @@ can be a performance penalty in complex models.</string>
         <item row="7" column="2">
          <widget class="Gui::PrefSpinBox" name="sbScrubCount">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm.  A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed.  Values above 2 are generally not productive.   Each pass adds to the time required to produce the drawing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

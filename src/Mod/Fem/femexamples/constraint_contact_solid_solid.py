@@ -57,7 +57,7 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
+https://forum.freecad.org/viewtopic.php?f=18&t=20276
 constraint contact for solid to solid mesh
 
 """
@@ -86,7 +86,7 @@ def setup(doc=None, solvertype="ccxtools"):
     )
     doc.recompute()
 
-    # top half cylinder, https://forum.freecadweb.org/viewtopic.php?f=18&t=43001#p366111
+    # top half cylinder, https://forum.freecad.org/viewtopic.php?f=18&t=43001#p366111
     top_halfcyl_obj = doc.addObject("Part::Cylinder", "TopHalfCylinder")
     top_halfcyl_obj.Radius = 30
     top_halfcyl_obj.Height = 500

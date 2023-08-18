@@ -37,7 +37,7 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "Constraint Constact Shell Shell",
+        "name": "Constraint Contact Shell Shell",
         "meshtype": "face",
         "meshelement": "Tria3",
         "constraints": ["fixed", "force", "contact"],
@@ -56,8 +56,8 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
-based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
+https://forum.freecad.org/viewtopic.php?f=18&t=42228
+based on https://forum.freecad.org/viewtopic.php?f=18&t=42228#p359488
 
 contact example shell to shell elements
 

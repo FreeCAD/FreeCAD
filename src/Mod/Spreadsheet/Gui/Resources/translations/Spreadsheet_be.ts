@@ -347,7 +347,7 @@
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="510"/>
+      <location filename="../../SheetModel.cpp" line="512"/>
       <source>Edit cell</source>
       <translation>Змяніць клетку</translation>
     </message>
@@ -371,7 +371,7 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
+      <location filename="../../SpreadsheetView.cpp" line="161"/>
       <source>Clear cell(s)</source>
       <translation>Ачысціць клеткі</translation>
     </message>
@@ -505,9 +505,7 @@ by that property.
 </source>
       <translation>Адрас пачатковай ячэйкі.
 
-Мяркуецца, што першы слупок дыяпазону ўтрымлівае спіс
-імёнаў наладаў, якія будуць ужывацца для стварэння спісу радкоў і прывязкі да зададзенай
-уласцівасці, каб карыстальнік мог дынамічна пераключаць налады.
+Мяркуецца, што першы слупок дыяпазону ўтрымлівае спіс імёнаў наладаў, якія будуць ужывацца для стварэння спісу радкоў і прывязкі да зададзенай уласцівасці, каб карыстальнік мог дынамічна пераключаць налады.
 
 Першы радок дыяпазону будзе прывязаны да любога радка (ускосна), абранай
 па гэтай уласцівасці.
@@ -526,9 +524,7 @@ by that property.
 </source>
       <translation>Адрас канчатковай ячэйкі.
 
-Мяркуецца, што першы слупок дыяпазону ўтрымлівае спіс
-імёнаў наладаў, якія будуць ужывацца для стварэння спісу радкоў і прывязкі да зададзенай
-уласцівасці, каб карыстальнік мог дынамічна пераключаць налады.
+Мяркуецца, што першы слупок дыяпазону ўтрымлівае спіс імёнаў наладаў, якія будуць ужывацца для стварэння спісу радкоў і прывязкі да зададзенай уласцівасці, каб карыстальнік мог дынамічна пераключаць налады.
 
 Першы радок дыяпазону будзе прывязаны да любога радка (ускосна), абранай
 па гэтай уласцівасці.
@@ -607,7 +603,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Злева</translation>
+      <translation>Па левым боку</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -618,7 +614,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Справа</translation>
+      <translation>Па правым боку</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -628,12 +624,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Зверху</translation>
+      <translation>Да верху</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation>Знізу</translation>
+      <translation>Да нізу</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -673,7 +669,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
-      <translation>Псеўданім для гэтай клеткі</translation>
+      <translation>Псеўданім для клеткі</translation>
     </message>
   </context>
   <context>
@@ -727,16 +723,21 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Не атрымалася скапіраваць і ўставіць</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="430"/>
       <source>Alias contains invalid characters!</source>
-      <translation>Псеўданім змяшчае недапушчальныя знакі!</translation>
+      <translation>Псеўданім змяшчае хібныя знакі!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="436"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Звярніцеся да клеткі па псеўданіму, напрыклад
 Аркуш.імя_псеўданіма замест Аркуш.В1</translation>
+    </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="121"/>
+      <source>Spreadsheet</source>
+      <translation>Аркуш</translation>
     </message>
   </context>
   <context>
@@ -1120,7 +1121,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Разрэзаць</translation>
+      <translation>Выразаць</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
@@ -1144,12 +1145,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="256"/>
       <source>Export PDF</source>
       <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
+      <location filename="../../SpreadsheetView.cpp" line="257"/>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
     </message>
@@ -1178,108 +1179,9 @@ Defaults to: %V = %A
     </message>
   </context>
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Аркуш</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Клетка</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Прымяніць</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>Прымяніць змены да бягучай клеткі</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Выдаліць</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Выдаліць змест бягучай клеткі</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Вылічыць</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>Абнаўляе значэнні, якія апрацаваныя кантролерамі</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Стварыць аркуш</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Дадаць кантролер</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Дадаць кантролер уласцівасці</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Аркуш</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Дадае аб'ект аркуша да бягучага дакумента</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Дадаць кантролер</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Дадае кантролер ячэйкі ў абраны аркуш</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Дадаць кантролер уласцівасці</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Дадае кантролер уласцівасці ў абраны аркуш</translation>
-    </message>
-  </context>
-  <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>

@@ -414,7 +414,7 @@ StdCmdWindowsMenu::StdCmdWindowsMenu()
   : Command("Std_WindowsMenu")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Activates this window");
+    sMenuText     = QT_TR_NOOP("Activate window"); // Replaced with the name of the window
     sToolTipText  = QT_TR_NOOP("Activates this window");
     sWhatsThis    = "Std_WindowsMenu";
     sStatusTip    = QT_TR_NOOP("Activates this window");

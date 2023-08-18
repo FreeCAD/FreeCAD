@@ -954,10 +954,10 @@ double Hole::getThreadClassClearance() const
 
     // Calculate how much clearance to add based on Thread tolerance class and pitch
     if (ThreadClass.getValueAsString()[1] == 'G') {
-        for (unsigned int i = 0; i < ThreadClass_ISOmetric_data_size; i++) {
-            double p = ThreadClass_ISOmetric_data[i][0];
+        for (auto it : ThreadClass_ISOmetric_data) {
+            double p = it[0];
             if (pitch <= p) {
-                return ThreadClass_ISOmetric_data[i][1];
+                return it[1];
             }
         }
     }
@@ -988,10 +988,10 @@ double Hole::getThreadRunout(int mode) const
     default:
         throw Base::ValueError("Unsupported argument");
     }
-    for (unsigned int i = 0; i < ThreadRunout_size; i++) {
-        double p = ThreadRunout[i][0];
+    for (auto it : ThreadRunout) {
+        double p = it[0];
         if (pitch <= p) {
-            return sf * ThreadRunout[i][1];
+            return sf * it[1];
         }
     }
 
@@ -1260,9 +1260,9 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(true);
             ThreadDepth.setReadOnly(true);
             ThreadDepthType.setReadOnly(true);
-            Threaded.setValue(0);
-            ModelThread.setValue(0);
-            UseCustomThreadClearance.setValue(0);
+            Threaded.setValue(false);
+            ModelThread.setValue(false);
+            UseCustomThreadClearance.setValue(false);
         }
         else if (type == "ISOMetricProfile") {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
@@ -1666,7 +1666,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+        std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
             "  - the active Body does not contain a base shape, so there is no\n"
             "  material to be removed;\n"
             "  - the selected sketch does not belong to the active Body."));
@@ -1684,7 +1684,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (profileshape.IsNull())
             return new App::DocumentObjectExecReturn(
-                "Hole error: Creating a face from sketch failed");
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
         profileshape.Move(invObjLoc);
 
         /* Build the prototype hole */
@@ -1709,10 +1709,10 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         else
             return new App::DocumentObjectExecReturn(
-                "Hole error: Unsupported length specification");
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification"));
 
         if (length <= 0.0)
-            return new App::DocumentObjectExecReturn("Hole error: Invalid hole depth");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth"));
 
         BRepBuilderAPI_MakeWire mkWire;
         const std::string holeCutType = HoleCutType.getValueAsString();
@@ -1735,7 +1735,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         double zPosCounter = 0.0;
 
         if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians(180.0))
-            return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid taper angle"));
 
         if (isCountersink || isCounterbore || isCounterdrill) {
             double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
@@ -1756,15 +1756,15 @@ App::DocumentObjectExecReturn* Hole::execute()
             }
 
             if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut diameter too small"));
 
             if (holeCutDepth > length)
                 return new App::DocumentObjectExecReturn(
-                    "Hole error: Hole cut depth must be less than hole depth");
+                    QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut depth must be less than hole depth"));
 
             if (holeCutDepth < 0.0)
                 return new App::DocumentObjectExecReturn(
-                    "Hole error: Hole cut depth must be greater or equal to zero");
+                    QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut depth must be greater or equal to zero"));
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1786,7 +1786,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                                 gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
 
             if (-length > zPosCounter)
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid countersink"));
 
             lengthCounter = zPosCounter;
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
@@ -1819,7 +1819,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
             // the angle is in any case > 0 and < 90 but nevertheless this safeguard:
             if (drillPointAngle <= 0.0 || drillPointAngle >= Base::toRadians(180.0))
-                return new App::DocumentObjectExecReturn("Hole error: Invalid drill point angle");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid drill point angle"));
 
             // if option to take drill point size into account
             // the next wire point is the intersection of the drill edge and the hole edge
@@ -1829,7 +1829,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                     gp_Pnt(radius, 0, 0),
                     gp_Pnt(radiusBottom, -length, 0), xPosDrill, zPosDrill);
                 if (zPosDrill > 0 || zPosDrill >= lengthCounter)
-                    return new App::DocumentObjectExecReturn("Hole error: Invalid drill point");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid drill point"));
 
                 newPoint = toPnt(xPosDrill * xDir + zPosDrill * zDir);
                 mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
@@ -1863,11 +1863,11 @@ App::DocumentObjectExecReturn* Hole::execute()
         double angle = Base::toRadians<double>(360.0);
         BRepPrimAPI_MakeRevol RevolMaker(face, gp_Ax1(firstPoint, zDir), angle);
         if (!RevolMaker.IsDone())
-            return new App::DocumentObjectExecReturn("Hole error: Could not revolve sketch");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Could not revolve sketch"));
 
         TopoDS_Shape protoHole = RevolMaker.Shape();
         if (protoHole.IsNull())
-            return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Resulting shape is empty"));
 
 
         // Make thread
@@ -1877,7 +1877,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             // fuse the thread to the hole
             BRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Adding the thread failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the thread failed"));
 
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
@@ -1889,9 +1889,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         // For some reason it is faster to do the cut through a BooleanOperation.
         BRepAlgoAPI_Cut mkBool(base, holes);
         if (!mkBool.IsDone()) {
-            std::stringstream error;
-            error << "Boolean operation failed";
-            return new App::DocumentObjectExecReturn(error.str());
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
         TopoDS_Shape result = mkBool.Shape();
 
@@ -1899,7 +1897,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         // We have to get the solids (fuse sometimes creates compounds)
         base = getSolid(result);
         if (base.IsNull())
-            return new App::DocumentObjectExecReturn("Hole: Resulting shape is not a solid");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         base = refineShapeIfActive(base);
 
 
@@ -1907,7 +1905,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         int solidCount = countSolids(base);
         if (solidCount > 1) {
             return new App::DocumentObjectExecReturn(
-                "Hole: Result has multiple solids. This is not supported at this time.");
+                QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         this->Shape.setValue(base);
@@ -1918,10 +1916,10 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (std::string(e.GetMessageString()) == "TopoDS::Face"
             && (std::string(DepthType.getValueAsString()) == "UpToFirst"
                 || std::string(DepthType.getValueAsString()) == "UpToFace"))
-            return new App::DocumentObjectExecReturn(
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
                 "Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
-                "for making a pocket up to a face.");
+                "for making a pocket up to a face."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
@@ -2024,10 +2022,10 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
     if (threadType < 0) {
-        throw Base::IndexError("Thread type out of range");
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
     }
     if (threadSize < 0) {
-        throw Base::IndexError("Thread size out of range");
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
 
     bool leftHanded = (bool)ThreadDirection.getValue();
@@ -2048,7 +2046,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // construct the cross section going counter-clockwise
     // for graphical explanation of geometrical construction of p1-p6 see:
-    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    // https://forum.freecad.org/viewtopic.php?f=19&t=54284#p466570
     gp_Pnt p1 = toPnt((Diam / 2 - 5 * H / 8 + clearance / 2) * xDir + Pitch / 8 * zDir);
     gp_Pnt p2 = toPnt((Diam / 2 + clearance / 2) * xDir + 7 * Pitch / 16 * zDir);
     gp_Pnt p3 = toPnt((Diam / 2 + clearance / 2) * xDir + 9 * Pitch / 16 * zDir);
@@ -2119,7 +2117,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     mkPS.SetMode(true);  //This is for frenet
     mkPS.Add(threadWire);
     if (!mkPS.IsReady())
-        throw Base::CADKernelError("Error: Thread could not be built");
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
     TopoDS_Shape shell = mkPS.Shape();
 
     // create faces at the ends of the pipe shell
@@ -2144,7 +2142,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     BRepBuilderAPI_MakeSolid mkSolid;
     mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
     if (!mkSolid.IsDone())
-        throw Base::CADKernelError("Error: Result is not a solid");
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
     TopoDS_Shape result = mkSolid.Shape();
 
     // check if the algorithm has confused the inside and outside of the solid

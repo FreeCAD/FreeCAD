@@ -17,21 +17,29 @@
 
         <Documentation>
             <Author Licence="LGPL" Name="Chris Hennes" EMail="chennes@pioneerlibrarysystem.org" />
-            <UserDocu>App.Metadata class.\n
+            <UserDocu>App.Metadata class.
+
 A Metadata object reads an XML-formatted package metadata file and provides
-read and write access to its contents.\n
-The following constructors are supported:\n
+read and write access to its contents.
+
+The following constructors are supported:
+
 Metadata()
-Empty constructor.\n
+Empty constructor.
+
 Metadata(metadata)
 Copy constructor.
-metadata : App.Metadata\n
+metadata : App.Metadata
+
 Metadata(file)
 Reads the XML file and provides access to the metadata it specifies.
-file : str\n    XML file name.\n
+file : str
+    XML file name.
+
 Metadata(bytes)
 Treats the bytes as UTF-8-encoded XML data and provides access to the metadata it specifies.
-bytes : bytes\n    Python bytes-like object.</UserDocu>
+bytes : bytes
+    Python bytes-like object.</UserDocu>
             <DeveloperDocu>Metadata</DeveloperDocu>
         </Documentation>
 
@@ -52,6 +60,12 @@ bytes : bytes\n    Python bytes-like object.</UserDocu>
                 <UserDocu>String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)</UserDocu>
             </Documentation>
             <Parameter Name="Date" Type="Object" />
+        </Attribute>
+        <Attribute Name="Type">
+            <Documentation>
+                <UserDocu>String representing the type of this item (text only, no markup allowed).</UserDocu>
+            </Documentation>
+            <Parameter Name="Type" Type="Object" />
         </Attribute>
         <Attribute Name="Description">
             <Documentation>
@@ -197,7 +211,8 @@ If unset it will be 0.0.0.</UserDocu>
 
         <Methode Name="getLastSupportedFreeCADVersion">
             <Documentation>
-                <UserDocu>getLastSupportedFreeCADVersion() -> str or None\n
+                <UserDocu>getLastSupportedFreeCADVersion() -> str or None
+
 Search through all content package items, and determine if a maximum supported
 version of FreeCAD is set.
 Returns None if no maximum version is set, or if *any* content item fails to
@@ -208,7 +223,8 @@ known versions).</UserDocu>
 
         <Methode Name="getFirstSupportedFreeCADVersion">
             <Documentation>
-                <UserDocu>getFirstSupportedFreeCADVersion() -> str or None\n
+                <UserDocu>getFirstSupportedFreeCADVersion() -> str or None
+
 Search through all content package items, and determine if a minimum supported
 version of FreeCAD is set.
 Returns 0.0 if no minimum version is set, or if *any* content item fails to
@@ -220,7 +236,8 @@ the metadata standard was added then).</UserDocu>
 
     <Methode Name="supportsCurrentFreeCAD">
       <Documentation>
-        <UserDocu>supportsCurrentFreeCAD() -> bool\n
+        <UserDocu>supportsCurrentFreeCAD() -> bool
+
 Returns False if this metadata object directly indicates that it does not
 support the current version of FreeCAD, or True if it makes no indication, or
 specifically indicates that it does support the current version. Does not
@@ -230,7 +247,8 @@ recurse into Content items.</UserDocu>
 
         <Methode Name="getGenericMetadata">
             <Documentation>
-                <UserDocu>getGenericMetadata(name) -> list\n
+                <UserDocu>getGenericMetadata(name) -> list
+
 Get the list of GenericMetadata objects with key 'name'.
 Generic metadata objects are Python objects with a string 'contents' and a
 dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
@@ -240,151 +258,176 @@ in the metadata file.</UserDocu>
 
         <Methode Name="addContentItem">
             <Documentation>
-                <UserDocu>addContentItem(content_type,metadata)\n
+                <UserDocu>addContentItem(content_type,metadata)
+
 Add a new content item of type 'content_type' with metadata 'metadata'. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeContentItem">
             <Documentation>
-                <UserDocu>removeContentItem(content_type,name)\n
+                <UserDocu>removeContentItem(content_type,name)
+
 Remove the content item of type 'content_type' with name 'name'. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addMaintainer">
             <Documentation>
-                <UserDocu>addMaintainer(name, email)\n
+                <UserDocu>addMaintainer(name, email)
+
 Add a new Maintainer. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeMaintainer">
             <Documentation>
-                <UserDocu>removeMaintainer(name, email)\n
+                <UserDocu>removeMaintainer(name, email)
+
 Remove the Maintainer. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addLicense">
             <Documentation>
-                <UserDocu>addLicense(short_code,path)\n
+                <UserDocu>addLicense(short_code,path)
+
 Add a new License. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeLicense">
             <Documentation>
-                <UserDocu>removeLicense(short_code)\n
+                <UserDocu>removeLicense(short_code)
+
 Remove the License. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addUrl">
             <Documentation>
-                <UserDocu>addUrl(url_type,url,branch)\n
-Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',\n
-'bugtracker', 'documentation', or 'webpage') If type is 'repository' you\n
+                <UserDocu>addUrl(url_type,url,branch)
+
+Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',
+
+'bugtracker', 'documentation', or 'webpage') If type is 'repository' you
+
 must also specify the 'branch' parameter. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeUrl">
             <Documentation>
-                <UserDocu>removeUrl(url_type,url)\n
+                <UserDocu>removeUrl(url_type,url)
+
 Remove the Url. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addAuthor">
             <Documentation>
-                <UserDocu>addAuthor(name, email)\n
+                <UserDocu>addAuthor(name, email)
+
 Add a new Author with name 'name', and optionally email 'email'. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeAuthor">
             <Documentation>
-                <UserDocu>removeAuthor(name, email)\n
+                <UserDocu>removeAuthor(name, email)
+
 Remove the Author. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addDepend">
             <Documentation>
-                <UserDocu>addDepend(name, kind, optional)\n
-Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),\n
+                <UserDocu>addDepend(name, kind, optional)
+
+Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),
+
 'internal', 'addon', or 'python'). </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeDepend">
             <Documentation>
-                <UserDocu>removeDepend(name, kind)\n
-Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any\n
+                <UserDocu>removeDepend(name, kind)
+
+Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any
+
 matching name is removed). </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addConflict">
             <Documentation>
-                <UserDocu>addConflict(name, kind)\n
+                <UserDocu>addConflict(name, kind)
+
 Add a new Conflict. See documentation for addDepend(). </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeConflict">
             <Documentation>
-                <UserDocu>removeConflict(name, kind)\n
+                <UserDocu>removeConflict(name, kind)
+
 Remove the Conflict. See documentation for removeDepend().</UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addReplace">
             <Documentation>
-                <UserDocu>addReplace(name)\n
+                <UserDocu>addReplace(name)
+
 Add a new Replace. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeReplace">
             <Documentation>
-                <UserDocu>removeReplace(name)\n
+                <UserDocu>removeReplace(name)
+
 Remove the Replace. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addTag">
             <Documentation>
-                <UserDocu>addTag(tag)\n
+                <UserDocu>addTag(tag)
+
 Add a new Tag. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeTag">
             <Documentation>
-                <UserDocu>removeTag(tag)\n
+                <UserDocu>removeTag(tag)
+
 Remove the Tag. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="addFile">
             <Documentation>
-                <UserDocu>addFile(filename)\n
+                <UserDocu>addFile(filename)
+
 Add a new File. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="removeFile">
             <Documentation>
-                <UserDocu>removeFile(filename)\n
+                <UserDocu>removeFile(filename)
+
 Remove the File. </UserDocu>
             </Documentation>
         </Methode>
 
         <Methode Name="write">
             <Documentation>
-                <UserDocu>write(filename)\n
+                <UserDocu>write(filename)
+
 Write the metadata to the given file as XML data.</UserDocu>
             </Documentation>
         </Methode>

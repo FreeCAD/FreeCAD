@@ -22,7 +22,7 @@
 
 __title__= "FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 SpaceTypes = [
 "Undefined",
@@ -171,17 +171,18 @@ else:
 #  Spaces define an open volume inside or outside a
 #  building, ie. a room.
 
-def makeSpace(objects=None,baseobj=None,name="Space"):
+def makeSpace(objects=None,baseobj=None,name=None):
 
-    """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
-    document object, in which case it becomes the base shape of the space object, or a list of
-    selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
+    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
+    Objects can be one document object, in which case it becomes the base shape of the space
+    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
+    (object, subobjectname)"""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = translate("Arch",name)
+    obj.Label = name if name else translate("Arch","Space")
     _Space(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSpace(obj.ViewObject)
@@ -405,12 +406,12 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-                if hasattr(b[0],'Shape'):
-                    for sub in b[1]:
-                        if "Face" in sub:
-                            fn = int(sub[4:])-1
-                            faces.append(b[0].Shape.Faces[fn])
-                            #print("adding face ",fn," of object ",b[0].Name)
+            if hasattr(b[0],'Shape'):
+                for sub in b[1]:
+                    if "Face" in sub:
+                        fn = int(sub[4:])-1
+                        faces.append(b[0].Shape.Faces[fn])
+                        #print("adding face ",fn," of object ",b[0].Name)
 
         #print("total: ", len(faces), " faces")
 
@@ -669,7 +670,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(self,"font") and hasattr(vobj,"FontName"):
                 self.font.name = str(vobj.FontName)
 
-        elif (prop == "FontSize"):
+        elif prop == "FontSize":
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
                 if hasattr(vobj,"FirstLine"):
@@ -677,7 +678,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.header.scaleFactor.setValue([scale,scale,scale])
                     self.onChanged(vobj, "TextPosition")
 
-        elif (prop == "FirstLine"):
+        elif prop == "FirstLine":
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])

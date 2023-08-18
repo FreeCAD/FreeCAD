@@ -42,7 +42,7 @@ import draftutils.messages as messages
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 

@@ -26,8 +26,6 @@
 #include <Inventor/SbBox2f.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#include <QCoreApplication> // For translation functions
-
 #include "SoFCColorBar.h"
 
 
@@ -41,7 +39,6 @@ class GuiExport SoFCColorLegend : public SoFCColorBarBase {
   using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorLegend);
-  Q_DECLARE_TR_FUNCTIONS(SoFCColorLegend);
 
 public:
   static void initClass();
@@ -69,7 +66,7 @@ public:
   std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
   void customize(SoFCColorBarBase*) override { }
-  const char* getColorBarName() const override { return tr("Color Legend").toStdString().c_str(); }
+  const char* getColorBarName() const override;
 
 //  virtual void handleEvent(SoHandleEventAction * action);
 //  virtual void GLRenderBelowPath(SoGLRenderAction * action);

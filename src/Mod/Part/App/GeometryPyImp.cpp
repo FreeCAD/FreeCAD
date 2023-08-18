@@ -399,10 +399,10 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
         Py::List list;
 
-        for (std::size_t i=0; i<ext.size(); ++i) {
+        for (const auto & it : ext) {
 
             // const casting only to get the Python object to make a copy
-            std::shared_ptr<GeometryExtension> p = std::const_pointer_cast<GeometryExtension>(ext[i].lock());
+            std::shared_ptr<GeometryExtension> p = std::const_pointer_cast<GeometryExtension>(it.lock());
 
             if(p) {
                 // we create a python copy and add it to the list

@@ -37,7 +37,7 @@ else:
 
 __title__ = "Path Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Pocket operation page controller and command implementation."
 
 
@@ -56,7 +56,7 @@ Command = PathOpGui.SetupOperation(
     "Path_3DPocket",
     QT_TRANSLATE_NOOP("Path_Pocket3D", "3D Pocket"),
     QT_TRANSLATE_NOOP(
-        "Path_Pocket3D", "Creates a Path 3D Pocket object from a face or faces"
+        "Path_Pocket3D", "Creates a Path 3D Pocket from a face or faces"
     ),
     PathPocket.SetupProperties,
 )

@@ -22,11 +22,9 @@
 
 __title__ = "TechDrawTools.TaskHoleShaftFit"
 __author__ = "edi"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __version__ = "00.01"
 __date__ = "2023/02/07"
-
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -35,12 +33,14 @@ from functools import partial
 
 import os
 
+translate = App.Qt.translate
+
 class TaskHoleShaftFit:
     def __init__(self,sel):
 
-        loose = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "loose fit")
-        snug = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "snug fit")
-        press = QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "press fit")
+        loose = translate("TechDraw_HoleShaftFit", "loose fit")
+        snug = translate("TechDraw_HoleShaftFit", "snug fit")
+        press = translate("TechDraw_HoleShaftFit", "press fit")
         self.isHole = True
         self.sel = sel
         self.holeValues = [["h9","D10",loose],["h9","E9",loose],["h9","F8",loose],["h6","G7",loose],
@@ -56,7 +56,7 @@ class TaskHoleShaftFit:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskHoleShaftFit.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "Hole / Shaft Fit ISO 286"))
+        self.form.setWindowTitle(translate("TechDraw_HoleShaftFit", "Hole / Shaft Fit ISO 286"))
 
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged,True))
         self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged,False))

@@ -39,7 +39,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
     // forward declaration
@@ -82,7 +82,7 @@ namespace Gui {
         virtual QVariant data(int role) const
         {
             Q_UNUSED(role);
-            return QVariant();
+            return {};
         }
         virtual bool setData (const QVariant & value, int role)
         {
@@ -199,7 +199,7 @@ namespace Gui {
         else if (role == Qt::DisplayRole) {
             return DocumentModel::tr("Application");
         }
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -271,7 +271,7 @@ namespace Gui {
             return static_cast<QVariant>(font);
         }
 
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -326,7 +326,7 @@ namespace Gui {
             return static_cast<QVariant>(font);
         }
 
-        return QVariant();
+        return {};
     }
 
     // ------------------------------------------------------------------------
@@ -360,12 +360,14 @@ DocumentModel::DocumentModel(QObject* parent)
         ViewProviderIndex   ::init();
     }
 
+    //NOLINTBEGIN
     // Setup connections
-    Application::Instance->signalNewDocument.connect(boost::bind(&DocumentModel::slotNewDocument, this, bp::_1));
-    Application::Instance->signalDeleteDocument.connect(boost::bind(&DocumentModel::slotDeleteDocument, this, bp::_1));
-    Application::Instance->signalRenameDocument.connect(boost::bind(&DocumentModel::slotRenameDocument, this, bp::_1));
-    Application::Instance->signalActiveDocument.connect(boost::bind(&DocumentModel::slotActiveDocument, this, bp::_1));
-    Application::Instance->signalRelabelDocument.connect(boost::bind(&DocumentModel::slotRelabelDocument, this, bp::_1));
+    Application::Instance->signalNewDocument.connect(std::bind(&DocumentModel::slotNewDocument, this, sp::_1));
+    Application::Instance->signalDeleteDocument.connect(std::bind(&DocumentModel::slotDeleteDocument, this, sp::_1));
+    Application::Instance->signalRenameDocument.connect(std::bind(&DocumentModel::slotRenameDocument, this, sp::_1));
+    Application::Instance->signalActiveDocument.connect(std::bind(&DocumentModel::slotActiveDocument, this, sp::_1));
+    Application::Instance->signalRelabelDocument.connect(std::bind(&DocumentModel::slotRelabelDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 DocumentModel::~DocumentModel()
@@ -375,13 +377,15 @@ DocumentModel::~DocumentModel()
 
 void DocumentModel::slotNewDocument(const Gui::Document& Doc)
 {
-    Doc.signalNewObject.connect(boost::bind(&DocumentModel::slotNewObject, this, bp::_1));
-    Doc.signalDeletedObject.connect(boost::bind(&DocumentModel::slotDeleteObject, this, bp::_1));
-    Doc.signalChangedObject.connect(boost::bind(&DocumentModel::slotChangeObject, this, bp::_1, bp::_2));
-    Doc.signalRelabelObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, bp::_1));
-    Doc.signalActivatedObject.connect(boost::bind(&DocumentModel::slotActiveObject, this, bp::_1));
-    Doc.signalInEdit.connect(boost::bind(&DocumentModel::slotInEdit, this, bp::_1));
-    Doc.signalResetEdit.connect(boost::bind(&DocumentModel::slotResetEdit, this, bp::_1));
+    //NOLINTBEGIN
+    Doc.signalNewObject.connect(std::bind(&DocumentModel::slotNewObject, this, sp::_1));
+    Doc.signalDeletedObject.connect(std::bind(&DocumentModel::slotDeleteObject, this, sp::_1));
+    Doc.signalChangedObject.connect(std::bind(&DocumentModel::slotChangeObject, this, sp::_1, sp::_2));
+    Doc.signalRelabelObject.connect(std::bind(&DocumentModel::slotRenameObject, this, sp::_1));
+    Doc.signalActivatedObject.connect(std::bind(&DocumentModel::slotActiveObject, this, sp::_1));
+    Doc.signalInEdit.connect(std::bind(&DocumentModel::slotInEdit, this, sp::_1));
+    Doc.signalResetEdit.connect(std::bind(&DocumentModel::slotResetEdit, this, sp::_1));
+    //NOLINTEND
 
     QModelIndex parent = createIndex(0,0,d->rootItem);
     int count_docs = d->rootItem->childCount();
@@ -485,7 +489,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
             QList<ViewProviderIndex*> views;
             doc_index->findViewProviders(obj, views);
-            for (const auto & view : views) {
+            for (const auto & view : qAsConst(views)) {
                 DocumentModelIndex* parentitem = view->parent();
                 QModelIndex parent = createIndex(0,0,parentitem);
                 int row = view->row();
@@ -519,7 +523,7 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             // get all occurrences of the view provider in the tree structure
             QList<ViewProviderIndex*> obj_index;
             doc_index->findViewProviders(obj, obj_index);
-            for (const auto & it : obj_index) {
+            for (const auto & it : qAsConst(obj_index)) {
                 QModelIndex parent = createIndex(it->row(),0,it);
                 int count_obj = it->childCount();
                 beginRemoveRows(parent, 0, count_obj);
@@ -604,7 +608,7 @@ int DocumentModel::columnCount (const QModelIndex & /*parent*/) const
 QVariant DocumentModel::data (const QModelIndex & index, int role) const
 {
     if (!index.isValid())
-        return QVariant();
+        return {};
     return static_cast<DocumentModelIndex*>(index.internalPointer())->data(role);
 }
 
@@ -621,7 +625,7 @@ Qt::ItemFlags DocumentModel::flags(const QModelIndex &index) const
     //    return Qt::ItemIsEnabled;
     //return QAbstractItemModel::flags(index);
     if (!index.isValid())
-        return Qt::ItemFlags();
+        return {};
     return static_cast<DocumentModelIndex*>(index.internalPointer())->flags();
 }
 
@@ -633,14 +637,14 @@ QModelIndex DocumentModel::index (int row, int column, const QModelIndex & paren
     else
         item = static_cast<DocumentModelIndex*>(parent.internalPointer())->child(row);
     if (!item)
-        return QModelIndex();
+        return {};
     return createIndex(row, column, item);
 }
 
 QModelIndex DocumentModel::parent (const QModelIndex & index) const
 {
     if (!index.isValid() || index.internalPointer() == d->rootItem)
-        return QModelIndex();
+        return {};
     DocumentModelIndex* item = nullptr;
     item = static_cast<DocumentModelIndex*>(index.internalPointer());
     DocumentModelIndex* parent = item->parent();
@@ -661,11 +665,11 @@ QVariant DocumentModel::headerData (int section, Qt::Orientation orientation, in
     Q_UNUSED(section);
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
-            return QVariant();
+            return {};
         return tr("Labels & Attributes");
     }
 
-    return QVariant();
+    return {};
 }
 
 bool DocumentModel::setHeaderData (int, Qt::Orientation, const QVariant &, int)

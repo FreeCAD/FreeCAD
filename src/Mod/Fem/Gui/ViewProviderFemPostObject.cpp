@@ -111,11 +111,15 @@ public:
 
 private:
     FemPostObjectSelectionObserver() {
+        //NOLINTBEGIN
         this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
             std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+        //NOLINTEND
     }
 
     ~FemPostObjectSelectionObserver() = default;
+
+public:
     FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
     FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
 
@@ -734,7 +738,7 @@ bool ViewProviderFemPostObject::setupPipeline()
     // Therefore the only way is the hack to filter only if the used Elmer CPU cores are > 1.
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Elmer");
-    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", 1);
+    bool FilterMultiCPUResults = hGrp->GetBool("FilterMultiCPUResults", true);
     int UseNumberOfCores = hGrp->GetInt("UseNumberOfCores", 1);
     // filtering is only necessary for pipelines and warp filters
     if (FilterMultiCPUResults && (UseNumberOfCores > 1)
@@ -780,7 +784,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
 bool ViewProviderFemPostObject::doubleClicked()
 {
     // work around for a problem in VTK implementation:
-    // https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+    // https://forum.freecad.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -869,11 +873,11 @@ void ViewProviderFemPostObject::hide()
     std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
     App::DocumentObject *firstVisiblePostObject = nullptr;
     // step through the objects
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
-            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
-                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
-                firstVisiblePostObject = *it;
+    for (auto it : ObjectsList) {
+        if (it->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && it->Visibility.getValue()
+                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                firstVisiblePostObject = it;
                 break;
             }
         }

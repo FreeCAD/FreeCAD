@@ -55,6 +55,7 @@ import pathlib
 
 directories = [
     {"tsname": "App", "workingdir": "./src/App", "tsdir": "Resources/translations"},
+    {"tsname": "Base", "workingdir": "./src/Base", "tsdir": "Resources/translations"},
     {"tsname": "FreeCAD", "workingdir": "./src/Gui", "tsdir": "Language"},
     {
         "tsname": "AddonManager",
@@ -127,11 +128,6 @@ directories = [
         "tsdir": "Gui/Resources/translations",
     },
     {
-        "tsname": "Raytracing",
-        "workingdir": "./src/Mod/Raytracing/",
-        "tsdir": "Gui/Resources/translations",
-    },
-    {
         "tsname": "ReverseEngineering",
         "workingdir": "./src/Mod/ReverseEngineering/",
         "tsdir": "Gui/Resources/translations",
@@ -176,6 +172,16 @@ directories = [
         "workingdir": "./src/Mod/Web/",
         "tsdir": "Gui/Resources/translations",
     },
+]
+
+# Exclude these files from consideration
+excluded_files = [
+    ("Path", "UtilsArguments.py"),  # Causes lupdate to hang
+    ("Path", "refactored_centroid_post.py"),  # lupdate bug causes failure on line 245
+    ("Path", "refactored_grbl_post.py"),  # lupdate bug causes failure on line 212
+    ("Path", "refactored_linuxcnc_post.py"),  # lupdate bug causes failure on line 178
+    ("Path", "refactored_mach3_mach4_post.py"),  # lupdate bug causes failure on line 186
+    ("Path", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
 ]
 
 QMAKE = ""
@@ -282,13 +288,9 @@ def update_translation(entry):
             f"touch dummy_cpp_file_for_lupdate.cpp"
         )  # lupdate 5.x requires at least one source file to process the UI files
         execline.append(f"touch {tsBasename}py.ts")
-        execline.append(
-            f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}'
-        )
+        execline.append(f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}')
         execline.append(f"{QMAKE} -project -o {project_filename} -r")
-        execline.append(
-            f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}"
-        )
+        execline.append(f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
         execline.append(
             f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp"
         )
@@ -337,10 +339,18 @@ def update_translation(entry):
             "qrc",
             "py",
         ]
-        with open("files_to_translate.txt", "w") as file_list:
+        with open("files_to_translate.txt", "w", encoding="utf-8") as file_list:
             for root, dirs, files in os.walk("./"):
                 for f in files:
-                    if pathlib.Path(f).suffix[1:] in extensions:
+                    skip = False
+                    for exclusion in excluded_files:
+                        if entry["tsname"] == exclusion[0] and f == exclusion[1]:
+                            print(
+                                f"    (NOTE: Excluding file {f} because it is in the excluded_files list)"
+                            )
+                            skip = True
+                            break
+                    if not skip and pathlib.Path(f).suffix[1:] in extensions:
                         file_list.write(os.path.join(root, f) + "\n")
 
         try:
@@ -359,16 +369,28 @@ def update_translation(entry):
                 timeout=60,
                 encoding="utf-8",
             )
+            if not p:
+                raise RuntimeError("No return result from lupdate")
+            if not p.stdout:
+                raise RuntimeError("No stdout from lupdate")
         except Exception as e:
+            print("*" * 80)
+            print("*" * 80)
+            print("*" * 80)
+            print(f"ERROR RUNNING lupdate -- TRANSLATIONS FOR {entry['tsname']} PROBABLY FAILED...")
             print(str(e))
+            print("*" * 80)
+            print("*" * 80)
+            print("*" * 80)
             os.chdir(cur)
             return
 
         with open(f"{cur}/tsupdate_stdout.log", "a", encoding="utf-8") as f:
-            f.write(p.stdout.decode())
-            print(p.stdout.decode())
+            f.write(p.stdout)
+            print(p.stdout, flush=True)
+
         with open(f"{cur}/tsupdate_stderr.log", "a", encoding="utf-8") as f:
-            f.write(p.stderr.decode())
+            f.write(p.stderr)
 
         # Strip out obsolete strings, and make sure there are no translations in the main *.ts file
         subprocess.run(

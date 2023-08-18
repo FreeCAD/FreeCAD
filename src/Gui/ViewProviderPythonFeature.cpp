@@ -50,7 +50,7 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     try {
         Py::Object ret(Base::pyCall(py_getIcon.ptr()));
         if(ret.isNone())
-            return QIcon();
+            return {};
 
         if(ret.isString()) {
             std::string content = Py::String(ret).as_std_string("utf-8");
@@ -148,7 +148,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
         }
     }
 
-    return QIcon();
+    return {};
 }
 
 bool ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*> &children) const
@@ -343,7 +343,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
 
 std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(const char* /*Element*/) const
 {
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 ViewProviderPythonFeatureImp::ValueT

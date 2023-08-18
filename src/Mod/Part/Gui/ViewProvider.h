@@ -51,7 +51,7 @@ public:
     ViewProviderPart();
     /// destructor
     ~ViewProviderPart() override;
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
 
 protected:
     void applyColor(const Part::ShapeHistory& hist,

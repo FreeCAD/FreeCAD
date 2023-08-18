@@ -23,7 +23,7 @@
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of 3D Surface operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
@@ -374,7 +374,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.",
+                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.",
                 ),
             ),
             (
@@ -392,7 +392,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Optimization",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.",
+                    "Convert co-planar arcs to G2/G3 G-code commands for `Circular` and `CircularZigZag` cut patterns.",
                 ),
             ),
             (
@@ -1193,7 +1193,7 @@ class ObjectSurface(PathOp.ObjectOp):
             SCANDATA.extend(profScan)
 
         if len(SCANDATA) == 0:
-            msg = translate("PathSurface", "No scan data to convert to Gcode.")
+            msg = translate("PathSurface", "No scan data to convert to G-code.")
             Path.Log.error(msg)
             return []
 
@@ -1246,7 +1246,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     PNTS.reverse()
                 offsetLists.append(PNTS)
         else:
-            # Reference https://forum.freecadweb.org/viewtopic.php?t=28861#p234939
+            # Reference https://forum.freecad.org/viewtopic.php?t=28861#p234939
             for fc in subShp.Faces:
                 # Reverse order of wires in each face - inside to outside
                 for w in range(len(fc.Wires) - 1, -1, -1):
@@ -2657,7 +2657,7 @@ class ObjectSurface(PathOp.ObjectOp):
     def setOclCutter(self, obj, safe=False):
         """setOclCutter(obj) ... Translation function to convert FreeCAD tool definition to OCL formatted tool."""
         # Set cutter details
-        #  https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
+        #  https://www.freecad.org/api/dd/dfe/classPath_1_1Tool.html#details
         diam_1 = float(obj.ToolController.Tool.Diameter)
         lenOfst = (
             obj.ToolController.Tool.LengthOffset

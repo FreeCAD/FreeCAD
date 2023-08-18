@@ -228,12 +228,12 @@
       <translation>Triangulation anzeigen</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="148"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="220"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>B-Spline einpassen</translation>
     </message>
@@ -243,7 +243,7 @@
       <translation>Poisson-Rekonstruktion</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="230"/>
+      <location filename="../../SegmentationManual.cpp" line="257"/>
       <source>Segmentation</source>
       <translation>Segmentierung</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="159"/>
-      <location filename="../../FitBSplineSurface.cpp" line="227"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="199"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="200"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Bitte ein einzelnes Placement-Objekt zur lokalen Orientierung wählen.</translation>
     </message>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Ebene</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>Minimale Anzahl von Dreiecken</translation>
+      <translation>Minimale Anzahl von Flächen</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation>Wähle</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
@@ -480,12 +480,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&lt; Dreiecke als</translation>
+      <translation>&lt; Flächen als</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation>Dreieck aufnehmen</translation>
+      <translation>Dreieck auswählen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -495,12 +495,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
       <source>Clear</source>
-      <translation>Löschen</translation>
+      <translation>Leeren</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>Ebene</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Minimale Anzahl von Dreiecken</translation>
+      <translation>Minimale Anzahl von Flächen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>Einstellungen</translation>
+      <translation>Bereich Einstellungen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Nur Dreiecke mit Normalen beachten, die zum Bildschirm zeigen</translation>
+      <translation>Nur Dreiecke beachten deren Normals zum Bildschirm zeigen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="306"/>
+      <location filename="../../SegmentationManual.cpp" line="333"/>
       <source>Create</source>
       <translation>Erstellen</translation>
     </message>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Rückführung</translation>
+      <translation>Reverse-Engineering</translation>
     </message>
   </context>
 </TS>

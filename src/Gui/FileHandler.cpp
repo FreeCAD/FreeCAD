@@ -37,6 +37,7 @@
 #include "PythonEditor.h"
 #include "MainWindow.h"
 #include <App/Application.h>
+#include <Base/Tools.h>
 
 using namespace Gui;
 
@@ -162,23 +163,29 @@ bool FileHandler::openInternal()
     return false;
 }
 
-void FileHandler::openInventor()
+void FileHandler::openInternal(const char* type, const char* prop)
 {
     App::Document* doc = createDocumentIfNeeded();
 
     QFileInfo fi;
     fi.setFile(filename);
 
-    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "App::InventorObject",  fi.baseName().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.FileName = '%s'", fi.absoluteFilePath().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", fi.baseName().toStdString());
+    QString encBase = Base::Tools::escapeEncodeString(fi.baseName());
+    QString encPath = Base::Tools::escapeEncodeString(fi.absoluteFilePath());
+
+    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", type,  encBase.toStdString());
+    Gui::cmdAppDocumentArgs(doc, "ActiveObject.%s = '%s'", prop, encPath.toStdString());
+    Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", encBase.toStdString());
     Gui::cmdAppDocument(doc, "recompute()");
+}
+
+void FileHandler::openInventor()
+{
+    openInternal("App::InventorObject", "FileName");
 }
 
 void FileHandler::openVRML()
 {
-    App::Document* doc = createDocumentIfNeeded();
-
     QFileInfo fi;
     fi.setFile(filename);
 
@@ -186,25 +193,14 @@ void FileHandler::openVRML()
     QByteArray path = fi.absolutePath().toUtf8();
     SoInput::addDirectoryFirst(path.constData());
 
-    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "App::VRMLObject",  fi.baseName().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.VrmlFile = '%s'", fi.absoluteFilePath().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", fi.baseName().toStdString());
-    Gui::cmdAppDocument(doc, "recompute()");
+    openInternal("App::VRMLObject", "VrmlFile");
 
     SoInput::removeDirectory(path.constData());
 }
 
 void FileHandler::openImage()
 {
-    App::Document* doc = createDocumentIfNeeded();
-
-    QFileInfo fi;
-    fi.setFile(filename);
-
-    Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Image::ImagePlane",  fi.baseName().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.ImageFile = '%s'", fi.absoluteFilePath().toStdString());
-    Gui::cmdAppDocumentArgs(doc, "ActiveObject.Label = '%s'", fi.baseName().toStdString());
-    Gui::cmdAppDocument(doc, "recompute()");
+    openInternal("Image::ImagePlane", "ImageFile");
 }
 
 void FileHandler::openPython()

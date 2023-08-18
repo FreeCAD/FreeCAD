@@ -190,12 +190,12 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                     Base::Console().Log("ViewProviderCurveNet::handleEvent() press left\n");
 
                     bool bIsNode =  false;
-                    for (std::list<Node>::iterator It = NodeList.begin();It != NodeList.end(); It++)
+                    for (const auto & It : NodeList)
                     {
-                        if (It->pcHighlight->isHighlighted())
+                        if (It.pcHighlight->isHighlighted())
                         {
                             bIsNode = true;
-                            PointToMove = *It;
+                            PointToMove = It;
                             break;
                         }
                     }

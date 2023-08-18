@@ -24,7 +24,7 @@
 
 __title__ = "Solver z88 FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 import unittest
 from os import listdir

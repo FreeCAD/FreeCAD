@@ -783,14 +783,11 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 
 float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
 {
-	try{
-		float radPos = std::abs(pos) * radius;
-		toolShapePoint test; test.radiusPos = radPos;
-		auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
-		return it->heightPos;
-	}catch(...){
-		return 0;
-	}
+    toolShapePoint test;
+    test.radiusPos = std::abs(pos) * radius;
+
+    auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
+    return it != m_toolShape.end() ? it->heightPos : 0.0f;
 }
 
 bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res)

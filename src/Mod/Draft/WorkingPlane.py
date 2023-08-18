@@ -48,7 +48,7 @@ FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Plane:
@@ -795,11 +795,11 @@ class Plane:
                     coin_up = coin.SbVec3f(0, 1, 0)
                     upvec = Vector(rot.multVec(coin_up).getValue())
                     vdir = view.getViewDirection()
-                    # The angle is between 0 and 180 degrees.
-                    angle = vdir.getAngle(self.axis)
-                    # don't change the plane if the axis is already
-                    # antiparallel to the current view
-                    if abs(math.pi - angle) > Part.Precision.angular():
+                    # don't change the plane if the axis and v vector
+                    # are already correct:
+                    tol = Part.Precision.angular()
+                    if abs(math.pi - vdir.getAngle(self.axis)) > tol \
+                            or abs(math.pi - upvec.getAngle(self.v)) > tol:
                         self.alignToPointAndAxis(Vector(0, 0, 0),
                                                  vdir.negative(), 0, upvec)
                 except Exception:

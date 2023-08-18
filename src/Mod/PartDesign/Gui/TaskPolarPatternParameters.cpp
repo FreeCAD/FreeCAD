@@ -148,8 +148,7 @@ void TaskPolarPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
-        const App::DocumentObject* obj = *i;
+    for (auto obj : originals) {
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
@@ -332,7 +331,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(nullptr,tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr,tr("Error"),QApplication::translate("Exception", e.what()));
     }
 
     kickUpdateViewTimer();
@@ -358,7 +357,7 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskPolarPatternParameters::onFeatureDeleted(void)
+void TaskPolarPatternParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -381,17 +380,17 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
     sub = lnk.getSubValues();
 }
 
-bool TaskPolarPatternParameters::getReverse(void) const
+bool TaskPolarPatternParameters::getReverse() const
 {
     return ui->checkReverse->isChecked();
 }
 
-double TaskPolarPatternParameters::getAngle(void) const
+double TaskPolarPatternParameters::getAngle() const
 {
     return ui->polarAngle->value().getValue();
 }
 
-unsigned TaskPolarPatternParameters::getOccurrences(void) const
+unsigned TaskPolarPatternParameters::getOccurrences() const
 {
     return ui->spinOccurrences->value();
 }

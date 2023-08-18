@@ -25,4 +25,4 @@ as they deal with scripted objects' view providers or the 3D view.
 - `init_draft_statusbar`: functions to initialize the status bar
 
 For more information see the thread:
-[[Discussion] Splitting Draft tools into their own modules](https://forum.freecadweb.org/viewtopic.php?f=23&t=38593&start=10#p341298)
+[[Discussion] Splitting Draft tools into their own modules](https://forum.freecad.org/viewtopic.php?f=23&t=38593&start=10#p341298)

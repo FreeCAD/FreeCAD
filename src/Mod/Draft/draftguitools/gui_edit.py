@@ -28,7 +28,7 @@
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{
@@ -750,7 +750,7 @@ class Edit(gui_base_original.Modifier):
         """
         if (hasattr(obj, 'obj_gui_tools') or
             (hasattr(obj, 'Proxy') and hasattr(obj.Proxy, 'obj_gui_tools')) or
-            (utils.get_type(obj) in self.gui_tools_repository.keys()) ):
+            (utils.get_type(obj) in self.gui_tools_repository) ):
             return True
         else:
             return False

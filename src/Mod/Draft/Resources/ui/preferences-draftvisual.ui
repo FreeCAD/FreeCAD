@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
+    <width>570</width>
     <height>552</height>
    </rect>
   </property>
@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
@@ -352,7 +361,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string notr="true">0.09,0.05</string>
+           <string notr="true">2,2</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -395,7 +404,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string notr="true">0.09,0.05,0.02,0.05</string>
+           <string notr="true">3,2,0.2,2</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -438,7 +447,7 @@
            <string>An SVG linestyle definition</string>
           </property>
           <property name="text">
-           <string notr="true">0.02,0.02</string>
+           <string notr="true">0.2,2</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

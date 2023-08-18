@@ -841,7 +841,7 @@ def RtoIJ(startpoint, command):
 
 def getPathWithPlacement(pathobj):
     """
-    Applies the rotation, and then postition of the obj's Placement
+    Applies the rotation, and then position of the obj's Placement
     to the obj's path
     """
 
@@ -852,7 +852,7 @@ def getPathWithPlacement(pathobj):
 
 def applyPlacementToPath(placement, path):
     """
-    Applies the rotation, and then postition of the placement to path
+    Applies the rotation, and then position of the placement to path
     """
 
     CmdMoveRapid = ["G0", "G00"]

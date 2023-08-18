@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Base Path Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
 if False:
@@ -259,7 +259,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         # 3DSort shouldn't be used without a valid start point. Can cause
         # tool crash without it.
         #
-        # ml: experimental feature, turning off for now (see https://forum.freecadweb.org/viewtopic.php?f=15&t=24422&start=30#p192458)
+        # ml: experimental feature, turning off for now (see https://forum.freecad.org/viewtopic.php?f=15&t=24422&start=30#p192458)
         # realthunder: I've fixed it with a new sorting algorithm, which I
         # tested fine, but of course need more test. Please let know if there is
         # any problem

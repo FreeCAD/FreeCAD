@@ -190,7 +190,7 @@ public:
         getWindowParameter()->Attach(this);
     }
 
-    ~DimensionWidget()
+    ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
     }
@@ -214,7 +214,7 @@ public:
     }
 
 private:
-    void unitChanged(void)
+    void unitChanged()
     {
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
         auto actions = menu()->actions();
@@ -230,8 +230,7 @@ private:
         assert(actions.size() <= maxSchema);
         for(int i = 0; i < maxSchema ; i++)
         {
-            actions[i]->setText(qApp->translate("Gui::Dialog::DlgGeneralImp",
-                    Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i))));
+            actions[i]->setText(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
         }
     }
 };
@@ -446,16 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
-
-    // setup font substitutions for NaviCube
-    // Helvetica usually gives good enough results on mac & linux
-    // in rare cases Helvetica matches a bad font on linux
-    // Nimbus Sans Narrow and Open Sans Condensed added as fallback
-    // Bahnschrift is a condensed font available on windows versions since 2017
-    // Arial added as fallback for older version
-    auto substitutions = QStringLiteral("Bahnschrift,Helvetica,Nimbus Sans Narrow,Open Sans Condensed,Arial,Sans");
-    auto family = QStringLiteral("FreeCAD NaviCube");
-    QFont::insertSubstitutions(family, substitutions.split(QLatin1Char(',')));
 
     statusBar()->showMessage(tr("Ready"), 2001);
 }
@@ -1180,6 +1169,13 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         return;
     auto view = dynamic_cast<MDIView*>(w->widget());
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
+    if (view)
+    {
+        d->activeView = view;
+        Application::Instance->viewActivated(view);
+    }
+    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
@@ -1205,9 +1201,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    d->activeView = view;
-    Application::Instance->viewActivated(view);
     updateActions(true);
 }
 
@@ -1353,7 +1346,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         Q_EMIT  mainWindowClosed();
         d->activityTimer->stop();
 
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=67748
+        // https://forum.freecad.org/viewtopic.php?f=8&t=67748
         // When the session manager jumps in it can happen that the closeEvent()
         // function is triggered twice and for the second call the main window might be
         // invisible. In this case the window settings shouldn't be saved.
@@ -1458,6 +1451,9 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    // TODO: Check for deprecated settings
+    Application::Instance->checkForDeprecatedSettings();
+
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
@@ -1501,7 +1497,7 @@ void MainWindow::updateActions(bool delay)
         // the whole application in a weird state
         if (d->activityTimer->thread() != QThread::currentThread()) {
             QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int, 150));
+                Q_ARG(int, 150));
         }
         else {
             d->activityTimer->start(150);
@@ -1604,13 +1600,15 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-// make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
-    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
-#endif
-
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
+
+    // make menus and tooltips usable in fullscreen under Windows, see issue #7563
+#if defined(Q_OS_WIN)
+    if (QWindow* win = this->windowHandle()) {
+        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+    }
+#endif
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
@@ -1693,6 +1691,59 @@ QPixmap MainWindow::aboutImage() const
     return about_image;
 }
 
+/**
+ * Displays a warning about this being a developer build. Designed for display in the Splashscreen.
+ * \param painter The painter to draw the warning into
+ * \param startPosition The painter-space coordinates to start the warning box at.
+ * \param maxSize The maximum extents for the box that is drawn. If the text exceeds this size it
+ * will be scaled down to fit.
+ * \note The text string is translatable, so its length is somewhat unpredictable. It is always
+ * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
+ * width is considered, the height simply follows from the font size.
+ */
+void MainWindow::renderDevBuildWarning(
+    QPainter &painter,
+    const QPoint startPosition,
+    const QSize maxSize)
+{
+    // Create a background box that fades out the artwork for better legibility
+    QColor fader (Qt::black);
+    constexpr float halfDensity (0.5);
+    fader.setAlphaF(halfDensity);
+    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
+    painter.setBrush(fillBrush);
+
+    // Construct the lines of text and figure out how much space they need
+    const auto devWarningLine1 = tr("WARNING: This is a development version.");
+    const auto devWarningLine2 = tr("Please do not use in a production environment.");
+    QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
+    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
+    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
+    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
+    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
+    int lineHeight = fontMetrics.lineSpacing();
+    if (boxWidth > maxSize.width()) {
+        // Especially if the text was translated, there is a chance that using the existing font
+        // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
+        // how long the text strings are.
+        float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
+        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
+        padding *= reductionFactor;
+        QFont newFont = painter.font();
+        newFont.setPointSize(newFontSize);
+        painter.setFont(newFont);
+        lineHeight = painter.fontMetrics().lineSpacing();
+        boxWidth = maxSize.width();
+    }
+    constexpr float lineExpansionFactor(2.3);
+    int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
+
+    // Draw the background rectangle and the text
+    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
+    painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
+}
+
 QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
@@ -1714,12 +1765,14 @@ QPixmap MainWindow::splashImage() const
     }
 
     // now try the icon paths
+    float pixelRatio (1.0);
     if (splash_image.isNull()) {
         if (qApp->devicePixelRatio() > 1.0) {
             // For HiDPI screens, we have a double-resolution version of the splash image
             splash_path += "2x";
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
             splash_image.setDevicePixelRatio(2.0);
+            pixelRatio = 2.0;
         }
         else {
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
@@ -1733,7 +1786,8 @@ QPixmap MainWindow::splashImage() const
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
         QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3").arg(major, minor, point);
+        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
@@ -1761,11 +1815,14 @@ QPixmap MainWindow::splashImage() const
         fontExe.setPointSizeF(20.0);
         QFontMetrics metricExe(fontExe);
         int l = QtTools::horizontalAdvance(metricExe, title);
+        if (title == QLatin1String("FreeCAD")) {
+            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
+        }
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSizeF(12.0);
+        fontVer.setPointSizeF(14.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
@@ -1786,9 +1843,19 @@ QPixmap MainWindow::splashImage() const
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
-            painter.drawText(x, y, title);
+            if (title != QLatin1String("FreeCAD")) {
+                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
+                painter.drawText(x, y, title);
+            }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 5), y, version);
+            if (suffix == QLatin1String("dev")) {
+                const int lineHeight = metricVer.lineSpacing();
+                const int padding {10}; // Distance from the edge of the graphic's bounding box
+                QPoint startPosition(padding, y + lineHeight);
+                QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
+                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize);
+            }
             painter.end();
         }
     }
@@ -2251,9 +2318,16 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                                Base::IntendedRecipient recipient, Base::ContentType content)
 {
     (void) notifiername;
+
+    // Do not log untranslated messages, or messages intended only to a developer to status bar
+    if( recipient == Base::IntendedRecipient::Developer ||
+        content == Base::ContentType::Untranslated ||
+        content == Base::ContentType::Untranslatable )
+        return;
 
     int messageType = -1;
     switch(level){

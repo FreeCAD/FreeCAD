@@ -64,10 +64,10 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
-https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
-https://forum.freecadweb.org/viewtopic.php?t=35893
-https://forum.freecadweb.org/viewtopic.php?t=23101
+https://forum.freecad.org/viewtopic.php?f=24&t=31997&start=30
+https://forum.freecad.org/viewtopic.php?t=33974&start=90
+https://forum.freecad.org/viewtopic.php?t=35893
+https://forum.freecad.org/viewtopic.php?t=23101
 
 Nonlinear material example, plate with hole.
 

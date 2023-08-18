@@ -65,11 +65,12 @@ void StartGui::Workbench::loadStartPage()
     // Ensure that we don't open the Start page multiple times
     QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();
-    for (QList<QWidget*>::const_iterator c = ch.cbegin(); c != ch.cend(); ++c) {
-        if ((*c)->windowTitle() == title) {
-            Gui::MDIView* mdi = qobject_cast<Gui::MDIView*>((*c));
-            if (mdi)
+    for (auto c : ch) {
+        if (c->windowTitle() == title) {
+            Gui::MDIView* mdi = qobject_cast<Gui::MDIView*>(c);
+            if (mdi) {
                 Gui::getMainWindow()->setActiveWindow(mdi);
+            }
             return;
         }
     }
@@ -117,8 +118,7 @@ void StartGui::Workbench::loadStartPage()
 
 void StartGui::Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
-    Q_UNUSED(recipient);
-    Q_UNUSED(item);
+    Gui::StdWorkbench::setupContextMenu(recipient, item);
 }
 
 Gui::MenuItem* StartGui::Workbench::setupMenuBar() const

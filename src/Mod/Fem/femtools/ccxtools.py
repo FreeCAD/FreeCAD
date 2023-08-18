@@ -24,7 +24,7 @@
 
 __title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -606,7 +606,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     "thus workaround for wrong exit code for *NOANALYSIS check "
                     "and set ret_code to 0.\n"
                 )
-                # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
+                # https://forum.freecad.org/viewtopic.php?f=18&t=31303&start=10#p260743
                 ret_code = 0
             else:
                 FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))

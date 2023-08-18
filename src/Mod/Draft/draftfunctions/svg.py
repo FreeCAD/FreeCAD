@@ -54,11 +54,11 @@ def get_line_style(line_style, scale):
     style = None
 
     if line_style == "Dashed":
-        style = param.GetString("svgDashedLine", "0.09,0.05")
+        style = param.GetString("svgDashedLine", "2,2")
     elif line_style == "Dashdot":
-        style = param.GetString("svgDashdotLine", "0.09,0.05,0.02,0.05")
+        style = param.GetString("svgDashdotLine", "3,2,0.2,2")
     elif line_style == "Dotted":
-        style = param.GetString("svgDottedLine", "0.02,0.02")
+        style = param.GetString("svgDottedLine", "0.2,2")
     elif line_style:
         if "," in line_style:
             style = line_style
@@ -859,6 +859,7 @@ def get_svg(obj,
                                     pathname='%s_w%04d' % (obj.Name, i))
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
+                fill = 'none' # Required if obj has a face. Edges processed here have no face.
                 for i, e in enumerate(obj.Shape.Edges):
                     if DraftGeomUtils.findEdge(e, wiredEdges) is None:
                         svg += get_path(obj, plane,

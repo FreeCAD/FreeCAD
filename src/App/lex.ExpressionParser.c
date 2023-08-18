@@ -9131,7 +9131,7 @@ COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quan
 case 49:
 YY_RULE_SETUP
 #line 234 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return USUNIT; // inch
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
@@ -9141,7 +9141,7 @@ COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quan
 case 51:
 YY_RULE_SETUP
 #line 236 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return USUNIT; // foot
 	YY_BREAK
 case 52:
 YY_RULE_SETUP

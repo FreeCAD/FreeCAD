@@ -8,11 +8,11 @@ function toggle(tab) {
 
     var tabs = document.getElementById("tabs").childElementCount;
     document.getElementById(tab).classList.remove("hidden");
-    document.getElementById("h"+tab).classList.add("active");
-    for (var i = 1; i <= tabs; i++) {
-        if ("tab"+i != tab) {
-            document.getElementById("tab"+i).classList.add("hidden");
-            document.getElementById("htab"+i).classList.remove("active");
+    document.getElementById("h" + tab).classList.add("active");
+    for (var i = 1; i < tabs; i++) {
+        if ("tab" + i != tab) {
+            document.getElementById("tab" + i).classList.add("hidden");
+            document.getElementById("htab" + i).classList.remove("active");
         }
     }
 }
@@ -25,7 +25,7 @@ function load() {
     if (localStorage["notepad"]) {
         document.getElementById("notepad").value = localStorage["notepad"]; // Load notepad from local storage
     }
-    document.getElementById("notepad").addEventListener( "input", function () {
+    document.getElementById("notepad").addEventListener("input", function () {
         localStorage.setItem("notepad", document.getElementById("notepad").value); // Save notepad on type
     }, false);
 
@@ -33,14 +33,14 @@ function load() {
         // load latest commits
         var ddiv = document.getElementById("commits");
         ddiv.innerHTML = "Connecting...";
-        var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
+        var tobj = new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
         tobj.buildScriptTag(); // Build the script tag
         tobj.addScriptTag(); // Execute (add) the script tag
         ddiv.innerHTML = "Downloading latest news...";
         // load addons list
         ddiv = document.getElementById("addons");
         ddiv.innerHTML = "Connecting...";
-        var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD-addons/contents?callback=printAddons');
+        var tobj = new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD-addons/contents?callback=printAddons');
         tobj.buildScriptTag(); // Build the script tag
         tobj.addScriptTag(); // Execute (add) the script tag
         ddiv.innerHTML = "Downloading addons list...";
@@ -48,7 +48,7 @@ function load() {
             // load forum recent posts
             ddiv = document.getElementById("forum");
             ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('https://www.freecadweb.org/xml-to-json.php?callback=printForum&url=https://forum.freecadweb.org/feed.php');
+            var tobj = new JSONscriptRequest('https://www.freecad.org/xml-to-json.php?callback=printForum&url=https://forum.freecad.org/feed.php');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading addons list...";
@@ -79,9 +79,9 @@ function printAddons(data) {
     var ddiv = document.getElementById('addons');
     ddiv.innerHTML = "Received";
     var html = ['<ul class="addonslist">'];
-    var blacklist = ['addons_installer.FCMacro','FreeCAD-Addon-Details.md','README.md'];
+    var blacklist = ['addons_installer.FCMacro', 'FreeCAD-Addon-Details.md', 'README.md'];
     for (var i = 0; i < data.data.length; i++) {
-        if ( (data.data[i].name[0] != ".") && (blacklist.indexOf(data.data[i].name) < 0) ) {
+        if ((data.data[i].name[0] != ".") && (blacklist.indexOf(data.data[i].name) < 0)) {
             if (wblist.indexOf(data.data[i].name.toLowerCase()) == -1) {
                 html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
             } else {
@@ -102,8 +102,8 @@ function printForum(data) {
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {
-        if (i < data.feed.entry.length){
-            html.push('<li><big><a href="', data.feed.entry[i].link.href, '">', data.feed.entry[i].title.$, '</a></big><br/><p>', data.feed.entry[i].content.$,'</p></li>');
+        if (i < data.feed.entry.length) {
+            html.push('<li><big><a href="', data.feed.entry[i].link.href, '">', data.feed.entry[i].title.$, '</a></big><br/><p>', data.feed.entry[i].content.$, '</p></li>');
         }
     }
     html.push('</ul>');

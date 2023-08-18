@@ -22,7 +22,7 @@
 
 __title__ = "FreeCAD material editor"
 __author__ = "Yorik van Havre, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 
 import os
 import sys
@@ -159,7 +159,7 @@ class MaterialEditor:
         template_data = get_material_template(True)
 
         for group in template_data:
-            gg = list(group.keys())[0]  # group dict has only one key
+            gg = list(group)[0]  # group dict has only one key
             top = QtGui.QStandardItem(gg)
             model.appendRow([top])
             self.groups.append(gg)
@@ -253,13 +253,13 @@ class MaterialEditor:
         card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
 
         if sort_by_resources is True:
-            for a_path in sorted(self.materials.keys()):
+            for a_path in sorted(self.materials):
                 card_name_list.append([self.cards[a_path], a_path, self.icons[a_path]])
         else:
             card_names_tmp = {}
             for path, name in self.cards.items():
                 card_names_tmp[name] = path
-            for a_name in sorted(card_names_tmp.keys()):
+            for a_name in sorted(card_names_tmp):
                 a_path = card_names_tmp[a_name]
                 card_name_list.append([a_name, a_path, self.icons[a_path]])
 
@@ -724,7 +724,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
 
     # FIXME
     # Workaround for problem from here:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&start=20#p516811
+    # https://forum.freecad.org/viewtopic.php?f=18&t=56912&start=20#p516811
     # set precision to 12
     # Better would be a similar system like used in FEM material task panel
     # if the value in the InputField has not changed the data is not changed

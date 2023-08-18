@@ -49,7 +49,7 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
@@ -79,8 +79,10 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, bp::_1);
-    auto bndProgressMessage = boost::bind(&ViewProviderDrawingView::onProgressMessage, this, bp::_1, bp::_2, bp::_3);
+    //NOLINTBEGIN
+    auto bnd = std::bind(&ViewProviderDrawingView::onGuiRepaint, this, sp::_1);
+    auto bndProgressMessage = std::bind(&ViewProviderDrawingView::onProgressMessage, this, sp::_1, sp::_2, sp::_3);
+    //NOLINTEND
     auto feature = getViewObject();
     if (feature) {
         const char* temp = feature->getNameInDocument();

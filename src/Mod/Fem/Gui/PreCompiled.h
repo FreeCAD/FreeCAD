@@ -36,7 +36,6 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <math.h>
 
 // STL
 #include <algorithm>

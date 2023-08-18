@@ -87,8 +87,6 @@ def run_all():
     run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
     run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
     run_example("thermomech_bimetall", run_solver=True)
-    run_example("thermomech_flow1d", run_solver=True)
-    run_example("thermomech_spine", run_solver=True)
 
 
 def setup_all():
@@ -127,8 +125,6 @@ def setup_all():
     run_example("square_pipe_end_twisted_edgeforces")
     run_example("square_pipe_end_twisted_nodeforces")
     run_example("thermomech_bimetall")
-    run_example("thermomech_flow1d")
-    run_example("thermomech_spine")
 
 
 def run_analysis(doc, base_name, filepath="", run_solver=False):

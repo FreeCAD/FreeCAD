@@ -352,7 +352,7 @@ private:
                 this, &WrapperManager::clear);
         wrapQApplication();
     }
-    ~WrapperManager() = default;
+    ~WrapperManager() override = default;
 };
 
 template<typename qttype>
@@ -563,6 +563,11 @@ QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
     return nullptr;
 }
 
+QGraphicsItem* PythonWrapper::toQGraphicsItem(const Py::Object& pyobject)
+{
+    return toQGraphicsItem(pyobject.ptr());
+}
+
 QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
@@ -572,6 +577,42 @@ QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
     //
     void* ptr = qt_getCppPointer(Py::asObject(pyPtr), shiboken, "getCppPointer");
     return reinterpret_cast<QGraphicsObject*>(ptr);
+#endif
+    return nullptr;
+}
+
+QGraphicsObject* PythonWrapper::toQGraphicsObject(const Py::Object& pyobject)
+{
+    return toQGraphicsObject(pyobject.ptr());
+}
+
+Py::Object PythonWrapper::fromQImage(const QImage& img)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN2)
+    PyObject* pyobj = Shiboken::Conversions::copyToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QImage>()),
+                              const_cast<QImage*>(&img));
+#else
+    PyObject* pyobj = Shiboken::Conversions::copyToPython(getPyTypeObjectForTypeName<QImage>(),
+                              const_cast<QImage*>(&img));
+#endif
+    if (pyobj) {
+        return Py::asObject(pyobj);
+    }
+#else
+    // Access shiboken/PySide via Python
+    //
+    return qt_wrapInstance<const QImage*>(&img, "QImage", shiboken, PySide + ".QtGui", "wrapInstance");
+#endif
+    throw Py::RuntimeError("Failed to wrap icon");
+}
+
+QImage *PythonWrapper::toQImage(PyObject *pyobj)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    return qt_getCppType<QImage>(pyobj);
+#else
+    Q_UNUSED(pyobj);
 #endif
     return nullptr;
 }

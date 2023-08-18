@@ -377,7 +377,7 @@
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Regular_Solid.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>

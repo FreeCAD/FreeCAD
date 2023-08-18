@@ -21,7 +21,7 @@
 
 __title__  = "FreeCAD Arch External Reference"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
 
 import FreeCAD
@@ -35,7 +35,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt, utf8_decode=False):
+    def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
@@ -51,16 +51,16 @@ else:
 
 
 
-def makeReference(filepath=None,partname=None,name="External Reference"):
+def makeReference(filepath=None,partname=None,name=None):
 
 
-    "makeReference([filepath,partname]): Creates an Arch Reference object"
+    "makeReference([filepath],[partname],[name]): Creates an Arch Reference object"
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ArchReference")
-    obj.Label = name
+    obj.Label = name if name else translate("Arch","External Reference")
     ArchReference(obj)
     if FreeCAD.GuiUp:
         ViewProviderArchReference(obj.ViewObject)
@@ -664,7 +664,7 @@ class ArchReferenceTaskPanel:
         self.openButton.setText("Open")
         if not self.obj.File:
             self.openButton.setEnabled(False)
-        l2 = QtGui.QHBoxLayout(self.form)
+        l2 = QtGui.QHBoxLayout()
         layout.addLayout(l2)
         l2.addWidget(self.fileButton)
         l2.addWidget(self.openButton)
@@ -680,11 +680,12 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.parts
         else:
             parts = self.obj.Proxy.getPartsList(self.obj)
-        for k in sorted(parts.keys()):
+        sortedkeys = sorted(parts)
+        for k in sortedkeys:
             self.partCombo.addItem(parts[k][0],k)
         if self.obj.Part:
-            if self.obj.Part in parts.keys():
-                self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
+            if self.obj.Part in sortedkeys:
+                self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
@@ -722,11 +723,12 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.getPartsList(self.obj,self.filename)
             if parts:
                 self.partCombo.clear()
-                for k in sorted(parts.keys()):
+                sortedkeys = sorted(parts)
+                for k in sortedkeys:
                     self.partCombo.addItem(parts[k][0],k)
                 if self.obj.Part:
-                    if self.obj.Part in parts.keys():
-                        self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
+                    if self.obj.Part in sortedkeys:
+                        self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
 
     def openFile(self):
 

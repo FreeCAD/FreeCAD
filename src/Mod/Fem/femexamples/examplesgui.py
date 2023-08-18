@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 """
-https://forum.freecadweb.org/viewtopic.php?f=10&t=48427
+https://forum.freecad.org/viewtopic.php?f=10&t=48427
 """
 
 import os
@@ -43,7 +43,7 @@ class FemExamples(QtGui.QWidget):
 
     def __del__(self,):
         # need as fix for qt event error
-        # --> see http://forum.freecadweb.org/viewtopic.php?f=18&t=10732&start=10#p86493
+        # --> see http://forum.freecad.org/viewtopic.php?f=18&t=10732&start=10#p86493
         return
 
     def init_ui(self):

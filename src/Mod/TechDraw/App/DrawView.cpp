@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "DrawView.h"
@@ -44,10 +45,33 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawView
 //===========================================================================
+
+#if 0   // needed for Qt's lupdate utility
+    QT_TRANSLATE_NOOP("DrawPage", "Page");
+    QT_TRANSLATE_NOOP("DrawSVGTemplate", "Template");
+    QT_TRANSLATE_NOOP("DrawView", "View");
+    QT_TRANSLATE_NOOP("DrawViewPart", "View");
+    QT_TRANSLATE_NOOP("DrawViewSection", "Section");
+    QT_TRANSLATE_NOOP("DrawComplexSection", "Section");
+    QT_TRANSLATE_NOOP("DrawViewDetail", "Detail");
+    QT_TRANSLATE_NOOP("DrawActiveView", "ActiveView");
+    QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
+    QT_TRANSLATE_NOOP("DrawViewImage", "Image");
+    QT_TRANSLATE_NOOP("DrawViewSymbol", "Symbol");
+    QT_TRANSLATE_NOOP("DrawViewArch", "Arch");
+    QT_TRANSLATE_NOOP("DrawViewDraft", "Draft");
+    QT_TRANSLATE_NOOP("DrawLeaderLine", "LeaderLine");
+    QT_TRANSLATE_NOOP("DrawViewBalloon", "Balloon");
+    QT_TRANSLATE_NOOP("DrawViewDimension", "Dimension");
+    QT_TRANSLATE_NOOP("DrawViewDimExtent", "Extent");
+    QT_TRANSLATE_NOOP("DrawHatch", "Hatch");
+    QT_TRANSLATE_NOOP("DrawGeomHatch", "GeomHatch");
+#endif
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
@@ -592,6 +616,17 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
     if (Preferences::reportProgress()) {
         signalProgressMessage(this, featureName, text);
     }
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+//    Base::Console().Message("DV::translateLabel - context: %s baseName: %s uniqueName: %s\n",
+//                            context.c_str(), baseName.c_str(), uniqueName.c_str());
+
+    Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
+//    Base::Console().Message("DV::translateLabel - new label: %s\n", Label.getValue());
 }
 
 PyObject *DrawView::getPyObject(void)

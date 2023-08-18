@@ -36,7 +36,7 @@ DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 __title__ = "Path Circular Holes Base Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 
 

@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>Ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Prečni prerezi …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Prečni prerezi</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>Krivulja na ploskovju ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Ustvari približno krivuljo po vrhu ploskovja.
@@ -44,7 +44,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -60,17 +60,17 @@ Ta ukaz deluje le s "ploskovji".</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>Ustvari prerez iz ploskovja in ravnine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Presek</translation>
     </message>
@@ -80,7 +80,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -97,12 +97,12 @@ Ta ukaz deluje le s "ploskovji".</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
       <translation>Prireži z ravnino</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>Prerez z ravnino</translation>
     </message>
@@ -112,7 +112,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Prečni prerezi</translation>
+      <translation>Prečni prerez</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -170,7 +170,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
       <translation>Stakni robove, če je razdalja manjša od</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Napaka</translation>
     </message>
@@ -275,7 +275,7 @@ Ta ukaz deluje le na "ploskovjih" in ne na pravilnih ploskvah ali površjih. Če
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Tlakovanje</translation>
+      <translation>Ploščičenje</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -387,7 +387,7 @@ Najmanjša vrednost je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation>Podrobnost:</translation>
+      <translation>Drobnatost:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -407,7 +407,7 @@ Najmanjša vrednost je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Podroben</translation>
+      <translation>Drobna</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -482,7 +482,7 @@ Razpon vrednosti je 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Pusti ploščo odprto</translation>
+      <translation>Ohrani odprto podokno</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
@@ -490,27 +490,27 @@ Razpon vrednosti je 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Ni dejavnega dokumenta</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Izbrali ste telo brez konice.
 Ali določite telesu konico ali pa izberite drugo obliko.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Izbrali ste lik brez ploskev.
 Izberite drugi lik.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Najprej izberite obliko za ploskovjenje.</translation>
     </message>
@@ -518,12 +518,12 @@ Izberite drugi lik.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Izberite ravnino</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Izberite ravnino s katero želite prerezati ploskovje.</translation>
     </message>

@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
     double radius = Radius.getValue();
 
     if(radius <= 0)
-        return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fillet radius must be greater than zero"));
 
     this->positionByBaseFeature();
 
@@ -106,18 +106,18 @@ App::DocumentObjectExecReturn *Fillet::execute()
     try {
         BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
 
-        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
+        for (const auto & it : SubNames) {
+            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it.c_str()));
             mkFillet.Add(radius, edge);
         }
 
         mkFillet.Build();
         if (!mkFillet.IsDone())
-            return new App::DocumentObjectExecReturn("Failed to create fillet");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create fillet"));
 
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
@@ -128,13 +128,13 @@ App::DocumentObjectExecReturn *Fillet::execute()
             aSfs->Perform();
             shape = aSfs->Shape();
             if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
             }
         }
 
         int solidCount = countSolids(shape);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn("Fillet: Result has multiple solids. This is not supported at this time.");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
         shape = refineShapeIfActive(shape);

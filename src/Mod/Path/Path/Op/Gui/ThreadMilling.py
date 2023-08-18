@@ -37,7 +37,7 @@ from PySide import QtCore
 
 __title__ = "Path Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "http://www.freecad.org"
 __doc__ = "UI and Command for Path Thread Milling Operation."
 
 if False:

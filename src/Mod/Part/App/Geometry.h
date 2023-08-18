@@ -131,9 +131,9 @@ protected:
     boost::uuids::uuid tag;
     std::vector<std::shared_ptr<GeometryExtension>> extensions;
 
-private:
-    Geometry(const Geometry&);
-    Geometry& operator = (const Geometry&);
+public:
+    Geometry(const Geometry&) = delete;
+    Geometry& operator = (const Geometry&) = delete;
 };
 
 class PartExport GeomPoint : public Geometry

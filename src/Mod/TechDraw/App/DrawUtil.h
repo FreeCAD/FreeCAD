@@ -56,7 +56,7 @@
 #define VECTORTOLERANCE (Precision::Confusion())
 
 #define SVG_NS_URI "http://www.w3.org/2000/svg"
-#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+#define FREECAD_SVG_NS_URI "http://www.freecad.org/wiki/index.php?title=Svg_Namespace"
 
 //some shapes are being passed in where edges that should be connected are in fact
 //separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
@@ -251,6 +251,9 @@ public:
                                                       const Base::BoundBox2d& rectangle,
                                                       std::vector<Base::Vector2d>& intersections);
     static void copyFile(std::string inSpec, std::string outSpec);
+
+    static std::string translateArbitrary(std::string context, std::string baseName, std::string uniqueName);
+
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

@@ -53,7 +53,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskTransformedParameters */
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
+    : TaskBox(Gui::BitmapFactory().pixmap(TransformedView->featureIcon().c_str()),
               TransformedView->menuName, true, parent)
     , proxy(nullptr)
     , TransformedView(TransformedView)
@@ -233,8 +233,8 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, co
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }

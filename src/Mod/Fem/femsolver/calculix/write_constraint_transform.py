@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix constraint transform"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 from femtools import geomtools

@@ -121,8 +121,8 @@ void FaceMakerBullseye::Build_Essence()
         }
         else {
             //wire is not on a face. Start a new face.
-            faces.push_back(std::unique_ptr<FaceDriller>(
-                                new FaceDriller(plane, w)
+            faces.push_back(std::make_unique<FaceDriller>(
+                                plane, w
                            ));
         }
     }

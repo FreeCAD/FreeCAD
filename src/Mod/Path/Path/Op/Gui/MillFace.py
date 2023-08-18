@@ -31,7 +31,7 @@ import FreeCADGui
 
 __title__ = "Path Face Mill Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Face Mill operation page controller and command implementation."
 
 if False:

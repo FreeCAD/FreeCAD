@@ -22,7 +22,9 @@
 # ******************************************************************************/
 
 from PySide import QtCore, QtGui
-import FreeCAD # Just for debug printing...
+import FreeCAD
+
+translate = FreeCAD.Qt.translate
 
 class WizardShaftTable:
     "The table widget that contains all the data of the shaft"
@@ -40,37 +42,38 @@ class WizardShaftTable:
     }
     rowDictReverse = {}
     headers = [
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Length [mm]"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Diameter [mm]"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Inner diameter [mm]"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Constraint type"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge type"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "Start edge size"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge type"),
-               QtCore.QT_TRANSLATE_NOOP("WizardShaftTable", "End edge size")
+        translate("WizardShaftTable", "Length [mm]"),
+        translate("WizardShaftTable", "Diameter [mm]"),
+        translate("WizardShaftTable", "Inner diameter [mm]"),
+        translate("WizardShaftTable", "Constraint type"),
+        translate("WizardShaftTable", "Start edge type"),
+        translate("WizardShaftTable", "Start edge size"),
+        translate("WizardShaftTable", "End edge type"),
+        translate("WizardShaftTable", "End edge size")
               ]
 
     def __init__(self, w, s):
-        for key in iter(self.rowDict.keys()):
-            self.rowDictReverse[self.rowDict[key]] = key
+        for key, val in self.rowDict.items():
+            self.rowDictReverse[val] = key
         # Set parent wizard (for connecting slots)
         self.wizard = w
         self.shaft = s
         # Create table widget
         self.widget = QtGui.QTableWidget(len(self.rowDict), 0)
         self.widget.setObjectName("ShaftWizardTable") # Do not change or translate: Used in ViewProviderFemConstraintXXX
-        self.widget.setWindowTitle("Shaft wizard")
+        self.widget.setWindowTitle(translate("WizardShaftTable", "Shaft wizard"))
         self.widget.resize(QtCore.QSize(300,200))
         self.editedRow = None
         self.editedColumn = None
 
         # Label rows and columns
         self.widget.setVerticalHeaderLabels(self.headers)
-        self.widget.setHorizontalHeaderLabels(["Section 1", "Section 2"])
+        self.widget.setHorizontalHeaderLabels([
+            translate("WizardShaftTable", "Section 1"), translate("WizardShaftTable", "Section 2")])
         #self.widget.columnMoved.connect(column, oldIndex, newIndex)
 
         # Create context menu
-        action = QtGui.QAction("Add column", self.widget)
+        action = QtGui.QAction(translate("WizardShaftTable", "Add column"), self.widget)
         action.triggered.connect(self.slotInsertColumn)
         self.widget.addAction(action)
         self.widget.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -116,7 +119,7 @@ class WizardShaftTable:
         self.shaft.addSegment(length, diameter, innerdiameter)
 
         self.widget.insertColumn(index)
-        self.widget.setHorizontalHeaderItem(index + 1, QtGui.QTableWidgetItem("Section %s" % (index + 1)))
+        self.widget.setHorizontalHeaderItem(index + 1, QtGui.QTableWidgetItem(translate("WizardShaftTable", "Section %s") % (index + 1)))
 
         # Length
         widget = QtGui.QDoubleSpinBox(self.widget)

@@ -134,7 +134,7 @@ class IfcRoot:
             IfcData["complex_attributes"] = "{}"
         ifcComplexAttributes = json.loads(IfcData["complex_attributes"])
         for attribute in ifcTypeSchema["complex_attributes"]:
-            if attribute["name"] not in ifcComplexAttributes.keys():
+            if attribute["name"] not in ifcComplexAttributes:
                 ifcComplexAttributes[attribute["name"]] = {}
         IfcData["complex_attributes"] = json.dumps(ifcComplexAttributes)
         obj.IfcData = IfcData
@@ -237,7 +237,7 @@ class IfcRoot:
         Do so using the .addIfcAttributeValueExpressions() method.
 
         Learn more about expressions here:
-        https://wiki.freecadweb.org/Expressions
+        https://wiki.freecad.org/Expressions
 
         Do not add the attribute if the object has a property with the
         attribute's name. Also do not add the attribute if its name is
@@ -315,7 +315,7 @@ class IfcRoot:
         - LongName
 
         Learn more about expressions here:
-        https://wiki.freecadweb.org/Expressions
+        https://wiki.freecad.org/Expressions
 
         Parameters
         ----------

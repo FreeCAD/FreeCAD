@@ -126,10 +126,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
     boost::signals2::signal<void (const char*)> signalActivateWorkbench;
-    /// signal on added workbench
-    boost::signals2::signal<void (const char*)> signalAddWorkbench;
-    /// signal on removed workbench
-    boost::signals2::signal<void (const char*)> signalRemoveWorkbench;
+    /// signal on added/removed workbench
+    boost::signals2::signal<void ()> signalRefreshWorkbenches;
     /// signal on show hidden items
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
@@ -194,6 +192,8 @@ public:
 
     /// true when the application shutting down
     bool isClosing();
+
+    void checkForDeprecatedSettings();
     void checkForPreviousCrashes();
 
     /** @name workbench handling */
@@ -209,8 +209,9 @@ public:
 
     /** @name Appearance */
     //@{
-    /// Activate a named workbench
+    /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
+    QString replaceVariablesInQss(QString qssText);
     //@}
 
     /** @name User Commands */
@@ -248,18 +249,35 @@ protected:
     // the below std::map is a translation of 'EditMode' enum in ViewProvider.h
     // to add a new edit mode, it should first be added there
     // this is only used for GUI user interaction (menu, toolbar, Python API)
-    const std::map <int, std::string> userEditModes {
-        {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
-        {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
-        {2, QT_TRANSLATE_NOOP("EditMode", "Cutting")},
-        {3, QT_TRANSLATE_NOOP("EditMode", "Color")}
+    const std::map<int, std::pair<std::string, std::string>> userEditModes {
+        {0,
+         std::make_pair(
+             QT_TRANSLATE_NOOP("EditMode", "Default"),
+             QT_TRANSLATE_NOOP("EditMode",
+                               "The object will be edited using the mode defined internally to be "
+                               "the most appropriate for the object type"))},
+        {1,
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Transform"),
+                        QT_TRANSLATE_NOOP("EditMode",
+                                          "The object will have its placement editable with the "
+                                          "Std TransformManip command"))},
+        {2,
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Cutting"),
+                        QT_TRANSLATE_NOOP("EditMode",
+                                          "This edit mode is implemented as available but "
+                                          "currently does not seem to be used by any object"))},
+        {3,
+         std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Color"),
+                        QT_TRANSLATE_NOOP("EditMode",
+                                          "The object will have the color of its individual faces "
+                                          "editable with the Part FaceColors command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 
 public:
-    std::map <int, std::string> listUserEditModes() const { return userEditModes; }
+    std::map <int, std::pair<std::string,std::string>> listUserEditModes() const { return userEditModes; }
     int getUserEditMode(const std::string &mode = "") const;
-    std::string getUserEditModeName(int mode = -1) const;
+    std::pair<std::string,std::string> getUserEditModeUIStrings(int mode = -1) const;
     bool setUserEditMode(int mode);
     bool setUserEditMode(const std::string &mode);
     //@}

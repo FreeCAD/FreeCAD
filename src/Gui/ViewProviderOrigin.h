@@ -76,6 +76,12 @@ public:
 
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
+
+    // the factor by which the axes are longer than the planes
+    static constexpr float axesScaling = 1.5f;
+
+    // default color for origini: light-blue (50, 150, 250, 255 stored as 0xRRGGBBAA)
+    static const uint32_t defaultColor = 0x3296faff;
 protected:
     void onChanged(const App::Property* prop) override;
     bool onDelete(const std::vector<std::string> &) override;

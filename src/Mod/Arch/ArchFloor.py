@@ -55,9 +55,9 @@ else:
 
 __title__  = "FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__    = "https://www.freecad.org"
 
-def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+def makeFloor(objectslist=None,baseobj=None,name=None):
     """Obsolete, superseded by ArchBuildingPart.makeFloor.
 
     Create a floor.
@@ -84,8 +84,8 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
-    obj.Label = translate("Arch",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Floor")
+    obj.Label = name if name else translate("Arch","Floor")
     _Floor(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFloor(obj.ViewObject)
@@ -105,7 +105,7 @@ class _CommandFloor:
     hierarchy objects to be part of floors.
 
     Find documentation on the end user usage of Arch Floor here:
-    https://wiki.freecadweb.org/Arch_Floor
+    https://wiki.freecad.org/Arch_Floor
     """
 
 
@@ -180,7 +180,7 @@ class _Floor(ArchIFC.IfcProduct):
     takes a list of objects to own as its children.
 
     The floor can be based off either a group, or a python feature. Learn more
-    about groups here: https://wiki.freecadweb.org/Std_Group
+    about groups here: https://wiki.freecad.org/Std_Group
 
     Adds the properties of a floor, and sets its IFC type.
 

@@ -25,30 +25,31 @@
 
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProviderPlaneParametric.h>
+#include <Mod/Path/PathGlobal.h>
 
 namespace PathGui
 {
 
 class PathGuiExport ViewProviderArea : public PartGui::ViewProviderPlaneParametric
 {
-    PROPERTY_HEADER(PathGui::ViewProviderArea);
+    PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderArea);
 
 public:
     ViewProviderArea();
-    virtual ~ViewProviderArea();
+    ~ViewProviderArea() override;
 
     /// grouping handling
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual void updateData(const App::Property*);
-    virtual bool onDelete(const std::vector<std::string> &);
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    void updateData(const App::Property*) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// drag and drop
-    virtual bool canDragObjects() const;
-    virtual bool canDragObject(App::DocumentObject*) const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual bool canDropObject(App::DocumentObject*) const;
-    virtual void dropObject(App::DocumentObject*);
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject*) const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    bool canDropObject(App::DocumentObject*) const override;
+    void dropObject(App::DocumentObject*) override;
 };
 
 using ViewProviderAreaPython = Gui::ViewProviderPythonFeatureT<ViewProviderArea>;
@@ -56,22 +57,22 @@ using ViewProviderAreaPython = Gui::ViewProviderPythonFeatureT<ViewProviderArea>
 
 class PathGuiExport ViewProviderAreaView : public PartGui::ViewProviderPlaneParametric
 {
-    PROPERTY_HEADER(PathGui::ViewProviderAreaView);
+    PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderAreaView);
 
 public:
     ViewProviderAreaView();
-    virtual ~ViewProviderAreaView();
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual void updateData(const App::Property*);
-    virtual bool onDelete(const std::vector<std::string> &);
+    ~ViewProviderAreaView() override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    void updateData(const App::Property*) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// drag and drop
-    virtual bool canDragObjects() const;
-    virtual bool canDragObject(App::DocumentObject*) const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual bool canDropObject(App::DocumentObject*) const;
-    virtual void dropObject(App::DocumentObject*);
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject*) const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    bool canDropObject(App::DocumentObject*) const override;
+    void dropObject(App::DocumentObject*) override;
 };
 
 using ViewProviderAreaViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderAreaView>;

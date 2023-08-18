@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM element rotation 1D document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package element_rotation1D
 #  \ingroup FEM

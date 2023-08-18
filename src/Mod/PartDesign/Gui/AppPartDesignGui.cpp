@@ -64,14 +64,15 @@
 
 
 // use a different name to CreateCommand()
-void CreatePartDesignCommands(void);
-void CreatePartDesignBodyCommands(void);
-void CreatePartDesignPrimitiveCommands(void);
+void CreatePartDesignCommands();
+void CreatePartDesignBodyCommands();
+void CreatePartDesignPrimitiveCommands();
 
 void loadPartDesignResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(PartDesign);
+    Q_INIT_RESOURCE(PartDesign_translation);
     Gui::Translator::instance()->refresh();
 }
 

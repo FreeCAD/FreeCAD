@@ -59,7 +59,7 @@ class Facebinder(DraftObject):
         obj.setEditorMode("Area",1)
 
     def execute(self,obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only(obj):
             self.props_changed_clear()
             return
 

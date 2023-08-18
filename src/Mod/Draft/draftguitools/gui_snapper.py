@@ -56,7 +56,7 @@ from draftutils.translate import translate
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 UNSNAPPABLES = ('Image::ImagePlane',)
 
@@ -423,12 +423,11 @@ class Snapper:
                         # we are snapping to a vertex
                         if shape.ShapeType == "Vertex":
                             snaps.extend(self.snapToEndpoints(shape))
-                    elif comp == "":
-                        # workaround for the new view provider
-                        snaps.append(self.snapToVertex(self.snapInfo, active=True))
                     else:
-                        # all other cases (face, etc...) default to passive snap
-                        snaps = [self.snapToVertex(self.snapInfo)]
+                        # `Catch-all` for other cases. Probably never executes
+                        # as objects with a Shape typically have edges, faces
+                        # or vertices.
+                        snaps.extend(self.snapToNearUnprojected(point))
 
             elif Draft.getType(obj) == "Dimension":
                 # for dimensions we snap to their 2 points:
@@ -440,7 +439,7 @@ class Snapper:
                     snaps.extend(self.snapToIntersection(edge))
 
             elif Draft.getType(obj).startswith("Mesh::"):
-                # for meshes we only snap to vertices
+                snaps.extend(self.snapToNearUnprojected(point))
                 snaps.extend(self.snapToEndpoints(obj.Mesh))
 
             elif Draft.getType(obj).startswith("Points::"):
@@ -781,7 +780,7 @@ class Snapper:
 
 
     def snapToNear(self, shape, point):
-        """Return a list of a near snap location for an edge."""
+        """Return a list with a near snap location for an edge."""
         if self.isEnabled("Near") and point:
             try:
                 np = shape.Curve.projectPoint(point, "NearestPoint")
@@ -800,6 +799,14 @@ class Snapper:
             except Exception:
                 return []
             return [[np, "passive", self.toWP(np)]]
+        else:
+            return []
+
+
+    def snapToNearUnprojected(self, point):
+        """Return a list with a near snap location that is not projected on the object."""
+        if self.isEnabled("Near") and point:
+            return [[point, "passive", self.toWP(point)]]
         else:
             return []
 
@@ -1414,12 +1421,16 @@ class Snapper:
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
-        def getcoords(point, relative=False):
+        def getcoords(point, global_mode=True, relative_mode=False):
             """Get the global coordinates from a point."""
-            self.pt = point
-            if relative and last and hasattr(App, "DraftWorkingPlane"):
-                v = App.DraftWorkingPlane.getGlobalCoords(point)
-                self.pt = last.add(v)
+            # Same algorithm as in validatePoint in DraftGui.py.
+            ref = App.Vector(0, 0, 0)
+            if global_mode is False and hasattr(App, "DraftWorkingPlane"):
+                point = App.DraftWorkingPlane.getGlobalRot(point)
+                ref = App.DraftWorkingPlane.getGlobalCoords(ref)
+            if relative_mode is True and last is not None:
+                ref = last
+            self.pt = point + ref
             accept()
 
         def click(event_cb):
@@ -1653,7 +1664,7 @@ class Snapper:
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
 
-        if self.grid and (not self.forceGridOff):
+        if tool and self.grid and (not self.forceGridOff):
             self.grid.set(tool)
 
 

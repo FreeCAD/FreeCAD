@@ -33,7 +33,7 @@ from PySide import QtCore
 
 __title__ = "Path Drilling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 
@@ -189,7 +189,7 @@ Command = PathOpGui.SetupOperation(
     QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
     QtCore.QT_TRANSLATE_NOOP(
         "Path_Drilling",
-        "Creates a Path Drilling object from a features of a base object",
+        "Creates a Path Drilling object from the features of a base object",
     ),
     PathDrilling.SetupProperties,
 )

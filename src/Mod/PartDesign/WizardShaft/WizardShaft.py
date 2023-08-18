@@ -27,6 +27,8 @@ from PySide import QtCore, QtGui
 from .WizardShaftTable import WizardShaftTable
 from .Shaft import Shaft
 
+translate = FreeCAD.Qt.translate
+
 class TaskWizardShaft:
     "Shaft Wizard"
     App = FreeCAD
@@ -51,7 +53,8 @@ class TaskWizardShaft:
 
         # Buttons for diagram display
         buttonLayout = QtGui.QGridLayout()
-        bnames = [["All [x]", "All [y]", "All [z]" ],
+        all = translate("TaskWizardShaft", "All")
+        bnames = [[f"{all} [x]", f"{all} [y]", f"{all} [z]" ],
                            ["N [x]", "Q [y]", "Q [z]"],
                            ["Mt [x]",  "Mb [z]", "Mb [y]"],
                            ["",  "w [y]",  "w [z]"],
@@ -98,8 +101,8 @@ class TaskWizardShaft:
         except ImportError as e:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(msgBox.Information)
-            msgBox.setWindowTitle("Missing module")
-            msgBox.setText("You may have to install the Plot add-on")
+            msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing module"))
+            msgBox.setText(translate("TaskWizardShaft", "You may have to install the Plot add-on"))
             msgBox.setDetailedText(traceback.format_exc())
             msgBox.exec_()
     def slotAllx(self):
@@ -182,8 +185,8 @@ class WizardShaftGui:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
@@ -207,8 +210,8 @@ class WizardShaftGuiCallback:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Shaft design wizard...")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaftCallBack", "Start the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}

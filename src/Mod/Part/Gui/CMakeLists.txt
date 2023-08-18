@@ -36,7 +36,11 @@ list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-qt_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
+set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Part_TR_QRC} ${QM_SRCS})
+qt_add_resources(PartGui_QRC_SRCS Resources/Part.qrc ${Part_TR_QRC})
 
 set(PartGui_UIC_SRCS
     CrossSections.ui

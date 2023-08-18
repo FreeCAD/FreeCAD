@@ -30,7 +30,7 @@
 using namespace PartDesign;
 
 // returns a string which represent the object e.g. when printed in python
-std::string FeaturePy::representation(void) const
+std::string FeaturePy::representation() const
 {
     App::DocumentObject* object = this->getFeaturePtr();
     std::stringstream str;

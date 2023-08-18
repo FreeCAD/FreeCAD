@@ -75,11 +75,11 @@ void Std_TestQM::activated(int iMsg)
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
-        for (QList<QTranslator*>::Iterator it = i18n.begin(); it != i18n.end(); ++it)
-            qApp->removeTranslator(*it);
-        for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
+        for (QTranslator* it : i18n)
+            qApp->removeTranslator(it);
+        for (const QString& it : files) {
             auto translator = new QTranslator(qApp);
-            if (translator->load(*it)) {
+            if (translator->load(it)) {
                 qApp->installTranslator(translator);
             }
             else {
@@ -715,8 +715,8 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 {
     sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
-    sToolTipText= QT_TR_NOOP("Test console output");
-    sStatusTip  = QT_TR_NOOP("Test console output");
+    sToolTipText= QT_TR_NOOP("Run test cases to verify console messages");
+    sStatusTip  = QT_TR_NOOP("Run test cases to verify console messages");
 }
 
 namespace Gui {
@@ -728,9 +728,12 @@ public:
     TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0), matchCritical(0)
     {
     }
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override{
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override{
 
         (void) notifiername;
+        (void) recipient;
+        (void) content;
 
         QMutexLocker ml(&mutex);
 

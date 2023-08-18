@@ -48,7 +48,7 @@
 
 
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 //**************************************************************************
@@ -154,7 +154,7 @@ QSize TaskBox::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionGroup::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 TaskBox::~TaskBox()
@@ -263,7 +263,7 @@ QSize TaskPanel::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionPanel::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 
@@ -293,18 +293,20 @@ TaskView::TaskView(QWidget *parent)
 
     Gui::Selection().Attach(this);
 
-    connectApplicationActiveDocument = 
+    //NOLINTBEGIN
+    connectApplicationActiveDocument =
     App::GetApplication().signalActiveDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeletedDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
+        (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 TaskView::~TaskView()
@@ -401,7 +403,9 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             func->setAutoDelete(true);
             Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
             if (doc) {
-                func->setFunction(std::bind(&Document::resetEdit, doc));
+                func->setFunction([doc](){
+                    doc->resetEdit();
+                });
                 func->singleShot(0);
             }
         }
@@ -600,8 +604,8 @@ void TaskView::updateWatcher()
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
 {
     // remove and delete the old set of TaskWatcher
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it)
-        delete *it;
+    for (TaskWatcher* tw : ActiveWatcher)
+        delete tw;
 
     ActiveWatcher = Watcher;
     addTaskWatcher();
@@ -618,10 +622,10 @@ void TaskView::clearTaskWatcher()
 void TaskView::addTaskWatcher()
 {
     // add all widgets for all watcher to the task view
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it){
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2){
-            taskPanel->addWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            taskPanel->addWidget(w);
         }
     }
 
@@ -631,7 +635,7 @@ void TaskView::addTaskWatcher()
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
+    // https://forum.freecad.org/viewtopic.php?f=8&t=39187
     //
     // Notify the button box about a style change so that it can
     // safely delete the style animation of its push buttons.
@@ -664,11 +668,11 @@ void TaskView::removeTaskWatcher()
     }
 
     // remove all widgets
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2) {
-            (*it2)->hide();
-            taskPanel->removeWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            w->hide();
+            taskPanel->removeWidget(w);
         }
     }
 

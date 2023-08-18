@@ -1479,7 +1479,7 @@ bool DrawViewDimension::fixExactMatch()
 void DrawViewDimension::handleNoExactMatch()
 {
 //    Base::Console().Message("DVD::handleNoExactMatch()\n");
-    Base::Console().Message("%s - trying to match changed geometry - stage 2\n", getNameInDocument());
+//    Base::Console().Message("%s - trying to match changed geometry - stage 2\n", getNameInDocument());
     // this is where we insert the clever logic to determine that the changed geometry
     // actually still represents the "front top left" edge.
     updateSavedGeometry();

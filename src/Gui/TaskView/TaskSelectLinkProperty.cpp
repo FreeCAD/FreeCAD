@@ -129,9 +129,9 @@ void TaskSelectLinkProperty::activate()
             std::string ObjName = StartObject->getNameInDocument();
             std::string DocName = StartObject->getDocument()->getName();
 
-            for (std::vector<std::string>::const_iterator it = StartValueBuffer.begin();it!=StartValueBuffer.end();++it)
+            for (const auto & it : StartValueBuffer)
             {
-                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it->c_str());
+                Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str(),it.c_str());
             }
         }
         

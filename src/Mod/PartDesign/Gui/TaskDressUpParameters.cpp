@@ -55,7 +55,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
+    : TaskBox(Gui::BitmapFactory().pixmap(DressUpView->featureIcon().c_str()),
               DressUpView->menuName,
               true,
               parent)
@@ -81,13 +81,13 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 const QString TaskDressUpParameters::btnPreviewStr()
 {
-    static const QString text{ tr("Preview") };
+    const QString text{ tr("Preview") };
     return text;
 }
 
 const QString TaskDressUpParameters::btnSelectStr()
 {
-    static const QString text{ tr("Select") };
+    const QString text{ tr("Select") };
     return text;
 }
 
@@ -155,8 +155,8 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     QSignalBlocker block(widget);
     widget->clear();
 
-    for (std::vector<std::string>::const_iterator it = edgeNames.begin(); it != edgeNames.end(); ++it){
-        widget->addItem(QLatin1String(it->c_str()));
+    for (const auto & it : edgeNames){
+        widget->addItem(QLatin1String(it.c_str()));
     }
 
     updateFeature(pcDressUp, edgeNames);
@@ -328,8 +328,8 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 {
     QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -362,7 +362,7 @@ void TaskDressUpParameters::showObject()
     }
 }
 
-Part::Feature* TaskDressUpParameters::getBase(void) const
+Part::Feature* TaskDressUpParameters::getBase() const
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     // Unlikely but this may throw an exception in case we are started to edit an object which base feature
@@ -425,8 +425,8 @@ bool TaskDlgDressUpParameters::accept()
     std::stringstream str;
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
-    for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
-        str << "\"" << *it << "\",";
+    for (const auto & ref : refs)
+        str << "\"" << ref << "\",";
     str << "])";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     return TaskDlgFeatureParameters::accept();

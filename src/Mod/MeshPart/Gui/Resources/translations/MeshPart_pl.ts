@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>Siatka Części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Przekrój poprzeczny ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Przekrój poprzeczny</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>Krzywa na siatce...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Tworzy przybliżoną krzywą na wierzchu siatki.
@@ -60,17 +60,17 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>Utwórz przekrój siatki płaszczyzną</translation>
+      <translation>Utwórz przekrój z siatki i płaszczyzny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Przekrój</translation>
     </message>
@@ -85,7 +85,7 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>Przytnij siatkę płaszczyzną</translation>
+      <translation>Przytnij siatkę za pomocą płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -97,12 +97,12 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
       <translation>Przytnij płaszczyzną</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>Przekrój z płaszczyzną</translation>
     </message>
@@ -167,10 +167,10 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation>Połącz krawędzie jeśli odległość jest mniejsza niż</translation>
+      <translation>Połącz krawędzie, jeśli odległość jest mniejsza niż</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Niepowodzenie</translation>
     </message>
@@ -285,7 +285,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Standardowy</translation>
+      <translation>Standardowe</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
@@ -408,7 +408,7 @@ Najmniejszą wartością jest 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Drobno</translation>
+      <translation>Drobne</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -491,27 +491,27 @@ Wartość w zakresie 0,2–10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="225"/>
+      <location filename="../../Tessellation.cpp" line="231"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="259"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Wybrałeś zawartość bez czubka.
 Proszę, ustaw czubek zawartości lub wybierz inny kształt.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="263"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Wybrałeś kształt bez ścian.
 Proszę wybrać inny kształt.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="267"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Najpierw wybierz kształt do utworzenia siatki.</translation>
     </message>
@@ -519,12 +519,12 @@ Proszę wybrać inny kształt.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Wybierz płaszczyznę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Wybierz płaszczyznę którą chcesz podzielić siatkę.</translation>
     </message>

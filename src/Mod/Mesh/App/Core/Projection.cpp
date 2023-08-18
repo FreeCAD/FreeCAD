@@ -165,12 +165,12 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
 
     // cut all facets with plane
     std::list< std::pair<Base::Vector3f, Base::Vector3f> > cutLine;
-    for (std::vector<FacetIndex>::iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (FacetIndex facet : facets) {
         Base::Vector3f e1, e2;
-        MeshGeomFacet tria = kernel.GetFacet(*it);
+        MeshGeomFacet tria = kernel.GetFacet(facet);
         if (bboxInsideRectangle(tria.GetBoundBox(), v1, v2, vd)) {
             if (tria.IntersectWithPlane(base, normal, e1, e2)) {
-                if ((*it != f1) && (*it != f2)) {
+                if ((facet != f1) && (facet != f2)) {
                     // inside cut line
                     if (!isPointInsideDistance(v1, v2, e1) ||
                         !isPointInsideDistance(v1, v2, e2)) {
@@ -180,7 +180,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                     cutLine.emplace_back(e1, e2);
                 }
                 else {
-                    if (*it == f1) { // start facet
+                    if (facet == f1) { // start facet
                         if (((e2 - v1) * dir) > 0.0f)
                             cutLine.emplace_back(v1, e2);
                         else
@@ -189,7 +189,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                         //start = it - facets.begin();
                     }
 
-                    if (*it == f2) { // end facet
+                    if (facet == f2) { // end facet
                         if (((e2 - v2) * -dir) > 0.0f)
                             cutLine.emplace_back(v2, e2);
                         else

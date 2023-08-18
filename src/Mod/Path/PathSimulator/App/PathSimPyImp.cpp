@@ -86,7 +86,7 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 {
 	if (!PyArg_ParseTuple(args, ""))
 		return nullptr;
-	cStock *stock = getPathSimPtr()->m_stock;
+	cStock *stock = getPathSimPtr()->m_stock.get();
 	if (!stock)
 	{
 		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");

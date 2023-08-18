@@ -85,7 +85,7 @@ public:
     };
 
     QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent = nullptr);
-    ~QGVPage();
+    ~QGVPage() override;
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter* painter, const QRectF& rect) override;
@@ -96,8 +96,6 @@ public:
     void cancelBalloonPlacing();
 
     TechDraw::DrawPage* getDrawPage();
-
-    void setExporting(bool enable);
 
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) { m_showGrid = state; }
