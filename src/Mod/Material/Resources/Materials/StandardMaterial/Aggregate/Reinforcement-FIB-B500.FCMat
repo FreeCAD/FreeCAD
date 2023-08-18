@@ -6,7 +6,8 @@ General:
   Name: "Reinforcement-Harry"
   Description: "Reinforcement inside concrete for reinforcement material examples, from fib examples, 0.84 x 0.75 x 500 MPa = 315 MPa (https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=200#p311705)"
 Inherits:
-  UUID: "a9f54d61-cc98-46df-8734-b0543ceb4e45"
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
 Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
