@@ -1359,6 +1359,230 @@ void StdCmdViewTop::activated(int iMsg)
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTop()");
 }
 
+
+//===============================================================================
+// StdCmdSelectFilter (dropdown toolbar button for Vertex, Edge & Face Selection)
+//===============================================================================
+
+DEF_STD_CMD_ACL(StdCmdSelectFilter)
+
+StdCmdSelectFilter::StdCmdSelectFilter()
+  : Command("Std_SelectFilter")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Selection filter");
+    sToolTipText  = QT_TR_NOOP("Change the Selection filter");
+    sStatusTip    = QT_TR_NOOP("Change the Selection filter");
+    sWhatsThis    = "Std_SelectFilter";
+    sPixmap       = "selection-filter";
+    eType         = Alter3DView;
+}
+
+void StdCmdSelectFilter::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg==0)
+        rcCmdMgr.runCommandByName("Std_VertexSelection");
+    else if (iMsg==1)
+        rcCmdMgr.runCommandByName("Std_EdgeSelection");
+    else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Std_FaceSelection");
+    else if (iMsg==3)
+        rcCmdMgr.runCommandByName("Std_RemoveSelectionGate");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * StdCmdSelectFilter::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("vertex-selection"));
+    cmd0->setShortcut(QKeySequence(QString::fromUtf8("X,S")));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("edge-selection"));
+    cmd1->setShortcut(QKeySequence(QString::fromUtf8("E,S")));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("face-selection"));
+    cmd2->setShortcut(QKeySequence(QString::fromUtf8("F,S")));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("clear-selection"));
+    cmd3->setShortcut(QKeySequence(QString::fromUtf8("C,S")));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("selection-filter"));
+    int defaultId = 3;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void StdCmdSelectFilter::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* vertexSelection = rcCmdMgr.getCommandByName("Std_VertexSelection");
+    if (vertexSelection) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("View_SelectionFilter", vertexSelection->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("View_SelectionFilter", vertexSelection->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("View_SelectionFilter", vertexSelection->getStatusTip()));
+    }
+
+    Gui::Command* edgeSelection = rcCmdMgr.getCommandByName("Std_EdgeSelection");
+    if (edgeSelection) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("View_SelectionFilter", edgeSelection->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", edgeSelection->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", edgeSelection->getStatusTip()));
+    }
+
+    Gui::Command* faceSelection = rcCmdMgr.getCommandByName("Std_FaceSelection");
+    if (faceSelection) {
+        QAction* cmd1 = a[2];
+        cmd1->setText(QApplication::translate("View_SelectionFilter", faceSelection->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", faceSelection->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", faceSelection->getStatusTip()));
+    }
+
+    Gui::Command* removeSelection = rcCmdMgr.getCommandByName("Std_RemoveSelectionGate");
+    if (removeSelection) {
+        QAction* cmd2 = a[3];
+        cmd2->setText(QApplication::translate("View_SelectionFilter", removeSelection->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("View_SelectionFilter", removeSelection->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("View_SelectionFilter", removeSelection->getStatusTip()));
+    }
+}
+
+bool StdCmdSelectFilter::isActive()
+{
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
+}
+
+
+//===========================================================================
+// Std_VertexSelection
+//===========================================================================
+DEF_3DV_CMD(StdCmdVertexSelection)
+
+StdCmdVertexSelection::StdCmdVertexSelection()
+  : Command("Std_VertexSelection")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Vertex Selection");
+    sToolTipText  = QT_TR_NOOP("Select a Vertex/Vertices");
+    sWhatsThis    = "Std_VertexSelection";
+    sStatusTip    = QT_TR_NOOP("Select a Vertex/Vertices");
+    sPixmap       = "vertex-selection";
+    sAccel        = "X, S";
+    eType         = Alter3DView;
+}
+
+void StdCmdVertexSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex')");
+}
+
+
+//===========================================================================
+// Std_EdgeSelection
+//===========================================================================
+DEF_3DV_CMD(StdCmdEdgeSelection)
+
+StdCmdEdgeSelection::StdCmdEdgeSelection()
+  : Command("Std_EdgeSelection")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Edge Selection");
+    sToolTipText  = QT_TR_NOOP("Select Edge(s)");
+    sWhatsThis    = "Std_EdgeSelection";
+    sStatusTip    = QT_TR_NOOP("Select Edge(s)");
+    sPixmap       = "edge-selection";
+    sAccel        = "E, S";
+    eType         = Alter3DView;
+}
+
+void StdCmdEdgeSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')");
+}
+
+
+//===========================================================================
+// Std_FaceSelection
+//===========================================================================
+DEF_3DV_CMD(StdCmdFaceSelection)
+
+StdCmdFaceSelection::StdCmdFaceSelection()
+  : Command("Std_FaceSelection")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Face Selection");
+    sToolTipText  = QT_TR_NOOP("Select Face(s)");
+    sWhatsThis    = "Std_FaceSelection";
+    sStatusTip    = QT_TR_NOOP("Select Face(s)");
+    sPixmap       = "face-selection";
+    sAccel        = "F, S";
+    eType         = Alter3DView;
+}
+
+void StdCmdFaceSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face')");
+}
+
+
+
+//===========================================================================
+// Std_RemoveSelectionGate
+//===========================================================================
+DEF_3DV_CMD(StdCmdRemoveSelectionGate)
+
+StdCmdRemoveSelectionGate::StdCmdRemoveSelectionGate()
+  : Command("Std_RemoveSelectionGate")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("All selection filters cleared");
+    sToolTipText  = QT_TR_NOOP("All selection filters cleared");
+    sWhatsThis    = "Std_RemoveSelectionGate";
+    sStatusTip    = QT_TR_NOOP("All selection filters cleared");
+    sPixmap       = "clear-selection";
+    sAccel        = "C, S";
+    eType         = Alter3DView;
+}
+
+void StdCmdRemoveSelectionGate::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.Selection.removeSelectionGate()");
+}
+
+
 //===========================================================================
 // Std_ViewIsometric
 //===========================================================================
@@ -3789,6 +4013,11 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewRear());
     rcCmdMgr.addCommand(new StdCmdViewRight());
     rcCmdMgr.addCommand(new StdCmdViewTop());
+    rcCmdMgr.addCommand(new StdCmdSelectFilter());
+    rcCmdMgr.addCommand(new StdCmdVertexSelection());
+    rcCmdMgr.addCommand(new StdCmdEdgeSelection());
+    rcCmdMgr.addCommand(new StdCmdFaceSelection());
+    rcCmdMgr.addCommand(new StdCmdRemoveSelectionGate());
     rcCmdMgr.addCommand(new StdCmdViewIsometric());
     rcCmdMgr.addCommand(new StdCmdViewDimetric());
     rcCmdMgr.addCommand(new StdCmdViewTrimetric());
