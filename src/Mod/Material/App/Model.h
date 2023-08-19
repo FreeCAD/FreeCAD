@@ -41,10 +41,10 @@ public:
     explicit ModelLibrary(const QString &libraryName, const QDir &dir, const QString &icon);
     virtual ~ModelLibrary();
 
-    const QString &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
+    const QString getName() const { return _name; }
+    const QDir getDirectory() const { return _directory; }
     const QString getDirectoryPath() const { return _directory.absolutePath(); }
-    const QString &getIconPath() const { return _iconPath; }
+    const QString getIconPath() const { return _iconPath; }
     bool operator==(const ModelLibrary& library) const
     {
         return (_name == library._name) && (_directory == library._directory);
@@ -68,12 +68,12 @@ public:
                            const QString& description);
     virtual ~ModelProperty();
 
-    const QString &getName() const {  return _name; }
-    const QString &getPropertyType() const {  return _propertyType; }
-    const QString &getUnits() const {  return _units; }
-    const QString &getURL() const {  return _url; }
-    const QString &getDescription() const {  return _description; }
-    const QString &getInheritance() const { return _inheritance; }
+    const QString getName() const {  return _name; }
+    const QString getPropertyType() const {  return _propertyType; }
+    const QString getUnits() const {  return _units; }
+    const QString getURL() const {  return _url; }
+    const QString getDescription() const {  return _description; }
+    const QString getInheritance() const { return _inheritance; }
     bool isInherited() const { return (_inheritance.length() > 0); }
 
     void setName(const QString& name) { _name = name; }
@@ -115,15 +115,15 @@ public:
 
     const ModelLibrary &getLibrary() const { return _library; }
     const QString getBase() const { return (_type == ModelType_Physical) ? QString::fromStdString("Model") : QString::fromStdString("AppearanceModel"); }
-    const QString &getName() const { return _name; }
+    const QString getName() const { return _name; }
     ModelType getType() const { return _type; }
-    const QDir &getDirectory() const { return _directory; }
+    const QDir getDirectory() const { return _directory; }
     const QString getDirectoryPath() const { return _directory.absolutePath(); }
     const QString getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()); }
-    const QString &getUUID() const { return _uuid; }
-    const QString &getDescription() const { return _description; }
-    const QString &getURL() const { return _url; }
-    const QString &getDOI() const { return _doi; }
+    const QString getUUID() const { return _uuid; }
+    const QString getDescription() const { return _description; }
+    const QString getURL() const { return _url; }
+    const QString getDOI() const { return _doi; }
 
     void setLibrary(const ModelLibrary &library) { _library = library; }
     void setType(ModelType type) { _type = type; }

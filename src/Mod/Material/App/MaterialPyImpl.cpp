@@ -241,3 +241,64 @@ PyObject *MaterialPy::hasAppearanceProperty(PyObject *args)
     bool hasProperty = getMaterialPtr()->hasAppearanceProperty(QString::fromStdString(name));
     return hasProperty ? Py_True : Py_False;
 }
+
+Py::Dict MaterialPy::getProperties() const
+{
+    Py::Dict dict;
+
+    auto properties = getMaterialPtr()->getPhysicalProperties();
+    for (auto it = properties.begin(); it != properties.end(); it++)
+    {
+        QString key = it->first;
+        MaterialProperty &materialProperty = it->second;
+
+        auto value = materialProperty.getString();
+        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+    }
+
+    properties = getMaterialPtr()->getAppearanceProperties();
+    for (auto it = properties.begin(); it != properties.end(); it++)
+    {
+        QString key = it->first;
+        MaterialProperty &materialProperty = it->second;
+
+        auto value = materialProperty.getString();
+        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+    }
+
+    return dict;
+}
+
+Py::Dict MaterialPy::getPhysicalProperties() const
+{
+    Py::Dict dict;
+
+    auto properties = getMaterialPtr()->getPhysicalProperties();
+    for (auto it = properties.begin(); it != properties.end(); it++)
+    {
+        QString key = it->first;
+        MaterialProperty &materialProperty = it->second;
+
+        auto value = materialProperty.getString();
+        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+    }
+
+    return dict;
+}
+
+Py::Dict MaterialPy::getAppearanceProperties() const
+{
+    Py::Dict dict;
+
+    auto properties = getMaterialPtr()->getAppearanceProperties();
+    for (auto it = properties.begin(); it != properties.end(); it++)
+    {
+        QString key = it->first;
+        MaterialProperty &materialProperty = it->second;
+
+        auto value = materialProperty.getString();
+        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+    }
+
+    return dict;
+}

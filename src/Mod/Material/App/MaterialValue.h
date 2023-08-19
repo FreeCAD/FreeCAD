@@ -52,8 +52,8 @@ public:
 
     ValueType getType() { return _valueType; }
 
-    const QVariant &getValue(void) const { return _value; }
-    virtual const QVariant &getValueAt(const QVariant &value) const { Q_UNUSED(value); return _value; }
+    const QVariant getValue(void) const { return _value; }
+    virtual const QVariant getValueAt(const QVariant &value) const { Q_UNUSED(value); return _value; }
     void setValue (const QVariant &value) { _value = value; }
 
 protected:
@@ -82,7 +82,7 @@ public:
     void deleteRow(int row);
 
     void setValue(int row, int column,  const QVariant &value);
-    const QVariant &getValue(int row, int column);
+    const QVariant getValue(int row, int column);
 
 protected:
     std::vector<std::vector<QVariant> *> _rows;
@@ -117,8 +117,8 @@ public:
 
     void setValue(const QVariant &depth, int row, int column,  const QVariant &value);
     void setValue(int row, int column,  const QVariant &value);
-    const QVariant &getValue(const QVariant &depth, int row, int column);
-    const QVariant &getValue(int row, int column);
+    const QVariant getValue(const QVariant &depth, int row, int column);
+    const QVariant getValue(int row, int column);
 
 protected:
     std::map<QVariant, std::vector<std::vector<QVariant> *>> _rowMap;

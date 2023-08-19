@@ -47,28 +47,12 @@ PyObject *MaterialManagerPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 {
     // never create such objects with the constructor
     return new MaterialManagerPy(new MaterialManager());
-
-    // PyErr_SetString(PyExc_RuntimeError,
-    //     "Please use MaterialManager.getManager() to get an instance of the MaterialManager");
-    // return nullptr;
 }
 
 // constructor method
 int MaterialManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
-}
-
-PyObject* MaterialManagerPy::getManager(PyObject *args)
-{
-    // if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
-    // try {
-    //     return new MaterialManagerPy(new MaterialManager::MaterialManager());
-    // } catch (ModelNotFound const &) {
-    //     return nullptr;
-    // }
 }
 
 PyObject* MaterialManagerPy::getMaterial(PyObject *args)

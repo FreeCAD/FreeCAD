@@ -43,9 +43,9 @@ public:
     virtual void addToTree(std::map<QString, Material*> *materialMap, std::map<QString, Material*> *_materialPathMap) = 0;
 
     const MaterialLibrary &getLibrary() const { return _library; }
-    const QString &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
-    const QString &getUUID() const { return _uuid; }
+    const QString getName() const { return _name; }
+    const QDir getDirectory() const { return _directory; }
+    const QString getUUID() const { return _uuid; }
     bool getDereferenced() const { return _dereferenced; }
 
     void markDereferenced() { _dereferenced = true; }

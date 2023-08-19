@@ -39,10 +39,10 @@ public:
     virtual ~ModelEntry();
 
     const ModelLibrary &getLibrary() const { return _library; }
-    const QString &getBase() const { return _base; }
-    const QString &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
-    const QString &getUUID() const { return _uuid; }
+    const QString getBase() const { return _base; }
+    const QString getName() const { return _name; }
+    const QDir getDirectory() const { return _directory; }
+    const QString getUUID() const { return _uuid; }
     const YAML::Node &getModel() const { return _model; }
     YAML::Node *getModelPtr() { return &_model; }
     bool getDereferenced() const { return _dereferenced; }

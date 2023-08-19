@@ -77,8 +77,6 @@ SET(Material_SRCS
     ModelUuids.h
     PreCompiled.cpp
     PreCompiled.h
-    PropertyModel.cpp
-    PropertyModel.h
     trim.h
 )
 

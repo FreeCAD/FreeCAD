@@ -43,10 +43,10 @@ public:
     explicit MaterialLibrary(const QString &libraryName, const QDir &dir, const QString &icon, bool readOnly = true);
     virtual ~MaterialLibrary();
 
-    const QString &getName() const { return _name; }
-    const QDir &getDirectory() const { return _directory; }
+    const QString getName() const { return _name; }
+    const QDir getDirectory() const { return _directory; }
     const QString getDirectoryPath() const { return _directory.absolutePath(); }
-    const QString &getIconPath() const { return _iconPath; }
+    const QString getIconPath() const { return _iconPath; }
     bool operator==(const MaterialLibrary& library) const
     {
         return (_name == library._name) && (_directory == library._directory);

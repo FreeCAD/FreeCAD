@@ -45,15 +45,15 @@ public:
 
     MaterialValue::ValueType getType(void) const { return _valuePtr->getType(); }
 
-    const QString& getModelUUID(void) const;
+    const QString getModelUUID(void) const;
     const QVariant getValue(void) const;
     MaterialValue* getValue(void);
-    const QString& getString(void) const;
+    const QString getString(void) const;
     bool getBoolean(void) const;
     int getInt(void) const;
     double getFloat(void) const;
     const Base::Quantity& getQuantity(void) const;
-    const QString& getURL(void) const;
+    const QString getURL(void) const;
 
     MaterialProperty &getColumn(int column);
     MaterialValue::ValueType getColumnType(int column) const;
@@ -104,14 +104,14 @@ public:
     const QDir &getDirectory() const { return _directory; }
     const QString getDirectoryPath() const { return _directory.absolutePath(); }
     const QString getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()); }
-    const QString &getUUID() const { return _uuid; }
-    const QString &getVersion() const { return _version; }
-    const QString &getName() const { return _name; }
-    const QString &getAuthorAndLicense() const { return _authorAndLicense; }
-    const QString &getParentUUID() const { return _parentUuid; }
-    const QString &getDescription() const { return _description; }
-    const QString &getURL() const { return _url; }
-    const QString &getReference() const { return _reference; }
+    const QString getUUID() const { return _uuid; }
+    const QString getVersion() const { return _version; }
+    const QString getName() const { return _name; }
+    const QString getAuthorAndLicense() const { return _authorAndLicense; }
+    const QString getParentUUID() const { return _parentUuid; }
+    const QString getDescription() const { return _description; }
+    const QString getURL() const { return _url; }
+    const QString getReference() const { return _reference; }
     const std::list<QString> &getTags() const { return _tags; }
     const std::vector<QString> *getPhysicalModels() const { return &_physicalUuids; }
     const std::vector<QString> *getAppearanceModels() const { return &_appearanceUuids; }
@@ -147,6 +147,9 @@ public:
     bool hasAppearanceProperty(const QString& name) const;
     bool hasPhysicalModel(const QString& uuid) const;
     bool hasAppearanceModel(const QString& uuid) const;
+
+    const std::map<QString, MaterialProperty> &getPhysicalProperties() const { return _physical; }
+    const std::map<QString, MaterialProperty> &getAppearanceProperties() const { return _appearance; }
 
 private:
     MaterialLibrary _library;

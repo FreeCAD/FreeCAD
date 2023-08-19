@@ -53,7 +53,7 @@ class MaterialTestCases(unittest.TestCase):
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        # self.assertTrue(steel.hasPhysicalModel('454661e5-265b-4320-8e6f-fcf6223ac3af')) # Density - need to fix
+        self.assertTrue(steel.hasPhysicalModel('454661e5-265b-4320-8e6f-fcf6223ac3af')) # Density
         self.assertTrue(steel.hasPhysicalModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50')) # IsotropicLinearElastic
         self.assertTrue(steel.hasPhysicalModel('9959d007-a970-4ea7-bae4-3eb1b8b883c7')) # Thermal
         self.assertFalse(steel.hasPhysicalModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536')) # Legacy linear elastic
@@ -67,11 +67,32 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(steel.hasPhysicalProperty("ThermalConductivity"))
         self.assertTrue(steel.hasPhysicalProperty("ThermalExpansionCoefficient"))
 
-        # self.assertIn("Density", steel.Properties)
-        # prop = steel.Properties["Density"]
-        # self.assertIn("Description", dir(prop))
-        # self.assertIn("Name", dir(prop))
-        # self.assertIn("Type", dir(prop))
-        # self.assertIn("URL", dir(prop))
-        # self.assertIn("Units", dir(prop))
-        # self.assertEqual(prop.Name, "Density")
+        properties = steel.PhysicalProperties
+        self.assertIn("Density", properties)
+        self.assertIn("BulkModulus", properties)
+        self.assertIn("PoissonRatio", properties)
+        self.assertIn("YoungsModulus", properties)
+        self.assertIn("ShearModulus", properties)
+        self.assertIn("SpecificHeat", properties)
+        self.assertIn("ThermalConductivity", properties)
+        self.assertIn("ThermalExpansionCoefficient", properties)
+
+        properties = steel.AppearanceProperties
+        self.assertNotIn("Density", properties)
+        self.assertNotIn("BulkModulus", properties)
+        self.assertNotIn("PoissonRatio", properties)
+        self.assertNotIn("YoungsModulus", properties)
+        self.assertNotIn("ShearModulus", properties)
+        self.assertNotIn("SpecificHeat", properties)
+        self.assertNotIn("ThermalConductivity", properties)
+        self.assertNotIn("ThermalExpansionCoefficient", properties)
+
+        properties = steel.Properties
+        self.assertIn("Density", properties)
+        self.assertIn("BulkModulus", properties)
+        self.assertIn("PoissonRatio", properties)
+        self.assertIn("YoungsModulus", properties)
+        self.assertIn("ShearModulus", properties)
+        self.assertIn("SpecificHeat", properties)
+        self.assertIn("ThermalConductivity", properties)
+        self.assertIn("ThermalExpansionCoefficient", properties)

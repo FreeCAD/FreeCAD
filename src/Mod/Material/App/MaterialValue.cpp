@@ -114,7 +114,7 @@ void Material2DArray::setValue(int row, int column,  const QVariant &value)
     }
 }
 
-const QVariant &Material2DArray::getValue(int row, int column)
+const QVariant Material2DArray::getValue(int row, int column)
 {
     try
     {
@@ -211,25 +211,32 @@ void Material3DArray::addRow(const QVariant & depth, std::vector<QVariant> *row)
 
 void Material3DArray::deleteRow(const QVariant & depth, int row)
 {
-
+    Q_UNUSED(depth)
+    Q_UNUSED(row)
 }
 
 void Material3DArray::deleteRows(int depth)
 {
-
+    Q_UNUSED(depth)
 }
 
 void Material3DArray::setValue(const QVariant & depth, int row, int column,  const QVariant &value)
 {
+    Q_UNUSED(depth)
+    Q_UNUSED(row)
+    Q_UNUSED(column)
+    Q_UNUSED(value)
 
 }
 
 void Material3DArray::setValue(int row, int column,  const QVariant &value)
 {
-
+    Q_UNUSED(row)
+    Q_UNUSED(column)
+    Q_UNUSED(value)
 }
 
-const QVariant &Material3DArray::getValue(const QVariant & depth, int row, int column)
+const QVariant Material3DArray::getValue(const QVariant & depth, int row, int column)
 {
     auto val = getRow(depth, row);
     try {
@@ -239,7 +246,7 @@ const QVariant &Material3DArray::getValue(const QVariant & depth, int row, int c
     }
 }
 
-const QVariant &Material3DArray::getValue(int row, int column)
+const QVariant Material3DArray::getValue(int row, int column)
 {
     return getValue(getDefault().getValue().toString(), row, column);
 

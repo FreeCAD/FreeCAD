@@ -82,6 +82,12 @@ MaterialValue* MaterialProperty::getValue(void)
     return _valuePtr;
 }
 
+const QString MaterialProperty::getString(void) const
+{
+    // return getValue().toString();
+    return QString();
+}
+
 void MaterialProperty::setPropertyType(const QString& type)
 {
     ModelProperty::setPropertyType(type);
