@@ -53,6 +53,7 @@ public:
     ValueType getType() { return _valueType; }
 
     const QVariant getValue(void) const { return _value; }
+    bool isNull() const { return _value.isNull(); }
     virtual const QVariant getValueAt(const QVariant &value) const { Q_UNUSED(value); return _value; }
     void setValue (const QVariant &value) { _value = value; }
 

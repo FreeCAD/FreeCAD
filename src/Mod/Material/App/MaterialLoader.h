@@ -46,16 +46,12 @@ public:
     const QString getName() const { return _name; }
     const QDir getDirectory() const { return _directory; }
     const QString getUUID() const { return _uuid; }
-    bool getDereferenced() const { return _dereferenced; }
-
-    void markDereferenced() { _dereferenced = true; }
 
 protected:
     MaterialLibrary _library;
     QString _name;
     QDir _directory;
     QString _uuid;
-    bool _dereferenced;
 };
 
 class MaterialYamlEntry : public MaterialEntry
@@ -93,8 +89,7 @@ private:
     explicit MaterialLoader();
 
     void addToTree(MaterialEntry* model);
-    void dereference(MaterialEntry* parent, const MaterialEntry* child);
-    void dereference(MaterialEntry* model);
+    void dereference(Material *material);
     MaterialEntry *getMaterialFromPath(const MaterialLibrary &library, const QString &path) const;
     void addLibrary(MaterialLibrary* model);
     void loadLibrary(const MaterialLibrary &library);

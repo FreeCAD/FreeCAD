@@ -47,7 +47,8 @@ public:
 
     const QString getModelUUID(void) const;
     const QVariant getValue(void) const;
-    MaterialValue* getValue(void);
+    bool isNull() const { return _valuePtr->isNull(); }
+    MaterialValue* getMaterialValue(void);
     const QString getString(void) const;
     bool getBoolean(void) const;
     int getInt(void) const;
@@ -62,6 +63,7 @@ public:
 
     void setModelUUID(const QString& uuid);
     void setPropertyType(const QString& type) override;
+    void setValue(const QVariant& value);
     void setValue(const QString& value);
     void setString(const QString& value);
     void setBoolean(bool value);
@@ -151,6 +153,9 @@ public:
     const std::map<QString, MaterialProperty> &getPhysicalProperties() const { return _physical; }
     const std::map<QString, MaterialProperty> &getAppearanceProperties() const { return _appearance; }
 
+    bool getDereferenced() const { return _dereferenced; }
+    void markDereferenced() { _dereferenced = true; }
+
 private:
     MaterialLibrary _library;
     QDir _directory;
@@ -167,7 +172,7 @@ private:
     std::vector<QString> _appearanceUuids;
     std::map<QString, MaterialProperty> _physical;
     std::map<QString, MaterialProperty> _appearance;
-
+    bool _dereferenced;
 };
 
 } // namespace Materials

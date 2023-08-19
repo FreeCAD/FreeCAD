@@ -39,13 +39,12 @@
 
 using namespace Materials;
 
-MaterialEntry::MaterialEntry():
-    _dereferenced(false)
+MaterialEntry::MaterialEntry()
 {}
 
 MaterialEntry::MaterialEntry(const MaterialLibrary &library, const QString &modelName, const QDir &dir, 
         const QString &modelUuid):
-    _library(library), _name(modelName), _directory(dir), _uuid(modelUuid), _dereferenced(false)
+    _library(library), _name(modelName), _directory(dir), _uuid(modelUuid)
 {}
 
 MaterialEntry::~MaterialEntry()
@@ -208,8 +207,6 @@ MaterialEntry *MaterialLoader::getMaterialFromPath(const MaterialLibrary &librar
         // showYaml(yamlroot);
     } catch (YAML::Exception const &) {
         Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
-
-        // Perhaps try parsing the older format?
     }
    
 
@@ -225,65 +222,75 @@ void MaterialLoader::showYaml(const YAML::Node &yaml)
     Base::Console().Log("%s\n", logData.c_str());
 }
 
-void MaterialLoader::dereference(MaterialEntry *parent, const MaterialEntry *child)
+
+void MaterialLoader::dereference(Material *material)
 {
-    Q_UNUSED(parent);
-    Q_UNUSED(child);
+    // Avoid recursion
+    if (material->getDereferenced())
+        return;
 
-    // auto parentPtr = parent->getModelPtr();
-    // auto childYaml = child->getModel();
-    // auto childBase = child->getBase();
+    Base::Console().Log("Dereferencing material '%s'.\n",
+                material->getName().toStdString().c_str());
 
-    // std::set<QString> exclude;
-    // exclude.insert("Name");
-    // exclude.insert("UUID");
-    // exclude.insert("URL");
-    // exclude.insert("Description");
-    // exclude.insert("DOI");
-    // exclude.insert("Inherits");
+    auto parentUUID = material->getParentUUID();
+    if (parentUUID.size() > 0)
+    {
+        Material* parent;
+        try
+        {
+            parent = (*_materialMap)[parentUUID];
+        } catch (std::out_of_range &e) {
+            Base::Console().Log("Unable to apply inheritance for material '%s', parent '%s' not found.\n",
+                material->getName().toStdString().c_str(),
+                parentUUID.toStdString().c_str());
+        }
+        
+        // Ensure the parent has been dereferenced
+        dereference(parent);
 
-    // auto parentProperties = (*parentPtr)[parentBase];
-    // auto childProperties = childYaml[childBase];
-    // for(auto it = childProperties.begin(); it != childProperties.end(); it++) {
-    //     QString name = it->first.as<QString>();
-    //     if (exclude.count(name) == 0) {
-    //         // showYaml(it->second);
-    //         if (!parentProperties[name])
-    //             parentProperties[name] = it->second;
-    //     }
-    // }
-    // showYaml(*parentPtr);
-}
+        // Add pysical models
+        auto modelVector = parent->getPhysicalModels();
+        for (auto model = modelVector->begin(); model != modelVector->end(); model++)
+        {
+            if (!material->hasPhysicalModel(*model)) {
+                material->addPhysical(*model);
+            }
+        }
 
+        // Add appearance models
+        modelVector = parent->getAppearanceModels();
+        for (auto model = modelVector->begin(); model != modelVector->end(); model++)
+        {
+            if (!material->hasAppearanceModel(*model)) {
+                material->addAppearance(*model);
+            }
+        }
 
-void MaterialLoader::dereference(MaterialEntry *model)
-{
-    Q_UNUSED(model);
+        // Add values
+        auto properties = parent->getPhysicalProperties();
+        for (auto itp = properties.begin(); itp != properties.end(); itp++)
+        {
+            auto name = itp->first;
+            auto property = itp->second;
 
-    // // Avoid recursion
-    // if (model->getDereferenced())
-    //     return;
+            if (material->getPhysicalProperty(name).isNull()) {
+                material->getPhysicalProperty(name).setValue(property.getValue());
+            }
+        }
 
-    // auto yamlModel = model->getModel();
-    // auto base = model->getBase();
-    // if (yamlModel[base]["Inherits"]) {
-    //     auto inherits = yamlModel[base]["Inherits"];
-    //     for(auto it = inherits.begin(); it != inherits.end(); it++) {
-    //         // auto nodeName = it->first.as<QString>();
-    //         QString nodeName = (*it)["UUID"].as<QString>();
+        properties = parent->getAppearanceProperties();
+        for (auto itp = properties.begin(); itp != properties.end(); itp++)
+        {
+            auto name = itp->first;
+            auto property = itp->second;
 
-    //         // This requires that all models have already been loaded undereferenced
-    //         try {
-    //             const MaterialYamlEntry *child = (*_MaterialYamlEntryMap)[nodeName];
-    //             dereference(model, child);
-    //         }
-    //         catch (const std::out_of_range& oor) {
-    //             Base::Console().Log("Unable to find '%s' in model map\n", nodeName.c_str());
-    //         }
-    //     }
-    // }
+            if (material->getAppearanceProperty(name).isNull()) {
+                material->getAppearanceProperty(name).setValue(property.getValue());
+            }
+        }
+    }
 
-    // model->markDereferenced();
+    material->markDereferenced();
 }
 
 void MaterialLoader::loadLibrary(const MaterialLibrary &library)
@@ -308,13 +315,8 @@ void MaterialLoader::loadLibrary(const MaterialLibrary &library)
     }
 
     for (auto it = _materialEntryMap->begin(); it != _materialEntryMap->end(); it++) {
-        dereference(it->second);
-    }
-
-    for (auto it = _materialEntryMap->begin(); it != _materialEntryMap->end(); it++) {
         it->second->addToTree(_materialMap, _materialPathMap);
     }
-
 }
 
 void MaterialLoader::loadLibraries(void)
@@ -324,6 +326,10 @@ void MaterialLoader::loadLibraries(void)
         for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
             loadLibrary(**it);
         }
+    }
+
+    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
+        dereference(it->second);
     }
 }
 

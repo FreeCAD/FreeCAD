@@ -53,7 +53,7 @@ Array2D::Array2D(const QString &propertyName, Materials::Material *material, QWi
         _property = nullptr;
     }
     if (_property)
-        _value = static_cast<Materials::Material2DArray *>(_property->getValue());
+        _value = static_cast<Materials::Material2DArray *>(_property->getMaterialValue());
     else
         _value = nullptr;
 

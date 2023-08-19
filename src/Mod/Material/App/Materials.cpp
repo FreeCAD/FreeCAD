@@ -77,15 +77,14 @@ const QVariant MaterialProperty::getValue(void) const
     return _valuePtr->getValue();
 }
 
-MaterialValue* MaterialProperty::getValue(void)
+MaterialValue* MaterialProperty::getMaterialValue(void)
 {
     return _valuePtr;
 }
 
 const QString MaterialProperty::getString(void) const
 {
-    // return getValue().toString();
-    return QString();
+    return getValue().toString();
 }
 
 void MaterialProperty::setPropertyType(const QString& type)
@@ -194,6 +193,12 @@ QVariant MaterialProperty::getColumnNull(int column) const
     return QVariant(QString());
 }
 
+void MaterialProperty::setValue(const QVariant& value)
+{
+    // _valueType = MaterialValue::String;
+    _valuePtr->setValue(value);
+}
+
 void MaterialProperty::setValue(const QString& value)
 {
     if (_valuePtr->getType() == MaterialValue::Boolean)
@@ -284,19 +289,20 @@ void MaterialProperty::setURL(const QString& value)
 
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
-Material::Material()
+Material::Material() :
+    _dereferenced(false)
 {}
 
 Material::Material(const MaterialLibrary &library, const QString& directory,
             const QString& uuid, const QString& name) :
-    _library(library), _uuid(uuid), _name(name)
+    _library(library), _uuid(uuid), _name(name), _dereferenced(false)
 {
     setDirectory(directory);
 }
 
 Material::Material(const MaterialLibrary &library, const QDir& directory,
             const QString& uuid, const QString& name) :
-    _library(library), _directory(directory), _uuid(uuid), _name(name)
+    _library(library), _directory(directory), _uuid(uuid), _name(name), _dereferenced(false)
 {}
 
 /*
