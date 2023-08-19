@@ -210,12 +210,22 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             }
         }
 
+        // path could contain characters that need escaping, such as quote signs
+        // therefore use its representation in the Python code string
+        PyObject *pathObj = PyUnicode_FromString(path);
+        PyObject *pathReprObj = PyObject_Repr(pathObj);
+        const char *pathRepr = PyUnicode_AsUTF8(pathReprObj);
+
         std::stringstream str;
         str << "import " << module << std::endl;
         if (fi.hasExtension("FCStd"))
-            str << module << ".openDocument('" << path << "')" << std::endl;
+            str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         else
-            str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+
+        Py_DECREF(pathObj);
+        Py_DECREF(pathReprObj);
+
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
     }
