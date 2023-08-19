@@ -56,8 +56,14 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(steel.hasPhysicalModel('454661e5-265b-4320-8e6f-fcf6223ac3af')) # Density
         self.assertTrue(steel.hasPhysicalModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50')) # IsotropicLinearElastic
         self.assertTrue(steel.hasPhysicalModel('9959d007-a970-4ea7-bae4-3eb1b8b883c7')) # Thermal
-        self.assertFalse(steel.hasPhysicalModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536')) # Legacy linear elastic
+        self.assertFalse(steel.hasPhysicalModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536')) # Legacy linear elastic - Not in the model
         self.assertTrue(steel.hasAppearanceModel('f006c7e4-35b7-43d5-bbf9-c5d572309e6e')) # BasicRendering - inherited from Steel.FCMat
+
+        self.assertTrue(steel.isPhysicalModelComplete('454661e5-265b-4320-8e6f-fcf6223ac3af')) # Density
+        self.assertFalse(steel.isPhysicalModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50')) # IsotropicLinearElastic - incomplete
+        self.assertTrue(steel.isPhysicalModelComplete('9959d007-a970-4ea7-bae4-3eb1b8b883c7')) # Thermal
+        self.assertFalse(steel.isPhysicalModelComplete('7b561d1d-fb9b-44f6-9da9-56a4f74d7536')) # Legacy linear elastic - Not in the model
+        self.assertTrue(steel.isAppearanceModelComplete('f006c7e4-35b7-43d5-bbf9-c5d572309e6e')) # BasicRendering - inherited from Steel.FCMat
 
         self.assertTrue(steel.hasPhysicalProperty("Density"))
         self.assertTrue(steel.hasPhysicalProperty("BulkModulus"))
@@ -76,10 +82,10 @@ class MaterialTestCases(unittest.TestCase):
 
         properties = steel.PhysicalProperties
         self.assertIn("Density", properties)
-        self.assertIn("BulkModulus", properties)
+        self.assertNotIn("BulkModulus", properties)
         self.assertIn("PoissonRatio", properties)
         self.assertIn("YoungsModulus", properties)
-        self.assertIn("ShearModulus", properties)
+        self.assertNotIn("ShearModulus", properties)
         self.assertIn("SpecificHeat", properties)
         self.assertIn("ThermalConductivity", properties)
         self.assertIn("ThermalExpansionCoefficient", properties)
@@ -108,10 +114,10 @@ class MaterialTestCases(unittest.TestCase):
 
         properties = steel.Properties
         self.assertIn("Density", properties)
-        self.assertIn("BulkModulus", properties)
+        self.assertNotIn("BulkModulus", properties)
         self.assertIn("PoissonRatio", properties)
         self.assertIn("YoungsModulus", properties)
-        self.assertIn("ShearModulus", properties)
+        self.assertNotIn("ShearModulus", properties)
         self.assertIn("SpecificHeat", properties)
         self.assertIn("ThermalConductivity", properties)
         self.assertIn("ThermalExpansionCoefficient", properties)
@@ -138,10 +144,10 @@ class MaterialTestCases(unittest.TestCase):
         # print("Transparency " + properties["Transparency"])
         
         self.assertTrue(len(properties["Density"]) > 0)
-        self.assertTrue(len(properties["BulkModulus"]) == 0)
+        # self.assertTrue(len(properties["BulkModulus"]) == 0)
         self.assertTrue(len(properties["PoissonRatio"]) > 0)
         self.assertTrue(len(properties["YoungsModulus"]) > 0)
-        self.assertTrue(len(properties["ShearModulus"]) == 0)
+        # self.assertTrue(len(properties["ShearModulus"]) == 0)
         self.assertTrue(len(properties["SpecificHeat"]) > 0)
         self.assertTrue(len(properties["ThermalConductivity"]) > 0)
         self.assertTrue(len(properties["ThermalExpansionCoefficient"]) > 0)
@@ -153,10 +159,10 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(len(properties["Transparency"]) > 0)
         
         self.assertEqual(properties["Density"], "7900 kg/m^3")
-        self.assertEqual(properties["BulkModulus"], "")
+        # self.assertEqual(properties["BulkModulus"], "")
         self.assertEqual(properties["PoissonRatio"], "0.30000001192092896")
         self.assertEqual(properties["YoungsModulus"], "210000 MPa")
-        self.assertEqual(properties["ShearModulus"], "")
+        # self.assertEqual(properties["ShearModulus"], "")
         self.assertEqual(properties["SpecificHeat"], "590 J/kg/K")
         self.assertEqual(properties["ThermalConductivity"], "43 W/m/K")
         self.assertEqual(properties["ThermalExpansionCoefficient"], "0.000012 m/m/K")

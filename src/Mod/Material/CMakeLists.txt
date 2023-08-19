@@ -40,7 +40,6 @@ SET (Material_Icon_Files
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
 
 SET (MaterialLib_Files
-    Resources/Materials/StandardMaterial/None.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/StandardMaterial/Aggregate/Reinforcement-FIB-B500.FCMat

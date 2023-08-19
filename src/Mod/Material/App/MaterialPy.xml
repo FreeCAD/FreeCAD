@@ -115,6 +115,16 @@
         <UserDocu>Check if the material implements the appearance model with the given UUID</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isPhysicalModelComplete" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the physical model with the given UUID, and has values defined for each property</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isAppearanceModelComplete" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if the material implements the appearance model with the given UUID, and has values defined for each property</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="hasPhysicalProperty" ReadOnly="true">
       <Documentation>
         <UserDocu>Check if the material implements the physical property with the given name</UserDocu>

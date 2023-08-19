@@ -140,13 +140,19 @@ public:
     void setAppearanceValue(const QString& name, const QString &value);
 
     MaterialProperty &getPhysicalProperty(const QString &name);
+    const MaterialProperty &getPhysicalProperty(const QString &name) const;
     MaterialProperty &getAppearanceProperty(const QString &name);
+    const MaterialProperty &getAppearanceProperty(const QString &name) const;
     const QString getPhysicalValue(const QString &name) const;
     const QString getAppearanceValue(const QString &name) const;
     bool hasPhysicalProperty(const QString& name) const;
     bool hasAppearanceProperty(const QString& name) const;
+
+    // Test if the model is defined, and if values are provided for all properties
     bool hasPhysicalModel(const QString& uuid) const;
     bool hasAppearanceModel(const QString& uuid) const;
+    bool isPhysicalModelComplete(const QString& uuid) const;
+    bool isAppearanceModelComplete(const QString& uuid) const;
 
     const std::map<QString, MaterialProperty> &getPhysicalProperties() const { return _physical; }
     const std::map<QString, MaterialProperty> &getAppearanceProperties() const { return _appearance; }

@@ -404,7 +404,25 @@ MaterialProperty &Material::getPhysicalProperty(const QString &name)
     }
 }
 
+const MaterialProperty &Material::getPhysicalProperty(const QString &name) const
+{
+    try {
+        return _physical.at(name);
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
 MaterialProperty &Material::getAppearanceProperty(const QString &name)
+{
+    try {
+        return _appearance.at(name);
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
+const MaterialProperty &Material::getAppearanceProperty(const QString &name) const
 {
     try {
         return _appearance.at(name);
@@ -467,6 +485,54 @@ bool Material::hasAppearanceModel(const QString& uuid) const
             return true;
 
     return false;
+}
+
+bool Material::isPhysicalModelComplete(const QString& uuid) const
+{
+    if (!hasPhysicalModel(uuid))
+        return false;
+
+    ModelManager *manager = ModelManager::getManager();
+
+    try {
+        const Model &model = manager->getModel(uuid);
+        for (auto it = model.begin(); it != model.end(); it++)
+        {
+            QString propertyName = it->first;
+            const MaterialProperty& property = getPhysicalProperty(propertyName);
+
+            if (property.isNull())
+                return false;
+        }
+    } catch (ModelNotFound const &) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Material::isAppearanceModelComplete(const QString& uuid) const
+{
+    if (!hasAppearanceModel(uuid))
+        return false;
+
+    ModelManager *manager = ModelManager::getManager();
+
+    try {
+        const Model &model = manager->getModel(uuid);
+        for (auto it = model.begin(); it != model.end(); it++)
+        {
+            QString propertyName = it->first;
+            const MaterialProperty& property = getAppearanceProperty(propertyName);
+
+            if (property.isNull())
+                return false;
+        }
+    } catch (ModelNotFound const &) {
+        return false;
+    }
+
+    return true;
 }
 
 #include "moc_Materials.cpp"

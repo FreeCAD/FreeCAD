@@ -222,6 +222,26 @@ PyObject *MaterialPy::hasAppearanceModel(PyObject *args)
     return hasProperty ? Py_True : Py_False;
 }
 
+PyObject *MaterialPy::isPhysicalModelComplete(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    bool isComplete = getMaterialPtr()->isPhysicalModelComplete(QString::fromStdString(name));
+    return isComplete ? Py_True : Py_False;
+}
+
+PyObject *MaterialPy::isAppearanceModelComplete(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    bool isComplete = getMaterialPtr()->isAppearanceModelComplete(QString::fromStdString(name));
+    return isComplete ? Py_True : Py_False;
+}
+
 PyObject *MaterialPy::hasPhysicalProperty(PyObject *args)
 {
     char *name;
@@ -252,8 +272,11 @@ Py::Dict MaterialPy::getProperties() const
         QString key = it->first;
         MaterialProperty &materialProperty = it->second;
 
-        auto value = materialProperty.getString();
-        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        if (!materialProperty.isNull())
+        {
+            auto value = materialProperty.getString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
     }
 
     properties = getMaterialPtr()->getAppearanceProperties();
@@ -262,8 +285,11 @@ Py::Dict MaterialPy::getProperties() const
         QString key = it->first;
         MaterialProperty &materialProperty = it->second;
 
-        auto value = materialProperty.getString();
-        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        if (!materialProperty.isNull())
+        {
+            auto value = materialProperty.getString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
     }
 
     return dict;
@@ -279,8 +305,11 @@ Py::Dict MaterialPy::getPhysicalProperties() const
         QString key = it->first;
         MaterialProperty &materialProperty = it->second;
 
-        auto value = materialProperty.getString();
-        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        if (!materialProperty.isNull())
+        {
+            auto value = materialProperty.getString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
     }
 
     return dict;
@@ -296,8 +325,11 @@ Py::Dict MaterialPy::getAppearanceProperties() const
         QString key = it->first;
         MaterialProperty &materialProperty = it->second;
 
-        auto value = materialProperty.getString();
-        dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        if (!materialProperty.isNull())
+        {
+            auto value = materialProperty.getString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
     }
 
     return dict;
