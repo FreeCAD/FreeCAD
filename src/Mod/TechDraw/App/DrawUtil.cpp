@@ -37,6 +37,7 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <gp_Ax3.hxx>
+#include <gp_Elips.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -47,7 +48,6 @@
 #include "GeometryObject.h"
 #include "LineGroup.h"
 #include "Preferences.h"
-
 
 using namespace TechDraw;
 
