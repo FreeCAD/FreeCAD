@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "b588224e-e8d6-47ad-ba1f-a058333fd1c6"
-  Version: "3ed4a6bf-52f1-4d53-869e-e74f073e4104"
   AuthorAndLicense: "(c) 2015 Bernd Hahnebach (CC-BY 3.0)"
   Name: "Wood"
   Description: "A standard construction wood"

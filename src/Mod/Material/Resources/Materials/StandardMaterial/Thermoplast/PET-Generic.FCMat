@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "f73004e3-6fb4-4591-8be7-89d1370be312"
-  Version: "acd9a44d-3c0f-49f1-bc87-7e2a72c5359f"
   AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
   Name: "PET"
   SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=a696bdcdff6f41dd98f8eec3599eaa20"

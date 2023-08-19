@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "dfba065e-2bfb-4fe3-8eec-dfb1cb6274fe"
-  Version: "b67083c8-3f77-48cb-acb4-a31dcb56d1d1"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "E360"
 Inherits:

@@ -77,12 +77,10 @@ void MaterialYamlEntry::addToTree(std::map<QString, Material*> *materialMap, std
     auto directory = getDirectory();
     QString uuid = getUUID();
 
-    QString version = yamlValue(yamlModel["General"], "Version", "");
     QString authorAndLicense = yamlValue(yamlModel["General"], "AuthorAndLicense", "");
     QString description = yamlValue(yamlModel["General"], "Description", "");
 
     Material *finalModel = new Material(library, directory, uuid, name);
-    finalModel->setVersion(version);
     finalModel->setAuthorAndLicense(authorAndLicense);
     finalModel->setDescription(description);
 

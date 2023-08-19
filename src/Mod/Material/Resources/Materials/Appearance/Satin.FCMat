@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "951b54ae-86b6-46d2-b452-60bd6a3ba1bb"
-  Version: "e39b7cee-a178-494f-851c-157dd75a27c5"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Satin"
   Description: "Defines the Satin appearance properties"

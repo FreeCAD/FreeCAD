@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "c424fe3d-5f49-4c39-9467-8a2a800076aa"
-  Version: "5615357a-a60e-4e38-a741-f62f3dd30009"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "1C22"
   Description: "Case hardened alloy steel"

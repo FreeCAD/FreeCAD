@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "dba76940-a910-4a3b-ab73-a9f412ac69d9"
-  Version: "c7b605dd-10df-4552-8870-0a02cad7a126"
   AuthorAndLicense: "(c) 2019 Bernd Hahnebach (CC-BY 3.0)"
   Name: "Concrete-EN-C35/45"
   Description: "Concrete matrix for reinforcement material examples, 0.6 x 0.75 x 35 MPa = 15.75 MPa (https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=200#p311075)"

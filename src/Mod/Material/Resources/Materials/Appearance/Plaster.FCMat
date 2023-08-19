@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "569dccb6-c64b-4dd0-9d3c-1b78f40ad1a5"
-  Version: "db59f4d6-5659-4960-adbc-c70044b2e10a"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Plaster"
   Description: "Defines the Plaster appearance properties"

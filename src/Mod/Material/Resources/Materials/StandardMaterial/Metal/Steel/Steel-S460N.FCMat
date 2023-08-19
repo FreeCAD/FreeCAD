@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "f0ae245a-1041-4674-ac4f-bf212dda6009"
-  Version: "8e304f82-595b-447c-b640-c6017252ce0f"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S460N"
 Inherits:

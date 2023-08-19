@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "1826c364-d26a-43fb-8f61-288281236836"
-  Version: "32e7eefd-f021-4fcd-a2c1-ff74e50634c4"
   AuthorAndLicense: "Uwe Stöhr"
   Name: "Iron Generic"
 Inherits:

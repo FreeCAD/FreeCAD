@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "6c03899d-496e-4c60-a41b-3d66f2337fb9"
-  Version: "2e23d82d-06de-4af6-8c95-6746c096bd28"
   AuthorAndLicense: "Uwe Stöhr"
   Name: "Copper Generic"
 Inherits:

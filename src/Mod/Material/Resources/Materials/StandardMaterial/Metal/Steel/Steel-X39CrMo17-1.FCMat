@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "9e7069ef-296d-401d-9331-d3e11267c2e0"
-  Version: "f201f1b7-0993-44cd-a475-4ddc3d27e739"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "X39CrMo17-1"
 Inherits:

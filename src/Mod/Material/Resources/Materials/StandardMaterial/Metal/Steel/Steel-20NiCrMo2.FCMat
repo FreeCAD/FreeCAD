@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "1c759697-7aef-4a14-92c5-5bf84b99a4f0"
-  Version: "02e8cdf1-5761-469a-86f1-fcdb60428ec1"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "20NiCrMo2"
 Inherits:

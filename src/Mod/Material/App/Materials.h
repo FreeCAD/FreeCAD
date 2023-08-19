@@ -107,7 +107,6 @@ public:
     const QString getDirectoryPath() const { return _directory.absolutePath(); }
     const QString getRelativePath() const { return _library.getDirectory().relativeFilePath(_directory.absolutePath()); }
     const QString getUUID() const { return _uuid; }
-    const QString getVersion() const { return _version; }
     const QString getName() const { return _name; }
     const QString getAuthorAndLicense() const { return _authorAndLicense; }
     const QString getParentUUID() const { return _parentUuid; }
@@ -122,7 +121,6 @@ public:
     void setDirectory(const QString& directory) { _directory = QDir(directory); }
     void setDirectory(const QDir &directory) { _directory = directory; }
     void setUUID(const QString& uuid) { _uuid = uuid; }
-    void setVersion(const QString& uuid) { _version = uuid; }
     void setName(const QString& name) { _name = name; }
     void setAuthorAndLicense(const QString& authorAndLicense) { _authorAndLicense = authorAndLicense; }
     void setParentUUID(const QString& uuid) { _parentUuid = uuid; }
@@ -160,7 +158,6 @@ private:
     MaterialLibrary _library;
     QDir _directory;
     QString _uuid;
-    QString _version;
     QString _name;
     QString _authorAndLicense;
     QString _parentUuid;

@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "758cfc44-f4ad-4605-8645-75e9e6b053ab"
-  Version: "d79dad6b-90e5-41ab-8f07-d92d722e755e"
   AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
   Name: "PVC"
   SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8833dd4c6e3116079"

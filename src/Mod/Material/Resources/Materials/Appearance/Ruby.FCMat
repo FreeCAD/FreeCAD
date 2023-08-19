@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "953261a0-cc48-41f8-a3f9-7b20ae3f9b56"
-  Version: "ce258c50-63e4-4bbd-a449-f1e13ff87771"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Ruby"
   Description: "Defines the Ruby appearance properties"

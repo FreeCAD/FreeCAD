@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "d149a177-07f1-4e53-9bad-0b5bf0663600"
-  Version: "c6220eb1-8f6c-44b4-a25e-f614ffd6726a"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Metalized"
   Description: "Defines the Metalized appearance properties"

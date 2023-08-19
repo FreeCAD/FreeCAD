@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "0e669f57-de27-4915-9a02-124f36047972"
-  Version: "c70fcd62-211a-4992-b257-7280aacc2a5c"
   AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
   Name: "Polypropylene"
   SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=a882a1c603374e278d062f106dfda95b"

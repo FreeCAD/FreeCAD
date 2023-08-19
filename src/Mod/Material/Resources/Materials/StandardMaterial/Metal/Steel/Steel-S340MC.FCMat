@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "5785ea5e-3376-47dd-8dc2-f1267c47e9bc"
-  Version: "d41fe3eb-43bf-4c98-b642-9caccba2de1e"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S340MC"
 Inherits:

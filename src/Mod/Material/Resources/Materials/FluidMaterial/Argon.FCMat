@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "e359c5b5-eae2-42b1-9ef6-edde21d706ee"
-  Version: "8c382de7-9a8a-4938-8f0e-b2f440b76d03"
   Name: "Argon"
   Description: "Argon properties at 20 Degrees Celsius and 1 atm"
 Models:

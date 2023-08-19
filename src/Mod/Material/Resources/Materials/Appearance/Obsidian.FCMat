@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "a004c270-7d2c-4898-bec6-b1120edacea9"
-  Version: "e264fefe-5977-4431-bd10-b01821f67660"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Obsidian"
   Description: "Defines the Obsidian appearance properties"

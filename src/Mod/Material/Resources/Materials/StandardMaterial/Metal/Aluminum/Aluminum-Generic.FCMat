@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "9bf060e9-1663-44a2-88e2-2ff6ee858efe"
-  Version: "0fa525fc-6b40-4828-890b-7ffe8ee3a7a6"
   AuthorAndLicense: "Uwe Stöhr"
   Name: "Aluminum Generic"
 Inherits:

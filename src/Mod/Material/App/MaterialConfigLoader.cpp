@@ -333,13 +333,11 @@ Material *MaterialConfigLoader::getMaterialFromPath(const MaterialLibrary &libra
     QString name = filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
     QString uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
-    QString version = QUuid::createUuid().toString(QUuid::WithoutBraces);
     QString description = value(fcmat, "Description", "");
     QString sourceReference = value(fcmat, "ReferenceSource", "");
     QString sourceURL = value(fcmat, "SourceURL", "");
 
     Material *finalModel = new Material(library, modelDir, uuid, name);
-    finalModel->setVersion(version);
     finalModel->setAuthorAndLicense(authorAndLicense);
     finalModel->setDescription(description);
     finalModel->setReference(sourceReference);

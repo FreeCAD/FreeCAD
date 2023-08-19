@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "90bbd8ef-8623-4d78-b3bf-e0bdb9b74dd3"
-  Version: "695f2164-184c-43ec-9171-8364773e2e4b"
   AuthorAndLicense: "(c) 2013 Juergen Riegel (CC-BY 3.0)"
   Name: "Steel-Generic"
   Description: "This is a blend Steel material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised steel cards."

@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "26042aa5-56e6-4d99-8b63-dd8b9ea5a37a"
-  Version: "3fe85895-c387-46dd-8f26-2246dd3bc480"
   AuthorAndLicense: "(c) 2013 Yorik van Havre (CC-BY 3.0)"
   Name: "Concrete"
   Description: "A standard C-25 construction concrete"

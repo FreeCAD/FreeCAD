@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "8d02a797-5e0a-4e40-803a-75fc66de8de6"
-  Version: "6049ecc9-53df-4d4f-a15c-fbb7ae8641aa"
   Name: "Nitrogen"
   Description: "Nitrogen properties at 20 Degrees Celsius and 1 atm"
 Models:

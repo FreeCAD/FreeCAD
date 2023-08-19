@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "85257e2c-be3f-40a1-b03f-0bd4ba58ca08"
-  Version: "f519ca2b-b5c7-423f-a9fb-219a58380c9c"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Gold"
   Description: "Defines the Gold appearance properties"

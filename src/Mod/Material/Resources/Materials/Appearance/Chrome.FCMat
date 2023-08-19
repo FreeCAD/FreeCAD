@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "a9544b88-dde7-4d05-9bdb-c008a4e88dc1"
-  Version: "d8ddd166-c9f2-42ff-9c76-9533582ae835"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Chrome"
   Description: "Defines the Chrome appearance properties"

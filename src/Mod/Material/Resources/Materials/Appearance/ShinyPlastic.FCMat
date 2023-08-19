@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "591c4c4a-22ba-4a9a-869d-e5610107d69a"
-  Version: "aec0c8df-277c-4246-8c7c-ee23010a1bcd"
   AuthorAndLicense: "(c) 2023 David Carter"
   Name: "Shiny Plastic"
   Description: "Defines the Shiny Plastic appearance properties"

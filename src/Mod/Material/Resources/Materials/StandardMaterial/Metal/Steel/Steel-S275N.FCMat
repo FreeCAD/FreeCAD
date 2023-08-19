@@ -1,7 +1,6 @@
 # File greated by ConvertFCMat.py
 General:
   UUID: "07592e35-3e1a-470f-8eda-f4bee7d9cb4a"
-  Version: "63220178-2559-41bd-b739-9965dfae3de0"
   AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
   Name: "S275N"
 Inherits:
