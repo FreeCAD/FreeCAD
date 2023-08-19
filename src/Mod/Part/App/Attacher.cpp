@@ -622,7 +622,7 @@ std::string AttachEngine::getModeName(eMapMode mmode)
 {
     if(mmode < 0 || mmode >= mmDummy_NumberOfModes)
         throw AttachEngineException("AttachEngine::getModeName: Attachment Mode index is out of range");
-    return std::string(AttachEngine::eMapModeStrings[mmode]);
+    return {AttachEngine::eMapModeStrings[mmode]};
 }
 
 eMapMode AttachEngine::getModeByName(const std::string &modeName)

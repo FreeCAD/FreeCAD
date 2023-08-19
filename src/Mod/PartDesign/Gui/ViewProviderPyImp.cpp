@@ -34,7 +34,7 @@ using namespace PartDesignGui;
 // returns a string which represent the object e.g. when printed in python
 std::string ViewProviderPy::representation() const
 {
-    return std::string("<PartDesign::ViewProvider>");
+    return {"<PartDesign::ViewProvider>"};
 }
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* ) const

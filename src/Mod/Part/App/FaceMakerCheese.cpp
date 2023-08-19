@@ -189,7 +189,7 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
 TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 {
     if (w.empty())
-        return TopoDS_Shape();
+        return {};
 
     //FIXME: Need a safe method to sort wire that the outermost one comes last
     // Currently it's done with the diagonal lengths of the bounding boxes
@@ -237,19 +237,19 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
         return TopoDS_Shape(std::move(comp));
     }
     else {
-        return TopoDS_Shape(); // error
+        return {}; // error
     }
 }
 
 
 std::string FaceMakerCheese::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Cheese facemaker"));
+    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Cheese facemaker")};
 }
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes, but no islands inside holes."));
+    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes, but no islands inside holes.")};
 }
 
 void FaceMakerCheese::Build_Essence()

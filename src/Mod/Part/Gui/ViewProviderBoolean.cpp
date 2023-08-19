@@ -171,7 +171,7 @@ ViewProviderMultiFuse::~ViewProviderMultiFuse()
 
 std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues());
+    return static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiFuse::getIcon() const
@@ -310,7 +310,7 @@ ViewProviderMultiCommon::~ViewProviderMultiCommon()
 
 std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues());
+    return static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiCommon::getIcon() const

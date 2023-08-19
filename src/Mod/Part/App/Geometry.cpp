@@ -4705,7 +4705,7 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(handle());
     Standard_RangeError_Raise_if (Nu + Nv < 1 || Nu < 0 || Nv < 0, " ");
     if (Nv > 1) {
-        return gp_Vec (0.0, 0.0, 0.0);
+        return {0.0, 0.0, 0.0};
     }
     else {
       return ElSLib__ConeDN(u, v, s->Position(), s->RefRadius(), s->SemiAngle(), Nu, Nv);
