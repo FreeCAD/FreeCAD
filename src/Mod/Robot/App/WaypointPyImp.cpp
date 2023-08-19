@@ -148,7 +148,7 @@ void  WaypointPy::setVelocity(Py::Float arg)
 
 Py::String WaypointPy::getName() const
 {
-    return Py::String(getWaypointPtr()->Name.c_str());
+    return {getWaypointPtr()->Name};
 }
 
 void WaypointPy::setName(Py::String arg)
@@ -202,7 +202,7 @@ void WaypointPy::setPos(Py::Object arg)
 
 Py::Boolean WaypointPy::getCont() const
 {
-    return Py::Boolean(getWaypointPtr()->Cont);
+    return {getWaypointPtr()->Cont};
 }
 
 void WaypointPy::setCont(Py::Boolean arg)

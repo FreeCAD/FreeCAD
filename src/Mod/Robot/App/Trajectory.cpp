@@ -119,10 +119,9 @@ double Trajectory::getDuration(int n) const
 
 Placement Trajectory::getPosition(double time)const
 {
-    if(pcTrajectory)
+    if (pcTrajectory)
         return Placement(toPlacement(pcTrajectory->Pos(time)));
-    else
-        return Placement();
+    return {};
 }
 
 double Trajectory::getVelocity(double time)const
@@ -236,7 +235,7 @@ void Trajectory::generateTrajectory()
 std::string Trajectory::getUniqueWaypointName(const char *Name) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
 
     // check for first character whether it's a digit
     std::string CleanName = Name;
