@@ -1399,8 +1399,7 @@ std::string Sheet::getAddressFromAlias(const std::string &alias) const
 
     if (cell)
         return cell->getAddress().toString();
-    else
-        return std::string();
+    return {};
 }
 
 /**
