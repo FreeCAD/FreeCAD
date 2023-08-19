@@ -40,7 +40,7 @@ using namespace App;
 // returns a string which represents the object e.g. when printed in python
 std::string SheetPy::representation() const
 {
-    return std::string("<Sheet object>");
+    return {"<Sheet object>"};
 }
 
 PyObject *SheetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

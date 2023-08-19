@@ -74,7 +74,7 @@ ViewProviderFace::~ViewProviderFace()
 
 std::vector<App::DocumentObject*> ViewProviderFace::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Part::Face*>(getObject())->Sources.getValues());
+    return static_cast<Part::Face*>(getObject())->Sources.getValues();
 }
 
 bool ViewProviderFace::canDragObjects() const

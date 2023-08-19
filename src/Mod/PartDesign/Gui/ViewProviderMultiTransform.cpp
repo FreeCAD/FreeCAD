@@ -53,7 +53,7 @@ std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() co
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
     if (!pcMultiTransform)
-        return std::vector<App::DocumentObject*>(); // TODO: Show error?
+        return {}; // TODO: Show error?
 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     return transformFeatures;

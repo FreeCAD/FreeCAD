@@ -549,7 +549,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<SShapeStore>& iShapeVec)
 {
   if (iShapeVec.empty())
-      return TopoDS_Shape();
+      return {};
 
   TopoDS_Compound aCompound;
   TopoDS_Builder aBuilder;
@@ -856,7 +856,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   shapeAnalyzer.ConnectEdgesToWires(shapeList, 0.0001, false, aWireHandle);
   shapeAnalyzer.ConnectWiresToWires(aWireHandle, 0.0001, false, aWireWireHandle);
   if (!aWireWireHandle)
-      return TopoDS_Wire();
+      return {};
   for (auto it = 1; it <= aWireWireHandle->Length(); ++it)
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
@@ -871,7 +871,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
     Q_UNUSED(retVal);
     return TopoDS::Wire(aWireFramFix.Shape());
   }
-  return TopoDS_Wire();
+  return {};
 }
 
 void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStore>& iCurrentShape)

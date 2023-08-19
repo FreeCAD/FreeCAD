@@ -128,7 +128,7 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string BuildPlateSurfacePy::representation() const
 {
-    return std::string("<GeomPlate_BuildPlateSurface object>");
+    return {"<GeomPlate_BuildPlateSurface object>"};
 }
 
 PyObject* BuildPlateSurfacePy::init(PyObject *args)

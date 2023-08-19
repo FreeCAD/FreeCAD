@@ -73,7 +73,7 @@ QVariant PropertyMeshKernelItem::value(const App::Property*) const
     }
 
     QString  str = QObject::tr("[Points: %1, Edges: %2, Faces: %3]").arg(ctP).arg(ctE).arg(ctF);
-    return QVariant(str);
+    return {str};
 }
 
 QVariant PropertyMeshKernelItem::toolTip(const App::Property* prop) const
@@ -103,7 +103,7 @@ void PropertyMeshKernelItem::setEditorData(QWidget *editor, const QVariant& data
 QVariant PropertyMeshKernelItem::editorData(QWidget *editor) const
 {
     Q_UNUSED(editor);
-    return QVariant();
+    return {};
 }
 
 int PropertyMeshKernelItem::countPoints() const

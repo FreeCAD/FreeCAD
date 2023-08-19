@@ -182,9 +182,9 @@ public:
     /** @name Iterator */
     //@{
     const_point_iterator begin() const
-    { return const_point_iterator(this, _Points.begin()); }
+    { return {this, _Points.begin()}; }
     const_point_iterator end() const
-    { return const_point_iterator(this, _Points.end()); }
+    { return {this, _Points.end()}; }
     const_reverse_iterator rbegin() const
     { return const_reverse_iterator(end()); }
     const_reverse_iterator rend() const

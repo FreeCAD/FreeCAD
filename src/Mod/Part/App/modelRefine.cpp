@@ -393,7 +393,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
     std::vector<EdgeVectorType> splitEdges;
     this->boundarySplit(faces, splitEdges);
     if (splitEdges.empty())
-        return TopoDS_Face();
+        return {};
     std::vector<EdgeVectorType>::iterator splitIt;
     for (splitIt = splitEdges.begin(); splitIt != splitEdges.end(); ++splitIt)
     {
@@ -409,7 +409,7 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
 
     BRepLib_MakeFace faceMaker(wires.at(0), Standard_True);
     if (faceMaker.Error() != BRepLib_FaceDone)
-        return TopoDS_Face();
+        return {};
     TopoDS_Face current = faceMaker.Face();
     if (wires.size() > 1)
     {
@@ -419,11 +419,11 @@ TopoDS_Face FaceTypedPlane::buildFace(const FaceVectorType &faces) const
             faceFix.Add(wires.at(index));
         faceFix.Perform();
         if (faceFix.Status(ShapeExtend_FAIL))
-            return TopoDS_Face();
+            return {};
         faceFix.FixOrientation();
         faceFix.Perform();
         if(faceFix.Status(ShapeExtend_FAIL))
-            return TopoDS_Face();
+            return {};
         current = faceFix.Face();
     }
 
@@ -967,7 +967,7 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
     std::vector<EdgeVectorType> splitEdges;
     this->boundarySplit(faces, splitEdges);
     if (splitEdges.empty())
-        return TopoDS_Face();
+        return {};
     std::vector<EdgeVectorType>::iterator splitIt;
     for (splitIt = splitEdges.begin(); splitIt != splitEdges.end(); ++splitIt)
     {
@@ -984,19 +984,19 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
     //make face from surface and outer wire.
     Handle(Geom_BSplineSurface) surface = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
     if (!surface)
-        return TopoDS_Face();
+        return {};
     std::vector<TopoDS_Wire>::iterator wireIt;
     wireIt = wires.begin();
     BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
     if (!faceMaker.IsDone())
-        return TopoDS_Face();
+        return {};
 
     //add additional boundaries.
     for (wireIt++; wireIt != wires.end(); ++wireIt)
     {
         faceMaker.Add(*wireIt);
         if (!faceMaker.IsDone())
-            return TopoDS_Face();
+            return {};
     }
 
     //fix newly constructed face. Orientation doesn't seem to get fixed the first call.
@@ -1004,11 +1004,11 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
     faceFixer.SetContext(new ShapeBuild_ReShape());
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL))
-        return TopoDS_Face();
+        return {};
     faceFixer.FixOrientation();
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL))
-        return TopoDS_Face();
+        return {};
 
     return faceFixer.Face();
 }

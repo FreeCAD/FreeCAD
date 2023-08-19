@@ -70,7 +70,7 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string PointConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_PointConstraint object>");
+    return {"<GeomPlate_PointConstraint object>"};
 }
 
 PyObject* PointConstraintPy::setOrder(PyObject *args)

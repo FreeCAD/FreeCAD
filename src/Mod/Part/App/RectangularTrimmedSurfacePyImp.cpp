@@ -38,7 +38,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string RectangularTrimmedSurfacePy::representation() const
 {
-    return std::string("<RectangularTrimmedSurface object>");
+    return {"<RectangularTrimmedSurface object>"};
 }
 
 PyObject *RectangularTrimmedSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)

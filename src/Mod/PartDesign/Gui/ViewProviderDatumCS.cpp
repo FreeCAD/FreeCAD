@@ -248,7 +248,7 @@ std::string ViewProviderDatumCoordinateSystem::getElement(const SoDetail* detail
         }
     }
 
-    return std::string();
+    return {};
 }
 
 SoDetail* ViewProviderDatumCoordinateSystem::getDetail(const char* subelement) const

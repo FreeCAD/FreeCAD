@@ -1362,7 +1362,7 @@ void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
  */
 QSize DockEvaluateMeshImp::sizeHint () const
 {
-    return QSize(371, 579);
+    return {371, 579};
 }
 
 #include "moc_DlgEvaluateMeshImp.cpp"

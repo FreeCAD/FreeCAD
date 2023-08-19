@@ -190,7 +190,7 @@ std::string ViewProviderDatum::getElement(const SoDetail* detail) const
             return datumType.toStdString();
     }
 
-    return std::string("");
+    return {};
 }
 
 SoDetail* ViewProviderDatum::getDetail(const char* subelement) const

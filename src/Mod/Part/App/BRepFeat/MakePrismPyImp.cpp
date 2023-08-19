@@ -99,7 +99,7 @@ int MakePrismPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string MakePrismPy::representation() const
 {
-    return std::string("<BRepFeat_MakePrism object>");
+    return {"<BRepFeat_MakePrism object>"};
 }
 
 PyObject* MakePrismPy::init(PyObject *args,  PyObject* kwds)

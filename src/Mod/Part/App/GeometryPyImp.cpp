@@ -428,7 +428,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 Py::String GeometryPy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getGeometryPtr()->getTag());
-    return Py::String(tmp);
+    return {tmp};
 }
 
 PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const

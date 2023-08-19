@@ -116,7 +116,7 @@ int BRepOffsetAPI_MakeFillingPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string BRepOffsetAPI_MakeFillingPy::representation() const
 {
-    return std::string("<BRepOffsetAPI_MakeFilling object>");
+    return {"<BRepOffsetAPI_MakeFilling object>"};
 }
 
 PyObject* BRepOffsetAPI_MakeFillingPy::setConstrParam(PyObject *args, PyObject *kwds)

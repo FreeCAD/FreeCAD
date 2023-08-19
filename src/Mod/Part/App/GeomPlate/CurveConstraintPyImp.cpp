@@ -118,7 +118,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string CurveConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_CurveConstraint object>");
+    return {"<GeomPlate_CurveConstraint object>"};
 }
 
 PyObject* CurveConstraintPy::setOrder(PyObject *args)

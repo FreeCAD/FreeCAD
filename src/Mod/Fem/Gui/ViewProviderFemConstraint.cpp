@@ -130,7 +130,7 @@ void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
 
 std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>();
+    return {};
 }
 
 void ViewProviderFemConstraint::setupContextMenu(QMenu *menu, QObject *receiver, const char *member)

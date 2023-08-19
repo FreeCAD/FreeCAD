@@ -99,7 +99,7 @@ gp_Pnt ImpExpDxfRead::makePoint(const double* p)
         sp2 = sp2 * optionScaling;
         sp3 = sp3 * optionScaling;
     }
-    return gp_Pnt(sp1,sp2,sp3);
+    return {sp1,sp2,sp3};
 }
 
 void ImpExpDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)

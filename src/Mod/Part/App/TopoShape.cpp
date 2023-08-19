@@ -270,7 +270,7 @@ TYPESYSTEM_SOURCE(Part::ShapeSegment , Data::Segment)
 
 std::string ShapeSegment::getName() const
 {
-    return std::string();
+    return {};
 }
 
 // ------------------------------------------------
@@ -325,13 +325,13 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
 {
     if(index <= 0) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         Standard_Failure::Raise("Unsupported sub-shape type");
     }
 
     if (this->_Shape.IsNull()) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         Standard_Failure::Raise("Cannot get sub-shape from empty shape");
     }
 
@@ -350,12 +350,12 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
         }
     } catch(Standard_Failure &) {
         if(silent)
-            return TopoDS_Shape();
+            return {};
         throw;
     }
     if(!silent)
         Standard_Failure::Raise("Index out of bound");
-    return TopoDS_Shape();
+    return {};
 }
 
 unsigned long TopoShape::countSubShapes(const char* Type) const
@@ -2122,7 +2122,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         return mkBuilder.Shape();
     }
 
-    return TopoDS_Shape();
+    return {};
 }
 
 
@@ -3009,7 +3009,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
     //assemble output compound
     if (shapesToReturn.empty())
-        return TopoDS_Shape(); //failure
+        return {}; //failure
     if (shapesToReturn.size() > 1 || forceOutputCompound){
         TopoDS_Compound result;
         BRep_Builder builder;

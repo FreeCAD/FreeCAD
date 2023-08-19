@@ -581,7 +581,7 @@ inline void glNormal(float* n)
 // Helper function: convert Vec to SbVec3f
 inline SbVec3f sbvec3f(const Base::Vector3f& _v)
 {
-    return SbVec3f(_v.x, _v.y, _v.z);
+    return {_v.x, _v.y, _v.z};
 }
 
 SO_NODE_SOURCE(SoFCMeshObjectShape)

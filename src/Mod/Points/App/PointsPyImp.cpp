@@ -41,7 +41,7 @@ using namespace Points;
 // returns a string which represents the object e.g. when printed in python
 std::string PointsPy::representation() const
 {
-    return std::string("<PointKernel object>");
+    return {"<PointKernel object>"};
 }
 
 PyObject *PointsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

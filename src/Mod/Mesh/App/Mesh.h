@@ -397,14 +397,14 @@ public:
     /** @name Iterator */
     //@{
     const_point_iterator points_begin() const
-    { return const_point_iterator(this, 0); }
+    { return {this, 0}; }
     const_point_iterator points_end() const
-    { return const_point_iterator(this, countPoints()); }
+    { return {this, countPoints()}; }
 
     const_facet_iterator facets_begin() const
-    { return const_facet_iterator(this, 0); }
+    { return {this, 0}; }
     const_facet_iterator facets_end() const
-    { return const_facet_iterator(this, countFacets()); }
+    { return {this, countFacets()}; }
 
     using const_segment_iterator = std::vector<Segment>::const_iterator;
     const_segment_iterator segments_begin() const

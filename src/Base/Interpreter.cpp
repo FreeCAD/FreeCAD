@@ -287,7 +287,7 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
         }
         else {
             PyException::ThrowException();
-            return std::string(); // just to quieten code analyzers
+            return {}; // just to quieten code analyzers
         }
     }
     Py_DECREF(presult);
