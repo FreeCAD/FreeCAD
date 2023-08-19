@@ -198,10 +198,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     TopoDS_Edge e = m_geometry->getOCCEdge();
 //    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     // Mirror shape in Y and scale
-    TopoDS_Shape s = TechDraw::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
+    TopoDS_Shape s = ShapeUtils::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
     // rotate using OXYZ as the coordinate system
-    s = TechDraw::rotateShape(s, gp_Ax2(), rotDegrees);
-    s = TechDraw::mirrorShape(s);
+    s = ShapeUtils::rotateShape(s, gp_Ax2(), rotDegrees);
+    s = ShapeUtils::mirrorShape(s);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
     newGeom->setClassOfEdge(ecHARD);
