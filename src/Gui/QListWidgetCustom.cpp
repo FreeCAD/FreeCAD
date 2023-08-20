@@ -35,9 +35,7 @@ QListWidgetCustom::QListWidgetCustom(QWidget * parent)
 {
 }
 
-QListWidgetCustom::~QListWidgetCustom()
-{
-}
+QListWidgetCustom::~QListWidgetCustom() = default;
 
 /* Overridden dragMoveEvent prevents dragging items that originated
  * from the same list for "disabled workbenches". Dragging from outside

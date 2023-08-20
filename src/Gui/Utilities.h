@@ -115,7 +115,7 @@ class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
 {
 public:
     explicit ViewVolumeProjection (const SbViewVolume &vv);
-    ~ViewVolumeProjection() override{}
+    ~ViewVolumeProjection() override = default;
 
     Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
     Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;

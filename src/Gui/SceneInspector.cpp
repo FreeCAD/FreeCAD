@@ -45,9 +45,7 @@ SceneModel::SceneModel(QObject* parent)
 {
 }
 
-SceneModel::~SceneModel()
-{
-}
+SceneModel::~SceneModel() = default;
 
 int SceneModel::columnCount (const QModelIndex & parent) const
 {

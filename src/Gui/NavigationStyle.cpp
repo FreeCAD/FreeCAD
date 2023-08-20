@@ -177,9 +177,7 @@ NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
 {
 }
 
-NavigationStyleEvent::~NavigationStyleEvent()
-{
-}
+NavigationStyleEvent::~NavigationStyleEvent() = default;
 
 const Base::Type& NavigationStyleEvent::style() const
 {

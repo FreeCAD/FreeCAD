@@ -113,9 +113,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgCustomToolbars::~DlgCustomToolbars()
-{
-}
+DlgCustomToolbars::~DlgCustomToolbars() = default;
 
 void DlgCustomToolbars::setupConnections()
 {
@@ -578,9 +576,7 @@ DlgCustomToolbarsImp::DlgCustomToolbarsImp( QWidget* parent )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgCustomToolbarsImp::~DlgCustomToolbarsImp()
-{
-}
+DlgCustomToolbarsImp::~DlgCustomToolbarsImp() = default;
 
 void DlgCustomToolbarsImp::addCustomToolbar(const QString& name)
 {
@@ -845,9 +841,7 @@ DlgCustomToolBoxbarsImp::DlgCustomToolBoxbarsImp( QWidget* parent )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgCustomToolBoxbarsImp::~DlgCustomToolBoxbarsImp()
-{
-}
+DlgCustomToolBoxbarsImp::~DlgCustomToolBoxbarsImp() = default;
 
 void DlgCustomToolBoxbarsImp::changeEvent(QEvent *e)
 {

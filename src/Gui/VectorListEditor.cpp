@@ -240,9 +240,7 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
     connect(ui->tableWidget, &QTableView::clicked, this, &VectorListEditor::clickedRow);
 }
 
-VectorListEditor::~VectorListEditor()
-{
-}
+VectorListEditor::~VectorListEditor() = default;
 
 void VectorListEditor::setValues(const QList<Base::Vector3d>& v)
 {

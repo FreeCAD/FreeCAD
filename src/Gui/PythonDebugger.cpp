@@ -38,9 +38,7 @@
 
 using namespace Gui;
 
-Breakpoint::Breakpoint()
-{
-}
+Breakpoint::Breakpoint() = default;
 
 Breakpoint::Breakpoint(const Breakpoint& rBp)
 {
@@ -60,10 +58,7 @@ Breakpoint& Breakpoint::operator= (const Breakpoint& rBp)
     return *this;
 }
 
-Breakpoint::~Breakpoint()
-{
-
-}
+Breakpoint::~Breakpoint() = default;
 
 void Breakpoint::setFilename(const QString& fn)
 {
@@ -166,13 +161,9 @@ void PythonDebugStdout::init_type()
     add_varargs_method("flush",&PythonDebugStdout::flush,"flush the output");
 }
 
-PythonDebugStdout::PythonDebugStdout()
-{
-}
+PythonDebugStdout::PythonDebugStdout() = default;
 
-PythonDebugStdout::~PythonDebugStdout()
-{
-}
+PythonDebugStdout::~PythonDebugStdout() = default;
 
 Py::Object PythonDebugStdout::repr()
 {
@@ -218,13 +209,9 @@ void PythonDebugStderr::init_type()
     add_varargs_method("write",&PythonDebugStderr::write,"write to stderr");
 }
 
-PythonDebugStderr::PythonDebugStderr()
-{
-}
+PythonDebugStderr::PythonDebugStderr() = default;
 
-PythonDebugStderr::~PythonDebugStderr()
-{
-}
+PythonDebugStderr::~PythonDebugStderr() = default;
 
 Py::Object PythonDebugStderr::repr()
 {
@@ -267,13 +254,9 @@ void PythonDebugExcept::init_type()
     add_varargs_method("fc_excepthook",&PythonDebugExcept::excepthook,"Custom exception handler");
 }
 
-PythonDebugExcept::PythonDebugExcept()
-{
-}
+PythonDebugExcept::PythonDebugExcept() = default;
 
-PythonDebugExcept::~PythonDebugExcept()
-{
-}
+PythonDebugExcept::~PythonDebugExcept() = default;
 
 Py::Object PythonDebugExcept::repr()
 {
@@ -321,7 +304,7 @@ class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     explicit PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
-    ~PythonDebuggerPy() override {}
+    ~PythonDebuggerPy() override = default;
     PythonDebugger* dbg;
     int depth;
 };

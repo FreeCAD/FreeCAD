@@ -205,13 +205,9 @@ using namespace Gui;
 /// @namespace Gui @class Workbench
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::Workbench, Base::BaseClass)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 std::string Workbench::name() const
 {
@@ -568,9 +564,7 @@ StdWorkbench::StdWorkbench()
 {
 }
 
-StdWorkbench::~StdWorkbench()
-{
-}
+StdWorkbench::~StdWorkbench() = default;
 
 void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
@@ -865,9 +859,7 @@ BlankWorkbench::BlankWorkbench()
 {
 }
 
-BlankWorkbench::~BlankWorkbench()
-{
-}
+BlankWorkbench::~BlankWorkbench() = default;
 
 void BlankWorkbench::activated()
 {
@@ -918,9 +910,7 @@ NoneWorkbench::NoneWorkbench()
 {
 }
 
-NoneWorkbench::~NoneWorkbench()
-{
-}
+NoneWorkbench::~NoneWorkbench() = default;
 
 void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
@@ -988,9 +978,7 @@ TestWorkbench::TestWorkbench()
 {
 }
 
-TestWorkbench::~TestWorkbench()
-{
-}
+TestWorkbench::~TestWorkbench() = default;
 
 MenuItem* TestWorkbench::setupMenuBar() const
 {
@@ -1222,9 +1210,7 @@ PythonBlankWorkbench::PythonBlankWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonBlankWorkbench::~PythonBlankWorkbench()
-{
-}
+PythonBlankWorkbench::~PythonBlankWorkbench() = default;
 
 // -----------------------------------------------------------------------
 
@@ -1239,9 +1225,7 @@ PythonWorkbench::PythonWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonWorkbench::~PythonWorkbench()
-{
-}
+PythonWorkbench::~PythonWorkbench() = default;
 
 MenuItem* PythonWorkbench::setupMenuBar() const
 {

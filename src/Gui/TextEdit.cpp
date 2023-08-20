@@ -70,9 +70,7 @@ TextEdit::TextEdit(QWidget* parent)
 }
 
 /** Destroys the object and frees any allocated resources */
-TextEdit::~TextEdit()
-{
-}
+TextEdit::~TextEdit() = default;
 
 /**
  * Set the approproriate item of the completion box or hide it, if needed.
@@ -511,9 +509,7 @@ LineMarker::LineMarker(TextEditor* editor)
 {
 }
 
-LineMarker::~LineMarker()
-{
-}
+LineMarker::~LineMarker() = default;
 
 QSize LineMarker::sizeHint() const
 {
@@ -540,9 +536,7 @@ CompletionList::CompletionList(QPlainTextEdit* parent)
             this, &CompletionList::completionItem);
 }
 
-CompletionList::~CompletionList()
-{
-}
+CompletionList::~CompletionList() = default;
 
 void CompletionList::findCurrentWord(const QString& wordPrefix)
 {

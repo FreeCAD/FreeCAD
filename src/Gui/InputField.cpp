@@ -103,9 +103,7 @@ InputField::InputField(QWidget * parent)
     connect(this, &QLineEdit::textChanged, this, &InputField::newInput);
 }
 
-InputField::~InputField()
-{
-}
+InputField::~InputField() = default;
 
 void InputField::bind(const App::ObjectIdentifier &_path)
 {
@@ -765,9 +763,7 @@ InputValidator::InputValidator(InputField* parent) : QValidator(parent), dptr(pa
 {
 }
 
-InputValidator::~InputValidator()
-{
-}
+InputValidator::~InputValidator() = default;
 
 void InputValidator::fixup(QString& input) const
 {

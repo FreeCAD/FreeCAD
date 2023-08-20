@@ -51,9 +51,7 @@ ExpressionBindingPy::ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tupl
     }
 }
 
-ExpressionBindingPy::~ExpressionBindingPy()
-{
-}
+ExpressionBindingPy::~ExpressionBindingPy() = default;
 
 ExpressionBinding* ExpressionBindingPy::asBinding(QWidget* obj)
 {

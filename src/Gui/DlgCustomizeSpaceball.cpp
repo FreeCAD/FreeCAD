@@ -690,10 +690,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
     connect(printReference, &QPushButton::clicked, this, &DlgCustomizeSpaceball::goPrint);
 }
 
-DlgCustomizeSpaceball::~DlgCustomizeSpaceball()
-{
-
-}
+DlgCustomizeSpaceball::~DlgCustomizeSpaceball() = default;
 
 void DlgCustomizeSpaceball::setMessage(const QString& message)
 {

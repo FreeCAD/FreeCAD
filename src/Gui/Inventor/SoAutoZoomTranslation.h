@@ -42,7 +42,7 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
-    ~SoAutoZoomTranslation() override {}
+    ~SoAutoZoomTranslation() override = default;
     void doAction(SoAction * action) override;
     void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
     void getMatrix(SoGetMatrixAction * action) override;

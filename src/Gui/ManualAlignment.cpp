@@ -64,13 +64,9 @@
 using namespace Gui;
 namespace sp = std::placeholders;
 
-AlignmentGroup::AlignmentGroup()
-{
-}
+AlignmentGroup::AlignmentGroup() = default;
 
-AlignmentGroup::~AlignmentGroup()
-{
-}
+AlignmentGroup::~AlignmentGroup() = default;
 
 void AlignmentGroup::addView(App::DocumentObject* pView)
 {
@@ -254,33 +250,21 @@ Base::BoundBox3d AlignmentGroup::getBoundingBox() const
 
 // ------------------------------------------------------------------
 
-MovableGroup::MovableGroup()
-{
-}
+MovableGroup::MovableGroup() = default;
 
-MovableGroup::~MovableGroup()
-{
-}
+MovableGroup::~MovableGroup() = default;
 
 // ------------------------------------------------------------------
 
-FixedGroup::FixedGroup()
-{
-}
+FixedGroup::FixedGroup() = default;
 
-FixedGroup::~FixedGroup()
-{
-}
+FixedGroup::~FixedGroup() = default;
 
 // ------------------------------------------------------------------
 
-MovableGroupModel::MovableGroupModel()
-{
-}
+MovableGroupModel::MovableGroupModel() = default;
 
-MovableGroupModel::~MovableGroupModel()
-{
-}
+MovableGroupModel::~MovableGroupModel() = default;
 
 void MovableGroupModel::addGroup(const MovableGroup& grp)
 {
@@ -426,9 +410,7 @@ public:
         static_cast<SoGroup*>(getViewer(1)->getSoRenderManager()->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Fixed object")));
     }
-    ~AlignmentView() override
-    {
-    }
+    ~AlignmentView() override = default;
     PyObject* getPyObject() override
     {
         Py_Return;

@@ -36,6 +36,7 @@ class QWheelEvent;
 class QKeyEvent;
 class QPaintEvent;
 class QResizeEvent;
+class SbVec2s;
 class SoEvent;
 class SbViewportRegion;
 class SoMouseButtonEvent;
@@ -58,7 +59,7 @@ public:
     enum { Continue=0, Restart=1, Finish=2, Cancel=3, Ignore=4 };
 
     AbstractMouseSelection();
-    virtual ~AbstractMouseSelection() {}
+    virtual ~AbstractMouseSelection() = default;
     /// implement this in derived classes
     virtual void initialize() = 0;
     /// implement this in derived classes
@@ -112,7 +113,7 @@ class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {
 public:
     BaseMouseSelection();
-    ~BaseMouseSelection() override{}
+    ~BaseMouseSelection() override = default;
 };
 
 // -----------------------------------------------------------------------------------

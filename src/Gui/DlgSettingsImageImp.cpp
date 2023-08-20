@@ -63,10 +63,7 @@ DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsImageImp::~DlgSettingsImageImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsImageImp::~DlgSettingsImageImp() = default;
 
 void DlgSettingsImageImp::setupConnections()
 {

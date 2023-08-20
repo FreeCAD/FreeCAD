@@ -144,9 +144,7 @@ TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(const char*
 {
 }
 
-TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection()
-{
-}
+TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection() = default;
 
 //==== implementer ===========================================================================
 

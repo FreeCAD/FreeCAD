@@ -276,7 +276,7 @@ private:
 class GuiExport SelectionGate
 {
 public:
-    virtual ~SelectionGate(){}
+    virtual ~SelectionGate() = default;
     virtual bool allow(App::Document*,App::DocumentObject*, const char*)=0;
 
     /**

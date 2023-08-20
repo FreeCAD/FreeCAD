@@ -202,8 +202,8 @@ while the progress bar is running.
 class Gui::ViewerEventFilter : public QObject
 {
 public:
-    ViewerEventFilter() {}
-    ~ViewerEventFilter() override {}
+    ViewerEventFilter() = default;
+    ~ViewerEventFilter() override = default;
 
     bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
@@ -245,8 +245,8 @@ public:
 
 class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
-    SpaceNavigatorDevice() {}
-    ~SpaceNavigatorDevice() override {}
+    SpaceNavigatorDevice() = default;
+    ~SpaceNavigatorDevice() override = default;
     const SoEvent* translateEvent(QEvent* event) override {
 
         if (event->type() == Spaceball::MotionEvent::MotionEventType) {
@@ -2787,9 +2787,7 @@ namespace Gui {
             startPos = camera->position.getValue();
             startRot = camera->orientation.getValue();
         }
-        ~CameraAnimation() override
-        {
-        }
+        ~CameraAnimation() override = default;
     protected:
         void updateCurrentValue(const QVariant & value) override
         {

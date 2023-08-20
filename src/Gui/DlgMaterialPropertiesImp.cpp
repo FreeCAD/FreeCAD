@@ -64,9 +64,7 @@ DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidg
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp()
-{
-}
+DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp() = default;
 
 void DlgMaterialPropertiesImp::setupConnections()
 {

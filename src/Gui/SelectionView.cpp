@@ -111,9 +111,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     connect(enablePickList, &QCheckBox::stateChanged, this, &SelectionView::onEnablePickList);
 }
 
-SelectionView::~SelectionView()
-{
-}
+SelectionView::~SelectionView() = default;
 
 void SelectionView::leaveEvent(QEvent *)
 {

@@ -83,9 +83,7 @@ SoFCOffscreenRenderer::SoFCOffscreenRenderer (SoGLRenderAction *action)
 {
 }
 
-SoFCOffscreenRenderer::~SoFCOffscreenRenderer()
-{
-}
+SoFCOffscreenRenderer::~SoFCOffscreenRenderer() = default;
 
 void SoFCOffscreenRenderer::writeToImage (QImage& img) const
 {

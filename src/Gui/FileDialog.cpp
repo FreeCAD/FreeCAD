@@ -80,9 +80,7 @@ FileDialog::FileDialog(QWidget * parent)
     connect(this, &QFileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
 }
 
-FileDialog::~FileDialog()
-{
-}
+FileDialog::~FileDialog() = default;
 
 void FileDialog::onSelectedFilter(const QString& /*filter*/)
 {
@@ -455,9 +453,7 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
     connect(extensionButton, &QPushButton::clicked, this, &FileOptionsDialog::toggleExtension);
 }
 
-FileOptionsDialog::~FileOptionsDialog()
-{
-}
+FileOptionsDialog::~FileOptionsDialog() = default;
 
 void FileOptionsDialog::accept()
 {
@@ -584,13 +580,9 @@ QWidget* FileOptionsDialog::getOptionsWidget() const
 /**
  * Constructs an empty file icon provider called \a name, with the parent \a parent.
  */
-FileIconProvider::FileIconProvider()
-{
-}
+FileIconProvider::FileIconProvider() = default;
 
-FileIconProvider::~FileIconProvider()
-{
-}
+FileIconProvider::~FileIconProvider() = default;
 
 QIcon FileIconProvider::icon(IconType type) const
 {
@@ -691,9 +683,7 @@ FileChooser::FileChooser ( QWidget * parent )
     setFocusProxy(lineEdit);
 }
 
-FileChooser::~FileChooser()
-{
-}
+FileChooser::~FileChooser() = default;
 
 void FileChooser::resizeEvent(QResizeEvent* e)
 {
@@ -916,9 +906,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
 #endif
 }
 
-SelectModule::~SelectModule()
-{
-}
+SelectModule::~SelectModule() = default;
 
 void SelectModule::accept()
 {

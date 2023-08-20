@@ -40,7 +40,7 @@ struct SoFCSelectionContextBase;
 using SoFCSelectionContextBasePtr = std::shared_ptr<SoFCSelectionContextBase>;
 
 struct GuiExport SoFCSelectionContextBase {
-    virtual ~SoFCSelectionContextBase() {}
+    virtual ~SoFCSelectionContextBase() = default;
     using MergeFunc = int (int status,
                            SoFCSelectionContextBasePtr &output,
                            SoFCSelectionContextBasePtr input,

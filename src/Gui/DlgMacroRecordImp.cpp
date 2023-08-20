@@ -73,10 +73,7 @@ DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgMacroRecordImp::~DlgMacroRecordImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgMacroRecordImp::~DlgMacroRecordImp() = default;
 
 void DlgMacroRecordImp::setupConnections()
 {

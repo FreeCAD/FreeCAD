@@ -58,7 +58,7 @@ namespace Gui {
             : QTreeWidgetItem(widget),
             systemWide(systemwide){}
 
-            ~MacroItem() override{}
+            ~MacroItem() override = default;
 
             bool systemWide;
         };
@@ -104,10 +104,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgMacroExecuteImp::~DlgMacroExecuteImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgMacroExecuteImp::~DlgMacroExecuteImp() = default;
 
 void DlgMacroExecuteImp::setupConnections()
 {
