@@ -55,31 +55,6 @@ map<string,unsigned int> Type::typemap;
 vector<TypeData*>        Type::typedata;
 set<string>              Type::loadModuleSet;
 
-//**************************************************************************
-// Construction/Destruction
-
-/**
- * A constructor.
- * A more elaborate description of the constructor.
- */
-Type::Type()
-: index(0)
-{
-}
-
-
-Type::Type(const Type& type)
-:index(type.index)
-{
-}
-
-
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
-Type::~Type() = default;
-
 void *Type::createInstance()
 {
   instantiationMethod method = typedata[index]->instMethod;
