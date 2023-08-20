@@ -37,5 +37,15 @@
       </Documentation>
       <Parameter Name="Materials" Type="Dict"/>
     </Attribute>
+    <Methode Name="materialsWithModel">
+      <Documentation>
+        <UserDocu>Get a list of materials implementing the specified model</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="materialsWithModelComplete">
+      <Documentation>
+        <UserDocu>Get a list of materials implementing the specified model, with values for all properties</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateMaterial>

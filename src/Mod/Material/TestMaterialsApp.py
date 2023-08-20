@@ -172,3 +172,17 @@ class MaterialTestCases(unittest.TestCase):
         self.assertEqual(properties["Shininess"], "0.05999999865889549")
         self.assertEqual(properties["SpecularColor"], "(0.9800, 0.9800, 0.9800, 1.0)")
         self.assertEqual(properties["Transparency"], "0")
+
+    def testMaterialsWithModel(self):
+        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
+        materialsComplete = self.MaterialManager.materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
+
+        self.assertTrue(len(materialsComplete) <= len(materials)) # Not all will be complete
+
+        materialsLinearElastic = self.MaterialManager.materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
+
+        # All LinearElastic models should be in IsotropicLinearElastic since it is inherited
+        self.assertTrue(len(materialsLinearElastic) <= len(materials))
+        for mat in materialsLinearElastic:
+            self.assertIn(mat, materials)
+

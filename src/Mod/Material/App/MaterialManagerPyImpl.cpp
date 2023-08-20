@@ -128,3 +128,51 @@ int MaterialManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj
 {
     return 0;
 }
+
+PyObject* MaterialManagerPy::materialsWithModel(PyObject *args)
+{
+    char *uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid))
+        return nullptr;
+
+    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
+    PyObject *dict = PyDict_New();
+
+    for (auto it = Materials->begin(); it != Materials->end(); it++)
+    {
+        QString key = it->first;
+        Material *material = it->second;
+
+        if (material->hasModel(QString::fromStdString(uuid)))
+        {
+            PyObject *materialPy = new MaterialPy(new Material(*material));
+            PyDict_SetItem(dict, PyBytes_FromString(key.toStdString().c_str()), materialPy);
+        }
+    }
+
+    return dict;
+}
+
+PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject *args)
+{
+    char *uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid))
+        return nullptr;
+
+    std::map<QString, Material*> *Materials = getMaterialManagerPtr()->getMaterials();
+    PyObject *dict = PyDict_New();
+
+    for (auto it = Materials->begin(); it != Materials->end(); it++)
+    {
+        QString key = it->first;
+        Material *material = it->second;
+
+        if (material->isModelComplete(QString::fromStdString(uuid)))
+        {
+            PyObject *materialPy = new MaterialPy(new Material(*material));
+            PyDict_SetItem(dict, PyBytes_FromString(key.toStdString().c_str()), materialPy);
+        }
+    }
+
+    return dict;
+}

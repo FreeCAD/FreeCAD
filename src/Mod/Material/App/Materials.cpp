@@ -313,6 +313,25 @@ Material::~Material()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void Material::addModel(const QString &uuid)
+{
+    for (QString modelUUID: _allUuids)
+        if (modelUUID == uuid)
+            return;
+
+    _allUuids.push_back(uuid);
+
+    ModelManager *manager = ModelManager::getManager();
+
+    try {
+        const Model &model = manager->getModel(uuid);
+        auto inheritance = model.getInheritance();
+        for (auto inherits = inheritance.begin(); inherits != inheritance.end(); inherits++)
+            addModel(*inherits);
+    } catch (ModelNotFound const &) {
+    }
+}
+
 void Material::addPhysical(const QString &uuid)
 {
     if (hasPhysicalModel(uuid))
@@ -324,6 +343,7 @@ void Material::addPhysical(const QString &uuid)
         const Model &model = manager->getModel(uuid);
 
         _physicalUuids.push_back(uuid);
+        addModel(uuid);
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
@@ -357,6 +377,7 @@ void Material::addAppearance(const QString &uuid)
         const Model &model = manager->getModel(uuid);
 
         _appearanceUuids.push_back(uuid);
+        addModel(uuid);
 
         for (auto it = model.begin(); it != model.end(); it++)
         {
@@ -469,20 +490,47 @@ bool Material::hasAppearanceProperty(const QString& name) const
     return true;
 }
 
-bool Material::hasPhysicalModel(const QString& uuid) const
+bool Material::hasModel(const QString& uuid) const
 {
-    for (QString modelUUID: _physicalUuids)
+    for (QString modelUUID: _allUuids)
         if (modelUUID == uuid)
             return true;
 
     return false;
 }
 
+bool Material::hasPhysicalModel(const QString& uuid) const
+{
+    if (!hasModel(uuid))
+        return false;
+
+    ModelManager *manager = ModelManager::getManager();
+
+    try {
+        const Model &model = manager->getModel(uuid);
+        if (model.getType() == Model::ModelType_Physical)
+            return true;
+
+    } catch (ModelNotFound const &) {
+    }
+
+    return false;
+}
+
 bool Material::hasAppearanceModel(const QString& uuid) const
 {
-    for (QString modelUUID: _appearanceUuids)
-        if (modelUUID == uuid)
+    if (!hasModel(uuid))
+        return false;
+
+    ModelManager *manager = ModelManager::getManager();
+
+    try {
+        const Model &model = manager->getModel(uuid);
+        if (model.getType() == Model::ModelType_Appearance)
             return true;
+
+    } catch (ModelNotFound const &) {
+    }
 
     return false;
 }

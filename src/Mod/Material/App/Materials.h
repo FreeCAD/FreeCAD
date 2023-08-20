@@ -149,8 +149,10 @@ public:
     bool hasAppearanceProperty(const QString& name) const;
 
     // Test if the model is defined, and if values are provided for all properties
+    bool hasModel(const QString& uuid) const;
     bool hasPhysicalModel(const QString& uuid) const;
     bool hasAppearanceModel(const QString& uuid) const;
+    bool isModelComplete(const QString& uuid) const { return isPhysicalModelComplete(uuid) || isAppearanceModelComplete(uuid); }
     bool isPhysicalModelComplete(const QString& uuid) const;
     bool isAppearanceModelComplete(const QString& uuid) const;
 
@@ -159,6 +161,9 @@ public:
 
     bool getDereferenced() const { return _dereferenced; }
     void markDereferenced() { _dereferenced = true; }
+
+protected:
+    void addModel(const QString& uuid);
 
 private:
     MaterialLibrary _library;
@@ -173,6 +178,7 @@ private:
     std::list<QString> _tags;
     std::vector<QString> _physicalUuids;
     std::vector<QString> _appearanceUuids;
+    std::vector<QString> _allUuids; // Includes inherited models
     std::map<QString, MaterialProperty> _physical;
     std::map<QString, MaterialProperty> _appearance;
     bool _dereferenced;
