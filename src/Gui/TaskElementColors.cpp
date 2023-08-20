@@ -549,9 +549,7 @@ TaskElementColors::TaskElementColors(ViewProviderDocumentObject* vp, bool noHide
     Content.push_back(taskbox);
 }
 
-TaskElementColors::~TaskElementColors()
-{
-}
+TaskElementColors::~TaskElementColors() = default;
 
 void TaskElementColors::open()
 {

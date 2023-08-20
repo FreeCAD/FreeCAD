@@ -228,9 +228,7 @@ Command::Command(const char* name)
     bCanLog     = true;
 }
 
-Command::~Command()
-{
-}
+Command::~Command() = default;
 
 void Command::setShortcut(const QString &shortcut)
 {
@@ -1118,9 +1116,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
     sScriptName = nullptr;
 }
 
-MacroCommand::~MacroCommand()
-{
-}
+MacroCommand::~MacroCommand() = default;
 
 void MacroCommand::activated(int iMsg)
 {
@@ -1787,9 +1783,7 @@ void PythonGroupCommand::onActionInit() const
 // CommandManager
 //===========================================================================
 
-CommandManager::CommandManager()
-{
-}
+CommandManager::CommandManager() = default;
 
 CommandManager::~CommandManager()
 {

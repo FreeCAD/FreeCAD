@@ -38,13 +38,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle)
 
-OpenCascadeNavigationStyle::OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::OpenCascadeNavigationStyle() = default;
 
-OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle()
-{
-}
+OpenCascadeNavigationStyle::~OpenCascadeNavigationStyle() = default;
 
 const char* OpenCascadeNavigationStyle::mouseButtons(ViewerMode mode)
 {

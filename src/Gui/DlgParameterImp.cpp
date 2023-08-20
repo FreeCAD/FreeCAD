@@ -479,9 +479,7 @@ ParameterGroup::ParameterGroup( QWidget * parent )
     menuEdit->setDefaultAction(expandAct);
 }
 
-ParameterGroup::~ParameterGroup()
-{
-}
+ParameterGroup::~ParameterGroup() = default;
 
 void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
 {
@@ -680,9 +678,7 @@ ParameterValue::ParameterValue( QWidget * parent )
             this, qOverload<QTreeWidgetItem*, int>(&ParameterValue::onChangeSelectedItem));
 }
 
-ParameterValue::~ParameterValue()
-{
-}
+ParameterValue::~ParameterValue() = default;
 
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
@@ -1020,9 +1016,7 @@ ParameterValueItem::ParameterValueItem ( QTreeWidget* parent, const Base::Refere
     setFlags(flags() | Qt::ItemIsEditable);
 }
 
-ParameterValueItem::~ParameterValueItem()
-{
-}
+ParameterValueItem::~ParameterValueItem() = default;
 
 void ParameterValueItem::setData ( int column, int role, const QVariant & value )
 {
@@ -1052,9 +1046,7 @@ ParameterText::ParameterText ( QTreeWidget * parent, QString label, const char* 
     setText(2, QString::fromUtf8(value));
 }
 
-ParameterText::~ParameterText()
-{
-}
+ParameterText::~ParameterText() = default;
 
 void ParameterText::changeValue()
 {
@@ -1096,9 +1088,7 @@ ParameterInt::ParameterInt ( QTreeWidget * parent, QString label, long value, co
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterInt::~ParameterInt()
-{
-}
+ParameterInt::~ParameterInt() = default;
 
 void ParameterInt::changeValue()
 {
@@ -1140,9 +1130,7 @@ ParameterUInt::ParameterUInt ( QTreeWidget * parent, QString label, unsigned lon
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterUInt::~ParameterUInt()
-{
-}
+ParameterUInt::~ParameterUInt() = default;
 
 void ParameterUInt::changeValue()
 {
@@ -1193,9 +1181,7 @@ ParameterFloat::ParameterFloat ( QTreeWidget * parent, QString label, double val
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
-ParameterFloat::~ParameterFloat()
-{
-}
+ParameterFloat::~ParameterFloat() = default;
 
 void ParameterFloat::changeValue()
 {
@@ -1237,9 +1223,7 @@ ParameterBool::ParameterBool ( QTreeWidget * parent, QString label, bool value, 
     setText(2, QString::fromLatin1((value ? "true" : "false")));
 }
 
-ParameterBool::~ParameterBool()
-{
-}
+ParameterBool::~ParameterBool() = default;
 
 void ParameterBool::changeValue()
 {

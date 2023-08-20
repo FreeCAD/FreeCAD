@@ -54,9 +54,7 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, c
 #endif
 }
 
-Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
-{
-}
+Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default;
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {

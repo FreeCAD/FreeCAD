@@ -137,9 +137,7 @@ public:
 
 // ----------------------------------------------------------------
 
-SoSVGVectorOutput::SoSVGVectorOutput()
-{
-}
+SoSVGVectorOutput::SoSVGVectorOutput() = default;
 
 SoSVGVectorOutput::~SoSVGVectorOutput()
 {

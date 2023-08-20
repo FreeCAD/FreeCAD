@@ -40,9 +40,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SelectionObject, Base::BaseClass)
 
-SelectionObject::SelectionObject()
-{
-}
+SelectionObject::SelectionObject() = default;
 
 SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
 {
@@ -62,9 +60,7 @@ SelectionObject::SelectionObject(App::DocumentObject* obj)
     TypeName = obj->getTypeId().getName();
 }
 
-SelectionObject::~SelectionObject()
-{
-}
+SelectionObject::~SelectionObject() = default;
 
 const App::DocumentObject * SelectionObject::getObject() const
 {

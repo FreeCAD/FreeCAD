@@ -46,9 +46,7 @@ ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
     sPixmap = "folder";
 }
 
-ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
-{
-}
+ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup() = default;
 
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes() const
 {

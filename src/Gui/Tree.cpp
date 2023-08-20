@@ -3095,9 +3095,7 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
             this, &TreePanel::itemSearch);
 }
 
-TreePanel::~TreePanel()
-{
-}
+TreePanel::~TreePanel() = default;
 
 void TreePanel::accept()
 {
@@ -3170,9 +3168,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
     pLayout->addWidget(panel, 0, 0);
 }
 
-TreeDockWidget::~TreeDockWidget()
-{
-}
+TreeDockWidget::~TreeDockWidget() = default;
 
 void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
     if (!isSelectionAttached() || isSelectionBlocked())

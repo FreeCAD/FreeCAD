@@ -95,10 +95,7 @@ ReportView::ReportView( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-ReportView::~ReportView()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+ReportView::~ReportView() = default;
 
 void ReportView::changeEvent(QEvent *e)
 {
@@ -134,9 +131,7 @@ ReportHighlighter::ReportHighlighter(QTextEdit* edit)
     errCol = Qt::red;
 }
 
-ReportHighlighter::~ReportHighlighter()
-{
-}
+ReportHighlighter::~ReportHighlighter() = default;
 
 void ReportHighlighter::highlightBlock (const QString & text)
 {
@@ -288,8 +283,7 @@ public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
     : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
-    ~CustomReportEvent() override
-    { }
+    ~CustomReportEvent() override = default;
     const QString& message() const
     { return msg; }
     ReportHighlighter::Paragraph messageType() const

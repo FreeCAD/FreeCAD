@@ -918,9 +918,7 @@ InventorBuilder::InventorBuilder(std::ostream& output)
     result << "#Inventor V2.1 ascii \n\n";
 }
 
-InventorBuilder:: ~InventorBuilder()
-{
-}
+InventorBuilder:: ~InventorBuilder() = default;
 
 void InventorBuilder::increaseIndent()
 {

@@ -287,7 +287,7 @@ class StdCmdFreezeViews : public Gui::Command
 {
 public:
     StdCmdFreezeViews();
-    ~StdCmdFreezeViews() override{}
+    ~StdCmdFreezeViews() override = default;
     const char* className() const override
     { return "StdCmdFreezeViews"; }
 
@@ -636,7 +636,7 @@ class StdCmdDrawStyle : public Gui::Command
 {
 public:
     StdCmdDrawStyle();
-    ~StdCmdDrawStyle() override{}
+    ~StdCmdDrawStyle() override = default;
     void languageChange() override;
     const char* className() const override {return "StdCmdDrawStyle";}
     void updateIcon(const Gui::MDIView* view);

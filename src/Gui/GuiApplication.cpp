@@ -66,9 +66,7 @@ GUIApplication::GUIApplication(int & argc, char ** argv)
 #endif
 }
 
-GUIApplication::~GUIApplication()
-{
-}
+GUIApplication::~GUIApplication() = default;
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
@@ -234,9 +232,7 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
     connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
-GUISingleApplication::~GUISingleApplication()
-{
-}
+GUISingleApplication::~GUISingleApplication() = default;
 
 bool GUISingleApplication::isRunning() const
 {

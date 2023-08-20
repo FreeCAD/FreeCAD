@@ -42,9 +42,7 @@ RevitNavigationStyle::RevitNavigationStyle() : lockButton1(false)
 {
 }
 
-RevitNavigationStyle::~RevitNavigationStyle()
-{
-}
+RevitNavigationStyle::~RevitNavigationStyle() = default;
 
 const char* RevitNavigationStyle::mouseButtons(ViewerMode mode)
 {

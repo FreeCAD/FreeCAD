@@ -505,9 +505,7 @@ std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
     return rv;
 }
 
-UiLoader::~UiLoader()
-{
-}
+UiLoader::~UiLoader() = default;
 
 QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
                                 const QString& name)
@@ -559,9 +557,7 @@ UiLoaderPy::UiLoaderPy()
 {
 }
 
-UiLoaderPy::~UiLoaderPy()
-{
-}
+UiLoaderPy::~UiLoaderPy() = default;
 
 Py::Object UiLoaderPy::repr()
 {
