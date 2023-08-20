@@ -579,7 +579,7 @@ TopoDS_Shape DrawUtil::shapeVectorToCompound(std::vector<TopoDS_Shape> vecIn, bo
         }
     }
     if (invert) {
-        return TechDraw::mirrorShape(compOut);
+        return ShapeUtils::mirrorShape(compOut);
     }
     return compOut;
 }
