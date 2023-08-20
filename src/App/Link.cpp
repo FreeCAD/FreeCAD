@@ -81,8 +81,7 @@ public:
     }
 
     // Auto generated code. See class document of LinkParams.
-    ~LinkParamsP() override {
-    }
+    ~LinkParamsP() override = default;
 
     // Auto generated code. See class document of LinkParams.
     void OnChange(Base::Subject<const char*> &, const char* sReason) override {
@@ -160,10 +159,6 @@ LinkBaseExtension::LinkBaseExtension()
     EXTENSION_ADD_PROPERTY_TYPE(_LinkOwner, (0), " Link",
             PropertyType(Prop_Hidden|Prop_Output),0);
     props.resize(PropMax,nullptr);
-}
-
-LinkBaseExtension::~LinkBaseExtension()
-{
 }
 
 PyObject* LinkBaseExtension::getExtensionPyObject() {
@@ -2233,10 +2228,6 @@ LinkExtension::LinkExtension()
     initExtensionType(LinkExtension::getExtensionClassTypeId());
 
     LINK_PROPS_ADD_EXTENSION(LINK_PARAMS_EXT);
-}
-
-LinkExtension::~LinkExtension()
-{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
