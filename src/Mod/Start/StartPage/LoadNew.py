@@ -37,9 +37,6 @@ elif template_name == "parametric_part":
         FreeCADGui.runCommand('Std_New')
         FreeCADGui.activateWorkbench("PartDesignWorkbench")
         FreeCADGui.runCommand("PartDesign_Body")
-        FreeCADGui.Selection.addSelection('Unnamed','Body')
-        FreeCADGui.runCommand('PartDesign_NewSketch',0)
-        FreeCADGui.Selection.clearSelection()
         StartPage.postStart(False)
 elif template_name == "csg_part":
         FreeCADGui.runCommand('Std_New')
