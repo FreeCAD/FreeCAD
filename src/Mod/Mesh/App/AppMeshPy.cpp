@@ -129,8 +129,6 @@ public:
                    "\n");
     }
 
-    ~Module() override {}
-
 private:
     Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {

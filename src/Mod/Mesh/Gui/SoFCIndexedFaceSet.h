@@ -108,7 +108,7 @@ public:
 
 protected:
     // Force using the reference count mechanism.
-    ~SoFCIndexedFaceSet() override {}
+    ~SoFCIndexedFaceSet() override = default;
     void GLRender(SoGLRenderAction *action) override;
     void drawFaces(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,

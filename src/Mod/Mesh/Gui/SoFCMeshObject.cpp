@@ -160,9 +160,7 @@ public:
     {
         this->rdbuf(&buf);
     }
-    ~SoInputStream() override
-    {
-    }
+    ~SoInputStream() override = default;
 
 private:
     SoInputStreambuf buf;
@@ -300,9 +298,7 @@ void SoFCMeshObjectElement::init(SoState * state)
     this->mesh = nullptr;
 }
 
-SoFCMeshObjectElement::~SoFCMeshObjectElement()
-{
-}
+SoFCMeshObjectElement::~SoFCMeshObjectElement() = default;
 
 void SoFCMeshObjectElement::set(SoState * const state, SoNode * const node, const Mesh::MeshObject * const mesh)
 {
@@ -419,9 +415,7 @@ SoFCMeshGridNode::SoFCMeshGridNode()
 /*!
   Destructor.
 */
-SoFCMeshGridNode::~SoFCMeshGridNode()
-{
-}
+SoFCMeshGridNode::~SoFCMeshGridNode() = default;
 
 // Doc from superclass.
 void SoFCMeshGridNode::initClass()
@@ -504,9 +498,7 @@ SoFCMeshObjectNode::SoFCMeshObjectNode()
 /*!
   Destructor.
 */
-SoFCMeshObjectNode::~SoFCMeshObjectNode()
-{
-}
+SoFCMeshObjectNode::~SoFCMeshObjectNode() = default;
 
 // Doc from superclass.
 void SoFCMeshObjectNode::initClass()
@@ -600,9 +592,7 @@ SoFCMeshObjectShape::SoFCMeshObjectShape()
     setName(SoFCMeshObjectShape::getClassTypeId().getName());
 }
 
-SoFCMeshObjectShape::~SoFCMeshObjectShape()
-{
-}
+SoFCMeshObjectShape::~SoFCMeshObjectShape() = default;
 
 void SoFCMeshObjectShape::notify(SoNotList * node)
 {

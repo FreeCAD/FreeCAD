@@ -41,9 +41,7 @@ AbstractSmoothing::AbstractSmoothing(MeshKernel& m)
 {
 }
 
-AbstractSmoothing::~AbstractSmoothing()
-{
-}
+AbstractSmoothing::~AbstractSmoothing() = default;
 
 void AbstractSmoothing::initialize(Component comp, Continuity cont)
 {
@@ -54,10 +52,6 @@ void AbstractSmoothing::initialize(Component comp, Continuity cont)
 PlaneFitSmoothing::PlaneFitSmoothing(MeshKernel& m)
   : AbstractSmoothing(m)
   , maximum(FLT_MAX)
-{
-}
-
-PlaneFitSmoothing::~PlaneFitSmoothing()
 {
 }
 
@@ -173,10 +167,6 @@ LaplaceSmoothing::LaplaceSmoothing(MeshKernel& m)
 {
 }
 
-LaplaceSmoothing::~LaplaceSmoothing()
-{
-}
-
 void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
                                 const MeshRefPointToFacets& vf_it, double stepsize)
 {
@@ -273,10 +263,6 @@ TaubinSmoothing::TaubinSmoothing(MeshKernel& m)
 {
 }
 
-TaubinSmoothing::~TaubinSmoothing()
-{
-}
-
 void TaubinSmoothing::Smooth(unsigned int iterations)
 {
     MeshCore::MeshRefPointToPoints vv_it(kernel);
@@ -328,10 +314,6 @@ inline Base::Vector3d find_median(std::vector<AngleNormal> &container)
 
 MedianFilterSmoothing::MedianFilterSmoothing(MeshKernel& m)
   : AbstractSmoothing(m), weights(1)
-{
-}
-
-MedianFilterSmoothing::~MedianFilterSmoothing()
 {
 }
 

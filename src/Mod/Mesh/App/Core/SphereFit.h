@@ -42,10 +42,6 @@ public:
      * Construction
      */
     SphereFit();
-    /**
-     * Destruction
-     */
-    ~SphereFit() override;
 
     /**
      * Set approximations before calling Fit()

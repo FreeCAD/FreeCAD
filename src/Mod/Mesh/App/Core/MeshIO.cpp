@@ -3098,10 +3098,6 @@ MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
 {
 }
 
-MeshCleanup::~MeshCleanup()
-{
-}
-
 void MeshCleanup::SetMaterial(Material* mat)
 {
     materialArray = mat;
@@ -3226,10 +3222,6 @@ MeshPointFacetAdjacency::MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& 
   , facets(f)
 {
     Build();
-}
-
-MeshPointFacetAdjacency::~MeshPointFacetAdjacency()
-{
 }
 
 void MeshPointFacetAdjacency::Build()

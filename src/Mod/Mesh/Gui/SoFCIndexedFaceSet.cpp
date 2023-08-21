@@ -102,9 +102,7 @@ MeshRenderer::Private::Private()
 {
 }
 
-MeshRenderer::Private::~Private()
-{
-}
+MeshRenderer::Private::~Private() = default;
 
 bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
 {
@@ -435,9 +433,7 @@ SoFCMaterialEngine::SoFCMaterialEngine()
     SO_ENGINE_ADD_OUTPUT(trigger, SoSFBool);
 }
 
-SoFCMaterialEngine::~SoFCMaterialEngine()
-{
-}
+SoFCMaterialEngine::~SoFCMaterialEngine() = default;
 
 void SoFCMaterialEngine::initClass()
 {

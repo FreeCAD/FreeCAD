@@ -43,7 +43,7 @@ class MeshSearchNeighbours
 {
 public:
   explicit MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
-  virtual ~MeshSearchNeighbours () {}
+  ~MeshSearchNeighbours () = default;
   /** Re-initilaizes internal structures. */
   void Reinit (float fSampleDistance);
   /** Collects all neighbour points from the facet (by index), the result are the points of the facets lying

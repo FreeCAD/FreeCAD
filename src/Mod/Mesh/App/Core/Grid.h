@@ -64,7 +64,7 @@ protected:
 
 public:
   /// Destruction
-  virtual ~MeshGrid () { }
+  virtual ~MeshGrid () = default;
 
 public:
   /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt
@@ -193,7 +193,7 @@ public:
   /// Construction
   MeshFacetGrid (const MeshKernel &rclM, float fGridLen);
   /// Destruction
-  ~MeshFacetGrid () override { }
+  ~MeshFacetGrid () override = default;
   //@}
 
   /** @name Search */
@@ -254,7 +254,7 @@ public:
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Destruction
-  ~MeshPointGrid () override {}
+  ~MeshPointGrid () override = default;
   //@}
 
   /** Finds all points that lie in the same grid as the point \a rclPoint. */

@@ -42,10 +42,6 @@ SphereFit::SphereFit()
 	_maxIter(50)
 {}
 
-SphereFit::~SphereFit()
-{
-}
-
 // Set approximations before calling the fitting
 void SphereFit::SetApproximations(double radius, const Base::Vector3d &center)
 {

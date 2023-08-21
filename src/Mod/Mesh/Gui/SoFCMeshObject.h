@@ -183,6 +183,8 @@ protected:
                                             const SoPrimitiveVertex * v2,
                                             const SoPrimitiveVertex * v3,
                                             SoPickedPoint * pp) override;
+    // Force using the reference count mechanism.
+    ~SoFCMeshObjectShape() override;
 
 private:
     enum Binding {
@@ -193,8 +195,6 @@ private:
     };
 
 private:
-    // Force using the reference count mechanism.
-    ~SoFCMeshObjectShape() override;
     void notify(SoNotList * list) override;
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
@@ -238,6 +238,8 @@ protected:
     void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
     void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
     void generatePrimitives(SoAction *action) override;
+    // Force using the reference count mechanism.
+    ~SoFCMeshSegmentShape() override = default;
 
 private:
     enum Binding {
@@ -248,8 +250,6 @@ private:
     };
 
 private:
-    // Force using the reference count mechanism.
-    ~SoFCMeshSegmentShape() override {}
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
     void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind,
@@ -271,9 +271,10 @@ protected:
     void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
     void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
     void generatePrimitives(SoAction *action) override;
-private:
     // Force using the reference count mechanism.
-    ~SoFCMeshObjectBoundary() override {}
+    ~SoFCMeshObjectBoundary() override = default;
+
+private:
     void drawLines(const Mesh::MeshObject *) const ;
 };
 

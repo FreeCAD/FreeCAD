@@ -1664,10 +1664,6 @@ MeshComponents::MeshComponents( const MeshKernel& rclMesh )
 {
 }
 
-MeshComponents::~MeshComponents()
-{
-}
-
 void MeshComponents::SearchForComponents(TMode tMode, std::vector<std::vector<FacetIndex> >& aclT) const
 {
   // all facets

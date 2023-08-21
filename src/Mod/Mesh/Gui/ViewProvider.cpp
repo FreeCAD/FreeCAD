@@ -160,13 +160,9 @@ void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernel, SoC
 
 PROPERTY_SOURCE(MeshGui::ViewProviderExport, Gui::ViewProviderDocumentObject)
 
-ViewProviderExport::ViewProviderExport()
-{
-}
+ViewProviderExport::ViewProviderExport() = default;
 
-ViewProviderExport::~ViewProviderExport()
-{
-}
+ViewProviderExport::~ViewProviderExport() = default;
 
 std::vector<std::string> ViewProviderExport::getDisplayModes() const
 {
@@ -912,9 +908,6 @@ public:
         , poly(poly)
         , proj(proj)
     {
-
-    }
-    ~MeshSplit() {
 
     }
     void cutMesh() {
@@ -2305,9 +2298,7 @@ ViewProviderIndexedFaceSet::ViewProviderIndexedFaceSet()
     pcMeshFaces = nullptr;
 }
 
-ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet()
-{
-}
+ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet() = default;
 
 /**
  * Extracts the mesh data from the feature \a pcFeature and creates
@@ -2396,9 +2387,7 @@ ViewProviderMeshObject::ViewProviderMeshObject()
     pcMeshShape = nullptr;
 }
 
-ViewProviderMeshObject::~ViewProviderMeshObject()
-{
-}
+ViewProviderMeshObject::~ViewProviderMeshObject() = default;
 
 void ViewProviderMeshObject::attach(App::DocumentObject *pcFeat)
 {

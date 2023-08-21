@@ -70,7 +70,6 @@ class MeshExport PlaneFitSmoothing : public AbstractSmoothing
 {
 public:
     explicit PlaneFitSmoothing(MeshKernel&);
-    ~PlaneFitSmoothing() override;
     void SetMaximum(float max) {
         maximum = max;
     }
@@ -85,7 +84,6 @@ class MeshExport LaplaceSmoothing : public AbstractSmoothing
 {
 public:
     explicit LaplaceSmoothing(MeshKernel&);
-    ~LaplaceSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
     void SetLambda(double l) { lambda = l;}
@@ -105,7 +103,6 @@ class MeshExport TaubinSmoothing : public LaplaceSmoothing
 {
 public:
     explicit TaubinSmoothing(MeshKernel&);
-    ~TaubinSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
     void SetMicro(double m) { micro = m;}
@@ -123,7 +120,6 @@ class MeshExport MedianFilterSmoothing : public AbstractSmoothing
 {
 public:
     explicit MedianFilterSmoothing(MeshKernel&);
-    ~MedianFilterSmoothing() override;
     void SetWeight(int w) {
         weights = w;
     }

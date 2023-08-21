@@ -50,8 +50,8 @@ namespace MeshGui {
 class PlaneFitParameter : public FitParameter
 {
 public:
-    PlaneFitParameter() {}
-    ~PlaneFitParameter() override {}
+    PlaneFitParameter() = default;
+    ~PlaneFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
@@ -73,8 +73,8 @@ public:
 class CylinderFitParameter : public FitParameter
 {
 public:
-    CylinderFitParameter() {}
-    ~CylinderFitParameter() override {}
+    CylinderFitParameter() = default;
+    ~CylinderFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
@@ -128,8 +128,8 @@ public:
 class SphereFitParameter : public FitParameter
 {
 public:
-    SphereFitParameter() {}
-    ~SphereFitParameter() override {}
+    SphereFitParameter() = default;
+    ~SphereFitParameter() override = default;
     std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::SphereFit fit;
@@ -522,11 +522,6 @@ TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
         QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskSegmentationBestFit::~TaskSegmentationBestFit()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskSegmentationBestFit::accept()
