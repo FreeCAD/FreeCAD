@@ -242,6 +242,10 @@ public:
         const std::vector<double>& heights = std::vector<double>(),
         const TopoDS_Shape& plane = TopoDS_Shape());
 
+    std::shared_ptr<Area> getClearedArea(double tipDiameter, double diameter);
+    std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter);
+    TopoDS_Shape toTopoShape();
+
     /** Config this Area object */
     void setParams(const AreaParams& params);
 

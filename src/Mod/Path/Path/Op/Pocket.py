@@ -135,6 +135,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... adds the properties if they doesn't exist."""
+        super().opOnDocumentRestored(obj)
         self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):

@@ -38,7 +38,7 @@ __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Base class and properties for Path.Area based operations."
-__contributors__ = "russ4262 (Russell Johnson)"
+__contributors__ = "russ4262 (Russell Johnson) davidgilkaufman (David Kaufman)"
 
 
 if False:
@@ -236,6 +236,47 @@ class ObjectOp(PathOp.ObjectOp):
             mode=0, project=self.areaOpUseProjection(obj), heights=heights
         )
         Path.Log.debug("sections = %s" % sections)
+
+        # Rest machining
+        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
+        if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
+            # Loop through prior operations
+            clearedAreas = []
+            foundSelf = False
+            for op in self.job.Operations.Group:
+                if foundSelf:
+                    break
+                oplist = [op] + op.OutListRecursive
+                oplist = list(filter(lambda op: hasattr(op, "Active"), oplist))
+                for op in oplist:
+                    if op.Proxy == self:
+                        # Ignore self, and all later operations
+                        foundSelf = True
+                        break
+                    if hasattr(op, "RestMachiningRegions") and op.Active:
+                        if hasattr(op, "RestMachiningRegionsNeedRecompute") and op.RestMachiningRegionsNeedRecompute:
+                            Path.Log.warning(
+                                translate("PathAreaOp", "Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...") % op.Label
+                            )
+                            op.recompute()
+
+                        tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
+                        diameter = tool.Diameter.getValueAs("mm")
+                        def shapeToArea(shape):
+                            area = Path.Area()
+                            area.setPlane(PathUtils.makeWorkplane(shape))
+                            area.add(shape)
+                            return area
+                        opClearedAreas = [shapeToArea(pa).getClearedArea(diameter, diameter) for pa in op.RestMachiningRegions.SubShapes]
+                        clearedAreas.extend(opClearedAreas)
+            restSections = []
+            for section in sections:
+                z = section.getShape().BoundBox.ZMin
+                sectionClearedAreas = [a for a in clearedAreas if a.getShape().BoundBox.ZMax <= z]
+                restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
+                restSections.append(restSection)
+            sections = restSections
+
         shapelist = [sec.getShape() for sec in sections]
         Path.Log.debug("shapelist = %s" % shapelist)
 
@@ -388,6 +429,7 @@ class ObjectOp(PathOp.ObjectOp):
             shapes = [j["shape"] for j in locations]
 
         sims = []
+        self.sectionShapes = []
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 
@@ -435,6 +477,10 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                 )
 
+        if hasattr(obj, "RestMachiningRegions"):
+            obj.RestMachiningRegions = Part.makeCompound(self.sectionShapes)
+        if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
+            obj.RestMachiningRegionsNeedRecompute = False
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
 
