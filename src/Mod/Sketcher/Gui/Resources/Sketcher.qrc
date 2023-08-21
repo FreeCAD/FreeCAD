@@ -220,17 +220,20 @@
     </qresource>
     <qresource>
         <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
-        <file>icons/splines/Sketcher_BSplineComb.svg</file>
         <file>icons/splines/Sketcher_BSplineDecreaseDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
-        <file>icons/splines/Sketcher_BSplineDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
         <file>icons/splines/Sketcher_BSplineInsertKnot.svg</file>
         <file>icons/splines/Sketcher_JoinCurves.svg</file>
-        <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
-        <file>icons/splines/Sketcher_BSplinePoleWeight.svg</file>
-        <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/overlay/Sketcher_BSplineComb.svg</file>
+        <file>icons/overlay/Sketcher_BSplineDegree.svg</file>
+        <file>icons/overlay/Sketcher_BSplineKnotMultiplicity.svg</file>
+        <file>icons/overlay/Sketcher_BSplinePoleWeight.svg</file>
+        <file>icons/overlay/Sketcher_BSplinePolygon.svg</file>
+        <file>icons/overlay/Sketcher_ArcOverlay.svg</file>
     </qresource>
     <qresource>
         <file>icons/tools/Sketcher_Clone.svg</file>
