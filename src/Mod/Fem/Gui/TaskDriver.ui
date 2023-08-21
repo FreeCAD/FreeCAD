@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <cstring>Form</cstring>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
