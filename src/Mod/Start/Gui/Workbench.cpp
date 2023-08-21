@@ -42,13 +42,9 @@ using namespace StartGui;
 
 TYPESYSTEM_SOURCE(StartGui::Workbench, Gui::StdWorkbench)
 
-StartGui::Workbench::Workbench()
-{
-}
+StartGui::Workbench::Workbench() = default;
 
-StartGui::Workbench::~Workbench()
-{
-}
+StartGui::Workbench::~Workbench() = default;
 
 void StartGui::Workbench::activated()
 {
