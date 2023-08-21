@@ -104,12 +104,10 @@ attach (Boolean): if True, then bind the document object first before adding to 
 viewType (String): override the view provider type directly, only effective when attach is False.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="addProperty">
+    <Methode Name="addProperty" Keyword="true">
         <Documentation>
             <UserDocu>
-                addProperty(string, string) -- Add a generic property.
-                The first argument specifies the type, the second the
-                name of the property.
+                addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False) -- Add a generic property.
             </UserDocu>
         </Documentation>
     </Methode>
