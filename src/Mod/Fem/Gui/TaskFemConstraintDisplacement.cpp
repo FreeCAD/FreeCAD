@@ -181,8 +181,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     updateUI();
 }
 
-TaskFemConstraintDisplacement::~TaskFemConstraintDisplacement()
-{}
+TaskFemConstraintDisplacement::~TaskFemConstraintDisplacement() = default;
 
 void TaskFemConstraintDisplacement::updateUI()
 {

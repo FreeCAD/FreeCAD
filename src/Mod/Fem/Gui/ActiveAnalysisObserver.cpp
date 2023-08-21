@@ -46,9 +46,7 @@ ActiveAnalysisObserver::ActiveAnalysisObserver()
 {
 }
 
-ActiveAnalysisObserver::~ActiveAnalysisObserver()
-{
-}
+ActiveAnalysisObserver::~ActiveAnalysisObserver() = default;
 
 void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
 {

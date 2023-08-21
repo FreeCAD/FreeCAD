@@ -88,8 +88,7 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed* C
     updateUI();
 }
 
-TaskFemConstraintFixed::~TaskFemConstraintFixed()
-{}
+TaskFemConstraintFixed::~TaskFemConstraintFixed() = default;
 
 void TaskFemConstraintFixed::updateUI()
 {
