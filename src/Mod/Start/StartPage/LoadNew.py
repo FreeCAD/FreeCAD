@@ -26,15 +26,14 @@ from StartPage import StartPage
 # template will be given before this script is run
 template_name = str(template)
 
-match template_name:
-    case "empty_file":
+if template_name == "empty_file":
         FreeCADGui.runCommand('Std_New')
         StartPage.postStart()
-    case "import_file":
+elif template_name == "import_file":
         FreeCADGui.runCommand('Std_New')
         StartPage.postStart()
         FreeCADGui.runCommand("Std_Import")
-    case "parametric_part":
+elif template_name == "parametric_part":
         FreeCADGui.runCommand('Std_New')
         FreeCADGui.activateWorkbench("PartDesignWorkbench")
         FreeCADGui.runCommand("PartDesign_Body")
@@ -42,16 +41,16 @@ match template_name:
         FreeCADGui.runCommand('PartDesign_NewSketch',0)
         FreeCADGui.Selection.clearSelection()
         StartPage.postStart(False)
-    case "csg_part":
+elif template_name == "csg_part":
         FreeCADGui.runCommand('Std_New')
         FreeCADGui.activateWorkbench("PartWorkbench")
         StartPage.postStart(False)
-    case "2d_draft":
+elif template_name == "2d_draft":
         FreeCADGui.runCommand('Std_New')
         FreeCADGui.activateWorkbench("DraftWorkbench")
         FreeCADGui.runCommand("Std_ViewTop")
         StartPage.postStart(False)
-    case "architecture":
+elif template_name == "architecture":
         FreeCADGui.runCommand('Std_New')
         try:
             import BimCommands
