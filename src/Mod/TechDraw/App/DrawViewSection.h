@@ -102,6 +102,7 @@ public:
 
     App::PropertyBool FuseBeforeCut;
     App::PropertyBool TrimAfterCut;//new v021
+    App::PropertyBool UsePreviousCut;   // new v022
 
     bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const;
