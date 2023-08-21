@@ -1,0 +1,341 @@
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2023 Ondsel <development@ondsel.com>                    *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+import os, re
+import FreeCAD as App
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+if App.GuiUp:
+    import FreeCADGui as Gui
+    from PySide import QtCore, QtGui, QtWidgets
+
+# translate = App.Qt.translate
+
+__title__ = "Assembly Commands"
+__author__ = "Ondsel"
+__url__ = "https://www.freecad.org"
+
+def activeAssembly():
+    doc = Gui.ActiveDocument
+
+    if (doc is None or doc.ActiveView is None):
+        return None
+
+    active_part = doc.ActiveView.getActiveObject('part')
+
+    if (active_part is not None and active_part.Type == "Assembly"):
+        return active_part
+
+    return None
+
+def isDocTemporary(doc):
+    #Guard against older versions of FreeCad which don't have the Temporary attribute
+    try:
+        docTemporary = doc.Temporary
+    except AttributeError:
+        docTemporary = False
+    return docTemporary
+
+def labelName(obj):
+    if obj:
+        if obj.Name == obj.Label:
+            txt = obj.Label
+        else:
+            txt = obj.Label +' ('+obj.Name+')'
+        return txt
+    else:
+        return None
+
+class CommandCreateAssembly:
+
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        return {
+            "Pixmap": "Geoassembly",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
+            "Accel": "A",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Assembly_CreateAssembly", "Create an assembly object in the current document."
+            ),
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return App.ActiveDocument is not None
+
+    def Activated(self):
+        App.setActiveTransaction("Create assembly")
+        assembly = App.ActiveDocument.addObject("App::Part","Assembly")
+        assembly.Type = "Assembly"
+        App.closeActiveTransaction()
+
+
+class CommandInsertLink:
+
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        tooltip  = "<p>Insert a Link into the assembly. "
+        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies, "
+        tooltip += "which can be in this document or in another document "
+        tooltip += "that is <b>open in the current session</b></p>"
+        tooltip += "<p>Press shift to add several links while clicking on the view."
+
+        return {
+            "Pixmap": "Assembly_InsertLink.svg",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Link"),
+            "Accel": "I",
+            "ToolTip": QT_TRANSLATE_NOOP("Assembly_InsertLink", tooltip),
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return activeAssembly() is not None
+
+    def Activated(self):
+        assembly = activeAssembly()
+        if not assembly:
+            return
+        view = Gui.activeDocument().activeView()
+
+        self.panel = TaskAssemblyInsertLink(assembly, view)
+        Gui.Control.showDialog(self.panel)
+
+
+class TaskAssemblyInsertLink(QtCore.QObject):
+    def __init__(self, assembly, view):
+        super().__init__()
+
+        self.assembly = assembly
+        self.view = view
+        self.doc = App.ActiveDocument
+
+        self.form = QtWidgets.QWidget()
+        self.form.setWindowTitle("Insert link")
+        self.layout = QtWidgets.QVBoxLayout(self.form)
+
+        # Define the individual widgets
+        self.filterPartList = QtGui.QLineEdit(self.form)
+        self.filterPartList.setPlaceholderText("Search parts...")
+        self.partList = QtGui.QListWidget(self.form)
+        self.openFileButton = QtGui.QPushButton('Open file', self.form)
+
+        self.layout.addWidget(self.filterPartList)
+        self.layout.addWidget(self.partList)
+
+        self.buttonsLayout = QtGui.QHBoxLayout()
+        self.buttonsLayout.addWidget(QtGui.QLabel("Don't find your part? "))
+        self.buttonsLayout.addWidget(self.openFileButton)
+        self.layout.addLayout(self.buttonsLayout)
+
+        self.form.setLayout(self.layout)
+        self.form.installEventFilter(self)
+
+        # Actions
+        self.openFileButton.clicked.connect(self.openFile)
+        self.partList.itemClicked.connect(self.onItemClicked)
+        self.filterPartList.textChanged.connect(self.onFilterChange)
+
+        self.allParts = []
+        self.partsDoc = []
+        self.numberOfAddedParts = 0
+        self.translation = 0
+        self.partMoving = False
+
+        self.buildPartList()
+
+        App.setActiveTransaction('Insert Link')
+
+    def accept(self):
+        App.closeActiveTransaction()
+        self.deactivated()
+        return True
+
+    def reject(self):
+        App.closeActiveTransaction(True)
+        self.deactivated()
+        return True
+
+    def deactivated(self):
+        if self.partMoving:
+            self.endMove()
+
+    def buildPartList(self):
+        self.allParts.clear()
+        self.partsDoc.clear()
+
+        docList = App.listDocuments().values()
+
+        for doc in docList:
+            if isDocTemporary(doc):
+                continue
+
+            for obj in doc.findObjects("App::Part"):
+                # we don't want to link to itself
+                if obj != self.assembly:
+                    self.allParts.append(obj)
+                    self.partsDoc.append(doc)
+
+            for obj in doc.findObjects("PartDesign::Body"):
+                # but only those at top level (not nested inside other containers)
+                if obj.getParentGeoFeatureGroup() is None:
+                    self.allParts.append(obj)
+                    self.partsDoc.append(doc)
+                    
+        self.partList.clear()
+        for part in self.allParts:
+            newItem = QtGui.QListWidgetItem()
+            newItem.setText( part.Document.Name +"#"+ labelName(part) )
+            newItem.setIcon(part.ViewObject.Icon)
+            self.partList.addItem(newItem)
+
+    def onFilterChange(self):
+        filterStr = self.filterPartList.text().strip()
+        for x in range(self.partList.count()):
+            item = self.partList.item(x)
+            # check the items's text match the filter ignoring the case
+            matchStr =  re.search(filterStr, item.text(), flags=re.IGNORECASE)
+            if filterStr and not matchStr:
+                item.setHidden(True)
+            else:
+                item.setHidden(False)
+
+    def openFile(self):
+        filename = None
+        importDoc = None
+        importDocIsOpen = False
+        dialog = QtGui.QFileDialog( QtGui.QApplication.activeWindow(),
+                                    "Select FreeCAD document to import part from" )
+
+        dialog.setNameFilter("Supported Formats *.FCStd *.fcstd (*.FCStd *.fcstd);;All files (*.*)")
+        if dialog.exec_():
+            filename = str(dialog.selectedFiles()[0])
+            # look only for filenames, not paths, as there are problems on WIN10 (Address-translation??)
+            requestedFile = os.path.split(filename)[1]
+            # see whether the file is already open
+            for d in App.listDocuments().values():
+                recentFile = os.path.split(d.FileName)[1]
+                if requestedFile == recentFile:
+                    importDocIsOpen = True
+                    break
+            # if not, open it
+            if not importDocIsOpen:
+                if filename.lower().endswith('.fcstd'):
+                    App.openDocument(filename)
+                    App.setActiveDocument(self.doc.Name)
+                    self.buildPartList()
+        return
+
+    def onItemClicked(self, item):
+        for selected in self.partList.selectedIndexes():
+            selectedPart = self.allParts[selected.row()]
+        if not selectedPart:
+            return
+
+        if self.partMoving:
+            self.endMove()
+
+        # check that the current document had been saved or that it's the same document as that of the selected part
+        if not self.doc.FileName != '' and not self.doc == selectedPart.Document:
+            print('The current document must be saved before inserting an external part')
+            return
+
+        self.createdLink = self.assembly.newObject('App::Link', selectedPart.Name)
+        self.createdLink.LinkedObject = selectedPart
+        self.createdLink.Placement.Base = self.getTranslationVec(selectedPart)
+        self.createdLink.recompute()
+
+        self.numberOfAddedParts += 1
+
+        # highlight the link
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(self.doc.Name, self.assembly.Name, self.createdLink.Name + '.')
+
+        # Start moving the part if user brings mouse on view
+        self.initMove()
+
+    def initMove(self):
+        self.callbackMove = self.view.addEventCallback("SoLocation2Event",self.moveMouse)
+        self.callbackClick = self.view.addEventCallback("SoMouseButtonEvent",self.clickMouse)
+        self.callbackKey = self.view.addEventCallback("SoKeyboardEvent",self.KeyboardEvent)
+        self.partMoving = True
+
+        # Selection filter to avoid selecting the part while it's moving
+        #filter = Gui.Selection.Filter('SELECT ???')
+        #Gui.Selection.addSelectionGate(filter)
+
+    def endMove(self):
+        self.view.removeEventCallback("SoLocation2Event",self.callbackMove)
+        self.view.removeEventCallback("SoMouseButtonEvent",self.callbackClick)
+        self.view.removeEventCallback("SoKeyboardEvent",self.callbackKey)
+        self.partMoving = False
+        self.doc.recompute()
+        #Gui.Selection.removeSelectionGate()
+
+    def moveMouse(self, info):
+        newPos = self.view.getPoint(*info['Position'])
+        self.createdLink.Placement.Base = newPos
+
+    def clickMouse(self, info):
+        if info['Button'] == 'BUTTON1' and info['State'] == 'DOWN':
+            if info['ShiftDown']:
+                # Create a new link and moves this one now
+                currentPos = self.createdLink.Placement.Base
+                selectedPart = self.createdLink.LinkedObject
+                self.createdLink = self.assembly.newObject('App::Link', selectedPart.Name)
+                self.createdLink.LinkedObject = selectedPart
+                self.createdLink.Placement.Base = currentPos
+            else:
+                self.endMove()
+
+    # 3D view keyboard handler
+    def KeyboardEvent(self, info):
+        if info['State'] == 'UP' and info['Key'] == 'ESCAPE':
+            self.endMove()
+            self.doc.removeObject(self.createdLink.Name)
+
+    # Taskbox keyboard event handler
+    def eventFilter(self, watched, event):
+        if watched == self.form and event.type() == QtCore.QEvent.KeyPress:
+            if event.key() == QtCore.Qt.Key_Escape and self.partMoving:
+                self.endMove()
+                self.doc.removeObject(self.createdLink.Name)
+                return True  # Consume the event
+        return super().eventFilter(watched, event)
+
+    def getTranslationVec(self, part):
+        bb = part.Shape.BoundBox
+        if bb:
+            self.translation += (bb.XMax + bb.YMax + bb.ZMax) * 0.15
+        else:
+            self.translation += 10
+        return App.Vector(self.translation, self.translation, self.translation)
+
+
+
+if App.GuiUp:
+    Gui.addCommand("Assembly_CreateAssembly", CommandCreateAssembly())
+    Gui.addCommand("Assembly_InsertLink", CommandInsertLink())
