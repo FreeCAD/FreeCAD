@@ -64,11 +64,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsDocumentImp::~DlgSettingsDocumentImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
-
+DlgSettingsDocumentImp::~DlgSettingsDocumentImp() = default;
 
 void DlgSettingsDocumentImp::saveSettings()
 {

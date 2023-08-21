@@ -115,8 +115,7 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     updateUI();
 }
 
-TaskFemConstraintTemperature::~TaskFemConstraintTemperature()
-{}
+TaskFemConstraintTemperature::~TaskFemConstraintTemperature() = default;
 
 void TaskFemConstraintTemperature::updateUI()
 {

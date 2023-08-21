@@ -153,6 +153,7 @@ public:
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
     TopoDS_Shape getCutShape() const { return m_cutShape; }
+    TopoDS_Shape getCutShapeRaw() const { return m_cutShapeRaw; }
 
     TopoDS_Shape getShapeForDetail() const override;
 
@@ -182,7 +183,8 @@ protected:
     int prefCutSurface() const;
     bool trimAfterCut() const;
 
-    TopoDS_Shape m_cutShape;
+    TopoDS_Shape m_cutShape;        // centered, scaled, rotated result of cut
+    TopoDS_Shape m_cutShapeRaw;     // raw result of cut w/o center/scale/rotate
 
     void onDocumentRestored() override;
     void setupObject() override;

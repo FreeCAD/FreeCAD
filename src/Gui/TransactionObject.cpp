@@ -33,13 +33,9 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::TransactionViewProvider, App::TransactionObject)
 
-TransactionViewProvider::TransactionViewProvider()
-{
-}
+TransactionViewProvider::TransactionViewProvider() = default;
 
-TransactionViewProvider::~TransactionViewProvider()
-{
-}
+TransactionViewProvider::~TransactionViewProvider() = default;
 
 void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObject* pcObj)
 {

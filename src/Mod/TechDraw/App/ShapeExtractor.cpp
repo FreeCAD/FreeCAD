@@ -41,6 +41,7 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
+//#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
@@ -50,12 +51,12 @@
 using namespace TechDraw;
 using DU = DrawUtil;
 
-std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links)
+std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref)
 {
 //    Base::Console().Message("SE::getShapes2d()\n");
 
     std::vector<TopoDS_Shape> shapes2d;
-    if (!prefAdd2d()) {
+    if (!prefAdd2d() && !overridePref) {
         return shapes2d;
     }
     for (auto& l:links) {
@@ -89,12 +90,15 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     return shapes2d;
 }
 
-TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links)
+TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links, bool include2d)
 {
 //    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
+        if (is2dObject(l) && !include2d) {
+            continue;
+        }
         if (l->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
             App::Link* xLink = dynamic_cast<App::Link*>(l);
             std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
@@ -313,7 +317,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
 TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObject*> links)
 {
 //    Base::Console().Message("SE::getShapesFused()\n");
-    TopoDS_Shape baseShape = getShapes(links);
+    // get only the 3d shapes and fuse them
+    TopoDS_Shape baseShape = getShapes(links, false);
     if (!baseShape.IsNull()) {
         TopoDS_Iterator it(baseShape);
         TopoDS_Shape fusedShape = it.Value();
@@ -330,6 +335,15 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
         }
         baseShape = fusedShape;
     }
+
+    // if there are 2d shapes in the links they will not fuse with the 3d shapes,
+    // so instead we return a compound of the fused 3d shapes and the 2d shapes
+    std::vector<TopoDS_Shape> shapes2d = getShapes2d(links, true);
+    if (!shapes2d.empty()) {
+        shapes2d.push_back(baseShape);
+        return DrawUtil::shapeVectorToCompound(shapes2d);
+    }
+
     return baseShape;
 }
 
@@ -361,11 +375,21 @@ TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
 
 bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
 {
-    bool result = false;
-    if (isEdgeType(obj) || isPointType(obj)) {
-        result = true;
+// TODO:: the check for an object being a sketch should be done as in the commented
+// if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
+// but that makes TechDraw dependent on Eigen libraries which we don't use.  As a
+// workaround we will inspect the object's class name.
+//    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+    std::string objTypeName = obj->getTypeId().getName();
+    std::string sketcherToken("Sketcher");
+    if (objTypeName.find(sketcherToken) != std::string::npos) {
+        return true;
     }
-    return result;
+
+    if (isEdgeType(obj) || isPointType(obj)) {
+        return true;
+    }
+    return false;
 }
 
 //skip edges for now.

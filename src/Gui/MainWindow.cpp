@@ -136,8 +136,7 @@ public:
     CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
-    ~CustomMessageEvent() override
-    { }
+    ~CustomMessageEvent() override = default;
     int type() const
     { return _type; }
     const QString& message() const

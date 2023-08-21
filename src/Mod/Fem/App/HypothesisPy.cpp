@@ -78,9 +78,7 @@ HypothesisPy::HypothesisPy(std::shared_ptr<SMESH_Hypothesis> h)
 {
 }
 
-HypothesisPy::~HypothesisPy()
-{
-}
+HypothesisPy::~HypothesisPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -114,9 +112,7 @@ SMESH_HypothesisPy<T>::SMESH_HypothesisPy(SMESH_Hypothesis* h) : hyp(h)
 }
 
 template<class T>
-SMESH_HypothesisPy<T>::~SMESH_HypothesisPy()
-{
-}
+SMESH_HypothesisPy<T>::~SMESH_HypothesisPy() = default;
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getattr(const char *name)
@@ -256,9 +252,7 @@ StdMeshers_Arithmetic1DPy::StdMeshers_Arithmetic1DPy(int hypId, int studyId, SME
 }
 #endif
 
-StdMeshers_Arithmetic1DPy::~StdMeshers_Arithmetic1DPy()
-{
-}
+StdMeshers_Arithmetic1DPy::~StdMeshers_Arithmetic1DPy() = default;
 
 Py::Object StdMeshers_Arithmetic1DPy::setLength(const Py::Tuple& args)
 {
@@ -301,9 +295,7 @@ StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, int /*
 }
 #endif
 
-StdMeshers_AutomaticLengthPy::~StdMeshers_AutomaticLengthPy()
-{
-}
+StdMeshers_AutomaticLengthPy::~StdMeshers_AutomaticLengthPy() = default;
 
 Py::Object StdMeshers_AutomaticLengthPy::setFineness(const Py::Tuple& args)
 {
@@ -370,9 +362,7 @@ StdMeshers_NotConformAllowedPy::StdMeshers_NotConformAllowedPy(int hypId, int st
 }
 #endif
 
-StdMeshers_NotConformAllowedPy::~StdMeshers_NotConformAllowedPy()
-{
-}
+StdMeshers_NotConformAllowedPy::~StdMeshers_NotConformAllowedPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -403,9 +393,7 @@ StdMeshers_MaxLengthPy::StdMeshers_MaxLengthPy(int hypId, int studyId, SMESH_Gen
 }
 #endif
 
-StdMeshers_MaxLengthPy::~StdMeshers_MaxLengthPy()
-{
-}
+StdMeshers_MaxLengthPy::~StdMeshers_MaxLengthPy() = default;
 
 Py::Object StdMeshers_MaxLengthPy::setLength(const Py::Tuple& args)
 {
@@ -479,9 +467,7 @@ StdMeshers_LocalLengthPy::StdMeshers_LocalLengthPy(int hypId, int studyId, SMESH
 }
 #endif
 
-StdMeshers_LocalLengthPy::~StdMeshers_LocalLengthPy()
-{
-}
+StdMeshers_LocalLengthPy::~StdMeshers_LocalLengthPy() = default;
 
 Py::Object StdMeshers_LocalLengthPy::setLength(const Py::Tuple& args)
 {
@@ -533,9 +519,7 @@ StdMeshers_MaxElementAreaPy::StdMeshers_MaxElementAreaPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_MaxElementAreaPy::~StdMeshers_MaxElementAreaPy()
-{
-}
+StdMeshers_MaxElementAreaPy::~StdMeshers_MaxElementAreaPy() = default;
 
 Py::Object StdMeshers_MaxElementAreaPy::setMaxArea(const Py::Tuple& args)
 {
@@ -571,9 +555,7 @@ StdMeshers_QuadranglePreferencePy::StdMeshers_QuadranglePreferencePy(int hypId, 
 }
 #endif
 
-StdMeshers_QuadranglePreferencePy::~StdMeshers_QuadranglePreferencePy()
-{
-}
+StdMeshers_QuadranglePreferencePy::~StdMeshers_QuadranglePreferencePy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -596,9 +578,7 @@ StdMeshers_Quadrangle_2DPy::StdMeshers_Quadrangle_2DPy(int hypId, int studyId, S
 }
 #endif
 
-StdMeshers_Quadrangle_2DPy::~StdMeshers_Quadrangle_2DPy()
-{
-}
+StdMeshers_Quadrangle_2DPy::~StdMeshers_Quadrangle_2DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -621,9 +601,7 @@ StdMeshers_Regular_1DPy::StdMeshers_Regular_1DPy(int hypId, int studyId, SMESH_G
 }
 #endif
 
-StdMeshers_Regular_1DPy::~StdMeshers_Regular_1DPy()
-{
-}
+StdMeshers_Regular_1DPy::~StdMeshers_Regular_1DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -646,9 +624,7 @@ StdMeshers_UseExisting_1DPy::StdMeshers_UseExisting_1DPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_UseExisting_1DPy::~StdMeshers_UseExisting_1DPy()
-{
-}
+StdMeshers_UseExisting_1DPy::~StdMeshers_UseExisting_1DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -671,9 +647,7 @@ StdMeshers_UseExisting_2DPy::StdMeshers_UseExisting_2DPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_UseExisting_2DPy::~StdMeshers_UseExisting_2DPy()
-{
-}
+StdMeshers_UseExisting_2DPy::~StdMeshers_UseExisting_2DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -696,9 +670,7 @@ StdMeshers_CompositeSegment_1DPy::StdMeshers_CompositeSegment_1DPy(int hypId, in
 }
 #endif
 
-StdMeshers_CompositeSegment_1DPy::~StdMeshers_CompositeSegment_1DPy()
-{
-}
+StdMeshers_CompositeSegment_1DPy::~StdMeshers_CompositeSegment_1DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -723,9 +695,7 @@ StdMeshers_Deflection1DPy::StdMeshers_Deflection1DPy(int hypId, int studyId, SME
 }
 #endif
 
-StdMeshers_Deflection1DPy::~StdMeshers_Deflection1DPy()
-{
-}
+StdMeshers_Deflection1DPy::~StdMeshers_Deflection1DPy() = default;
 
 Py::Object StdMeshers_Deflection1DPy::setDeflection(const Py::Tuple& args)
 {
@@ -755,9 +725,7 @@ StdMeshers_Hexa_3DPy::StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* ge
 }
 #endif
 
-StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
-{
-}
+StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -774,9 +742,7 @@ StdMeshers_TrianglePreferencePy::StdMeshers_TrianglePreferencePy(int hypId, int 
 {
 }
 
-StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy()
-{
-}
+StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy() = default;
 #endif // --------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
@@ -802,9 +768,7 @@ StdMeshers_StartEndLengthPy::StdMeshers_StartEndLengthPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_StartEndLengthPy::~StdMeshers_StartEndLengthPy()
-{
-}
+StdMeshers_StartEndLengthPy::~StdMeshers_StartEndLengthPy() = default;
 
 Py::Object StdMeshers_StartEndLengthPy::setLength(const Py::Tuple& args)
 {
@@ -840,9 +804,7 @@ StdMeshers_SegmentLengthAroundVertexPy::StdMeshers_SegmentLengthAroundVertexPy(i
 }
 #endif
 
-StdMeshers_SegmentLengthAroundVertexPy::~StdMeshers_SegmentLengthAroundVertexPy()
-{
-}
+StdMeshers_SegmentLengthAroundVertexPy::~StdMeshers_SegmentLengthAroundVertexPy() = default;
 
 Py::Object StdMeshers_SegmentLengthAroundVertexPy::setLength(const Py::Tuple& args)
 {
@@ -878,9 +840,7 @@ StdMeshers_SegmentAroundVertex_0DPy::StdMeshers_SegmentAroundVertex_0DPy(int hyp
 }
 #endif
 
-StdMeshers_SegmentAroundVertex_0DPy::~StdMeshers_SegmentAroundVertex_0DPy()
-{
-}
+StdMeshers_SegmentAroundVertex_0DPy::~StdMeshers_SegmentAroundVertex_0DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -903,9 +863,7 @@ StdMeshers_RadialPrism_3DPy::StdMeshers_RadialPrism_3DPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_RadialPrism_3DPy::~StdMeshers_RadialPrism_3DPy()
-{
-}
+StdMeshers_RadialPrism_3DPy::~StdMeshers_RadialPrism_3DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -928,9 +886,7 @@ StdMeshers_QuadraticMeshPy::StdMeshers_QuadraticMeshPy(int hypId, int studyId, S
 }
 #endif
 
-StdMeshers_QuadraticMeshPy::~StdMeshers_QuadraticMeshPy()
-{
-}
+StdMeshers_QuadraticMeshPy::~StdMeshers_QuadraticMeshPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -953,9 +909,7 @@ StdMeshers_ProjectionSource3DPy::StdMeshers_ProjectionSource3DPy(int hypId, int 
 }
 #endif
 
-StdMeshers_ProjectionSource3DPy::~StdMeshers_ProjectionSource3DPy()
-{
-}
+StdMeshers_ProjectionSource3DPy::~StdMeshers_ProjectionSource3DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -978,9 +932,7 @@ StdMeshers_ProjectionSource2DPy::StdMeshers_ProjectionSource2DPy(int hypId, int 
 }
 #endif
 
-StdMeshers_ProjectionSource2DPy::~StdMeshers_ProjectionSource2DPy()
-{
-}
+StdMeshers_ProjectionSource2DPy::~StdMeshers_ProjectionSource2DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1003,9 +955,7 @@ StdMeshers_ProjectionSource1DPy::StdMeshers_ProjectionSource1DPy(int hypId, int 
 }
 #endif
 
-StdMeshers_ProjectionSource1DPy::~StdMeshers_ProjectionSource1DPy()
-{
-}
+StdMeshers_ProjectionSource1DPy::~StdMeshers_ProjectionSource1DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1028,9 +978,7 @@ StdMeshers_Projection_3DPy::StdMeshers_Projection_3DPy(int hypId, int studyId, S
 }
 #endif
 
-StdMeshers_Projection_3DPy::~StdMeshers_Projection_3DPy()
-{
-}
+StdMeshers_Projection_3DPy::~StdMeshers_Projection_3DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1053,9 +1001,7 @@ StdMeshers_Projection_2DPy::StdMeshers_Projection_2DPy(int hypId, int studyId, S
 }
 #endif
 
-StdMeshers_Projection_2DPy::~StdMeshers_Projection_2DPy()
-{
-}
+StdMeshers_Projection_2DPy::~StdMeshers_Projection_2DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1078,9 +1024,7 @@ StdMeshers_Projection_1DPy::StdMeshers_Projection_1DPy(int hypId, int studyId, S
 }
 #endif
 
-StdMeshers_Projection_1DPy::~StdMeshers_Projection_1DPy()
-{
-}
+StdMeshers_Projection_1DPy::~StdMeshers_Projection_1DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1103,9 +1047,7 @@ StdMeshers_Prism_3DPy::StdMeshers_Prism_3DPy(int hypId, int studyId, SMESH_Gen* 
 }
 #endif
 
-StdMeshers_Prism_3DPy::~StdMeshers_Prism_3DPy()
-{
-}
+StdMeshers_Prism_3DPy::~StdMeshers_Prism_3DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1130,9 +1072,7 @@ StdMeshers_NumberOfSegmentsPy::StdMeshers_NumberOfSegmentsPy(int hypId, int stud
 }
 #endif
 
-StdMeshers_NumberOfSegmentsPy::~StdMeshers_NumberOfSegmentsPy()
-{
-}
+StdMeshers_NumberOfSegmentsPy::~StdMeshers_NumberOfSegmentsPy() = default;
 
 Py::Object StdMeshers_NumberOfSegmentsPy::setNumSegm(const Py::Tuple& args)
 {
@@ -1170,9 +1110,7 @@ StdMeshers_NumberOfLayersPy::StdMeshers_NumberOfLayersPy(int hypId, int studyId,
 }
 #endif
 
-StdMeshers_NumberOfLayersPy::~StdMeshers_NumberOfLayersPy()
-{
-}
+StdMeshers_NumberOfLayersPy::~StdMeshers_NumberOfLayersPy() = default;
 
 Py::Object StdMeshers_NumberOfLayersPy::setNumLayers(const Py::Tuple& args)
 {
@@ -1208,9 +1146,7 @@ StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_G
 }
 #endif
 
-StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy()
-{
-}
+StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy() = default;
 
 // ---------------------------------------------------------------------------
 
@@ -1235,9 +1171,7 @@ StdMeshers_MaxElementVolumePy::StdMeshers_MaxElementVolumePy(int hypId, int stud
 }
 #endif
 
-StdMeshers_MaxElementVolumePy::~StdMeshers_MaxElementVolumePy()
-{
-}
+StdMeshers_MaxElementVolumePy::~StdMeshers_MaxElementVolumePy() = default;
 
 Py::Object StdMeshers_MaxElementVolumePy::setMaxVolume(const Py::Tuple& args)
 {
@@ -1275,9 +1209,7 @@ StdMeshers_LengthFromEdgesPy::StdMeshers_LengthFromEdgesPy(int hypId, int studyI
 }
 #endif
 
-StdMeshers_LengthFromEdgesPy::~StdMeshers_LengthFromEdgesPy()
-{
-}
+StdMeshers_LengthFromEdgesPy::~StdMeshers_LengthFromEdgesPy() = default;
 
 Py::Object StdMeshers_LengthFromEdgesPy::setMode(const Py::Tuple& args)
 {
@@ -1319,9 +1251,7 @@ StdMeshers_LayerDistributionPy::StdMeshers_LayerDistributionPy(int hypId, int st
 }
 #endif
 
-StdMeshers_LayerDistributionPy::~StdMeshers_LayerDistributionPy()
-{
-}
+StdMeshers_LayerDistributionPy::~StdMeshers_LayerDistributionPy() = default;
 
 Py::Object StdMeshers_LayerDistributionPy::setLayerDistribution(const Py::Tuple& args)
 {

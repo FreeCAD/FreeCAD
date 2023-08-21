@@ -88,12 +88,8 @@ class GuiExport GLGraphicsItem : public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    GLGraphicsItem()
-    {
-    }
-    ~GLGraphicsItem() override
-    {
-    }
+    GLGraphicsItem() = default;
+    ~GLGraphicsItem() override  = default;
     virtual void paintGL() = 0;
 };
 

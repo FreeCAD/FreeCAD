@@ -205,13 +205,9 @@ using namespace Gui;
 /// @namespace Gui @class Workbench
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::Workbench, Base::BaseClass)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 std::string Workbench::name() const
 {
@@ -568,9 +564,7 @@ StdWorkbench::StdWorkbench()
 {
 }
 
-StdWorkbench::~StdWorkbench()
-{
-}
+StdWorkbench::~StdWorkbench() = default;
 
 void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
@@ -590,8 +584,10 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         measure->setCommand("Measure");
         *measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << StdViews << measure
-              << "Separator" << "Std_ViewDockUndockFullscreen";
+
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
+              << StdViews << measure << "Std_SelectFilter" << "Separator"
+              << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
@@ -798,7 +794,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_LinkSelectActions"
           << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
-          << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
+          << "Std_ViewLeft"  << "Std_SelectFilter" << "Separator" << "Std_MeasureDistance" ;
 
     // Structure
     auto structure = new ToolBarItem( root );
@@ -822,7 +818,8 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     view->setCommand("Standard views");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
           << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
-          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
+          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom" << "Std_SelectFilter";
+
     // Special Ops
     auto macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
@@ -865,9 +862,7 @@ BlankWorkbench::BlankWorkbench()
 {
 }
 
-BlankWorkbench::~BlankWorkbench()
-{
-}
+BlankWorkbench::~BlankWorkbench() = default;
 
 void BlankWorkbench::activated()
 {
@@ -918,9 +913,7 @@ NoneWorkbench::NoneWorkbench()
 {
 }
 
-NoneWorkbench::~NoneWorkbench()
-{
-}
+NoneWorkbench::~NoneWorkbench() = default;
 
 void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
@@ -988,9 +981,7 @@ TestWorkbench::TestWorkbench()
 {
 }
 
-TestWorkbench::~TestWorkbench()
-{
-}
+TestWorkbench::~TestWorkbench() = default;
 
 MenuItem* TestWorkbench::setupMenuBar() const
 {
@@ -1222,9 +1213,7 @@ PythonBlankWorkbench::PythonBlankWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonBlankWorkbench::~PythonBlankWorkbench()
-{
-}
+PythonBlankWorkbench::~PythonBlankWorkbench() = default;
 
 // -----------------------------------------------------------------------
 
@@ -1239,9 +1228,7 @@ PythonWorkbench::PythonWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonWorkbench::~PythonWorkbench()
-{
-}
+PythonWorkbench::~PythonWorkbench() = default;
 
 MenuItem* PythonWorkbench::setupMenuBar() const
 {

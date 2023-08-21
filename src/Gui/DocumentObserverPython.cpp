@@ -89,9 +89,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     //NOLINTEND
 }
 
-DocumentObserverPython::~DocumentObserverPython()
-{
-}
+DocumentObserverPython::~DocumentObserverPython() = default;
 
 void DocumentObserverPython::slotCreatedDocument(const Gui::Document& Doc)
 {

@@ -50,8 +50,7 @@ ViewProviderPlane::ViewProviderPlane()
     sPixmap = "Std_Plane";
 }
 
-ViewProviderPlane::~ViewProviderPlane()
-{ }
+ViewProviderPlane::~ViewProviderPlane() = default;
 
 void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     ViewProviderOriginFeature::attach ( obj );

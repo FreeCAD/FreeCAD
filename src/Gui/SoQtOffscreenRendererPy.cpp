@@ -33,9 +33,7 @@ SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(Py::PythonClassInstance* self, 
     this->setViewportRegion(args);
 }
 
-SoQtOffscreenRendererPy::~SoQtOffscreenRendererPy()
-{
-}
+SoQtOffscreenRendererPy::~SoQtOffscreenRendererPy() = default;
 
 Py::Object SoQtOffscreenRendererPy::repr()
 {

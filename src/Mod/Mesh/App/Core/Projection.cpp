@@ -41,10 +41,6 @@ MeshProjection::MeshProjection(const MeshKernel& mesh)
 {
 }
 
-MeshProjection::~MeshProjection()
-{
-}
-
 bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
                                          const Base::Vector3f& p1,
                                          const Base::Vector3f& p2,

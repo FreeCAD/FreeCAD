@@ -742,9 +742,7 @@ QString PropertyItem::expressionAsString() const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyStringItem)
 
-PropertyStringItem::PropertyStringItem()
-{
-}
+PropertyStringItem::PropertyStringItem() = default;
 
 QVariant PropertyStringItem::value(const App::Property* prop) const
 {
@@ -796,9 +794,7 @@ QVariant PropertyStringItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFontItem)
 
-PropertyFontItem::PropertyFontItem()
-{
-}
+PropertyFontItem::PropertyFontItem() = default;
 
 QVariant PropertyFontItem::value(const App::Property* prop) const
 {
@@ -861,9 +857,7 @@ QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* rec
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerItem)
 
-PropertyIntegerItem::PropertyIntegerItem()
-{
-}
+PropertyIntegerItem::PropertyIntegerItem() = default;
 
 QVariant PropertyIntegerItem::value(const App::Property* prop) const
 {
@@ -928,9 +922,7 @@ QVariant PropertyIntegerItem::toString(const QVariant& v) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerConstraintItem)
 
-PropertyIntegerConstraintItem::PropertyIntegerConstraintItem()
-{
-}
+PropertyIntegerConstraintItem::PropertyIntegerConstraintItem() = default;
 
 QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
 {
@@ -1011,9 +1003,7 @@ QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatItem)
 
-PropertyFloatItem::PropertyFloatItem()
-{
-}
+PropertyFloatItem::PropertyFloatItem() = default;
 
 QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
@@ -1080,9 +1070,7 @@ QVariant PropertyFloatItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyUnitItem)
 
-PropertyUnitItem::PropertyUnitItem()
-{
-}
+PropertyUnitItem::PropertyUnitItem() = default;
 
 QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
@@ -1155,10 +1143,7 @@ QVariant PropertyUnitItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyUnitConstraintItem)
 
-PropertyUnitConstraintItem::PropertyUnitConstraintItem()
-{
-
-}
+PropertyUnitConstraintItem::PropertyUnitConstraintItem() = default;
 
 void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
@@ -1191,9 +1176,7 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatConstraintItem)
 
-PropertyFloatConstraintItem::PropertyFloatConstraintItem()
-{
-}
+PropertyFloatConstraintItem::PropertyFloatConstraintItem() = default;
 
 QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
@@ -1281,9 +1264,7 @@ PropertyPrecisionItem::PropertyPrecisionItem()
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyAngleItem)
 
-PropertyAngleItem::PropertyAngleItem()
-{
-}
+PropertyAngleItem::PropertyAngleItem() = default;
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
@@ -1299,9 +1280,7 @@ QVariant PropertyAngleItem::toString(const QVariant& prop) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyBoolItem)
 
-PropertyBoolItem::PropertyBoolItem()
-{
-}
+PropertyBoolItem::PropertyBoolItem() = default;
 
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
@@ -1530,9 +1509,7 @@ PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
     // setFocusProxy(lineEdit);
 }
 
-PropertyEditorWidget::~PropertyEditorWidget()
-{
-}
+PropertyEditorWidget::~PropertyEditorWidget() = default;
 
 void PropertyEditorWidget::resizeEvent(QResizeEvent* e)
 {
@@ -1603,9 +1580,7 @@ void VectorListWidget::showValue(const QVariant& d)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
 
-PropertyVectorListItem::PropertyVectorListItem()
-{
-}
+PropertyVectorListItem::PropertyVectorListItem() = default;
 
 QVariant PropertyVectorListItem::toString(const QVariant& prop) const
 {
@@ -2275,9 +2250,7 @@ PropertyRotationItem::PropertyRotationItem()
     this->appendChild(m_d);
 }
 
-PropertyRotationItem::~PropertyRotationItem()
-{
-}
+PropertyRotationItem::~PropertyRotationItem() = default;
 
 Base::Quantity PropertyRotationItem::getAngle() const
 {
@@ -2460,9 +2433,7 @@ PlacementEditor::PlacementEditor(const QString& name, QWidget * parent)
     propertyname.replace(QLatin1String(" "), QLatin1String(""));
 }
 
-PlacementEditor::~PlacementEditor()
-{
-}
+PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
@@ -2546,9 +2517,7 @@ PropertyPlacementItem::PropertyPlacementItem()
     this->appendChild(m_p);
 }
 
-PropertyPlacementItem::~PropertyPlacementItem()
-{
-}
+PropertyPlacementItem::~PropertyPlacementItem() = default;
 
 Base::Quantity PropertyPlacementItem::getAngle() const
 {
@@ -3002,9 +2971,7 @@ QVariant PropertyEnumItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyStringListItem)
 
-PropertyStringListItem::PropertyStringListItem()
-{
-}
+PropertyStringListItem::PropertyStringListItem() = default;
 
 QWidget* PropertyStringListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
@@ -3081,9 +3048,7 @@ void PropertyStringListItem::setValue(const QVariant& value)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatListItem)
 
-PropertyFloatListItem::PropertyFloatListItem()
-{
-}
+PropertyFloatListItem::PropertyFloatListItem() = default;
 
 QWidget* PropertyFloatListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
@@ -3155,9 +3120,7 @@ void PropertyFloatListItem::setValue(const QVariant& value)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerListItem)
 
-PropertyIntegerListItem::PropertyIntegerListItem()
-{
-}
+PropertyIntegerListItem::PropertyIntegerListItem() = default;
 
 QWidget* PropertyIntegerListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
@@ -3230,9 +3193,7 @@ void PropertyIntegerListItem::setValue(const QVariant& value)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyColorItem)
 
-PropertyColorItem::PropertyColorItem()
-{
-}
+PropertyColorItem::PropertyColorItem() = default;
 
 QVariant PropertyColorItem::decoration(const QVariant& value) const
 {
@@ -3349,9 +3310,7 @@ PropertyMaterialItem::PropertyMaterialItem()
     this->appendChild(transparency);
 }
 
-PropertyMaterialItem::~PropertyMaterialItem()
-{
-}
+PropertyMaterialItem::~PropertyMaterialItem() = default;
 
 void PropertyMaterialItem::propertyBound()
 {
@@ -3662,9 +3621,7 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     this->appendChild(transparency);
 }
 
-PropertyMaterialListItem::~PropertyMaterialListItem()
-{
-}
+PropertyMaterialListItem::~PropertyMaterialListItem() = default;
 
 void PropertyMaterialListItem::propertyBound()
 {
@@ -4093,9 +4050,7 @@ QVariant PropertyMaterialListItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFileItem)
 
-PropertyFileItem::PropertyFileItem()
-{
-}
+PropertyFileItem::PropertyFileItem() = default;
 
 QVariant PropertyFileItem::value(const App::Property* prop) const
 {
@@ -4152,9 +4107,7 @@ QVariant PropertyFileItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPathItem)
 
-PropertyPathItem::PropertyPathItem()
-{
-}
+PropertyPathItem::PropertyPathItem() = default;
 
 QVariant PropertyPathItem::value(const App::Property* prop) const
 {
@@ -4204,9 +4157,7 @@ QVariant PropertyPathItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyTransientFileItem)
 
-PropertyTransientFileItem::PropertyTransientFileItem()
-{
-}
+PropertyTransientFileItem::PropertyTransientFileItem() = default;
 
 QVariant PropertyTransientFileItem::value(const App::Property* prop) const
 {
@@ -4267,9 +4218,7 @@ LinkSelection::LinkSelection(const App::SubObjectT &link) : link(link)
 {
 }
 
-LinkSelection::~LinkSelection()
-{
-}
+LinkSelection::~LinkSelection() = default;
 
 void LinkSelection::select()
 {
@@ -4320,9 +4269,7 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
             this, &LinkLabel::onEditClicked);
 }
 
-LinkLabel::~LinkLabel()
-{
-}
+LinkLabel::~LinkLabel() = default;
 
 void LinkLabel::updatePropertyLink()
 {
@@ -4405,9 +4352,7 @@ void LinkLabel::resizeEvent(QResizeEvent* e)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
-PropertyLinkItem::PropertyLinkItem()
-{
-}
+PropertyLinkItem::PropertyLinkItem() = default;
 
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
@@ -4488,18 +4433,11 @@ QVariant PropertyLinkItem::editorData(QWidget *editor) const
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkListItem)
 
-PropertyLinkListItem::PropertyLinkListItem()
-{
-}
+PropertyLinkListItem::PropertyLinkListItem() = default;
 
+PropertyItemEditorFactory::PropertyItemEditorFactory() = default;
 
-PropertyItemEditorFactory::PropertyItemEditorFactory()
-{
-}
-
-PropertyItemEditorFactory::~PropertyItemEditorFactory()
-{
-}
+PropertyItemEditorFactory::~PropertyItemEditorFactory() = default;
 
 QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
 {

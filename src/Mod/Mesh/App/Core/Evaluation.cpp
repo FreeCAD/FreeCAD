@@ -123,10 +123,6 @@ MeshEvalOrientation::MeshEvalOrientation (const MeshKernel& rclM)
 {
 }
 
-MeshEvalOrientation::~MeshEvalOrientation()
-{
-}
-
 bool MeshEvalOrientation::Evaluate ()
 {
     const MeshFacetArray& rFAry = _rclMesh.GetFacets();
@@ -267,10 +263,6 @@ MeshFixOrientation::MeshFixOrientation (MeshKernel& rclM)
 {
 }
 
-MeshFixOrientation::~MeshFixOrientation()
-{
-}
-
 bool MeshFixOrientation::Fixup ()
 {
     MeshTopoAlgorithm(_rclMesh).HarmonizeNormals();
@@ -281,10 +273,6 @@ bool MeshFixOrientation::Fixup ()
 
 MeshEvalSolid::MeshEvalSolid (const MeshKernel& rclM)
   :MeshEvaluation( rclM )
-{
-}
-
-MeshEvalSolid::~MeshEvalSolid()
 {
 }
 

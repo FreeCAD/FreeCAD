@@ -36,24 +36,18 @@ Placement::Placement(const Base::Matrix4D& matrix)
     fromMatrix(matrix);
 }
 
-Placement::Placement(const Placement& that)
-{
-    this->_pos = that._pos;
-    this->_rot = that._rot;
-}
-
 Placement::Placement(const Vector3d& Pos, const Rotation &Rot)
+    : _pos(Pos)
+    , _rot(Rot)
 {
-    this->_pos = Pos;
-    this->_rot = Rot;
 }
 
 Placement::Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& Cnt)
+    : _rot(Rot)
 {
     Vector3d RotC = Cnt;
     Rot.multVec(RotC, RotC);
     this->_pos = Pos + Cnt - RotC;
-    this->_rot = Rot;
 }
 
 Placement Placement::fromDualQuaternion(DualQuat qq)
@@ -159,13 +153,6 @@ Placement Placement::operator*(const Placement & p) const
     Placement plm(*this);
     plm *= p;
     return plm;
-}
-
-Placement& Placement::operator = (const Placement& New)
-{
-    this->_pos = New._pos;
-    this->_rot = New._rot;
-    return *this;
 }
 
 Placement Placement::pow(double t, bool shorten) const

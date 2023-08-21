@@ -43,9 +43,7 @@ FemMeshObject::FemMeshObject()
     // https://forum.freecad.org/viewtopic.php?f=18&t=33329#p279203
 }
 
-FemMeshObject::~FemMeshObject()
-{
-}
+FemMeshObject::~FemMeshObject() = default;
 
 short FemMeshObject::mustExecute() const
 {

@@ -42,9 +42,7 @@ SelectionFilterPy::SelectionFilterPy(Py::PythonClassInstance* self, Py::Tuple& a
     }
 }
 
-SelectionFilterPy::~SelectionFilterPy()
-{
-}
+SelectionFilterPy::~SelectionFilterPy() = default;
 
 Py::Object SelectionFilterPy::repr()
 {

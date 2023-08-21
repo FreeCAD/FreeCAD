@@ -35,7 +35,7 @@ class GuiExport ViewProviderTextDocument : public ViewProviderDocumentObject {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderTextDocument);
 public:
     ViewProviderTextDocument();
-    ~ViewProviderTextDocument() override {}
+    ~ViewProviderTextDocument() override = default;
 
     App::PropertyBool ReadOnly;
     App::PropertyFloat FontSize;

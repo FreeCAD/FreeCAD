@@ -49,9 +49,7 @@ Flag::Flag(QWidget* parent)
     setAutoFillBackground(true);
 }
 
-Flag::~Flag()
-{
-}
+Flag::~Flag() = default;
 
 void Flag::initializeGL()
 {

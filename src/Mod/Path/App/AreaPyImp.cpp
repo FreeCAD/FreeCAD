@@ -146,6 +146,22 @@ static const PyMethodDef areaOverrides[] = {
         "of this Area is used if section mode is 'Workplane'.",
     },
     {
+        "getClearedArea",nullptr,0,
+        "getClearedArea(tipDiameter, diameter):\n"
+        "Gets the area cleared when a tool maximally clears this area. This method assumes a tool tip diameter 'tipDiameter' traces the full area, and that (perhaps at a different height on the tool) this clears a different region with tool diameter 'diameter'.\n",
+    },
+    {
+        "getRestArea",nullptr,0,
+        "getRestArea(clearedAreas, diameter):\n"
+        "Rest machining: gets the area left to be machined, assuming some of this area has already been cleared previous tool paths.\n"
+        "clearedAreas: the regions already cleared.\n"
+        "diameter: the tool diameter that finishes clearing this area.\n",
+    },
+    {
+        "toTopoShape",nullptr,0,
+        "toTopoShape():\n"
+    },
+    {
         "setDefaultParams",reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>(areaSetParams)), METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "setDefaultParams(key=value...):\n"
         "Static method to set the default parameters of all following Path.Area, plus the following\n"
@@ -380,6 +396,55 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
         for(auto &area : sections)
             ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
         return Py::new_reference_to(ret);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::getClearedArea(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+        double tipDiameter, diameter;
+        if (!PyArg_ParseTuple(args, "dd", &tipDiameter, &diameter))
+            return nullptr;
+        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(tipDiameter, diameter);
+        auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
+        return Py::new_reference_to(pyClearedArea);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::getRestArea(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+        PyObject *pyClearedAreas;
+        std::vector<std::shared_ptr<Area>> clearedAreas;
+        double diameter;
+        if (!PyArg_ParseTuple(args, "Od", &pyClearedAreas, &diameter))
+            return nullptr;
+        if (pyClearedAreas && PyObject_TypeCheck(pyClearedAreas, &PyList_Type)) {
+            Py::Sequence clearedAreasSeq(pyClearedAreas);
+            clearedAreas.reserve(clearedAreasSeq.size());
+            for (Py::Sequence::iterator it = clearedAreasSeq.begin(); it != clearedAreasSeq.end(); ++it) {
+                PyObject *item = (*it).ptr();
+                if (!PyObject_TypeCheck(item, &(AreaPy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "cleared areas must only contain AreaPy type");
+                    return nullptr;
+                }
+                clearedAreas.push_back(std::make_shared<Area>(*static_cast<AreaPy*>(item)->getAreaPtr(), true));
+            }
+        } else {
+            PyErr_SetString(PyExc_TypeError, "clearedAreas must be of type list of AreaPy");
+            return nullptr;
+        }
+
+        std::shared_ptr<Area> restArea = getAreaPtr()->getRestArea(clearedAreas, diameter);
+        auto pyRestArea = Py::asObject(new AreaPy(new Area(*restArea, true)));
+        return Py::new_reference_to(pyRestArea);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::toTopoShape(PyObject *args, PyObject *keywds)
+{
+    PY_TRY {
+      return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
     } PY_CATCH_OCC
 }
 

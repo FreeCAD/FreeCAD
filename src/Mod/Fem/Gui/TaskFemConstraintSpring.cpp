@@ -112,8 +112,7 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     updateUI();
 }
 
-TaskFemConstraintSpring::~TaskFemConstraintSpring()
-{}
+TaskFemConstraintSpring::~TaskFemConstraintSpring() = default;
 
 void TaskFemConstraintSpring::updateUI()
 {

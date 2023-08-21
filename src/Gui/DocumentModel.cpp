@@ -116,7 +116,7 @@ namespace Gui {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
-        ApplicationIndex(){}
+        ApplicationIndex() = default;
         int findChild(const Gui::Document& d) const;
         Qt::ItemFlags flags() const override;
         QVariant data(int role) const override;

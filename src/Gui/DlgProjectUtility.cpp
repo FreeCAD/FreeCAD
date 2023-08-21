@@ -53,9 +53,7 @@ DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgProjectUtility::~DlgProjectUtility()
-{
-}
+DlgProjectUtility::~DlgProjectUtility() = default;
 
 void DlgProjectUtility::extractButton()
 {

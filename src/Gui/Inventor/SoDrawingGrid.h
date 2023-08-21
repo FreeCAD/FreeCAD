@@ -48,7 +48,7 @@ public:
 private:
     void renderGrid(SoGLRenderAction *action);
     // Force using the reference count mechanism.
-    ~SoDrawingGrid() override {}
+    ~SoDrawingGrid() override = default;
 };
 
 } // namespace Inventor

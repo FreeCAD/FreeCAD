@@ -40,10 +40,6 @@ MeshTrimming::MeshTrimming(MeshKernel &rclM, const Base::ViewProjMethod* pclProj
 {
 }
 
-MeshTrimming::~MeshTrimming()
-{
-}
-
 void MeshTrimming::SetInnerOrOuter(TMode tMode)
 {
     switch (tMode)

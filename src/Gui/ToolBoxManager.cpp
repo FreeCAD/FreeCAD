@@ -57,9 +57,7 @@ ToolBoxManager::ToolBoxManager() : _toolBox(nullptr)
 {
 }
 
-ToolBoxManager::~ToolBoxManager()
-{
-}
+ToolBoxManager::~ToolBoxManager() = default;
 
 void ToolBoxManager::setToolBox( DockWnd::ToolBox* tb )
 {

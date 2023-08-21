@@ -104,10 +104,7 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgCustomizeImp::~DlgCustomizeImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgCustomizeImp::~DlgCustomizeImp() = default;
 
 /**
  * Adds a customize page with its class name \a className.

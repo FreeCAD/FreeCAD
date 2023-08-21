@@ -253,7 +253,7 @@ class AppExport ColorField
 {
 public:
     ColorField ();
-    ColorField (const ColorField &rclCF);
+    ColorField (const ColorField &rclCF) = default;
     ColorField (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt);
     virtual ~ColorField () = default;
 
@@ -441,10 +441,10 @@ class AppExport ColorLegend
 {
 public:
     ColorLegend ();
-    ColorLegend (const ColorLegend &rclCL);
+    ColorLegend (const ColorLegend &rclCL) = default;
     virtual ~ColorLegend () = default;
 
-    ColorLegend& operator = (const ColorLegend &rclCL);
+    ColorLegend& operator = (const ColorLegend &rclCL) = default;
     bool operator == (const ColorLegend &rclCL) const;
     bool operator != (const ColorLegend &rclCL) const {
         return !(*this == rclCL);

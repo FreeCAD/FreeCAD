@@ -54,10 +54,7 @@ ControlSingleton::ControlSingleton()
 
 }
 
-ControlSingleton::~ControlSingleton()
-{
-
-}
+ControlSingleton::~ControlSingleton() = default;
 
 Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
 {

@@ -51,9 +51,7 @@ ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
     ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
-ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux()
-{
-}
+ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintHeatflux::setEdit(int ModNum)

@@ -278,7 +278,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     TopoDS_Shape shapeToCut;
     if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection *>(base);
-        shapeToCut = dvs->getCutShape();
+        shapeToCut = dvs->getCutShapeRaw();
     } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
         dvd = static_cast<TechDraw::DrawViewDetail *>(base);
         shapeToCut = dvd->getDetailShape();
@@ -463,7 +463,8 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     waitingForCut(false);
 }
 
-//position, scale and rotate shape for  buildGeometryObject
+//! position, scale and rotate shape for  buildGeometryObject
+//! save the cut shape for further processing
 TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double shapeSize)
 {
     //    Base::Console().Message("DVS::prepareShape - %s - rawShape.IsNull: %d shapeSize: %.3f\n",
@@ -479,6 +480,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         inputCenter = ShapeUtils::findCentroid(rawShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
+        m_cutShapeRaw = rawShape;
         preparedShape = ShapeUtils::moveShape(rawShape, centroid * -1.0);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;

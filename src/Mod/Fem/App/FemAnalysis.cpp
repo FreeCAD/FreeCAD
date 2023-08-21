@@ -41,9 +41,7 @@ FemAnalysis::FemAnalysis()
     ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Analysis");
 }
 
-FemAnalysis::~FemAnalysis()
-{
-}
+FemAnalysis::~FemAnalysis() = default;
 
 void FemAnalysis::handleChangedPropertyName(Base::XMLReader& reader,
                                             const char* TypeName,

@@ -54,10 +54,13 @@ public:
   inline Vector2d();
   inline Vector2d(float x, float y);
   inline Vector2d(double x, double y);
-  inline Vector2d(const Vector2d &v);
+  inline Vector2d(const Vector2d&) = default;
+  inline Vector2d(Vector2d&&) = default;
+  ~Vector2d() = default;
 
   // operators
-  inline Vector2d& operator=  (const Vector2d &v);
+  inline Vector2d& operator=  (const Vector2d&) = default;
+  inline Vector2d& operator=  (Vector2d&&) = default;
   inline bool      operator== (const Vector2d &v) const;
   inline Vector2d  operator+  () const;
   inline Vector2d  operator+  (const Vector2d &v) const;
@@ -104,13 +107,16 @@ public:
   double MinX, MinY, MaxX, MaxY;
 
   inline BoundBox2d ();
-  inline BoundBox2d (const BoundBox2d &rclBB);
+  inline BoundBox2d (const BoundBox2d&) = default;
+  inline BoundBox2d (BoundBox2d&&) = default;
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
+  ~BoundBox2d() = default;
   inline bool IsValid ();
   inline bool IsEqual(const BoundBox2d&, double tolerance) const;
 
   // operators
-  inline BoundBox2d& operator= (const BoundBox2d& rclBB);
+  inline BoundBox2d& operator= (const BoundBox2d&) = default;
+  inline BoundBox2d& operator= (BoundBox2d&&) = default;
   inline bool operator== (const BoundBox2d& rclBB) const;
 
   // methods
@@ -139,7 +145,9 @@ public:
   Vector2d clV1, clV2;
 
   Line2d () = default;
-  inline Line2d (const Line2d &rclLine);
+  ~Line2d () = default;
+  inline Line2d (const Line2d&) = default;
+  inline Line2d (Line2d&&) = default;
   inline Line2d (const Vector2d &rclV1, const Vector2d &rclV2);
 
   // methods
@@ -147,7 +155,8 @@ public:
   BoundBox2d CalcBoundBox () const;
 
   // operators
-  inline Line2d& operator= (const Line2d& rclLine);
+  inline Line2d& operator= (const Line2d&) = default;
+  inline Line2d& operator= (Line2d&&) = default;
   inline bool operator== (const Line2d& rclLine) const;
 
   // misc
@@ -167,10 +176,12 @@ class BaseExport Polygon2d
 {
 public:
   Polygon2d () = default;
-  inline Polygon2d (const Polygon2d &rclPoly);
-  virtual ~Polygon2d () = default;
+  inline Polygon2d (const Polygon2d&) = default;
+  inline Polygon2d (Polygon2d&&) = default;
+  ~Polygon2d () = default;
 
   inline Polygon2d& operator = (const Polygon2d &rclP);
+  inline Polygon2d& operator = (Polygon2d &&rclP);
 
   // admin-interface
   inline size_t GetCtVectors () const;
@@ -208,18 +219,6 @@ inline Vector2d::Vector2d(float x, float y)
 inline Vector2d::Vector2d(double x, double y)
 : x(x), y(y)
 {
-}
-
-inline Vector2d::Vector2d(const Vector2d &v)
-: x(v.x), y(v.y)
-{
-}
-
-inline Vector2d& Vector2d::operator= (const Vector2d &v)
-{
-  x = v.x;
-  y = v.y;
-  return *this;
 }
 
 inline bool Vector2d::operator== (const Vector2d &v) const
@@ -381,16 +380,9 @@ inline bool Vector2d::IsEqual(const Vector2d& v, double tolerance) const
 
 // ========================================
 
-inline Polygon2d::Polygon2d (const Polygon2d &rclPoly)
-{
-  *this = rclPoly;
-}
+inline Polygon2d& Polygon2d::operator = (const Polygon2d &rclP) = default;
 
-inline Polygon2d& Polygon2d::operator = (const Polygon2d &rclP)
-{
-  _aclVct = rclP._aclVct;
-  return *this;
-}
+inline Polygon2d& Polygon2d::operator = (Polygon2d &&rclP) = default;
 
 inline void Polygon2d::DeleteAll ()
 {
@@ -442,12 +434,6 @@ inline Vector2d& Polygon2d::At (size_t ulNdx)
 }
 
 
-inline Line2d::Line2d (const Line2d &rclLine)
-    : clV1 (rclLine.clV1),
-      clV2 (rclLine.clV2)
-{
-}
-
 inline Line2d::Line2d (const Vector2d &rclV1, const Vector2d &rclV2)
     : clV1 (rclV1), clV2 (rclV2)
 {
@@ -456,13 +442,6 @@ inline Line2d::Line2d (const Vector2d &rclV1, const Vector2d &rclV2)
 inline double Line2d::Length () const
 {
   return (clV2 - clV1).Length ();
-}
-
-inline Line2d& Line2d::operator= (const Line2d& rclLine)
-{
-  clV1 = rclLine.clV1;
-  clV2 = rclLine.clV2;
-  return *this;
 }
 
 inline bool Line2d::operator== (const Line2d& rclLine) const
@@ -481,20 +460,12 @@ inline BoundBox2d::BoundBox2d ()
   MaxX = MaxY = - DOUBLE_MAX;
 }
 
-inline BoundBox2d::BoundBox2d (const BoundBox2d &rclBB)
-    : MinX (rclBB.MinX),
-      MinY (rclBB.MinY),
-      MaxX (rclBB.MaxX),
-      MaxY (rclBB.MaxY)
-{
-}
-
 inline BoundBox2d::BoundBox2d (double fX1, double fY1, double fX2, double fY2)
+    : MinX(std::min<double>(fX1, fX2))
+    , MinY(std::min<double>(fY1, fY2))
+    , MaxX(std::max<double>(fX1, fX2))
+    , MaxY(std::max<double>(fY1, fY2))
 {
-    MinX = std::min<double>(fX1, fX2);
-    MaxX = std::max<double>(fX1, fX2);
-    MinY = std::min<double>(fY1, fY2);
-    MaxY = std::max<double>(fY1, fY2);
 }
 
 inline bool BoundBox2d::IsValid ()
@@ -506,15 +477,6 @@ inline bool BoundBox2d::IsEqual(const BoundBox2d& b, double tolerance) const
 {
   return Vector2d(MinX, MinY).IsEqual(Vector2d(b.MinX, b.MinY), tolerance) &&
          Vector2d(MaxX, MaxY).IsEqual(Vector2d(b.MaxX, b.MaxY), tolerance);
-}
-
-inline BoundBox2d& BoundBox2d::operator= (const BoundBox2d& rclBB)
-{
-  MinX = rclBB.MinX;
-  MinY = rclBB.MinY;
-  MaxX = rclBB.MaxX;
-  MaxY = rclBB.MaxY;
-  return *this;
 }
 
 inline bool BoundBox2d::operator== (const BoundBox2d& rclBB) const

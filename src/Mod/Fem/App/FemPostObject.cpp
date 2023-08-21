@@ -40,9 +40,7 @@ FemPostObject::FemPostObject()
     ADD_PROPERTY(Data, (nullptr));
 }
 
-FemPostObject::~FemPostObject()
-{
-}
+FemPostObject::~FemPostObject() = default;
 
 vtkBoundingBox FemPostObject::getBoundingBox() {
 

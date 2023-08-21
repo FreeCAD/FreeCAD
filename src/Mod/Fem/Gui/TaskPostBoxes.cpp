@@ -241,8 +241,7 @@ TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& i
       m_view(view)
 {}
 
-TaskPostBox::~TaskPostBox()
-{}
+TaskPostBox::~TaskPostBox() = default;
 
 bool TaskPostBox::autoApply()
 {
@@ -291,8 +290,7 @@ TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
     assert(view);
 }
 
-TaskDlgPost::~TaskDlgPost()
-{}
+TaskDlgPost::~TaskDlgPost() = default;
 
 QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 {
@@ -421,10 +419,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
 }
 
-TaskPostDisplay::~TaskPostDisplay()
-{
-
-}
+TaskPostDisplay::~TaskPostDisplay() = default;
 
 void TaskPostDisplay::setupConnections()
 {
@@ -488,8 +483,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* pa
     this->groupLayout()->addWidget(w);
 }
 
-TaskPostFunction::~TaskPostFunction()
-{}
+TaskPostFunction::~TaskPostFunction() = default;
 
 void TaskPostFunction::applyPythonCode()
 {
@@ -569,8 +563,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-TaskPostDataAlongLine::~TaskPostDataAlongLine()
-{}
+TaskPostDataAlongLine::~TaskPostDataAlongLine() = default;
 
 void TaskPostDataAlongLine::setupConnectionsStep1()
 {
@@ -1269,8 +1262,7 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
         static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.getValue());
 }
 
-TaskPostClip::~TaskPostClip()
-{}
+TaskPostClip::~TaskPostClip() = default;
 
 void TaskPostClip::setupConnections()
 {
@@ -1438,8 +1430,7 @@ TaskPostContours::TaskPostContours(ViewProviderDocumentObject* view, QWidget* pa
     connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
 }
 
-TaskPostContours::~TaskPostContours()
-{}
+TaskPostContours::~TaskPostContours() = default;
 
 void TaskPostContours::applyPythonCode()
 {}
@@ -1558,8 +1549,7 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 }
 
-TaskPostCut::~TaskPostCut()
-{}
+TaskPostCut::~TaskPostCut() = default;
 
 void TaskPostCut::setupConnections()
 {
@@ -1709,8 +1699,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
         "init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
-TaskPostScalarClip::~TaskPostScalarClip()
-{}
+TaskPostScalarClip::~TaskPostScalarClip() = default;
 
 void TaskPostScalarClip::setupConnections()
 {
@@ -1851,8 +1840,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget
     Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-TaskPostWarpVector::~TaskPostWarpVector()
-{}
+TaskPostWarpVector::~TaskPostWarpVector() = default;
 
 void TaskPostWarpVector::setupConnections()
 {

@@ -37,10 +37,7 @@ DlgSettingsFemMaterialImp::DlgSettingsFemMaterialImp(QWidget* parent)
     ui->setupUi(this);
 }
 
-DlgSettingsFemMaterialImp::~DlgSettingsFemMaterialImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemMaterialImp::~DlgSettingsFemMaterialImp() = default;
 
 void DlgSettingsFemMaterialImp::saveSettings()
 {

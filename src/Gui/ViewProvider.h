@@ -94,7 +94,7 @@ public:
     // Too bad, VC2013 does not support constructor inheritance
     //using boost::intrusive_ptr<T>::intrusive_ptr;
     using inherited = boost::intrusive_ptr<T>;
-    CoinPtr() {}
+    CoinPtr() = default;
     CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
     template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
 

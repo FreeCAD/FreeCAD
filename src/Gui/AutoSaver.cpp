@@ -66,9 +66,7 @@ AutoSaver::AutoSaver(QObject* parent)
     //NOLINTEND
 }
 
-AutoSaver::~AutoSaver()
-{
-}
+AutoSaver::~AutoSaver() = default;
 
 AutoSaver* AutoSaver::instance()
 {
@@ -290,9 +288,7 @@ RecoveryWriter::RecoveryWriter(AutoSaveProperty& saver)
 {
 }
 
-RecoveryWriter::~RecoveryWriter()
-{
-}
+RecoveryWriter::~RecoveryWriter() = default;
 
 bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistence *object) const
 {

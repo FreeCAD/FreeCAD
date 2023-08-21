@@ -245,14 +245,24 @@ The latter can be used to face of the entire stock area to ensure uniform height
         </property>
        </widget>
       </item>
-     <item row="2" column="1">
+      <item row="2" column="1">
        <widget class="QCheckBox" name="minTravel">
         <property name="text">
          <string>Min Travel</string>
         </property>
        </widget>
       </item>
-      </layout>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="useRestMachining">
+        <property name="toolTip">
+         <string>Check to skip machining regions that have already been cleared by previous operations</string>
+        </property>
+        <property name="text">
+         <string>Use Rest Machining</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="4" column="0">

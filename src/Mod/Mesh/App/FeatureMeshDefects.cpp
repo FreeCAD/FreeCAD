@@ -44,10 +44,6 @@ FixDefects::FixDefects()
   ADD_PROPERTY(Epsilon  ,(0));
 }
 
-FixDefects::~FixDefects()
-{
-}
-
 short FixDefects::mustExecute() const
 {
     if (Source.isTouched())
@@ -64,13 +60,7 @@ App::DocumentObjectExecReturn *FixDefects::execute()
 
 PROPERTY_SOURCE(Mesh::HarmonizeNormals, Mesh::FixDefects)
 
-HarmonizeNormals::HarmonizeNormals()
-{
-}
-
-HarmonizeNormals::~HarmonizeNormals()
-{
-}
+HarmonizeNormals::HarmonizeNormals() = default;
 
 App::DocumentObjectExecReturn *HarmonizeNormals::execute()
 {
@@ -93,13 +83,7 @@ App::DocumentObjectExecReturn *HarmonizeNormals::execute()
 
 PROPERTY_SOURCE(Mesh::FlipNormals, Mesh::FixDefects)
 
-FlipNormals::FlipNormals()
-{
-}
-
-FlipNormals::~FlipNormals()
-{
-}
+FlipNormals::FlipNormals() = default;
 
 App::DocumentObjectExecReturn *FlipNormals::execute()
 {
@@ -122,13 +106,7 @@ App::DocumentObjectExecReturn *FlipNormals::execute()
 
 PROPERTY_SOURCE(Mesh::FixNonManifolds, Mesh::FixDefects)
 
-FixNonManifolds::FixNonManifolds()
-{
-}
-
-FixNonManifolds::~FixNonManifolds()
-{
-}
+FixNonManifolds::FixNonManifolds() = default;
 
 App::DocumentObjectExecReturn *FixNonManifolds::execute()
 {
@@ -151,13 +129,7 @@ App::DocumentObjectExecReturn *FixNonManifolds::execute()
 
 PROPERTY_SOURCE(Mesh::FixDuplicatedFaces, Mesh::FixDefects)
 
-FixDuplicatedFaces::FixDuplicatedFaces()
-{
-}
-
-FixDuplicatedFaces::~FixDuplicatedFaces()
-{
-}
+FixDuplicatedFaces::FixDuplicatedFaces() = default;
 
 App::DocumentObjectExecReturn *FixDuplicatedFaces::execute()
 {
@@ -180,13 +152,7 @@ App::DocumentObjectExecReturn *FixDuplicatedFaces::execute()
 
 PROPERTY_SOURCE(Mesh::FixDuplicatedPoints, Mesh::FixDefects)
 
-FixDuplicatedPoints::FixDuplicatedPoints()
-{
-}
-
-FixDuplicatedPoints::~FixDuplicatedPoints()
-{
-}
+FixDuplicatedPoints::FixDuplicatedPoints() = default;
 
 App::DocumentObjectExecReturn *FixDuplicatedPoints::execute()
 {
@@ -209,13 +175,7 @@ App::DocumentObjectExecReturn *FixDuplicatedPoints::execute()
 
 PROPERTY_SOURCE(Mesh::FixDegenerations, Mesh::FixDefects)
 
-FixDegenerations::FixDegenerations()
-{
-}
-
-FixDegenerations::~FixDegenerations()
-{
-}
+FixDegenerations::FixDegenerations() = default;
 
 App::DocumentObjectExecReturn *FixDegenerations::execute()
 {
@@ -243,10 +203,6 @@ FixDeformations::FixDeformations()
   ADD_PROPERTY(MaxAngle  ,(5.0f));
 }
 
-FixDeformations::~FixDeformations()
-{
-}
-
 App::DocumentObjectExecReturn *FixDeformations::execute()
 {
     App::DocumentObject* link = Source.getValue();
@@ -270,13 +226,7 @@ App::DocumentObjectExecReturn *FixDeformations::execute()
 
 PROPERTY_SOURCE(Mesh::FixIndices, Mesh::FixDefects)
 
-FixIndices::FixIndices()
-{
-}
-
-FixIndices::~FixIndices()
-{
-}
+FixIndices::FixIndices() = default;
 
 App::DocumentObjectExecReturn *FixIndices::execute()
 {
@@ -305,10 +255,6 @@ FillHoles::FillHoles()
     ADD_PROPERTY(MaxArea,(0.1f));
 }
 
-FillHoles::~FillHoles()
-{
-}
-
 App::DocumentObjectExecReturn *FillHoles::execute()
 {
     App::DocumentObject* link = Source.getValue();
@@ -335,10 +281,6 @@ PROPERTY_SOURCE(Mesh::RemoveComponents, Mesh::FixDefects)
 RemoveComponents::RemoveComponents()
 {
     ADD_PROPERTY(RemoveCompOfSize,(0));
-}
-
-RemoveComponents::~RemoveComponents()
-{
 }
 
 App::DocumentObjectExecReturn *RemoveComponents::execute()

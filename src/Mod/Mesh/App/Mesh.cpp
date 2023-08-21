@@ -61,9 +61,7 @@ const float MeshObject::Epsilon = 1.0e-5F;
 TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
 TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 
-MeshObject::MeshObject()
-{
-}
+MeshObject::MeshObject() = default;
 
 MeshObject::MeshObject(const MeshCore::MeshKernel& Kernel)
   : _kernel(Kernel)
@@ -84,9 +82,7 @@ MeshObject::MeshObject(const MeshObject& mesh)
     copySegments(mesh);
 }
 
-MeshObject::~MeshObject()
-{
-}
+MeshObject::~MeshObject() = default;
 
 std::vector<const char*> MeshObject::getElementTypes() const
 {
@@ -2011,22 +2007,13 @@ MeshObject::const_point_iterator::const_point_iterator(const MeshObject* mesh, P
     this->_point.Mesh = _mesh;
 }
 
-MeshObject::const_point_iterator::const_point_iterator(const MeshObject::const_point_iterator& fi)
-  : _mesh(fi._mesh), _point(fi._point), _p_it(fi._p_it)
-{
-}
+MeshObject::const_point_iterator::const_point_iterator
+(const MeshObject::const_point_iterator& fi) = default;
 
-MeshObject::const_point_iterator::~const_point_iterator()
-{
-}
+MeshObject::const_point_iterator::~const_point_iterator() = default;
 
-MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=(const MeshObject::const_point_iterator& pi)
-{
-    this->_mesh  = pi._mesh;
-    this->_point = pi._point;
-    this->_p_it  = pi._p_it;
-    return *this;
-}
+MeshObject::const_point_iterator& MeshObject::const_point_iterator::operator=
+(const MeshObject::const_point_iterator& pi) = default;
 
 void MeshObject::const_point_iterator::dereference()
 {
@@ -2080,22 +2067,13 @@ MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject* mesh, F
     this->_facet.Mesh = _mesh;
 }
 
-MeshObject::const_facet_iterator::const_facet_iterator(const MeshObject::const_facet_iterator& fi)
-  : _mesh(fi._mesh), _facet(fi._facet), _f_it(fi._f_it)
-{
-}
+MeshObject::const_facet_iterator::const_facet_iterator
+(const MeshObject::const_facet_iterator& fi) = default;
 
-MeshObject::const_facet_iterator::~const_facet_iterator()
-{
-}
+MeshObject::const_facet_iterator::~const_facet_iterator() = default;
 
-MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=(const MeshObject::const_facet_iterator& fi)
-{
-    this->_mesh  = fi._mesh;
-    this->_facet = fi._facet;
-    this->_f_it  = fi._f_it;
-    return *this;
-}
+MeshObject::const_facet_iterator& MeshObject::const_facet_iterator::operator=
+(const MeshObject::const_facet_iterator& fi) = default;
 
 void MeshObject::const_facet_iterator::dereference()
 {

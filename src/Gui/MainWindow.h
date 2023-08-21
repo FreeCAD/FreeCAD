@@ -58,8 +58,7 @@ public:
     explicit UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
-    ~UrlHandler() override {
-    }
+    ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&) {
     }
 };

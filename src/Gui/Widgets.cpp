@@ -74,9 +74,7 @@ CommandIconView::CommandIconView ( QWidget * parent )
 /**
  * Destroys the icon view and deletes all items.
  */
-CommandIconView::~CommandIconView ()
-{
-}
+CommandIconView::~CommandIconView () = default;
 
 /**
  * Stores the name of the selected commands for drag and drop.
@@ -207,9 +205,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     setButtonsEnabled();
 }
 
-ActionSelector::~ActionSelector()
-{
-}
+ActionSelector::~ActionSelector() = default;
 
 void ActionSelector::setSelectedLabel(const QString& label)
 {
@@ -566,10 +562,7 @@ CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-CheckListDialog::~CheckListDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+CheckListDialog::~CheckListDialog() = default;
 
 /**
  * Sets the items to the dialog's list view. By default all items are checkable..
@@ -885,9 +878,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
         setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
-UrlLabel::~UrlLabel()
-{
-}
+UrlLabel::~UrlLabel() = default;
 
 void Gui::UrlLabel::setLaunchExternal(bool l)
 {
@@ -1098,9 +1089,7 @@ LabelButton::LabelButton (QWidget * parent)
     connect(button, &QPushButton::clicked, this, &LabelButton::buttonClicked);
 }
 
-LabelButton::~LabelButton()
-{
-}
+LabelButton::~LabelButton() = default;
 
 void LabelButton::resizeEvent(QResizeEvent* e)
 {
@@ -1154,9 +1143,7 @@ ToolTip::ToolTip() : installed(false), hidden(true)
 {
 }
 
-ToolTip::~ToolTip()
-{
-}
+ToolTip::~ToolTip() = default;
 
 void ToolTip::installEventFilter()
 {
@@ -1241,9 +1228,7 @@ StatusWidget::StatusWidget(QWidget* parent)
     gridLayout->addWidget(label, 0, 0, 1, 1);
 }
 
-StatusWidget::~StatusWidget()
-{
-}
+StatusWidget::~StatusWidget() = default;
 
 void StatusWidget::setStatusText(const QString& s)
 {
@@ -1466,9 +1451,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     setFocusProxy(lineEdit);
 }
 
-LabelEditor::~LabelEditor()
-{
-}
+LabelEditor::~LabelEditor() = default;
 
 void LabelEditor::resizeEvent(QResizeEvent* e)
 {

@@ -98,7 +98,7 @@ class Dimension(gui_base_original.Creator):
         else:
             super(Dimension, self).Activated(name="Dimension")
             if self.ui:
-                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
+                self.ui.pointUi(title=translate("draft", "Dimension"), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False

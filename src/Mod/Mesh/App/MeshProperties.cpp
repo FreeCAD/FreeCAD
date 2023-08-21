@@ -45,15 +45,7 @@ TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
 TYPESYSTEM_SOURCE(Mesh::PropertyMaterial , App::Property)
 TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
 
-PropertyNormalList::PropertyNormalList()
-{
-
-}
-
-PropertyNormalList::~PropertyNormalList()
-{
-
-}
+PropertyNormalList::PropertyNormalList() = default;
 
 void PropertyNormalList::setSize(int newSize)
 {
@@ -224,15 +216,7 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 
 // ----------------------------------------------------------------------------
 
-PropertyCurvatureList::PropertyCurvatureList()
-{
-
-}
-
-PropertyCurvatureList::~PropertyCurvatureList()
-{
-
-}
+PropertyCurvatureList::PropertyCurvatureList() = default;
 
 void PropertyCurvatureList::setValue(const CurvatureInfo& lValue)
 {

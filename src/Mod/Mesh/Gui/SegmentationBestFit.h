@@ -48,7 +48,7 @@ public:
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
     };
-    virtual ~FitParameter() {}
+    virtual ~FitParameter() = default;
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
@@ -114,7 +114,6 @@ class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
 {
 public:
     explicit TaskSegmentationBestFit(Mesh::Feature* mesh);
-    ~TaskSegmentationBestFit() override;
 
 public:
     bool accept() override;

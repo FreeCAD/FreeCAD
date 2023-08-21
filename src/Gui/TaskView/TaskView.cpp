@@ -62,9 +62,7 @@ TaskWidget::TaskWidget( QWidget *parent)
 
 }
 
-TaskWidget::~TaskWidget()
-{
-}
+TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
@@ -86,9 +84,7 @@ TaskGroup::TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *
 {
 }
 
-TaskGroup::~TaskGroup()
-{
-}
+TaskGroup::~TaskGroup() = default;
 
 void TaskGroup::actionEvent (QActionEvent* e)
 {
@@ -157,9 +153,7 @@ QSize TaskBox::minimumSizeHint() const
     return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
-TaskBox::~TaskBox()
-{
-}
+TaskBox::~TaskBox() = default;
 
 void TaskBox::showEvent(QShowEvent*)
 {
@@ -247,9 +241,7 @@ TaskPanel::TaskPanel(QWidget *parent)
 {
 }
 
-TaskPanel::~TaskPanel()
-{
-}
+TaskPanel::~TaskPanel() = default;
 
 QSize TaskPanel::minimumSizeHint() const
 {

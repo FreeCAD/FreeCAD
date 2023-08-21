@@ -50,9 +50,7 @@ TreeView::TreeView(QWidget* parent)
     this->setMouseTracking(true); // needed for itemEntered() to work
 }
 
-TreeView::~TreeView()
-{
-}
+TreeView::~TreeView() = default;
 
 void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
 {

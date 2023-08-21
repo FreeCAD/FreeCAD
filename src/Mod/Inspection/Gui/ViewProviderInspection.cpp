@@ -445,7 +445,7 @@ class ViewProviderProxyObject : public QObject
 {
 public:
     explicit ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
-    ~ViewProviderProxyObject() override {}
+    ~ViewProviderProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         if (!widget.isNull()) {
@@ -682,13 +682,9 @@ PROPERTY_SOURCE(InspectionGui::ViewProviderInspectionGroup, Gui::ViewProviderDoc
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderInspectionGroup::ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::ViewProviderInspectionGroup() = default;
 
-ViewProviderInspectionGroup::~ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::~ViewProviderInspectionGroup() = default;
 
 /**
  * Returns the pixmap for the opened list item.

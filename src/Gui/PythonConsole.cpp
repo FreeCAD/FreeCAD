@@ -1514,9 +1514,7 @@ PythonConsoleHighlighter::PythonConsoleHighlighter(QObject* parent)
 {
 }
 
-PythonConsoleHighlighter::~PythonConsoleHighlighter()
-{
-}
+PythonConsoleHighlighter::~PythonConsoleHighlighter() = default;
 
 void PythonConsoleHighlighter::highlightBlock(const QString& text)
 {
@@ -1564,9 +1562,7 @@ ConsoleHistory::ConsoleHistory()
     _it = _history.cend();
 }
 
-ConsoleHistory::~ConsoleHistory()
-{
-}
+ConsoleHistory::~ConsoleHistory() = default;
 
 void ConsoleHistory::first()
 {

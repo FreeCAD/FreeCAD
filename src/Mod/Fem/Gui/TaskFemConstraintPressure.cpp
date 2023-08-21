@@ -98,8 +98,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     updateUI();
 }
 
-TaskFemConstraintPressure::~TaskFemConstraintPressure()
-{}
+TaskFemConstraintPressure::~TaskFemConstraintPressure() = default;
 
 void TaskFemConstraintPressure::updateUI()
 {

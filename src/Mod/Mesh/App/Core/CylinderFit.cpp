@@ -81,10 +81,6 @@ CylinderFit::CylinderFit()
 {
 }
 
-CylinderFit::~CylinderFit()
-{
-}
-
 // Set approximations before calling the fitting
 void CylinderFit::SetApproximations(double radius, const Base::Vector3d &base, const Base::Vector3d &axis)
 {

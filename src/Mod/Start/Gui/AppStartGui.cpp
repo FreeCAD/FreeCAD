@@ -53,8 +53,6 @@ public:
         initialize("This module is the StartGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

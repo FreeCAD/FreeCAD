@@ -56,10 +56,7 @@ DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettings3DViewImp::~DlgSettings3DViewImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettings3DViewImp::~DlgSettings3DViewImp() = default;
 
 void DlgSettings3DViewImp::saveSettings()
 {
