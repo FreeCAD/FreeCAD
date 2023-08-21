@@ -41,7 +41,7 @@ namespace KDTree
          NoLeakAlloc(_Alloc_base * b) : base(b), new_node(base->_M_allocate_node()) {}
 
          _Node_ * get() { return new_node; }
-         void disconnect() { new_node = nullptr; }
+         void disconnect() { new_node = NULL; }
 
          ~NoLeakAlloc() { if (new_node) base->_M_deallocate_node(new_node); }
       };
@@ -74,7 +74,11 @@ namespace KDTree
       void
       _M_destroy_node(_Node_* __p)
       {
+#if __cplusplus >= 201703L
+        std::allocator_traits<allocator_type>::destroy(_M_node_allocator,__p);
+#else
         _M_node_allocator.destroy(__p);
+#endif
       }
     };
 
