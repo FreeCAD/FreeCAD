@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-//! a class to contain useful shape manipulations. these methods were orginally in
-//  GeometryObject.
+//! a class to contain useful shape manipulations. these methods were originally
+//  in GeometryObject.
 
 
 #include "PreCompiled.h"

@@ -578,8 +578,8 @@ void LinkBaseExtension::syncCopyOnChange()
     // the mutated object. The reason for doing so is that we are copying from
     // the original linked object and its dependency, not the mutated objects
     // which are old copies. There could be arbitrary changes in the originals
-    // which may add or remove or change dependending orders, while the
-    // replacement happen between the new and old copies.
+    // which may add or remove or change depending orders, while the
+    // replacement happens between the new and old copies.
 
     std::map<Base::Uuid, App::DocumentObjectT> newObjs;
     for (auto obj : copiedObjs) {

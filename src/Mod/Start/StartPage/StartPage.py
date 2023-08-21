@@ -253,7 +253,7 @@ def getDefaultIcon():
 
 def build_new_file_card(template):
 
-    "builds an html <li> element respresenting a new file template"
+    "builds an html <li> element representing a new file template"
 
     templates = {
         "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
