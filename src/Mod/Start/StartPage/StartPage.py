@@ -259,7 +259,7 @@ def build_new_file_card(template):
         "empty_file": [TranslationTexts.T_TEMPLATE_EMPTYFILE_NAME, TranslationTexts.T_TEMPLATE_EMPTYFILE_DESC],
         "import_file": [TranslationTexts.T_TEMPLATE_IMPORTFILE_NAME, TranslationTexts.T_TEMPLATE_IMPORTFILE_DESC],
         "parametric_part": [TranslationTexts.T_TEMPLATE_PARAMETRICPART_NAME, TranslationTexts.T_TEMPLATE_PARAMETRICPART_DESC],
-        "csg_part": [TranslationTexts.T_TEMPLATE_CSGPART_NAME, TranslationTexts.T_TEMPLATE_CSGPART_DESC],
+        # "csg_part": [TranslationTexts.T_TEMPLATE_CSGPART_NAME, TranslationTexts.T_TEMPLATE_CSGPART_DESC],
         "2d_draft": [TranslationTexts.T_TEMPLATE_2DDRAFT_NAME, TranslationTexts.T_TEMPLATE_2DDRAFT_DESC],
         "architecture": [TranslationTexts.T_TEMPLATE_ARCHITECTURE_NAME, TranslationTexts.T_TEMPLATE_ARCHITECTURE_DESC]
     }
@@ -430,7 +430,7 @@ def handle():
     SECTION_NEW_FILE += build_new_file_card("empty_file")
     SECTION_NEW_FILE += build_new_file_card("import_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
-    SECTION_NEW_FILE += build_new_file_card("csg_part")
+    # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
     SECTION_NEW_FILE += build_new_file_card("architecture")
     SECTION_NEW_FILE += '</ul>'
