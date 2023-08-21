@@ -272,7 +272,7 @@ class MeshFastFacetIterator
 {
 public:
   inline explicit MeshFastFacetIterator (const MeshKernel &rclM);
-  virtual ~MeshFastFacetIterator () {}
+  virtual ~MeshFastFacetIterator () = default;
 
   void Init () { _clIter = _rclFAry.begin(); }
   inline void Next ();

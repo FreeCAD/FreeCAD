@@ -283,8 +283,8 @@ class GuiExport UserNavigationStyle : public NavigationStyle {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    UserNavigationStyle(){}
-    ~UserNavigationStyle() override{}
+    UserNavigationStyle() = default;
+    ~UserNavigationStyle() override = default;
     virtual const char* mouseButtons(ViewerMode) = 0;
     virtual std::string userFriendlyName() const;
     static std::map<Base::Type, std::string> getUserFriendlyNames();

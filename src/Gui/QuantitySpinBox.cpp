@@ -72,9 +72,7 @@ public:
       q_ptr(q)
     {
     }
-    ~QuantitySpinBoxPrivate()
-    {
-    }
+    ~QuantitySpinBoxPrivate() = default;
 
     QString stripped(const QString &t, int *pos) const
     {
@@ -294,9 +292,7 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 #endif
 }
 
-QuantitySpinBox::~QuantitySpinBox()
-{
-}
+QuantitySpinBox::~QuantitySpinBox() = default;
 
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {

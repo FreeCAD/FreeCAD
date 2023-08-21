@@ -92,16 +92,9 @@ public:
             this->busy = false;
         }
 
-        ExpressionInfo(const ExpressionInfo & other) {
-            expression = other.expression;
-            busy = other.busy;
-        }
+        ExpressionInfo(const ExpressionInfo &) = default;
 
-        ExpressionInfo & operator=(const ExpressionInfo & other) {
-            expression = other.expression;
-            busy = other.busy;
-            return *this;
-        }
+        ExpressionInfo & operator=(const ExpressionInfo &) = default;
     };
 
     PropertyExpressionEngine();

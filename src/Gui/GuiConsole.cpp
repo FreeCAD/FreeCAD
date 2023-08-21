@@ -119,8 +119,8 @@ void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg
 #else /* FC_OS_LINUX */
 
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
-GUIConsole::GUIConsole () {}
-GUIConsole::~GUIConsole () {}
+GUIConsole::GUIConsole () = default;
+GUIConsole::~GUIConsole () = default;
 void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                          Base::IntendedRecipient recipient, Base::ContentType content)
 {

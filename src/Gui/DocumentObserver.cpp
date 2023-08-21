@@ -40,9 +40,7 @@ using namespace Gui;
 namespace sp = std::placeholders;
 
 
-DocumentT::DocumentT()
-{
-}
+DocumentT::DocumentT() = default;
 
 DocumentT::DocumentT(Document* doc)
 {
@@ -59,9 +57,7 @@ DocumentT::DocumentT(const DocumentT& doc)
     document = doc.document;
 }
 
-DocumentT::~DocumentT()
-{
-}
+DocumentT::~DocumentT() = default;
 
 void DocumentT::operator=(const DocumentT& doc)
 {
@@ -122,9 +118,7 @@ std::string DocumentT::getAppDocumentPython() const
 
 // -----------------------------------------------------------------------------
 
-ViewProviderT::ViewProviderT()
-{
-}
+ViewProviderT::ViewProviderT() = default;
 
 ViewProviderT::ViewProviderT(const ViewProviderT& other)
 {
@@ -141,9 +135,7 @@ ViewProviderT::ViewProviderT(const ViewProviderDocumentObject* obj)
     *this = obj;
 }
 
-ViewProviderT::~ViewProviderT()
-{
-}
+ViewProviderT::~ViewProviderT() = default;
 
 ViewProviderT & ViewProviderT::operator=(const ViewProviderT& obj)
 {
@@ -266,9 +258,7 @@ DocumentWeakPtrT::DocumentWeakPtrT(Gui::Document* doc) noexcept
 {
 }
 
-DocumentWeakPtrT::~DocumentWeakPtrT()
-{
-}
+DocumentWeakPtrT::~DocumentWeakPtrT() = default;
 
 void DocumentWeakPtrT::reset() noexcept
 {
@@ -360,10 +350,7 @@ ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj)
 {
 }
 
-ViewProviderWeakPtrT::~ViewProviderWeakPtrT()
-{
-
-}
+ViewProviderWeakPtrT::~ViewProviderWeakPtrT() = default;
 
 ViewProviderDocumentObject* ViewProviderWeakPtrT::_get() const noexcept
 {
@@ -409,18 +396,14 @@ bool ViewProviderWeakPtrT::operator!= (const ViewProviderWeakPtrT& p) const noex
 
 // -----------------------------------------------------------------------------
 
-DocumentObserver::DocumentObserver()
-{
-}
+DocumentObserver::DocumentObserver() = default;
 
 DocumentObserver::DocumentObserver(Document* doc)
 {
     attachDocument(doc);
 }
 
-DocumentObserver::~DocumentObserver()
-{
-}
+DocumentObserver::~DocumentObserver() = default;
 
 void DocumentObserver::attachDocument(Document* doc)
 {

@@ -96,9 +96,7 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
 /**
  *  Destroys the object and frees any allocated resources
  */
-UnitTestDialog::~UnitTestDialog()
-{
-}
+UnitTestDialog::~UnitTestDialog() = default;
 
 void UnitTestDialog::setupConnections()
 {

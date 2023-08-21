@@ -54,10 +54,7 @@ SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
 /*!
   Destructor.
 */
-SoFCColorBarBase::~SoFCColorBarBase()
-{
-    //delete THIS;
-}
+SoFCColorBarBase::~SoFCColorBarBase() = default;
 
 // doc from parent
 void SoFCColorBarBase::initClass()
@@ -159,7 +156,7 @@ class SoFCColorBarProxyObject : public QObject
 public:
     explicit SoFCColorBarProxyObject(SoFCColorBar* b)
         : QObject(nullptr), bar(b) {}
-    ~SoFCColorBarProxyObject() override {}
+    ~SoFCColorBarProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         bar->customize(bar->getActiveBar());
@@ -198,10 +195,7 @@ SoFCColorBar::SoFCColorBar()
 /*!
   Destructor.
 */
-SoFCColorBar::~SoFCColorBar()
-{
-    //delete THIS;
-}
+SoFCColorBar::~SoFCColorBar() = default;
 
 // doc from parent
 void SoFCColorBar::initClass()

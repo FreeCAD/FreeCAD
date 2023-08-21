@@ -81,8 +81,6 @@ class MeshExport MeshDefinitions
 {
 public:
   MeshDefinitions ();
-  virtual ~MeshDefinitions ()
-  {}
 
   static float  _fMinPointDistance;
   static float  _fMinPointDistanceP2;

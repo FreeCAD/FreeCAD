@@ -73,8 +73,8 @@ namespace MeshIO {
 
 struct MeshExport Material
 {
-    Material() : binding(MeshIO::OVERALL) {}
-    MeshIO::Binding binding;
+    Material() = default;
+    MeshIO::Binding binding{MeshIO::OVERALL};
     mutable std::string library;
 
     std::vector<App::Color> ambientColor;  /**< Defines the ambient color. */
@@ -105,7 +105,6 @@ public:
         : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
-    virtual ~MeshInput () { }
     const std::vector<std::string>& GetGroupNames() const {
         return _groupNames;
     }
@@ -165,7 +164,6 @@ public:
         : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
-    virtual ~MeshOutput () { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
     void SetGroups(const std::vector<Group>& g) {
@@ -264,7 +262,6 @@ public:
       \param f -- the facet array
      */
     MeshCleanup(MeshPointArray& p, MeshFacetArray& f);
-    ~MeshCleanup();
 
     /*!
       \brief Set the material array.
@@ -310,7 +307,6 @@ public:
       \param f -- the facet array
      */
     MeshPointFacetAdjacency(std::size_t p, MeshFacetArray& f);
-    ~MeshPointFacetAdjacency();
 
     /*!
       \brief Set the neighbourhood of two adjacent facets.

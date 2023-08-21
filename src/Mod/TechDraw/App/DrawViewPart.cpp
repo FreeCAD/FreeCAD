@@ -22,6 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
+//===========================================================================
+// DrawViewPart overview
+//===========================================================================
+//
+// 1) get the shapes from the source objects
+// 2) center, scale and rotate the shapes
+// 3) project the shape using the OCC HLR algorithms
+// 4) add cosmetic and other objects that don't participate in hlr
+// 5) find the closed regions (faces) in the edges returned by hlr
+// everything else is mostly providing services to other objects, such as the
+// actual drawing routines in Gui
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -81,11 +93,6 @@
 
 using namespace TechDraw;
 using DU = DrawUtil;
-
-//===========================================================================
-// DrawViewPart
-//===========================================================================
-
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, TechDraw::DrawView)
 
@@ -157,6 +164,8 @@ DrawViewPart::~DrawViewPart()
     removeAllReferencesFromGeom();
 }
 
+//! returns a compound of all the shapes from the DocumentObjects in the Source &
+//!  XSource property lists
 TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
 {
     //    Base::Console().Message("DVP::getSourceShape()\n");
@@ -170,15 +179,15 @@ TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
     return ShapeExtractor::getShapes(links);
 }
 
-// deliver a shape appropriate for making a detail view based on this view
-// TODO: why does dvp do the thinking for detail, but section picks its own
-// version of the shape?  Should we have a getShapeForSection?
+//! deliver a shape appropriate for making a detail view based on this view
+//! TODO: why does dvp do the thinking for detail, but section picks its own
+//! version of the shape?  Should we have a getShapeForSection?
 TopoDS_Shape DrawViewPart::getShapeForDetail() const
 {
     return ShapeUtils::rotateShape(getSourceShape(true), getProjectionCS(), Rotation.getValue());
 }
 
-// combine the regular links and xlinks into a single list
+//! combine the regular links and xlinks into a single list
 std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
 {
     //    Base::Console().Message("DVP::getAllSources()\n");
@@ -192,8 +201,8 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
     return result;
 }
 
-//pick supported 2d shapes out of the Source properties and
-//add them directly to the geometry without going through HLR
+//! pick supported 2d shapes out of the Source properties and
+//! add them directly to the geometry without going through HLR
 void DrawViewPart::addShapes2d(void)
 {
     std::vector<TopoDS_Shape> shapes = ShapeExtractor::getShapes2d(getAllSources());
@@ -300,7 +309,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
     }
 }
 
-//prepare the shape for HLR processing by centering, scaling and rotating it
+//! prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
@@ -320,7 +329,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
     return buildGeometryObject(localShape, getProjectionCS());
 }
 
-//Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
+//! Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
 TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                              Base::Vector3d centroid)
 {
@@ -339,7 +348,7 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& in
     return centeredShape;
 }
 
-//create a geometry object and trigger the HLR process in another thread
+//! create a geometry object and trigger the HLR process in another thread
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
@@ -386,7 +395,7 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
     return go;
 }
 
-//continue processing after hlr thread completes
+//! continue processing after hlr thread completes
 void DrawViewPart::onHlrFinished(void)
 {
     //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
@@ -436,7 +445,7 @@ void DrawViewPart::onHlrFinished(void)
     }
 }
 
-//run any tasks that need to been done after geometry is available
+//! run any tasks that need to been done after geometry is available
 void DrawViewPart::postHlrTasks(void)
 {
     //    Base::Console().Message("DVP::postHlrTasks() - %s\n", getNameInDocument());

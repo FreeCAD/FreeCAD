@@ -111,9 +111,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 }
 
 /** Destroys the object and frees any allocated resources */
-DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
-{
-}
+DlgCustomKeyboardImp::~DlgCustomKeyboardImp() = default;
 
 void DlgCustomKeyboardImp::setupConnections()
 {

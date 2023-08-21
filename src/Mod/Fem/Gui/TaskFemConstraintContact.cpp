@@ -122,8 +122,7 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     updateUI();
 }
 
-TaskFemConstraintContact::~TaskFemConstraintContact()
-{}
+TaskFemConstraintContact::~TaskFemConstraintContact() = default;
 
 void TaskFemConstraintContact::updateUI()
 {

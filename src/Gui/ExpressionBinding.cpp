@@ -53,9 +53,7 @@ ExpressionBinding::ExpressionBinding()
 }
 
 
-ExpressionBinding::~ExpressionBinding()
-{
-}
+ExpressionBinding::~ExpressionBinding() = default;
 
 bool ExpressionBinding::isBound() const
 {

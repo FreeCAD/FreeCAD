@@ -54,10 +54,6 @@ SetOperations::SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutM
 {
 }
 
-SetOperations::~SetOperations ()
-{
-}
-
 void SetOperations::Do ()
 {
  _minDistanceToPoint = 0.000001f;

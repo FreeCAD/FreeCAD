@@ -47,9 +47,7 @@ ViewProviderFemConstraintPulley::ViewProviderFemConstraintPulley()
     sPixmap = "FEM_ConstraintPulley";
 }
 
-ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley()
-{
-}
+ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley() = default;
 
 bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
 {

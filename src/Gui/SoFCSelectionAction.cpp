@@ -138,9 +138,7 @@ SoFCHighlightAction::SoFCHighlightAction (const SelectionChanges &SelCh)
 }
 
 
-SoFCHighlightAction::~SoFCHighlightAction()
-{
-}
+SoFCHighlightAction::~SoFCHighlightAction() = default;
 
 
 void SoFCHighlightAction::beginTraversal(SoNode *node)
@@ -224,9 +222,7 @@ SoFCSelectionAction::SoFCSelectionAction (const SelectionChanges &SelCh)
 }
 
 
-SoFCSelectionAction::~SoFCSelectionAction()
-{
-}
+SoFCSelectionAction::~SoFCSelectionAction() = default;
 
 
 void SoFCSelectionAction::beginTraversal(SoNode *node)
@@ -306,9 +302,7 @@ SoFCEnableSelectionAction::SoFCEnableSelectionAction (const SbBool& sel)
 }
 
 
-SoFCEnableSelectionAction::~SoFCEnableSelectionAction()
-{
-}
+SoFCEnableSelectionAction::~SoFCEnableSelectionAction() = default;
 
 
 void SoFCEnableSelectionAction::beginTraversal(SoNode *node)
@@ -388,9 +382,7 @@ SoFCEnableHighlightAction::SoFCEnableHighlightAction (const SbBool& sel)
 }
 
 
-SoFCEnableHighlightAction::~SoFCEnableHighlightAction()
-{
-}
+SoFCEnableHighlightAction::~SoFCEnableHighlightAction() = default;
 
 
 void SoFCEnableHighlightAction::beginTraversal(SoNode *node)
@@ -470,9 +462,7 @@ SoFCSelectionColorAction::SoFCSelectionColorAction (const SoSFColor& col)
 }
 
 
-SoFCSelectionColorAction::~SoFCSelectionColorAction()
-{
-}
+SoFCSelectionColorAction::~SoFCSelectionColorAction() = default;
 
 
 void SoFCSelectionColorAction::beginTraversal(SoNode *node)
@@ -552,9 +542,7 @@ SoFCHighlightColorAction::SoFCHighlightColorAction (const SoSFColor& col)
 }
 
 
-SoFCHighlightColorAction::~SoFCHighlightColorAction()
-{
-}
+SoFCHighlightColorAction::~SoFCHighlightColorAction() = default;
 
 
 void SoFCHighlightColorAction::beginTraversal(SoNode *node)
@@ -634,9 +622,7 @@ SoFCDocumentAction::SoFCDocumentAction (const SoSFString& docName)
 }
 
 
-SoFCDocumentAction::~SoFCDocumentAction()
-{
-}
+SoFCDocumentAction::~SoFCDocumentAction() = default;
 
 
 void SoFCDocumentAction::beginTraversal(SoNode *node)
@@ -711,9 +697,7 @@ SoFCDocumentObjectAction::SoFCDocumentObjectAction () : _handled(false)
   SO_ACTION_CONSTRUCTOR(SoFCDocumentObjectAction);
 }
 
-SoFCDocumentObjectAction::~SoFCDocumentObjectAction()
-{
-}
+SoFCDocumentObjectAction::~SoFCDocumentObjectAction() = default;
 
 void SoFCDocumentObjectAction::beginTraversal(SoNode *node)
 {
@@ -781,9 +765,7 @@ SoGLSelectAction::SoGLSelectAction (const SbViewportRegion& region,
   SO_ACTION_CONSTRUCTOR(SoGLSelectAction);
 }
 
-SoGLSelectAction::~SoGLSelectAction()
-{
-}
+SoGLSelectAction::~SoGLSelectAction() = default;
 
 const SbViewportRegion& SoGLSelectAction::getViewportRegion () const
 {
@@ -856,9 +838,7 @@ SoVisibleFaceAction::SoVisibleFaceAction () : _handled(false)
   SO_ACTION_CONSTRUCTOR(SoVisibleFaceAction);
 }
 
-SoVisibleFaceAction::~SoVisibleFaceAction()
-{
-}
+SoVisibleFaceAction::~SoVisibleFaceAction() = default;
 
 void SoVisibleFaceAction::beginTraversal(SoNode *node)
 {
@@ -926,9 +906,7 @@ SoUpdateVBOAction::SoUpdateVBOAction ()
   SO_ACTION_CONSTRUCTOR(SoUpdateVBOAction);
 }
 
-SoUpdateVBOAction::~SoUpdateVBOAction()
-{
-}
+SoUpdateVBOAction::~SoUpdateVBOAction() = default;
 
 void SoUpdateVBOAction::finish()
 {

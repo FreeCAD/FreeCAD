@@ -193,6 +193,25 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(const double scale)
     return newGeom;
 }
 
+TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale, const double rotDegrees)
+{
+    TopoDS_Edge e = m_geometry->getOCCEdge();
+//    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+    // Mirror shape in Y and scale
+    TopoDS_Shape s = ShapeUtils::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
+    // rotate using OXYZ as the coordinate system
+    s = ShapeUtils::rotateShape(s, gp_Ax2(), rotDegrees);
+    s = ShapeUtils::mirrorShape(s);
+    TopoDS_Edge newEdge = TopoDS::Edge(s);
+    TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
+    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setHlrVisible( true);
+    newGeom->setCosmetic(true);
+    newGeom->source(COSMETICEDGE);
+    newGeom->setCosmeticTag(getTagAsString());
+    return newGeom;
+}
+
 std::string CosmeticEdge::toString() const
 {
     std::stringstream ss;

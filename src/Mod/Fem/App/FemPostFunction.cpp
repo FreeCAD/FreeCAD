@@ -35,9 +35,7 @@ FemPostFunctionProvider::FemPostFunctionProvider() : DocumentObject() {
     ADD_PROPERTY(Functions, (nullptr));
 }
 
-FemPostFunctionProvider::~FemPostFunctionProvider() {
-
-}
+FemPostFunctionProvider::~FemPostFunctionProvider() = default;
 
 void FemPostFunctionProvider::onChanged(const Property* prop) {
     App::DocumentObject::onChanged(prop);
@@ -46,13 +44,9 @@ void FemPostFunctionProvider::onChanged(const Property* prop) {
 
 PROPERTY_SOURCE(Fem::FemPostFunction, App::DocumentObject)
 
-FemPostFunction::FemPostFunction()
-{
-}
+FemPostFunction::FemPostFunction() = default;
 
-FemPostFunction::~FemPostFunction()
-{
-}
+FemPostFunction::~FemPostFunction() = default;
 
 DocumentObjectExecReturn* FemPostFunction::execute() {
 
@@ -77,9 +71,7 @@ FemPostBoxFunction::FemPostBoxFunction()
     m_box->SetBounds(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0);
 }
 
-FemPostBoxFunction::~FemPostBoxFunction()
-{
-}
+FemPostBoxFunction::~FemPostBoxFunction() = default;
 
 void FemPostBoxFunction::onChanged(const Property* prop)
 {
@@ -123,9 +115,7 @@ FemPostCylinderFunction::FemPostCylinderFunction()
     m_cylinder->SetRadius(5.0);
 }
 
-FemPostCylinderFunction::~FemPostCylinderFunction()
-{
-}
+FemPostCylinderFunction::~FemPostCylinderFunction() = default;
 
 void FemPostCylinderFunction::onChanged(const Property* prop)
 {
@@ -167,9 +157,7 @@ FemPostPlaneFunction::FemPostPlaneFunction() : FemPostFunction() {
     m_plane->SetNormal(0.0, 0.0, 1.0);
 }
 
-FemPostPlaneFunction::~FemPostPlaneFunction() {
-
-}
+FemPostPlaneFunction::~FemPostPlaneFunction() = default;
 
 void FemPostPlaneFunction::onChanged(const Property* prop) {
 
@@ -207,9 +195,7 @@ FemPostSphereFunction::FemPostSphereFunction() : FemPostFunction() {
     m_sphere->SetRadius(5.0);
 }
 
-FemPostSphereFunction::~FemPostSphereFunction() {
-
-}
+FemPostSphereFunction::~FemPostSphereFunction() = default;
 
 void FemPostSphereFunction::onChanged(const Property* prop) {
 

@@ -53,6 +53,7 @@ public:
     std::string toString() const;
     void dump(const char* title) override;
     Base::Vector3d scaled(const double factor);
+    Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees);
 
     static bool restoreCosmetic();
 

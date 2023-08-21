@@ -567,9 +567,7 @@ public:
     explicit BarThread(unsigned long s) : steps(s)
     {
     }
-    ~BarThread() override
-    {
-    }
+    ~BarThread() override  = default;
     void run() override
     {
         QMutex mutex;

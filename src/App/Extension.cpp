@@ -53,10 +53,6 @@ void App::Extension::init(){
 
 using namespace App;
 
-Extension::Extension()
-{
-}
-
 Extension::~Extension()
 {
     if (!ExtensionPythonObject.is(Py::_None())){

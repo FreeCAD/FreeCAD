@@ -70,10 +70,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
         ui->cmb_def_solver->setCurrentIndex(1);
 }
 
-DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp() = default;
 
 void DlgSettingsFemGeneralImp::saveSettings()
 {

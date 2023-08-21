@@ -55,10 +55,7 @@ DlgSettingsTheme::DlgSettingsTheme(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsTheme::~DlgSettingsTheme()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsTheme::~DlgSettingsTheme() = default;
 
 void DlgSettingsTheme::saveSettings()
 {

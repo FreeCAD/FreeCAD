@@ -38,9 +38,7 @@ FemSetNodesObject::FemSetNodesObject()
     ADD_PROPERTY_TYPE(Nodes,(), "Node indexes",Prop_None,"Nodes belonging to the NodesSet");
 }
 
-FemSetNodesObject::~FemSetNodesObject()
-{
-}
+FemSetNodesObject::~FemSetNodesObject() = default;
 
 short FemSetNodesObject::mustExecute() const
 {

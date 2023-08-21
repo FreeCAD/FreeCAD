@@ -137,8 +137,6 @@ public:
         initialize("This module is the QtUnitGui module"); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)
     {

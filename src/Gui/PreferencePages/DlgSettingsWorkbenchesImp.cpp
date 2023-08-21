@@ -163,9 +163,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     layout->setContentsMargins(10, 0, 0, 0);
 }
 
-wbListItem::~wbListItem()
-{
-}
+wbListItem::~wbListItem() = default;
 
 bool wbListItem::isEnabled()
 {
@@ -245,10 +243,7 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp()
-{
-}
-
+DlgSettingsWorkbenchesImp::~DlgSettingsWorkbenchesImp() = default;
 
 void DlgSettingsWorkbenchesImp::saveSettings()
 {

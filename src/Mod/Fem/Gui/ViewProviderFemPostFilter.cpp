@@ -44,8 +44,7 @@ ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine()
     sPixmap = "FEM_PostFilterDataAlongLine";
 }
 
-ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine()
-{}
+ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() = default;
 
 void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 {
@@ -75,8 +74,7 @@ void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChan
     // because a single point does not make sense with a color range.
 }
 
-ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint()
-{}
+ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() = default;
 
 void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
 {
@@ -94,8 +92,7 @@ ViewProviderFemPostClip::ViewProviderFemPostClip() {
     sPixmap = "FEM_PostFilterClipRegion";
 }
 
-ViewProviderFemPostClip::~ViewProviderFemPostClip()
-{}
+ViewProviderFemPostClip::~ViewProviderFemPostClip() = default;
 
 void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
 
@@ -117,8 +114,7 @@ ViewProviderFemPostContours::ViewProviderFemPostContours()
     sPixmap = "FEM_PostFilterContours";
 }
 
-ViewProviderFemPostContours::~ViewProviderFemPostContours()
-{}
+ViewProviderFemPostContours::~ViewProviderFemPostContours() = default;
 
 void ViewProviderFemPostContours::setupTaskDialog(TaskDlgPost* dlg)
 {
@@ -136,8 +132,7 @@ ViewProviderFemPostCut::ViewProviderFemPostCut()
     sPixmap = "FEM_PostFilterCutFunction";
 }
 
-ViewProviderFemPostCut::~ViewProviderFemPostCut()
-{}
+ViewProviderFemPostCut::~ViewProviderFemPostCut() = default;
 
 void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
@@ -160,9 +155,7 @@ ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip()
     sPixmap = "FEM_PostFilterClipScalar";
 }
 
-ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
-
-}
+ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() = default;
 
 void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg)
 {
@@ -183,8 +176,7 @@ ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector()
     sPixmap = "FEM_PostFilterWarp";
 }
 
-ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector()
-{}
+ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() = default;
 
 void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
 {

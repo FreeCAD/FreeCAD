@@ -44,9 +44,9 @@ class MeshExport MeshFacetVisitor
 {
 public:
     /// Construction
-    MeshFacetVisitor() { }
+    MeshFacetVisitor() = default;
     /// Denstruction
-    virtual ~MeshFacetVisitor() { }
+    virtual ~MeshFacetVisitor() = default;
     /** Needs to be implemented in sub-classes.
      * \a rclFacet is the currently visited facet with the index \a ulFInd, \a rclFrom
      * is the last visited facet and \a ulLevel indicates the ring number around the start facet.
@@ -79,7 +79,7 @@ class MeshExport MeshSearchNeighbourFacetsVisitor : public MeshFacetVisitor
 {
 public:
     MeshSearchNeighbourFacetsVisitor (const MeshKernel &rclMesh, float fRadius, FacetIndex ulStartFacetIdx);
-    ~MeshSearchNeighbourFacetsVisitor () override {}
+    ~MeshSearchNeighbourFacetsVisitor () override = default;
     /** Checks the facet if it lies inside the search radius. */
     inline bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel) override;
     /** Resets the VISIT flag of already visited facets. */
@@ -175,9 +175,9 @@ class MeshExport MeshPointVisitor
 {
 public:
     /// Construction
-    MeshPointVisitor() { }
+    MeshPointVisitor() = default;
     /// Denstruction
-    virtual ~MeshPointVisitor() { }
+    virtual ~MeshPointVisitor() = default;
     /** Needs to be implemented in sub-classes.
      * \a rclPoint is the currently visited point with the index \a ulPInd, \a rclFrom
      * is the last visited point  and \a ulLevel indicates the ring number around the start point.

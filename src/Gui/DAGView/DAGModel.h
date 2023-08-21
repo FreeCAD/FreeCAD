@@ -84,7 +84,7 @@ namespace Gui
       void editingFinishedSlot();
 
     private:
-      Model(){}
+      Model() = default;
       //documentObject slots.
       using Connection = boost::signals2::connection;
       Connection connectNewObject;

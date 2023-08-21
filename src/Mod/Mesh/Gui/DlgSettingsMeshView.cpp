@@ -45,10 +45,7 @@ DlgSettingsMeshView::DlgSettingsMeshView(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsMeshView::~DlgSettingsMeshView()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsMeshView::~DlgSettingsMeshView() = default;
 
 void DlgSettingsMeshView::saveSettings()
 {

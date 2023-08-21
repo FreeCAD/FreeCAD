@@ -67,9 +67,7 @@ InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMes
     _bApply = _clTrf != tmp;
 }
 
-InspectActualMesh::~InspectActualMesh()
-{
-}
+InspectActualMesh::~InspectActualMesh() = default;
 
 unsigned long InspectActualMesh::countPoints() const
 {
@@ -545,15 +543,9 @@ bool InspectNominalShape::isBelowFace(const gp_Pnt& pnt3d) const
 
 TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists)
 
-PropertyDistanceList::PropertyDistanceList()
-{
+PropertyDistanceList::PropertyDistanceList() = default;
 
-}
-
-PropertyDistanceList::~PropertyDistanceList()
-{
-
-}
+PropertyDistanceList::~PropertyDistanceList() = default;
 
 void PropertyDistanceList::setSize(int newSize)
 {
@@ -754,9 +746,7 @@ Feature::Feature()
     ADD_PROPERTY(Distances,(0.0));
 }
 
-Feature::~Feature()
-{
-}
+Feature::~Feature() = default;
 
 short Feature::mustExecute() const
 {
@@ -953,10 +943,6 @@ App::DocumentObjectExecReturn* Feature::execute()
 PROPERTY_SOURCE(Inspection::Group, App::DocumentObjectGroup)
 
 
-Group::Group()
-{
-}
+Group::Group() = default;
 
-Group::~Group()
-{
-}
+Group::~Group() = default;

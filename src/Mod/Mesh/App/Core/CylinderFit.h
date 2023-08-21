@@ -51,11 +51,6 @@ public:
      */
     CylinderFit();
     /**
-     * Destruction
-     */
-    ~CylinderFit() override;
-
-    /**
      * Set approximations before calling Fit()
      */
     void SetApproximations(double radius, const Base::Vector3d &base, const Base::Vector3d &axis);

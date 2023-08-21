@@ -52,7 +52,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def pocketFeatures(self):
         """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
-        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
+        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline | PathPocketBaseGui.FeatureRestMachining
 
     def taskPanelBaseLocationPage(self, obj, features):
         if not hasattr(self, "extensionsPanel"):

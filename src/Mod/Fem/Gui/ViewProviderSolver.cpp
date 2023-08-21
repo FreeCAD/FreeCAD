@@ -44,8 +44,7 @@ ViewProviderSolver::ViewProviderSolver()
     sPixmap = "FEM_SolverStandard";
 }
 
-ViewProviderSolver::~ViewProviderSolver()
-{}
+ViewProviderSolver::~ViewProviderSolver() = default;
 
 std::vector<std::string> ViewProviderSolver::getDisplayModes() const
 {

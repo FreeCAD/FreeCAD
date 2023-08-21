@@ -243,8 +243,7 @@ SoFCSelectionCounter::SoFCSelectionCounter()
 {}
 
 
-SoFCSelectionCounter::~SoFCSelectionCounter()
-{}
+SoFCSelectionCounter::~SoFCSelectionCounter() = default;
 
 
 bool SoFCSelectionCounter::checkRenderCache(SoState *state) {

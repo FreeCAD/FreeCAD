@@ -166,8 +166,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     }
 }
 
-TaskFemConstraintTransform::~TaskFemConstraintTransform()
-{}
+TaskFemConstraintTransform::~TaskFemConstraintTransform() = default;
 
 const QString TaskFemConstraintTransform::makeText(const App::DocumentObject* obj) const
 {

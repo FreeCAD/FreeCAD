@@ -774,8 +774,7 @@ bool TaskFemConstraintFluidBoundary::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
-TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary()
-{}
+TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary() = default;
 
 void TaskFemConstraintFluidBoundary::addToSelection()
 {

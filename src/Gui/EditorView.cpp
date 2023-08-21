@@ -598,9 +598,7 @@ PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
             editor, &PythonEditor::setFileName);
 }
 
-PythonEditorView::~PythonEditorView()
-{
-}
+PythonEditorView::~PythonEditorView() = default;
 
 /**
  * Runs the action specified by \a pMsg.

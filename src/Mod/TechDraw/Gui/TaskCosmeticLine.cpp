@@ -43,6 +43,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 //ctor for edit
 TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
@@ -111,21 +112,39 @@ void TaskCosmeticLine::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Cosmetic Line"));
 
+    double rotDeg = m_partFeat->Rotation.getValue();
+    double rotRad = rotDeg * M_PI / 180.0;
+    Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+    Base::Vector3d p1, p2;
     if (m_is3d.front()) {
+        // center, project and invert the 3d point
+        p1 = DrawUtil::invertY(m_partFeat->projectPoint(m_points.front() - centroid));
         ui->rb2d1->setChecked(false);
         ui->rb3d1->setChecked(true);
     } else {
+        // invert, unscale and unrotate the selected 2d point
+        p1 = DU::invertY(m_points.front()) / m_partFeat->getScale();
+        if (rotDeg != 0.0) {
+            // we always rotate around the origin.
+            p1.RotateZ(-rotRad);
+        }
         ui->rb2d1->setChecked(true);
         ui->rb3d1->setChecked(false);
     }
+
     if (m_is3d.back()) {
+        p2 = DrawUtil::invertY(m_partFeat->projectPoint(m_points.back() - centroid));
         ui->rb2d2->setChecked(false);
         ui->rb3d2->setChecked(true);
     } else {
+        p2 = DU::invertY(m_points.back()) / m_partFeat->getScale();
+        if (rotDeg != 0.0) {
+            p2.RotateZ(-rotRad);
+        }
         ui->rb2d2->setChecked(true);
         ui->rb3d2->setChecked(false);
     }
-    Base::Vector3d p1 = m_points.front();
+
     ui->qsbx1->setUnit(Base::Unit::Length);
     ui->qsbx1->setValue(p1.x);
     ui->qsby1->setUnit(Base::Unit::Length);
@@ -133,7 +152,6 @@ void TaskCosmeticLine::setUiPrimary()
     ui->qsby1->setUnit(Base::Unit::Length);
     ui->qsbz1->setValue(p1.z);
 
-    Base::Vector3d p2 = m_points.back();
     ui->qsbx2->setUnit(Base::Unit::Length);
     ui->qsbx2->setValue(p2.x);
     ui->qsby2->setUnit(Base::Unit::Length);
@@ -165,6 +183,7 @@ void TaskCosmeticLine::setUiEdit()
 //******************************************************************************
 void TaskCosmeticLine::createCosmeticLine(void)
 {
+//    Base::Console().Message("TCL::createCosmeticLine()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
     double x = ui->qsbx1->value().getValue();
@@ -177,18 +196,6 @@ void TaskCosmeticLine::createCosmeticLine(void)
     z = ui->qsbz2->value().getValue();
     Base::Vector3d p1(x, y, z);
 
-    Base::Vector3d centroid = m_partFeat->getOriginalCentroid();
-
-    if (ui->rb3d1->isChecked()) {
-        p0 = p0 - centroid;
-        p0 = DrawUtil::invertY(m_partFeat->projectPoint(p0));
-    }
-
-    if (ui->rb3d2->isChecked()) {
-        p1 = p1 - centroid;
-        p1 = DrawUtil::invertY(m_partFeat->projectPoint(p1));
-    }
-
     m_tag = m_partFeat->addCosmeticEdge(p0, p1);
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
 
@@ -197,6 +204,7 @@ void TaskCosmeticLine::createCosmeticLine(void)
 
 void TaskCosmeticLine::updateCosmeticLine(void)
 {
+//    Base::Console().Message("TCL::updateCosmeticLine()\n");
     double x = ui->qsbx1->value().getValue();
     double y = ui->qsby1->value().getValue();
     double z = ui->qsbz1->value().getValue();
@@ -212,15 +220,11 @@ void TaskCosmeticLine::updateCosmeticLine(void)
     //replace the geometry
     m_ce->permaStart = p0;
     m_ce->permaEnd = p1;
+
     gp_Pnt gp1(p0.x, p0.y, p0.z);
     gp_Pnt gp2(p1.x, p1.y, p1.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-//    auto oldGeom = m_ce->m_geometry;
     m_ce->m_geometry = TechDraw::BaseGeom::baseFactory(e);
-//    delete oldGeom;
-
-//    Gui::Command::updateActive();
-//    Gui::Command::commitCommand();
 }
 
 //******************************************************************************

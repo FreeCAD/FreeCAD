@@ -234,9 +234,7 @@ Rubberband::Rubberband() : viewer(nullptr)
     rgb_a = 1.0f;
 }
 
-Rubberband::~Rubberband()
-{
-}
+Rubberband::~Rubberband() = default;
 
 void Rubberband::setWorking(bool on)
 {
@@ -340,9 +338,7 @@ Polyline::Polyline() : viewer(nullptr)
     rgb_a = 1.0f;
 }
 
-Polyline::~Polyline()
-{
-}
+Polyline::~Polyline() = default;
 
 void Polyline::setWorking(bool on)
 {

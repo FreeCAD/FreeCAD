@@ -98,13 +98,9 @@ void ControlPy::init_type()
                         "showModelView()");
 }
 
-ControlPy::ControlPy()
-{
-}
+ControlPy::ControlPy() = default;
 
-ControlPy::~ControlPy()
-{
-}
+ControlPy::~ControlPy() = default;
 
 Py::Object ControlPy::repr()
 {
@@ -363,9 +359,7 @@ TaskDialogPy::TaskDialogPy(TaskDialog* dlg)
 {
 }
 
-TaskDialogPy::~TaskDialogPy()
-{
-}
+TaskDialogPy::~TaskDialogPy() = default;
 
 Py::Object TaskDialogPy::repr()
 {

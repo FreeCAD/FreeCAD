@@ -81,8 +81,7 @@ expandSubObjectNames(const App::DocumentObject *obj,
     return res;
 }
 
-Exporter::Exporter()
-{ }
+Exporter::Exporter() = default;
 
 //static
 std::string Exporter::xmlEscape(const std::string &input)

@@ -55,7 +55,7 @@ class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 
 public:
     LinkBaseExtension();
-    ~LinkBaseExtension() override;
+    ~LinkBaseExtension() override = default;
 
     PropertyBool _LinkTouched;
     PropertyInteger _LinkOwner;
@@ -411,7 +411,7 @@ class AppExport LinkExtension : public LinkBaseExtension
 
 public:
     LinkExtension();
-    ~LinkExtension() override;
+    ~LinkExtension() override = default;
 
     /** \name Helpers for defining extended parameter
      *

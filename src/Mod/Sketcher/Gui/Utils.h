@@ -145,6 +145,8 @@ bool isSketchInEdit(Gui::Document* doc);
 /// sketcher is no special state or a sketchHandler is active.
 bool isCommandActive(Gui::Document* doc, bool actsOnSelection = false);
 
+bool isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection);
+
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider();
@@ -162,6 +164,7 @@ bool showCursorCoords();
 bool useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
+
 }// namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane

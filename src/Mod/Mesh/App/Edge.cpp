@@ -52,9 +52,7 @@ Edge::Edge(const Edge& e)
     }
 }
 
-Edge::~Edge()
-{
-}
+Edge::~Edge() = default;
 
 void Edge::operator = (const Edge& e)
 {

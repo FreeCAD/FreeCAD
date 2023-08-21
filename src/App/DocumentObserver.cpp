@@ -259,10 +259,7 @@ Property *DocumentObjectT::getProperty() const {
 
 SubObjectT::SubObjectT() = default;
 
-SubObjectT::SubObjectT(const SubObjectT &other)
-    :DocumentObjectT(other), subname(other.subname)
-{
-}
+SubObjectT::SubObjectT(const SubObjectT &) = default;
 
 SubObjectT::SubObjectT(SubObjectT &&other)
     :DocumentObjectT(std::move(other)), subname(std::move(other.subname))

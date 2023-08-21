@@ -389,8 +389,7 @@ bool TaskFemConstraintForce::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
-TaskFemConstraintForce::~TaskFemConstraintForce()
-{}
+TaskFemConstraintForce::~TaskFemConstraintForce() = default;
 
 bool TaskFemConstraintForce::event(QEvent* e)
 {

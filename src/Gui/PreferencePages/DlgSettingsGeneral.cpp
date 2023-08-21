@@ -111,9 +111,7 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsGeneral::~DlgSettingsGeneral()
-{
-}
+DlgSettingsGeneral::~DlgSettingsGeneral() = default;
 
 /** Sets the size of the recent file list from the user parameters.
  * @see RecentFilesAction

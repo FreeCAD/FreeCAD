@@ -872,6 +872,9 @@ class TestPathGeom(PathTestBase):
         edge = Part.Edge(spline)
         self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
 
+        edge = Part.Edge(spline, 4, 12)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
         edge = Part.Edge(
             Part.BSplineCurve(
                 [

@@ -80,8 +80,7 @@ class SoFCMeshObjectShape;
 class MeshGuiExport ViewProviderMeshBuilder : public Gui::ViewProviderBuilder
 {
 public:
-    ViewProviderMeshBuilder(){}
-    ~ViewProviderMeshBuilder() override{}
+    ViewProviderMeshBuilder() = default;
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*) const;
     void createMesh(const MeshCore::MeshKernel&, SoCoordinate3*, SoIndexedFaceSet*) const;

@@ -110,8 +110,9 @@ public:
   MeshPoint () : _ucFlag(0), _ulProp(0) { }
   inline MeshPoint (float x, float y, float z);
   inline MeshPoint (const Base::Vector3f &rclPt);//explicit bombs
-  inline MeshPoint (const MeshPoint &rclPt);
-  ~MeshPoint () { }
+  inline MeshPoint (const MeshPoint &rclPt) = default;
+  inline MeshPoint (MeshPoint &&rclPt) = default;
+  ~MeshPoint () = default;
   //@}
 
 public:
@@ -136,7 +137,8 @@ public:
   //@}
 
   // Assignment
-  inline MeshPoint& operator = (const MeshPoint &rclPt);
+  inline MeshPoint& operator = (const MeshPoint &rclPt) = default;
+  inline MeshPoint& operator = (MeshPoint &&rclPt) = default;
 
   // compare operator
   inline bool operator == (const MeshPoint &rclPt) const;
@@ -239,9 +241,10 @@ public:
   /** @name Construction */
   //@{
   inline MeshFacet ();
-  inline MeshFacet(const MeshFacet &rclF);
+  inline MeshFacet(const MeshFacet &rclF) = default;
+  inline MeshFacet(MeshFacet &&rclF) = default;
   inline MeshFacet(PointIndex p1,PointIndex p2,PointIndex p3,FacetIndex n1=FACET_INDEX_MAX,FacetIndex n2=FACET_INDEX_MAX,FacetIndex n3=FACET_INDEX_MAX);
-  ~MeshFacet () { }
+  ~MeshFacet () = default;
   //@}
 
   /** @name Flag state
@@ -270,7 +273,8 @@ public:
   //@}
 
   // Assignment
-  inline MeshFacet& operator = (const MeshFacet &rclF);
+  inline MeshFacet& operator = (const MeshFacet &rclF) = default;
+  inline MeshFacet& operator = (MeshFacet &&rclF) = default;
   inline void SetVertices(PointIndex,PointIndex,PointIndex);
   inline void SetNeighbours(FacetIndex,FacetIndex,FacetIndex);
 
@@ -370,9 +374,14 @@ public:
   MeshGeomFacet ();
   /// Constructor with the corner points
   MeshGeomFacet (const Base::Vector3f &v1,const Base::Vector3f &v2,const Base::Vector3f &v3);
+  MeshGeomFacet(const MeshGeomFacet&) = default;
+  MeshGeomFacet(MeshGeomFacet&&) = default;
    /// Destruction
-  ~MeshGeomFacet () { }
+  ~MeshGeomFacet () = default;
   //@}
+
+  MeshGeomFacet& operator = (const MeshGeomFacet&) = default;
+  MeshGeomFacet& operator = (MeshGeomFacet&&) = default;
 
 public:
   /**
@@ -580,13 +589,14 @@ public:
   /** @name Construction */
   //@{
   // constructor
-  MeshPointArray () { }
+  MeshPointArray () = default;
   // constructor
   explicit MeshPointArray (PointIndex ulSize) : TMeshPointArray(ulSize) { }
   /// copy-constructor
   MeshPointArray (const MeshPointArray&);
+  MeshPointArray (MeshPointArray&&);
   // Destructor
-  ~MeshPointArray () { }
+  ~MeshPointArray () = default;
   //@}
 
   /** @name Flag state
@@ -605,6 +615,7 @@ public:
 
   // Assignment
   MeshPointArray& operator = (const MeshPointArray &rclPAry);
+  MeshPointArray& operator = (MeshPointArray &&rclPAry);
   void Transform(const Base::Matrix4D&);
   /**
    * Searches for the first point index  Two points are equal if the distance is less
@@ -634,13 +645,14 @@ public:
     /** @name Construction */
     //@{
     /// constructor
-    MeshFacetArray () { }
+    MeshFacetArray () = default;
     /// constructor
     explicit MeshFacetArray (FacetIndex ulSize) : TMeshFacetArray(ulSize) { }
     /// copy-constructor
     MeshFacetArray (const MeshFacetArray&);
+    MeshFacetArray (MeshFacetArray&&);
     /// destructor
-    ~MeshFacetArray () { }
+    ~MeshFacetArray () = default;
     //@}
 
     /** @name Flag state
@@ -660,6 +672,7 @@ public:
 
     // Assignment
     MeshFacetArray& operator = (const MeshFacetArray &rclFAry);
+    MeshFacetArray& operator = (MeshFacetArray &&rclFAry);
 
     /**
      * Removes the facet from the array the iterator points to. All neighbour
@@ -687,11 +700,15 @@ public:
         : rPoints(points)
     {
     }
+    ~MeshPointModifier() = default;
 
-    MeshPointModifier(const MeshPointModifier& c)
-        : rPoints(c.rPoints)
-    {
-    }
+    MeshPointArray& GetPoints() const { return rPoints; }
+
+    MeshPointModifier(const MeshPointModifier& c) = default;
+    MeshPointModifier(MeshPointModifier&& c) = default;
+
+    MeshPointModifier& operator = (const MeshPointModifier& c) = delete;
+    MeshPointModifier& operator = (MeshPointModifier&& c) = delete;
 
 private:
     MeshPointArray& rPoints;
@@ -708,11 +725,12 @@ public:
         : rFacets(facets)
     {
     }
+    ~MeshFacetModifier() = default;
 
-    MeshFacetModifier(const MeshFacetModifier& c)
-        : rFacets(c.rFacets)
-    {
-    }
+    MeshFacetModifier(const MeshFacetModifier& c) = default;
+    MeshFacetModifier(MeshFacetModifier&& c) = default;
+    MeshFacetModifier& operator = (const MeshFacetModifier& c) = delete;
+    MeshFacetModifier& operator = (MeshFacetModifier&& c) = delete;
 
     /**
      * Replaces the index of the corner point of the facet at position \a pos
@@ -729,48 +747,17 @@ private:
 };
 
 inline MeshPoint::MeshPoint (float x, float y, float z)
-#ifdef _MSC_VER
-: Vector3f(x, y, z),
-#else
-: Base::Vector3f(x, y, z),
-#endif
-  _ucFlag(0),
-  _ulProp(0)
+  : Base::Vector3f(x, y, z),
+    _ucFlag(0),
+    _ulProp(0)
 {
 }
 
 inline MeshPoint::MeshPoint (const Base::Vector3f &rclPt)
-#ifdef _MSC_VER
-: Vector3f(rclPt),
-#else
-: Base::Vector3f(rclPt),
-#endif
-  _ucFlag(0),
-  _ulProp(0)
+  : Base::Vector3f(rclPt),
+    _ucFlag(0),
+    _ulProp(0)
 {
-}
-
-inline MeshPoint::MeshPoint (const MeshPoint &rclPt)
-#ifdef _MSC_VER
-: Vector3f(rclPt),
-#else
-: Base::Vector3f(rclPt),
-#endif
-  _ucFlag(rclPt._ucFlag),
-  _ulProp(rclPt._ulProp)
-{
-}
-
-inline MeshPoint& MeshPoint::operator = (const MeshPoint &rclPt)
-{
-#ifdef _MSC_VER
-    Vector3f::operator=(rclPt);
-#else
-    Base::Vector3f::operator=(rclPt);
-#endif
-    _ucFlag = rclPt._ucFlag;
-    _ulProp = rclPt._ulProp;
-    return *this;
 }
 
 inline bool MeshPoint::operator == (const MeshPoint &rclPt) const
@@ -844,7 +831,7 @@ inline void MeshGeomFacet::AdjustCirculationDirection ()
 
 inline Base::BoundBox3f MeshGeomFacet::GetBoundBox () const
 {
-    return Base::BoundBox3f(_aclPoints, 3);
+    return {_aclPoints, 3};
 }
 
 inline float MeshGeomFacet::Perimeter() const
@@ -900,19 +887,6 @@ inline MeshFacet::MeshFacet ()
     memset(_aulPoints, 0xff, sizeof(PointIndex) * 3);
 }
 
-inline MeshFacet::MeshFacet(const MeshFacet &rclF)
-: _ucFlag(rclF._ucFlag),
-  _ulProp(rclF._ulProp)
-{
-    _aulPoints[0] = rclF._aulPoints[0];
-    _aulPoints[1] = rclF._aulPoints[1];
-    _aulPoints[2] = rclF._aulPoints[2];
-
-    _aulNeighbours[0] = rclF._aulNeighbours[0];
-    _aulNeighbours[1] = rclF._aulNeighbours[1];
-    _aulNeighbours[2] = rclF._aulNeighbours[2];
-}
-
 inline MeshFacet::MeshFacet(PointIndex p1,PointIndex p2,PointIndex p3,
                             FacetIndex n1,FacetIndex n2,FacetIndex n3)
 : _ucFlag(0),
@@ -925,22 +899,6 @@ inline MeshFacet::MeshFacet(PointIndex p1,PointIndex p2,PointIndex p3,
     _aulNeighbours[0] = n1;
     _aulNeighbours[1] = n2;
     _aulNeighbours[2] = n3;
-}
-
-inline MeshFacet& MeshFacet::operator = (const MeshFacet &rclF)
-{
-    _ucFlag          = rclF._ucFlag;
-    _ulProp          = rclF._ulProp;
-
-    _aulPoints[0]    = rclF._aulPoints[0];
-    _aulPoints[1]    = rclF._aulPoints[1];
-    _aulPoints[2]    = rclF._aulPoints[2];
-
-    _aulNeighbours[0] = rclF._aulNeighbours[0];
-    _aulNeighbours[1] = rclF._aulNeighbours[1];
-    _aulNeighbours[2] = rclF._aulNeighbours[2];
-
-    return *this;
 }
 
 void MeshFacet::SetVertices(PointIndex p1,PointIndex p2,PointIndex p3)

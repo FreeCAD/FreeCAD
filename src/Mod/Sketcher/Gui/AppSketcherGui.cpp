@@ -47,6 +47,7 @@ void CreateSketcherCommandsConstraints();
 void CreateSketcherCommandsConstraintAccel();
 void CreateSketcherCommandsAlterGeo();
 void CreateSketcherCommandsBSpline();
+void CreateSketcherCommandsOverlay();
 void CreateSketcherCommandsVirtualSpace();
 
 void loadSketcherResource()
@@ -108,6 +109,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/pointers"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/splines"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/overlay"));
 
     // instantiating the commands
     CreateSketcherCommands();
@@ -116,6 +118,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
     CreateSketcherCommandsBSpline();
+    CreateSketcherCommandsOverlay();
     CreateSketcherCommandsVirtualSpace();
 
     SketcherGui::Workbench::init();

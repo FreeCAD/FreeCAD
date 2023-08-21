@@ -40,7 +40,6 @@ class MeshGuiExport Workbench : public Gui::StdWorkbench
 
 public:
   Workbench();
-  ~Workbench() override;
 
   void activated() override;
   void deactivated() override;
