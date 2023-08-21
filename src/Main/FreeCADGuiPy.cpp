@@ -65,7 +65,7 @@ public:
     QtApplication(int &argc, char **argv)
         : QApplication(argc, argv) {
     }
-    bool notify (QObject * receiver, QEvent * event) {
+    bool notify (QObject * receiver, QEvent * event) override {
         try {
             return QApplication::notify(receiver, event);
         }

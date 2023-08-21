@@ -1093,8 +1093,8 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         }
 
         Py::List points;
-        for (size_t i = 0; i < pairs.size(); i++) {
-            points.append(Py::asObject(new PointPy(new GeomPoint(pairs[i].first))));
+        for (const auto & pair : pairs) {
+            points.append(Py::asObject(new PointPy(new GeomPoint(pair.first))));
         }
 
         return Py::new_reference_to(points);

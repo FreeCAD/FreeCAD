@@ -45,16 +45,7 @@ Exception::Exception()
   _sErrMsg = "FreeCAD Exception";
 }
 
-Exception::Exception(const Exception &inst)
-  : BaseClass(inst)
-  , _sErrMsg(inst._sErrMsg)
-  , _file(inst._file)
-  , _line(inst._line)
-  , _function(inst._function)
-  , _isTranslatable(inst._isTranslatable)
-  , _isReported(inst._isReported)
-{
-}
+Exception::Exception(const Exception &inst) = default;
 
 Exception::Exception(const char * sMessage)
   : _sErrMsg(sMessage)
@@ -81,7 +72,7 @@ Exception &Exception::operator=(const Exception &inst)
     return *this;
 }
 
-const char* Exception::what() const throw()
+const char* Exception::what() const noexcept
 {
     return _sErrMsg.c_str();
 }
@@ -174,7 +165,7 @@ AbortException::AbortException()
     _sErrMsg = "Aborted operation";
 }
 
-const char* AbortException::what() const throw()
+const char* AbortException::what() const noexcept
 {
     return Exception::what();
 }
@@ -224,7 +215,7 @@ XMLParseException::XMLParseException()
     _sErrMsg = "XML parse exception";
 }
 
-const char* XMLParseException::what() const throw()
+const char* XMLParseException::what() const noexcept
 {
     return XMLBaseException::what();
 }
@@ -251,7 +242,7 @@ XMLAttributeError::XMLAttributeError()
     _sErrMsg = "XML attribute error";
 }
 
-const char* XMLAttributeError::what() const throw()
+const char* XMLAttributeError::what() const noexcept
 {
     return XMLBaseException::what();
 }
@@ -282,13 +273,6 @@ FileException::FileException()
     _sErrMsgAndFileName = _sErrMsg;
 }
 
-FileException::FileException(const FileException &inst)
-  : Exception(inst._sErrMsg.c_str())
-  , file(inst.file)
-  , _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
-{
-}
-
 void FileException::setFileName(const char * sFileName)
 {
     file.setFile(sFileName);
@@ -312,7 +296,7 @@ FileException & FileException::operator=(const FileException &inst)
     return *this;
 }
 
-const char* FileException::what() const throw()
+const char* FileException::what() const noexcept
 {
     return _sErrMsgAndFileName.c_str();
 }
@@ -428,7 +412,7 @@ MemoryException & MemoryException::operator=(const MemoryException &inst)
 }
 
 #if defined (__GNUC__)
-const char* MemoryException::what() const throw()
+const char* MemoryException::what() const noexcept
 {
     // call what() of Exception, not of std::bad_alloc
     return Exception::what();

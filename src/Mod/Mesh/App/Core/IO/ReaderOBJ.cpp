@@ -46,8 +46,8 @@ ReaderOBJ::ReaderOBJ(MeshKernel& kernel, Material* material)
 bool ReaderOBJ::Load(std::istream &str)
 {
     boost::regex rx_m("^mtllib\\s+(.+)\\s*$");
-    boost::regex rx_u("^usemtl\\s+([\\x21-\\x7E]+)\\s*$");
-    boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_u(R"(^usemtl\s+([\x21-\x7E]+)\s*$)");
+    boost::regex rx_g(R"(^g\s+([\x21-\x7E]+)\s*$)");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
@@ -209,8 +209,8 @@ bool ReaderOBJ::Load(std::istream &str)
             _material->binding = MeshIO::PER_VERTEX;
             _material->diffuseColor.reserve(meshPoints.size());
 
-            for (MeshPointArray::iterator it = meshPoints.begin(); it != meshPoints.end(); ++it) {
-                unsigned long prop = it->_ulProp;
+            for (const auto & it : meshPoints) {
+                unsigned long prop = it._ulProp;
                 App::Color c;
                 c.setPackedValue(static_cast<uint32_t>(prop));
                 _material->diffuseColor.push_back(c);
@@ -312,32 +312,32 @@ bool ReaderOBJ::LoadMaterial(std::istream &str)
         }
     }
 
-    for (auto it = _materialNames.begin(); it != _materialNames.end(); ++it) {
+    for (const auto & it : _materialNames) {
         {
-            auto jt = materialAmbientColor.find(it->first);
+            auto jt = materialAmbientColor.find(it.first);
             if (jt != materialAmbientColor.end()) {
-                std::vector<App::Color> mat(it->second, jt->second);
+                std::vector<App::Color> mat(it.second, jt->second);
                 ambientColor.insert(ambientColor.end(), mat.begin(), mat.end());
             }
         }
         {
-            auto jt = materialDiffuseColor.find(it->first);
+            auto jt = materialDiffuseColor.find(it.first);
             if (jt != materialDiffuseColor.end()) {
-                std::vector<App::Color> mat(it->second, jt->second);
+                std::vector<App::Color> mat(it.second, jt->second);
                 diffuseColor.insert(diffuseColor.end(), mat.begin(), mat.end());
             }
         }
         {
-            auto jt = materialSpecularColor.find(it->first);
+            auto jt = materialSpecularColor.find(it.first);
             if (jt != materialSpecularColor.end()) {
-                std::vector<App::Color> mat(it->second, jt->second);
+                std::vector<App::Color> mat(it.second, jt->second);
                 specularColor.insert(specularColor.end(), mat.begin(), mat.end());
             }
         }
         {
-            auto jt = materialTransparency.find(it->first);
+            auto jt = materialTransparency.find(it.first);
             if (jt != materialTransparency.end()) {
-                std::vector<float> transp(it->second, jt->second);
+                std::vector<float> transp(it.second, jt->second);
                 transparency.insert(transparency.end(), transp.begin(), transp.end());
             }
         }

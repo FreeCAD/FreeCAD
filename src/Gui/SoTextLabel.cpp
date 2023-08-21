@@ -485,6 +485,4 @@ TranslateManip::TranslateManip()
     setDragger(myDrag);
 }
 
-TranslateManip::~TranslateManip()
-{
-}
+TranslateManip::~TranslateManip() = default;

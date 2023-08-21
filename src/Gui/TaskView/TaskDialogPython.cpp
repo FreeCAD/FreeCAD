@@ -98,13 +98,9 @@ void ControlPy::init_type()
                         "showModelView()");
 }
 
-ControlPy::ControlPy()
-{
-}
+ControlPy::ControlPy() = default;
 
-ControlPy::~ControlPy()
-{
-}
+ControlPy::~ControlPy() = default;
 
 Py::Object ControlPy::repr()
 {
@@ -363,9 +359,7 @@ TaskDialogPy::TaskDialogPy(TaskDialog* dlg)
 {
 }
 
-TaskDialogPy::~TaskDialogPy()
-{
-}
+TaskDialogPy::~TaskDialogPy() = default;
 
 Py::Object TaskDialogPy::repr()
 {
@@ -742,7 +736,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
             Py::Tuple args;
             Py::Int ret(method.apply(args));
             int value = (int)ret;
-            return QDialogButtonBox::StandardButtons(value);
+            return {value};
         }
     }
     catch (Py::Exception&) {

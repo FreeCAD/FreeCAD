@@ -123,7 +123,7 @@ void CmdPointsExport::activated(int iMsg)
 
     addModule(Command::App, "Points");
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
+    for (auto point : points) {
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
           QString(), QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
           .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
@@ -133,7 +133,7 @@ void CmdPointsExport::activated(int iMsg)
         if (!fn.isEmpty()) {
             fn = Base::Tools::escapeEncodeFilename(fn);
             doCommand(Command::Doc, "Points.export([App.ActiveDocument.%s], \"%s\")",
-                      (*it)->getNameInDocument(), fn.toUtf8().data());
+                      point->getNameInDocument(), fn.toUtf8().data());
         }
     }
 }

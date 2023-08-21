@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Approximate a cylinder</source>
-      <translation>Approximate a cylinder</translation>
+      <translation type="unfinished">Approximate a cylinder</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Plane...</source>
-      <translation>平面...</translation>
+      <translation type="unfinished">Plane...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="319"/>
       <source>Polynomial surface</source>
-      <translation>Polynomial surface</translation>
+      <translation type="unfinished">Polynomial surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Approximate a polynomial surface</translation>
+      <translation type="unfinished">Approximate a polynomial surface</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Approximate a sphere</source>
-      <translation>Approximate a sphere</translation>
+      <translation type="unfinished">Approximate a sphere</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Approximate B-spline surface...</translation>
+      <translation type="unfinished">Approximate B-spline surface...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Approximate a B-spline surface</translation>
+      <translation type="unfinished">Approximate a B-spline surface</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Wire from mesh boundary...</translation>
+      <translation type="unfinished">Wire from mesh boundary...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Create wire from mesh boundaries</translation>
+      <translation type="unfinished">Create wire from mesh boundaries</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="551"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation type="unfinished">Poisson...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson surface reconstruction</translation>
+      <translation type="unfinished">Poisson surface reconstruction</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Mesh segmentation...</source>
-      <translation>Mesh segmentation...</translation>
+      <translation type="unfinished">Mesh segmentation...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="375"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>From components</source>
-      <translation>From components</translation>
+      <translation type="unfinished">From components</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Create mesh segments from components</source>
-      <translation>Create mesh segments from components</translation>
+      <translation type="unfinished">Create mesh segments from components</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Manual segmentation...</source>
-      <translation>Manual segmentation...</translation>
+      <translation type="unfinished">Manual segmentation...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Create mesh segments manually</source>
-      <translation>Create mesh segments manually</translation>
+      <translation type="unfinished">Create mesh segments manually</translation>
     </message>
   </context>
   <context>
@@ -191,13 +191,13 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Structured point clouds</source>
-      <translation>Structured point clouds</translation>
+      <translation type="unfinished">Structured point clouds</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="586"/>
       <location filename="../../Command.cpp" line="587"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulation of structured point clouds</translation>
+      <translation type="unfinished">Triangulation of structured point clouds</translation>
     </message>
   </context>
   <context>
@@ -205,47 +205,47 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>Fit plane</source>
-      <translation>最適化平面</translation>
+      <translation type="unfinished">Fit plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
-      <translation>最適化圓柱</translation>
+      <translation type="unfinished">Fit cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
-      <translation>最適化球體</translation>
+      <translation type="unfinished">Fit sphere</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
       <source>Fit polynomial surface</source>
-      <translation>Fit polynomial surface</translation>
+      <translation type="unfinished">Fit polynomial surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>View triangulation</source>
-      <translation>View triangulation</translation>
+      <translation type="unfinished">View triangulation</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
-      <translation>放置位置</translation>
+      <translation>佈置</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
-      <translation>最適化B-雲行線</translation>
+      <translation type="unfinished">Fit B-Spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="91"/>
       <source>Poisson reconstruction</source>
-      <translation>Poisson reconstruction</translation>
+      <translation type="unfinished">Poisson reconstruction</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="257"/>
       <source>Segmentation</source>
-      <translation>Segmentation</translation>
+      <translation type="unfinished">Segmentation</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>最適化B-雲行線表面</translation>
+      <translation type="unfinished">Fit B-spline surface</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
@@ -295,12 +295,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation>User-defined u/v directions</translation>
+      <translation type="unfinished">User-defined u/v directions</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation>Create placement</translation>
+      <translation type="unfinished">Create placement</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -331,20 +331,20 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Please select a single placement object to get local orientation.</translation>
+      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
     </message>
   </context>
   <context>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation type="unfinished">Poisson</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -362,17 +362,17 @@
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation>Octree depth</translation>
+      <translation type="unfinished">Octree depth</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Solver divide</translation>
+      <translation type="unfinished">Solver divide</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation>Samples per node</translation>
+      <translation type="unfinished">Samples per node</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="98"/>
@@ -386,17 +386,17 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>錯誤的選擇</translation>
+      <translation>錯誤的選取</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation>Please select a point cloud or mesh.</translation>
+      <translation type="unfinished">Please select a point cloud or mesh.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="564"/>
       <source>Please select a single point cloud.</source>
-      <translation>Please select a single point cloud.</translation>
+      <translation type="unfinished">Please select a single point cloud.</translation>
     </message>
   </context>
   <context>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <source>View triangulation failed</source>
-      <translation>View triangulation failed</translation>
+      <translation type="unfinished">View triangulation failed</translation>
     </message>
   </context>
   <context>
@@ -427,12 +427,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
-      <translation>Curvature tolerance</translation>
+      <translation type="unfinished">Curvature tolerance</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
-      <translation>Distance to plane</translation>
+      <translation type="unfinished">Distance to plane</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation>Create mesh from unused triangles</translation>
+      <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation>Create compound</translation>
+      <translation type="unfinished">Create compound</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation>Manual segmentation</translation>
+      <translation type="unfinished">Manual segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -507,7 +507,7 @@
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Detect</source>
-      <translation>偵測</translation>
+      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="135"/>
@@ -551,17 +551,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation>Segmentation</translation>
+      <translation type="unfinished">Segmentation</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation>Cut segment from mesh</translation>
+      <translation type="unfinished">Cut segment from mesh</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation>Hide segment</translation>
+      <translation type="unfinished">Hide segment</translation>
     </message>
   </context>
   <context>

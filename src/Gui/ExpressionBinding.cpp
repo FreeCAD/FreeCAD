@@ -45,7 +45,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 ExpressionBinding::ExpressionBinding()
     : m_autoApply(false)
@@ -53,9 +53,7 @@ ExpressionBinding::ExpressionBinding()
 }
 
 
-ExpressionBinding::~ExpressionBinding()
-{
-}
+ExpressionBinding::~ExpressionBinding() = default;
 
 bool ExpressionBinding::isBound() const
 {
@@ -111,9 +109,11 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
     if (docObj) {
-        expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+        //NOLINTBEGIN
+        expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(std::bind(&ExpressionBinding::expressionChange, this, sp::_1));
         App::Document* doc = docObj->getDocument();
-        objectdeleted = doc->signalDeletedObject.connect(boost::bind(&ExpressionBinding::objectDeleted, this, bp::_1));
+        objectdeleted = doc->signalDeletedObject.connect(std::bind(&ExpressionBinding::objectDeleted, this, sp::_1));
+        //NOLINTEND
     }
 }
 
@@ -158,7 +158,7 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
         else
             throw;
     }
-    return std::string();
+    return {};
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const

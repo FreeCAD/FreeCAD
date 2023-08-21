@@ -23,7 +23,7 @@ if(BUILD_GUI)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
     endif()
 endif()
-if (BUILD_TEST)
+if (ENABLE_DEVELOPER_TESTS)
     list (APPEND FREECAD_QT_COMPONENTS Test)
 endif ()
 
@@ -37,6 +37,8 @@ endforeach()
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(QtCore_MOC_EXECUTABLE ${Qt${FREECAD_QT_MAJOR_VERSION}Core_MOC_EXECUTABLE})
+
+add_definitions(-DQT_NO_KEYWORDS)
 
 message(STATUS "Set up to compile with Qt ${Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION}")
 

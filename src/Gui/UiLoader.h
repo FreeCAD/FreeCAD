@@ -91,7 +91,7 @@ class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
 
 public:
     PySideUicModule();
-    ~PySideUicModule() override {}
+    ~PySideUicModule() override = default;
 
 private:
     Py::Object loadUiType(const Py::Tuple& args);
@@ -128,7 +128,7 @@ public:
      *
      * @see https://github.com/FreeCAD/FreeCAD/issues/8708
      */
-    static std::unique_ptr<UiLoader> newInstance(QObject *parent=0);
+    static std::unique_ptr<UiLoader> newInstance(QObject *parent=nullptr);
 
     ~UiLoader() override;
 

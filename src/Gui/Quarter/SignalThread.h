@@ -46,9 +46,9 @@ class SignalThread : public QThread {
   Q_OBJECT
 public:
   SignalThread();
-  virtual ~SignalThread();
+  ~SignalThread() override;
 
-  virtual void run();
+  void run() override;
   void trigger();
   void stopThread();
 

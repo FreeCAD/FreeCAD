@@ -94,7 +94,7 @@ public:
     // Too bad, VC2013 does not support constructor inheritance
     //using boost::intrusive_ptr<T>::intrusive_ptr;
     using inherited = boost::intrusive_ptr<T>;
-    CoinPtr() {}
+    CoinPtr() = default;
     CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
     template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
 
@@ -142,6 +142,8 @@ public:
     virtual SoSeparator* getBackRoot() const;
     ///Indicate whether to be added to scene graph or not
     virtual bool canAddToSceneGraph() const {return true;}
+    // Indicate whether to be added to object group (true) or only to scene graph (false)
+    virtual bool isPartOfPhysicalObject() const {return true;}
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
@@ -164,7 +166,7 @@ public:
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const { return std::string(); }
+    virtual std::string getElement(const SoDetail *) const { return {}; }
     /// return the coin node detail of the subelement
     virtual SoDetail* getDetail(const char *) const { return nullptr; }
 
@@ -201,7 +203,7 @@ public:
     /// return the highlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         (void)Element;
-        return std::vector<Base::Vector3d>();
+        return {};
     }
 
     /** Return the bound box of this view object
@@ -310,7 +312,7 @@ public:
             const char *subname, const std::vector<std::string> &elements) const;
 
     /// return a subname referencing the sub-object holding the dropped objects
-    virtual std::string getDropPrefix() const { return std::string(); }
+    virtual std::string getDropPrefix() const { return {}; }
 
     /** Add an object with full qualified name to the view provider by drag and drop
      *

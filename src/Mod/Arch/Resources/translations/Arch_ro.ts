@@ -2243,7 +2243,7 @@ Dacă rulează = 0, atunci rularea este calculată astfel încât înălțimea s
       <translation>Înălţime (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Ușă</translation>
     </message>
@@ -2293,7 +2293,7 @@ Dacă rulează = 0, atunci rularea este calculată astfel încât înălțimea s
       <translation>Referință deschisă</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Creează o referință externă</translation>
     </message>
@@ -6198,12 +6198,12 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Referință externă</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Creează un obiect de referință extern</translation>
     </message>

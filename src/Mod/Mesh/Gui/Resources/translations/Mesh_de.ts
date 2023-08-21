@@ -253,7 +253,7 @@
     <message>
       <location filename="../../Command.cpp" line="427"/>
       <source>Create mesh from geometry...</source>
-      <translation>Erzeuge Netz aus Geometrie...</translation>
+      <translation>Netz aus Geometrie erstellen...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="428"/>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../Command.cpp" line="854"/>
       <source>Create section from mesh and plane</source>
-      <translation>Schnitt aus Netz und Ebene erstellen</translation>
+      <translation>Schnittlinie aus Netz und Ebene erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="855"/>
@@ -586,12 +586,12 @@
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Split by components</source>
-      <translation>Nach Komponenten teilen</translation>
+      <translation>In Komponenten auftrennen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1606"/>
       <source>Split selected mesh into its components</source>
-      <translation>Ausgewähltes Netz in seine Komponenten teilen</translation>
+      <translation>Teilt das ausgewählte Netz in seine Komponenten auf</translation>
     </message>
   </context>
   <context>
@@ -782,34 +782,34 @@
       <translation>Auswahl löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="916"/>
-      <location filename="../../ViewProvider.cpp" line="971"/>
+      <location filename="../../ViewProvider.cpp" line="922"/>
+      <location filename="../../ViewProvider.cpp" line="977"/>
       <source>Cut</source>
-      <translation>Differenz</translation>
+      <translation>Schneiden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="925"/>
-      <location filename="../../ViewProvider.cpp" line="1032"/>
+      <location filename="../../ViewProvider.cpp" line="931"/>
+      <location filename="../../ViewProvider.cpp" line="1040"/>
       <source>Trim</source>
-      <translation>Beschneiden</translation>
+      <translation>Zuschneiden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1109"/>
+      <location filename="../../ViewProvider.cpp" line="1119"/>
       <source>Split</source>
       <translation>Teilen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1183"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1719"/>
+      <location filename="../../ViewProvider.cpp" line="1729"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1836"/>
       <source>Fill hole</source>
       <translation>Loch füllen</translation>
     </message>
@@ -1580,7 +1580,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../RemeshGmsh.cpp" line="263"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
   </context>
   <context>
@@ -1609,7 +1609,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="730"/>
       <source>Finish</source>
       <translation>Fertig</translation>
     </message>
@@ -1717,7 +1717,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Löschen</translation>
+      <translation>Leeren</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1812,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Ebene</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1882,7 +1882,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Ebene</translation>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1940,7 +1940,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="406"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Zentrum</translation>
     </message>
   </context>
   <context>
@@ -1959,7 +1959,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Löschen</translation>
+      <translation>Leeren</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
@@ -2277,43 +2277,43 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>Komponenten anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="782"/>
+      <location filename="../../ViewProvider.cpp" line="784"/>
       <source>Display segments</source>
       <translation>Segmente anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="788"/>
+      <location filename="../../ViewProvider.cpp" line="792"/>
       <source>Display colors</source>
       <translation>Farben anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1570"/>
+      <location filename="../../ViewProvider.cpp" line="1580"/>
       <location filename="../../ViewProviderCurvature.cpp" line="498"/>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1629"/>
+      <location filename="../../ViewProvider.cpp" line="1639"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1652"/>
+      <location filename="../../ViewProvider.cpp" line="1662"/>
       <source>Leave hole-filling mode</source>
       <translation>Löcher-Schließen-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1698"/>
+      <location filename="../../ViewProvider.cpp" line="1708"/>
       <source>Leave removal mode</source>
       <translation>Entfernen-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1699"/>
+      <location filename="../../ViewProvider.cpp" line="1709"/>
       <source>Delete selected faces</source>
       <translation>Selektierte Dreiecke löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1700"/>
+      <location filename="../../ViewProvider.cpp" line="1710"/>
       <source>Clear selected faces</source>
       <translation>Auswahl aufheben</translation>
     </message>

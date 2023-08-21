@@ -65,7 +65,7 @@
 #include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
-#include "DlgSettingsCacheDirectory.h"
+#include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
@@ -83,7 +83,8 @@
 #include "MDIViewPy.h"
 #include "SoFCDB.h"
 #include "Selection.h"
-#include "SoFCOffscreenRenderer.h"
+#include "SelectionFilterPy.h"
+#include "SoQtOffscreenRendererPy.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
@@ -357,6 +358,7 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
+        //NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
             std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
         App::GetApplication().signalDeleteDocument.connect(
@@ -369,6 +371,7 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+        //NOLINTEND
 
         // install the last active language
         ParameterGrp::handle hPGrp =
@@ -821,6 +824,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     auto pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
 
+    //NOLINTBEGIN
     // connect the signals to the application for the new document
     pDoc->signalNewObject.connect(std::bind(&Gui::Application::slotNewObject, this, sp::_1));
     pDoc->signalDeletedObject.connect(std::bind(&Gui::Application::slotDeletedObject,
@@ -833,6 +837,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
         this, sp::_1));
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
+    //NOLINTEND
 
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc)
@@ -1568,7 +1573,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
         if (!s.isEmpty())
             return icon.pixmap(s[0]);
     }
-    return QPixmap();
+    return {};
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
@@ -1592,7 +1597,7 @@ QString Application::workbenchToolTip(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString Application::workbenchMenuText(const QString& wb) const
@@ -1617,7 +1622,7 @@ QString Application::workbenchMenuText(const QString& wb) const
         }
     }
 
-    return QString();
+    return {};
 }
 
 QStringList Application::workbenches() const
@@ -1753,26 +1758,35 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    Q_UNUSED(context);
+    QByteArray output;
+    if (context.category && strcmp(context.category, "default") != 0) {
+        output.append('(');
+        output.append(context.category);
+        output.append(')');
+        output.append(' ');
+    }
+
+    output.append(msg.toUtf8());
+
     switch (type)
     {
     case QtInfoMsg:
     case QtDebugMsg:
 #ifdef FC_DEBUG
-        Base::Console().Message("%s\n", msg.toUtf8().constData());
+        Base::Console().Message("%s\n", output.constData());
 #else
         // do not stress user with Qt internals but write to log file if enabled
-        Base::Console().Log("%s\n", msg.toUtf8().constData());
+        Base::Console().Log("%s\n", output.constData());
 #endif
         break;
     case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg.toUtf8().constData());
+        Base::Console().Warning("%s\n", output.constData());
         break;
     case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         break;
     case QtFatalMsg:
-        Base::Console().Error("%s\n", msg.toUtf8().constData());
+        Base::Console().Error("%s\n", output.constData());
         abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
@@ -2120,8 +2134,9 @@ void Application::runApplication()
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
         QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
         QString title =
-            QString::fromLatin1("%1 %2.%3.%4").arg(mainApp.applicationName(), major, minor, point);
+            QString::fromLatin1("%1 %2.%3.%4%5").arg(mainApp.applicationName(), major, minor, point, suffix);
         mw.setWindowTitle(title);
     }
     else {
@@ -2446,11 +2461,9 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
         qApp->setPalette(newPal);
     }
 
-
-    QString current = mw->property("fc_currentStyleSheet").toString();
     mw->setProperty("fc_currentStyleSheet", qssFile);
 
-    if (!qssFile.isEmpty() && current != qssFile) {
+    if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.
         // For qss they are set-up in runApplication() with the prefix "qss"
         QString prefix(QLatin1String("qss:"));
@@ -2466,7 +2479,10 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
         if (!f.fileName().isEmpty() && f.open(QFile::ReadOnly | QFile::Text)) {
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
-            qApp->setStyleSheet(str.readAll());
+
+            QString styleSheetContent = replaceVariablesInQss(str.readAll());
+
+            qApp->setStyleSheet(styleSheetContent);
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
@@ -2492,8 +2508,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
             }
         }
     }
-
-    if (qssFile.isEmpty()) {
+    else {
         if (tiledBackground) {
             qApp->setStyleSheet(QString());
             ActionStyleEvent e(ActionStyleEvent::Restore);
@@ -2515,6 +2530,49 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     if (!d->startingUp) {
         if (mdi->style())
             mdi->style()->unpolish(qApp);
+    }
+}
+
+QString Application::replaceVariablesInQss(QString qssText)
+{
+    //First we fetch the colors from preferences,
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
+    unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
+    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
+
+    //convert them to hex.
+    //Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
+    QString accentColor1 = QString::fromLatin1("#%1").arg(longAccentColor1, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+    QString accentColor2 = QString::fromLatin1("#%1").arg(longAccentColor2, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+    QString accentColor3 = QString::fromLatin1("#%1").arg(longAccentColor3, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
+
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor1"), accentColor1);
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor2"), accentColor2);
+    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor3"), accentColor3);
+
+    //Base::Console().Warning("%s\n", qssText.toStdString());
+    return qssText;
+}
+
+void Application::checkForDeprecatedSettings()
+{
+    // From 0.21, `FCBak` will be the intended default backup format
+    bool makeBackups = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                           ->GetBool("CreateBackupFiles", true);
+    if (makeBackups) {
+        bool useFCBakExtension =
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("UseFCBakExtension", true);
+        if (!useFCBakExtension) {
+            // TODO: This should be translated
+            Base::Console().Warning("The `.FCStd#` backup format is deprecated as of v0.21 and may "
+                                    "be removed in future versions.\n"
+                                    "To update, check the 'Preferences->General->Document->Use "
+                                    "date and FCBak extension' option.\n");
+        }
     }
 }
 

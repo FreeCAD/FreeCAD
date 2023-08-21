@@ -141,21 +141,21 @@ void Robot6Axis::readKinematic(const char * FileName)
     // over read the header
     in.getline(buf,119,'\n');
     // read 6 Axis
-    for (int i = 0; i < 6; i++) {
+    for (auto & i : temp) {
         in.getline(buf,79,'\n');
         destination.clear();
         split(std::string(buf),',',destination);
         if (destination.size() < 8)
             continue;
         // transfer the values in kinematic structure
-        temp[i].a        = atof(destination[0].c_str());
-        temp[i].alpha    = atof(destination[1].c_str());
-        temp[i].d        = atof(destination[2].c_str());
-        temp[i].theta    = atof(destination[3].c_str());
-        temp[i].rotDir   = atof(destination[4].c_str());
-        temp[i].maxAngle = atof(destination[5].c_str());
-        temp[i].minAngle = atof(destination[6].c_str());
-        temp[i].velocity = atof(destination[7].c_str());
+        i.a        = atof(destination[0].c_str());
+        i.alpha    = atof(destination[1].c_str());
+        i.d        = atof(destination[2].c_str());
+        i.theta    = atof(destination[3].c_str());
+        i.rotDir   = atof(destination[4].c_str());
+        i.maxAngle = atof(destination[5].c_str());
+        i.minAngle = atof(destination[6].c_str());
+        i.velocity = atof(destination[7].c_str());
     }
 
     setKinematic(temp);

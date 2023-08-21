@@ -50,7 +50,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
-
+// Hint: this is to prevent to re-format big parts of the file. Remove it later again.
+// clang-format off
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -806,7 +807,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // Handle highest GeoIds first to minimize GeoIds changing
     // TODO: this might not completely resolve GeoIds changing
-    std::sort(SubGeoIds.begin(), SubGeoIds.end(), std::greater<int>());
+    std::sort(SubGeoIds.begin(), SubGeoIds.end(), std::greater<>());
     // Keep unique
     SubGeoIds.erase(std::unique(SubGeoIds.begin(), SubGeoIds.end()), SubGeoIds.end());
 
@@ -2277,3 +2278,4 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
     rcCmdMgr.addCommand(new CmdSketcherRemoveAxesAlignment());
 }
+// clang-format on

@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
       <source>Free Turntable</source>
-      <translation>自由轉盤</translation>
+      <translation type="unfinished">Free Turntable</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>

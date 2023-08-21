@@ -53,7 +53,7 @@ class _CommandProfileHexagon1:
 
     def GetResources(self):
         return {
-            "Pixmap": "Sketcher_ProfilesHexagon1",
+            "Pixmap": "Sketcher_CreateHexagon",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "Sketcher_ProfilesHexagon1", "Creates a hexagonal profile"
             ),

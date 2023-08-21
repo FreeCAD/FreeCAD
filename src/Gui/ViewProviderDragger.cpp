@@ -49,13 +49,9 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 
-ViewProviderDragger::ViewProviderDragger()
-{
-}
+ViewProviderDragger::ViewProviderDragger() = default;
 
-ViewProviderDragger::~ViewProviderDragger()
-{
-}
+ViewProviderDragger::~ViewProviderDragger() = default;
 
 void ViewProviderDragger::updateData(const App::Property* prop)
 {

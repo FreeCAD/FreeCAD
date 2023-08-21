@@ -48,9 +48,7 @@ ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
     sPixmap = "FEM_PostPipelineFromResult";
 }
 
-ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
-{
-}
+ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline() = default;
 
 std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren() const {
 
@@ -206,7 +204,7 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pda
     }
 }
 
-PyObject *ViewProviderFemPostPipeline::getPyObject(void)
+PyObject *ViewProviderFemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

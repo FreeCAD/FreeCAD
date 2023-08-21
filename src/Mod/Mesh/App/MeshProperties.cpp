@@ -154,8 +154,8 @@ void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
+    for (auto it : _lValueList) {
+        str << it.x << it.y << it.z;
     }
 }
 
@@ -165,8 +165,8 @@ void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Vector3f> values(uCt);
-    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
+    for (auto & it : values) {
+        str >> it.x >> it.y >> it.z;
     }
     setValues(values);
 }
@@ -257,40 +257,40 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
 
     // Mean curvature
     if (mode == MeanCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
+        for (const auto & it : fCurvInfo)
         {
-            fValues.push_back( 0.5f*(it->fMaxCurvature+it->fMinCurvature) );
+            fValues.push_back( 0.5f*(it.fMaxCurvature+it.fMinCurvature) );
         }
     }
     // Gaussian curvature
     else if (mode == GaussCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
+        for (const auto & it : fCurvInfo)
         {
-            fValues.push_back( it->fMaxCurvature * it->fMinCurvature );
+            fValues.push_back( it.fMaxCurvature * it.fMinCurvature );
         }
     }
     // Maximum curvature
     else if (mode == MaxCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
+        for (const auto & it : fCurvInfo)
         {
-          fValues.push_back( it->fMaxCurvature );
+          fValues.push_back( it.fMaxCurvature );
         }
     }
     // Minimum curvature
     else if (mode == MinCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
+        for (const auto & it : fCurvInfo)
         {
-          fValues.push_back( it->fMinCurvature );
+          fValues.push_back( it.fMinCurvature );
         }
     }
     // Absolute curvature
     else if (mode == AbsCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
+        for (const auto & it : fCurvInfo)
         {
-            if ( fabs(it->fMaxCurvature) > fabs(it->fMinCurvature) )
-                fValues.push_back( it->fMaxCurvature );
+            if ( fabs(it.fMaxCurvature) > fabs(it.fMinCurvature) )
+                fValues.push_back( it.fMaxCurvature );
             else
-                fValues.push_back( it->fMinCurvature );
+                fValues.push_back( it.fMinCurvature );
         }
     }
 
@@ -357,10 +357,10 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->fMaxCurvature << it->fMinCurvature;
-        str << it->cMaxCurvDir.x << it->cMaxCurvDir.y << it->cMaxCurvDir.z;
-        str << it->cMinCurvDir.x << it->cMinCurvDir.y << it->cMinCurvDir.z;
+    for (const auto & it : _lValueList) {
+        str << it.fMaxCurvature << it.fMinCurvature;
+        str << it.cMaxCurvDir.x << it.cMaxCurvDir.y << it.cMaxCurvDir.z;
+        str << it.cMinCurvDir.x << it.cMinCurvDir.y << it.cMinCurvDir.z;
     }
 }
 
@@ -370,10 +370,10 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<CurvatureInfo> values(uCt);
-    for (std::vector<CurvatureInfo>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->fMaxCurvature >> it->fMinCurvature;
-        str >> it->cMaxCurvDir.x >> it->cMaxCurvDir.y >> it->cMaxCurvDir.z;
-        str >> it->cMinCurvDir.x >> it->cMinCurvDir.y >> it->cMinCurvDir.z;
+    for (auto & it : values) {
+        str >> it.fMaxCurvature >> it.fMinCurvature;
+        str >> it.cMaxCurvDir.x >> it.cMaxCurvDir.y >> it.cMaxCurvDir.z;
+        str >> it.cMinCurvDir.x >> it.cMinCurvDir.y >> it.cMinCurvDir.z;
     }
 
     setValues(values);
@@ -382,19 +382,19 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
 PyObject* PropertyCurvatureList::getPyObject()
 {
     Py::List list;
-    for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+    for (const auto & it : _lValueList) {
         Py::Tuple tuple(4);
-        tuple.setItem(0, Py::Float(it->fMaxCurvature));
-        tuple.setItem(1, Py::Float(it->fMinCurvature));
+        tuple.setItem(0, Py::Float(it.fMaxCurvature));
+        tuple.setItem(1, Py::Float(it.fMinCurvature));
         Py::Tuple maxDir(3);
-        maxDir.setItem(0, Py::Float(it->cMaxCurvDir.x));
-        maxDir.setItem(1, Py::Float(it->cMaxCurvDir.y));
-        maxDir.setItem(2, Py::Float(it->cMaxCurvDir.z));
+        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
+        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
+        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
         tuple.setItem(2, maxDir);
         Py::Tuple minDir(3);
-        minDir.setItem(0, Py::Float(it->cMinCurvDir.x));
-        minDir.setItem(1, Py::Float(it->cMinCurvDir.y));
-        minDir.setItem(2, Py::Float(it->cMinCurvDir.z));
+        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
+        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
+        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
         tuple.setItem(3, minDir);
         list.append(tuple);
     }
@@ -847,8 +847,8 @@ void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex,
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
-    for (std::vector<std::pair<PointIndex, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
-        kernel.SetPoint(it->first, it->second);
+    for (const auto & it : inds)
+        kernel.SetPoint(it.first, it.second);
     hasSetValue();
 }
 

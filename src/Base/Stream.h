@@ -81,9 +81,8 @@ public:
     OutputStream& operator << (float f);
     OutputStream& operator << (double d);
 
-private:
-    OutputStream (const OutputStream&);
-    void operator = (const OutputStream&);
+    OutputStream (const OutputStream&) = delete;
+    void operator = (const OutputStream&) = delete;
 
 private:
     std::ostream& _out;
@@ -117,9 +116,8 @@ public:
         return !_in.eof();
     }
 
-private:
-    InputStream (const InputStream&);
-    void operator = (const InputStream&);
+    InputStream (const InputStream&) = delete;
+    void operator = (const InputStream&) = delete;
 
 private:
     std::istream& _in;
@@ -149,9 +147,9 @@ protected:
         std::ios_base::openmode which =
             std::ios::in | std::ios::out) override;
 
-private:
-    ByteArrayOStreambuf(const ByteArrayOStreambuf&);
-    ByteArrayOStreambuf& operator=(const ByteArrayOStreambuf&);
+public:
+    ByteArrayOStreambuf(const ByteArrayOStreambuf&) = delete;
+    ByteArrayOStreambuf& operator=(const ByteArrayOStreambuf&) = delete;
 
 private:
     QBuffer* _buffer;
@@ -180,9 +178,9 @@ protected:
     pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out) override;
-private:
-    ByteArrayIStreambuf(const ByteArrayIStreambuf&);
-    ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&);
+public:
+    ByteArrayIStreambuf(const ByteArrayIStreambuf&) = delete;
+    ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&) = delete;
 
 private:
     const QByteArray& _buffer;
@@ -210,9 +208,9 @@ protected:
     pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out) override;
-private:
-    IODeviceOStreambuf(const IODeviceOStreambuf&);
-    IODeviceOStreambuf& operator=(const IODeviceOStreambuf&);
+public:
+    IODeviceOStreambuf(const IODeviceOStreambuf&) = delete;
+    IODeviceOStreambuf& operator=(const IODeviceOStreambuf&) = delete;
 
 protected:
     QIODevice* device;
@@ -238,9 +236,9 @@ protected:
     pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out) override;
-private:
-    IODeviceIStreambuf(const IODeviceIStreambuf&);
-    IODeviceIStreambuf& operator=(const IODeviceIStreambuf&);
+public:
+    IODeviceIStreambuf(const IODeviceIStreambuf&) = delete;
+    IODeviceIStreambuf& operator=(const IODeviceIStreambuf&) = delete;
 
 protected:
     QIODevice* device;
@@ -286,9 +284,9 @@ private:
     bool flushBuffer();
     bool writeStr(const char* s, std::streamsize num);
 
-private:
-    PyStreambuf(const PyStreambuf&);
-    PyStreambuf& operator=(const PyStreambuf&);
+public:
+    PyStreambuf(const PyStreambuf&) = delete;
+    PyStreambuf& operator=(const PyStreambuf&) = delete;
 
 private:
     PyObject* inp;
@@ -316,9 +314,9 @@ protected:
         std::ios_base::openmode which =
             std::ios::in | std::ios::out) override;
 
-private:
-    Streambuf(const Streambuf&);
-    Streambuf& operator=(const Streambuf&);
+public:
+    Streambuf(const Streambuf&) = delete;
+    Streambuf& operator=(const Streambuf&) = delete;
 
 private:
     std::string::const_iterator _beg;

@@ -61,7 +61,7 @@
 
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace PartGui {
     class FaceSelection : public Gui::SelectionFilterGate
@@ -216,8 +216,8 @@ public:
             polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
         }
         else {
-            for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-                polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+            for (const auto& it : picked)
+                polygon.Add(Base::Vector2d(it[0], it[1]));
         }
 
         FaceColors* self = static_cast<FaceColors*>(ud);
@@ -251,12 +251,14 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
-    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&FaceColors::slotDeleteDocument, this, bp::_1));
-    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&FaceColors::slotDeleteObject, this, bp::_1));
-    d->connectUndoDoc = d->doc->signalUndoDocument.connect(boost::bind
-        (&FaceColors::slotUndoDocument, this, bp::_1));
+    //NOLINTBEGIN
+    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
+        (&FaceColors::slotDeleteDocument, this, sp::_1));
+    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(std::bind
+        (&FaceColors::slotDeleteObject, this, sp::_1));
+    d->connectUndoDoc = d->doc->signalUndoDocument.connect(std::bind
+        (&FaceColors::slotUndoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 FaceColors::~FaceColors()
@@ -338,9 +340,9 @@ void FaceColors::onColorButtonChanged()
 {
     if (!d->index.isEmpty()) {
         QColor color = d->ui->colorButton->color();
-        for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
+        for (int it : d->index) {
             // alpha of App::Color is contrary to the one of QColor
-            d->perface[*it].set(color.redF(), color.greenF(), color.blueF(), (1.0 - color.alphaF()));
+            d->perface[it].set(color.redF(), color.greenF(), color.blueF(), (1.0 - color.alphaF()));
         }
         d->vp->DiffuseColor.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
@@ -396,8 +398,8 @@ void FaceColors::updatePanel()
 {
     QString faces = QString::fromLatin1("[");
     int size = d->index.size();
-    for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-        faces += QString::number(*it + 1);
+    for (int it : d->index) {
+        faces += QString::number(it + 1);
         if (--size > 0)
             faces += QString::fromLatin1(",");
     }

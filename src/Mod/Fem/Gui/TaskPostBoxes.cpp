@@ -241,8 +241,7 @@ TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& i
       m_view(view)
 {}
 
-TaskPostBox::~TaskPostBox()
-{}
+TaskPostBox::~TaskPostBox() = default;
 
 bool TaskPostBox::autoApply()
 {
@@ -268,8 +267,8 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 {
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
-    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        list.push_back(QString::fromStdString(*it));
+    for (auto it : vec) {
+        list.push_back(QString::fromStdString(it));
     }
 
     int index = prop.getValue();
@@ -291,16 +290,15 @@ TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
     assert(view);
 }
 
-TaskDlgPost::~TaskDlgPost()
-{}
+TaskDlgPost::~TaskDlgPost() = default;
 
 QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const
 {
 
     //check if we only have gui task boxes
     bool guionly = true;
-    for (std::vector<TaskPostBox*>::const_iterator it = m_boxes.begin(); it != m_boxes.end(); ++it)
-        guionly = guionly && (*it)->isGuiTaskOnly();
+    for (auto it : m_boxes)
+        guionly = guionly && it->isGuiTaskOnly();
 
     if (!guionly)
         return QDialogButtonBox::Apply | QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
@@ -413,7 +411,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 
-    // get Tranparency from ViewProvider
+    // get Transparency from ViewProvider
     int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
     Base::Console().Log("Transparency %i: \n", trans);
     // sync the trancparency slider
@@ -421,10 +419,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
 }
 
-TaskPostDisplay::~TaskPostDisplay()
-{
-
-}
+TaskPostDisplay::~TaskPostDisplay() = default;
 
 void TaskPostDisplay::setupConnections()
 {
@@ -488,8 +483,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* pa
     this->groupLayout()->addWidget(w);
 }
 
-TaskPostFunction::~TaskPostFunction()
-{}
+TaskPostFunction::~TaskPostFunction() = default;
 
 void TaskPostFunction::applyPythonCode()
 {
@@ -569,8 +563,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
 }
 
-TaskPostDataAlongLine::~TaskPostDataAlongLine()
-{}
+TaskPostDataAlongLine::~TaskPostDataAlongLine() = default;
 
 void TaskPostDataAlongLine::setupConnectionsStep1()
 {
@@ -1269,8 +1262,7 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
         static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.getValue());
 }
 
-TaskPostClip::~TaskPostClip()
-{}
+TaskPostClip::~TaskPostClip() = default;
 
 void TaskPostClip::setupConnections()
 {
@@ -1438,8 +1430,7 @@ TaskPostContours::TaskPostContours(ViewProviderDocumentObject* view, QWidget* pa
     connect(ui->noColorCB, &QCheckBox::toggled, this, &TaskPostContours::onNoColorChanged);
 }
 
-TaskPostContours::~TaskPostContours()
-{}
+TaskPostContours::~TaskPostContours() = default;
 
 void TaskPostContours::applyPythonCode()
 {}
@@ -1558,8 +1549,7 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     ui->CreateButton->setPopupMode(QToolButton::InstantPopup);
 }
 
-TaskPostCut::~TaskPostCut()
-{}
+TaskPostCut::~TaskPostCut() = default;
 
 void TaskPostCut::setupConnections()
 {
@@ -1709,8 +1699,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
         "init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
-TaskPostScalarClip::~TaskPostScalarClip()
-{}
+TaskPostScalarClip::~TaskPostScalarClip() = default;
 
 void TaskPostScalarClip::setupConnections()
 {
@@ -1851,8 +1840,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget
     Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-TaskPostWarpVector::~TaskPostWarpVector()
-{}
+TaskPostWarpVector::~TaskPostWarpVector() = default;
 
 void TaskPostWarpVector::setupConnections()
 {

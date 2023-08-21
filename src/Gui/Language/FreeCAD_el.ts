@@ -42,29 +42,29 @@
       <translation>Οπτικό μέγεθος του χαρακτηριστικού</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="503"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="502"/>
       <source>&lt;empty&gt;</source>
       <translation>&lt;κενό&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2269"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2535"/>
       <source>Angle</source>
       <translation>Γωνία</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
       <source>Axis</source>
       <translation>Άξονας</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2544"/>
       <source>Position</source>
       <translation type="unfinished">Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2783"/>
       <source>Enum</source>
       <translation type="unfinished">Enum</translation>
     </message>
@@ -91,12 +91,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3302"/>
+      <location filename="../CommandView.cpp" line="3304"/>
       <source>Clear measurement</source>
       <translation>Εκκαθάριση μέτρησης</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3303"/>
+      <location filename="../CommandView.cpp" line="3305"/>
       <source>Clear all visible measurements</source>
       <translation>Καθαρισμός όλων των ορατών μετρήσεων</translation>
     </message>
@@ -104,12 +104,12 @@
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3332"/>
+      <location filename="../CommandView.cpp" line="3334"/>
       <source>Toggle measurement</source>
       <translation>Εναλλαγή μέτρησης</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3333"/>
+      <location filename="../CommandView.cpp" line="3335"/>
       <source>Turn on or off the display of all measurements</source>
       <translation>Ενεργοποίηση ή απενεργοποίηση της εμφάνισης όλων των μετρήσεων</translation>
     </message>
@@ -117,12 +117,12 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="304"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="306"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="663"/>
+      <location filename="../Application.cpp" line="665"/>
       <source>Import</source>
       <translation>Εισάγετε</translation>
     </message>
@@ -182,7 +182,7 @@
       <translation>Προσθήκη μιας Ομάδας</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="985"/>
+      <location filename="../ManualAlignment.cpp" line="989"/>
       <source>Align</source>
       <translation type="unfinished">Align</translation>
     </message>
@@ -200,12 +200,12 @@
       <translation>Μετατόπιση</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2570"/>
+      <location filename="../ViewProviderLink.cpp" line="2573"/>
       <source>Toggle array elements</source>
       <translation>Εναλλαγή στοιχείων πίνακα</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2979"/>
+      <location filename="../ViewProviderLink.cpp" line="2982"/>
       <source>Link Transform</source>
       <translation>Σύνδεσμος Μετατόπισης</translation>
     </message>
@@ -215,12 +215,12 @@
       <translation>Μετρήστε απόσταση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="884"/>
+      <location filename="../CommandView.cpp" line="886"/>
       <source>Toggle visibility</source>
       <translation>Εναλλαγή ορατότητας</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="924"/>
+      <location filename="../CommandView.cpp" line="926"/>
       <source>Toggle selectability</source>
       <translation>Εναλλαγή επιλεξιμότητας</translation>
     </message>
@@ -421,42 +421,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="252"/>
+      <location filename="../Application.h" line="254"/>
       <source>Default</source>
       <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="253"/>
+      <location filename="../Application.h" line="255"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="257"/>
+      <location filename="../Application.h" line="259"/>
       <source>Transform</source>
       <translation>Μετατόπιση</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="258"/>
+      <location filename="../Application.h" line="260"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="262"/>
+      <location filename="../Application.h" line="264"/>
       <source>Cutting</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="263"/>
+      <location filename="../Application.h" line="265"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Αυτή η λειτουργία επεξεργασίας 'είναι διαθέσιμη, αλλά προς το παρόν δεν φαίνεται να χρησιμοποιείται από κανένα αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="267"/>
+      <location filename="../Application.h" line="269"/>
       <source>Color</source>
       <translation>Χρώμα</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="268"/>
+      <location filename="../Application.h" line="270"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
     </message>
@@ -559,7 +559,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="167"/>
+      <location filename="../AutoSaver.cpp" line="173"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Παρακαλώ περιμένετε μέχρι να ολοκληρωθεί η αποθήκευση του αρχείου ΑυτόματηΑνάκτηση...</translation>
     </message>
@@ -711,47 +711,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="474"/>
-      <location filename="../Splashscreen.cpp" line="483"/>
+      <location filename="../Splashscreen.cpp" line="475"/>
+      <location filename="../Splashscreen.cpp" line="484"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>Ονόματα Συντελεστών</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="485"/>
+      <location filename="../Splashscreen.cpp" line="486"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>Το FreeCAD δεν θα ήταν δυνατό χωρίς τις συνεισφορές του</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="488"/>
+      <location filename="../Splashscreen.cpp" line="489"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>Ατομικά</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="501"/>
+      <location filename="../Splashscreen.cpp" line="502"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Οργανισμός</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="528"/>
-      <location filename="../Splashscreen.cpp" line="768"/>
+      <location filename="../Splashscreen.cpp" line="529"/>
+      <location filename="../Splashscreen.cpp" line="769"/>
       <source>License</source>
       <translation>Άδεια</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="567"/>
+      <location filename="../Splashscreen.cpp" line="568"/>
       <source>Libraries</source>
       <translation>Βιβλιοθήκες</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="729"/>
+      <location filename="../Splashscreen.cpp" line="730"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>Αυτό το λογισμικό χρησιμοποιεί στοιχεία ανοικτού κώδικα. Τα πνευματικά δικαιώματα, καθώς και τα άλλα δικαιώματα ιδιοκτησίας, αυτών των στοιχείων, ανήκουν στους εκάστοτε ιδιοκτήτες τους:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="755"/>
+      <location filename="../Splashscreen.cpp" line="756"/>
       <source>Collection</source>
       <translation>Συλλογή</translation>
     </message>
@@ -759,22 +759,22 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>Cache directory</source>
       <translation>Κατάλογος προσωρινή μνήμης (cache)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
       <translation>Ο κατάλογος προσωρινής αποθήκευσης %1 υπερβαίνει το μέγεθος του %2.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
       <translation>Θέλετε να το καθαρίσετε τώρα;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="234"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
       <translation>Προειδοποίηση: Βεβαιωθείτε ότι αυτό είναι το μόνο %1 που εκτελείται και ότι δεν υπάρχουν ανοιχτά έγγραφα, καθώς αυτό μπορεί να οδηγήσει σε απώλεια δεδομένων!</translation>
     </message>
@@ -795,37 +795,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="273"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="275"/>
       <source>Camera settings</source>
       <translation>Ρυθμίσεις κάμερας</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="280"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="282"/>
       <source>Orientation</source>
       <translation>Προσανατολισμός</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="296"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="304"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="306"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="314"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="316"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="324"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="326"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="333"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="335"/>
       <source>Current view</source>
       <translation>Τωρινή προβολή</translation>
     </message>
@@ -1394,13 +1394,13 @@ same time. The one with the highest priority will be triggered.</translation>
       <translation>Τίτλος</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="398"/>
+      <location filename="../DlgKeyboardImp.cpp" line="397"/>
       <source>All</source>
       <translation>Όλα</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="436"/>
-      <location filename="../DlgKeyboardImp.cpp" line="504"/>
+      <location filename="../DlgKeyboardImp.cpp" line="435"/>
+      <location filename="../DlgKeyboardImp.cpp" line="503"/>
       <source>none</source>
       <translation>κανένα</translation>
     </message>
@@ -1408,8 +1408,8 @@ same time. The one with the highest priority will be triggered.</translation>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
-      <location filename="../DlgToolbarsImp.cpp" line="836"/>
-      <location filename="../DlgToolbarsImp.cpp" line="847"/>
+      <location filename="../DlgToolbarsImp.cpp" line="844"/>
+      <location filename="../DlgToolbarsImp.cpp" line="855"/>
       <source>Toolbox bars</source>
       <translation>Γραμμές εργαλειοθηκών</translation>
     </message>
@@ -1684,112 +1684,112 @@ same time. The one with the highest priority will be triggered.</translation>
   <context>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="547"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="549"/>
       <source>Default</source>
       <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="548"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="550"/>
       <source>Aluminium</source>
       <translation>Αλουμίνιο</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="549"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="551"/>
       <source>Brass</source>
       <translation>Ορείχαλκος</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="550"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="552"/>
       <source>Bronze</source>
       <translation>Μπρούτζος</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="551"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="553"/>
       <source>Copper</source>
       <translation>Χαλκός</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="552"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="554"/>
       <source>Chrome</source>
       <translation>Χρώμιο</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="553"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="555"/>
       <source>Emerald</source>
       <translation>Σμαράγδι</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="554"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="556"/>
       <source>Gold</source>
       <translation>Χρυσός</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="555"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="557"/>
       <source>Jade</source>
       <translation>Νεφρίτης</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="556"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="558"/>
       <source>Metalized</source>
       <translation>Επιμεταλλωμένο</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="557"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="559"/>
       <source>Neon GNC</source>
       <translation>Νέον GNC</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="558"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="560"/>
       <source>Neon PHC</source>
       <translation>Νέον PHC</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="559"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="561"/>
       <source>Obsidian</source>
       <translation>Οψιανός</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="560"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="562"/>
       <source>Pewter</source>
       <translation>Κασσίτερος</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="561"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="563"/>
       <source>Plaster</source>
       <translation>Γύψος</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="562"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="564"/>
       <source>Plastic</source>
       <translation>Πλαστικό</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="563"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="565"/>
       <source>Ruby</source>
       <translation>Ρουμπίνι</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="564"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="566"/>
       <source>Satin</source>
       <translation>Σατέν</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="565"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="567"/>
       <source>Shiny plastic</source>
       <translation>Γυαλιστερό πλαστικό</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="566"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="568"/>
       <source>Silver</source>
       <translation>Ασήμι</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="567"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="569"/>
       <source>Steel</source>
       <translation>Χάλυβας</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="568"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="570"/>
       <source>Stone</source>
       <translation>Πέτρα</translation>
     </message>
@@ -1797,434 +1797,8 @@ same time. The one with the highest priority will be triggered.</translation>
   <context>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
-      <location filename="../DlgEditor.ui" line="14"/>
-      <source>Editor</source>
-      <translation>Πρόγραμμα επεξεργασίας</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="35"/>
-      <source>Options</source>
-      <translation>Επιλογές</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="59"/>
-      <source>Code lines will be numbered</source>
-      <translation>Οι γραμμές κώδικα θα αριθμηθούν</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="62"/>
-      <source>Enable line numbers</source>
-      <translation>Ενεργοποίηση αριθμών γραμμών</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="81"/>
-      <source>The cursor shape will be a block</source>
-      <translation>Το σχήμα του κέρσορα θα είναι μπλοκ</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="84"/>
-      <source>Enable block cursor</source>
-      <translation>Ενεργοποίηση του κέρσορα</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="100"/>
-      <source>Enable folding</source>
-      <translation>Ενεργοποίηση αναδίπλωσης</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="135"/>
-      <source>Indentation</source>
-      <translation>Εισαγωγή εσοχής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="156"/>
-      <source>Tab size:</source>
-      <translation>Μέγεθος καρτέλας:</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="163"/>
-      <source>Tabulator raster (how many spaces)</source>
-      <translation>Πίνακας ψηφιακή εικόνα τύπου bitmap (πόσα κενά)</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="179"/>
-      <source>Indent size:</source>
-      <translation>Μέγεθος εσοχής:</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="186"/>
-      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation>Πόσα κενά θα εισαχθούν όταν πατήσετε &lt;Tab&gt;</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="202"/>
-      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation>Πατώντας &lt;Tab&gt; θα εισαχθεί το καθορισμένο μέγεθος εσοχής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="205"/>
-      <source>Keep tabs</source>
-      <translation>Διατηρήστε τις καρτέλες</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="221"/>
-      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>Πατώντας &lt;Tab&gt; θα εισαχθεί το καθορισμένο μέγεθος εσοχής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="224"/>
-      <source>Insert spaces</source>
-      <translation>Εισαγωγή κενών</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="246"/>
-      <source>Display items</source>
-      <translation>Εμφάνιση στοιχείων</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="267"/>
-      <source>Color and font settings will be applied to selected type</source>
-      <translation>Θα εφαρμοστούν οι ρυθμίσεις χρώματος και γραμματοσειράς στον επιλεγμένο τύπο</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="282"/>
-      <source>Family:</source>
-      <translation>Οικογένεια:</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="295"/>
-      <source>Font family to be used for selected code type</source>
-      <translation>Μέγεθος γραμματοσειράς που θα χρησιμοποιηθεί για τον επιλεγμένο τύπο κώδικα</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="302"/>
-      <source>Size:</source>
-      <translation>Μέγεθος:</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="315"/>
-      <source>Font size to be used for selected code type</source>
-      <translation>Μέγεθος γραμματοσειράς που θα χρησιμοποιηθεί για τον επιλεγμένο τύπο κώδικα</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="334"/>
-      <source>Color:</source>
-      <translation>Χρώμα:</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditor.ui" line="363"/>
-      <source>Preview:</source>
-      <translation>Προεπισκόπηση:</translation>
-    </message>
-    <message>
       <source/>
       <translation type="unfinished"/>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgGeneral</name>
-    <message>
-      <location filename="../DlgGeneral.ui" line="14"/>
-      <source>General</source>
-      <translation>Γενικές</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="48"/>
-      <source>Language of the application's user interface</source>
-      <translation>Γλώσσα του περιβάλλοντος εργασίας χρήστη της εφαρμογής</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="142"/>
-      <source>Number format:</source>
-      <translation>Μορφή αριθμού:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="156"/>
-      <source>Operating system</source>
-      <translation>Λειτουργικό σύστημα</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="161"/>
-      <source>Selected language</source>
-      <translation>Επιλογή γλώσσας</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="166"/>
-      <source>C/POSIX</source>
-      <translation>C/POSIX</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="174"/>
-      <source>If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="341"/>
-      <source>Preference packs</source>
-      <translation>Πακέτα προτιμήσεων</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="407"/>
-      <source>Name</source>
-      <translation>Όνομα</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="418"/>
-      <source>Type</source>
-      <translation>Τύπος</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="429"/>
-      <source>Load</source>
-      <translation>Φόρτωση</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="452"/>
-      <source>Import config...</source>
-      <translation>Εισαγωγή ρυθμίσεων...</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="459"/>
-      <source>Save new...</source>
-      <translation>Αποθήκευση νέου...</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="472"/>
-      <source>Manage...</source>
-      <translation>Διαχείριση...</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="479"/>
-      <source>Revert...</source>
-      <translation>Επαναφορά...</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="271"/>
-      <source>How many files should be listed in recent files list</source>
-      <translation>Πόσα αρχεία θα πρέπει να καταχωρηθούν στη λίστα πρόσφατων αρχείων</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="291"/>
-      <source>Enable tiled background</source>
-      <translation>Ενεργοποίηση πλακόστρωτου υποβάθρου</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="298"/>
-      <source>The text cursor will be blinking</source>
-      <translation>Ο κέρσορας κειμένου θα αναβοσβήνει</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="301"/>
-      <source>Enable cursor blinking</source>
-      <translation>Ενεργοποίηση αναβοσβήσματος κέρσορα</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="217"/>
-      <source>Style sheet:</source>
-      <translation>Φύλλο τύπων μορφοποίησης:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="20"/>
-      <source>Language and number format</source>
-      <translation>Μορφή γλώσσας και αριθμού</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="41"/>
-      <source>Language:</source>
-      <translation>Γλώσσα:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="55"/>
-      <source>Unit system:</source>
-      <translation>Σύστημα μονάδων:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="62"/>
-      <source>Unit system that should be used for all parts of the application</source>
-      <translation>Σύστημα μονάδας που θα πρέπει να χρησιμοποιείται για όλα τα μέρη της εφαρμογής</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="71"/>
-      <source>Number of decimals:</source>
-      <translation>Πλήθος δεκαδικών:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="78"/>
-      <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Αριθμός δεκαδικών που πρέπει να εμφανίζονται για τους αριθμούς και τις διαστάσεις</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="93"/>
-      <source>Minimum fractional inch:</source>
-      <translation>Ελάχιστο κλάσμα των ιντσών:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="100"/>
-      <source>Minimum fractional inch to be displayed</source>
-      <translation>Ελάχιστη κλασματική ίντσα για εμφάνιση</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="180"/>
-      <source>Substitute decimal separator</source>
-      <translation>Αντικατάσταση δεκαδικού διαχωριστικού</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="196"/>
-      <source>Application</source>
-      <translation>Εφαρμογή</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="224"/>
-      <source>Style sheet how user interface will look like</source>
-      <translation>Φύλλο στυλ πώς θα μοιάζει το περιβάλλον χρήστη</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="231"/>
-      <source>Size of toolbar icons:</source>
-      <translation>Μέγεθος των εικονιδίων γραμμής εργαλείων:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="238"/>
-      <source>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</source>
-      <translation>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="246"/>
-      <source>Tree view mode:</source>
-      <translation>Tree view mode:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="253"/>
-      <source>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Προσαρμόστε τον τρόπο εμφάνισης της δενδρικής προβολής στον πίνακα (απαιτείται επανεκκίνηση).
-
-'Συνδυαστική προβολή' ('Combo View'): συνδυάστε την προβολή δέντρου και την προβολή ιδιότητας σε ένα πλαίσιο.
-'Προβολή δέντρου και προβολή ιδιότητας'('Tree View and PropertyView'): χωρίστε τις προβολές σε ξεχωριστό πλαίσιο.
-'Και τα δύο' ('Both'): διατηρήστε και τα τρία πλαίσια και μπορείτε να έχετε δύο σετ προβολής δέντρου και προβολή ιδιοτήτων.</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="264"/>
-      <source>Size of recent file list:</source>
-      <translation>Μέγεθος λίστας πρόσφατων αρχείων:</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="287"/>
-      <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</source>
-      <translation>Το φόντο του κύριου παραθύρου (όταν δεν έχει ανοιχτεί κανένα έγγραφο) θα αποτελείται από πλακίδια μιας ειδικής εικόνας.
-Δείτε το Wiki του FreeCAD για λεπτομέρειες σχετικά με την εικόνα.</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="317"/>
-      <source>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</source>
-      <translation>Εάν είναι επιλεγμένη αυτή η επιλογή 'οθόνη Splash' είναι ένα μικρό παράθυρο φόρτωσης που εμφανίζεται κατά την εκκίνηση του FreeCAD.</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="322"/>
-      <source>Enable splash screen at start up</source>
-      <translation>Ενεργοποίηση οθόνης υποδοχής κατά την εκκίνηση</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgGeneralImp</name>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="78"/>
-      <source>Manage preference packs</source>
-      <translation>Διαχείριση πακέτων προτιμήσεων</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="321"/>
-      <source>Small (%1px)</source>
-      <translation>Μικρό (%1px)</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="322"/>
-      <source>Medium (%1px)</source>
-      <translation>Μεσαίο (%1px)</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="323"/>
-      <source>Large (%1px)</source>
-      <translation>Μεγάλο (%1px)</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="324"/>
-      <source>Extra large (%1px)</source>
-      <translation>Πολύ μεγάλο (%1px)</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="327"/>
-      <source>Custom (%1px)</source>
-      <translation>Προσαρμοσμένο (%1px)</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="334"/>
-      <source>Combo View</source>
-      <translation>Συνδυασμένη Προβολή</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="335"/>
-      <source>TreeView and PropertyView</source>
-      <translation>TreeView and PropertyView</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="336"/>
-      <source>Both</source>
-      <translation>Both</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="372"/>
-      <source>No style sheet</source>
-      <translation>Χωρίς φύλλο τύπων μορφοποίησης</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="426"/>
-      <source>Preference Pack Name</source>
-      <translation>Όνομα Πακέτου Προτίμησης</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="427"/>
-      <source>Tags</source>
-      <translation>Ετικέτες</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="453"/>
-      <source>Apply</source>
-      <translation>Εφαρμογή</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="454"/>
-      <source>Apply the %1 preference pack</source>
-      <translation>Εφαρμογή του %1 πακέτου προτιμήσεων</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="515"/>
-      <source>Choose a FreeCAD config file to import</source>
-      <translation>Επιλέξτε ένα αρχείο ρυθμίσεων FreeCAD για εισαγωγή</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="526"/>
-      <source>File exists</source>
-      <translation>Το αρχείο υπάρχει</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneralImp.cpp" line="527"/>
-      <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation>Ένα πακέτο προτιμήσεων με αυτό το όνομα υπάρχει ήδη. Αντικατάσταση;</translation>
     </message>
   </context>
   <context>
@@ -2335,7 +1909,7 @@ display the splash screen</source>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="96"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="654"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="653"/>
       <source>Macros</source>
       <translation>Μακροεντολές</translation>
     </message>
@@ -2356,8 +1930,8 @@ display the splash screen</source>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="405"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="735"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="869"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="733"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="867"/>
       <source>Existing file</source>
       <translation>Υπάρχον αρχείο</translation>
     </message>
@@ -2435,53 +2009,53 @@ Note: your changes will be applied when you next switch workbenches
       <translation>Οδηγίες περιήγησης: Κάντε κλικ στο κουμπί με το δεξί βέλος (-&gt;) και, στη συνέχεια, στο Κλείσιμο.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="634"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
       <translation>Οδηγίες περιήγησης: Κάντε κλικ στο Νέο, στη συνέχεια στο κουμπί με το δεξί βέλος (-&gt;) και στη συνέχεια στο Κλείσιμο.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="721"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="719"/>
       <source>Renaming Macro File</source>
       <translation>Πραγματοποιείται μετονομασία του Αρχείου Μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="856"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="720"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="854"/>
       <source>Enter new name:</source>
       <translation>Εισάγετε νέο όνομα:</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="736"/>
-      <location filename="../DlgMacroExecuteImp.cpp" line="870"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="734"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="868"/>
       <source>'%1'
  already exists.</source>
       <translation>Το '%1'
  υπάρχει ήδη.</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="739"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="737"/>
       <source>Rename Failed</source>
       <translation>Η Μετονομασία Απέτυχε</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="740"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="738"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Αποτυχία μετονομασίας σε '%1'.
 Ίσως υπάρχει κάποιο σφάλμα άδειας αρχείου;</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="855"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="853"/>
       <source>Duplicate Macro</source>
       <translation>Διπλογραφή της Μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="873"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="871"/>
       <source>Duplicate Failed</source>
       <translation>Αποτυχία Κατά τη Διπλογραφή</translation>
     </message>
     <message>
-      <location filename="../DlgMacroExecuteImp.cpp" line="874"/>
+      <location filename="../DlgMacroExecuteImp.cpp" line="872"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Αποτυχία κατά την διπλογραφή στο '%1'.
@@ -2863,42 +2437,42 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="364"/>
+      <location filename="../DlgPreferencesImp.cpp" line="363"/>
       <source>Clear user settings</source>
       <translation>Εκκαθάριση των ρυθμίσεων χρήστη</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="365"/>
+      <location filename="../DlgPreferencesImp.cpp" line="364"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Θέλετε να εκκαθαρίσετε όλες σας τις ρυθμίσεις χρήστη;</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="366"/>
+      <location filename="../DlgPreferencesImp.cpp" line="365"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Αν συμφωνήσετε θα εκκαθαριστούν όλες οι ρυθμίσεις σας.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="457"/>
+      <location filename="../DlgPreferencesImp.cpp" line="456"/>
       <source>Wrong parameter</source>
       <translation>Εσφαλμένη παράμετρος</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="493"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Restart required</source>
       <translation>Απαιτείται επανεκκίνηση</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="494"/>
+      <location filename="../DlgPreferencesImp.cpp" line="493"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="499"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="500"/>
+      <location filename="../DlgPreferencesImp.cpp" line="499"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
@@ -3115,184 +2689,6 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
-      <location filename="../DlgReportView.ui" line="14"/>
-      <source>Report view</source>
-      <translation>Προβολή αναφοράς</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="20"/>
-      <source>Output</source>
-      <translation>Έξοδος</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="38"/>
-      <source>Normal messages will be recorded</source>
-      <translation>Κανονικά μηνύματα θα καταγράφονται</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="41"/>
-      <source>Record normal messages</source>
-      <translation>Καταγραφή κανονικών μηνυμάτων</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="57"/>
-      <source>Log messages will be recorded</source>
-      <translation>Θα καταγράφονται τα μηνύματα καταγραφής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="60"/>
-      <source>Record log messages</source>
-      <translation>Καταχώρηση μηνυμάτων αρχείου καταγραφής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="73"/>
-      <source>Warnings will be recorded</source>
-      <translation>Οι προειδοποιήσεις θα καταγράφονται</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="76"/>
-      <source>Record warnings</source>
-      <translation>Καταγραφή προειδοποιήσεων</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="92"/>
-      <source>Error messages will be recorded</source>
-      <translation>Θα καταγράφονται μηνύματα σφάλματος</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="95"/>
-      <source>Record error messages</source>
-      <translation>Καταγραφή μηνυμάτων σφάλματος</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="111"/>
-      <source>When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</source>
-      <translation>Όταν παρουσιαστεί σφάλμα, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη και εμφανίζεται το σφάλμα</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="115"/>
-      <source>Show report view on error</source>
-      <translation>Εμφάνιση προβολής αναφοράς σχετικά με το σφάλμα</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="131"/>
-      <source>When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</source>
-      <translation>Όταν εμφανιστεί μια προειδοποίηση, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη ενώ εμφανίζεται η προειδοποίηση</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="135"/>
-      <source>Show report view on warning</source>
-      <translation>Εμφάνιση της προβολής αναφοράς στην προειδοποίηση</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="148"/>
-      <source>When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</source>
-      <translation>Όταν προκύψει ένα κανονικό μήνυμα, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη κατά την εμφάνιση του μηνύματος</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="152"/>
-      <source>Show report view on normal message</source>
-      <translation>Εμφάνιση προβολής αναφοράς σε κανονικό μήνυμα</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="168"/>
-      <source>When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</source>
-      <translation>Όταν εμφανιστεί ένα μήνυμα καταγραφής, ο διάλογος "Αναφορά προβολής" γίνεται ορατός στην οθόνη κατά την εμφάνιση του μηνύματος καταγραφής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="172"/>
-      <source>Show report view on log message</source>
-      <translation>Εμφάνιση της προβολής αναφοράς στο μήνυμα καταγραφής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="188"/>
-      <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="191"/>
-      <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="210"/>
-      <source>Colors</source>
-      <translation>Χρώματα</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="248"/>
-      <source>Normal messages:</source>
-      <translation>Κανονικά μηνύματα:</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="283"/>
-      <source>Font color for normal messages in Report view panel</source>
-      <translation>Χρώμα γραμματοσειράς για κανονικά μηνύματα στον πίνακα Αναφοράς προβολής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="306"/>
-      <source>Log messages:</source>
-      <translation>Μηνύματα αρχείου καταγραφής:</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="341"/>
-      <source>Font color for log messages in Report view panel</source>
-      <translation>Χρώμα γραμματοσειράς για μηνύματα καταγραφής στον πίνακα Αναφοράς προβολής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="364"/>
-      <source>Warnings:</source>
-      <translation>Προειδοποιήσεις:</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="399"/>
-      <source>Font color for warning messages in Report view panel</source>
-      <translation>Χρώμα γραμματοσειράς για προειδοποιητικά μηνύματα στον πίνακα Αναφοράς προβολής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="422"/>
-      <source>Errors:</source>
-      <translation>Σφάλματα:</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="457"/>
-      <source>Font color for error messages in Report view panel</source>
-      <translation>Χρώμα γραμματοσειράς για μηνύματα σφάλματος στον πίνακα Αναφοράς προβολής</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="501"/>
-      <source>Python interpreter</source>
-      <translation>Διερμηνέας Python</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="507"/>
-      <source>Internal Python output will be redirected
-from Python console to Report view panel</source>
-      <translation>Η εσωτερική έξοδος Python θα ανακατευθυνθεί
-από την κονσόλα Python στο πλαίσιο προβολής αναφοράς</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="511"/>
-      <source>Redirect internal Python output to report view</source>
-      <translation>Ανακατεύθυνση της εσωτερικής εξόδου Python στην προβολή αναφορών</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="527"/>
-      <source>Internal Python error messages will be redirected
-from Python console to Report view panel</source>
-      <translation>Τα εσωτερικά μηνύματα σφάλματος Python θα ανακατευθύνονται 
-από την κονσόλα Python στον πίνακα προβολής Αναφοράς</translation>
-    </message>
-    <message>
-      <location filename="../DlgReportView.ui" line="531"/>
-      <source>Redirect internal Python errors to report view</source>
-      <translation>Ανακατεύθυνση των εσωτερικών σφαλμάτων Python στην προβολή αναφορών</translation>
-    </message>
-    <message>
       <source/>
       <translation type="unfinished"/>
     </message>
@@ -3369,67 +2765,67 @@ from Python console to Report view panel</source>
   <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="14"/>
       <source>3D View</source>
       <translation>Τρισδιάστατη Προβολή</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="23"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="23"/>
       <source>General</source>
       <translation>Γενικές</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="31"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="31"/>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
       <translation>Το σύστημα συντεταγμένων θα εμφανίζεται πάντα στην
 κάτω δεξιά γωνία εντός των ανοιχτών αρχείων</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="35"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="35"/>
       <source>Show coordinate system in the corner</source>
       <translation>Εμφάνιση συστήματος συντεταγμένων στην γωνία</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="63"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size :   </source>
       <translation>Σχετικό μέγεθος :   </translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="73"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
       <translation>Μέγεθος αναπαράστασης του συστήματος συντεταγμένων στη γωνία -- σε % του ύψους/πλάτους της προβολής</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="101"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="101"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
       <translation>Ο σταυρός αξόνων θα εμφανίζεται κατά το άνοιγμα ή τη δημιουργία ενός αρχείου</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="105"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="105"/>
       <source>Show axis cross by default</source>
       <translation>Προεπιλογή εμφάνιση σταυρού αξόνων</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="118"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="118"/>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
       <translation>Ο χρόνος που απαιτείται για την τελευταία λειτουργία και ο προκύπτων ρυθμός καρέ θα εμφανίζονται στην κάτω αριστερή γωνία στα ανοιχτά αρχεία</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="122"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="122"/>
       <source>Show counter of frames per second</source>
       <translation>Εμφάνιση μετρητή των καρέ ανά δευτερόλεπτο</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="141"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="141"/>
       <source>Rendering</source>
       <translation>Απεικόνιση</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="147"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="147"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
@@ -3438,22 +2834,22 @@ Changing this option requires a restart of the application.</source>
 Η αλλαγή αυτής της επιλογής απαιτεί επανεκκίνηση της εφαρμογής.</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="152"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="152"/>
       <source>Use software OpenGL</source>
       <translation>Χρήση λογισμικού OpenGL</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="177"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="177"/>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
       <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="192"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="192"/>
       <source>Render cache</source>
       <translation type="unfinished">Render cache</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="165"/>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
 A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
@@ -3476,7 +2872,7 @@ issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="205"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="205"/>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
 There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
@@ -3493,92 +2889,92 @@ only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="218"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="218"/>
       <source>Auto</source>
       <translation>Αυτόματο</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="223"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="223"/>
       <source>Distributed</source>
       <translation>Κατανομή</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="228"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="228"/>
       <source>Centralized</source>
       <translation>Συγκέντρωση</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="236"/>
       <source>Anti-Aliasing</source>
       <translation>Anti-Aliasing</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="249"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="249"/>
       <source>What kind of multisample anti-aliasing is used</source>
       <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="259"/>
       <source>None</source>
       <translation>Κανένα</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="264"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="264"/>
       <source>Line Smoothing</source>
       <translation>Εξομάλυνση Γραμμής</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="269"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="269"/>
       <source>MSAA 2x</source>
       <translation>MSAA 2x</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="274"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="274"/>
       <source>MSAA 4x</source>
       <translation>MSAA 4x</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="279"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="279"/>
       <source>MSAA 8x</source>
       <translation>MSAA 8x</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="290"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="290"/>
       <source>Transparent objects:</source>
       <translation>Διαφανή αντικείμενα:</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="303"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
       <source>Render types of transparent objects</source>
       <translation>Render types of transparent objects</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="313"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="313"/>
       <source>One pass</source>
       <translation>One pass</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="318"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="318"/>
       <source>Backface pass</source>
       <translation>Backface pass</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="329"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="329"/>
       <source>Marker size:</source>
       <translation>Μέγεθος του δείκτη:</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="342"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
       <source>Size of vertices in the Sketcher workbench</source>
       <translation>Μέγεθος των κορυφών στον πάγκο εργασίας τα "Σκίτσα"</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="349"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Eye to eye distance for stereo modes</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="362"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="362"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
@@ -3586,48 +2982,48 @@ bounding box size of the 3D object that is currently displayed.</source>
 Η καθορισμένη τιμή είναι ένας παράγοντας που θα πολλαπλασιαστεί με το μέγεθος του πλαισίου οριοθέτησης του τρισδιάστατου αντικειμένου που εμφανίζεται αυτήν τη στιγμή.</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="392"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="392"/>
       <source>Backlight is enabled with the defined color</source>
       <translation>Backlight is enabled with the defined color</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="395"/>
-      <location filename="../DlgSettings3DView.ui" line="411"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="395"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="411"/>
       <source>Backlight color</source>
       <translation>Backlight color</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="450"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="450"/>
       <source>Intensity</source>
       <translation>Ένταση</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="475"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="475"/>
       <source>Intensity of the backlight</source>
       <translation>Ένταση οπίσθιου φωτισμού</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="511"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="511"/>
       <source>Camera type</source>
       <translation>Τύπος κάμερας</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="532"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="532"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Objects will appear in a perspective projection</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="535"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="535"/>
       <source>Perspective renderin&amp;g</source>
       <translation>Προοπτική αποτύπωση</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="548"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="548"/>
       <source>Objects will be projected in orthographic projection</source>
       <translation>Objects will be projected in orthographic projection</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DView.ui" line="551"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Ορθογραφική απο&amp;τύπωση</translation>
     </message>
@@ -3639,42 +3035,42 @@ bounding box size of the 3D object that is currently displayed.</source>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="127"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="127"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="128"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="128"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="129"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="129"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="130"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="131"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="132"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="163"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Anti-aliasing</translation>
     </message>
     <message>
-      <location filename="../DlgSettings3DViewImp.cpp" line="164"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Ανοίξτε ένα νέο πρόγραμμα προβολής ή πραγματοποιήστε επανεκκίνηση %1 για να εφαρμόσετε τις αλλαγές anti-aliasing.</translation>
     </message>
@@ -3682,77 +3078,77 @@ bounding box size of the 3D object that is currently displayed.</source>
   <context>
     <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="14"/>
       <source>Cache</source>
       <translation type="unfinished">Cache</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
       <translation>Κατάλογος προσωρινή μνήμης (cache)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location:</source>
       <translation type="unfinished">Location:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="56"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="56"/>
       <source>Check periodically at program start:</source>
       <translation>Ελέγχετε περιοδικά με την έναρξη του προγράμματος:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="83"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="83"/>
       <source>Always</source>
       <translation type="unfinished">Always</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="88"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="88"/>
       <source>Daily</source>
       <translation>Καθημερινά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="93"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="93"/>
       <source>Weekly</source>
       <translation>Εβδομαδιαία</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="98"/>
       <source>Monthly</source>
       <translation type="unfinished">Monthly</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="103"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="103"/>
       <source>Yearly</source>
       <translation type="unfinished">Yearly</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="108"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="108"/>
       <source>Never</source>
       <translation type="unfinished">Never</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="116"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="116"/>
       <source>Cache size limit:</source>
       <translation type="unfinished">Cache size limit:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.ui" line="161"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="161"/>
       <source>Check now...</source>
       <translation type="unfinished">Check now...</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="58"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="58"/>
       <source>Notify the user if the cache size exceeds the specified limit</source>
       <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="60"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="60"/>
       <source>Unknown</source>
       <translation>Άγνωστο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsCacheDirectory.cpp" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="117"/>
       <source>Current cache size: %1</source>
       <translation type="unfinished">Current cache size: %1</translation>
     </message>
@@ -3926,182 +3322,182 @@ besides the color bar</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="14"/>
       <source>Document</source>
       <translation>Έγγραφο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="20"/>
       <source>General</source>
       <translation>Γενικές</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="41"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="41"/>
       <source>The application will create a new document when started</source>
       <translation>Η εφαρμογή θα δημιουργήσει ένα νέο έγγραφο όταν ξεκινήσει</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="44"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="44"/>
       <source>Create new document at start up</source>
       <translation>Δημιουργήστε νέο έγγραφο κατά την έναρξη</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
       <translation>Βαθμός συμπίεσης αποθηκευόμενων εγγράφων
 (0 = καμία, 9 = ύψιστη, 3 = προεπιλεγμένη)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
       <source>Compression level for FCStd files</source>
       <translation>Compression level for FCStd files</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="129"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="129"/>
       <source>All changes in documents are stored so that they can be undone/redone</source>
       <translation>Όλες οι αλλαγές στα έγγραφα αποθηκεύονται έτσι ώστε να μπορούν να αναιρεθούν/επαναληφθούν</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="132"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
       <source>Using Undo/Redo on documents</source>
       <translation>Χρήση Αναίρεσης/Επανάληψης σε έγγραφα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
       <source>Maximum Undo/Redo steps</source>
       <translation>Μέγιστο πλήθος βημάτων Αναίρεσης/Επανάληψης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
       <source>How many Undo/Redo steps should be recorded</source>
       <translation>How many Undo/Redo steps should be recorded</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="197"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="197"/>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
       <translation>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="201"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="201"/>
       <source>Allow aborting recomputation</source>
       <translation>Allow aborting recomputation</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="217"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="217"/>
       <source>Storage</source>
       <translation>Αποθήκευση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="226"/>
       <source>Saving transactions (Auto-save)</source>
       <translation>Πραγματοποιείται αποθήκευση συναλλαγών (Αυτόματη αποθήκευση)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="242"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="242"/>
       <source>Discard saved transaction after saving document</source>
       <translation>Απόρριψη αποθηκευμένης συναλλαγής μετά την αποθήκευση του εγγράφου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="255"/>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
       <translation>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="259"/>
       <source>Run AutoRecovery at startup</source>
       <translation>Εκτέλεση ΑυτόματηςΑποκατάστασης κατά την εκκίνηση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="277"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="277"/>
       <source>How often a recovery file is written</source>
       <translation>How often a recovery file is written</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="280"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="280"/>
       <source>Save AutoRecovery information every</source>
       <translation>Αποθήκευση πληροφοριών ΑυτόματηςΑποκατάστασης κάθε</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="341"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="341"/>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>A thumbnail will be stored when document is saved</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="344"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="347"/>
       <source>Save thumbnail into project file when saving document</source>
       <translation>Αποθήκευση μικρογραφίας σε αρχείο έργου κατά την αποθήκευση εγγράφου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="373"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="376"/>
       <source>Size</source>
       <translation>Μέγεθος</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="383"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="386"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
       <translation>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="408"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="411"/>
       <source>The program logo will be added to the thumbnail</source>
       <translation>The program logo will be added to the thumbnail</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="411"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="414"/>
       <source>Add the program logo to the generated thumbnail</source>
       <translation>Προσθήκη του λογότυπου προγράμματος στην παραγόμενη μικρογραφία</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="444"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="447"/>
       <source>How many backup files will be kept when saving document</source>
       <translation>How many backup files will be kept when saving document</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="447"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="450"/>
       <source>Maximum number of backup files to keep when resaving document</source>
       <translation>Μέγιστο πλήθος αρχείων αντιγράφων ασφαλείας προς διατήρηση κατά την επαναποθήκευση εγγράφου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="511"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="514"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
       <translation>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="515"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="521"/>
       <source>Use date and FCBak extension</source>
       <translation>Use date and FCBak extension</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="528"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="534"/>
       <source>Date format</source>
       <translation>Date format</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="553"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="559"/>
       <source>Document objects</source>
       <translation>Αντικείμενα εγγράφου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="559"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="565"/>
       <source>Allow objects to have same label</source>
       <translation type="unfinished">Allow objects to have same label</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="562"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="568"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>Να επιτρέπεται η χρήση ομοίων ετικετών αντικειμένων στο ίδιο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="575"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="581"/>
       <source>Enable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -4113,22 +3509,22 @@ icon in the tree view to fully reload it.</source>
 Κάντε διπλό κλικ στο εικονίδιο του εγγράφου στην προβολή δέντρου για να το φορτώσετε πλήρως.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="582"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="588"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>Disable partial loading of external linked objects</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="598"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="604"/>
       <source>Authoring and License</source>
       <translation>Συγγραφή και Άδεια</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="604"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="610"/>
       <source>Author name</source>
       <translation>Όνομα συγγραφέα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="611"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="617"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -4137,32 +3533,32 @@ Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="626"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="632"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>The field 'Last modified by' will be set to specified author when saving the file</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="629"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="635"/>
       <source>Set on save</source>
       <translation>Ορισμός κατά την αποθήκευση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="642"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="648"/>
       <source>Company</source>
       <translation>Εταιρεία</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="649"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="655"/>
       <source>Default company name to use for new files</source>
       <translation>Default company name to use for new files</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="662"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="668"/>
       <source>Default license</source>
       <translation>Προεπιλεγμένη άδεια</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="672"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="678"/>
       <source>Default license for new documents</source>
       <translation>Default license for new documents</translation>
     </message>
@@ -4232,12 +3628,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Άλλο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="688"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="694"/>
       <source>License URL</source>
       <translation>Διεύθυνση URL της άδειας</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocument.ui" line="695"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="701"/>
       <source>URL describing more about the license</source>
       <translation type="unfinished">URL describing more about the license</translation>
     </message>
@@ -4245,102 +3641,19 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
+      <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="54"/>
       <source>The format of the date to use.</source>
       <translation>Μορφή ημερομηνίας προς χρήση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
+      <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="54"/>
       <source>Default</source>
       <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsDocumentImp.cpp" line="54"/>
+      <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="54"/>
       <source>Format</source>
       <translation type="unfinished">Format</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgSettingsEditorImp</name>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="104"/>
-      <source>Text</source>
-      <translation>Κείμενο</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="108"/>
-      <source>Bookmark</source>
-      <translation>Σελιδοδείκτης</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="112"/>
-      <source>Breakpoint</source>
-      <translation>Σημείο Διακοπής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="116"/>
-      <source>Keyword</source>
-      <translation>Λέξη-κλειδί</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="120"/>
-      <source>Comment</source>
-      <translation>Σχόλιο</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="124"/>
-      <source>Block comment</source>
-      <translation>Σχόλιο του μπλοκ</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="128"/>
-      <source>Number</source>
-      <translation>Αριθμός</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="132"/>
-      <source>String</source>
-      <translation>Συμβολοσειρά</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="136"/>
-      <source>Character</source>
-      <translation>Χαρακτήρας</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="140"/>
-      <source>Class name</source>
-      <translation>Όνομα κλάσης</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="144"/>
-      <source>Define name</source>
-      <translation>Ορίστε όνομα</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="148"/>
-      <source>Operator</source>
-      <translation>Τελεστής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="152"/>
-      <source>Python output</source>
-      <translation>Έξοδος Python</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="156"/>
-      <source>Python error</source>
-      <translation>Σφάλμα Python</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="160"/>
-      <source>Current line highlight</source>
-      <translation>Επισήμανση τρέχουσας γραμμής</translation>
-    </message>
-    <message>
-      <location filename="../DlgEditorImp.cpp" line="162"/>
-      <source>Items</source>
-      <translation>Αντικείμενα</translation>
     </message>
   </context>
   <context>
@@ -4523,122 +3836,122 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
       <translation>Μακροεντολή</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
       <source>General macro settings</source>
       <translation>Γενικές ρυθμίσεις μακροεντολών</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="26"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="26"/>
       <source>Variables defined by macros are created as local variables</source>
       <translation>Οι μεταβλητές που καθορίζονται από τις μακροεντολές δημιουργούνται ως τοπικές μεταβλητές</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="29"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="29"/>
       <source>Run macros in local environment</source>
       <translation>Εκτέλεση μακροεντολών σε τοπικό περιβάλλον</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="48"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="48"/>
       <source>Macro recording settings</source>
       <translation>Ρυθμίσεις καταγραφής μακροεντολών</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="69"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro path</source>
       <translation>Διαδρομή μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="90"/>
       <source>The directory in which the application will search for macros</source>
       <translation>Ο κατάλογος στον οποίο η εφαρμογή θα αναζητήσει μακροεντολές</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="109"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
       <source>Gui commands</source>
       <translation>Εντολές Γραφικού Περιβάλλοντος Χρήστη</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="130"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="130"/>
       <source>Recorded macros will also contain user interface commands</source>
       <translation>Οι εγγραφόμενες μακροεντολές θα περιέχουν επίσης εντολές διεπαφής χρήστη</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="133"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="133"/>
       <source>Record GUI commands</source>
       <translation>Καταγραφή των εντολών της Γενικής Διάδρασης του Χρήστη</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="149"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="149"/>
       <source>Recorded macros will also contain user interface commands as comments</source>
       <translation>Οι εγγραφόμενες μακροεντολές θα περιέχουν επίσης εντολές διεπαφής χρήστη ως σχόλια</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="152"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="152"/>
       <source>Record as comment</source>
       <translation>Καταγραφή ως σχόλιο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="171"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="171"/>
       <source>Logging Commands</source>
       <translation>Εντολές Καταγραφής</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="192"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="192"/>
       <source>Commands executed by macro scripts are shown in Python console</source>
       <translation>Οι εντολές που εκτελούνται από μακροεντολές εμφανίζονται στην κονσόλα Python</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="195"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in python console</source>
       <translation>Εμφάνιση εντολών σεναρίου στην κονσόλα python</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="211"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
       <source>Log all commands issued by menus to file:</source>
       <translation>Καταγραφή όλων των εντολών που εκδίδονται από μενού στο αρχείο:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="224"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="224"/>
       <source>FullScript.FCScript</source>
       <translation>FullScript.FCScript</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="243"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="243"/>
       <source>Recent macros menu</source>
       <translation>Μενού πρόσφατων μακροεφαρμογών</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="249"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="249"/>
       <source>Size of recent macro list</source>
       <translation>Μέγεθος πρόσφατης λίστας μακροεντολών</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="269"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="269"/>
       <source>How many macros should be listed in recent macros list</source>
       <translation>Πόσες μακροεντολές θα πρέπει να εμφανίζονται στη λίστα πρόσφατων μακροεντολών</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="285"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
       <translation>Καταμέτρηση συντομεύσεων πληκτρολογίου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="305"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="305"/>
       <source>How many recent macros should have shortcuts</source>
       <translation>Πόσες πρόσφατες μακροεντολές θα πρέπει να έχουν συντομεύσεις</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="321"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="321"/>
       <source>Keyboard Modifiers</source>
       <translation>Τροποποιητές Πληκτρολογίου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsMacro.ui" line="341"/>
+      <location filename="../PreferencePages/DlgSettingsMacro.ui" line="341"/>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
       <translation>Τροποποιήσεις πληκτρολογίου, προεπιλογή = Ctrl+Shift+</translation>
     </message>
@@ -4646,130 +3959,130 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../DlgSettingsNavigation.ui" line="238"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="238"/>
       <source>Navigation</source>
       <translation>Πλοήγηση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation cube</source>
       <translation>Τύπος Πλοήγησης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="29"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="29"/>
       <source>Steps by turn</source>
       <translation>Βήματα κατά την περιστροφή</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="36"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="36"/>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
       <translation>Αριθμός βημάτων με στροφή κατά τη χρήση βελών (προεπιλογή = 8 : γωνία βημάτων = 360/8 = 45 deg)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="77"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="77"/>
       <source>Corner</source>
       <translation>Γωνία</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="87"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="87"/>
       <source>Corner where navigation cube is shown</source>
       <translation>Γωνία όπου εμφανίζεται ο κύβος πλοήγησης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="100"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="100"/>
       <source>Top left</source>
       <translation>Πάνω αριστερά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="105"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="105"/>
       <source>Top right</source>
       <translation>Πάνω δεξιά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="110"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="110"/>
       <source>Bottom left</source>
       <translation>Κάτω αριστερά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="115"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="115"/>
       <source>Bottom right</source>
       <translation>Κάτω δεξιά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="123"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="123"/>
       <source>Rotates to nearest possible state when clicking a cube face</source>
       <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="126"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="126"/>
       <source>Rotate to nearest</source>
       <translation>Περιστροφή στο πλησιέστερο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="142"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="142"/>
       <source>Font name:</source>
       <translation type="unfinished">Font name:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="149"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="149"/>
       <source>Font name of the navigation cube</source>
       <translation>Όνομα γραμματοσειράς του κύβου πλοήγησης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="162"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
       <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="170"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
       <source>Cube size</source>
       <translation>Μέγεθος κύβου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="177"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="177"/>
       <source>Size of the navigation cube</source>
       <translation>Μέγεθος του κύβου πλοήγησης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="205"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Color</source>
       <translation>Χρώμα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="212"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="212"/>
       <source>Base color for all elements</source>
       <translation type="unfinished">Base color for all elements</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="244"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="244"/>
       <source>3D Navigation</source>
       <translation>Τρισδιάστατη Πλοήγηση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="281"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="281"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Εμφάνιση των ρυθμίσεων του ποντικιού για κάθε επιλεγμένη ρύθμιση πλοήγησης.
 Επιλέξτε ένα σετ και στη συνέχεια πατήστε το κουμπί για να δείτε αυτές τις ρυθμίσεις.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="285"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="285"/>
       <source>Mouse...</source>
       <translation>Ποντίκι...</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="306"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="306"/>
       <source>Navigation settings set</source>
       <translation>Οι ρυθμίσεις πλοήγησης ορίστηκαν</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="316"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="316"/>
       <source>Orbit style</source>
       <translation>Τύπος μορφοποίησης τροχιάς</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="335"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="335"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4780,116 +4093,116 @@ Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="345"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="345"/>
       <source>Turntable</source>
       <translation>Περιστρεφόμενη βάση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="350"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="350"/>
       <source>Trackball</source>
       <translation>Ιχνόσφαιρα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="355"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="355"/>
       <source>Free Turntable</source>
       <translation type="unfinished">Free Turntable</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="363"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="363"/>
       <source>Rotation mode</source>
       <translation>Λειτουργία περιστροφής</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="382"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="382"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Περιστροφή σε 3D θα χρησιμοποιήσει την τρέχουσα θέση του κέρσορα ως κέντρο για περιστροφή</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="389"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="389"/>
       <source>Window center</source>
       <translation>Κεντράρισμα παραθύρου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="394"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="394"/>
       <source>Drag at cursor</source>
       <translation>Σύρετε τον κέρσορα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="399"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="399"/>
       <source>Object center</source>
       <translation>Κέντρο αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="407"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="407"/>
       <source>Default camera orientation</source>
       <translation>Προεπιλεγμένος προσανατολισμός κάμερας</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="426"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="426"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Προεπιλεγμένος προσανατολισμός κάμερας κατά τη δημιουργία ενός νέου εγγράφου ή την επιλογή της προβολής αρχικής οθόνης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="433"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="433"/>
       <source>Camera zoom</source>
       <translation>Μεγέθυνση κάμερας</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="452"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="452"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Ρυθμίζει το ζουμ της κάμερας για νέα έγγραφα.
 Η τιμή είναι η διάμετρος της σφαίρας που θα χωρέσει στην οθόνη.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="456"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="456"/>
       <source>mm</source>
       <translation>χιλιοστά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="481"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="481"/>
       <source>Enable animated rotations</source>
       <translation type="unfinished">Enable animated rotations</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="484"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="484"/>
       <source>Enable animation</source>
       <translation>Ενεργοποίηση αναπαράστασης κίνησης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="503"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Zoom at cursor</source>
       <translation>Εστίαση στον κέρσορα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="519"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="519"/>
       <source> Zoom step</source>
       <translation type="unfinished"> Zoom step</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="537"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="537"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Πόσο θα μεγεθύνεται.
 Το βήμα ζουμ του '1' σημαίνει ένα συντελεστή 7,5 για κάθε βήμα ζουμ.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="581"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="581"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation type="unfinished">Direction of zoom operations will be inverted</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="584"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="584"/>
       <source>Invert zoom</source>
       <translation>Αντιστροφή εστίασης</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="600"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="600"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4898,57 +4211,67 @@ Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="605"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="605"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Απενεργοποίηση της χειρονομίας πλαγιάσματος, από την οθόνη αφής</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="150"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="621"/>
+      <source>Show the rotation center when dragging.</source>
+      <translation type="unfinished">Show the rotation center when dragging.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="624"/>
+      <source>Enable rotation center indication</source>
+      <translation type="unfinished">Enable rotation center indication</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="152"/>
       <source>Isometric</source>
       <translation>Ισομετρική</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="151"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="153"/>
       <source>Dimetric</source>
       <translation>Διμετρική</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="152"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="154"/>
       <source>Trimetric</source>
       <translation>Τριμετρική</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="153"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="155"/>
       <source>Top</source>
       <translation>Πάνω</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="154"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="156"/>
       <source>Front</source>
       <translation>Εμπρόσθια</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="155"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="157"/>
       <source>Left</source>
       <translation>Αριστερά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="156"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="158"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="157"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="159"/>
       <source>Rear</source>
       <translation>Οπίσθια</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="158"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="160"/>
       <source>Bottom</source>
       <translation>Κάτω</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="159"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="161"/>
       <source>Custom</source>
       <translation>Επιλογή</translation>
     </message>
@@ -4956,44 +4279,44 @@ Mouse tilting is not disabled by this setting.</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsPythonConsole</name>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
       <source>Python console</source>
       <translation>Κονσόλα Python</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Settings</source>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="26"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
       <translation>Words will be wrapped when they exceed available
 horizontal space in Python console</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="30"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="30"/>
       <source>Enable word wrap</source>
       <translation>Ενεργοποίηση της αναδίπλωσης λέξεων</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="46"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="46"/>
       <source>The cursor shape will be a block</source>
       <translation>Το σχήμα του κέρσορα θα είναι μπλοκ</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="49"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="49"/>
       <source>Enable block cursor</source>
       <translation>Ενεργοποίηση του κέρσορα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="65"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="65"/>
       <source>Saves Python history across sessions</source>
       <translation type="unfinished">Saves Python history across sessions</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsPythonConsole.ui" line="68"/>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="68"/>
       <source>Save history</source>
       <translation type="unfinished">Save history</translation>
     </message>
@@ -5001,17 +4324,37 @@ horizontal space in Python console</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsSelection</name>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="14"/>
       <source>Selection</source>
       <translation>Επιλογή</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="41"/>
+      <source>Enable preselection, highlighted with specified color</source>
+      <translation type="unfinished">Enable preselection, highlighted with specified color</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="44"/>
+      <source>Enable preselection</source>
+      <translation type="unfinished">Enable preselection</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="80"/>
+      <source>Enable selection, highlighted with specified color</source>
+      <translation type="unfinished">Enable selection, highlighted with specified color</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="83"/>
+      <source>Enable selection</source>
+      <translation type="unfinished">Enable selection</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
       <source>Pick radius (px):</source>
       <translation>Διαλέξτε ακτίνα (px):</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="33"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="149"/>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
@@ -5020,27 +4363,27 @@ Larger value eases to pick things, but can make small features impossible to sel
       </translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="63"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="179"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>Αυτόματη μετάβαση στην τρισδιάστατη προβολή που περιέχει το επιλεγμένο αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="70"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="192"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>Auto expand tree item when the corresponding object is selected in 3D view</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="77"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>Preselect the object in 3D view when mouse over the tree item</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="84"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>Record selection in tree view in order to go back/forward using navigation button</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsSelection.ui" line="91"/>
+      <location filename="../PreferencePages/DlgSettingsSelection.ui" line="231"/>
       <source>Add checkboxes for selection in document tree</source>
       <translation>Προσθήκη πλαισίων επιλογής στο δέντρο εγγράφων</translation>
     </message>
@@ -5048,147 +4391,122 @@ Larger value eases to pick things, but can make small features impossible to sel
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="14"/>
       <source>Colors</source>
       <translation>Χρώματα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="20"/>
-      <source>Selection</source>
-      <translation>Επιλογή</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsViewColor.ui" line="64"/>
-      <source>Enable preselection and highlight by specified color</source>
-      <translation>Enable preselection and highlight by specified color</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsViewColor.ui" line="67"/>
-      <source>Enable preselection highlighting</source>
-      <translation>Ενεργοποίηση επισήμανσης προεπιλογής</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsViewColor.ui" line="112"/>
-      <source>Enable selection highlighting and use specified color</source>
-      <translation>Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsViewColor.ui" line="115"/>
-      <source>Enable selection highlighting</source>
-      <translation>Ενεργοποίηση επισήμανσης επιλογής</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsViewColor.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="20"/>
       <source>Background color for the model view</source>
       <translation>Background color for the model view</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="175"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="23"/>
       <source>Background color</source>
       <translation>Χρώμα υποβάθρου</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="213"/>
-      <location filename="../DlgSettingsViewColor.ui" line="275"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="61"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="123"/>
       <source>Background will have selected color</source>
       <translation>Background will have selected color</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="216"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="64"/>
       <source>Simple color</source>
       <translation>Απλό χρώμα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="229"/>
-      <location filename="../DlgSettingsViewColor.ui" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="77"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="96"/>
       <source>Background will have selected color gradient</source>
       <translation>Background will have selected color gradient</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="80"/>
       <source>Linear gradient</source>
       <translation type="unfinished">Linear gradient</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="251"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="99"/>
       <source>Radial gradient</source>
       <translation type="unfinished">Radial gradient</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="329"/>
-      <location filename="../DlgSettingsViewColor.cpp" line="148"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="177"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="138"/>
       <source>Top:</source>
       <translation type="unfinished">Top:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="356"/>
-      <location filename="../DlgSettingsViewColor.cpp" line="149"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="204"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="139"/>
       <source>Middle:</source>
       <translation type="unfinished">Middle:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="315"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="163"/>
       <source>Switches the colors of the gradient</source>
       <translation type="unfinished">Switches the colors of the gradient</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="318"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="166"/>
       <source>Switch</source>
       <translation type="unfinished">Switch</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="383"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="231"/>
       <source>Color gradient will get selected color as middle color</source>
       <translation>Color gradient will get selected color as middle color</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="386"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="234"/>
       <source>Middle color</source>
       <translation>Μεσαίο χρώμα</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="399"/>
-      <location filename="../DlgSettingsViewColor.cpp" line="150"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="247"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="140"/>
       <source>Bottom:</source>
       <translation>Κάτω:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="433"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree view</source>
       <translation>Προβολή δενδροδιαγράμματος</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="480"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="328"/>
       <source>Object being edited</source>
       <translation>Αντικείμενο σε επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="493"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
       <source>Background color for objects in tree view that are currently edited</source>
       <translation>Background color for objects in tree view that are currently edited</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="513"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
       <source>Active container</source>
       <translation>Ενεργό δοχείο</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="526"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
       <source>Background color for active containers in tree view</source>
       <translation>Background color for active containers in tree view</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.cpp" line="156"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="146"/>
       <source>Central:</source>
       <translation>Κέντρο:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.cpp" line="157"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="147"/>
       <source>Midway:</source>
       <translation>Μεσαίο:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.cpp" line="158"/>
+      <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="148"/>
       <source>End:</source>
       <translation>Τέλος:</translation>
     </message>
@@ -5313,7 +4631,7 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="985"/>
+      <location filename="../Placement.cpp" line="987"/>
       <source>Placement</source>
       <translation>Τοποθέτηση</translation>
     </message>
@@ -5914,17 +5232,17 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Εφαρμογή</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="611"/>
+      <location filename="../Placement.cpp" line="613"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation>Επιλέξτε 1, 2 ή 3 σημεία πριν κάνετε κλικ σε αυτό το κουμπί. Ένα σημείο μπορεί να βρίσκεται σε μια κορυφή, μια όψη ή μια άκρη. Εάν βρίσκεται σε μια όψη ή μια άκρη, το σημείο που χρησιμοποιείται θα είναι το σημείο στη θέση του ποντικιού κατά μήκος της όψης ή της άκρης. Εάν επιλεγεί 1 σημείο, θα χρησιμοποιηθεί ως κέντρο περιστροφής. Εάν επιλεγούν 2 σημεία, το μέσο μεταξύ τους θα είναι το κέντρο περιστροφής και θα δημιουργηθεί ένας νέος προσαρμοσμένος άξονας, εάν χρειαστεί. Εάν επιλεγούν 3 σημεία, το πρώτο σημείο γίνεται το κέντρο περιστροφής και βρίσκεται στο διάνυσμα που είναι κάθετο στο επίπεδο που ορίζεται από τα 3 σημεία. Στην προβολή αναφοράς παρέχονται ορισμένες πληροφορίες απόστασης και γωνίας, οι οποίες μπορεί να είναι χρήσιμες κατά την ευθυγράμμιση αντικειμένων. Για τη διευκόλυνσή σας, όταν χρησιμοποιείται Shift + κλικ, η κατάλληλη απόσταση ή γωνία αντιγράφεται στο πρόχειρο.</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="707"/>
+      <location filename="../Placement.cpp" line="709"/>
       <source>Incorrect quantity</source>
       <translation>Εσφαλμένη ποσότητα</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="709"/>
+      <location filename="../Placement.cpp" line="711"/>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
       <translation>Υπάρχουν πεδία εισόδου με εσφαλμένη είσοδο, παρακαλώ βεβαιωθείτε πως χρησιμοποιείτε έγκυρες τιμές τοποθέτησης!</translation>
     </message>
@@ -6186,7 +5504,7 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="558"/>
+      <location filename="../PropertyView.cpp" line="560"/>
       <source>Property View</source>
       <translation>Προβολή Ιδιοτήτων</translation>
     </message>
@@ -6254,22 +5572,22 @@ originally selected prior to opening this dialog</source>
       <translation>Μετάβαση στο τέλος</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="666"/>
+      <location filename="../ReportView.cpp" line="668"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="668"/>
+      <location filename="../ReportView.cpp" line="670"/>
       <source>Save As...</source>
       <translation>Αποθήκευση Ως...</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="676"/>
+      <location filename="../ReportView.cpp" line="678"/>
       <source>Save Report Output</source>
       <translation>Αποθήκευση Εξόδου Αναφοράς</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="677"/>
+      <location filename="../ReportView.cpp" line="679"/>
       <source>Plain Text Files</source>
       <translation>Αρχεία Απλού Κειμένου</translation>
     </message>
@@ -6400,7 +5718,7 @@ originally selected prior to opening this dialog</source>
       <translation>Εφαρμογή</translation>
     </message>
     <message>
-      <location filename="../DocumentModel.cpp" line="665"/>
+      <location filename="../DocumentModel.cpp" line="669"/>
       <source>Labels &amp; Attributes</source>
       <translation>Ετικέτες &amp; Χαρακτηριστικά</translation>
     </message>
@@ -6449,27 +5767,27 @@ Do you want to save your changes?</source>
       <translation>Αρχείο PDF</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="502"/>
+      <location filename="../EditorView.cpp" line="504"/>
       <source>untitled[*]</source>
       <translation>χωρίς τίτλο[*]</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="505"/>
+      <location filename="../EditorView.cpp" line="507"/>
       <source> - Editor</source>
       <translation> - Πρόγραμμα Επεξεργασίας</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="559"/>
+      <location filename="../EditorView.cpp" line="561"/>
       <source>%1 chars removed</source>
       <translation>Απομακρύνθηκαν %1 χαρακτήρες</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="561"/>
+      <location filename="../EditorView.cpp" line="563"/>
       <source>%1 chars added</source>
       <translation>Προστέθηκαν %1 χαρακτήρες</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="563"/>
+      <location filename="../EditorView.cpp" line="565"/>
       <source>Formatted</source>
       <translation>Μορφοποιημένο</translation>
     </message>
@@ -6586,74 +5904,74 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="307"/>
+      <location filename="../GraphvizView.cpp" line="309"/>
       <source>Graphviz not found</source>
       <translation>Δεν βρέθηκε το λογισμικό Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="311"/>
+      <location filename="../GraphvizView.cpp" line="313"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>Αδύνατη η εύρεση του λογισμικού Graphviz στον υπολογιστή σας.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="312"/>
+      <location filename="../GraphvizView.cpp" line="314"/>
       <source>Read more about it here.</source>
       <translation>Διαβάστε περισσότερα σχετικά με αυτό εδώ.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="313"/>
+      <location filename="../GraphvizView.cpp" line="315"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Θέλετε να καθορίσετε τη διαδρομή εγκατάστασής του εφόσον είναι ήδη εγκατεστημένο;</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="320"/>
+      <location filename="../GraphvizView.cpp" line="322"/>
       <source>Graphviz installation path</source>
       <translation>Διαδρομή εγκατάστασης λογισμικού Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="359"/>
+      <location filename="../GraphvizView.cpp" line="361"/>
       <source>Graphviz failed</source>
       <translation>Το λογισμικό Graphviz απέτυχε</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="360"/>
+      <location filename="../GraphvizView.cpp" line="362"/>
       <source>Graphviz failed to create an image file</source>
       <translation>Το λογισμικό Graphviz απέτυχε στη δημιουργία αρχείου εικόνας</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="447"/>
+      <location filename="../GraphvizView.cpp" line="449"/>
       <source>PNG format</source>
       <translation>Μορφή PNG</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../GraphvizView.cpp" line="450"/>
       <source>Bitmap format</source>
       <translation>Μορφή Bitmap</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="449"/>
+      <location filename="../GraphvizView.cpp" line="451"/>
       <source>GIF format</source>
       <translation>Μορφή GIF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="450"/>
+      <location filename="../GraphvizView.cpp" line="452"/>
       <source>JPG format</source>
       <translation>Μορφή JPG</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="451"/>
+      <location filename="../GraphvizView.cpp" line="453"/>
       <source>SVG format</source>
       <translation>Μορφή SVG</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="452"/>
-      <location filename="../GraphvizView.cpp" line="536"/>
+      <location filename="../GraphvizView.cpp" line="454"/>
+      <location filename="../GraphvizView.cpp" line="538"/>
       <source>PDF format</source>
       <translation>Μορφή PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="460"/>
-      <location filename="../GraphvizView.cpp" line="539"/>
+      <location filename="../GraphvizView.cpp" line="462"/>
+      <location filename="../GraphvizView.cpp" line="541"/>
       <source>Export graph</source>
       <translation>Εξαγωγή γραφικού</translation>
     </message>
@@ -6795,17 +6113,17 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::MacroCommand</name>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="383"/>
+      <location filename="../DlgKeyboardImp.cpp" line="382"/>
       <source>Macros</source>
       <translation>Μακροεντολές</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1146"/>
+      <location filename="../Command.cpp" line="1147"/>
       <source>Macro file doesn't exist</source>
       <translation>Το αρχείο μακροεντολής δεν υπάρχει</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1147"/>
+      <location filename="../Command.cpp" line="1148"/>
       <source>No such macro file: '%1'</source>
       <translation>Δεν υπάρχει τέτοιο αρχείο μακροεντολής: '%1'</translation>
     </message>
@@ -6814,7 +6132,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="166"/>
-      <location filename="../MainWindow.cpp" line="2062"/>
+      <location filename="../MainWindow.cpp" line="2131"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
@@ -6844,32 +6162,42 @@ Do you want to save your changes?</source>
       <translation>Κλείσιμο Όλων</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1264"/>
-      <location filename="../MainWindow.cpp" line="1265"/>
-      <location filename="../MainWindow.cpp" line="1266"/>
+      <location filename="../MainWindow.cpp" line="1267"/>
+      <location filename="../MainWindow.cpp" line="1268"/>
+      <location filename="../MainWindow.cpp" line="1269"/>
       <source>Toggles this toolbar</source>
       <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης αυτής της γραμμής εργαλείων</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1279"/>
-      <location filename="../MainWindow.cpp" line="1280"/>
-      <location filename="../MainWindow.cpp" line="1281"/>
+      <location filename="../MainWindow.cpp" line="1282"/>
+      <location filename="../MainWindow.cpp" line="1283"/>
+      <location filename="../MainWindow.cpp" line="1284"/>
       <source>Toggles this dockable window</source>
       <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης αυτού του προσδέσιμου παραθύρου</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1853"/>
-      <location filename="../MainWindow.cpp" line="1945"/>
+      <location filename="../MainWindow.cpp" line="1717"/>
+      <source>WARNING: This is a development version.</source>
+      <translation type="unfinished">WARNING: This is a development version.</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="1718"/>
+      <source>Please do not use in a production environment.</source>
+      <translation type="unfinished">Please do not use in a production environment.</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="1922"/>
+      <location filename="../MainWindow.cpp" line="2014"/>
       <source>Unsaved document</source>
       <translation>Μη αποθηκευμένο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1854"/>
+      <location filename="../MainWindow.cpp" line="1923"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1946"/>
+      <location filename="../MainWindow.cpp" line="2015"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
@@ -6879,63 +6207,63 @@ Do you want to save the document now?</translation>
   <context>
     <name>Gui::ManualAlignment</name>
     <message>
-      <location filename="../ManualAlignment.cpp" line="799"/>
-      <location filename="../ManualAlignment.cpp" line="957"/>
-      <location filename="../ManualAlignment.cpp" line="962"/>
-      <location filename="../ManualAlignment.cpp" line="967"/>
-      <location filename="../ManualAlignment.cpp" line="999"/>
+      <location filename="../ManualAlignment.cpp" line="801"/>
+      <location filename="../ManualAlignment.cpp" line="961"/>
+      <location filename="../ManualAlignment.cpp" line="966"/>
+      <location filename="../ManualAlignment.cpp" line="971"/>
+      <location filename="../ManualAlignment.cpp" line="1003"/>
       <source>Manual alignment</source>
       <translation>Χειροκίνητη ευθυγράμμιση</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="799"/>
+      <location filename="../ManualAlignment.cpp" line="801"/>
       <source>The alignment is already in progress.</source>
       <translation>Η ευθυγράμμιση βρίσκεται ήδη σε εξέλιξη.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="812"/>
+      <location filename="../ManualAlignment.cpp" line="814"/>
       <source>Alignment[*]</source>
       <translation>Ευθυγράμμιση[*]</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="819"/>
+      <location filename="../ManualAlignment.cpp" line="821"/>
       <source>Please, select at least one point in the left and the right view</source>
       <translation>Παρακαλώ, επιλέξτε τουλάχιστον ένα σημείο στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="820"/>
+      <location filename="../ManualAlignment.cpp" line="822"/>
       <source>Please, select at least %1 points in the left and the right view</source>
       <translation>Παρακαλώ, επιλέξτε τουλάχιστον %1 σημεία στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="873"/>
+      <location filename="../ManualAlignment.cpp" line="877"/>
       <source>Please pick points in the left and right view</source>
       <translation>Παρακαλώ, επιλέξτε σημεία στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="929"/>
+      <location filename="../ManualAlignment.cpp" line="933"/>
       <source>The alignment has finished</source>
       <translation>Η ευθυγράμμιση ολοκληρώθηκε</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="947"/>
+      <location filename="../ManualAlignment.cpp" line="951"/>
       <source>The alignment has been canceled</source>
       <translation>Η ευθυγράμμιση ακυρώθηκε</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="958"/>
-      <location filename="../ManualAlignment.cpp" line="1020"/>
+      <location filename="../ManualAlignment.cpp" line="962"/>
+      <location filename="../ManualAlignment.cpp" line="1024"/>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
       <translation>Δεν επιλέχθηκαν αρκετά σημεία στην αριστερή προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="963"/>
-      <location filename="../ManualAlignment.cpp" line="1025"/>
+      <location filename="../ManualAlignment.cpp" line="967"/>
+      <location filename="../ManualAlignment.cpp" line="1029"/>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
       <translation>Δεν επιλέχθηκαν αρκετά σημεία στην δεξιά προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="968"/>
+      <location filename="../ManualAlignment.cpp" line="972"/>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
@@ -6944,59 +6272,59 @@ on the right view %2 points are picked.</source>
 στην δεξιά προβολή έχουν επιλεχθεί %2 σημεία.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="979"/>
+      <location filename="../ManualAlignment.cpp" line="983"/>
       <source>Try to align group of views</source>
       <translation>Προσπαθήστε να ευθυγραμμίσετε την ομάδα προβολών</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1000"/>
+      <location filename="../ManualAlignment.cpp" line="1004"/>
       <source>The alignment failed.
 How do you want to proceed?</source>
       <translation>Η ευθυγράμμιση απέτυχε.
 Πώς θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1030"/>
+      <location filename="../ManualAlignment.cpp" line="1034"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
       <translation>Επιλέχθηκε διαφορετικό πλήθος σημείων στην αριστερή και στην δεξιά προβολή. Στην αριστερή προβολή έχουν επιλεχθεί %1 σημεία, στην δεξιά προβολή έχουν επιλεχθεί %2 σημεία.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1135"/>
+      <location filename="../ManualAlignment.cpp" line="1139"/>
       <source>Point_%1</source>
       <translation>Σημείο_%1</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1237"/>
+      <location filename="../ManualAlignment.cpp" line="1241"/>
       <source>Point picked at (%1,%2,%3)</source>
       <translation>Επιλέχθηκε σημείο στο (%1,%2,%3)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1242"/>
+      <location filename="../ManualAlignment.cpp" line="1246"/>
       <source>No point was found on model</source>
       <translation>Δεν βρέθηκε κανένα σημείο στο μοντέλο</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1248"/>
+      <location filename="../ManualAlignment.cpp" line="1252"/>
       <source>No point was picked</source>
       <translation>Δεν επιλέχθηκε κανένα σημείο</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1262"/>
+      <location filename="../ManualAlignment.cpp" line="1266"/>
       <source>&amp;Align</source>
       <translation>&amp;Ευθυγράμμιση</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1263"/>
+      <location filename="../ManualAlignment.cpp" line="1267"/>
       <source>&amp;Remove last point</source>
       <translation>&amp;Αφαίρεση τελευταίου σημείου</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1265"/>
+      <location filename="../ManualAlignment.cpp" line="1269"/>
       <source>&amp;Cancel</source>
       <translation>Ακύρωση</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1269"/>
+      <location filename="../ManualAlignment.cpp" line="1273"/>
       <source>&amp;Synchronize views</source>
       <translation>&amp;Συγχρονισμός προβολών</translation>
     </message>
@@ -7107,17 +6435,17 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
-      <location filename="../ProgressBar.cpp" line="298"/>
+      <location filename="../ProgressBar.cpp" line="297"/>
       <source>Remaining: %1</source>
       <translation>Απομένει: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="489"/>
+      <location filename="../ProgressBar.cpp" line="484"/>
       <source>Aborting</source>
       <translation>Πραγματοποιείται διακοπή</translation>
     </message>
     <message>
-      <location filename="../ProgressBar.cpp" line="490"/>
+      <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Θέλετε πραγματικά να διακόψετε την διαδικασία;</translation>
     </message>
@@ -7130,12 +6458,12 @@ How do you want to proceed?</source>
       <translation>Απομένει: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="320"/>
+      <location filename="../ProgressDialog.cpp" line="317"/>
       <source>Aborting</source>
       <translation>Πραγματοποιείται διακοπή</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="321"/>
+      <location filename="../ProgressDialog.cpp" line="318"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Θέλετε πραγματικά να διακόψετε την διαδικασία;</translation>
     </message>
@@ -7143,7 +6471,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4313"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4309"/>
       <source>Change the linked object</source>
       <translation>Αλλαγή του συνδεδεμένου αντικειμένου</translation>
     </message>
@@ -7151,12 +6479,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4278"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4282"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4278"/>
       <source>Object not found</source>
       <translation>Το αντικείμενο δεν βρέθηκε</translation>
     </message>
@@ -7227,13 +6555,13 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="89"/>
-      <location filename="../PropertyView.cpp" line="546"/>
+      <location filename="../PropertyView.cpp" line="548"/>
       <source>View</source>
       <translation>Προβολή</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="94"/>
-      <location filename="../PropertyView.cpp" line="547"/>
+      <location filename="../PropertyView.cpp" line="549"/>
       <source>Data</source>
       <translation>Δεδομένα</translation>
     </message>
@@ -7280,77 +6608,77 @@ Do you want to exit without saving your data?</source>
       <translation>Άγνωστη μη διαχειρίσιμη εξαίρεση C++.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1321"/>
+      <location filename="../PythonConsole.cpp" line="1327"/>
       <source>&amp;Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1324"/>
+      <location filename="../PythonConsole.cpp" line="1331"/>
       <source>&amp;Copy command</source>
       <translation>Αντιγραφή εντολής</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1327"/>
+      <location filename="../PythonConsole.cpp" line="1334"/>
       <source>&amp;Copy history</source>
       <translation>Αντιγραφή ιστορικού</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1330"/>
+      <location filename="../PythonConsole.cpp" line="1337"/>
       <source>Save history as...</source>
       <translation>Αποθήκευση ιστορικού ως...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1333"/>
+      <location filename="../PythonConsole.cpp" line="1340"/>
       <source>Save history</source>
       <translation type="unfinished">Save history</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1334"/>
+      <location filename="../PythonConsole.cpp" line="1341"/>
       <source>Saves Python history across %1 sessions</source>
       <translation type="unfinished">Saves Python history across %1 sessions</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1340"/>
+      <location filename="../PythonConsole.cpp" line="1347"/>
       <source>&amp;Paste</source>
       <translation>Ε&amp;πικόλληση</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1344"/>
+      <location filename="../PythonConsole.cpp" line="1352"/>
       <source>Select All</source>
       <translation>Επιλογή Όλων</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1347"/>
+      <location filename="../PythonConsole.cpp" line="1356"/>
       <source>Clear console</source>
       <translation>Εκκαθάριση κονσόλας</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1351"/>
+      <location filename="../PythonConsole.cpp" line="1360"/>
       <source>Insert file name...</source>
       <translation>Εισάγετε όνομα αρχείου...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1354"/>
+      <location filename="../PythonConsole.cpp" line="1363"/>
       <source>Word wrap</source>
       <translation>Αναδίπλωση λέξεων</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1378"/>
+      <location filename="../PythonConsole.cpp" line="1387"/>
       <source>Save History</source>
       <translation>Αποθήκευση Ιστορικού</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1379"/>
+      <location filename="../PythonConsole.cpp" line="1388"/>
       <source>Macro Files</source>
       <translation>Αρχεία Μακροεντολών</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1398"/>
+      <location filename="../PythonConsole.cpp" line="1407"/>
       <source>Insert file name</source>
       <translation>Εισάγετε όνομα αρχείου</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1399"/>
+      <location filename="../PythonConsole.cpp" line="1408"/>
       <source>All Files</source>
       <translation>Όλα τα Αρχεία</translation>
     </message>
@@ -7363,7 +6691,7 @@ Do you want to exit without saving your data?</source>
       <translation>Σχόλιο</translation>
     </message>
     <message>
-      <location filename="../PythonEditor.cpp" line="154"/>
+      <location filename="../PythonEditor.cpp" line="155"/>
       <source>Uncomment</source>
       <translation>Διαγραφή σχολίου</translation>
     </message>
@@ -7371,17 +6699,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="857"/>
+      <location filename="../Action.cpp" line="859"/>
       <source>Open file %1</source>
       <translation>Άνοιγμα του αρχείου %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="901"/>
+      <location filename="../Action.cpp" line="903"/>
       <source>File not found</source>
       <translation>Το αρχείο δεν βρέθηκε</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="901"/>
+      <location filename="../Action.cpp" line="903"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Αδυναμία ανοίγματος του αρχείου '%1'.</translation>
     </message>
@@ -7389,22 +6717,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1024"/>
+      <location filename="../Action.cpp" line="1026"/>
       <source>none</source>
       <translation>κανένα</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1039"/>
+      <location filename="../Action.cpp" line="1041"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Εκτέλεση μακροεντολής %1 (Shift+click για επεξεργασία) συντόμευση πληκτρολογίου: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1097"/>
+      <location filename="../Action.cpp" line="1099"/>
       <source>File not found</source>
       <translation>Το αρχείο δεν βρέθηκε</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1097"/>
+      <location filename="../Action.cpp" line="1099"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Αδυναμία ανοίγματος του αρχείου '%1'.</translation>
     </message>
@@ -7435,22 +6763,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::SearchBar</name>
     <message>
-      <location filename="../EditorView.cpp" line="749"/>
+      <location filename="../EditorView.cpp" line="751"/>
       <source>Previous</source>
       <translation>Previous</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="750"/>
+      <location filename="../EditorView.cpp" line="752"/>
       <source>Next</source>
       <translation type="unfinished">Next</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="751"/>
+      <location filename="../EditorView.cpp" line="753"/>
       <source>Case sensitive</source>
       <translation type="unfinished">Case sensitive</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="752"/>
+      <location filename="../EditorView.cpp" line="754"/>
       <source>Whole words</source>
       <translation type="unfinished">Whole words</translation>
     </message>
@@ -7696,38 +7024,38 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TextDocumentEditorView</name>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="138"/>
+      <location filename="../TextDocumentEditorView.cpp" line="140"/>
       <source>Text updated</source>
       <translation>Το κείμενο ενημερώθηκε</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="140"/>
+      <location filename="../TextDocumentEditorView.cpp" line="142"/>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
       <translation>Το κείμενο του υποκειμένου στοιχείου έχει αλλάξει. Να γίνει απόρριψη αλλαγών και επαναφόρτωση του κειμένου από το στοιχείο;</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="144"/>
+      <location filename="../TextDocumentEditorView.cpp" line="146"/>
       <source>Yes, reload.</source>
       <translation>Ναι, να γίνει επαναφόρτωση.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="230"/>
+      <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>Unsaved document</source>
       <translation>Μη αποθηκευμένο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="231"/>
+      <location filename="../TextDocumentEditorView.cpp" line="233"/>
       <source>Do you want to save your changes before closing?</source>
       <translation>Θέλετε να αποθηκεύσετε τις αλλαγές σας πριν το κλείσιμο;</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="232"/>
+      <location filename="../TextDocumentEditorView.cpp" line="234"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Αν δεν κάνετε αποθήκευση, οι αλλαγές σας θα χαθούν.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="286"/>
-      <location filename="../TextDocumentEditorView.cpp" line="293"/>
+      <location filename="../TextDocumentEditorView.cpp" line="288"/>
+      <location filename="../TextDocumentEditorView.cpp" line="295"/>
       <source>Edit text</source>
       <translation>Επεξεργασία του κειμένου</translation>
     </message>
@@ -7999,7 +7327,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3159"/>
+      <location filename="../Tree.cpp" line="3165"/>
       <source>Tree view</source>
       <translation>Προβολή δενδροδιαγράμματος</translation>
     </message>
@@ -8007,7 +7335,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3085"/>
+      <location filename="../Tree.cpp" line="3091"/>
       <source>Search</source>
       <translation>Αναζήτηση</translation>
     </message>
@@ -8015,183 +7343,183 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="460"/>
+      <location filename="../Tree.cpp" line="462"/>
       <source>Search...</source>
       <translation>Αναζήτηση...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="461"/>
+      <location filename="../Tree.cpp" line="463"/>
       <source>Search for objects</source>
       <translation>Αναζήτηση για αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="887"/>
+      <location filename="../Tree.cpp" line="891"/>
       <source>Activate document</source>
       <translation>Ενεργοποίηση εγγράφου</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="894"/>
+      <location filename="../Tree.cpp" line="898"/>
       <source>Activate document %1</source>
       <translation>Ενεργοποίηση του εγγράφου %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="906"/>
+      <location filename="../Tree.cpp" line="910"/>
       <source>Tree settings</source>
       <translation type="unfinished">Tree settings</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="910"/>
+      <location filename="../Tree.cpp" line="914"/>
       <source>Show description column</source>
       <translation type="unfinished">Show description column</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="911"/>
+      <location filename="../Tree.cpp" line="915"/>
       <source>Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
       <translation type="unfinished">Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="952"/>
+      <location filename="../Tree.cpp" line="956"/>
       <source>Group</source>
       <translation>Ομάδα</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2790"/>
+      <location filename="../Tree.cpp" line="2796"/>
       <source>Labels &amp; Attributes</source>
       <translation>Ετικέτες &amp; Χαρακτηριστικά</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2791"/>
+      <location filename="../Tree.cpp" line="2797"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2793"/>
+      <location filename="../Tree.cpp" line="2799"/>
       <source>Show items hidden in tree view</source>
       <translation type="unfinished">Show items hidden in tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2794"/>
+      <location filename="../Tree.cpp" line="2800"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
       <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2796"/>
+      <location filename="../Tree.cpp" line="2802"/>
       <source>Toggle visibility in tree view</source>
       <translation type="unfinished">Toggle visibility in tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2797"/>
+      <location filename="../Tree.cpp" line="2803"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation type="unfinished">Toggles the visibility of selected items in the tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2799"/>
+      <location filename="../Tree.cpp" line="2805"/>
       <source>Create group...</source>
       <translation>Δημιουργήστε ομάδα...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2800"/>
+      <location filename="../Tree.cpp" line="2806"/>
       <source>Create a group</source>
       <translation>Δημιουργήστε μια ομάδα</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2802"/>
-      <location filename="../Tree.cpp" line="4940"/>
+      <location filename="../Tree.cpp" line="2808"/>
+      <location filename="../Tree.cpp" line="4948"/>
       <source>Rename</source>
       <translation>Μετονομασία</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2803"/>
+      <location filename="../Tree.cpp" line="2809"/>
       <source>Rename object</source>
       <translation>Μετονομασία αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2805"/>
+      <location filename="../Tree.cpp" line="2811"/>
       <source>Finish editing</source>
       <translation>Ολοκλήρωση επεξεργασίας</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2806"/>
+      <location filename="../Tree.cpp" line="2812"/>
       <source>Finish editing object</source>
       <translation>Ολοκλήρωση επεξεργασίας του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2808"/>
+      <location filename="../Tree.cpp" line="2814"/>
       <source>Add dependent objects to selection</source>
       <translation type="unfinished">Add dependent objects to selection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2809"/>
+      <location filename="../Tree.cpp" line="2815"/>
       <source>Adds all dependent objects to the selection</source>
       <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2811"/>
+      <location filename="../Tree.cpp" line="2817"/>
       <source>Close document</source>
       <translation type="unfinished">Close document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2812"/>
+      <location filename="../Tree.cpp" line="2818"/>
       <source>Close the document</source>
       <translation>Close the document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2814"/>
+      <location filename="../Tree.cpp" line="2820"/>
       <source>Reload document</source>
       <translation>Reload document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2815"/>
+      <location filename="../Tree.cpp" line="2821"/>
       <source>Reload a partially loaded document</source>
       <translation>Reload a partially loaded document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2817"/>
+      <location filename="../Tree.cpp" line="2823"/>
       <source>Skip recomputes</source>
       <translation>Παράλειψη επανεκτέλεσης υπoλογισμών</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2818"/>
+      <location filename="../Tree.cpp" line="2824"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Ενεργοποιήστε ή απενεργοποιήστε την επανεκτέλεση υπολογισμών του εγγράφου</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2820"/>
+      <location filename="../Tree.cpp" line="2826"/>
       <source>Allow partial recomputes</source>
       <translation>Allow partial recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2822"/>
+      <location filename="../Tree.cpp" line="2828"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2824"/>
+      <location filename="../Tree.cpp" line="2830"/>
       <source>Mark to recompute</source>
       <translation>Επισημάνετε για επανεκτέλεση υπολογισμών</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2825"/>
+      <location filename="../Tree.cpp" line="2831"/>
       <source>Mark this object to be recomputed</source>
       <translation>Επισημάνετε αυτό το αντικείμενο για επανεκτέλεση των υπολογισμών του</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2828"/>
+      <location filename="../Tree.cpp" line="2834"/>
       <source>Recompute object</source>
       <translation>Recompute object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2829"/>
+      <location filename="../Tree.cpp" line="2835"/>
       <source>Recompute the selected object</source>
       <translation>Recompute the selected object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4911"/>
+      <location filename="../Tree.cpp" line="4919"/>
       <source> (but must be executed)</source>
       <translation> (but must be executed)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4913"/>
+      <location filename="../Tree.cpp" line="4921"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Εσωτερικό όνομα: %2</translation>
     </message>
@@ -8222,12 +7550,12 @@ Do you want to specify another directory?</source>
       <translation>Αρχείο PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="275"/>
+      <location filename="../View3DInventor.cpp" line="277"/>
       <source>Opening file failed</source>
       <translation>Αποτυχία ανοίγματος αρχείου</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="276"/>
+      <location filename="../View3DInventor.cpp" line="278"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Αδυναμία ανοίγματος αρχείου '%1' για εγγραφή.</translation>
     </message>
@@ -8235,7 +7563,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="722"/>
+      <location filename="../Action.cpp" line="724"/>
       <source>Select the '%1' workbench</source>
       <translation>Επιλέξτε τον πάγκο εργασίας '%1'</translation>
     </message>
@@ -8450,69 +7778,70 @@ Do you want to specify another directory?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../resource.cpp" line="67"/>
-      <location filename="../resource.cpp" line="68"/>
       <location filename="../resource.cpp" line="69"/>
       <location filename="../resource.cpp" line="70"/>
       <location filename="../resource.cpp" line="71"/>
       <location filename="../resource.cpp" line="72"/>
+      <location filename="../resource.cpp" line="73"/>
+      <location filename="../resource.cpp" line="74"/>
       <source>General</source>
       <translation>Γενικές</translation>
     </message>
     <message>
-      <location filename="../resource.cpp" line="73"/>
-      <location filename="../resource.cpp" line="74"/>
       <location filename="../resource.cpp" line="75"/>
+      <location filename="../resource.cpp" line="76"/>
+      <location filename="../resource.cpp" line="77"/>
+      <location filename="../resource.cpp" line="78"/>
       <source>Display</source>
       <translation>Απεικόνιση</translation>
     </message>
     <message>
-      <location filename="../resource.cpp" line="76"/>
+      <location filename="../resource.cpp" line="79"/>
       <source>Workbenches</source>
       <translation>Πάγκοι Εργασίας</translation>
     </message>
     <message>
-      <location filename="../resource.cpp" line="77"/>
-      <location filename="../resource.cpp" line="78"/>
-      <location filename="../resource.cpp" line="79"/>
+      <location filename="../resource.cpp" line="80"/>
+      <location filename="../resource.cpp" line="81"/>
+      <location filename="../resource.cpp" line="82"/>
       <source>Python</source>
       <translation type="unfinished">Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="628"/>
-      <location filename="../Application.cpp" line="722"/>
-      <location filename="../Application.cpp" line="795"/>
+      <location filename="../Application.cpp" line="630"/>
+      <location filename="../Application.cpp" line="724"/>
+      <location filename="../Application.cpp" line="797"/>
       <source>Unknown filetype</source>
       <translation>Άγνωστος τύπος αρχείου</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="629"/>
-      <location filename="../Application.cpp" line="723"/>
+      <location filename="../Application.cpp" line="631"/>
+      <location filename="../Application.cpp" line="725"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Αδυναμία ανοίγματος του αγνώστου τύπου αρχείου: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="788"/>
+      <location filename="../Application.cpp" line="790"/>
       <source>Export failed</source>
       <translation>Αποτυχία της εξαγωγής</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="796"/>
+      <location filename="../Application.cpp" line="798"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Αδυναμία αποθήκευσης στον άγνωστο τύπο αρχείου: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1491"/>
+      <location filename="../Application.cpp" line="1495"/>
       <source>Workbench failure</source>
       <translation>Αποτυχία πάγκου εργασίας</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1492"/>
+      <location filename="../Application.cpp" line="1496"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="489"/>
+      <location filename="../Command.cpp" line="490"/>
       <source>Exception</source>
       <translation>Εξαίρεση</translation>
     </message>
@@ -8714,17 +8043,17 @@ Do you want to continue?</source>
       <translation>Αδυναμία ανοίγματος του αρχείου '%1'.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1844"/>
+      <location filename="../CommandView.cpp" line="1846"/>
       <source>files</source>
       <translation>αρχεία</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1852"/>
+      <location filename="../CommandView.cpp" line="1854"/>
       <source>Save image</source>
       <translation type="unfinished">Save image</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2003"/>
+      <location filename="../CommandView.cpp" line="2005"/>
       <source>Choose an image file to open</source>
       <translation>Επιλέξτε ένα αρχείο εικόνας για άνοιγμα</translation>
     </message>
@@ -8830,44 +8159,44 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1020"/>
+      <location filename="../NotificationArea.cpp" line="1022"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1021"/>
+      <location filename="../NotificationArea.cpp" line="1023"/>
       <source>Notifier</source>
       <translation type="unfinished">Notifier</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1022"/>
+      <location filename="../NotificationArea.cpp" line="1024"/>
       <source>Message</source>
       <translation type="unfinished">Message</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="963"/>
+      <location filename="../NotificationArea.cpp" line="965"/>
       <source>Notifier: </source>
       <translation type="unfinished">Notifier: </translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="965"/>
+      <location filename="../NotificationArea.cpp" line="967"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
       <translation type="unfinished">Do you want to skip confirmation of further critical message notifications while loading the file?</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="969"/>
+      <location filename="../NotificationArea.cpp" line="971"/>
       <source>Critical Message</source>
       <translation type="unfinished">Critical Message</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="1035"/>
+      <location filename="../NotificationArea.cpp" line="1037"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
       <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1051"/>
+      <location filename="../Document.cpp" line="1053"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8876,44 +8205,44 @@ Do you want to continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1052"/>
+      <location filename="../Document.cpp" line="1054"/>
       <source>Are you sure you want to continue?</source>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1071"/>
+      <location filename="../Document.cpp" line="1073"/>
       <source>Please check report view for more...</source>
       <translation>Ελέγξτε την προβολή αναφοράς για περισσότερα...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1074"/>
+      <location filename="../Document.cpp" line="1076"/>
       <source>Physical path:</source>
       <translation type="unfinished">Physical path:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1076"/>
-      <location filename="../Document.cpp" line="1082"/>
+      <location filename="../Document.cpp" line="1078"/>
+      <location filename="../Document.cpp" line="1084"/>
       <source>Document:</source>
       <translation type="unfinished">Document:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1078"/>
-      <location filename="../Document.cpp" line="1084"/>
+      <location filename="../Document.cpp" line="1080"/>
+      <location filename="../Document.cpp" line="1086"/>
       <source>Path:</source>
       <translation>Διαδρομή:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1093"/>
+      <location filename="../Document.cpp" line="1095"/>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1101"/>
+      <location filename="../Document.cpp" line="1103"/>
       <source>Could not save document</source>
       <translation type="unfinished">Could not save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1102"/>
+      <location filename="../Document.cpp" line="1104"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8926,102 +8255,102 @@ Would you like to save the file with a different name?</source>
 Would you like to save the file with a different name?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1112"/>
-      <location filename="../Document.cpp" line="1244"/>
-      <location filename="../Document.cpp" line="1327"/>
+      <location filename="../Document.cpp" line="1114"/>
+      <location filename="../Document.cpp" line="1246"/>
+      <location filename="../Document.cpp" line="1329"/>
       <source>Saving aborted</source>
       <translation>Η αποθήκευση διεκόπη</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1159"/>
+      <location filename="../Document.cpp" line="1161"/>
       <source>Save dependent files</source>
       <translation>Save dependent files</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1160"/>
+      <location filename="../Document.cpp" line="1162"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>The file contains external dependencies. Do you want to save the dependent files, too;</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1194"/>
-      <location filename="../Document.cpp" line="1238"/>
+      <location filename="../Document.cpp" line="1196"/>
+      <location filename="../Document.cpp" line="1240"/>
       <source>Saving document failed</source>
       <translation>Αποτυχία αποθήκευσης εγγράφου</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1208"/>
+      <location filename="../Document.cpp" line="1210"/>
       <source>Save document under new filename...</source>
       <translation>Αποθήκευση εγγράφου με άλλο όνομα αρχείου...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1211"/>
-      <location filename="../Document.cpp" line="1312"/>
+      <location filename="../Document.cpp" line="1213"/>
+      <location filename="../Document.cpp" line="1314"/>
       <source>Save %1 Document</source>
       <translation>Αποθήκευση Εγγράφου %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1213"/>
+      <location filename="../Document.cpp" line="1215"/>
       <source>Document</source>
       <translation>Έγγραφο</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1257"/>
-      <location filename="../Document.cpp" line="1298"/>
+      <location filename="../Document.cpp" line="1259"/>
+      <location filename="../Document.cpp" line="1300"/>
       <source>Failed to save document</source>
       <translation>Failed to save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1258"/>
+      <location filename="../Document.cpp" line="1260"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documents contains cyclic dependencies. Do you still want to save them;</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1309"/>
+      <location filename="../Document.cpp" line="1311"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Αποθηκεύστε ένα αντίγραφο του εγγράφου με νέο όνομα αρχείου...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1314"/>
+      <location filename="../Document.cpp" line="1316"/>
       <source>%1 document (*.FCStd)</source>
       <translation>έγγραφο %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1963"/>
+      <location filename="../Document.cpp" line="1965"/>
       <source>Document not closable</source>
       <translation>Το έγγραφο δεν κλείνει</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1964"/>
+      <location filename="../Document.cpp" line="1966"/>
       <source>The document is not closable for the moment.</source>
       <translation>Το έγγραφο δεν κλείνει προς το παρόν.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2001"/>
+      <location filename="../Document.cpp" line="2003"/>
       <source>Document not saved</source>
       <translation type="unfinished">Document not saved</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2002"/>
+      <location filename="../Document.cpp" line="2004"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>Το έγγραφο%1 δεν μπορεί να αποθηκευτεί. Θέλετε να ακυρώσετε το κλείσιμο;</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2330"/>
+      <location filename="../Document.cpp" line="2332"/>
       <source>Undo</source>
       <translation type="unfinished">Undo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2330"/>
+      <location filename="../Document.cpp" line="2332"/>
       <source>Redo</source>
       <translation type="unfinished">Redo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2332"/>
+      <location filename="../Document.cpp" line="2334"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>There are grouped transactions in the following documents with other preceding transactions</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2335"/>
+      <location filename="../Document.cpp" line="2337"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -9104,12 +8433,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Επιλογές...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2162"/>
+      <location filename="../View3DInventorViewer.cpp" line="2230"/>
       <source>Out of memory</source>
       <translation>Μνήμη πλήρης</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2163"/>
+      <location filename="../View3DInventorViewer.cpp" line="2231"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Δεν υπάρχει αρκετή μνήμη διαθέσιμη για την προβολή των δεδομένων.</translation>
     </message>
@@ -9125,7 +8454,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Αδυναμία εύρεσης του αρχείου %1 τόσο στο %2 όσο και στο %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1732"/>
+      <location filename="../NavigationStyle.cpp" line="1740"/>
       <source>Navigation styles</source>
       <translation>Τύποι μορφοποίησης πλοήγησης</translation>
     </message>
@@ -9136,7 +8465,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <location filename="../ViewProviderDragger.cpp" line="88"/>
-      <location filename="../ViewProviderLink.cpp" line="2594"/>
+      <location filename="../ViewProviderLink.cpp" line="2597"/>
       <source>Transform</source>
       <translation>Μετατόπιση</translation>
     </message>
@@ -9201,12 +8530,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Το %1 δεν είναι άδειο, να διαγραφεί και το περιεχόμενό του;</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="294"/>
+      <location filename="../SoFCCSysDragger.cpp" line="306"/>
       <source>Translation:</source>
       <translation>Μετάφραση:</translation>
     </message>
     <message>
-      <location filename="../SoFCCSysDragger.cpp" line="579"/>
+      <location filename="../SoFCCSysDragger.cpp" line="603"/>
       <source>Rotation:</source>
       <translation>Περιστροφή:</translation>
     </message>
@@ -9302,59 +8631,59 @@ underscore, and must not start with a digit.</translation>
       <translation>Failed to add property to '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2079"/>
-      <location filename="../Tree.cpp" line="2275"/>
+      <location filename="../Tree.cpp" line="2083"/>
+      <location filename="../Tree.cpp" line="2279"/>
       <source>Drag &amp; drop failed</source>
       <translation type="unfinished">Drag &amp; drop failed</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2421"/>
+      <location filename="../ViewProviderLink.cpp" line="2424"/>
       <source>Setup configurable object</source>
       <translation type="unfinished">Setup configurable object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2422"/>
+      <location filename="../ViewProviderLink.cpp" line="2425"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Επιλέξτε ποιο αντικείμενο θα αντιγράψετε ή θα εξαιρέσετε όταν αλλάζει η διαμόρφωση. Όλα τα εξωτερικά συνδεδεμένα αντικείμενα εξαιρούνται από προεπιλογή.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2437"/>
+      <location filename="../ViewProviderLink.cpp" line="2440"/>
       <source>Please select which objects to copy when the configuration is changed</source>
       <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2439"/>
+      <location filename="../ViewProviderLink.cpp" line="2442"/>
       <source>Apply to all</source>
       <translation type="unfinished">Apply to all</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2440"/>
+      <location filename="../ViewProviderLink.cpp" line="2443"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
       <translation>Εφαρμόστε τη ρύθμιση σε όλες τις συνδέσεις. Ή, καταργήστε αυτή την επιλογή μόνο σε αυτόν τον σύνδεσμο.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2485"/>
+      <location filename="../ViewProviderLink.cpp" line="2488"/>
       <source>Copy on change</source>
       <translation type="unfinished">Copy on change</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2486"/>
+      <location filename="../ViewProviderLink.cpp" line="2489"/>
       <source>Enable</source>
       <translation>Ενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2487"/>
+      <location filename="../ViewProviderLink.cpp" line="2490"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2500"/>
+      <location filename="../ViewProviderLink.cpp" line="2503"/>
       <source>Tracking</source>
       <translation>Απόσταση Γραμμάτων</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2501"/>
+      <location filename="../ViewProviderLink.cpp" line="2504"/>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -9363,17 +8692,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2520"/>
+      <location filename="../ViewProviderLink.cpp" line="2523"/>
       <source>Disable copy on change</source>
       <translation type="unfinished">Disable copy on change</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2535"/>
+      <location filename="../ViewProviderLink.cpp" line="2538"/>
       <source>Refresh configurable object</source>
       <translation type="unfinished">Refresh configurable object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2536"/>
+      <location filename="../ViewProviderLink.cpp" line="2539"/>
       <source>Synchronize the original configurable source object by
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
@@ -9382,23 +8711,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2568"/>
+      <location filename="../ViewProviderLink.cpp" line="2571"/>
       <source>Toggle array elements</source>
       <translation>Εναλλαγή στοιχείων πίνακα</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2577"/>
+      <location filename="../ViewProviderLink.cpp" line="2580"/>
       <source>Change whether show each link array element as individual objects</source>
       <translation>Αλλάξτε εάν εμφανίζεται κάθε στοιχείο πίνακα συνδέσμων ως μεμονωμένα αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2595"/>
+      <location filename="../ViewProviderLink.cpp" line="2598"/>
       <source>Transform at the origin of the placement</source>
       <translation>Μετατόπιση στην αρχή της τοποθέτησης</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2605"/>
-      <location filename="../ViewProviderLink.cpp" line="2611"/>
+      <location filename="../ViewProviderLink.cpp" line="2608"/>
+      <location filename="../ViewProviderLink.cpp" line="2614"/>
       <source>Override colors...</source>
       <translation>Αντικατάσταση χρωμάτων...</translation>
     </message>
@@ -9426,12 +8755,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection.cpp" line="637"/>
+      <location filename="../Selection.cpp" line="639"/>
       <source>Not allowed:</source>
       <translation>Δεν επιτρέπεται:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="904"/>
+      <location filename="../Selection.cpp" line="906"/>
       <source>Selection not allowed by filter</source>
       <translation>Η επιλογή δεν επιτρέπεται λόγω χρήσης φίλτρου</translation>
     </message>
@@ -9439,9 +8768,9 @@ the current copy will be lost.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2956"/>
-      <location filename="../CommandView.cpp" line="2957"/>
+      <location filename="../CommandView.cpp" line="2958"/>
       <location filename="../CommandView.cpp" line="2959"/>
+      <location filename="../CommandView.cpp" line="2961"/>
       <source>Box element selection</source>
       <translation>Επιλογή στοιχείων πλαισίου</translation>
     </message>
@@ -9449,13 +8778,13 @@ the current copy will be lost.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2694"/>
+      <location filename="../CommandView.cpp" line="2696"/>
       <source>Box selection</source>
       <translation>Επιλογή με τη χρήση πλαισίου</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2695"/>
       <location filename="../CommandView.cpp" line="2697"/>
+      <location filename="../CommandView.cpp" line="2699"/>
       <source>Activate the box selection tool</source>
       <translation type="unfinished">Activate the box selection tool</translation>
     </message>
@@ -9533,13 +8862,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2106"/>
+      <location filename="../CommandView.cpp" line="2108"/>
       <source>Toggle axis cross</source>
       <translation>Εναλλαγή εμφάνισης/απόκρυψης του συστήματος αξόνων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2107"/>
-      <location filename="../CommandView.cpp" line="2108"/>
+      <location filename="../CommandView.cpp" line="2109"/>
+      <location filename="../CommandView.cpp" line="2110"/>
       <source>Turns on or off the axis cross at the origin</source>
       <translation type="unfinished">Turns on or off the axis cross at the origin</translation>
     </message>
@@ -9645,13 +8974,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3274"/>
+      <location filename="../CommandView.cpp" line="3276"/>
       <source>View turntable...</source>
       <translation>Προβολή περιστρεφόμενης βάσης...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3275"/>
       <location filename="../CommandView.cpp" line="3277"/>
+      <location filename="../CommandView.cpp" line="3279"/>
       <source>View turntable</source>
       <translation>Προβολή περιστρεφόμενης βάσης</translation>
     </message>
@@ -9991,13 +9320,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1130"/>
+      <location filename="../CommandView.cpp" line="1132"/>
       <source>Hide all objects</source>
       <translation>Απόκρυψη όλων των αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1131"/>
-      <location filename="../CommandView.cpp" line="1132"/>
+      <location filename="../CommandView.cpp" line="1133"/>
+      <location filename="../CommandView.cpp" line="1134"/>
       <source>Hide all objects in the document</source>
       <translation>Απόκρυψη όλων των αντικειμένων στο έγγραφο</translation>
     </message>
@@ -10005,13 +9334,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="982"/>
+      <location filename="../CommandView.cpp" line="984"/>
       <source>Hide selection</source>
       <translation>Απόκρυψη επιλογής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="983"/>
-      <location filename="../CommandView.cpp" line="984"/>
+      <location filename="../CommandView.cpp" line="985"/>
+      <location filename="../CommandView.cpp" line="986"/>
       <source>Hide all selected objects</source>
       <translation>Απόκρυψη όλων των επιλεγμένων αντικειμένων</translation>
     </message>
@@ -10285,13 +9614,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <location filename="../CommandView.cpp" line="3123"/>
+      <location filename="../CommandView.cpp" line="3125"/>
       <source>Measure distance</source>
       <translation>Μετρήστε απόσταση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3124"/>
       <location filename="../CommandView.cpp" line="3126"/>
+      <location filename="../CommandView.cpp" line="3128"/>
       <source>Activate the distance measurement tool</source>
       <translation type="unfinished">Activate the distance measurement tool</translation>
     </message>
@@ -10351,7 +9680,7 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2050"/>
+      <location filename="../MainWindow.cpp" line="2119"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>
@@ -10579,8 +9908,8 @@ the current copy will be lost.
     <name>StdCmdRecentFiles</name>
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
-      <source>Recent files</source>
-      <translation>Πρόσφατα αρχεία</translation>
+      <source>Open Recent</source>
+      <translation type="unfinished">Open Recent</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
@@ -10718,13 +10047,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3214"/>
+      <location filename="../CommandView.cpp" line="3216"/>
       <source>Scene inspector...</source>
       <translation>Επιθεωρητής σκηνής...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3215"/>
       <location filename="../CommandView.cpp" line="3217"/>
+      <location filename="../CommandView.cpp" line="3219"/>
       <source>Scene inspector</source>
       <translation>Επιθεωρητής σκηνής</translation>
     </message>
@@ -10732,13 +10061,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3361"/>
+      <location filename="../CommandView.cpp" line="3363"/>
       <source>&amp;Back</source>
       <translation>&amp;Πίσω</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3362"/>
       <location filename="../CommandView.cpp" line="3364"/>
+      <location filename="../CommandView.cpp" line="3366"/>
       <source>Go back to previous selection</source>
       <translation>Μετάβαση πίσω στην προηγούμενη επιλογή</translation>
     </message>
@@ -10746,13 +10075,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3674"/>
+      <location filename="../CommandView.cpp" line="3676"/>
       <source>&amp;Bounding box</source>
       <translation>&amp;Πλαίσιο ορισμού</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3675"/>
       <location filename="../CommandView.cpp" line="3677"/>
+      <location filename="../CommandView.cpp" line="3679"/>
       <source>Show selection bounding box</source>
       <translation>Επιλογή εμφάνιση πλαισίου οριοθέτησης</translation>
     </message>
@@ -10760,13 +10089,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3391"/>
+      <location filename="../CommandView.cpp" line="3393"/>
       <source>&amp;Forward</source>
       <translation>&amp;Εμπρός</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3392"/>
       <location filename="../CommandView.cpp" line="3394"/>
+      <location filename="../CommandView.cpp" line="3396"/>
       <source>Repeat the backed selection</source>
       <translation>Επανάληψη της υποστηριζόμενης επιλογής</translation>
     </message>
@@ -10788,13 +10117,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1010"/>
+      <location filename="../CommandView.cpp" line="1012"/>
       <source>Select visible objects</source>
       <translation>Επιλέξτε ορατά αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1011"/>
-      <location filename="../CommandView.cpp" line="1012"/>
+      <location filename="../CommandView.cpp" line="1013"/>
+      <location filename="../CommandView.cpp" line="1014"/>
       <source>Select visible objects in the active document</source>
       <translation>Επιλέξτε ορατά αντικείμενα στο ενεργό έγγραφο</translation>
     </message>
@@ -10816,13 +10145,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../CommandView.cpp" line="1167"/>
+      <location filename="../CommandView.cpp" line="1169"/>
       <source>Appearance...</source>
       <translation>Εμφάνιση...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1168"/>
       <location filename="../CommandView.cpp" line="1170"/>
+      <location filename="../CommandView.cpp" line="1172"/>
       <source>Sets the display properties of the selected object</source>
       <translation>Ορίζει τις ιδιότητες προβολής του επιλεγμένου αντικειμένου</translation>
     </message>
@@ -10830,13 +10159,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1093"/>
+      <location filename="../CommandView.cpp" line="1095"/>
       <source>Show all objects</source>
       <translation>Εμφάνιση όλων των αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1094"/>
-      <location filename="../CommandView.cpp" line="1095"/>
+      <location filename="../CommandView.cpp" line="1096"/>
+      <location filename="../CommandView.cpp" line="1097"/>
       <source>Show all objects in the document</source>
       <translation>Εμφάνιση όλων των αντικειμένων στο έγγραφο</translation>
     </message>
@@ -10844,13 +10173,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="954"/>
+      <location filename="../CommandView.cpp" line="956"/>
       <source>Show selection</source>
       <translation>Εμφάνιση επιλογής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="955"/>
-      <location filename="../CommandView.cpp" line="956"/>
+      <location filename="../CommandView.cpp" line="957"/>
+      <location filename="../CommandView.cpp" line="958"/>
       <source>Show all selected objects</source>
       <translation>Εμφάνιση όλων των επιλεγμένων αντικειμένων</translation>
     </message>
@@ -10886,13 +10215,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3247"/>
+      <location filename="../CommandView.cpp" line="3249"/>
       <source>Texture mapping...</source>
       <translation>Χαρτογράφηση υφής...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3248"/>
       <location filename="../CommandView.cpp" line="3250"/>
+      <location filename="../CommandView.cpp" line="3252"/>
       <source>Texture mapping</source>
       <translation>Χαρτογράφηση υφής</translation>
     </message>
@@ -10942,13 +10271,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2057"/>
+      <location filename="../CommandView.cpp" line="2059"/>
       <source>Toggle navigation/Edit mode</source>
       <translation>Εναλλαγή λειτουργίας Πλοήγησης/Επεξεργασίας</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2058"/>
-      <location filename="../CommandView.cpp" line="2059"/>
+      <location filename="../CommandView.cpp" line="2060"/>
+      <location filename="../CommandView.cpp" line="2061"/>
       <source>Toggle between navigation and edit mode</source>
       <translation>Εναλλαγή μεταξύ της λειτουργίας πλοήγησης και της λειτουργίας επεξεργασίας</translation>
     </message>
@@ -10956,13 +10285,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1052"/>
+      <location filename="../CommandView.cpp" line="1054"/>
       <source>Toggle all objects</source>
       <translation>Εναλλαγή εμφάνισης/απόκρυψης όλων των αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1053"/>
-      <location filename="../CommandView.cpp" line="1054"/>
+      <location filename="../CommandView.cpp" line="1055"/>
+      <location filename="../CommandView.cpp" line="1056"/>
       <source>Toggles visibility of all objects in the active document</source>
       <translation>Εναλλάσσει την ορατότητα όλων των αντικειμένων στο ενεργό έγγραφο</translation>
     </message>
@@ -10970,13 +10299,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="902"/>
+      <location filename="../CommandView.cpp" line="904"/>
       <source>Toggle selectability</source>
       <translation>Εναλλαγή επιλεξιμότητας</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="903"/>
-      <location filename="../CommandView.cpp" line="904"/>
+      <location filename="../CommandView.cpp" line="905"/>
+      <location filename="../CommandView.cpp" line="906"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
       <translation>Εναλλάσσει την ιδιότητα των αντικειμένων να επιλέγονται στην Τρισδιάστατη Προβολή</translation>
     </message>
@@ -10984,13 +10313,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="871"/>
+      <location filename="../CommandView.cpp" line="873"/>
       <source>Toggle visibility</source>
       <translation>Εναλλαγή ορατότητας</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="872"/>
-      <location filename="../CommandView.cpp" line="873"/>
+      <location filename="../CommandView.cpp" line="874"/>
+      <location filename="../CommandView.cpp" line="875"/>
       <source>Toggles visibility</source>
       <translation>Εναλλάσσει την ορατότητα</translation>
     </message>
@@ -11040,13 +10369,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3022"/>
+      <location filename="../CommandView.cpp" line="3024"/>
       <source>Collapse selected item</source>
       <translation type="unfinished">Collapse selected item</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3023"/>
       <location filename="../CommandView.cpp" line="3025"/>
+      <location filename="../CommandView.cpp" line="3027"/>
       <source>Collapse currently selected tree items</source>
       <translation type="unfinished">Collapse currently selected tree items</translation>
     </message>
@@ -11054,13 +10383,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3047"/>
+      <location filename="../CommandView.cpp" line="3049"/>
       <source>Expand selected item</source>
       <translation>Expand selected item</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3048"/>
       <location filename="../CommandView.cpp" line="3050"/>
+      <location filename="../CommandView.cpp" line="3052"/>
       <source>Expand currently selected tree items</source>
       <translation>Expand currently selected tree items</translation>
     </message>
@@ -11068,13 +10397,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3072"/>
+      <location filename="../CommandView.cpp" line="3074"/>
       <source>Select all instances</source>
       <translation>Select all instances</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3073"/>
       <location filename="../CommandView.cpp" line="3075"/>
+      <location filename="../CommandView.cpp" line="3077"/>
       <source>Select all instances of the current selected object</source>
       <translation>Select all instances of the current selected object</translation>
     </message>
@@ -11082,13 +10411,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3639"/>
       <source>TreeView actions</source>
       <translation>TreeView actions</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3638"/>
       <location filename="../CommandView.cpp" line="3640"/>
+      <location filename="../CommandView.cpp" line="3642"/>
       <source>TreeView behavior options and actions</source>
       <translation>TreeView behavior options and actions</translation>
     </message>
@@ -11152,13 +10481,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1225"/>
+      <location filename="../CommandView.cpp" line="1227"/>
       <source>Bottom</source>
       <translation>Κάτω</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1226"/>
       <location filename="../CommandView.cpp" line="1228"/>
+      <location filename="../CommandView.cpp" line="1230"/>
       <source>Set to bottom view</source>
       <translation>Ορισμός κάτω προβολής</translation>
     </message>
@@ -11166,13 +10495,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2028"/>
+      <location filename="../CommandView.cpp" line="2030"/>
       <source>Create new view</source>
       <translation>Δημιουργήστε νέα προβολή</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2029"/>
       <location filename="../CommandView.cpp" line="2031"/>
+      <location filename="../CommandView.cpp" line="2033"/>
       <source>Creates a new view window for the active document</source>
       <translation>Δημιουργεί ένα νέο παράθυρο προβολής για το ενεργό έγγραφο</translation>
     </message>
@@ -11180,13 +10509,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1393"/>
+      <location filename="../CommandView.cpp" line="1395"/>
       <source>Dimetric</source>
       <translation>Διμετρική</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1394"/>
       <location filename="../CommandView.cpp" line="1396"/>
+      <location filename="../CommandView.cpp" line="1398"/>
       <source>Set to dimetric view</source>
       <translation>Ορισμός σε διμετρική προβολή</translation>
     </message>
@@ -11194,13 +10523,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2152"/>
+      <location filename="../CommandView.cpp" line="2154"/>
       <source>Inventor example #1</source>
       <translation>Παράδειγμα Inventor #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2153"/>
       <location filename="../CommandView.cpp" line="2155"/>
+      <location filename="../CommandView.cpp" line="2157"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>Εμφανίζει μια τρισδιάστατη υφή με χρήση του πάγκου εργασίας παραποίησης</translation>
     </message>
@@ -11208,13 +10537,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2180"/>
+      <location filename="../CommandView.cpp" line="2182"/>
       <source>Inventor example #2</source>
       <translation>Παράδειγμα Inventor #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2181"/>
       <location filename="../CommandView.cpp" line="2183"/>
+      <location filename="../CommandView.cpp" line="2185"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Εμφανίζει σφαίρες και μετακινούμενες πηγές φωτός</translation>
     </message>
@@ -11222,13 +10551,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2208"/>
+      <location filename="../CommandView.cpp" line="2210"/>
       <source>Inventor example #3</source>
       <translation>Παράδειγμα Inventor #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2209"/>
       <location filename="../CommandView.cpp" line="2211"/>
+      <location filename="../CommandView.cpp" line="2213"/>
       <source>Shows a animated texture</source>
       <translation>Εμφανίζει μια κινούμενη υφή</translation>
     </message>
@@ -11236,13 +10565,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1489"/>
+      <location filename="../CommandView.cpp" line="1491"/>
       <source>Fit all</source>
       <translation>Προσαρμογή όλων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1490"/>
       <location filename="../CommandView.cpp" line="1492"/>
+      <location filename="../CommandView.cpp" line="1494"/>
       <source>Fits the whole content on the screen</source>
       <translation>Επαναφέρει όλα τα αντικείμενά στο κέντρο της οθόνης</translation>
     </message>
@@ -11250,13 +10579,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1520"/>
+      <location filename="../CommandView.cpp" line="1522"/>
       <source>Fit selection</source>
       <translation>Προσαρμογή επιλογής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1521"/>
       <location filename="../CommandView.cpp" line="1523"/>
+      <location filename="../CommandView.cpp" line="1525"/>
       <source>Fits the selected content on the screen</source>
       <translation>Επαναφέρει τα επιλεγμένα αντικείμενα στο κέντρο της οθόνης</translation>
     </message>
@@ -11264,13 +10593,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1249"/>
+      <location filename="../CommandView.cpp" line="1251"/>
       <source>Front</source>
       <translation>Εμπρόσθια</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1250"/>
       <location filename="../CommandView.cpp" line="1252"/>
+      <location filename="../CommandView.cpp" line="1254"/>
       <source>Set to front view</source>
       <translation>Ορισμός εμπρόσθιας προβολής</translation>
     </message>
@@ -11278,13 +10607,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1197"/>
+      <location filename="../CommandView.cpp" line="1199"/>
       <source>Home</source>
       <translation>Home</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1198"/>
       <location filename="../CommandView.cpp" line="1200"/>
+      <location filename="../CommandView.cpp" line="1202"/>
       <source>Set to default home view</source>
       <translation>Ορισμός προεπιλεγμένης προβολής αρχικής οθόνης</translation>
     </message>
@@ -11292,13 +10621,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1369"/>
+      <location filename="../CommandView.cpp" line="1371"/>
       <source>Isometric</source>
       <translation>Ισομετρική</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1370"/>
       <location filename="../CommandView.cpp" line="1372"/>
+      <location filename="../CommandView.cpp" line="1374"/>
       <source>Set to isometric view</source>
       <translation>Ορισμός σε ισομετρική προβολή</translation>
     </message>
@@ -11306,13 +10635,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2379"/>
+      <location filename="../CommandView.cpp" line="2381"/>
       <source>Issue camera position</source>
       <translation>Καταγραφή θέσης κάμερας</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2380"/>
       <location filename="../CommandView.cpp" line="2382"/>
+      <location filename="../CommandView.cpp" line="2384"/>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Καταγράψτε την θέση της κάμερας στην κονσόλα και σε μια μακροεντολή, ώστε να θυμάστε αυτήν την θέση με ευκολία</translation>
     </message>
@@ -11320,13 +10649,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2350"/>
+      <location filename="../CommandView.cpp" line="2352"/>
       <source>Stereo Interleaved Columns</source>
       <translation>Παρεμβαλλόμενες Στήλες Στερεοσκοπικής Προβολής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2351"/>
       <location filename="../CommandView.cpp" line="2353"/>
+      <location filename="../CommandView.cpp" line="2355"/>
       <source>Switch stereo viewing to Interleaved Columns</source>
       <translation>Μεταβολή στερεοσκοπικής προβολής σε Παρεμβαλλόμενων Στηλών</translation>
     </message>
@@ -11334,13 +10663,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2322"/>
+      <location filename="../CommandView.cpp" line="2324"/>
       <source>Stereo Interleaved Rows</source>
       <translation>Παρεμβαλλόμενες Σειρές Στερεοσκοπικής Προβολής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2323"/>
       <location filename="../CommandView.cpp" line="2325"/>
+      <location filename="../CommandView.cpp" line="2327"/>
       <source>Switch stereo viewing to Interleaved Rows</source>
       <translation>Μεταβολή στερεοσκοπικής προβολής σε Παρεμβαλλόμενων Σειρών</translation>
     </message>
@@ -11348,13 +10677,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2237"/>
+      <location filename="../CommandView.cpp" line="2239"/>
       <source>Stereo Off</source>
       <translation>Απενεργοποιημένη η Στερεοσκοπική Προβολή</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2238"/>
       <location filename="../CommandView.cpp" line="2240"/>
+      <location filename="../CommandView.cpp" line="2242"/>
       <source>Switch stereo viewing off</source>
       <translation>Απενεργοποίηση στερεοσκοπικής προβολής</translation>
     </message>
@@ -11362,13 +10691,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2294"/>
+      <location filename="../CommandView.cpp" line="2296"/>
       <source>Stereo quad buffer</source>
       <translation>Στερεοσκοπική προβολή τεσσάρων ρυθμιστών</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2295"/>
       <location filename="../CommandView.cpp" line="2297"/>
+      <location filename="../CommandView.cpp" line="2299"/>
       <source>Switch stereo viewing to quad buffer</source>
       <translation>Μεταβολή στερεοσκοπικής προβολής σε τεσσάρων ρυθμιστών</translation>
     </message>
@@ -11376,13 +10705,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2266"/>
+      <location filename="../CommandView.cpp" line="2268"/>
       <source>Stereo red/cyan</source>
       <translation>Στερεοσκοπική προβολή κόκκινο/κυανό</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2267"/>
       <location filename="../CommandView.cpp" line="2269"/>
+      <location filename="../CommandView.cpp" line="2271"/>
       <source>Switch stereo viewing to red/cyan</source>
       <translation>Μεταβολή στερεοσκοπικής προβολής σε κόκκινο/κυανό</translation>
     </message>
@@ -11390,13 +10719,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1273"/>
+      <location filename="../CommandView.cpp" line="1275"/>
       <source>Left</source>
       <translation>Αριστερά</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1274"/>
       <location filename="../CommandView.cpp" line="1276"/>
+      <location filename="../CommandView.cpp" line="1278"/>
       <source>Set to left view</source>
       <translation>Ορισμός αριστερής προβολής</translation>
     </message>
@@ -11404,13 +10733,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1297"/>
+      <location filename="../CommandView.cpp" line="1299"/>
       <source>Rear</source>
       <translation>Οπίσθια</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1298"/>
       <location filename="../CommandView.cpp" line="1300"/>
+      <location filename="../CommandView.cpp" line="1302"/>
       <source>Set to rear view</source>
       <translation>Ορισμός οπίσθιας προβολής</translation>
     </message>
@@ -11432,13 +10761,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1321"/>
+      <location filename="../CommandView.cpp" line="1323"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1322"/>
       <location filename="../CommandView.cpp" line="1324"/>
+      <location filename="../CommandView.cpp" line="1326"/>
       <source>Set to right view</source>
       <translation>Ορισμός δεξιά προβολής</translation>
     </message>
@@ -11446,13 +10775,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1439"/>
+      <location filename="../CommandView.cpp" line="1441"/>
       <source>Rotate Left</source>
       <translation>Περιστροφή προς τα Αριστερά</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1440"/>
       <location filename="../CommandView.cpp" line="1442"/>
+      <location filename="../CommandView.cpp" line="1444"/>
       <source>Rotate the view by 90° counter-clockwise</source>
       <translation>Rotate the view by 90° counter-clockwise</translation>
     </message>
@@ -11460,13 +10789,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1464"/>
+      <location filename="../CommandView.cpp" line="1466"/>
       <source>Rotate Right</source>
       <translation>Περιστροφή προς τα Δεξιά</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1465"/>
       <location filename="../CommandView.cpp" line="1467"/>
+      <location filename="../CommandView.cpp" line="1469"/>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Rotate the view by 90° clockwise</translation>
     </message>
@@ -11488,13 +10817,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1345"/>
+      <location filename="../CommandView.cpp" line="1347"/>
       <source>Top</source>
       <translation>Πάνω</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1346"/>
       <location filename="../CommandView.cpp" line="1348"/>
+      <location filename="../CommandView.cpp" line="1350"/>
       <source>Set to top view</source>
       <translation>Ορισμός πάνω προβολής</translation>
     </message>
@@ -11502,13 +10831,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1416"/>
+      <location filename="../CommandView.cpp" line="1418"/>
       <source>Trimetric</source>
       <translation>Τριμετρική</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1417"/>
       <location filename="../CommandView.cpp" line="1419"/>
+      <location filename="../CommandView.cpp" line="1421"/>
       <source>Set to trimetric view</source>
       <translation>Ορισμός σε τριμετρική προβολή</translation>
     </message>
@@ -11516,13 +10845,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1782"/>
+      <location filename="../CommandView.cpp" line="1784"/>
       <source>FreeCAD-VR</source>
       <translation>FREECAD-VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1783"/>
       <location filename="../CommandView.cpp" line="1785"/>
+      <location filename="../CommandView.cpp" line="1787"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
       <translation>Επέκταση του Τρισδιάστατου Παραθύρου FreeCAD σε σύστημα εικονικής πραγματικότητας Oculus Rift</translation>
     </message>
@@ -11586,13 +10915,13 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1607"/>
+      <location filename="../CommandView.cpp" line="1609"/>
       <source>Fullscreen</source>
       <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1608"/>
       <location filename="../CommandView.cpp" line="1610"/>
+      <location filename="../CommandView.cpp" line="1612"/>
       <source>Display the main window in fullscreen mode</source>
       <translation>Απεικόνιση του κύριου παραθύρου σε λειτουργία πλήρους οθόνης</translation>
     </message>
@@ -11628,13 +10957,13 @@ the current copy will be lost.
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3748"/>
+      <location filename="../CommandView.cpp" line="3750"/>
       <source>Recall working view</source>
       <translation type="unfinished">Recall working view</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3749"/>
-      <location filename="../CommandView.cpp" line="3750"/>
+      <location filename="../CommandView.cpp" line="3751"/>
+      <location filename="../CommandView.cpp" line="3752"/>
       <source>Recall previously stored temporary working view</source>
       <translation type="unfinished">Recall previously stored temporary working view</translation>
     </message>
@@ -11642,13 +10971,13 @@ the current copy will be lost.
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3718"/>
+      <location filename="../CommandView.cpp" line="3720"/>
       <source>Store working view</source>
       <translation type="unfinished">Store working view</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3719"/>
-      <location filename="../CommandView.cpp" line="3720"/>
+      <location filename="../CommandView.cpp" line="3721"/>
+      <location filename="../CommandView.cpp" line="3722"/>
       <source>Store a document-specific temporary working view</source>
       <translation type="unfinished">Store a document-specific temporary working view</translation>
     </message>
@@ -11656,13 +10985,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3475"/>
+      <location filename="../CommandView.cpp" line="3477"/>
       <source>Collapse/Expand</source>
       <translation>Σύμπτυξη/Επέκταση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3476"/>
       <location filename="../CommandView.cpp" line="3478"/>
+      <location filename="../CommandView.cpp" line="3480"/>
       <source>Expand active document and collapse all others</source>
       <translation>Επέκταση του ενεργού εγγράφου, και σύμπτυξη όλων των άλλων</translation>
     </message>
@@ -11670,12 +10999,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3604"/>
+      <location filename="../CommandView.cpp" line="3606"/>
       <source>Initiate dragging</source>
       <translation>Initiate dragging</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3605"/>
+      <location filename="../CommandView.cpp" line="3607"/>
       <source>Initiate dragging of current selected tree items</source>
       <translation>Initiate dragging of current selected tree items</translation>
     </message>
@@ -11683,13 +11012,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3458"/>
+      <location filename="../CommandView.cpp" line="3460"/>
       <source>Multi document</source>
       <translation>Multi document</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3459"/>
       <location filename="../CommandView.cpp" line="3461"/>
+      <location filename="../CommandView.cpp" line="3463"/>
       <source>Display all documents in the tree view</source>
       <translation>Εμφάνιση όλων των εγγράφων στην προβολή δέντρου</translation>
     </message>
@@ -11697,12 +11026,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3568"/>
+      <location filename="../CommandView.cpp" line="3570"/>
       <source>Pre-selection</source>
       <translation>Pre-selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3569"/>
+      <location filename="../CommandView.cpp" line="3571"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>Preselect the object in 3D view when mouse over the tree item</translation>
     </message>
@@ -11710,12 +11039,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3586"/>
+      <location filename="../CommandView.cpp" line="3588"/>
       <source>Record selection</source>
       <translation>Record selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3587"/>
+      <location filename="../CommandView.cpp" line="3589"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>Record selection in tree view in order to go back/forward using navigation button</translation>
     </message>
@@ -11723,13 +11052,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2997"/>
+      <location filename="../CommandView.cpp" line="2999"/>
       <source>Go to selection</source>
       <translation>Μεταβείτε στην επιλογή</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2998"/>
       <location filename="../CommandView.cpp" line="3000"/>
+      <location filename="../CommandView.cpp" line="3002"/>
       <source>Scroll to first selected item</source>
       <translation>Κύλιση στο πρώτο επιλεγμένο αντικείμενο</translation>
     </message>
@@ -11737,13 +11066,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3441"/>
+      <location filename="../CommandView.cpp" line="3443"/>
       <source>Single document</source>
       <translation>Single document</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3442"/>
       <location filename="../CommandView.cpp" line="3444"/>
+      <location filename="../CommandView.cpp" line="3446"/>
       <source>Only display the active document in the tree view</source>
       <translation>Εμφάνιση μόνο του ενεργού εγγράφου, στην προβολή σαν δέντρο</translation>
     </message>
@@ -11751,12 +11080,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3550"/>
+      <location filename="../CommandView.cpp" line="3552"/>
       <source>Sync placement</source>
       <translation>Συγχρονισμός τοποθέτησης</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3551"/>
+      <location filename="../CommandView.cpp" line="3553"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
       <translation>Αυτόματη προσαρμογή της τοποθέτησης σε αντικείμενα μεταφοράς 
 και απόθεσης στα συστήματα συντεταγμένων</translation>
@@ -11765,12 +11094,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3532"/>
+      <location filename="../CommandView.cpp" line="3534"/>
       <source>Sync selection</source>
       <translation>Επιλογή συγχρονισμού</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3533"/>
+      <location filename="../CommandView.cpp" line="3535"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>Auto expand tree item when the corresponding object is selected in 3D view</translation>
     </message>
@@ -11778,12 +11107,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3514"/>
+      <location filename="../CommandView.cpp" line="3516"/>
       <source>Sync view</source>
       <translation>Συγχρονισμός προβολής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3515"/>
+      <location filename="../CommandView.cpp" line="3517"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>Αυτόματη μετάβαση στην τρισδιάστατη προβολή που περιέχει το επιλεγμένο αντικείμενο</translation>
     </message>
@@ -11791,13 +11120,13 @@ the current copy will be lost.
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2624"/>
+      <location filename="../CommandView.cpp" line="2626"/>
       <source>Box zoom</source>
       <translation>Εστίαση με τη χρήση πλαισίου</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2625"/>
       <location filename="../CommandView.cpp" line="2627"/>
+      <location filename="../CommandView.cpp" line="2629"/>
       <source>Activate the box zoom tool</source>
       <translation type="unfinished">Activate the box zoom tool</translation>
     </message>
@@ -11805,13 +11134,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1549"/>
+      <location filename="../CommandView.cpp" line="1551"/>
       <source>Docked</source>
       <translation>Προσκολλημένο</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1550"/>
       <location filename="../CommandView.cpp" line="1552"/>
+      <location filename="../CommandView.cpp" line="1554"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
@@ -11819,13 +11148,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1669"/>
+      <location filename="../CommandView.cpp" line="1671"/>
       <source>Document window</source>
       <translation>Παράθυρο εγγράφου</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1670"/>
       <location filename="../CommandView.cpp" line="1672"/>
+      <location filename="../CommandView.cpp" line="1674"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
@@ -11833,13 +11162,13 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1639"/>
+      <location filename="../CommandView.cpp" line="1641"/>
       <source>Fullscreen</source>
       <translation>Πλήρης οθόνη</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1640"/>
       <location filename="../CommandView.cpp" line="1642"/>
+      <location filename="../CommandView.cpp" line="1644"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
@@ -11847,13 +11176,13 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="1811"/>
+      <location filename="../CommandView.cpp" line="1813"/>
       <source>Save image...</source>
       <translation type="unfinished">Save image...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1812"/>
       <location filename="../CommandView.cpp" line="1814"/>
+      <location filename="../CommandView.cpp" line="1816"/>
       <source>Creates a screenshot of the active view</source>
       <translation>Δημιουργεί ένα στιγμιότυπο οθόνης της ενεργής προβολής</translation>
     </message>
@@ -11861,13 +11190,13 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1578"/>
+      <location filename="../CommandView.cpp" line="1580"/>
       <source>Undocked</source>
       <translation>Ανεξάρτητα</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1579"/>
       <location filename="../CommandView.cpp" line="1581"/>
+      <location filename="../CommandView.cpp" line="1583"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
@@ -11875,13 +11204,13 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2429"/>
+      <location filename="../CommandView.cpp" line="2431"/>
       <source>Zoom In</source>
       <translation>Μεγέθυνση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2430"/>
       <location filename="../CommandView.cpp" line="2432"/>
+      <location filename="../CommandView.cpp" line="2434"/>
       <source>Increase the zoom factor by a fixed amount</source>
       <translation type="unfinished">Increase the zoom factor by a fixed amount</translation>
     </message>
@@ -11889,13 +11218,13 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2458"/>
+      <location filename="../CommandView.cpp" line="2460"/>
       <source>Zoom Out</source>
       <translation>Σμίκρυνση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2459"/>
       <location filename="../CommandView.cpp" line="2461"/>
+      <location filename="../CommandView.cpp" line="2463"/>
       <source>Decrease the zoom factor by a fixed amount</source>
       <translation type="unfinished">Decrease the zoom factor by a fixed amount</translation>
     </message>
@@ -11930,72 +11259,72 @@ Are you sure you want to continue;
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="730"/>
+      <location filename="../CommandView.cpp" line="732"/>
       <source>As is</source>
       <translation>Όπως είναι</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="732"/>
+      <location filename="../CommandView.cpp" line="734"/>
       <source>Normal mode</source>
       <translation>Κανονική λειτουργία</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="735"/>
+      <location filename="../CommandView.cpp" line="737"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="737"/>
+      <location filename="../CommandView.cpp" line="739"/>
       <source>Points mode</source>
       <translation>Λειτουργία σημείων</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="740"/>
+      <location filename="../CommandView.cpp" line="742"/>
       <source>Wireframe</source>
       <translation>Σκελετός</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="742"/>
+      <location filename="../CommandView.cpp" line="744"/>
       <source>Wireframe mode</source>
       <translation>Λειτουργία σκελετού</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="745"/>
+      <location filename="../CommandView.cpp" line="747"/>
       <source>Hidden line</source>
       <translation>Κρυφή γραμμή</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="747"/>
+      <location filename="../CommandView.cpp" line="749"/>
       <source>Hidden line mode</source>
       <translation>Λειτουργία κρυφής γραμμής</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="750"/>
+      <location filename="../CommandView.cpp" line="752"/>
       <source>No shading</source>
       <translation>Χωρίς σκίαση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="752"/>
+      <location filename="../CommandView.cpp" line="754"/>
       <source>No shading mode</source>
       <translation>Λειτουργία χωρίς σκίαση</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="755"/>
+      <location filename="../CommandView.cpp" line="757"/>
       <source>Shaded</source>
       <translation>Σκιασμένη</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="757"/>
+      <location filename="../CommandView.cpp" line="759"/>
       <source>Shaded mode</source>
       <translation>Λειτουργία σκίασης</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="760"/>
+      <location filename="../CommandView.cpp" line="762"/>
       <source>Flat lines</source>
       <translation>Επίπεδες γραμμές</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="762"/>
+      <location filename="../CommandView.cpp" line="764"/>
       <source>Flat lines mode</source>
       <translation>Κατάσταση λειτουργίας επίπεδων γραμμών</translation>
     </message>
@@ -12209,12 +11538,12 @@ Do you still want to proceed;</translation>
   <context>
     <name>Gui::MDIView</name>
     <message>
-      <location filename="../MDIView.cpp" line="253"/>
+      <location filename="../MDIView.cpp" line="255"/>
       <source>Export PDF</source>
       <translation>Εξαγωγή σε PDF</translation>
     </message>
     <message>
-      <location filename="../MDIView.cpp" line="254"/>
+      <location filename="../MDIView.cpp" line="256"/>
       <source>PDF file</source>
       <translation>Αρχείο PDF</translation>
     </message>
@@ -12222,196 +11551,190 @@ Do you still want to proceed;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsNotificationArea</name>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="14"/>
-      <location filename="../DlgSettingsNotificationArea.cpp" line="57"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="14"/>
       <source>Notification Area</source>
       <translation type="unfinished">Notification Area</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="20"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>Settings</source>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="26"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="26"/>
       <source>The Notification area will appear in the status bar</source>
       <translation type="unfinished">The Notification area will appear in the status bar</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="29"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
       <translation type="unfinished">Enable Notification Area</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="45"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="45"/>
       <source>Non-intrusive notifications will appear next to the notification area in the status bar</source>
       <translation type="unfinished">Non-intrusive notifications will appear next to the notification area in the status bar</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="48"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="48"/>
       <source>Enable non-intrusive notifications</source>
       <translation type="unfinished">Enable non-intrusive notifications</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="67"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
       <source>Additional data sources</source>
       <translation type="unfinished">Additional data sources</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="73"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="73"/>
       <source>Errors intended for developers will appear in the notification area</source>
       <translation type="unfinished">Errors intended for developers will appear in the notification area</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="76"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="76"/>
       <source>Debug errors</source>
       <translation type="unfinished">Debug errors</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="92"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="92"/>
       <source>Warnings intended for developers will appear in the notification area</source>
       <translation type="unfinished">Warnings intended for developers will appear in the notification area</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="95"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="95"/>
       <source>Debug warnings</source>
       <translation type="unfinished">Debug warnings</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="114"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
       <translation type="unfinished">Non-Intrusive Notifications</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="120"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="120"/>
       <source>Minimum Duration:</source>
       <translation type="unfinished">Minimum Duration:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="130"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="130"/>
       <source>Maximum Duration:</source>
       <translation type="unfinished">Maximum Duration:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="137"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="137"/>
       <source>Duration during which the notification will be shown (unless mouse buttons are clicked)</source>
       <translation type="unfinished">Duration during which the notification will be shown (unless mouse buttons are clicked)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="140"/>
-      <location filename="../DlgSettingsNotificationArea.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="165"/>
       <source>s</source>
       <translation type="unfinished">s</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="162"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="162"/>
       <source>Minimum duration during which the notification will be shown (unless notification clicked)</source>
       <translation type="unfinished">Minimum duration during which the notification will be shown (unless notification clicked)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="181"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="181"/>
       <source>Maximum Number of Notifications:</source>
       <translation type="unfinished">Maximum Number of Notifications:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="188"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="188"/>
       <source>Maximum number of notifications that will be simultaneously present on the screen</source>
       <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the screen</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="204"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
       <translation type="unfinished">Notification width:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="211"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="211"/>
       <source>Width of the notification in pixels</source>
       <translation type="unfinished">Width of the notification in pixels</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="233"/>
       <source>Any open non-intrusive notifications will disappear when another window is activated</source>
       <translation type="unfinished">Any open non-intrusive notifications will disappear when another window is activated</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
       <translation type="unfinished">Hide when other window is activated</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="252"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="252"/>
       <source>Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</source>
       <translation type="unfinished">Prevent non-intrusive notifications from appearing when the FreeCAD Window is not the active window</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
       <translation type="unfinished">Do not show when inactive</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="274"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
       <translation type="unfinished">Message List</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="280"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="280"/>
       <source>Limit the number of messages that will be kept in the list. If 0 there is no limit.</source>
       <translation type="unfinished">Limit the number of messages that will be kept in the list. If 0 there is no limit.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="299"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
       <translation type="unfinished">Maximum Messages (0 = no limit):</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="306"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="306"/>
       <source>Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</source>
       <translation type="unfinished">Removes the user notifications from the message list after the non-intrusive maximum duration has lapsed.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNotificationArea.ui" line="309"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
       <translation type="unfinished">Auto-remove User Notifications</translation>
-    </message>
-    <message>
-      <location filename="../DlgSettingsNotificationArea.cpp" line="58"/>
-      <source>Activation of the Notification Area only takes effect after an application restart.</source>
-      <translation type="unfinished">Activation of the Notification Area only takes effect after an application restart.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenches</name>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="14"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="14"/>
       <source>Available Workbenches</source>
       <translation>Διαθέσιμοι πάγκοι εργασίας</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="32"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="63"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="63"/>
       <source>Start up workbench:</source>
       <translation type="unfinished">Start up workbench:</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="70"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="70"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
       <translation>Επιλέξτε τον πάγκο εργασίας που θα ενεργοποιηθεί και θα εμφανιστεί
 μετά την εκκίνηση του FreeCAD</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="97"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector position :</source>
       <translation type="unfinished">Workbench selector position :</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="104"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
       <source>Customize where the workbench selector appears (restart required).
 
 'Toolbar': In the toolbars, as a movable toolbar.
@@ -12424,12 +11747,12 @@ after FreeCAD launches</source>
 'Right Corner': In the menu bar, on the right corner.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="117"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
       <translation>Εάν επιλεγεί, η εφαρμογή θα θυμάται ποιος πάγκος εργασίας είναι ενεργός για κάθε καρτέλα της θύρας προβολής</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenches.ui" line="120"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="120"/>
       <source>Remember active workbench by tab</source>
       <translation>Απομνημόνευση ενεργού πάγκου εργασίας κατά καρτέλα</translation>
     </message>
@@ -12578,47 +11901,47 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::Dialog::wbListItem</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="85"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="86"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
       <translation type="unfinished">If unchecked, %1 will not appear in the available workbenches.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="91"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
       <translation type="unfinished">This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="113"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="114"/>
       <source>Shortcut to activate this workbench.</source>
       <translation type="unfinished">Shortcut to activate this workbench.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="127"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="128"/>
       <source>Auto-load</source>
       <translation type="unfinished">Auto-load</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="128"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="129"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
       <translation type="unfinished">If checked, %1 will be loaded automatically when FreeCAD starts up</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="134"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="135"/>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
       <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="141"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="142"/>
       <source>Loaded</source>
       <translation type="unfinished">Loaded</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="144"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="145"/>
       <source>Load</source>
       <translation>Φόρτωση</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="145"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="146"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
       <translation type="unfinished">To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</translation>
     </message>
@@ -12626,17 +11949,17 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="475"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="476"/>
       <source>Toolbar</source>
       <translation>Toolbar</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="476"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="477"/>
       <source>Left corner</source>
       <translation type="unfinished">Left corner</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsWorkbenchesImp.cpp" line="477"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="478"/>
       <source>Right corner</source>
       <translation type="unfinished">Right corner</translation>
     </message>
@@ -12662,12 +11985,12 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::NotificationArea</name>
     <message>
-      <location filename="../NotificationArea.cpp" line="861"/>
+      <location filename="../NotificationArea.cpp" line="863"/>
       <source>Delete user notifications</source>
       <translation type="unfinished">Delete user notifications</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="871"/>
+      <location filename="../NotificationArea.cpp" line="873"/>
       <source>Delete All</source>
       <translation type="unfinished">Delete All</translation>
     </message>
@@ -12703,13 +12026,13 @@ after FreeCAD launches</source>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="1982"/>
+      <location filename="../CommandView.cpp" line="1984"/>
       <source>Load image...</source>
       <translation type="unfinished">Load image...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1983"/>
       <location filename="../CommandView.cpp" line="1985"/>
+      <location filename="../CommandView.cpp" line="1987"/>
       <source>Loads an image</source>
       <translation type="unfinished">Loads an image</translation>
     </message>
@@ -12775,6 +12098,738 @@ after FreeCAD launches</source>
       <location filename="../Widgets.cpp" line="1667"/>
       <source>An error occurred -- see Report View for information</source>
       <translation type="unfinished">An error occurred -- see Report View for information</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsEditor</name>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="14"/>
+      <source>Editor</source>
+      <translation>Πρόγραμμα επεξεργασίας</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="35"/>
+      <source>Options</source>
+      <translation>Επιλογές</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="59"/>
+      <source>Code lines will be numbered</source>
+      <translation>Οι γραμμές κώδικα θα αριθμηθούν</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="62"/>
+      <source>Enable line numbers</source>
+      <translation>Ενεργοποίηση αριθμών γραμμών</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="81"/>
+      <source>The cursor shape will be a block</source>
+      <translation>Το σχήμα του κέρσορα θα είναι μπλοκ</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="84"/>
+      <source>Enable block cursor</source>
+      <translation>Ενεργοποίηση του κέρσορα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="100"/>
+      <source>Enable folding</source>
+      <translation>Ενεργοποίηση αναδίπλωσης</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="135"/>
+      <source>Indentation</source>
+      <translation>Εισαγωγή εσοχής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="156"/>
+      <source>Tab size:</source>
+      <translation>Μέγεθος καρτέλας:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="163"/>
+      <source>Tabulator raster (how many spaces)</source>
+      <translation>Πίνακας ψηφιακή εικόνα τύπου bitmap (πόσα κενά)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="179"/>
+      <source>Indent size:</source>
+      <translation>Μέγεθος εσοχής:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="186"/>
+      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
+      <translation>Πόσα κενά θα εισαχθούν όταν πατήσετε &lt;Tab&gt;</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="202"/>
+      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
+      <translation>Πατώντας &lt;Tab&gt; θα εισαχθεί το καθορισμένο μέγεθος εσοχής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="205"/>
+      <source>Keep tabs</source>
+      <translation>Διατηρήστε τις καρτέλες</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="221"/>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Πατώντας &lt;Tab&gt; θα εισαχθεί το καθορισμένο μέγεθος εσοχής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="224"/>
+      <source>Insert spaces</source>
+      <translation>Εισαγωγή κενών</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="246"/>
+      <source>Display items</source>
+      <translation>Εμφάνιση στοιχείων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="267"/>
+      <source>Color and font settings will be applied to selected type</source>
+      <translation>Θα εφαρμοστούν οι ρυθμίσεις χρώματος και γραμματοσειράς στον επιλεγμένο τύπο</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="282"/>
+      <source>Family:</source>
+      <translation>Οικογένεια:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="295"/>
+      <source>Font family to be used for selected code type</source>
+      <translation>Μέγεθος γραμματοσειράς που θα χρησιμοποιηθεί για τον επιλεγμένο τύπο κώδικα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="302"/>
+      <source>Size:</source>
+      <translation>Μέγεθος:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="315"/>
+      <source>Font size to be used for selected code type</source>
+      <translation>Μέγεθος γραμματοσειράς που θα χρησιμοποιηθεί για τον επιλεγμένο τύπο κώδικα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="334"/>
+      <source>Color:</source>
+      <translation>Χρώμα:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.ui" line="363"/>
+      <source>Preview:</source>
+      <translation>Προεπισκόπηση:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="105"/>
+      <source>Text</source>
+      <translation>Κείμενο</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="109"/>
+      <source>Bookmark</source>
+      <translation>Σελιδοδείκτης</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="113"/>
+      <source>Breakpoint</source>
+      <translation>Σημείο Διακοπής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="117"/>
+      <source>Keyword</source>
+      <translation>Λέξη-κλειδί</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="121"/>
+      <source>Comment</source>
+      <translation>Σχόλιο</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="125"/>
+      <source>Block comment</source>
+      <translation>Σχόλιο του μπλοκ</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="129"/>
+      <source>Number</source>
+      <translation>Αριθμός</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="133"/>
+      <source>String</source>
+      <translation>Συμβολοσειρά</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="137"/>
+      <source>Character</source>
+      <translation>Χαρακτήρας</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="141"/>
+      <source>Class name</source>
+      <translation>Όνομα κλάσης</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="145"/>
+      <source>Define name</source>
+      <translation>Ορίστε όνομα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="149"/>
+      <source>Operator</source>
+      <translation>Τελεστής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="153"/>
+      <source>Python output</source>
+      <translation>Έξοδος Python</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="157"/>
+      <source>Python error</source>
+      <translation>Σφάλμα Python</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="161"/>
+      <source>Current line highlight</source>
+      <translation>Επισήμανση τρέχουσας γραμμής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsEditor.cpp" line="163"/>
+      <source>Items</source>
+      <translation>Αντικείμενα</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsGeneral</name>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="14"/>
+      <source>General</source>
+      <translation>Γενικές</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="20"/>
+      <source>Language and number format</source>
+      <translation>Μορφή γλώσσας και αριθμού</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
+      <source>Language:</source>
+      <translation>Γλώσσα:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="48"/>
+      <source>Language of the application's user interface</source>
+      <translation>Γλώσσα του περιβάλλοντος εργασίας χρήστη της εφαρμογής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
+      <source>Unit system:</source>
+      <translation>Σύστημα μονάδων:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+      <source>Unit system that should be used for all parts of the application</source>
+      <translation>Σύστημα μονάδας που θα πρέπει να χρησιμοποιείται για όλα τα μέρη της εφαρμογής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
+      <source>Number of decimals:</source>
+      <translation>Πλήθος δεκαδικών:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="78"/>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Αριθμός δεκαδικών που πρέπει να εμφανίζονται για τους αριθμούς και τις διαστάσεις</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
+      <source>Minimum fractional inch:</source>
+      <translation>Ελάχιστο κλάσμα των ιντσών:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Ελάχιστη κλασματική ίντσα για εμφάνιση</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="142"/>
+      <source>Number format:</source>
+      <translation>Μορφή αριθμού:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="156"/>
+      <source>Operating system</source>
+      <translation>Λειτουργικό σύστημα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="161"/>
+      <source>Selected language</source>
+      <translation>Επιλογή γλώσσας</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
+      <source>C/POSIX</source>
+      <translation>C/POSIX</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="174"/>
+      <source>If enabled, numerical keypad decimal separator
+will be substituted with locale separator, except
+in Python Console and Macro Editor where a
+dot/period will always be printed.</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator
+will be substituted with locale separator, except
+in Python Console and Macro Editor where a
+dot/period will always be printed.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="180"/>
+      <source>Substitute decimal separator</source>
+      <translation>Αντικατάσταση δεκαδικού διαχωριστικού</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="196"/>
+      <source>Application</source>
+      <translation>Εφαρμογή</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="217"/>
+      <source>Theme:</source>
+      <translation type="unfinished">Theme:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="224"/>
+      <source>Customize how user interface will look like</source>
+      <translation type="unfinished">Customize how user interface will look like</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="231"/>
+      <source>Size of toolbar icons:</source>
+      <translation>Μέγεθος των εικονιδίων γραμμής εργαλείων:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="238"/>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
+      <source>Tree view mode:</source>
+      <translation>Tree view mode:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="253"/>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Προσαρμόστε τον τρόπο εμφάνισης της δενδρικής προβολής στον πίνακα (απαιτείται επανεκκίνηση).
+
+'Συνδυαστική προβολή' ('Combo View'): συνδυάστε την προβολή δέντρου και την προβολή ιδιότητας σε ένα πλαίσιο.
+'Προβολή δέντρου και προβολή ιδιότητας'('Tree View and PropertyView'): χωρίστε τις προβολές σε ξεχωριστό πλαίσιο.
+'Και τα δύο' ('Both'): διατηρήστε και τα τρία πλαίσια και μπορείτε να έχετε δύο σετ προβολής δέντρου και προβολή ιδιοτήτων.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="264"/>
+      <source>Size of recent file list:</source>
+      <translation>Μέγεθος λίστας πρόσφατων αρχείων:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Πόσα αρχεία θα πρέπει να καταχωρηθούν στη λίστα πρόσφατων αρχείων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="287"/>
+      <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>Το φόντο του κύριου παραθύρου (όταν δεν έχει ανοιχτεί κανένα έγγραφο) θα αποτελείται από πλακίδια μιας ειδικής εικόνας.
+Δείτε το Wiki του FreeCAD για λεπτομέρειες σχετικά με την εικόνα.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="291"/>
+      <source>Enable tiled background</source>
+      <translation>Ενεργοποίηση πλακόστρωτου υποβάθρου</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="298"/>
+      <source>The text cursor will be blinking</source>
+      <translation>Ο κέρσορας κειμένου θα αναβοσβήνει</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="301"/>
+      <source>Enable cursor blinking</source>
+      <translation>Ενεργοποίηση αναβοσβήσματος κέρσορα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="317"/>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Εάν είναι επιλεγμένη αυτή η επιλογή 'οθόνη Splash' είναι ένα μικρό παράθυρο φόρτωσης που εμφανίζεται κατά την εκκίνηση του FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="322"/>
+      <source>Enable splash screen at start up</source>
+      <translation>Ενεργοποίηση οθόνης υποδοχής κατά την εκκίνηση</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="341"/>
+      <source>Preference packs</source>
+      <translation>Πακέτα προτιμήσεων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="407"/>
+      <source>Name</source>
+      <translation>Όνομα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="418"/>
+      <source>Type</source>
+      <translation>Τύπος</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="429"/>
+      <source>Load</source>
+      <translation>Φόρτωση</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="452"/>
+      <source>Import config...</source>
+      <translation>Εισαγωγή ρυθμίσεων...</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="459"/>
+      <source>Save new...</source>
+      <translation>Αποθήκευση νέου...</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="472"/>
+      <source>Manage...</source>
+      <translation>Διαχείριση...</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="479"/>
+      <source>Revert...</source>
+      <translation>Επαναφορά...</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="81"/>
+      <source>Manage preference packs</source>
+      <translation>Διαχείριση πακέτων προτιμήσεων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="323"/>
+      <source>Small (%1px)</source>
+      <translation>Μικρό (%1px)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="324"/>
+      <source>Medium (%1px)</source>
+      <translation>Μεσαίο (%1px)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="325"/>
+      <source>Large (%1px)</source>
+      <translation>Μεγάλο (%1px)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="326"/>
+      <source>Extra large (%1px)</source>
+      <translation>Πολύ μεγάλο (%1px)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="329"/>
+      <source>Custom (%1px)</source>
+      <translation>Προσαρμοσμένο (%1px)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="336"/>
+      <source>Combo View</source>
+      <translation>Συνδυασμένη Προβολή</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="337"/>
+      <source>TreeView and PropertyView</source>
+      <translation>TreeView and PropertyView</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="338"/>
+      <source>Both</source>
+      <translation>Both</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="439"/>
+      <source>Preference Pack Name</source>
+      <translation>Όνομα Πακέτου Προτίμησης</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="440"/>
+      <source>Tags</source>
+      <translation>Ετικέτες</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="477"/>
+      <source>Apply</source>
+      <translation>Εφαρμογή</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="478"/>
+      <source>Apply the %1 preference pack</source>
+      <translation>Εφαρμογή του %1 πακέτου προτιμήσεων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="539"/>
+      <source>Choose a FreeCAD config file to import</source>
+      <translation>Επιλέξτε ένα αρχείο ρυθμίσεων FreeCAD για εισαγωγή</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="550"/>
+      <source>File exists</source>
+      <translation>Το αρχείο υπάρχει</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="551"/>
+      <source>A preference pack with that name already exists. Overwrite?</source>
+      <translation>Ένα πακέτο προτιμήσεων με αυτό το όνομα υπάρχει ήδη. Αντικατάσταση;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsReportView</name>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="14"/>
+      <source>Report view</source>
+      <translation>Προβολή αναφοράς</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="20"/>
+      <source>Output</source>
+      <translation>Έξοδος</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="38"/>
+      <source>Normal messages will be recorded</source>
+      <translation>Κανονικά μηνύματα θα καταγράφονται</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="41"/>
+      <source>Record normal messages</source>
+      <translation>Καταγραφή κανονικών μηνυμάτων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="57"/>
+      <source>Log messages will be recorded</source>
+      <translation>Θα καταγράφονται τα μηνύματα καταγραφής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="60"/>
+      <source>Record log messages</source>
+      <translation>Καταχώρηση μηνυμάτων αρχείου καταγραφής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="73"/>
+      <source>Warnings will be recorded</source>
+      <translation>Οι προειδοποιήσεις θα καταγράφονται</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="76"/>
+      <source>Record warnings</source>
+      <translation>Καταγραφή προειδοποιήσεων</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="92"/>
+      <source>Error messages will be recorded</source>
+      <translation>Θα καταγράφονται μηνύματα σφάλματος</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="95"/>
+      <source>Record error messages</source>
+      <translation>Καταγραφή μηνυμάτων σφάλματος</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="111"/>
+      <source>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</source>
+      <translation>Όταν παρουσιαστεί σφάλμα, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη και εμφανίζεται το σφάλμα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="115"/>
+      <source>Show report view on error</source>
+      <translation>Εμφάνιση προβολής αναφοράς σχετικά με το σφάλμα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="131"/>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>Όταν εμφανιστεί μια προειδοποίηση, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη ενώ εμφανίζεται η προειδοποίηση</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="135"/>
+      <source>Show report view on warning</source>
+      <translation>Εμφάνιση της προβολής αναφοράς στην προειδοποίηση</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="148"/>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>Όταν προκύψει ένα κανονικό μήνυμα, το παράθυρο διαλόγου Προβολή αναφοράς γίνεται ορατό στην οθόνη κατά την εμφάνιση του μηνύματος</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="152"/>
+      <source>Show report view on normal message</source>
+      <translation>Εμφάνιση προβολής αναφοράς σε κανονικό μήνυμα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>Όταν εμφανιστεί ένα μήνυμα καταγραφής, ο διάλογος "Αναφορά προβολής" γίνεται ορατός στην οθόνη κατά την εμφάνιση του μηνύματος καταγραφής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="172"/>
+      <source>Show report view on log message</source>
+      <translation>Εμφάνιση της προβολής αναφοράς στο μήνυμα καταγραφής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="188"/>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="191"/>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="210"/>
+      <source>Colors</source>
+      <translation>Χρώματα</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="248"/>
+      <source>Normal messages:</source>
+      <translation>Κανονικά μηνύματα:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="283"/>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Χρώμα γραμματοσειράς για κανονικά μηνύματα στον πίνακα Αναφοράς προβολής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="306"/>
+      <source>Log messages:</source>
+      <translation>Μηνύματα αρχείου καταγραφής:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="341"/>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Χρώμα γραμματοσειράς για μηνύματα καταγραφής στον πίνακα Αναφοράς προβολής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="364"/>
+      <source>Warnings:</source>
+      <translation>Προειδοποιήσεις:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="399"/>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Χρώμα γραμματοσειράς για προειδοποιητικά μηνύματα στον πίνακα Αναφοράς προβολής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="422"/>
+      <source>Errors:</source>
+      <translation>Σφάλματα:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="457"/>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Χρώμα γραμματοσειράς για μηνύματα σφάλματος στον πίνακα Αναφοράς προβολής</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="501"/>
+      <source>Python interpreter</source>
+      <translation>Διερμηνέας Python</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="507"/>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>Η εσωτερική έξοδος Python θα ανακατευθυνθεί
+από την κονσόλα Python στο πλαίσιο προβολής αναφοράς</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="511"/>
+      <source>Redirect internal Python output to report view</source>
+      <translation>Ανακατεύθυνση της εσωτερικής εξόδου Python στην προβολή αναφορών</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="527"/>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Τα εσωτερικά μηνύματα σφάλματος Python θα ανακατευθύνονται 
+από την κονσόλα Python στον πίνακα προβολής Αναφοράς</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsReportView.ui" line="531"/>
+      <source>Redirect internal Python errors to report view</source>
+      <translation>Ανακατεύθυνση των εσωτερικών σφαλμάτων Python στην προβολή αναφορών</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsTheme</name>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="14"/>
+      <source>Theme</source>
+      <translation type="unfinished">Theme</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="20"/>
+      <source>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
+      <source>Style sheet:</source>
+      <translation>Φύλλο τύπων μορφοποίησης:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="41"/>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Φύλλο στυλ πώς θα μοιάζει το περιβάλλον χρήστη</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="48"/>
+      <source>Secondary theme color</source>
+      <translation type="unfinished">Secondary theme color</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="61"/>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="94"/>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="127"/>
+      <source>This color might be used by your theme to let you customize it.</source>
+      <translation type="unfinished">This color might be used by your theme to let you customize it.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="81"/>
+      <source>Highlight color</source>
+      <translation type="unfinished">Highlight color</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.ui" line="114"/>
+      <source>Focus theme color</source>
+      <translation type="unfinished">Focus theme color</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsTheme.cpp" line="116"/>
+      <source>No style sheet</source>
+      <translation>Χωρίς φύλλο τύπων μορφοποίησης</translation>
     </message>
   </context>
 </TS>

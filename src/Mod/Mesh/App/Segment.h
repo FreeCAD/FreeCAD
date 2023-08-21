@@ -95,9 +95,9 @@ public:
     };
 
     const_facet_iterator facets_begin() const
-    { return const_facet_iterator(this, _indices.begin()); }
+    { return {this, _indices.begin()}; }
     const_facet_iterator facets_end() const
-    { return const_facet_iterator(this, _indices.end()); }
+    { return {this, _indices.end()}; }
 };
 
 } // namespace Mesh

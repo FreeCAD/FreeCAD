@@ -56,7 +56,7 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
         std::unique_ptr<GeomPlate_PointConstraint> ptr;
         Base::Vector3d v = static_cast<Base::VectorPy*>(pt)->value();
 
-        ptr.reset(new GeomPlate_PointConstraint(gp_Pnt(v.x, v.y, v.z), order, tolDist));
+        ptr = std::make_unique<GeomPlate_PointConstraint>(gp_Pnt(v.x, v.y, v.z), order, tolDist);
         setTwinPointer(ptr.release());
 
         return 0;
@@ -70,7 +70,7 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string PointConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_PointConstraint object>");
+    return {"<GeomPlate_PointConstraint object>"};
 }
 
 PyObject* PointConstraintPy::setOrder(PyObject *args)

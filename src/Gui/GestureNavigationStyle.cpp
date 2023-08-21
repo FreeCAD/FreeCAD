@@ -94,7 +94,7 @@ class NS::Event : public sc::event<NS::Event>
 {
 public:
     Event():inventor_event(nullptr), modifiers{}, flags(new Flags){}
-    virtual ~Event(){}
+    virtual ~Event() = default;
 
     void log() const {
         if (isPress(1))
@@ -245,7 +245,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> IdleState\n");
     }
-    virtual ~IdleState(){}
+    virtual ~IdleState() = default;
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -494,7 +494,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> RotateState\n");
     }
-    virtual ~RotateState(){}
+    virtual ~RotateState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -539,7 +539,7 @@ public:
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    virtual ~PanState(){}
+    virtual ~PanState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -631,7 +631,7 @@ public:
             Base::Console().Log(" -> TiltState\n");
         ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    virtual ~TiltState(){}
+    virtual ~TiltState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -759,7 +759,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> AwaitingReleaseState\n");
     }
-    virtual ~AwaitingReleaseState(){}
+    virtual ~AwaitingReleaseState() = default;
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -810,7 +810,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> InteractState\n");
     }
-    virtual ~InteractState(){}
+    virtual ~InteractState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -842,10 +842,7 @@ GestureNavigationStyle::GestureNavigationStyle()
 
 }
 
-GestureNavigationStyle::~GestureNavigationStyle()
-{
-
-}
+GestureNavigationStyle::~GestureNavigationStyle() = default;
 
 const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
 {

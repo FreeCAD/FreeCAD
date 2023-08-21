@@ -118,8 +118,8 @@ void ViewProviderPoints::setVertexColorMode(App::PropertyColorList* pcProperty)
     SbColor* col = pcColorMat->diffuseColor.startEditing();
 
     std::size_t i=0;
-    for (std::vector<App::Color>::const_iterator it = val.begin(); it != val.end(); ++it) {
-        col[i++].setValue(it->r, it->g, it->b);
+    for (const auto& it : val) {
+        col[i++].setValue(it.r, it.g, it.b);
     }
 
     pcColorMat->diffuseColor.finishEditing();
@@ -133,8 +133,8 @@ void ViewProviderPoints::setVertexGreyvalueMode(Points::PropertyGreyValueList* p
     SbColor* col = pcColorMat->diffuseColor.startEditing();
 
     std::size_t i=0;
-    for (std::vector<float>::const_iterator it = val.begin(); it != val.end(); ++it) {
-        col[i++].setValue(*it, *it, *it);
+    for (float it : val) {
+        col[i++].setValue(it, it, it);
     }
 
     pcColorMat->diffuseColor.finishEditing();
@@ -148,8 +148,8 @@ void ViewProviderPoints::setVertexNormalMode(Points::PropertyNormalList* pcPrope
     SbVec3f* norm = pcPointsNormal->vector.startEditing();
 
     std::size_t i=0;
-    for (std::vector<Base::Vector3f>::const_iterator it = val.begin(); it != val.end(); ++it) {
-        norm[i++].setValue(it->x, it->y, it->z);
+    for (const auto& it : val) {
+        norm[i++].setValue(it.x, it.y, it.z);
     }
 
     pcPointsNormal->vector.finishEditing();
@@ -162,10 +162,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     if (strcmp("Color",ModeName) == 0) {
         std::map<std::string,App::Property*> Map;
         pcObject->getPropertyMap(Map);
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            Base::Type type = it->second->getTypeId();
+        for (auto & it : Map) {
+            Base::Type type = it.second->getTypeId();
             if (type == App::PropertyColorList::getClassTypeId()) {
-                App::PropertyColorList* colors = static_cast<App::PropertyColorList*>(it->second);
+                App::PropertyColorList* colors = static_cast<App::PropertyColorList*>(it.second);
                 if (numPoints != colors->getSize()) {
 #ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
@@ -185,10 +185,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     else if (strcmp("Intensity",ModeName) == 0) {
         std::map<std::string,App::Property*> Map;
         pcObject->getPropertyMap(Map);
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            Base::Type type = it->second->getTypeId();
+        for (const auto& it : Map) {
+            Base::Type type = it.second->getTypeId();
             if (type == Points::PropertyGreyValueList::getClassTypeId()) {
-                Points::PropertyGreyValueList* greyValues = static_cast<Points::PropertyGreyValueList*>(it->second);
+                Points::PropertyGreyValueList* greyValues = static_cast<Points::PropertyGreyValueList*>(it.second);
                 if (numPoints != greyValues->getSize()) {
 #ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
@@ -198,7 +198,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     setDisplayMaskMode("Point");
                 }
                 else {
-                    setVertexGreyvalueMode((Points::PropertyGreyValueList*)it->second);
+                    setVertexGreyvalueMode((Points::PropertyGreyValueList*)it.second);
                     setDisplayMaskMode("Color");
                 }
                 break;
@@ -208,10 +208,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     else if (strcmp("Shaded",ModeName) == 0) {
         std::map<std::string,App::Property*> Map;
         pcObject->getPropertyMap(Map);
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            Base::Type type = it->second->getTypeId();
+        for (const auto& it : Map) {
+            Base::Type type = it.second->getTypeId();
             if (type == Points::PropertyNormalList::getClassTypeId()) {
-                Points::PropertyNormalList* normals = static_cast<Points::PropertyNormalList*>(it->second);
+                Points::PropertyNormalList* normals = static_cast<Points::PropertyNormalList*>(it.second);
                 if (numPoints != normals->getSize()) {
 #ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
@@ -327,8 +327,8 @@ void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
         clPoly.push_back(clPoly.front());
 
     std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
-    for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
-        ViewProviderPoints* that = static_cast<ViewProviderPoints*>(*it);
+    for (auto it : views) {
+        ViewProviderPoints* that = static_cast<ViewProviderPoints*>(it);
         if (that->getEditingMode() > -1) {
             that->finishEditing();
             that->cut(clPoly, *view);
@@ -424,8 +424,8 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
 {
     // create the polygon from the picked points
     Base::Polygon2d cPoly;
-    for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it) {
-        cPoly.Add(Base::Vector2d((*it)[0],(*it)[1]));
+    for (const auto& it : picked) {
+        cPoly.Add(Base::Vector2d(it[0],it[1]));
     }
 
     // get a reference to the point feature
@@ -461,17 +461,17 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
     std::map<std::string,App::Property*> Map;
     pcObject->getPropertyMap(Map);
 
-    for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-        Base::Type type = it->second->getTypeId();
+    for (const auto& it : Map) {
+        Base::Type type = it.second->getTypeId();
         if (type == Points::PropertyNormalList::getClassTypeId()) {
-            static_cast<Points::PropertyNormalList*>(it->second)->removeIndices(removeIndices);
+            static_cast<Points::PropertyNormalList*>(it.second)->removeIndices(removeIndices);
         }
         else if (type == Points::PropertyGreyValueList::getClassTypeId()) {
-            static_cast<Points::PropertyGreyValueList*>(it->second)->removeIndices(removeIndices);
+            static_cast<Points::PropertyGreyValueList*>(it.second)->removeIndices(removeIndices);
         }
         else if (type == App::PropertyColorList::getClassTypeId()) {
             //static_cast<App::PropertyColorList*>(it->second)->removeIndices(removeIndices);
-            const std::vector<App::Color>& colors = static_cast<App::PropertyColorList*>(it->second)->getValues();
+            const std::vector<App::Color>& colors = static_cast<App::PropertyColorList*>(it.second)->getValues();
 
             if (removeIndices.size() > colors.size())
                 break;
@@ -490,7 +490,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
                     ++pos;
             }
 
-            static_cast<App::PropertyColorList*>(it->second)->setValues(remainValue);
+            static_cast<App::PropertyColorList*>(it.second)->setValues(remainValue);
         }
     }
 
@@ -576,8 +576,8 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3D
 {
     // create the polygon from the picked points
     Base::Polygon2d cPoly;
-    for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it) {
-        cPoly.Add(Base::Vector2d((*it)[0],(*it)[1]));
+    for (const auto& it : picked) {
+        cPoly.Add(Base::Vector2d(it[0],it[1]));
     }
 
     // get a reference to the point feature
@@ -593,11 +593,11 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3D
 
     bool invalidatePoints = false;
     double nan = std::numeric_limits<double>::quiet_NaN();
-    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end(); ++jt) {
+    for (const auto & point : points) {
         // valid point?
-        Base::Vector3d vec(*jt);
-        if (!(boost::math::isnan(jt->x) || boost::math::isnan(jt->y) || boost::math::isnan(jt->z))) {
-            SbVec3f pt(jt->x,jt->y,jt->z);
+        Base::Vector3d vec(point);
+        if (!(boost::math::isnan(point.x) || boost::math::isnan(point.y) || boost::math::isnan(point.z))) {
+            SbVec3f pt(point.x,point.y,point.z);
 
             // project from 3d to 2d
             vol.projectToScreen(pt, pt);
@@ -703,8 +703,8 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordi
     idx=0;
     points->coordIndex.setNum(indices.size());
     int32_t* pos = points->coordIndex.startEditing();
-    for (std::vector<int32_t>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        pos[idx++] = *it;
+    for (int32_t index : indices) {
+        pos[idx++] = index;
     }
     points->coordIndex.finishEditing();
 }

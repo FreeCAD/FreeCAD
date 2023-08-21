@@ -275,10 +275,10 @@ ResultModel::~ResultModel()
 QModelIndex ResultModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!root)
-        return QModelIndex();
+        return {};
     ResultEntry *parentNode = nodeFromIndex(parent);
     if (!parentNode)
-        return QModelIndex();
+        return {};
     return createIndex(row, column, parentNode->children.at(row));
 }
 
@@ -286,13 +286,13 @@ QModelIndex ResultModel::parent(const QModelIndex &child) const
 {
     ResultEntry *childNode = nodeFromIndex(child);
     if (!childNode)
-        return QModelIndex();
+        return {};
     ResultEntry *parentNode = childNode->parent;
     if (!parentNode)
-        return QModelIndex();
+        return {};
     ResultEntry *grandParentNode = parentNode->parent;
     if (!grandParentNode)
-        return QModelIndex();
+        return {};
     int row = grandParentNode->children.indexOf(parentNode);
     return createIndex(row, 0, parentNode);
 }
@@ -314,10 +314,10 @@ int ResultModel::columnCount(const QModelIndex &parent) const
 QVariant ResultModel::data(const QModelIndex &index, int role) const
 {
     if (role != Qt::DisplayRole)
-        return QVariant();
+        return {};
     ResultEntry *node = nodeFromIndex(index);
     if (!node)
-        return QVariant();
+        return {};
     switch (index.column())
     {
     case 0:
@@ -327,13 +327,13 @@ QVariant ResultModel::data(const QModelIndex &index, int role) const
     case 2:
         return QVariant(node->error);
     }
-    return QVariant();
+    return {};
 }
 
 QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal || role != Qt::DisplayRole)
-        return QVariant();
+        return {};
     switch (section)
     {
     case 0:
@@ -343,7 +343,7 @@ QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int r
     case 2:
         return QVariant(QString(tr("Error")));
     }
-    return QVariant();
+    return {};
 }
 
 void ResultModel::setResults(ResultEntry *resultsIn)

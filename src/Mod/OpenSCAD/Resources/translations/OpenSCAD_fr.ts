@@ -221,7 +221,7 @@
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Refresh</source>
-      <translation>Rafraîchir</translation>
+      <translation>Actualiser</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>

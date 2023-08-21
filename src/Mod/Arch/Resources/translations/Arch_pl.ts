@@ -218,7 +218,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
-      <translation>Własność</translation>
+      <translation>Właściwości</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="76"/>
@@ -534,7 +534,7 @@ Uwaga dotycząca eksportu CSV: W programie Libreoffice plik CSV można połączy
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation>Odwróć wybór</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -614,7 +614,7 @@ Uwaga dotycząca eksportu CSV: W programie Libreoffice plik CSV można połączy
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>Start</translation>
+      <translation>Odtwórz</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
@@ -1420,7 +1420,7 @@ Jeśli używasz Netgen, upewnij się, że jest on dostępny.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>Tesselacja</translation>
+      <translation>Rozdrobnienie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -1484,7 +1484,7 @@ Stopniowanie lokalnego rozmiaru oczek siatki h(x) jest ograniczone przez |Δh(x)
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>Optymalizacja</translation>
+      <translation>Optymalizuj</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
@@ -2130,7 +2130,7 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
@@ -2221,7 +2221,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>Numer ID</translation>
+      <translation>Identyfikator</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2254,7 +2254,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <translation>Wysokość (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Drzwi</translation>
     </message>
@@ -2304,7 +2304,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <translation>Otwórz odniesienie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Utwórz zewnętrzny odnośnik</translation>
     </message>
@@ -2490,7 +2490,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <location filename="../../ArchSite.py" line="935"/>
       <location filename="../../ArchWindow.py" line="1791"/>
       <source>Edit</source>
-      <translation>Edycja</translation>
+      <translation>Edytuj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
@@ -2512,7 +2512,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
       <location filename="../../ArchComponent.py" line="1953"/>
       <location filename="../../ArchWindow.py" line="1795"/>
       <source>Components</source>
-      <translation>Fragmenty</translation>
+      <translation>Komponenty</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1796"/>
@@ -2980,7 +2980,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
-      <translation>Obrót</translation>
+      <translation>Obracanie</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="83"/>
@@ -3031,7 +3031,7 @@ Jeśli Rozpiętość = 0, wówczas Rozpiętość jest obliczana tak, aby wysoko�
     <message>
       <location filename="../../ArchPanel.py" line="1386"/>
       <source>Tools</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1390"/>
@@ -3382,7 +3382,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>Własność</translation>
+      <translation>Właściwości</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3397,7 +3397,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2014"/>
       <source>New...</source>
-      <translation>Nowy...</translation>
+      <translation>Nowy ...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2152"/>
@@ -3428,7 +3428,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3514,7 +3514,7 @@ Tworzenie piętra zostało przerwane.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Środek</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3618,17 +3618,17 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="526"/>
       <source>Alignment</source>
-      <translation>Wyrównanie</translation>
+      <translation>Wyśrodkowane</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>Od lewej</translation>
+      <translation>W lewo</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Od prawej</translation>
+      <translation>W prawo</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -6102,7 +6102,7 @@ Tworzenie budynku zostało przerwane.</translation>
       <location filename="../../InitGui.py" line="185"/>
       <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
-      <translation>&amp;Narzędzia</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="191"/>
@@ -6120,7 +6120,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>Adnotacja</translation>
+      <translation>Opisy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6209,12 +6209,12 @@ Tworzenie budynku zostało przerwane.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Zewnętrzne odniesienie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Tworzy obiekt zewnętrznego odniesienia</translation>
     </message>
@@ -6250,7 +6250,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation>System osi</translation>
+      <translation>Układ Osi</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6545,7 +6545,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation>Harmonogram</translation>
+      <translation>Obmiar</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
@@ -6558,7 +6558,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Level</source>
-      <translation>Poziom</translation>
+      <translation>Kondygnacja</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="120"/>
@@ -6866,7 +6866,7 @@ Tworzenie budynku zostało przerwane.</translation>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>Import-Eksport</translation>
+      <translation>Import — Eksport</translation>
     </message>
   </context>
 </TS>

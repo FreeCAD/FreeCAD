@@ -75,11 +75,11 @@ void Std_TestQM::activated(int iMsg)
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
-        for (QList<QTranslator*>::Iterator it = i18n.begin(); it != i18n.end(); ++it)
-            qApp->removeTranslator(*it);
-        for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
+        for (QTranslator* it : i18n)
+            qApp->removeTranslator(it);
+        for (const QString& it : files) {
             auto translator = new QTranslator(qApp);
-            if (translator->load(*it)) {
+            if (translator->load(it)) {
                 qApp->installTranslator(translator);
             }
             else {
@@ -567,9 +567,7 @@ public:
     explicit BarThread(unsigned long s) : steps(s)
     {
     }
-    ~BarThread() override
-    {
-    }
+    ~BarThread() override  = default;
     void run() override
     {
         QMutex mutex;

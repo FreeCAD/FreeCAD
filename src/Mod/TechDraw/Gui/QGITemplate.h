@@ -47,10 +47,10 @@ class TechDrawGuiExport QGITemplate : public QObject, public QGraphicsItemGroup
 
 public:
     QGITemplate(QGSPage *);
-    ~QGITemplate();
+    ~QGITemplate() override;
 
     enum {Type = QGraphicsItem::UserType + 150};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     void clearContents();
 
@@ -60,7 +60,7 @@ public:
     inline qreal getY() { return y() * -1; }
 
     virtual void updateView(bool update = false);
-    std::vector<TemplateTextField *> getTextFields(void) { return textFields; };
+    std::vector<TemplateTextField *> getTextFields() { return textFields; };
 
     virtual void draw() = 0;
 

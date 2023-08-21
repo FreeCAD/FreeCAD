@@ -125,8 +125,8 @@ void PlaneFitSmoothing::SmoothPoints(unsigned int iterations, const std::vector<
 
     for (unsigned int i=0; i<iterations; i++) {
         Base::Vector3f N, L;
-        for (std::vector<PointIndex>::const_iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
-            v_it.Set(*it);
+        for (PointIndex it : point_indices) {
+            v_it.Set(it);
             MeshCore::PlaneFit pf;
             pf.AddPoint(*v_it);
             center = *v_it;
@@ -220,11 +220,11 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
     const MeshCore::MeshPointArray& points = kernel.GetPoints();
     MeshCore::MeshPointArray::_TConstIterator v_beg = points.begin();
 
-    for (std::vector<PointIndex>::const_iterator pos = point_indices.begin(); pos != point_indices.end(); ++pos) {
-        const std::set<PointIndex>& cv = vv_it[*pos];
+    for (PointIndex it : point_indices) {
+        const std::set<PointIndex>& cv = vv_it[it];
         if (cv.size() < 3)
             continue;
-        if (cv.size() != vf_it[*pos].size()) {
+        if (cv.size() != vf_it[it].size()) {
             // do nothing for border points
             continue;
         }
@@ -236,15 +236,15 @@ void LaplaceSmoothing::Umbrella(const MeshRefPointToPoints& vv_it,
         double delx=0.0,dely=0.0,delz=0.0;
         std::set<PointIndex>::const_iterator cv_it;
         for (cv_it = cv.begin(); cv_it !=cv.end(); ++cv_it) {
-            delx += w*static_cast<double>((v_beg[*cv_it]).x-(v_beg[*pos]).x);
-            dely += w*static_cast<double>((v_beg[*cv_it]).y-(v_beg[*pos]).y);
-            delz += w*static_cast<double>((v_beg[*cv_it]).z-(v_beg[*pos]).z);
+            delx += w*static_cast<double>((v_beg[*cv_it]).x-(v_beg[it]).x);
+            dely += w*static_cast<double>((v_beg[*cv_it]).y-(v_beg[it]).y);
+            delz += w*static_cast<double>((v_beg[*cv_it]).z-(v_beg[it]).z);
         }
 
-        float x = static_cast<float>(static_cast<double>((v_beg[*pos]).x)+stepsize*delx);
-        float y = static_cast<float>(static_cast<double>((v_beg[*pos]).y)+stepsize*dely);
-        float z = static_cast<float>(static_cast<double>((v_beg[*pos]).z)+stepsize*delz);
-        kernel.SetPoint(*pos,x,y,z);
+        float x = static_cast<float>(static_cast<double>((v_beg[it]).x)+stepsize*delx);
+        float y = static_cast<float>(static_cast<double>((v_beg[it]).y)+stepsize*dely);
+        float z = static_cast<float>(static_cast<double>((v_beg[it]).z)+stepsize*delz);
+        kernel.SetPoint(it,x,y,z);
     }
 }
 

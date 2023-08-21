@@ -267,9 +267,9 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
 
     //f may be above or below paper plane and must be moved so Common operation in
     //getTrimmedLines succeeds
-    TopoDS_Shape moved = TechDraw::moveShape(f,
+    TopoDS_Shape moved = ShapeUtils::moveShape(f,
                                               offset);
-    TopoDS_Face fMoved = TopoDS::Face(GeometryObject::invertGeometry(moved));
+    TopoDS_Face fMoved = TopoDS::Face(ShapeUtils::invertGeometry(moved));
     return getTrimmedLines(
         source,
         lineSets,

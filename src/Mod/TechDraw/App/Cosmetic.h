@@ -41,10 +41,10 @@ class TechDrawExport LineFormat
 {
 public:
     LineFormat();
-    LineFormat(int style,
-               double weight,
-               App::Color color,
-               bool visible);
+    LineFormat(const int style,
+               const double weight,
+               const App::Color& color,
+               const bool visible);
     ~LineFormat() = default;
 
     int m_style;
@@ -67,19 +67,20 @@ class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::B
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     CosmeticEdge();
-    CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
-    CosmeticEdge(CosmeticEdge* ce);
-    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
-    CosmeticEdge(TopoDS_Edge e);
-    CosmeticEdge(TechDraw::BaseGeomPtr g);
+    CosmeticEdge(const TechDraw::BaseGeomPtr* geometry);
+    CosmeticEdge(const CosmeticEdge* ce);
+    CosmeticEdge(const Base::Vector3d& p1, const Base::Vector3d& p2);
+    CosmeticEdge(const TopoDS_Edge& e);
+    CosmeticEdge(const TechDraw::BaseGeomPtr g);
     ~CosmeticEdge() override;
 
     void initialize();
-    TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
-    TechDraw::BaseGeomPtr scaledGeometry(double scale);
+    TopoDS_Edge TopoDS_EdgeFromVectors(const Base::Vector3d& pt1, const Base::Vector3d& pt2);
+    TechDraw::BaseGeomPtr scaledGeometry(const double scale);
+    TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
 
     std::string toString() const override;
-    void dump(const char* title);
+    void dump(const char* title) const;
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
@@ -119,9 +120,9 @@ class TechDrawExport GeomFormat: public Base::Persistence
 
 public:
     GeomFormat();
-    explicit GeomFormat(TechDraw::GeomFormat* gf);
-    GeomFormat(int idx,
-               LineFormat fmt);
+    explicit GeomFormat(const TechDraw::GeomFormat* gf);
+    GeomFormat(const int idx,
+               const LineFormat& fmt);
     ~GeomFormat() override;
 
     // Persistence implementer ---------------------

@@ -170,7 +170,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
       <translation>Conectează marginile dacă distanța este mai mică de</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Eșec</translation>
     </message>

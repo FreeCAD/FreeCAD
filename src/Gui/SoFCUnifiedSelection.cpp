@@ -799,9 +799,7 @@ SoHighlightElementAction::SoHighlightElementAction () : _highlight(false), _det(
     SO_ACTION_CONSTRUCTOR(SoHighlightElementAction);
 }
 
-SoHighlightElementAction::~SoHighlightElementAction()
-{
-}
+SoHighlightElementAction::~SoHighlightElementAction() = default;
 
 void SoHighlightElementAction::beginTraversal(SoNode *node)
 {
@@ -870,9 +868,7 @@ SoSelectionElementAction::SoSelectionElementAction (Type t, bool secondary)
     SO_ACTION_CONSTRUCTOR(SoSelectionElementAction);
 }
 
-SoSelectionElementAction::~SoSelectionElementAction()
-{
-}
+SoSelectionElementAction::~SoSelectionElementAction() = default;
 
 void SoSelectionElementAction::beginTraversal(SoNode *node)
 {
@@ -942,9 +938,7 @@ SoVRMLAction::SoVRMLAction() : overrideMode(true)
     SO_ACTION_CONSTRUCTOR(SoVRMLAction);
 }
 
-SoVRMLAction::~SoVRMLAction()
-{
-}
+SoVRMLAction::~SoVRMLAction() = default;
 
 void SoVRMLAction::setOverrideMode(SbBool on)
 {
@@ -1030,11 +1024,11 @@ void SoFCSeparator::finish()
 // Thread local data for bounding box rendering
 //
 // The code is inspred by Coin SoLevelOfDetails.cpp.
-typedef struct {
+using SoFCBBoxRenderInfo = struct {
     SoGetBoundingBoxAction * bboxaction;
     SoCube *cube;
     SoColorPacker *packer;
-} SoFCBBoxRenderInfo;
+};
 
 static void so_bbox_construct_data(void * closure)
 {
@@ -1082,9 +1076,7 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
-SoFCSelectionRoot::~SoFCSelectionRoot()
-{
-}
+SoFCSelectionRoot::~SoFCSelectionRoot() = default;
 
 void SoFCSelectionRoot::initClass()
 {
@@ -1125,7 +1117,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     stack.front() = front;
     if(it!=front->contextMap.end())
         return it->second;
-    return SoFCSelectionContextBasePtr();
+    return {};
 }
 
 SoFCSelectionContextBasePtr

@@ -192,6 +192,8 @@ public:
 
     /// true when the application shutting down
     bool isClosing();
+
+    void checkForDeprecatedSettings();
     void checkForPreviousCrashes();
 
     /** @name workbench handling */
@@ -207,8 +209,9 @@ public:
 
     /** @name Appearance */
     //@{
-    /// Activate a named workbench
+    /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
+    QString replaceVariablesInQss(QString qssText);
     //@}
 
     /** @name User Commands */

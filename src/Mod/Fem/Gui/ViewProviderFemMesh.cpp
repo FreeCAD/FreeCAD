@@ -416,7 +416,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
                 str << "Node" << vertex;
             }
             else {
-                return std::string();
+                return {};
             }
         }
     }
@@ -455,7 +455,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
 
 std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /*Element*/) const
 {
-    return std::vector<Base::Vector3d>();
+    return {};
 }
 
 std::set<long> ViewProviderFemMesh::getHighlightNodes() const
@@ -513,8 +513,8 @@ void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &Node
     long endId = (--NodeColorMap.end())->first;
 
     std::vector<App::Color> colorVec(endId+1,App::Color(0,1,0));
-    for(std::map<long,App::Color>::const_iterator it=NodeColorMap.begin();it!=NodeColorMap.end();++it)
-        colorVec[it->first] = it->second;
+    for(const auto & it : NodeColorMap)
+        colorVec[it.first] = it.second;
 
     setColorByNodeIdHelper(colorVec);
 
@@ -566,8 +566,8 @@ void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long,Base::Vect
 
     std::vector<Base::Vector3d> vecVec(endId-startId+2,Base::Vector3d());
 
-    for(std::map<long,Base::Vector3d>::const_iterator it=NodeDispMap.begin();it!=NodeDispMap.end();++it)
-        vecVec[it->first-startId] = it->second;
+    for(const auto & it : NodeDispMap)
+        vecVec[it.first-startId] = it.second;
 
     setDisplacementByNodeIdHelper(vecVec,startId);
 }
@@ -983,18 +983,18 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
 
         unsigned int max =0, avg = 0;
-        for(std::vector<FemFaceGridItem>::iterator it=Grid.begin();it!=Grid.end();++it){
-            for(unsigned int l=0; l< it->size();l++){
-                if(! it->operator[](l)->hide){
-                    for(unsigned int i=l+1; i<it->size(); i++){
-                        if(it->operator[](l)->isSameFace(*(it->operator[](i))) ){
+        for(const auto& it : Grid){
+            for(size_t l=0; l< it.size();l++){
+                if(! it[l]->hide){
+                    for(size_t i=l+1; i<it.size(); i++){
+                        if(it[l]->isSameFace(*(it[i])) ){
                             break;
                         }
                     }
                 }
             }
-            if(it->size() > max)max=it->size();
-            avg += it->size();
+            if(it.size() > max)max=it.size();
+            avg += it.size();
         }
         avg = avg/Grid.size();
 
@@ -1024,9 +1024,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
         for (int l = 0; l < FaceSize; l++) {
             if (!facesHelper[l].hide) {
-                for (int i = 0; i < 8; i++) {
-                    if (facesHelper[l].Nodes[i])
-                        mapNodeIndex[facesHelper[l].Nodes[i]] = 0;
+                for (auto Node : facesHelper[l].Nodes) {
+                    if (Node)
+                        mapNodeIndex[Node] = 0;
                     else
                         break;
                 }

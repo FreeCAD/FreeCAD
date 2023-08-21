@@ -159,8 +159,7 @@ bool TaskDecimating::accept()
     if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
     }
-    for (std::vector<Mesh::Feature*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        Mesh::Feature* mesh = *it;
+    for (auto mesh : meshes) {
         Mesh::MeshObject* mm = mesh->Mesh.startEditing();
         if (absolute) {
             mm->decimate(targetSize);

@@ -29,12 +29,6 @@ using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShape, FemGui::ViewProviderFemMesh)
 
-ViewProviderFemMeshShape::ViewProviderFemMeshShape()
-{
+ViewProviderFemMeshShape::ViewProviderFemMeshShape() = default;
 
-}
-
-ViewProviderFemMeshShape::~ViewProviderFemMeshShape()
-{
-
-}
+ViewProviderFemMeshShape::~ViewProviderFemMeshShape() = default;

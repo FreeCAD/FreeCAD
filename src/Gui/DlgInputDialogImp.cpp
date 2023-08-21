@@ -61,10 +61,7 @@ DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, 
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgInputDialogImp::~DlgInputDialogImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgInputDialogImp::~DlgInputDialogImp() = default;
 
 void DlgInputDialogImp::textChanged( const QString &s )
 {

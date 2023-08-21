@@ -409,7 +409,7 @@
       <location filename="../../CommandExport.cpp" line="85"/>
       <location filename="../../CommandExport.cpp" line="147"/>
       <source>All Files</source>
-      <translation>Alla Filer</translation>
+      <translation>Alla filer</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="86"/>

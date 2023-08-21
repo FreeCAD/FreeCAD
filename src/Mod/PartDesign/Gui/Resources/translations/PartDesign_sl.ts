@@ -108,12 +108,12 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
       <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
-      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+      <translation>Višina zoba od delilnega kroga do temena, upraviljena na korak.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="119"/>
       <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
-      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+      <translation>Višina zoba od delilnega kroga do korena, upraviljena na korak.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="123"/>
@@ -123,7 +123,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Dolžina profilnega premika navzven, upravíljena na korak.</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1430"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
@@ -149,7 +149,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
@@ -159,7 +159,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Ostreši izbran prerez preko ostalih prerezov</translation>
+      <translation>Navleci izbrani prerez preko ostalih prerezov</translation>
     </message>
   </context>
   <context>
@@ -167,7 +167,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -177,7 +177,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Povleči izbrano skico vzdolž poti ali do drugih prerezov</translation>
+      <translation>Vzdolži izbrani očrt ob poti ali do drugih prerezov</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="85"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
@@ -203,7 +203,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2343"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
@@ -221,7 +221,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -239,7 +239,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1724"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
@@ -257,7 +257,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
@@ -275,12 +275,12 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>Draft</source>
-      <translation>Ugrez</translation>
+      <translation>Nagib</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -293,7 +293,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="606"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="607"/>
@@ -311,7 +311,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -329,7 +329,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -347,7 +347,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
@@ -365,7 +365,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -383,7 +383,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2041"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
@@ -401,7 +401,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="312"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
@@ -411,7 +411,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="314"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Preseli dokument v sodobni PartDesignov delotok</translation>
+      <translation>Preseli dokument v sodobni delotok Snovalnika delov (PartDesgin)</translation>
     </message>
   </context>
   <context>
@@ -419,7 +419,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1979"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
@@ -437,7 +437,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="662"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
@@ -455,7 +455,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="829"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
@@ -473,7 +473,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="527"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
@@ -491,7 +491,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
@@ -509,7 +509,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="502"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="503"/>
@@ -527,7 +527,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="990"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="991"/>
@@ -545,7 +545,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -563,7 +563,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
@@ -581,7 +581,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -599,7 +599,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -617,7 +617,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -635,7 +635,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2170"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
@@ -653,7 +653,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -671,7 +671,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -685,7 +685,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
@@ -703,17 +703,17 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
       <source>Subtractive loft</source>
-      <translation>Odvzemno ostrešje</translation>
+      <translation>Odvzemni navleček</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Ostreši izbran prerez preko drugih prerezov in ga odstrani iz telesa</translation>
+      <translation>Navleci izbran prerez preko drugih prerezov in ga odstrani iz telesa</translation>
     </message>
   </context>
   <context>
@@ -721,7 +721,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -739,7 +739,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
@@ -757,7 +757,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -811,7 +811,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Snovalnik delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -917,7 +917,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation>Preseli podedovane zmožnosti oblikovanja delov v Telesa</translation>
+      <translation>Preseli podedovane značilnosti snovalnika delov v Telesa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
@@ -927,7 +927,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
-      <translation>Podvoji predmet NačrtovanjeDela (PartDesign)</translation>
+      <translation>Podvoji predmet Snovalnika delov (PartDesign)</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="743"/>
@@ -1078,7 +1078,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile Shift Coefficient</source>
-      <translation type="unfinished">Profile Shift Coefficient</translation>
+      <translation>Količnik profilnega premika</translation>
     </message>
   </context>
   <context>
@@ -1093,9 +1093,9 @@ da se izogne samosečnosti.</translation>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>Če želite ustvariti nov predmet v OblikovanjeDelov (PartDesign), mora biti v dokumentu dejavno telo.
+      <translation>Če želite ustvariti nov predmet v Snovalniku delov (PartDesign), mora biti v dokumentu dejavno telo.
 
-Izberite telo izmed spodnjih ali ustvarite novega.</translation>
+Izberite med spodnjimi telesi ali ustvarite novega.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -1283,7 +1283,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max:</source>
-      <translation>Najv./najm. Z:</translation>
+      <translation>Najv./najm. Z2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
@@ -1379,7 +1379,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Osnova</translation>
+      <translation>Sklic</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1515,7 +1515,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
@@ -1567,7 +1567,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="180"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="324"/>
@@ -1641,7 +1641,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
@@ -1688,7 +1688,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
@@ -1856,7 +1856,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
@@ -1945,7 +1945,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Izberite osnovo …</translation>
+      <translation>Izberite sklic ...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2030,12 +2030,12 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="281"/>
       <source>Warning: helix might be self intersecting</source>
-      <translation type="unfinished">Warning: helix might be self intersecting</translation>
+      <translation>Pozor: vijačnica lahko seka samo sebe</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="286"/>
       <source>Error: helix touches itself</source>
-      <translation type="unfinished">Error: helix touches itself</translation>
+      <translation>Napaka: vijačnica se dotika sama sebe</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="334"/>
@@ -2126,7 +2126,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
@@ -2141,7 +2141,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>Potrdi</translation>
+      <translation>V redu</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
@@ -2179,7 +2179,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
@@ -2189,12 +2189,12 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Dodaj Prerez</translation>
+      <translation>Dodaj presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Odstrani Prerez</translation>
+      <translation>Odstrani presek</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
@@ -2247,7 +2247,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>Potrdi</translation>
+      <translation>V redu</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
@@ -2373,7 +2373,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>Do zadnjega</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="74"/>
@@ -2443,7 +2443,7 @@ rob oblikovanca</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="102"/>
       <source>Select reference...</source>
-      <translation>Izberite osnovo …</translation>
+      <translation>Izberite sklic ...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
@@ -2571,7 +2571,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Nepremičen</translation>
+      <translation>Nespremenljivo</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2586,7 +2586,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Binormala</translation>
+      <translation>Binormalno</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -2596,7 +2596,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
@@ -2634,12 +2634,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Usmerjenost preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2654,7 +2654,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
@@ -2685,7 +2685,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Pot vzdolž katere povleči</translation>
+      <translation>Pot ob kateri se vzdolži</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2698,23 +2698,23 @@ merjena vzdolž določene smeri</translation>
       <translation>Odstrani rob</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="69"/>
+      <location filename="../../TaskPipeParameters.cpp" line="68"/>
       <source>Pipe parameters</source>
       <translation>Določilke cevi</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="85"/>
+      <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="423"/>
+      <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <source>No active body</source>
       <translation>Nobenega dejavnega telesa</translation>
     </message>
@@ -2744,12 +2744,12 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Dodaj Prerez</translation>
+      <translation>Dodaj presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Odstrani Prerez</translation>
+      <translation>Odstrani presek</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
@@ -2757,12 +2757,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Preoblikovanje preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2840,17 +2840,17 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Nasprotna smer</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="107"/>
       <source>Occurrences</source>
-      <translation>Pojavitve</translation>
+      <translation>Pogostosti</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
@@ -3188,7 +3188,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::ViewProviderBody</name>
     <message>
-      <location filename="../../ViewProviderBody.cpp" line="133"/>
+      <location filename="../../ViewProviderBody.cpp" line="135"/>
       <source>Toggle active body</source>
       <translation>Preklopi dejavno telo</translation>
     </message>
@@ -3211,12 +3211,12 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="116"/>
       <source>Datum Line parameters</source>
-      <translation>Določilke osnovne črte</translation>
+      <translation>Določilke sklicne črte</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <source>Datum Point parameters</source>
-      <translation>Določilke osnovne točke</translation>
+      <translation>Določilke sklicne točke</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
@@ -3613,7 +3613,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="116"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Telo ne more biti osnovano na PartDesign značilnosti.</translation>
+      <translation>Telo ne more biti osnovano na značilnosti Snovalnika delov.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="121"/>
@@ -3676,7 +3676,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>Ni bilo mogoče najti nobene značilnosti Oblikovanja delov (PartDesigna), ki ne bi pripadala telesu. Ni kaj seliti.</translation>
+      <translation>Ni bilo mogoče najti nobene značilnosti Snovalnika delov (PartDesign), ki ne bi pripadala telesu. Ni kaj seliti.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>
@@ -3700,7 +3700,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Izberi natanko eno PartDesign značilnost ali telo.</translation>
+      <translation>Izberi natanko eno značilnost Snovalnika delov (PartDesign) ali telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
@@ -3800,9 +3800,9 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Če želite uporabljati PartDesign, potrebujete v dokumentu dejavno Telo. Naredite enega dejavnega (dvoklik) ali ga ustvarite.
+      <translation>Če želite uporabljati Snovalnik delov (PartDesign), potrebujete dejavno Telo iz dokumenta. Naredite enega dejavnega (dvoklik) ali ga ustvarite.
 
-Če je vaš dokument podedovan in ima PartDesign predmete brez Teles, uporabitete PartDesighnovo zmožnost pretvorbe, da jih spremenite v Telo.</translation>
+Če je vaš dokument podedovan in ima predmete Snovalanika delov (PartDesign) brez Teles, uporabitete Snovalnikovo zmožnost pretvorbe, da jih spremenite v Telesa.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="186"/>
@@ -3812,7 +3812,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Če želite ustvariti nov PartDesign predmet, mora biti v dokumentu dejavno telo. Naredite enega dejavnega (dvoklik) ali ustvarite novega.</translation>
+      <translation>Če želite ustvariti nov predmet Snovalnika delov, mora biti v dokumentu dejavno telo. Naredite enega dejavnega (dvoklik) ali ustvarite novega.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="222"/>
@@ -3878,7 +3878,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
-      <translation>Uredi osnovne mere</translation>
+      <translation>Uredi sklicnost</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="74"/>
@@ -3905,7 +3905,7 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="70"/>
       <source>Edit loft</source>
-      <translation>Uredi ostrešje</translation>
+      <translation>Uredi navleček</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="48"/>
@@ -3963,36 +3963,36 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
       <translation>Preoblikovanje uspelo</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="138"/>
+      <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Dokument "%1", ki ga urejate, je bil narejen v starejši različici delavnega okolja PartDesign.</translation>
+      <translation>Dokument "%1", ki ga urejate, je bil narejen v starejši različici delavnega okolja Snovalnik delov (PartDesign).</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="141"/>
+      <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Želite preseliti, da bi lahko uporabljali nove zmožnosti PartDesigna?</translation>
+      <translation>Želite preseliti, da bi lahko uporabljali zmožnosti novega Snovalnika delov?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="144"/>
+      <location filename="../../WorkflowManager.cpp" line="146"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Kaže, da je dokument "%1" bodisi sredi selitve iz podedovanega PartDesigna, bodisi ima malo pokvarjeno zasnovo.</translation>
+      <translation>Kaže, da je dokument "%1" bodisi sredi selitve iz podedovanega Snovalnika delova, bodisi ima malo okvarjeno zasnovo.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="148"/>
+      <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
       <translation>Želite, da bi bila selitev samodejna?</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="150"/>
+      <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Opomba: Če se odločite za selitev, datoteke ne boste mogli več urejati s starejšimi različicami FreeCADa.
-Če zavrnete selitev, ne boste mogli uporabljati novih zmožnosti PartDesigna, kot so Telesa in Deli. Posledično, ne bo mogoče uporabljati vaših delov v sestavljalnem delavnem okolju.
-Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča kadarkoli.</translation>
+Če zavrnete selitev, ne boste mogli uporabljati zmožnosti Snovalnika delov (PartDesign), kot so Telesa in Deli. Posledično, ne bo mogoče uporabljati vaših delov v sestavljalnem delavnem okolju.
+Neglede na to je selitev v bodoče z "Snovanje delov -&gt; Preseli" mogoča kadarkoli.</translation>
     </message>
     <message>
-      <location filename="../../WorkflowManager.cpp" line="159"/>
+      <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
       <translation>Preseli ročno</translation>
     </message>
@@ -4004,42 +4004,42 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="41"/>
       <source>Edit chamfer</source>
-      <translation type="unfinished">Edit chamfer</translation>
+      <translation>Uredi prisekavo</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="42"/>
       <source>Edit draft</source>
-      <translation type="unfinished">Edit draft</translation>
+      <translation>Uredi nagib</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
       <source>Edit fillet</source>
-      <translation type="unfinished">Edit fillet</translation>
+      <translation>Uredi zaokrožitev</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
       <source>Edit linear pattern</source>
-      <translation type="unfinished">Edit linear pattern</translation>
+      <translation>Uredi premočrtni vzorec</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="39"/>
       <source>Edit mirrored</source>
-      <translation type="unfinished">Edit mirrored</translation>
+      <translation>Uredi zrcaljeno</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
       <source>Edit multi-transform</source>
-      <translation type="unfinished">Edit multi-transform</translation>
+      <translation>Uredi večkratno preoblikovanje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit polar pattern</source>
-      <translation type="unfinished">Edit polar pattern</translation>
+      <translation>Uredi krožni vzorec</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="39"/>
       <source>Edit scaled</source>
-      <translation type="unfinished">Edit scaled</translation>
+      <translation>Uredi prevelikosteno</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>
@@ -4463,20 +4463,20 @@ Na voljo le pri luknjah breh navoja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="618"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Standard</source>
       <translation>Običajno</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="619"/>
-      <location filename="../../TaskHoleParameters.cpp" line="630"/>
+      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
       <source>Close</source>
       <translation>Zapri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="620"/>
+      <location filename="../../TaskHoleParameters.cpp" line="622"/>
       <source>Wide</source>
       <translation>Velika</translation>
     </message>
@@ -4630,12 +4630,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Obratno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="629"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Normal</source>
       <translation>Običajno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Loose</source>
       <translation>Ohlapno</translation>
     </message>
@@ -4663,12 +4663,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation>Oblikovanje &amp;delov</translation>
+      <translation>&amp;Snovanje delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Create a datum</source>
-      <translation>Ustvari sklicni predmet</translation>
+      <translation>Ustvari sklicnost</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -4723,7 +4723,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation>Pomočnik za oblikovanje delov</translation>
+      <translation>Pomočnik za snovanje delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -4802,22 +4802,22 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
       <source>Shaft wizard</source>
-      <translation type="unfinished">Shaft wizard</translation>
+      <translation>Čarovnik gredi</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 1</source>
-      <translation type="unfinished">Section 1</translation>
+      <translation>Razdelek 1</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 2</source>
-      <translation type="unfinished">Section 2</translation>
+      <translation>Razdelek 2</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>Dodaj stolpec</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
@@ -4835,12 +4835,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>Missing module</source>
-      <translation type="unfinished">Missing module</translation>
+      <translation>Manjkajoči modul</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
       <source>You may have to install the Plot add-on</source>
-      <translation type="unfinished">You may have to install the Plot add-on</translation>
+      <translation>Morda boste morali namestiti dodatek Plot</translation>
     </message>
   </context>
   <context>
@@ -4874,7 +4874,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../../App/Body.cpp" line="401"/>
       <source>Linked object is not a PartDesign feature</source>
-      <translation>Povezani predmet ni zmožnost Oblikovanja delov (PartDesign)</translation>
+      <translation>Povezani predmet ni značilnost v okolju Snovanje delov (PartDesign)</translation>
     </message>
     <message>
       <location filename="../../../App/Body.cpp" line="408"/>
@@ -4975,7 +4975,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <location filename="../../../App/FeaturePrimitive.cpp" line="108"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="128"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Dobljenih je več teles, kar pa trenutno ni podprto.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
@@ -5242,130 +5242,130 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
       <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
+Sekanje enot očrta ali več ploskev v očrtu ni dopustno pri izdelavi ugreza v ploskev.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2025"/>
       <source>Thread type out of range</source>
-      <translation type="unfinished">Thread type out of range</translation>
+      <translation>Vrsta navoja izven obsega</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2028"/>
       <source>Thread size out of range</source>
-      <translation type="unfinished">Thread size out of range</translation>
+      <translation>Velikost navoja izven obsega</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2120"/>
       <source>Error: Thread could not be built</source>
-      <translation type="unfinished">Error: Thread could not be built</translation>
+      <translation>Napak: navoja ni bilo mogoče izvesti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="135"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>Navleček: potreben je vsaj en presek</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="140"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
+      <translation>Navleček: oblike preseka ni mogoče pridobiti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="153"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
+      <translation>Navleček: če se za presek/prereze uporablja točke, naj ima očrt le eno točko</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="161"/>
       <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <translation>Navleček: vsi preseki morajo biti značilnosti dela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="166"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
+      <translation>Navleček: oblike preseka ni mogoče pridobiti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="182"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
+      <translation>Navleček: presek ne vsebuje črtovja, niti posamičnega oglišča</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Navleček: le prvi in zadnji presek sta lahko oglišči</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Navleček: pri zaprtih navlečkih more le presek biti oglišče</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Navleček: vsi preseki navlečka morajo imeti enako število notranjih črtovij</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>Navlečka ni bilo mogoče narediti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Navleček: dobljeno ni telo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="278"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Navleček: od ničesar ni mogoče odvzeti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="288"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Navleček: dodajanje navlečka spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Navleček: odvzemanje navlečka spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="330"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Navleček: pri navlačenju je prišlo do usodne napake</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="125"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Izboklina: ustvarjanje je spodletelo, ker je smer pravokotna na normalo očrta</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="136"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>Izboklina: ustvarjanje ploskve iz očrta spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="200"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>Izboklina: dobljena oblika je prazna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="211"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>Izboklina: združitev z izhodiščno značilnostjo spodletela</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="243"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
+Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Cev: oblike preseka ni mogoče pridobiti</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
@@ -5593,42 +5593,42 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="652"/>
       <source>delta x of wedge too small</source>
-      <translation type="unfinished">delta x of wedge too small</translation>
+      <translation>sprememba x-a klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
       <source>delta y of wedge too small</source>
-      <translation type="unfinished">delta y of wedge too small</translation>
+      <translation>sprememba y-a klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
       <source>delta z of wedge too small</source>
-      <translation type="unfinished">delta z of wedge too small</translation>
+      <translation>sprememba z-ja klina premajhna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
       <source>delta z2 of wedge is negative</source>
-      <translation type="unfinished">delta z2 of wedge is negative</translation>
+      <translation>sprememba klinovega z-ja 2 je negativna</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>delta x2 of wedge is negative</source>
-      <translation type="unfinished">delta x2 of wedge is negative</translation>
+      <translation>sprememba klinovega x-a 2 je negativna</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
       <source>Angle of revolution too large</source>
-      <translation type="unfinished">Angle of revolution too large</translation>
+      <translation>Kot zvrtenja prevelik</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
       <source>Angle of revolution too small</source>
-      <translation type="unfinished">Angle of revolution too small</translation>
+      <translation>Kot zvrtenja premajhen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
       <source>Fusion with base feature failed</source>
-      <translation type="unfinished">Fusion with base feature failed</translation>
+      <translation>Združitev z izhodiščno značilnostjo spodletela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
@@ -5638,27 +5638,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>Nobenega na preoblikovano značilnost vezanega izvirnika ni.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>Neveljavne podporne oblike ni mogoče preoblikovati</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
       <source>Transformation failed</source>
-      <translation type="unfinished">Transformation failed</translation>
+      <translation>Preoblikovanje spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Oblika dodajne/odvzemne značilnosti je prazna</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation type="unfinished">Only additive and subtractive features can be transformed</translation>
+      <translation>Preoblikovati je mogoče le dodajne in odvzemne značilnosti</translation>
     </message>
   </context>
 </TS>

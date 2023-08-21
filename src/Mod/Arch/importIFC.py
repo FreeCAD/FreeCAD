@@ -323,7 +323,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         while only:
             currentid = only.pop()
             ids.append(currentid)
-            if currentid in additions.keys():
+            if currentid in additions:
                 only.extend(additions[currentid])
         products = [ifcfile[currentid] for currentid in ids]
 
@@ -370,7 +370,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 lays = product.Representation.Representations[0].LayerAssignments
                 if len(lays) > 0:
                     layer_name = lays[0].Name
-                    if layer_name not in list(layers.keys()):
+                    if layer_name not in layers:
                         layers[layer_name] = [pid]
                     else:
                         layers[layer_name].append(pid)
@@ -943,7 +943,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
                 compound = []
                 for c in children:
-                    if c in structshapes.keys():
+                    if c in structshapes:
                         compound.append(structshapes[c])
                         del structshapes[c]
                 if compound:
@@ -969,11 +969,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 # print(host, ' --> ', children)
                 obj = doc.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
-                if host in objects.keys():
+                if host in objects:
                     cobs = []
                     childs_to_delete = []
                     for child in children:
-                        if child in objects.keys():
+                        if child in objects:
                             cobs.append(objects[child])
                             childs_to_delete.append(child)
                     for c in childs_to_delete:
@@ -1009,7 +1009,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
-                if child in objects.keys():
+                if child in objects:
                     grp.addObject(objects[child])
                     swallowed.append(child)
                 else:
@@ -1025,12 +1025,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if ifcfile[host].is_a("IfcBuildingStorey"):
                 compound = []
                 for c in children:
-                    if c in shapes.keys():
+                    if c in shapes:
                         compound.append(shapes[c])
                         del shapes[c]
-                    if c in additions.keys():
+                    if c in additions:
                         for c2 in additions[c]:
-                            if c2 in shapes.keys():
+                            if c2 in shapes:
                                 compound.append(shapes[c2])
                                 del shapes[c2]
                 if compound:
@@ -1054,7 +1054,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         if preferences['SEPARATE_OPENINGS']:
             for subtraction in subtractions:
-                if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
+                if (subtraction[0] in objects) and (subtraction[1] in objects):
                     if preferences['DEBUG'] and first:
                         print("")
                         first = False
@@ -1065,13 +1065,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # additions
 
         for host,children in additions.items():
-            if host not in objects.keys():
+            if host not in objects:
                 # print(host, 'not used')
                 # print(ifcfile[host])
                 continue
             cobs = []
             for child in children:
-                if child in objects.keys() \
+                if child in objects \
                         and child not in swallowed:  # don't add objects already in groups
                     cobs.append(objects[child])
             if not cobs:
@@ -1131,11 +1131,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # placing in container if needed
 
         if anno:
-            if aid in remaining.keys():
+            if aid in remaining:
                 remaining[aid].addObject(anno)
             else:
                 for host,children in additions.items():
-                    if (aid in children) and (host in objects.keys()):
+                    if (aid in children) and (host in objects):
                         Arch.addComponents(anno,objects[host])
 
         if preferences['DEBUG']: print("")  # add newline for 2D objects debug prints

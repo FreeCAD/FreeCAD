@@ -272,7 +272,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if (!self)
-        return std::string();
+        return {};
     std::map<App::DocumentObject*, std::vector<std::string> > values;
     if (!subname) subname = "";
     std::string sub(subname);
@@ -293,7 +293,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
     self->setLinks(std::move(values), QApplication::keyboardModifiers() == Qt::ControlModifier);
     if (self->Relative.getValue())
         updatePlacement(false);
-    return std::string();
+    return {};
 }
 
 
@@ -402,7 +402,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     App::GetApplication().closeActiveTransaction(true);
 }
 
-std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
     std::vector<App::DocumentObject*> ret;
     auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
     if (self && self->ClaimChildren.getValue() && self->Support.getValue()) {

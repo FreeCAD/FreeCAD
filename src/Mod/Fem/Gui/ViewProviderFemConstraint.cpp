@@ -130,7 +130,7 @@ void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
 
 std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>();
+    return {};
 }
 
 void ViewProviderFemConstraint::setupContextMenu(QMenu *menu, QObject *receiver, const char *member)
@@ -511,12 +511,11 @@ void ViewProviderFemConstraint::updateRotation(const SoNode *node, const int idx
 
 QObject *ViewProviderFemConstraint::findChildByName(const QObject *parent, const QString &name)
 {
-    for (QObjectList::const_iterator o = parent->children().begin(); o != parent->children().end();
-         o++) {
-        if ((*o)->objectName() == name)
-            return *o;
-        if (!(*o)->children().empty()) {
-            QObject *result = findChildByName(*o, name);
+    for (auto o : parent->children()) {
+        if (o->objectName() == name)
+            return o;
+        if (!o->children().empty()) {
+            QObject *result = findChildByName(o, name);
             if (result)
                 return result;
         }

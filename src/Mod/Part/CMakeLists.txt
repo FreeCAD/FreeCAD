@@ -44,6 +44,7 @@ endif(BUILD_GUI)
 
 set(BOPTools_Scripts
     BOPTools/__init__.py
+    BOPTools/BOPFeatures.py
     BOPTools/GeneralFuseResult.py
     BOPTools/JoinAPI.py
     BOPTools/JoinFeatures.py

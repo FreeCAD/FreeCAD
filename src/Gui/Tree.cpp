@@ -78,7 +78,7 @@ FC_LOG_LEVEL_INIT("Tree", false, true, true)
 #define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,Notify<Base::LogStyle::Log>,_msg)
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -216,13 +216,15 @@ public:
     DocumentObjectData(DocumentItem* docItem, ViewProviderDocumentObject* vpd)
         : docItem(docItem), viewObject(vpd), rootItem(nullptr)
     {
+        //NOLINTBEGIN
         // Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
-            boost::bind(&DocumentObjectData::slotChangeIcon, this));
+            std::bind(&DocumentObjectData::slotChangeIcon, this));
         connectTool = viewObject->signalChangeToolTip.connect(
-            boost::bind(&DocumentObjectData::slotChangeToolTip, this, bp::_1));
+            std::bind(&DocumentObjectData::slotChangeToolTip, this, sp::_1));
         connectStat = viewObject->signalChangeStatusTip.connect(
-            boost::bind(&DocumentObjectData::slotChangeStatusTip, this, bp::_1));
+            std::bind(&DocumentObjectData::slotChangeStatusTip, this, sp::_1));
+        //NOLINTEND
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
@@ -462,19 +464,21 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
 
+    //NOLINTBEGIN
     // Setup connections
-    connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, bp::_1, bp::_2));
-    connectDelDocument = Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, bp::_1));
-    connectRenDocument = Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, bp::_1));
-    connectActDocument = Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, bp::_1));
-    connectRelDocument = Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, bp::_1));
-    connectShowHidden = Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, bp::_1));
+    connectNewDocument = Application::Instance->signalNewDocument.connect(std::bind(&TreeWidget::slotNewDocument, this, sp::_1, sp::_2));
+    connectDelDocument = Application::Instance->signalDeleteDocument.connect(std::bind(&TreeWidget::slotDeleteDocument, this, sp::_1));
+    connectRenDocument = Application::Instance->signalRenameDocument.connect(std::bind(&TreeWidget::slotRenameDocument, this, sp::_1));
+    connectActDocument = Application::Instance->signalActiveDocument.connect(std::bind(&TreeWidget::slotActiveDocument, this, sp::_1));
+    connectRelDocument = Application::Instance->signalRelabelDocument.connect(std::bind(&TreeWidget::slotRelabelDocument, this, sp::_1));
+    connectShowHidden = Application::Instance->signalShowHidden.connect(std::bind(&TreeWidget::slotShowHidden, this, sp::_1));
 
     // Gui::Document::signalChangedObject informs the App::Document property
     // change, not view provider's own property, which is what the signal below
     // for
     connectChangedViewObj = Application::Instance->signalChangedObject.connect(
-        boost::bind(&TreeWidget::slotChangedViewObject, this, bp::_1, bp::_2));
+        std::bind(&TreeWidget::slotChangedViewObject, this, sp::_1, sp::_2));
+    //NOLINTEND
 
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
@@ -515,9 +519,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     setupText();
     if (!documentPixmap) {
-        documentPixmap.reset(new QPixmap(Gui::BitmapFactory().pixmap("Document")));
+        documentPixmap = std::make_unique<QPixmap>(Gui::BitmapFactory().pixmap("Document"));
         QIcon icon(*documentPixmap);
-        documentPartialPixmap.reset(new QPixmap(icon.pixmap(documentPixmap->size(), QIcon::Disabled)));
+        documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
     header()->setVisible(!TreeParams::getHideColumn());
@@ -2562,10 +2566,12 @@ void TreeWidget::onUpdateStatus()
         auto doc = v.first->getDocument();
 
         if (!docItem->connectChgObject.connected()) {
+            //NOLINTBEGIN
             docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
-                boost::bind(&TreeWidget::slotChangeObject, this, bp::_1, bp::_2));
+                std::bind(&TreeWidget::slotChangeObject, this, sp::_1, sp::_2));
             docItem->connectTouchedObject = doc->signalTouchedObject.connect(
-                boost::bind(&TreeWidget::slotTouchedObject, this, bp::_1));
+                std::bind(&TreeWidget::slotTouchedObject, this, sp::_1));
+            //NOLINTEND
         }
 
         if (doc->testStatus(App::Document::PartialDoc))
@@ -3089,9 +3095,7 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
             this, &TreePanel::itemSearch);
 }
 
-TreePanel::~TreePanel()
-{
-}
+TreePanel::~TreePanel() = default;
 
 void TreePanel::accept()
 {
@@ -3164,9 +3168,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
     pLayout->addWidget(panel, 0, 0);
 }
 
-TreeDockWidget::~TreeDockWidget()
-{
-}
+TreeDockWidget::~TreeDockWidget() = default;
 
 void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
     if (!isSelectionAttached() || isSelectionBlocked())
@@ -3214,27 +3216,29 @@ void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
 DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem* parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(const_cast<Gui::Document*>(doc))
 {
+    //NOLINTBEGIN
     // Setup connections
-    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, bp::_1));
+    connectNewObject = doc->signalNewObject.connect(std::bind(&DocumentItem::slotNewObject, this, sp::_1));
     connectDelObject = doc->signalDeletedObject.connect(
-        boost::bind(&TreeWidget::slotDeleteObject, getTree(), bp::_1));
+        std::bind(&TreeWidget::slotDeleteObject, getTree(), sp::_1));
     if (!App::GetApplication().isRestoring()) {
         connectChgObject = doc->signalChangedObject.connect(
-            boost::bind(&TreeWidget::slotChangeObject, getTree(), bp::_1, bp::_2));
+            std::bind(&TreeWidget::slotChangeObject, getTree(), sp::_1, sp::_2));
         connectTouchedObject = doc->getDocument()->signalTouchedObject.connect(
-            boost::bind(&TreeWidget::slotTouchedObject, getTree(), bp::_1));
+            std::bind(&TreeWidget::slotTouchedObject, getTree(), sp::_1));
     }
-    connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, bp::_1));
-    connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, bp::_1));
+    connectEdtObject = doc->signalInEdit.connect(std::bind(&DocumentItem::slotInEdit, this, sp::_1));
+    connectResObject = doc->signalResetEdit.connect(std::bind(&DocumentItem::slotResetEdit, this, sp::_1));
     connectHltObject = doc->signalHighlightObject.connect(
-        boost::bind(&DocumentItem::slotHighlightObject, this, bp::_1, bp::_2, bp::_3, bp::_4, bp::_5));
+        std::bind(&DocumentItem::slotHighlightObject, this, sp::_1, sp::_2, sp::_3, sp::_4, sp::_5));
     connectExpObject = doc->signalExpandObject.connect(
-        boost::bind(&DocumentItem::slotExpandObject, this, bp::_1, bp::_2, bp::_3, bp::_4));
-    connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, bp::_1));
+        std::bind(&DocumentItem::slotExpandObject, this, sp::_1, sp::_2, sp::_3, sp::_4));
+    connectScrObject = doc->signalScrollToObject.connect(std::bind(&DocumentItem::slotScrollToObject, this, sp::_1));
     auto adoc = doc->getDocument();
-    connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, bp::_1, bp::_2));
+    connectRecomputed = adoc->signalRecomputed.connect(std::bind(&DocumentItem::slotRecomputed, this, sp::_1, sp::_2));
     connectRecomputedObj = adoc->signalRecomputedObject.connect(
-        boost::bind(&DocumentItem::slotRecomputedObject, this, bp::_1));
+        std::bind(&DocumentItem::slotRecomputedObject, this, sp::_1));
+    //NOLINTEND
 
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
 
@@ -5147,7 +5151,7 @@ App::DocumentObject* DocumentObjectItem::getRelativeParent(
     auto subname2 = str2.str();
     const char* sub = subname.c_str();
     const char* sub2 = subname2.c_str();
-    while (1) {
+    while (true) {
         const char* dot = strchr(sub, '.');
         if (!dot) {
             str.str("");

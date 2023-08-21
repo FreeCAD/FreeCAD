@@ -38,18 +38,18 @@ public:
 
     void setDimension(DrawViewDimension* dim) { m_dimension = dim; }
     bool isMultiValueSchema() const;
-    std::string formatValue(qreal value,
-                            QString qFormatSpec,
-                            int partial,
-                            bool isDim);
-    std::string getFormattedToleranceValue(int partial);
-    std::pair<std::string, std::string> getFormattedToleranceValues(int partial);
-    std::string getFormattedDimensionValue(int partial);
-    QStringList getPrefixSuffixSpec(QString fSpec);
+    std::string formatValue(const qreal value,
+                            const QString& qFormatSpec,
+                            const int partial,
+                            const bool isDim) const;
+    std::string getFormattedToleranceValue(const int partial) const;
+    std::pair<std::string, std::string> getFormattedToleranceValues(const int partial) const;
+    std::string getFormattedDimensionValue(const int partial) const;
+    QStringList getPrefixSuffixSpec(const QString& fSpec) const;
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
-    bool isTooSmall(double value, QString formatSpec);
-    QString formatValueToSpec(double value, QString formatSpecifier);
-    bool isNumericFormat(QString formatSpecifier);
+    bool isTooSmall(const double value, const QString& formatSpec) const;
+    QString formatValueToSpec(const double value, const QString& formatSpecifier) const;
+    bool isNumericFormat(const QString& formatSpecifier) const;
 
 private:
     DrawViewDimension* m_dimension;

@@ -629,7 +629,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="20"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Oblik</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="58"/>
@@ -730,7 +730,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Oblik</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
@@ -763,7 +763,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Oblik</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
@@ -881,7 +881,7 @@
     <message>
       <location filename="../../TaskRobotMessages.ui" line="14"/>
       <source>Form</source>
-      <translation>Obrazac</translation>
+      <translation>Oblik</translation>
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>

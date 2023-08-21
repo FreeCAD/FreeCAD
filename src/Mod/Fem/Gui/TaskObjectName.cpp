@@ -68,8 +68,7 @@ void TaskObjectName::TextChanged (const QString & text)
     //pcObject->Label.setValue(text.toUtf8());
 }
 
-TaskObjectName::~TaskObjectName()
-{}
+TaskObjectName::~TaskObjectName() = default;
 
 
 #include "moc_TaskObjectName.cpp"

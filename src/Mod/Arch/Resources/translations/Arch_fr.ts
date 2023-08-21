@@ -341,7 +341,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>Importation</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
@@ -434,7 +434,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>Rafraîchir</translation>
+      <translation>Actualiser</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -485,7 +485,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>Copier le matériau...</translation>
+      <translation>Copier l’existant...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -570,7 +570,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>Tolérance</translation>
+      <translation>Tolérance </translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -610,7 +610,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Démarrer</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
@@ -896,7 +896,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="702"/>
       <location filename="../ui/preferences-archdefaults.ui" line="859"/>
       <source>Width:</source>
-      <translation>Largeur :</translation>
+      <translation>Largeur :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="41"/>
@@ -921,7 +921,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="494"/>
       <location filename="../ui/preferences-archdefaults.ui" line="741"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
@@ -952,7 +952,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -977,7 +977,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>Fenêtres</translation>
+      <translation>Fenêtre</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1003,7 +1003,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>Transparence :</translation>
+      <translation>Transparence :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1041,7 +1041,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="898"/>
       <source>Thickness</source>
-      <translation>Evidement</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
@@ -1451,7 +1451,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
       <source>Second order</source>
-      <translation>Second ordre</translation>
+      <translation>Deuxième ordre</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
@@ -2067,7 +2067,7 @@ Cependant, certaines applications BIM utiliseront ce facteur pour choisir l'unit
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>Architecture</translation>
+      <translation>Arch</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2178,7 +2178,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>ID</translation>
+      <translation>Identifiant</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2211,14 +2211,14 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <translation>Hauteur (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Porte</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>Couper</translation>
+      <translation>Coupe</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2261,7 +2261,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <translation>Ouvrir la référence</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Créer une référence externe</translation>
     </message>
@@ -2412,7 +2412,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>Choix sélectionné</translation>
+      <translation>Choisir la sélection</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="805"/>
@@ -2496,7 +2496,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <location filename="../../ArchPanel.py" line="237"/>
       <location filename="../../ArchWindow.py" line="1800"/>
       <source>Thickness</source>
-      <translation>Evidement</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1417"/>
@@ -2700,7 +2700,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>L'épaisseur global</translation>
+      <translation>Épaisseur totale</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -3014,7 +3014,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>Tuyau</translation>
+      <translation>Conduite</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
@@ -3215,7 +3215,7 @@ La création du niveau est abandonnée.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="808"/>
       <source>Axis</source>
-      <translation>Axe</translation>
+      <translation>Axes</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
@@ -3385,7 +3385,7 @@ La création du niveau est abandonnée.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>Section</translation>
+      <translation>Coupe</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3471,7 +3471,7 @@ La création du niveau est abandonnée.</translation>
       <location filename="../../ArchSectionPlane.py" line="1384"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Centrer</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1385"/>
@@ -3580,12 +3580,12 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>Gauche</translation>
+      <translation>À gauche</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Droit</translation>
+      <translation>À droite</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -3661,7 +3661,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>Prendre des cotes</translation>
+      <translation>Prendre des côtes</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -6027,7 +6027,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../InitGui.py" line="167"/>
       <source>Arch tools</source>
-      <translation>Outils Arch</translation>
+      <translation>Outils de Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="170"/>
@@ -6077,7 +6077,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>Annotation</translation>
+      <translation>Annotations</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6166,12 +6166,12 @@ La création du bâtiment est abandonnée.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Référence externe</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Créer une référence externe</translation>
     </message>
@@ -6406,7 +6406,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Panneau de coupe</translation>
+      <translation>Découpe de panneau</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6419,7 +6419,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>Plaque de panneaux</translation>
+      <translation>Plaque de panneau</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6528,7 +6528,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="93"/>
       <source>Axis</source>
-      <translation>Axe</translation>
+      <translation>Axes</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="97"/>
@@ -6542,7 +6542,7 @@ La création du bâtiment est abandonnée.</translation>
       <location filename="../../ArchAxis.py" line="824"/>
       <location filename="../../ArchAxis.py" line="827"/>
       <source>Axis tools</source>
-      <translation>Outils pour les axes</translation>
+      <translation>Outils de l’axe</translation>
     </message>
   </context>
   <context>
@@ -6719,7 +6719,7 @@ La création du bâtiment est abandonnée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>Prendre des cotes</translation>
+      <translation>Prise de côtes</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
@@ -6808,7 +6808,7 @@ La création du bâtiment est abandonnée.</translation>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>Architecture</translation>
+      <translation>Arch</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6816,14 +6816,14 @@ La création du bâtiment est abandonnée.</translation>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Tirant d'eau</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>Importer/Exporter</translation>
+      <translation>Importer-Exporter</translation>
     </message>
   </context>
 </TS>

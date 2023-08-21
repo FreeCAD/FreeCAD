@@ -88,7 +88,7 @@ void SequencerDialog::startStep()
     if (thr != currentThread) {
         d->guiThread = false;
         QMetaObject::invokeMethod(d->dlg, "setRangeEx", Qt::QueuedConnection,
-            QGenericReturnArgument(), Q_ARG(int, 0), Q_ARG(int, (int)nTotalSteps));
+            Q_ARG(int, 0), Q_ARG(int, (int)nTotalSteps));
         d->dlg->setModal(false);
         if (nTotalSteps == 0) {
             d->progressTime.start();
@@ -96,7 +96,7 @@ void SequencerDialog::startStep()
 
         d->measureTime.start();
         QMetaObject::invokeMethod(d->dlg, "setValueEx", Qt::QueuedConnection,
-            QGenericReturnArgument(), Q_ARG(int,0));
+            Q_ARG(int,0));
         QMetaObject::invokeMethod(d->dlg, "aboutToShow", Qt::QueuedConnection);
     }
     else {
@@ -174,7 +174,7 @@ void SequencerDialog::setValue(int step)
             d->progressTime.restart();
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->dlg, "setValueEx", Qt::/*Blocking*/QueuedConnection,
-                    QGenericReturnArgument(), Q_ARG(int,d->dlg->value()+1));
+                    Q_ARG(int,d->dlg->value()+1));
             }
             else {
                 d->dlg->setValueEx(d->dlg->value()+1);
@@ -185,7 +185,7 @@ void SequencerDialog::setValue(int step)
     else {
         if (thr != currentThread) {
             QMetaObject::invokeMethod(d->dlg, "setValueEx", Qt::/*Blocking*/QueuedConnection,
-                QGenericReturnArgument(), Q_ARG(int,step));
+                Q_ARG(int,step));
             if (d->dlg->isVisible())
                 showRemainingTime();
         }
@@ -222,7 +222,6 @@ void SequencerDialog::showRemainingTime()
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->dlg, "setLabelText",
                     Qt::/*Blocking*/QueuedConnection,
-                    QGenericReturnArgument(),
                     Q_ARG(QString,status));
             }
             else {
@@ -241,7 +240,6 @@ void SequencerDialog::resetData()
         QMetaObject::invokeMethod(d->dlg, "hide", Qt::QueuedConnection);
         QMetaObject::invokeMethod(d->dlg, "setLabelText",
             Qt::/*Blocking*/QueuedConnection,
-            QGenericReturnArgument(),
             Q_ARG(QString,QString()));
     }
     else {
@@ -279,7 +277,6 @@ void SequencerDialog::setText (const char* pszTxt)
     if (thr != currentThread) {
         QMetaObject::invokeMethod(d->dlg, "setLabelText",
             Qt::/*Blocking*/QueuedConnection,
-            QGenericReturnArgument(),
             Q_ARG(QString,d->text));
     }
     else {
@@ -306,9 +303,7 @@ ProgressDialog::ProgressDialog (SequencerDialog* s, QWidget * parent)
     connect(this, &QProgressDialog::canceled, this, &ProgressDialog::onCancel);
 }
 
-ProgressDialog::~ProgressDialog ()
-{
-}
+ProgressDialog::~ProgressDialog() = default;
 
 void ProgressDialog::onCancel()
 {

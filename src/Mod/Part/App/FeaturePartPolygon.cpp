@@ -55,8 +55,8 @@ App::DocumentObjectExecReturn *Part::Polygon::execute()
     BRepBuilderAPI_MakePolygon poly;
     const std::vector<Base::Vector3d> nodes = Nodes.getValues();
 
-    for (std::vector<Base::Vector3d>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
-        gp_Pnt pnt(it->x, it->y, it->z);
+    for (const auto & node : nodes) {
+        gp_Pnt pnt(node.x, node.y, node.z);
         poly.Add(pnt);
     }
 

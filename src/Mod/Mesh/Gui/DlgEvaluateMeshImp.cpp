@@ -156,10 +156,10 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
 DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
 {
     // no need to delete child widgets, Qt does it all for us
-    for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
+    for (const auto& it : d->vp) {
         if (d->view)
-            d->view->getViewer()->removeViewProvider(it->second);
-        delete it->second;
+            d->view->getViewer()->removeViewProvider(it.second);
+        delete it.second;
     }
 
     try {
@@ -314,8 +314,8 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
 {
     if (&Doc == getDocument()) {
         // the view is already destroyed
-        for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
-            delete it->second;
+        for (const auto& it : d->vp) {
+            delete it.second;
         }
 
         d->vp.clear();
@@ -373,10 +373,10 @@ void DlgEvaluateMeshImp::removeViewProvider(const char* name)
 
 void DlgEvaluateMeshImp::removeViewProviders()
 {
-    for (std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.begin(); it != d->vp.end(); ++it) {
+    for (const auto& it : d->vp) {
         if (d->view)
-            d->view->getViewer()->removeViewProvider(it->second);
-        delete it->second;
+            d->view->getViewer()->removeViewProvider(it.second);
+        delete it.second;
     }
     d->vp.clear();
 }
@@ -387,9 +387,9 @@ void DlgEvaluateMeshImp::onMeshNameButtonActivated(int i)
 
     d->meshFeature = nullptr;
     std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        if (item == QLatin1String((*it)->getNameInDocument())) {
-            d->meshFeature = (Mesh::Feature*)(*it);
+    for (auto obj : objs) {
+        if (item == QLatin1String(obj->getNameInDocument())) {
+            d->meshFeature = static_cast<Mesh::Feature*>(obj);
             break;
         }
     }
@@ -407,16 +407,16 @@ void DlgEvaluateMeshImp::refreshList()
     QVector<QPair<QString, QString> > items;
     if (this->getDocument()) {
         std::vector<App::DocumentObject*> objs = this->getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-            items.push_back(qMakePair(QString::fromUtf8((*it)->Label.getValue()),
-                                      QString::fromLatin1((*it)->getNameInDocument())));
+        for (auto obj : objs) {
+            items.push_back(qMakePair(QString::fromUtf8(obj->Label.getValue()),
+                                      QString::fromLatin1(obj->getNameInDocument())));
         }
     }
 
     d->ui.meshNameButton->clear();
     d->ui.meshNameButton->addItem(tr("No selection"));
-    for (QVector<QPair<QString, QString> >::iterator it = items.begin(); it != items.end(); ++it)
-        d->ui.meshNameButton->addItem(it->first, it->second);
+    for (const auto & item : items)
+        d->ui.meshNameButton->addItem(item.first, item.second);
     d->ui.meshNameButton->setDisabled(items.empty());
     cleanInformation();
 }
@@ -433,10 +433,12 @@ void DlgEvaluateMeshImp::showInformation()
     d->ui.analyzeFoldsButton->setEnabled(true);
     d->ui.analyzeAllTogether->setEnabled(true);
 
-    const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
-    d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
-    d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
-    d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+    if (d->meshFeature) {
+        const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
+        d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
+        d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
+        d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+    }
 }
 
 void DlgEvaluateMeshImp::cleanInformation()
@@ -1360,7 +1362,7 @@ void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
  */
 QSize DockEvaluateMeshImp::sizeHint () const
 {
-    return QSize(371, 579);
+    return {371, 579};
 }
 
 #include "moc_DlgEvaluateMeshImp.cpp"

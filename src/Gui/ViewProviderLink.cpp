@@ -194,8 +194,10 @@ public:
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
+        //NOLINTBEGIN
         connChangeIcon = vp->signalChangeIcon.connect(
-                boost::bind(&LinkInfo::slotChangeIcon,this));
+                std::bind(&LinkInfo::slotChangeIcon,this));
+        //NOLINTEND
         vp->forceUpdate(true);
         sensor.setFunction(sensorCB);
         sensor.setData(this);
@@ -207,8 +209,7 @@ public:
         transformSensor.setData(this);
     }
 
-    ~LinkInfo() {
-    }
+    ~LinkInfo() = default;
 
     bool checkName(const char *name) const {
         return isLinked() && strcmp(name,getLinkedName())==0;
@@ -609,7 +610,7 @@ public:
             return false;
         auto geoGroup = pcLinked->getObject();
         auto sobj = geoGroup;
-        while(1) {
+        while(true) {
             std::string objname = std::string(nextsub,dot-nextsub+1);
             if(!geoGroup->getSubObject(objname.c_str())) {
                 // this object is not found under the geo group, abort.
@@ -1036,7 +1037,7 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
         auto it = subInfo.find(subname);
         if(it == subInfo.end()) {
             it = subInfo.insert(std::make_pair(subname,std::unique_ptr<SubInfo>())).first;
-            it->second.reset(new SubInfo(*this));
+            it->second = std::make_unique<SubInfo>(*this);
         }
         if(subelement[0])
             it->second->subElements.insert(subelement);
@@ -1077,7 +1078,7 @@ void LinkView::setSize(int _size) {
         pcLinkRoot->addChild(info->pcSwitch);
 
     while(nodeArray.size()<size) {
-        nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
+        nodeArray.push_back(std::make_unique<Element>(*this));
         auto &info = *nodeArray.back();
         info.pcRoot->addChild(info.pcTransform);
         if(pcLinkedRoot)
@@ -1129,8 +1130,9 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     std::map<App::DocumentObject*, size_t> groups;
     for(size_t i=0;i<children.size();++i) {
         auto obj = children[i];
-        if(nodeArray.size()<=i)
-            nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
+        if(nodeArray.size()<=i) {
+            nodeArray.push_back(std::make_unique<Element>(*this));
+        }
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
@@ -1454,7 +1456,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
         if (subname[0]>='0' && subname[0]<='9') {
             idx = App::LinkBaseExtension::getArrayIndex(subname,&subname);
         } else {
-            while(1) {
+            while(true) {
                 const char *dot = strchr(subname,'.');
                 if(!dot)
                     break;
@@ -2633,7 +2635,7 @@ bool ViewProviderLink::initDraggingPlacement() {
                         FC_ERR("initDraggingPlacement() expects return of type tuple(matrix,placement,boundbox)");
                         return false;
                     }
-                    dragCtx.reset(new DraggerContext);
+                    dragCtx = std::make_unique<DraggerContext>();
                     dragCtx->initialPlacement = *static_cast<Base::PlacementPy*>(pypla)->getPlacementPtr();
                     dragCtx->preTransform = *static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
                     dragCtx->bbox = *static_cast<Base::BoundBoxPy*>(pybbox)->getBoundBoxPtr();
@@ -2663,7 +2665,7 @@ bool ViewProviderLink::initDraggingPlacement() {
         return false;
     }
 
-    dragCtx.reset(new DraggerContext);
+    dragCtx = std::make_unique<DraggerContext>();
 
     dragCtx->preTransform = doc->getEditingTransform();
     doc->setEditingTransform(dragCtx->preTransform);
@@ -3077,7 +3079,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         // In case of multi-level linking, we recursively call into each level,
         // and merge the colors
         auto vp = this;
-        while(1) {
+        while(true) {
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
                 color.a = ShapeMaterial.getValue().transparency;
@@ -3165,7 +3167,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     }
     std::map<std::string, App::Color> ret;
     for(const auto &v : colors) {
-        const char *pos = 0;
+        const char *pos = nullptr;
         auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
         if(!sobj || !pos)
             continue;

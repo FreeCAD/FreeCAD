@@ -46,7 +46,7 @@ class ContextMenu : public QObject {
   Q_OBJECT
 public:
   ContextMenu(QuarterWidget * quarterwidget);
-  ~ContextMenu();
+  ~ContextMenu() override;
 
   QMenu * getMenu() const;
 

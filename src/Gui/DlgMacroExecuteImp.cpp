@@ -58,7 +58,7 @@ namespace Gui {
             : QTreeWidgetItem(widget),
             systemWide(systemwide){}
 
-            ~MacroItem() override{}
+            ~MacroItem() override = default;
 
             bool systemWide;
         };
@@ -104,10 +104,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgMacroExecuteImp::~DlgMacroExecuteImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgMacroExecuteImp::~DlgMacroExecuteImp() = default;
 
 void DlgMacroExecuteImp::setupConnections()
 {
@@ -620,7 +617,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
             workbenchBox->setCurrentIndex(globalIdx);
             QMetaObject::invokeMethod(setupToolbarPage, "on_workbenchBox_activated",
                 Qt::DirectConnection,
-                QGenericReturnArgument(),
                 Q_ARG(int, globalIdx));
         } else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
@@ -656,7 +652,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
             categoryBox->setCurrentIndex(macrosIdx);
             QMetaObject::invokeMethod(setupToolbarPage, "on_categoryBox_activated",
                 Qt::DirectConnection,
-                QGenericReturnArgument(),
                 Q_ARG(int, macrosIdx));
         } else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");

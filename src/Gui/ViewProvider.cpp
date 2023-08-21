@@ -233,7 +233,9 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 
                         auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
-                        func->setFunction(std::bind(&Document::resetEdit, doc));
+                        func->setFunction([doc]() {
+                            doc->resetEdit();
+                        });
                         func->singleShot(0);
                     }
                 }
@@ -363,12 +365,14 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
 
 SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
+    //NOLINTBEGIN
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+    //NOLINTEND
 }
 
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
@@ -410,9 +414,8 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
-    for (std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.begin();
-         it != _sDisplayMaskModes.end(); ++it)
-        types.push_back( it->first );
+    for (const auto & it : _sDisplayMaskModes)
+        types.push_back( it.first );
     return types;
 }
 
@@ -811,7 +814,7 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
             return ext->extensionDropObjectEx(obj, owner, subname, elements);
     }
     dropObject(obj);
-    return std::string();
+    return {};
 }
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)

@@ -14,7 +14,7 @@ angewendet werden soll, die das gleiche konfigurierbare Objekt referenzieren</tr
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="441"/>
+      <location filename="../../Application.cpp" line="446"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>

@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
-      <translation>Сітка(Меш)</translation>
+      <translation>Сітка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Помилка</translation>
     </message>

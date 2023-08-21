@@ -37,37 +37,37 @@ namespace Path
 
     class PathExport Toolpath : public Base::Persistence
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
         public:
             Toolpath();
             Toolpath(const Toolpath&);
-            ~Toolpath();
+            ~Toolpath() override;
 
             Toolpath &operator=(const Toolpath&);
 
             // from base class
-            virtual unsigned int getMemSize (void) const;
-            virtual void Save (Base::Writer &/*writer*/) const;
-            virtual void Restore(Base::XMLReader &/*reader*/);
-            void SaveDocFile (Base::Writer &writer) const;
-            void RestoreDocFile(Base::Reader &reader);
+            unsigned int getMemSize () const override;
+            void Save (Base::Writer &/*writer*/) const override;
+            void Restore(Base::XMLReader &/*reader*/) override;
+            void SaveDocFile (Base::Writer &writer) const override;
+            void RestoreDocFile(Base::Reader &reader) override;
 
             // interface
-            void clear(void); // clears the internal data
+            void clear(); // clears the internal data
             void addCommand(const Command &Cmd); // adds a command at the end
             void insertCommand(const Command &Cmd, int); // inserts a command
             void deleteCommand(int); // deletes a command
-            double getLength(void); // return the Length (mm) of the Path
+            double getLength(); // return the Length (mm) of the Path
             double getCycleTime(double, double, double, double); // return the Cycle Time (s) of the Path
-            void recalculate(void); // recalculates the points
+            void recalculate(); // recalculates the points
             void setFromGCode(const std::string); // sets the path from the contents of the given GCode string
-            std::string toGCode(void) const; // gets a gcode string representation from the Path
-            Base::BoundBox3d getBoundBox(void) const;
+            std::string toGCode() const; // gets a gcode string representation from the Path
+            Base::BoundBox3d getBoundBox() const;
 
             // shortcut functions
-            unsigned int getSize(void) const { return vpcCommands.size(); }
-            const std::vector<Command*> &getCommands(void) const { return vpcCommands; }
+            unsigned int getSize() const { return vpcCommands.size(); }
+            const std::vector<Command*> &getCommands() const { return vpcCommands; }
             const Command &getCommand(unsigned int pos)    const { return *vpcCommands[pos]; }
 
             // support for rotation

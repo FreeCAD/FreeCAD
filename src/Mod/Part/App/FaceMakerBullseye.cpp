@@ -55,12 +55,12 @@ void FaceMakerBullseye::setPlane(const gp_Pln &plane)
 
 std::string FaceMakerBullseye::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Bull's-eye facemaker"));
+    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Bull's-eye facemaker")};
 }
 
 std::string FaceMakerBullseye::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes with islands."));
+    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes with islands.")};
 }
 
 void FaceMakerBullseye::Build_Essence()
@@ -121,8 +121,8 @@ void FaceMakerBullseye::Build_Essence()
         }
         else {
             //wire is not on a face. Start a new face.
-            faces.push_back(std::unique_ptr<FaceDriller>(
-                                new FaceDriller(plane, w)
+            faces.push_back(std::make_unique<FaceDriller>(
+                                plane, w
                            ));
         }
     }

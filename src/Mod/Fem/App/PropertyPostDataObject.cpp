@@ -56,13 +56,9 @@ using namespace Fem;
 
 TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property)
 
-PropertyPostDataObject::PropertyPostDataObject()
-{
-}
+PropertyPostDataObject::PropertyPostDataObject() = default;
 
-PropertyPostDataObject::~PropertyPostDataObject()
-{
-}
+PropertyPostDataObject::~PropertyPostDataObject() = default;
 
 void PropertyPostDataObject::scaleDataObject(vtkDataObject *dataObject, double s)
 {
@@ -70,8 +66,8 @@ void PropertyPostDataObject::scaleDataObject(vtkDataObject *dataObject, double s
         for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
             double xyz[3];
             points->GetPoint(i, xyz);
-            for (int j = 0; j < 3; j++)
-                xyz[j] *= s;
+            for (double & j : xyz)
+                j *= s;
             points->SetPoint(i, xyz);
         }
     };

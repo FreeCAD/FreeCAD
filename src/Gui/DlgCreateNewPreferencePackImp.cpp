@@ -48,7 +48,7 @@ DlgCreateNewPreferencePackImp::DlgCreateNewPreferencePackImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    QRegularExpression validNames(QString::fromUtf8("[^/\\\\?%*:|\"<>]+"));
+    QRegularExpression validNames(QString::fromUtf8(R"([^/\\?%*:|"<>]+)"));
     _nameValidator.setRegularExpression(validNames);
     ui->lineEdit->setValidator(&_nameValidator);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
@@ -57,9 +57,7 @@ DlgCreateNewPreferencePackImp::DlgCreateNewPreferencePackImp(QWidget* parent)
 }
 
 
-DlgCreateNewPreferencePackImp::~DlgCreateNewPreferencePackImp()
-{
-}
+DlgCreateNewPreferencePackImp::~DlgCreateNewPreferencePackImp() = default;
 
 void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector<Gui::PreferencePackManager::TemplateFile>& availableTemplates)
 {

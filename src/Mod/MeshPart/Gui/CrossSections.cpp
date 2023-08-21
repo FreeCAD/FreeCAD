@@ -61,7 +61,7 @@
 
 
 using namespace MeshPartGui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace MeshPartGui {
 class ViewProviderCrossSections : public Gui::ViewProvider
@@ -94,9 +94,9 @@ public:
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const override
+    std::vector<std::string> getDisplayModes() const override
     {
-        return std::vector<std::string>();
+        return {};
     }
     void setCoords(const std::vector<Base::Vector3f>& v)
     {
@@ -145,10 +145,10 @@ public:
         algo.CutWithPlane(p, n, grid, polylines, epsilon, connectEdges);
 
         std::list<TopoDS_Wire> wires;
-        for (auto it = polylines.begin(); it != polylines.end(); ++it) {
+        for (const auto & polyline : polylines) {
             BRepBuilderAPI_MakePolygon mkPoly;
-            for (auto jt = it->begin(); jt != it->end(); ++jt) {
-                mkPoly.Add(Base::convertTo<gp_Pnt>(*jt));
+            for (auto jt : polyline) {
+                mkPoly.Add(Base::convertTo<gp_Pnt>(jt));
             }
 
             if (mkPoly.IsDone())
@@ -286,33 +286,34 @@ void CrossSections::apply()
     double eps = ui->spinEpsilon->value();
 
 #if 1 // multi-threaded sections
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+    for (auto it : obj) {
+        const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(it)->Mesh.getValue();
 
         MeshCore::MeshKernel kernel(mesh.getKernel());
         kernel.Transform(mesh.getTransform());
 
         MeshCore::MeshFacetGrid grid(kernel);
 
+        //NOLINTBEGIN
         MeshCrossSection cs(kernel, grid, a, b, c, connectEdges, eps);
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, boost::bind(&MeshCrossSection::section, &cs, bp::_1));
+            (d, std::bind(&MeshCrossSection::section, &cs, sp::_1));
         future.waitForFinished();
+        //NOLINTEND
 
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
 
-        for (auto ft = future.begin(); ft != future.end(); ++ft) {
-            const std::list<TopoDS_Wire>& w = *ft;
-            for (std::list<TopoDS_Wire>::const_iterator wt = w.begin(); wt != w.end(); ++wt) {
-                if (!wt->IsNull())
-                    builder.Add(comp, *wt);
+        for (const auto & w : future) {
+            for (const auto & wt : w) {
+                if (!wt.IsNull())
+                    builder.Add(comp, wt);
             }
         }
 
-        App::Document* doc = (*it)->getDocument();
-        std::string s = (*it)->getNameInDocument();
+        App::Document* doc = it->getDocument();
+        std::string s = it->getNameInDocument();
         s += "_cs";
         Part::Feature* section = static_cast<Part::Feature*>
             (doc->addObject("Part::Feature",s.c_str()));
@@ -568,26 +569,26 @@ std::vector<double> CrossSections::getPlanes() const
 void CrossSections::makePlanes(Plane type, const std::vector<double>& d, double bound[4])
 {
     std::vector<Base::Vector3f> points;
-    for (std::vector<double>::const_iterator it = d.begin(); it != d.end(); ++it) {
+    for (double it : d) {
         Base::Vector3f v[4];
         switch (type) {
             case XY:
-                v[0].Set(bound[0],bound[2],*it);
-                v[1].Set(bound[1],bound[2],*it);
-                v[2].Set(bound[1],bound[3],*it);
-                v[3].Set(bound[0],bound[3],*it);
+                v[0].Set(bound[0],bound[2],it);
+                v[1].Set(bound[1],bound[2],it);
+                v[2].Set(bound[1],bound[3],it);
+                v[3].Set(bound[0],bound[3],it);
                 break;
             case XZ:
-                v[0].Set(bound[0],*it,bound[2]);
-                v[1].Set(bound[1],*it,bound[2]);
-                v[2].Set(bound[1],*it,bound[3]);
-                v[3].Set(bound[0],*it,bound[3]);
+                v[0].Set(bound[0],it,bound[2]);
+                v[1].Set(bound[1],it,bound[2]);
+                v[2].Set(bound[1],it,bound[3]);
+                v[3].Set(bound[0],it,bound[3]);
                 break;
             case YZ:
-                v[0].Set(*it,bound[0],bound[2]);
-                v[1].Set(*it,bound[1],bound[2]);
-                v[2].Set(*it,bound[1],bound[3]);
-                v[3].Set(*it,bound[0],bound[3]);
+                v[0].Set(it,bound[0],bound[2]);
+                v[1].Set(it,bound[1],bound[2]);
+                v[2].Set(it,bound[1],bound[3]);
+                v[3].Set(it,bound[0],bound[3]);
                 break;
         }
 

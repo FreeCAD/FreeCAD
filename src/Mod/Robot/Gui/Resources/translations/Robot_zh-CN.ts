@@ -119,7 +119,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="170"/>
       <source>Kuka IR125</source>
-      <translation>库卡IR125</translation>
+      <translation>库卡 IR125</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="171"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="89"/>
       <source>Kuka IR16</source>
-      <translation>库卡IR16</translation>
+      <translation>库卡 IR16</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="90"/>

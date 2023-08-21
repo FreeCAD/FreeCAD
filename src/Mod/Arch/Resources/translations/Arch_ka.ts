@@ -283,7 +283,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation>ავტო–განახლება</translation>
+      <translation>ავტომატური განახლება</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -348,7 +348,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>გატანა</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -487,7 +487,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>არსებულის კოპირება...</translation>
+      <translation>არსებულის კოპირება....</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -532,7 +532,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
       <source>Invert</source>
-      <translation>დაბრუნება</translation>
+      <translation>ინვერსია</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
@@ -552,7 +552,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
       <source>Shapes</source>
-      <translation>ფიგურები</translation>
+      <translation>მოყვანილობები</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
@@ -562,7 +562,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -572,7 +572,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>სიზუსტე</translation>
+      <translation>დაშვება</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -612,7 +612,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>დაწყება</translation>
+      <translation>გაშვება</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
@@ -622,7 +622,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="177"/>
       <source>Preview</source>
-      <translation>გადახედვა</translation>
+      <translation>მინიატურა</translation>
     </message>
   </context>
   <context>
@@ -958,7 +958,7 @@ Bim სერვერის ინტერფეისს გარე ბრ�
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>სიგრძე:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -1077,7 +1077,7 @@ Bim სერვერის ინტერფეისს გარე ბრ�
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>მყარი სხეული</translation>
+      <translation>მყარი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1388,7 +1388,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
-      <translation>მეფისტო</translation>
+      <translation>Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
@@ -1731,7 +1731,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="125"/>
       <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation>კოჭი</translation>
+      <translation>ზურგი</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
@@ -1975,7 +1975,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>მზადაა</translation>
+      <translation>დასრულებულია</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="757"/>
@@ -1986,7 +1986,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
       <source>Equipment</source>
-      <translation>აღჭურვილობა</translation>
+      <translation>აპარატურა</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2031,7 +2031,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="206"/>
       <source>BuildingPart</source>
-      <translation>შენობის ნაწილი</translation>
+      <translation>სამშენებლო ნაწილი</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="221"/>
@@ -2052,7 +2052,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>გააქტიურება</translation>
+      <translation>აქტივაცია</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2083,7 +2083,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>არქ</translation>
+      <translation>არქიტექტურა</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2108,7 +2108,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
       <source>Site</source>
-      <translation>ადგილი</translation>
+      <translation>საიტი</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2227,7 +2227,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>სიმაღლე (მმ)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>კარი</translation>
     </message>
@@ -2259,7 +2259,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="191"/>
       <source>Front</source>
-      <translation>წინ</translation>
+      <translation>წინა</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="64"/>
@@ -2277,7 +2277,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მიმართვის გახსნა</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>ობიექტის ფაილიდან ჩასმა მასზე ბმის გამოყენებით</translation>
     </message>
@@ -2428,7 +2428,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1788"/>
       <source>Pick selected</source>
-      <translation>მონიშნულის მითითება</translation>
+      <translation>მონიშნულის არჩევა</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="805"/>
@@ -2438,7 +2438,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSpace.py" line="799"/>
       <location filename="../../ArchWindow.py" line="1789"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="806"/>
@@ -2566,7 +2566,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
       <source>Axis System</source>
-      <translation>კოორდინატების სისტემა</translation>
+      <translation>ღერძების სისტემა</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
@@ -2659,7 +2659,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="67"/>
       <source>Stairs</source>
-      <translation>კიბე</translation>
+      <translation>კიბეები</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
@@ -2716,7 +2716,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
-      <translation>ჯამური სისქე</translation>
+      <translation>სრული სისქე</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="971"/>
@@ -2788,12 +2788,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="426"/>
       <source>Add row</source>
-      <translation>რიგის დამატება</translation>
+      <translation>მწკრივის დამატება</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="427"/>
       <source>Del row</source>
-      <translation>რიგის მოცილება</translation>
+      <translation>მწკრივის წაშლა</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="428"/>
@@ -2953,12 +2953,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
-      <translation>მობრუნება</translation>
+      <translation>შემობრუნება</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="83"/>
       <source>Panel</source>
-      <translation>პანელი</translation>
+      <translation>ზოლი</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="105"/>
@@ -2984,7 +2984,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="244"/>
       <source>Rotate</source>
-      <translation>შებრუნება</translation>
+      <translation>დატრიალება</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="333"/>
@@ -3030,12 +3030,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>მილი</translation>
+      <translation>ფაიფი</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
       <source>Connector</source>
-      <translation>შემაერთებელი</translation>
+      <translation>დამკავშირებელი</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="123"/>
@@ -3180,7 +3180,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="664"/>
       <location filename="../../ArchSchedule.py" line="682"/>
       <source>Unit</source>
-      <translation>საზომი ერთეული</translation>
+      <translation>საზომი ერთეულები</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="744"/>
@@ -3236,7 +3236,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>დაშორება</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
@@ -3355,7 +3355,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>
       <source>Property</source>
-      <translation>თვისება</translation>
+      <translation>პარამეტრი</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2012"/>
@@ -3426,7 +3426,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1372"/>
       <source>Add selected</source>
-      <translation>მონიშნულის დამატება</translation>
+      <translation>ყველა მონიშნული</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1373"/>
@@ -3498,7 +3498,7 @@ Floor creation aborted.</source>
       <location filename="../../ArchBuilding.py" line="204"/>
       <location filename="../../ArchBuildingPart.py" line="231"/>
       <source>Building</source>
-      <translation>შენობები</translation>
+      <translation>შენობა</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
@@ -3534,7 +3534,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>სივრცე</translation>
+      <translation>გამოტოვება</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3596,12 +3596,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Left</source>
-      <translation>მარცხნივ</translation>
+      <translation>მარცხენა</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>მარჯვნივ</translation>
+      <translation>მარჯვენა</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -3642,7 +3642,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="1739"/>
       <source>Flip direction</source>
-      <translation>საპირისპირო მიმართულება</translation>
+      <translation>გადაბრუნების მიმართულება</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="410"/>
@@ -3677,7 +3677,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>ანალიზი</translation>
+      <translation>მიმოხილვა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -3712,7 +3712,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>სულ</translation>
+      <translation>ჯამში</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -3924,7 +3924,7 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation>ArchSketch-ს ბაზის მონიშნული წიბოები (ან წიბოების ჯგუფები) ამ არქიტექტურული სტრუქტურის მონახაზის შექმნისას გამოსაყენებლად (ნაგულისხმებად ყველა საბაზისო მონახაზის წიბოს მაგიერ). საჭიროებს წიბოების ან ჯგუფების ინდექსის ნომრებს.</translation>
+      <translation>ArchSketch-ს ბაზის მონიშნული წიბოები (ან წიბოების ჯგუფები) ამ არქიტექტურული სტრუქტურის მონახაზის შექმნისას გამოსაყენებლად (ნაგულისხმევად ყველა საბაზისო მონახაზის წიბოს მაგიერ). საჭიროებს წიბოების ან ჯგუფების ინდექსის ნომრებს.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -5972,7 +5972,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
-      <translation>აღჭურვილობა</translation>
+      <translation>აპარატურა</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
@@ -5998,7 +5998,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>BuildingPart</source>
-      <translation>შენობის ნაწილი</translation>
+      <translation>სამშენებლო ნაწილი</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="291"/>
@@ -6019,7 +6019,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
-      <translation>კონსტრუქციის ხელსაწყოები</translation>
+      <translation>სტრუქტურის ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="92"/>
@@ -6099,7 +6099,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="196"/>
       <source>Annotation</source>
-      <translation>შენიშვნა</translation>
+      <translation>ანოტაცია</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="200"/>
@@ -6138,7 +6138,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
-      <translation>ადგილი</translation>
+      <translation>საიტი</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
@@ -6188,12 +6188,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>ობიექტის მიმართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>გარე ობიექტზე ბმულის შექმნა</translation>
     </message>
@@ -6203,7 +6203,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchFrame.py" line="80"/>
       <source>Frame</source>
-      <translation>ჩარჩო</translation>
+      <translation>კადრი</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="84"/>
@@ -6229,7 +6229,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>Axis System</source>
-      <translation>კოორდინატების სისტემა</translation>
+      <translation>ღერძების სისტემა</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="78"/>
@@ -6242,7 +6242,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation>ფერმა</translation>
+      <translation>ნივნივა</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>
@@ -6268,7 +6268,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStairs.py" line="208"/>
       <source>Stairs</source>
-      <translation>კიბე</translation>
+      <translation>კიბეები</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="212"/>
@@ -6281,7 +6281,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>სივრცე</translation>
+      <translation>გამოტოვება</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6294,7 +6294,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation>ზღუდე</translation>
+      <translation>მესერი</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="391"/>
@@ -6428,7 +6428,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>პანელის დაჭრა</translation>
+      <translation>პანელის ამოჭრა</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6441,7 +6441,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>პანელების ფურცელი</translation>
+      <translation>პანელის ფურცელი</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6468,7 +6468,7 @@ Building creation aborted.</source>
       <location filename="../../ArchPanel.py" line="1577"/>
       <location filename="../../ArchPanel.py" line="1580"/>
       <source>Panel tools</source>
-      <translation>პანელის ხელსაწყოები</translation>
+      <translation>პანელის ხელაწყოები</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6476,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation>გამჭვირვალე ფასადი</translation>
+      <translation>გალავნს კედელი</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6489,7 +6489,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>მილი</translation>
+      <translation>ფაიფი</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
@@ -6524,7 +6524,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation>დაგეგმვა</translation>
+      <translation>განრიგი</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
@@ -6598,7 +6598,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuilding.py" line="219"/>
       <source>Building</source>
-      <translation>შენობები</translation>
+      <translation>შენობა</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="223"/>
@@ -6663,7 +6663,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
-      <translation>მრავალკუთხა ბადის გაყოფა</translation>
+      <translation>ბადის დაყოფა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1410"/>
@@ -6676,7 +6676,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
-      <translation>ბადიდან ფიგურამდე</translation>
+      <translation>ბადიდან მოხაზულობამდე</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1435"/>
@@ -6741,7 +6741,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>ანალიზი</translation>
+      <translation>მიმოხილვა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
@@ -6806,7 +6806,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1680"/>
       <source>Toggle subcomponents</source>
-      <translation>ქვეკომპონენტების ჩართ/გამორთ</translation>
+      <translation>ქვეკომპონენტების გადართვა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1683"/>
@@ -6830,7 +6830,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>არქ</translation>
+      <translation>არქიტექტურა</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6838,7 +6838,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>წყალშიგი</translation>
+      <translation>მონახაზი</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>

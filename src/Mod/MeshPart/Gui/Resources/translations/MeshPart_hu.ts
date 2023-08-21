@@ -170,7 +170,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
       <translation>Csatlakoztassa az éleket, ha a távolság kisebb, mint</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Hiba</translation>
     </message>

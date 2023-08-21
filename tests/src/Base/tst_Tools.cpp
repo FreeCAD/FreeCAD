@@ -40,3 +40,13 @@ TEST(BaseToolsSuite, TestUniqueName8)
 {
     EXPECT_EQ(Base::Tools::getUniqueName("Body12345", {"Body"}, 3), "Body12346");
 }
+
+TEST(BaseToolsSuite, TestQuote)
+{
+    EXPECT_EQ(Base::Tools::quoted("Test"), "\"Test\"");
+}
+
+TEST(BaseToolsSuite, TestJoinList)
+{
+    EXPECT_EQ(Base::Tools::joinList({"AB", "CD"}), "AB, CD, ");
+}

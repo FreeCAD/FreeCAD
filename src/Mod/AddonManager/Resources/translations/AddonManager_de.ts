@@ -470,7 +470,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation>Update verfügbar</translation>
+      <translation>Aktualisierung verfügbar</translation>
     </message>
   </context>
   <context>
@@ -537,7 +537,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Bester verfügbarer Branch, Tag oder Commit</translation>
     </message>
   </context>
   <context>
@@ -671,7 +671,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>Der Pfad zur ausführbaren Git-Datei. Wird automatisch erkannt, falls erforderlich und nicht angegeben.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -724,7 +724,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="66"/>
       <source>Update</source>
-      <translation>Aktualisieren</translation>
+      <translation>Aktualisierung</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="73"/>
@@ -873,7 +873,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Klasse, die das &quot;Symbol&quot; Datenelement definiert</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
@@ -883,7 +883,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation type="unfinished">Optional, defaults to name of content item</translation>
+      <translation>Optional, Standardwert ist der Name des Inhaltselements</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -893,7 +893,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+      <translation>Optional, erbt standardmäßig vom Top-Level Add-on</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -948,7 +948,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Alle nicht ausgefüllten Felder werden aus den Metadaten der obersten Ebene des Add-ons übernommen und sind daher technisch gesehen alle optional. Bei Add-ons mit mehreren Inhaltselementen sollte jedes Element einen eindeutigen Anzeigenamen und eine Beschreibung enthalten.</translation>
     </message>
   </context>
   <context>
@@ -1020,7 +1020,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Ein Betreuer ist jemand mit aktuellem Commit-Zugriff auf dieses Projekt. Ein Autor ist jeder, dem Sie&apos; gerne Anerkennung schenken möchten.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1035,7 +1035,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>E-Mail ist für Betreuer erforderlich und für Autoren optional.</translation>
     </message>
   </context>
   <context>
@@ -1151,7 +1151,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>Eine Werkzeugleistenschaltfläche für dieses Makro hinzufügen?</translation>
+      <translation>Eine Symbolleistenschaltfläche für dieses Makro hinzufügen?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
@@ -1184,20 +1184,20 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="294"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Arbeitsprozess {} braucht lange, um beendet zu werden...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="350"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
+      <translation>Vorheriger Cache-Prozess wurde unterbrochen, wird neu gestartet...
 </translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="369"/>
       <source>Custom repo list changed, forcing recache...
 </source>
-      <translation type="unfinished">Custom repo list changed, forcing recache...
+      <translation>Benutzerdefinierte Repo-Liste geändert, erzwinge den Recache...
 </translation>
     </message>
     <message>
@@ -1235,7 +1235,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManager.py" line="663"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Add-on &apos;{}&apos; zur Auswahl nicht gefunden
 </translation>
     </message>
     <message>
@@ -1272,7 +1272,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
-      <translation>Maintainer</translation>
+      <translation>Betreuer</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="117"/>
@@ -1290,7 +1290,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="170"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
-      <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
+      <translation>Dies scheint das erste Mal zu sein, dass diese Version von Python mit dem Add-on Manager verwendet wurde. Möchten Sie die gleichen automatisch installierten Abhängigkeiten für die neue Version installieren?</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="202"/>
@@ -1301,7 +1301,7 @@ installed addons will be checked for available updates
       <location filename="../../manage_python_dependencies.py" line="253"/>
       <location filename="../../package_details.py" line="918"/>
       <source>Update</source>
-      <translation>Aktualisieren</translation>
+      <translation>Aktualisierung</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="355"/>
@@ -1316,17 +1316,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../NetworkManager.py" line="221"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
-      <translation type="unfinished">Failed to convert the specified proxy port &apos;{}&apos; to a port number</translation>
+      <translation>Konnte den angegebenen Proxy-Port &apos;{}&apos; nicht in eine Portnummer umwandeln</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="252"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Parameterfehler: sich gegenseitig ausschließende Proxy-Optionen eingestellt. Wird auf Standard zurückgesetzt.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="267"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Parameterfehler: Benutzerdefinierter Proxy ausgewählt, aber kein Proxy angegeben. Wird auf Standard zurückgesetzt.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="406"/>
@@ -1377,7 +1377,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="63"/>
       <source>Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</source>
-      <translation type="unfinished">Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</translation>
+      <translation>Add-on Manager Warnung: QtWebEngineWidgets konnte nicht importiert werden -- LIESMICH Daten werden als reiner Text angezeigt</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="187"/>
@@ -1465,7 +1465,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="379"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation type="unfinished">WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</translation>
+      <translation>WARNUNG: Dieses Add-on ist derzeit installiert, aber deaktiviert. Verwenden Sie die Schaltfläche &apos;aktivieren&apos;, um es wieder zu aktivieren.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="510"/>
@@ -1491,7 +1491,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="949"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
+      <translation>QtWebEngine Python Bindings nicht installiert -- verwendet Fallback LIESMICH Anzeige.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
@@ -1503,12 +1503,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="686"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded, please restart to use the new version.</translation>
+      <translation>Branch wechsel erfolgreich, bitte starten Sie neu, um die neue Version zu verwenden.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="707"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Wechsel zu git ref &apos;{}&apos; -- bitte neu starten, um das Add-on zu nutzen.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="757"/>
@@ -1558,7 +1558,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="957"/>
       <source>The page is taking a long time to load... showing the data we have so far...</source>
-      <translation type="unfinished">The page is taking a long time to load... showing the data we have so far...</translation>
+      <translation>Die Seite braucht lange, um zu laden... Es werden die Daten angezeigt, die bisher geladen wurden...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="68"/>
@@ -1583,7 +1583,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>QtNetwork konnte nicht importiert werden - siehe Ausgabefenster für Details. Der Addon Manager ist nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
@@ -1604,7 +1604,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer.py" line="348"/>
       <source>Received {} response code from server</source>
-      <translation type="unfinished">Received {} response code from server</translation>
+      <translation>{} Antwortcode vom Server erhalten</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="497"/>
@@ -1614,7 +1614,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="137"/>
       <source>Unrecognized content kind &apos;{}&apos;</source>
-      <translation type="unfinished">Unrecognized content kind &apos;{}&apos;</translation>
+      <translation>Unbekannter Inhaltstyp &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="202"/>
@@ -1707,12 +1707,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</translation>
+      <translation>Add-on &apos;{}&apos; benötigt &apos;{}&apos;, was in Ihrer Kopie von FreeCAD nicht verfügbar ist.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</translation>
+      <translation>Add-on &apos;{}&apos; benötigt die folgenden Arbeitsbereiche, welche in Ihrer FreeCAD Kopie nicht verfügbar sind:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
@@ -1733,7 +1733,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="268"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
-      <translation type="unfinished">Optional dependency on {} ignored because it is not in the allow-list</translation>
+      <translation>Optionale Abhängigkeit von {} ignoriert, weil sie nicht in der Erlaubnisliste ist</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
@@ -1755,7 +1755,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Dependencies could not be installed. Continue with installation of {} anyway?</translation>
+      <translation>Abhängigkeiten konnten nicht installiert werden. Trotzdem mit der Installation von {} fortfahren?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="364"/>
@@ -1766,7 +1766,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
-      <translation type="unfinished">Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </translation>
+      <translation>Die Ausführung von pip ist fehlgeschlagen, da sie möglicherweise nicht in Ihrer Python-Installation enthalten ist. Bitte stellen Sie sicher, dass Ihr System pip installiert hat und versuchen Sie es erneut. Der fehlgeschlagene Befehl war: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
@@ -1838,7 +1838,7 @@ installed addons will be checked for available updates
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>laufen</translation>
+      <translation>Ausführen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1919,7 +1919,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="651"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
-      <translation type="unfinished">Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</translation>
+      <translation>Die automatische Erkennung der erforderlichen Python-Version für dieses Add-on erfordert Vermin (https://pypi.org/project/vermin/). Soll dies Installiert werden?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="658"/>
@@ -1982,7 +1982,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="408"/>
       <source>Tags</source>
-      <translation>Tags</translation>
+      <translation>Schlagwörter</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="428"/>
@@ -2042,7 +2042,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="800"/>
       <source>All</source>
-      <translation>Alles</translation>
+      <translation>Alle</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="803"/>
@@ -2116,7 +2116,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="179"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation>Markierung</translation>
+      <translation>Schlagwort</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2176,7 +2176,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="207"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Failed to decode {} file for Addon &apos;{}&apos;</translation>
+      <translation>Datei {} für Add-on &apos;{}&apos; konnte nicht dekodiert werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="216"/>
@@ -2211,7 +2211,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="179"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
-      <translation type="unfinished">Unable to retrieve a description from the wiki for macro {}</translation>
+      <translation>Konnte keine Beschreibung aus dem Wiki für Makro {} holen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="212"/>
@@ -2226,22 +2226,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="379"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (expected at {})</translation>
+      <translation>Datei {} konnte nicht gefunden werden (erwartet um {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="348"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation type="unfinished">{}: Unrecognized internal workbench &apos;{}&apos;</translation>
+      <translation>{}: Unbekannter interner Arbeitsbereich &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="381"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</translation>
+      <translation>Add-on Entwickler Warnung: Die in der Datei package.xml für das Add-on {} ({}) angegebene Repository-URL stimmt nicht mit der URL überein, von der es abgerufen wurde ({})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="389"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</translation>
+      <translation>Add-on Entwickler Warnung: Der in der package.xml-Datei für das Add-on {} ({}) angegebene Repository-Branch stimmt nicht mit dem Branch überein, aus dem es geholt wurde ({})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="767"/>

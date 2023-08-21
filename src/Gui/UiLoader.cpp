@@ -505,9 +505,7 @@ std::unique_ptr<UiLoader> UiLoader::newInstance(QObject *parent)
     return rv;
 }
 
-UiLoader::~UiLoader()
-{
-}
+UiLoader::~UiLoader() = default;
 
 QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
                                 const QString& name)
@@ -559,9 +557,7 @@ UiLoaderPy::UiLoaderPy()
 {
 }
 
-UiLoaderPy::~UiLoaderPy()
-{
-}
+UiLoaderPy::~UiLoaderPy() = default;
 
 Py::Object UiLoaderPy::repr()
 {
@@ -624,10 +620,12 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 {
+    //NOLINTBEGIN
     return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, loader.get(),
                                                  std::placeholders::_1,
                                                  std::placeholders::_2,
                                                  std::placeholders::_3));
+    //NOLINTEND
 }
 
 Py::Object UiLoaderPy::addPluginPath(const Py::Tuple& args)

@@ -313,7 +313,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Archivos recientes</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
@@ -393,7 +393,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>El &lt;a href="http://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
+      <translation>El foro &lt;a href="http://forum.freecad.org"&gt;FreeCAD&lt;/a&gt; es un buen lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de temas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Ayuda general sobre el uso de FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>

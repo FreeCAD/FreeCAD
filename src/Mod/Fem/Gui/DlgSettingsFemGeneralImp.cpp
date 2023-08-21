@@ -44,16 +44,16 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     std::vector<std::string> Solvers = {"None"};
 
     if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty())
-        Solvers.push_back("CalculiX");
+        Solvers.emplace_back("CalculiX");
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty())
-        Solvers.push_back("Elmer");
+        Solvers.emplace_back("Elmer");
     // also check the multi-CPU Elmer build
     else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty())
-        Solvers.push_back("Elmer");
+        Solvers.emplace_back("Elmer");
     if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty())
-        Solvers.push_back("Mystran");
+        Solvers.emplace_back("Mystran");
     if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty())
-        Solvers.push_back("Z88");
+        Solvers.emplace_back("Z88");
 
     QStringList solversList;
     for (auto item : Solvers) {
@@ -70,10 +70,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
         ui->cmb_def_solver->setCurrentIndex(1);
 }
 
-DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp() = default;
 
 void DlgSettingsFemGeneralImp::saveSettings()
 {

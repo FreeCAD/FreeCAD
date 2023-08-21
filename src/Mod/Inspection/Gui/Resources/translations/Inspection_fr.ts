@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Oblongue</translation>
+      <translation>Inspection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Oblongue</translation>
+      <translation>Inspection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation>Evidement</translation>
+      <translation>Épaisseur</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Leave info mode</source>
-      <translation>Quitter le mode d'information</translation>
+      <translation>Quitter le mode information</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="632"/>

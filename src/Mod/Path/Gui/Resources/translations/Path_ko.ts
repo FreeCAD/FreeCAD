@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation type="unfinished">Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</translation>
+      <translation>금회 업무에서 사용할 기본형을 선택하세요, 업무별 기본형들이 없는 경우는 여러분이 기존 업무 메뉴의 팝업메뉴에서 새로 만들수 있습니다, 파일명을 job_파일명.json 이런식으로 정하고, 매크로나 path용 폴더에 저장해 두면 이 목록에서 선택하게 될 수 있습니다.(설정 메뉴를 참고 하세요)</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -188,9 +188,8 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation type="unfinished">Enable to include values of the SetupSheet in the template.
-
-Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</translation>
+      <translation>기본형의 '설정값시트'에 있는 값을 포함 할 수 있게 합니다. 
+설정값시트에 있는 모든 값은 기본값으로 부터 변경하려면 그 항목이 미리 선택되어져 있어야 합니다. 이 칸을 사용하여 선택 되어 있지 않으면 현재의 설정값시트에 있는 값은 재설정 되지 않습니다.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
@@ -224,11 +223,7 @@ Any values of the SetupSheet that are changed from their default are preselected
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
-
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
-
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+      <translation>기본형들에 공작물 생성에 관련 항목이 수록되어 있다면 이용할 수 있습니다. 기본형들에 공작물에 대한 정의들이 수록되어 있지 않으면 기본적인 공작물 생성 절차 알고리즘이 사용되어질 겁니다( 기본형 물체 꺼내기 상자로 부터 생성됨).</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -260,9 +255,8 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation type="unfinished">Enable all operations for which the configuration values should be exported.
-
-Note that only operations which currently have configuration values set are listed.</translation>
+      <translation>설정값을 옮겨 나갈 수 있게 모든 작업명이 가능하게 하세요. 
+주의할 것은 현재 설정값 세트를 갖고 있는 작업명만 목록에 수록되어 있다는 겁니다.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -276,11 +270,9 @@ Note that only operations which currently have configuration values set are list
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
-
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
-
-For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</translation>
+      <translation>공작 대상에 관한 현재 치수 설정들을 사용할 수 있으면 기본형에 수록됩니다.
+'박스나 실린더 공작물에 관한 것' 이라는 것은 나중에 만들어진 공작물 실물체의 치수들이라는 겁니다. 
+기본형 물체 꺼내기 상자에서 온 공작물 이라는 것은 임의 방향에 추가되는 물체라는 겁니다. 그런 기본형으로 부터 생성된 공작물 물체에 적용된 기본적인 치수와 기타의 설정들은 새 작업을 위한 기본 물체들에 저장되어 있던 겁니다.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>

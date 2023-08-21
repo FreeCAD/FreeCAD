@@ -80,7 +80,7 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation() const
 {
-    return std::string("<Material object>");
+    return {"<Material object>"};
 }
 
 PyObject* MaterialPy::set(PyObject * args)

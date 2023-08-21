@@ -205,13 +205,9 @@ using namespace Gui;
 /// @namespace Gui @class Workbench
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::Workbench, Base::BaseClass)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 std::string Workbench::name() const
 {
@@ -568,9 +564,7 @@ StdWorkbench::StdWorkbench()
 {
 }
 
-StdWorkbench::~StdWorkbench()
-{
-}
+StdWorkbench::~StdWorkbench() = default;
 
 void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
@@ -625,12 +619,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // File
     auto file = new MenuItem( menuBar );
     file->setCommand("&File");
-    *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
+    *file << "Std_New" << "Std_Open" << "Std_RecentFiles" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
           << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import"
           << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
-          << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
+          << "Separator" << "Std_Quit";
 
     // Edit
     auto edit = new MenuItem( menuBar );
@@ -865,9 +859,7 @@ BlankWorkbench::BlankWorkbench()
 {
 }
 
-BlankWorkbench::~BlankWorkbench()
-{
-}
+BlankWorkbench::~BlankWorkbench() = default;
 
 void BlankWorkbench::activated()
 {
@@ -918,9 +910,7 @@ NoneWorkbench::NoneWorkbench()
 {
 }
 
-NoneWorkbench::~NoneWorkbench()
-{
-}
+NoneWorkbench::~NoneWorkbench() = default;
 
 void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
@@ -988,9 +978,7 @@ TestWorkbench::TestWorkbench()
 {
 }
 
-TestWorkbench::~TestWorkbench()
-{
-}
+TestWorkbench::~TestWorkbench() = default;
 
 MenuItem* TestWorkbench::setupMenuBar() const
 {
@@ -1222,9 +1210,7 @@ PythonBlankWorkbench::PythonBlankWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonBlankWorkbench::~PythonBlankWorkbench()
-{
-}
+PythonBlankWorkbench::~PythonBlankWorkbench() = default;
 
 // -----------------------------------------------------------------------
 
@@ -1239,9 +1225,7 @@ PythonWorkbench::PythonWorkbench()
     _commandBar = new ToolBarItem;
 }
 
-PythonWorkbench::~PythonWorkbench()
-{
-}
+PythonWorkbench::~PythonWorkbench() = default;
 
 MenuItem* PythonWorkbench::setupMenuBar() const
 {

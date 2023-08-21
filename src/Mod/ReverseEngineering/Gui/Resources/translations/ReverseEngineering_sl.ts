@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="485"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="550"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="551"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="584"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="585"/>
@@ -228,12 +228,12 @@
       <translation>Trikotenje pogleda</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="150"/>
+      <location filename="../../FitBSplineSurface.cpp" line="152"/>
       <source>Placement</source>
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="222"/>
+      <location filename="../../FitBSplineSurface.cpp" line="224"/>
       <source>Fit B-Spline</source>
       <translation>Prilegaj B-zlepek</translation>
     </message>
@@ -331,18 +331,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="161"/>
-      <location filename="../../FitBSplineSurface.cpp" line="229"/>
+      <location filename="../../FitBSplineSurface.cpp" line="163"/>
+      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="201"/>
+      <location filename="../../FitBSplineSurface.cpp" line="203"/>
       <source>Wrong selection</source>
-      <translation>Napačna izbira</translation>
+      <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="202"/>
+      <location filename="../../FitBSplineSurface.cpp" line="204"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Izberite eno postavitev objekta za pridobitev lokalne usmerjenosti.</translation>
     </message>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>Napačna izbira</translation>
+      <translation>Napačen izbor</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>Najmanjše št. ploskev</translation>
+      <translation>Najmanjše število ploskev</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
-      <translation>Izberite</translation>
+      <translation>Izberi</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
@@ -490,7 +490,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>Izberite celo sestavino</translation>
+      <translation>Izberi celo sestavino</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Najmanjše št. ploskev</translation>
+      <translation>Najmanjše število ploskev</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -541,12 +541,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Upoštevaj samo vidne trikotnike</translation>
+      <translation>Upoštevaj le vidne trikotnike</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Upoštevaj samo trikotnike, katerih normale kažejo proti zaslonu</translation>
+      <translation>Upoštevaj le trikotnike, katerih normale so usmerjene proti zaslonu</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
   </context>
 </TS>

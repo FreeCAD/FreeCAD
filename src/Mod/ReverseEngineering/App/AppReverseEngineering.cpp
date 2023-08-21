@@ -245,8 +245,8 @@ private:
             }
 
             int index=0;
-            for (std::vector<Base::Vector3f>::iterator it = pts.begin(); it != pts.end(); ++it) {
-                clPoints(index++) = gp_Pnt(it->x, it->y, it->z);
+            for (const auto & pt : pts) {
+                clPoints(index++) = gp_Pnt(pt.x, pt.y, pt.z);
             }
 
             Reen::BSplineParameterCorrection pc(uOrder,vOrder,uPoles,vPoles);

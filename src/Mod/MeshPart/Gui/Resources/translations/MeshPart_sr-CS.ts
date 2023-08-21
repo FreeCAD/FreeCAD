@@ -170,7 +170,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
       <translation>Poveži ivice ako je rastojanje manje od</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="366"/>
+      <location filename="../../CrossSections.cpp" line="368"/>
       <source>Failure</source>
       <translation>Neuspeh</translation>
     </message>

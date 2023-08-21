@@ -54,7 +54,7 @@ class FemGuiExport FunctionWidget : public QWidget
     Q_OBJECT
 public:
     FunctionWidget() : m_block(false), m_view(nullptr), m_object(nullptr) {}
-    ~FunctionWidget() override {}
+    ~FunctionWidget() override = default;
 
     virtual void applyPythonCode() = 0;
     virtual void setViewProvider(ViewProviderFemPostFunction* view);

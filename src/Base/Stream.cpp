@@ -264,7 +264,7 @@ ByteArrayOStreambuf::seekoff(std::streambuf::off_type off,
             endpos = _buffer->size();
             break;
         default:
-            return pos_type(off_type(-1));
+            return {off_type(-1)};
     }
 
     if (endpos != curpos) {
@@ -272,7 +272,7 @@ ByteArrayOStreambuf::seekoff(std::streambuf::off_type off,
             endpos = -1;
     }
 
-    return pos_type(endpos);
+    return {endpos};
 }
 
 std::streambuf::pos_type
@@ -396,7 +396,7 @@ IODeviceOStreambuf::seekoff(std::streambuf::off_type off,
             endpos = device->size();
             break;
         default:
-            return pos_type(off_type(-1));
+            return {off_type(-1)};
     }
 
     if (endpos != curpos) {
@@ -404,7 +404,7 @@ IODeviceOStreambuf::seekoff(std::streambuf::off_type off,
             endpos = -1;
     }
 
-    return pos_type(endpos);
+    return {endpos};
 }
 
 std::streambuf::pos_type
@@ -496,7 +496,7 @@ IODeviceIStreambuf::seekoff(std::streambuf::off_type off,
             endpos = -1;
     }
 
-    return pos_type(endpos);
+    return {endpos};
 }
 
 std::streambuf::pos_type
@@ -696,7 +696,7 @@ PyStreambuf::seekoff(PyStreambuf::off_type offset, PyStreambuf::seekdir dir, PyS
         whence = 2;
         break;
     default:
-        return pos_type(off_type(-1));
+        return {off_type(-1)};
     }
 
     try {
@@ -715,7 +715,7 @@ PyStreambuf::seekoff(PyStreambuf::off_type offset, PyStreambuf::seekdir dir, PyS
     }
     catch(Py::Exception& e) {
         e.clear();
-        return pos_type(off_type(-1));
+        return {off_type(-1)};
     }
 }
 

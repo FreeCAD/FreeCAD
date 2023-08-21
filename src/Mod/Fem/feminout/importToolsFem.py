@@ -356,7 +356,7 @@ def fill_femresult_mechanical(
     if "disp" in result_set:
         disp = result_set["disp"]
         res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
-        res_obj.NodeNumbers = list(disp.keys())
+        res_obj.NodeNumbers = list(disp)
 
         # fill res_obj.NodeStressXX etc if they exist in result_set
         # list values are just added
@@ -458,7 +458,7 @@ def fill_femresult_mechanical(
             res_obj.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             res_obj.Time = step_time
             # disp does not exist, res_obj.NodeNumbers needs to be set
-            res_obj.NodeNumbers = list(MassFlow.keys())
+            res_obj.NodeNumbers = list(MassFlow)
 
     # fill res_obj.NetworkPressure, disp does not exist, see MassFlow
     if "npressure" in result_set:

@@ -73,7 +73,6 @@ public:
     /** Does basically the same as the constructor above unless that it accepts a MaterialType as argument. */
     explicit Material(const MaterialType MatType);
     //@}
-    ~Material();
 
     /** Set a material by name
      *  There are some standard materials defined which are:

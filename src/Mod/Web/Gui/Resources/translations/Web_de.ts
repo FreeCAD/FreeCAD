@@ -146,7 +146,7 @@
       <location filename="../../BrowserView.cpp" line="616"/>
       <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="616"/>

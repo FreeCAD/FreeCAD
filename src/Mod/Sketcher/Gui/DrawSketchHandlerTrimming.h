@@ -43,7 +43,7 @@ public:
         , object(obj)
     {}
 
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         if (pObj != this->object)
             return false;
@@ -71,7 +71,7 @@ class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerTrimming() = default;
-    virtual ~DrawSketchHandlerTrimming()
+    ~DrawSketchHandlerTrimming() override
     {
         Gui::Selection().rmvSelectionGate();
     }

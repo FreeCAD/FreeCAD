@@ -200,9 +200,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
     this->adjustSize();
 }
 
-DocumentRecovery::~DocumentRecovery()
-{
-}
+DocumentRecovery::~DocumentRecovery() = default;
 
 bool DocumentRecovery::foundDocuments() const
 {
@@ -576,8 +574,10 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 
 bool DocumentRecoveryFinder::checkForPreviousCrashes()
 {
+    //NOLINTBEGIN
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
+    //NOLINTEND
 
     return showRecoveryDialogIfNeeded();
 }

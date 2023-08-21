@@ -11,7 +11,8 @@
       FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Jürgen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-      <UserDocu>App.GeoFeature class.\n
+      <UserDocu>App.GeoFeature class.
+
 Base class of all geometric document objects.
 This class does the whole placement and position handling.
 With the method `getPropertyOfGeometry` is possible to obtain
@@ -20,14 +21,16 @@ to any particular property name.</UserDocu>
     </Documentation>
     <Methode Name="getPaths">
       <Documentation>
-        <UserDocu>getPaths()\n
+        <UserDocu>getPaths()
+
 Returns all possible paths to the root of the document.
 Note: Not implemented.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGlobalPlacement">
       <Documentation>
-        <UserDocu>getGlobalPlacement() -> Base.Placement\n
+        <UserDocu>getGlobalPlacement() -> Base.Placement
+
 Returns the placement of the object in the global coordinate space, respecting all stacked
 relationships.
 Note: This function is not available during recompute, as there the placements of parents
@@ -36,7 +39,8 @@ can change after the execution of this object, rendering the result wrong.</User
     </Methode>
     <Methode Name="getPropertyNameOfGeometry">
       <Documentation>
-        <UserDocu>getPropertyNameOfGeometry() -> str or None\n
+        <UserDocu>getPropertyNameOfGeometry() -> str or None
+
 Returns the property name of the actual geometry.
 For example for a Part feature it returns the value 'Shape', for a mesh feature the value
 'Mesh' and so on.
@@ -45,7 +49,8 @@ If an object has no such property then None is returned.</UserDocu>
     </Methode>
     <Methode Name="getPropertyOfGeometry">
       <Documentation>
-        <UserDocu>getPropertyOfGeometry() -> object or None\n
+        <UserDocu>getPropertyOfGeometry() -> object or None
+
 Returns the property of the actual geometry.
 For example for a Part feature it returns its Shape property, for a Mesh feature its
 Mesh property and so on.

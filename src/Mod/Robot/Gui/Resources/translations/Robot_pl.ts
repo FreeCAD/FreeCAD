@@ -368,7 +368,7 @@
       <location filename="../../CommandTrajectory.cpp" line="177"/>
       <location filename="../../CommandTrajectory.cpp" line="406"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>

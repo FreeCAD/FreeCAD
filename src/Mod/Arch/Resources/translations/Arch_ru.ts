@@ -185,7 +185,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
       <source>Comment</source>
-      <translation>Закомментировать</translation>
+      <translation>Комментарий</translation>
     </message>
   </context>
   <context>
@@ -562,7 +562,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
@@ -572,7 +572,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
       <source>Tolerance</source>
-      <translation>Точность</translation>
+      <translation>Допуск</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
@@ -612,7 +612,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Запуск</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="170"/>
@@ -980,7 +980,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="444"/>
       <source>Windows</source>
-      <translation>Окна</translation>
+      <translation>Windows</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
@@ -1074,7 +1074,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>Твердое тело</translation>
+      <translation>Твердотельный объект</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1391,7 +1391,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
-      <translation>Netgen</translation>
+      <translation>Нетген</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
@@ -1401,7 +1401,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>Тесселяция</translation>
+      <translation>Мозаика</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -2189,7 +2189,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>№</translation>
+      <translation>Идентификатор</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2222,14 +2222,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Высота (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Дверь</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="153"/>
       <source>Cutting</source>
-      <translation>Обрезка</translation>
+      <translation>Резание</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
@@ -2272,7 +2272,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Открыть ссылку</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Создать внешнюю ссылку</translation>
     </message>
@@ -2561,7 +2561,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
       <source>Axis System</source>
-      <translation>Система осей</translation>
+      <translation>Система Осей</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
@@ -3396,7 +3396,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchSectionPlane.py" line="68"/>
       <source>Section</source>
-      <translation>Разделить</translation>
+      <translation>Разрез (Сечение)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="839"/>
@@ -3529,7 +3529,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>Зона</translation>
+      <translation>Пространство</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3707,7 +3707,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1062"/>
       <source>Total</source>
-      <translation>Итог</translation>
+      <translation>Всего</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
@@ -6008,7 +6008,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="78"/>
       <source>Structure tools</source>
-      <translation>Инструменты конструкции</translation>
+      <translation>Инструменты структуры</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="92"/>
@@ -6048,12 +6048,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="173"/>
       <source>Draft annotation tools</source>
-      <translation>Инструменты заметок для эскиза</translation>
+      <translation>Инструменты аннотации черновика</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
-      <translation>Инструменты модификации черновика</translation>
+      <translation>Инструменты изменения чертежа</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="179"/>
@@ -6070,7 +6070,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="185"/>
       <location filename="../../InitGui.py" line="204"/>
       <source>Utilities</source>
-      <translation>Вспомогательные</translation>
+      <translation>Утилиты</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="191"/>
@@ -6177,12 +6177,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Внешняя ссылка</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Создает ссылку на внешней объект</translation>
     </message>
@@ -6270,7 +6270,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>Зона</translation>
+      <translation>Пространство</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6417,7 +6417,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Нарезка панелей</translation>
+      <translation>Вырез панели</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6430,7 +6430,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>Лист панелей</translation>
+      <translation>Лист Панели</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6465,7 +6465,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation>Фасад</translation>
+      <translation>Навесная стена</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6513,7 +6513,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="60"/>
       <source>Schedule</source>
-      <translation>Опись</translation>
+      <translation>Планирование</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
@@ -6810,7 +6810,7 @@ Building creation aborted.</source>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchSite.py" line="955"/>
       <source>Transform</source>
-      <translation>Переместить</translation>
+      <translation>Преобразовать</translation>
     </message>
   </context>
   <context>
@@ -6827,7 +6827,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Осадка</translation>
+      <translation>Черновик</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>

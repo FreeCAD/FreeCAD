@@ -56,7 +56,7 @@ using namespace Gui;
 
 using Connection = boost::signals2::connection;
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 class NotificationAreaObserver;
 
@@ -353,7 +353,7 @@ public:
             return font;
         }
 
-        return QVariant();
+        return {};
     }
 
     Base::LogStyle notificationType;
@@ -380,9 +380,9 @@ public:
         : QWidgetAction(parent)
     {}
 
-    ~NotificationsAction()
+    ~NotificationsAction() override
     {
-        for (auto* item : pushedItems) {
+        for (auto* item : qAsConst(pushedItems)) {
             if (item) {
                 delete item;
             }
@@ -572,7 +572,7 @@ protected:
                 QMenu menu;
 
                 QAction* del = menu.addAction(tr("Delete"), this, [&]() {
-                    for (auto it : selectedItems) {
+                    for (auto it : qAsConst(selectedItems)) {
                         delete it;
                     }
                 });
@@ -825,11 +825,13 @@ NotificationArea::NotificationArea(QWidget* parent)
     });
 
 
+    //NOLINTBEGIN
     // Connection to the finish restore signal to rearm Critical messages modal mode when action is
     // user initiated
     pImp->finishRestoreDocumentConnection =
         App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind(&Gui::NotificationArea::slotRestoreFinished, this, bp::_1));
+            std::bind(&Gui::NotificationArea::slotRestoreFinished, this, sp::_1));
+    //NOLINTEND
 
     // Initialisation of the timer to inhibit continuous updates of the notification system in case
     // clusters of messages arrive (so as to delay the actual notification until the whole cluster

@@ -78,7 +78,7 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * The most important such delegates are: EditModeGeometryCoinManager and
  * EditModeConstraintCoinManager.
  *
- * EditModeCoinManager takes over the responsibility of creating the Coin (Inventor) scenograph
+ * EditModeCoinManager takes over the responsibility of creating the Coin (Inventor) scenegraph
  * and modifying it, including all the drawing of geometry, constraints and overlay layer. This
  * is an exclusive responsibility under the Single Responsibility Principle.
  *
@@ -88,7 +88,7 @@ using GeoListFacade = Sketcher::GeoListFacade;
  *
  * EditModeCoinManager is responsible, under the Single Responsibility Principle, to manage the coin
  * EditRoot node. This node is ref-ed on creation and unref-ed on destruction to ensure that its
- * lifetime matches the one of EditModecoinManager.
+ * lifetime matches the one of EditModeCoinManager.
  *
  * EditRoot is added on request to pcRoot by ViewProviderSketch. The node pcRoot belongs, under the
  * Single Responsibility Principle, to ViewProviderSketch. EditModeCoinManager delegates addition
@@ -97,7 +97,7 @@ using GeoListFacade = Sketcher::GeoListFacade;
  * EditModeCoinManager is designed to define the span of time in which ViewProviderSketch is in edit
  * mode.
  *
- * In addition to the scenograph, EditModeCoinManager is responsible for keeping any necessary
+ * In addition to the scenegraph, EditModeCoinManager is responsible for keeping any necessary
  * mapping between indices used at ViewProviderSketch level, and internal indexing used by
  * EditModeCoinManager and its subclasses.
  */

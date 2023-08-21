@@ -79,7 +79,7 @@ public:
     bool       useAntialiasing;
 
 protected:
-    ~SoDatumLabel() override {}
+    ~SoDatumLabel() override = default;
     void GLRender(SoGLRenderAction *action) override;
     void computeBBox(SoAction *, SbBox3f &box, SbVec3f &center) override;
     void generatePrimitives(SoAction * action) override;

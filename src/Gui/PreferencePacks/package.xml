@@ -9,7 +9,8 @@
 
   <content>
     <preferencepack>
-      <name>Classic theme</name>
+      <name>Classic</name>
+      <type>Theme</type>
       <description>Removes stylesheets, and applies the classic purple/gray background. Resets all colors to default</description>
       <version>1.0.0</version>
       <tag>built-in</tag>
@@ -18,8 +19,9 @@
       <tag>classic theme</tag>
     </preferencepack>
     <preferencepack>
-      <name>Dark theme</name>
-      <description>Applies a dark background and a darker stylesheet, you can choose other stylesheets as you wish.</description>
+      <name>Dark</name>
+      <type>Theme</type>
+      <description>Applies a dark background and a darker stylesheet.</description>
       <version>0.5.0</version>
       <tag>built-in</tag>
       <tag>dark</tag>
@@ -28,8 +30,75 @@
       <tag>theme</tag>
     </preferencepack>
     <preferencepack>
-      <name>Light theme</name>
-      <description>Applies a light background and a light stylesheet, you can choose other stylesheets as you wish.</description>
+      <name>Darker</name>
+      <type>Theme</type>
+      <description>Applies a dark background and a darker stylesheet.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>dark</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>Dark modern</name>
+      <type>Theme</type>
+      <description>Applies a dark background and a darker stylesheet.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>dark</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>ProDark</name>
+      <type>Theme</type>
+      <description>Applies a dark background and a darker stylesheet.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>dark</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>Dark behave</name>
+      <type>Theme</type>
+      <description>Applies a dark background and a darker stylesheet.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>dark</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>Dark contrast</name>
+      <type>Theme</type>
+      <description>Dark theme with high contrasts.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>dark</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>Light</name>
+      <type>Theme</type>
+      <description>Applies a light background and a light stylesheet.</description>
+      <version>0.5.0</version>
+      <tag>built-in</tag>
+      <tag>light</tag>
+      <tag>background</tag>
+      <tag>stylesheet</tag>
+      <tag>theme</tag>
+    </preferencepack>
+    <preferencepack>
+      <name>Light modern</name>
+      <type>Theme</type>
+      <description>Applies a light background and a light stylesheet.</description>
       <version>0.5.0</version>
       <tag>built-in</tag>
       <tag>light</tag>

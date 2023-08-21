@@ -43,16 +43,16 @@ TrajectoryCompound::~TrajectoryCompound()
 {
 }
 
-App::DocumentObjectExecReturn *TrajectoryCompound::execute(void)
+App::DocumentObjectExecReturn *TrajectoryCompound::execute()
 {
     const std::vector<DocumentObject*> &Tracs = Source.getValues();
     Robot::Trajectory result;
 
-    for (std::vector<DocumentObject*>::const_iterator it= Tracs.begin();it!=Tracs.end();++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())){
-            const std::vector<Waypoint*> &wps = static_cast<Robot::TrajectoryObject*>(*it)->Trajectory.getValue().getWaypoints();
-            for (std::vector<Waypoint*>::const_iterator it2= wps.begin();it2!=wps.end();++it2) {
-                result.addWaypoint(**it2);
+    for (auto it : Tracs) {
+        if (it->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())){
+            const std::vector<Waypoint*> &wps = static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
+            for (auto wp : wps) {
+                result.addWaypoint(*wp);
             }
         }else
             return new App::DocumentObjectExecReturn("Not all objects in compound are trajectories!");

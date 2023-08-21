@@ -313,7 +313,7 @@ Pomocí ";;" pro oddělení cest, zde můžete přidat více složek</translatio
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
       <source>Recent files</source>
-      <translation>Nedávné soubory</translation>
+      <translation type="unfinished">Recent files</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>

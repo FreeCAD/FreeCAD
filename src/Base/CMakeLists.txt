@@ -152,6 +152,17 @@ endif ()
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
+set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/Base_*.ts"
+        ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file_prefix(${FreeCADBase_TR_QRC} ${QM_SRCS})
+set(FreeCADBase_RES_SRCS
+        Resources/translation.qrc
+        ${FreeCADBase_TR_QRC}
+        )
+
+qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_RES_SRCS})
+
 SET(FreeCADBase_XML_SRCS
     AxisPy.xml
     BaseClassPy.xml

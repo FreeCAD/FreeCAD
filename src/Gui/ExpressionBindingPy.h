@@ -29,25 +29,24 @@ class QWidget;
 namespace Gui {
 class ExpressionBinding;
 
-class ExpressionBindingPy : public Py::PythonExtension<ExpressionBindingPy>
+class ExpressionBindingPy : public Py::PythonClass<ExpressionBindingPy>
 {
 public:
     static void init_type();    // announce properties and methods
 
-    explicit ExpressionBindingPy(ExpressionBinding*);
+    ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds);
     ~ExpressionBindingPy() override;
 
     Py::Object repr() override;
 
     Py::Object bind(const Py::Tuple&);
-    Py::Object isBound(const Py::Tuple&);
+    Py::Object isBound();
     Py::Object apply(const Py::Tuple&);
-    Py::Object hasExpression(const Py::Tuple&);
-    Py::Object autoApply(const Py::Tuple&);
+    Py::Object hasExpression();
+    Py::Object autoApply();
     Py::Object setAutoApply(const Py::Tuple&);
 
 private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     static ExpressionBinding* asBinding(QWidget*);
 
 private:

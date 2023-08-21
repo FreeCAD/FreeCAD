@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="146"/>
       <source>Insert in trajectory</source>
-      <translation>Вставить текущее положение робота в траекторию</translation>
+      <translation>Вставить в траекторию</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="147"/>

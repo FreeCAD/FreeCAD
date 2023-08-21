@@ -41,12 +41,11 @@ class TechDrawExport DrawComplexSection: public DrawViewSection
 
 public:
     DrawComplexSection();
-    ~DrawComplexSection() = default;
+    ~DrawComplexSection() override = default;
 
     App::PropertyLink CuttingToolWireObject;
     App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned
 
-    TopoDS_Shape getShapeToCut() override;
     TopoDS_Shape makeCuttingTool(double dMax) override;
     gp_Ax2 getCSFromBase(const std::string sectionName) const override;
     bool isBaseValid() const override;

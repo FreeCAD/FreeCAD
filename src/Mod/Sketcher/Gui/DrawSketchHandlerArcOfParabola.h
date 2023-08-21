@@ -44,7 +44,7 @@ public:
         , arcAngle_t(0)
     {}
 
-    virtual ~DrawSketchHandlerArcOfParabola() = default;
+    ~DrawSketchHandlerArcOfParabola() override = default;
 
     /// mode table
     enum SelectMode

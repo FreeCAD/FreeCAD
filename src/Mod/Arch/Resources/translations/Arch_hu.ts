@@ -349,7 +349,7 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
-      <translation>Export</translation>
+      <translation>Exportálás</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -2003,7 +2003,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="60"/>
       <source>Equipment</source>
-      <translation>Berendezési tárgy</translation>
+      <translation>Felszerelési tárgy</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="185"/>
@@ -2064,12 +2064,12 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="905"/>
       <source>Deactivate</source>
-      <translation>Kikapcsolás</translation>
+      <translation>Inaktiválás</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="907"/>
       <source>Activate</source>
-      <translation>Bekapcsol</translation>
+      <translation>Aktiválás</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="915"/>
@@ -2100,7 +2100,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>Arch</source>
-      <translation>Architektúra</translation>
+      <translation>Építészeti</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="140"/>
@@ -2120,7 +2120,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="610"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Szelvény</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
@@ -2244,7 +2244,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Magasság (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Ajtó</translation>
     </message>
@@ -2294,7 +2294,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Hivatkozás megnyitása</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Külső hivatkozás készítése</translation>
     </message>
@@ -3263,7 +3263,7 @@ Szint létrehozása megszakítva.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="811"/>
       <source>Label</source>
-      <translation>Címke</translation>
+      <translation>Felirat</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="87"/>
@@ -3342,7 +3342,7 @@ Szint létrehozása megszakítva.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Objects</source>
-      <translation>Objektumok</translation>
+      <translation>Tárgyak</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
@@ -3402,7 +3402,7 @@ Szint létrehozása megszakítva.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="64"/>
       <source>Rebar</source>
-      <translation>Betonacél</translation>
+      <translation>Újrahálózás</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="130"/>
@@ -3618,7 +3618,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="529"/>
       <source>Right</source>
-      <translation>Jobb oldalnézet</translation>
+      <translation>Jobb</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="545"/>
@@ -5983,7 +5983,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchEquipment.py" line="173"/>
       <source>Equipment</source>
-      <translation>Berendezési tárgy</translation>
+      <translation>Felszerelési tárgy</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="177"/>
@@ -6075,7 +6075,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="176"/>
       <source>Draft modification tools</source>
-      <translation>Tervrajz módosítási eszközök</translation>
+      <translation>Tervezési módosítási eszközök</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="179"/>
@@ -6199,12 +6199,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Külső hivatkozás</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Egy külső referencia tárgyat hoz létre</translation>
     </message>
@@ -6439,7 +6439,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="322"/>
       <source>Panel Cut</source>
-      <translation>Panel kivágás</translation>
+      <translation>Panel vágó</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="326"/>
@@ -6452,7 +6452,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPanel.py" line="349"/>
       <source>Panel Sheet</source>
-      <translation>Panel stíluslap</translation>
+      <translation>Panel lap</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="353"/>
@@ -6674,7 +6674,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1407"/>
       <source>Split Mesh</source>
-      <translation>Háló osztása</translation>
+      <translation>Háló felosztása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1410"/>
@@ -6817,7 +6817,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1680"/>
       <source>Toggle subcomponents</source>
-      <translation>Al összetevők ki-/ bekapcsolása</translation>
+      <translation>Al-összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1683"/>
@@ -6841,7 +6841,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="213"/>
       <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
-      <translation>Architektúra</translation>
+      <translation>Építészet</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="217"/>
@@ -6856,7 +6856,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="257"/>
       <location filename="../../InitGui.py" line="258"/>
       <source>Import-Export</source>
-      <translation>Importálás-Exportálás</translation>
+      <translation>Import-Export</translation>
     </message>
   </context>
 </TS>

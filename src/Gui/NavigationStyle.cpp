@@ -177,9 +177,7 @@ NavigationStyleEvent::NavigationStyleEvent(const Base::Type& s)
 {
 }
 
-NavigationStyleEvent::~NavigationStyleEvent()
-{
-}
+NavigationStyleEvent::~NavigationStyleEvent() = default;
 
 const Base::Type& NavigationStyleEvent::style() const
 {
@@ -862,10 +860,9 @@ void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& po
 
 }
 
-SbVec3f NavigationStyle::getRotationCenter(SbBool* ok) const
+SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
 {
-    if (ok)
-        *ok = PRIVATE(this)->rotationCenterFound;
+    found = PRIVATE(this)->rotationCenterFound;
     return PRIVATE(this)->rotationCenter;
 }
 
@@ -879,7 +876,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
-        return SbVec3f(0,0,0);
+        return {0,0,0};
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -1032,6 +1029,11 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
 
+    // mode is WindowCenter
+    if (!PRIVATE(this)->rotationCenterMode) {
+        setRotationCenter(getFocalPoint());
+    }
+
     //Option to get point on model (slow) or always on focal plane (fast)
     //
     // mode is ScenePointAtCursor to get exact point if possible
@@ -1078,8 +1080,9 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         if (!cam) // no camera
             return;
 
+        // Get the bounding box center of the physical object group
         SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
+        action.apply(viewer->objectGroup);
         SbBox3f boundingBox = action.getBoundingBox();
         SbVec3f boundingBoxCenter = boundingBox.getCenter();
         setRotationCenter(boundingBoxCenter);
@@ -1100,16 +1103,16 @@ SbVec2f NavigationStyle::normalizePixelPos(SbVec2s pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ((float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                    (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {(float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 SbVec2f NavigationStyle::normalizePixelPos(SbVec2f pixpos)
 {
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
-    return SbVec2f ( pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
-                     pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+    return {pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+            pixpos[1] / (float) std::max((int)(size[1] - 1), 1)};
 }
 
 void NavigationStyle::moveCursorPosition()
@@ -1412,12 +1415,14 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     case DRAGGING:
         // Set up initial projection point for the projector object when
         // first starting a drag operation.
+        viewer->showRotationCenter(true);
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
         break;
 
     case SPINNING:
+        viewer->showRotationCenter(true);
         this->interactiveCountInc();
         viewer->getSoRenderManager()->scheduleRedraw();
         break;
@@ -1442,6 +1447,8 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     switch (oldmode) {
     case SPINNING:
     case DRAGGING:
+        viewer->showRotationCenter(false);
+        [[fallthrough]];
     case PANNING:
     case ZOOMING:
     case BOXZOOM:

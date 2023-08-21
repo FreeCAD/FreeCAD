@@ -85,11 +85,11 @@
 
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
-#include "DrawProjGroupItem.h"
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
+#include "DrawViewDetail.h"
 
 #include "DrawViewSection.h"
 
@@ -270,6 +270,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     App::DocumentObject *base = BaseView.getValue();
     TechDraw::DrawViewPart *dvp = nullptr;
     TechDraw::DrawViewSection *dvs = nullptr;
+    TechDraw::DrawViewDetail *dvd = nullptr;
     if (!base) {
         return TopoDS_Shape();
     }
@@ -277,14 +278,16 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     TopoDS_Shape shapeToCut;
     if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection *>(base);
-        shapeToCut = dvs->getCutShape();
+        shapeToCut = dvs->getCutShapeRaw();
+    } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+        dvd = static_cast<TechDraw::DrawViewDetail *>(base);
+        shapeToCut = dvd->getDetailShape();
     } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         dvp = static_cast<TechDraw::DrawViewPart *>(base);
         shapeToCut = dvp->getSourceShape();
         if (FuseBeforeCut.getValue()) {
-            shapeToCut = dvp->getSourceShapeFused();
+            shapeToCut = dvp->getSourceShape(true);
         }
-
     } else {
         Base::Console().Message("DVS::getShapeToCut - base is weird\n");
         return TopoDS_Shape();
@@ -294,7 +297,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
 
 TopoDS_Shape DrawViewSection::getShapeForDetail() const
 {
-    return TechDraw::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
 }
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
@@ -460,7 +463,8 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     waitingForCut(false);
 }
 
-//position, scale and rotate shape for  buildGeometryObject
+//! position, scale and rotate shape for  buildGeometryObject
+//! save the cut shape for further processing
 TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double shapeSize)
 {
     //    Base::Console().Message("DVS::prepareShape - %s - rawShape.IsNull: %d shapeSize: %.3f\n",
@@ -473,18 +477,19 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         Base::Vector3d origin(0.0, 0.0, 0.0);
         m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
-        inputCenter = TechDraw::findCentroid(rawShape, m_projectionCS);
+        inputCenter = ShapeUtils::findCentroid(rawShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
-        preparedShape = TechDraw::moveShape(rawShape, centroid * -1.0);
+        m_cutShapeRaw = rawShape;
+        preparedShape = ShapeUtils::moveShape(rawShape, centroid * -1.0);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
-        preparedShape = TechDraw::scaleShape(preparedShape, getScale());
+        preparedShape = ShapeUtils::scaleShape(preparedShape, getScale());
 
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             preparedShape =
-                TechDraw::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
+                ShapeUtils::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
         }
         if (debugSection()) {
             BRepTools::Write(m_cutShape, "DVSCutShape.brep");//debug
@@ -561,12 +566,12 @@ void DrawViewSection::postHlrTasks(void)
         BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");//debug
     }
 
-    TopoDS_Shape centeredFaces = TechDraw::moveShape(faceIntersections, m_saveCentroid * -1.0);
+    TopoDS_Shape centeredFaces = ShapeUtils::moveShape(faceIntersections, m_saveCentroid * -1.0);
 
-    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredFaces, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredFaces, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            TechDraw::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
@@ -659,12 +664,12 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersection
 //                            faceIntersections.IsNull());
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
-        TechDraw::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
+        ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
 
-    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShape, getScale());
+    TopoDS_Shape scaledSection = ShapeUtils::scaleShape(centeredShape, getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
-            TechDraw::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+            ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
     }
 
     return mapToPage(scaledSection);
@@ -1076,16 +1081,6 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
     return nullptr;
 }
 
-TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
-{
-    App::DocumentObject* base = BaseView.getValue();
-    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        TechDraw::DrawProjGroupItem* baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
-        return baseDPGI;
-    }
-    return nullptr;
-}
-
 // setup / tear down routines
 
 void DrawViewSection::unsetupObject()
@@ -1124,14 +1119,13 @@ void DrawViewSection::makeLineSets(void)
 
     std::string fileSpec = PatIncluded.getValue();
     Base::FileInfo fi(fileSpec);
-    std::string ext = fi.extension();
     if (!fi.isReadable()) {
         Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(),
                                 fileSpec.c_str());
         return;
     }
 
-    if (ext == "pat" || ext == "PAT") {
+    if (fi.hasExtension("pat")) {
         if (!fileSpec.empty() && !NameGeomPattern.isEmpty()) {
             m_lineSets.clear();
             m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());

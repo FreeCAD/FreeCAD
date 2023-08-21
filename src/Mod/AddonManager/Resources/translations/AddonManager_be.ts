@@ -789,12 +789,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Дыялог</translation>
+      <translation>Дыялогавае акно</translation>
     </message>
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>ТэкставыНадпіс</translation>
+      <translation>Тэкставы надпіс</translation>
     </message>
   </context>
   <context>
@@ -1845,7 +1845,7 @@ installed addons will be checked for available updates
       <location filename="../../install_to_toolbar.py" line="247"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>Праца</translation>
+      <translation>Выканаць</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>
@@ -1875,7 +1875,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Class</source>
-      <translation>Поле дакладнасці</translation>
+      <translation>Клас</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>

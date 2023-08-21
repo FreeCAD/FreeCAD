@@ -54,10 +54,7 @@ SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
 /*!
   Destructor.
 */
-SoFCColorBarBase::~SoFCColorBarBase()
-{
-    //delete THIS;
-}
+SoFCColorBarBase::~SoFCColorBarBase() = default;
 
 // doc from parent
 void SoFCColorBarBase::initClass()
@@ -157,9 +154,9 @@ namespace Gui {
 class SoFCColorBarProxyObject : public QObject
 {
 public:
-    SoFCColorBarProxyObject(SoFCColorBar* b)
+    explicit SoFCColorBarProxyObject(SoFCColorBar* b)
         : QObject(nullptr), bar(b) {}
-    ~SoFCColorBarProxyObject() override {}
+    ~SoFCColorBarProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         bar->customize(bar->getActiveBar());
@@ -190,18 +187,15 @@ SoFCColorBar::SoFCColorBar()
     _colorBars.push_back( new SoFCColorGradient );
     _colorBars.push_back( new SoFCColorLegend );
 
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        pColorMode->addChild( *it );
+    for (auto it : _colorBars)
+        pColorMode->addChild(it);
     pColorMode->whichChild = 0;
 }
 
 /*!
   Destructor.
 */
-SoFCColorBar::~SoFCColorBar()
-{
-    //delete THIS;
-}
+SoFCColorBar::~SoFCColorBar() = default;
 
 // doc from parent
 void SoFCColorBar::initClass()
@@ -227,14 +221,14 @@ void SoFCColorBar::setViewportSize( const SbVec2s& size )
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setRange(fMin, fMax, prec);
+    for (auto it : _colorBars)
+        it->setRange(fMin, fMax, prec);
 }
 
 void SoFCColorBar::setOutsideGrayed (bool bVal)
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setOutsideGrayed(bVal);
+    for (auto it : _colorBars)
+        it->setOutsideGrayed(bVal);
 }
 
 bool SoFCColorBar::isVisible (float fVal) const
@@ -318,10 +312,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 SoFCColorBarBase* current = getActiveBar();
                 QMenu menu;
                 int i=0;
-                for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it) {
-                    QAction* item = menu.addAction(QObject::tr((*it)->getColorBarName()));
+                for (auto it : _colorBars) {
+                    QAction* item = menu.addAction(QObject::tr(it->getColorBarName()));
                     item->setCheckable(true);
-                    item->setChecked((*it) == current);
+                    item->setChecked(it == current);
                     item->setData(QVariant(i++));
                 }
 

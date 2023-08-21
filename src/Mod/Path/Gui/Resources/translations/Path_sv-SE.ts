@@ -2044,7 +2044,7 @@ Default: "5mm"</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Säker</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="129"/>
@@ -4138,7 +4138,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Säker</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1160"/>
@@ -4335,7 +4335,7 @@ For example:
     <message>
       <location filename="../../../InitGui.py" line="286"/>
       <source>Ok</source>
-      <translation>OK</translation>
+      <translation>Ok</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="288"/>
@@ -6478,7 +6478,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
       <source>Jobs</source>
-      <translation type="unfinished">Jobs</translation>
+      <translation>Jobb</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="330"/>
@@ -6814,7 +6814,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="447"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Datum</translation>
     </message>
   </context>
   <context>
@@ -7075,7 +7075,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Klättra</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
@@ -7465,7 +7465,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="460"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Klättra</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
@@ -7537,7 +7537,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="484"/>
       <source>Only</source>
-      <translation type="unfinished">Only</translation>
+      <translation>Endast</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="485"/>
@@ -7673,7 +7673,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Klättra</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
@@ -7772,7 +7772,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Av</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="113"/>
@@ -7818,7 +7818,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="122"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Klättra</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>

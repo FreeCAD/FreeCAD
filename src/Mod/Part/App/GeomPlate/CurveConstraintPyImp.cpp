@@ -99,10 +99,10 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             }
 #endif
 
-            ptr.reset(new GeomPlate_CurveConstraint(hCurve, order, nbPts, tolDist, tolAng, tolCurv));
+            ptr = std::make_unique<GeomPlate_CurveConstraint>(hCurve, order, nbPts, tolDist, tolAng, tolCurv);
         }
         else {
-            ptr.reset(new GeomPlate_CurveConstraint);
+            ptr = std::make_unique<GeomPlate_CurveConstraint>();
         }
 
         setTwinPointer(ptr.release());
@@ -118,7 +118,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 // returns a string which represents the object e.g. when printed in python
 std::string CurveConstraintPy::representation() const
 {
-    return std::string("<GeomPlate_CurveConstraint object>");
+    return {"<GeomPlate_CurveConstraint object>"};
 }
 
 PyObject* CurveConstraintPy::setOrder(PyObject *args)

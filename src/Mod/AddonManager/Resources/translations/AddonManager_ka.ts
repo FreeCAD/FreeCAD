@@ -54,7 +54,7 @@
     <message>
       <location filename="../../compact_view.py" line="88"/>
       <source>Update Available</source>
-      <translation>განახლება ხელმისაწვდომია</translation>
+      <translation>ხელმისაწვდომია განახლება</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
@@ -470,7 +470,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation>განახლება ხელმისაწვდომია</translation>
+      <translation>ხელმისაწვდომიაგანახლება</translation>
     </message>
   </context>
   <context>
@@ -652,7 +652,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="239"/>
       <source>User-defined proxy:</source>
-      <translation>მომხმარებლის მითითებული პროქსი:</translation>
+      <translation>მომხმარებლის პროქსი:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
@@ -662,7 +662,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
-      <translation>git-ის გამშვები ფაილის ბილიკი (არასავალდებულოა):</translation>
+      <translation>'git'-ის გამშვები ფაილის ბილიკი (არასავალდებულოა):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -792,7 +792,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
-      <translation>ტექსტური წარწერა</translation>
+      <translation>ტექსტური ჭდე</translation>
     </message>
   </context>
   <context>
@@ -895,7 +895,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation>არასავალდებულო. ნაგულისხმებია ყველაზე ზედა დამატებიდან, მემკვიდრეობით</translation>
+      <translation>არასავალდებულო. ნაგულისხმევია ყველაზე ზედა დამატებიდან, მემკვიდრეობით</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -935,17 +935,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>მხარდაჭერილია Semantic (1.2.3-beta) და CalVer (2022.08.30) სტილები</translation>
+      <translation>მხარდაჭერილია Semantic (1.2.3-beta) ან CalVer (2022.08.30) სტილები</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation>დღევანდელ დღეზე დაყენება (CalVer-ის სტილი)</translation>
+      <translation>დღევანდელზე დაყენება (CalVer-ის სტილი)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation>ნაგულისხმევი სახელი</translation>
+      <translation>საჩვენებელი სახელი</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
@@ -1153,7 +1153,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>დავამატო ამ ღილაკი ამ მაკროსთვის?</translation>
+      <translation>დავამატო ხელსაწყოების პანელის ღილაკი ამ მაკროსთვის?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
@@ -1274,7 +1274,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <location filename="../../package_list.py" line="398"/>
       <source>Maintainer</source>
-      <translation>პროექტის ლიდერი</translation>
+      <translation>წამყვანი პროგრამისტი</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="117"/>
@@ -1323,12 +1323,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../NetworkManager.py" line="252"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation>პარამეტრის შეცდომა: პროქსის ურთიერთგამომრიცხავი პარამეტრები. დაბრუნებული იქნება ნაგულისხმები მნიშვნელობები.</translation>
+      <translation>პარამეტრის შეცდომა: პროქსის ურთიერთგამომრიცხავი პარამეტრები. დაბრუნებული იქნება ნაგულისხმევი მნიშვნელობები.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="267"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation>პარამეტრის შეცდომა: მომხმარებლის პროქსი ჩართულია, მაგრამ მითითებული არაა. გამოყენებული იქნება ნაგულისხმები მნიშვნელობები.</translation>
+      <translation>პარამეტრის შეცდომა: მომხმარებლის პროქსი ჩართულია, მაგრამ მითითებული არაა. გამოყენებული იქნება ნაგულისხმევი მნიშვნელობები.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="406"/>
@@ -1545,7 +1545,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="932"/>
       <source>Enable</source>
-      <translation>ჩაართვა</translation>
+      <translation>ჩართვა</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="935"/>
@@ -1805,7 +1805,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation>&apos;{}&apos;-ის დაყენების შეწყვეტა</translation>
+      <translation>&apos;{}&apos;-ის დაყენების შეწყვეტა;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="477"/>
@@ -1870,7 +1870,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="271"/>
       <source>Class</source>
-      <translation>დაშვების ველი</translation>
+      <translation>კლასი</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="276"/>
@@ -2064,7 +2064,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="815"/>
       <source>Status:</source>
-      <translation>სტატუსი:</translation>
+      <translation>მდგომარეობა:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="818"/>
@@ -2084,7 +2084,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="839"/>
       <source>OK</source>
-      <translation>&amp;დიახ</translation>
+      <translation>დიახ</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
@@ -2351,7 +2351,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation>მაკროს &apos;{name}&apos; კოდის გამოთხოვის შეცდომა</translation>
+      <translation>მაკროს &apos;{name}&apos; კოდის გამოთხოვის შეცდომა;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="742"/>

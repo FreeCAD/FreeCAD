@@ -87,9 +87,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     //tabs->addTab(projectView, tr("Project"));
 }
 
-ComboView::~ComboView()
-{
-}
+ComboView::~ComboView() = default;
 
 void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 {

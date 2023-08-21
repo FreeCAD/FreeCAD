@@ -228,9 +228,7 @@ Command::Command(const char* name)
     bCanLog     = true;
 }
 
-Command::~Command()
-{
-}
+Command::~Command() = default;
 
 void Command::setShortcut(const QString &shortcut)
 {
@@ -422,8 +420,9 @@ void Command::_invoke(int id, bool disablelog)
         getGuiApplication()->macroManager()->setModule(sAppModule);
 
         std::unique_ptr<LogDisabler> logdisabler;
-        if (disablelog)
-            logdisabler.reset(new LogDisabler);
+        if (disablelog) {
+            logdisabler = std::make_unique<LogDisabler>();
+        }
 
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
@@ -578,7 +577,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
-        return std::string("None");
+        return {"None"};
     std::ostringstream str;
     if(prefix)
         str << prefix;
@@ -593,7 +592,7 @@ std::string Command::getObjectCmd(const App::DocumentObject *obj,
         const char *prefix, const char *postfix, bool gui)
 {
     if(!obj || !obj->getNameInDocument())
-        return std::string("None");
+        return {"None"};
     return getObjectCmd(obj->getNameInDocument(), obj->getDocument(), prefix, postfix,gui);
 }
 
@@ -1117,9 +1116,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
     sScriptName = nullptr;
 }
 
-MacroCommand::~MacroCommand()
-{
-}
+MacroCommand::~MacroCommand() = default;
 
 void MacroCommand::activated(int iMsg)
 {
@@ -1262,8 +1259,9 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
 
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
-        boost::bind(&PythonCommand::onActionInit, this));
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() {
+        this->onActionInit();
+    });
 }
 
 PythonCommand::~PythonCommand()
@@ -1493,8 +1491,9 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
 
     auto& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect(
-        boost::bind(&PythonGroupCommand::onActionInit, this));
+    connPyCmdInitialized = rcCmdMgr.signalPyCmdInitialized.connect([this]() {
+        this->onActionInit();
+    });
 }
 
 PythonGroupCommand::~PythonGroupCommand()
@@ -1784,9 +1783,7 @@ void PythonGroupCommand::onActionInit() const
 // CommandManager
 //===========================================================================
 
-CommandManager::CommandManager()
-{
-}
+CommandManager::CommandManager() = default;
 
 CommandManager::~CommandManager()
 {

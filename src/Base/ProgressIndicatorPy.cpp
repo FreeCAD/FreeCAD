@@ -79,8 +79,9 @@ Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
     unsigned int steps;
     if (!PyArg_ParseTuple(args.ptr(), "sI",&text,&steps))
         throw Py::Exception();
-    if (!_seq.get())
-        _seq.reset(new SequencerLauncher(text,steps));
+    if (!_seq.get()) {
+        _seq = std::make_unique<SequencerLauncher>(text,steps);
+    }
     return Py::None();
 }
 

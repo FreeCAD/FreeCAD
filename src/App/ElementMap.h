@@ -43,7 +43,7 @@ namespace Data
 {
 
 class ElementMap;
-typedef std::shared_ptr<ElementMap> ElementMapPtr;
+using ElementMapPtr = std::shared_ptr<ElementMap>;
 
 /* This class provides for ComplexGeoData's ability to provide proper naming.
  * Specifically, ComplexGeoData uses this class for it's `_id` property.
@@ -122,7 +122,7 @@ public:
                            std::ostringstream& ss,
                            ElementIDRefs* sids,
                            long masterTag,
-                           const char* postfix = 0,
+                           const char* postfix = nullptr,
                            long tag = 0,
                            bool forceTag = false) const;
 
@@ -183,7 +183,7 @@ public:
 
     long getElementHistory(const MappedName & name,
                            long masterTag,
-                           MappedName *original=0, std::vector<MappedName> *history=0) const;
+                           MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const;
 
 private:
     /** Serialize this map
@@ -267,7 +267,7 @@ private:
 
     std::map<const char*, IndexedElements, CStringComp> indexedNames;
 
-    std::map<MappedName, IndexedName, std::less<MappedName>> mappedNames;
+    std::map<MappedName, IndexedName, std::less<>> mappedNames;
 
     struct ChildMapInfo
     {

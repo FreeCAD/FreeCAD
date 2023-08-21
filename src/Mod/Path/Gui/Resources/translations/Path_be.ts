@@ -138,7 +138,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
       <source>2D</source>
-      <translation>дзвюхмерны</translation>
+      <translation>Двухмернае</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
@@ -298,7 +298,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="248"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Экспартаваць</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
@@ -726,7 +726,7 @@ FreeCAD пастаўляецца з некалькімі прадусталяв�
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
       <source>Import</source>
-      <translation>Імпарт</translation>
+      <translation>Імпартаваць</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
@@ -955,7 +955,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation>Вышыня адхілення</translation>
+      <translation>Вышыня зазору</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
@@ -1112,13 +1112,13 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>Як высока вы павінны ўздымаць інструмент пры хуткіх злучальных рухах над вычышчанымі абласцямі.
-Калі злучальная траекторыя не вольная, інструмент уздымаецца да вышыні ачысткі.</translation>
+Калі злучальная траекторыя не вольная, інструмент уздымаецца да вышыні зазору.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>Найбольшая даўжыня спуску інструмента ў адносінах да прамой адлегласці паміж кропкамі.
-У выпадку перавышэння, прывязка будзе ажыццяўляцца шляхам узняцця інструмента на вышыню ачысткі.</translation>
+У выпадку перавышэння, прывязка будзе ажыццяўляцца шляхам узняцця інструмента на вышыню зазору.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
@@ -1164,13 +1164,13 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <source>CW</source>
-      <translation>па гадзінніку</translation>
+      <translation>Па гадзінніку</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <source>CCW</source>
-      <translation>супраць гадзінніка</translation>
+      <translation>Супраць гадзінніка</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -1215,7 +1215,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="381"/>
       <source>TextLabel</source>
-      <translation>ТэкставыНадпіс</translation>
+      <translation>Тэкставы надпіс</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="78"/>
@@ -1260,7 +1260,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="115"/>
@@ -1716,7 +1716,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="127"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="189"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Вяршыня</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
@@ -1798,7 +1798,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
       <source>Multi-pass</source>
-      <translation>Шматпраходны</translation>
+      <translation>Шмат праходаў</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -1813,7 +1813,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
       <source>Perpendicular</source>
-      <translation>Перпендыкуляр</translation>
+      <translation>Перпендыкулярна</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
@@ -2062,12 +2062,12 @@ Default: "5mm"</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
-      <translation>Хуткая гарызантальная падача, якая прысвоеная як гарызантальная падача да новага Кантролера інструменту.</translation>
+      <translation>Хуткая гарызантальная падача, якая прызначаная як гарызантальная падача да новага Кантролера інструменту.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="225"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
-      <translation>Хуткая вертыкальная падача, якая прысвоеная як вертыкальная падача да новага Кантролера інструменту.</translation>
+      <translation>Хуткая вертыкальная падача, якая прызначаная як вертыкальная падача да новага Кантролера інструменту.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
@@ -2131,7 +2131,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation>Падача</translation>
+      <translation>Крок</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2385,7 +2385,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
       <source>General</source>
-      <translation>Асноўныя</translation>
+      <translation>Агульны</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="38"/>
@@ -2666,7 +2666,7 @@ If left empty no template will be preselected.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="603"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Становішча</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="647"/>
@@ -2694,7 +2694,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../../DlgProcessorChooser.cpp" line="42"/>
       <location filename="../../DlgProcessorChooser.cpp" line="69"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
   </context>
   <context>
@@ -2802,7 +2802,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="346"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="354"/>
@@ -3013,7 +3013,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
       <source>Perpendicular</source>
-      <translation>Перпендыкуляр</translation>
+      <translation>Перпендыкулярна</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="169"/>
@@ -3138,12 +3138,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце пажаданы стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце патрэбны стыль афармлення аздаблення:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Форма косткі&lt;/span&gt; ... абярыце самую кароткую траекторыю, каб пакрыць кут,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Т-вобразная костка&lt;/span&gt; ... выцягвайце ў пэўным напрамку, пакуль кут не будзе пакрыты&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation>Сабачая костка</translation>
+      <translation>Форма сабачай косткі</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
@@ -3209,7 +3209,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>fixed</source>
-      <translation>выпраўлены</translation>
+      <translation>зафіксаваны</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
@@ -3429,7 +3429,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation>Вышыня адхілення</translation>
+      <translation>Вышыня зазору</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3573,7 +3573,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
       <source>TextLabel</source>
-      <translation>ТэкставыНадпіс</translation>
+      <translation>Тэкставы надпіс</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
@@ -3684,7 +3684,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
       <source>TextLabel</source>
-      <translation>ТэкставыНадпіс</translation>
+      <translation>Тэкставы надпіс</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>
@@ -3712,7 +3712,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
       <source>General</source>
-      <translation>Асноўныя</translation>
+      <translation>Агульны</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="39"/>
@@ -3845,7 +3845,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model's Bounding Box</source>
-      <translation>Пашырэнне габарытаў мадэлі</translation>
+      <translation>Пашырыць габарыты мадэлі</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -4002,7 +4002,7 @@ Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation>Выраз, які зададзеная як бяспечная вышыня для новай аперацыі.
+      <translation>Выраз, які зададзены як бяспечная вышыня для новай аперацыі.
 Першапачаткова: OpStockZMax+SetupSheet.SafeHeightOffset</translation>
     </message>
     <message>
@@ -4026,12 +4026,12 @@ Default: "5mm"</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1347"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
-      <translation>Хуткая гарызантальная падача, якая прысвоеная як гарызантальная падача да новага Кантролера інструменту.</translation>
+      <translation>Хуткая гарызантальная падача, якая прызначаная як гарызантальная падача да новага Кантролера інструменту.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1367"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
-      <translation>Хуткая вертыкальная падача, якая прысвоеная як вертыкальная падача да новага Кантролера інструменту.</translation>
+      <translation>Хуткая вертыкальная падача, якая прызначаная як вертыкальная падача да новага Кантролера інструменту.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1046"/>
@@ -4230,12 +4230,12 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1334"/>
       <source>Horizontal</source>
-      <translation>Па гарызанталі</translation>
+      <translation>Гарызантальны</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1354"/>
       <source>Vertical</source>
-      <translation>Па вертыкалі</translation>
+      <translation>Вертыкальны</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1395"/>
@@ -4369,7 +4369,7 @@ For example:
     <message>
       <location filename="../../../InitGui.py" line="286"/>
       <source>Ok</source>
-      <translation>OK</translation>
+      <translation>Ok</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="288"/>
@@ -4502,12 +4502,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="184"/>
       <source>CW</source>
-      <translation>па гадзінніку</translation>
+      <translation>Па гадзінніку</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="185"/>
       <source>CCW</source>
-      <translation>супраць гадзінніка</translation>
+      <translation>Супраць гадзінніка</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="333"/>
@@ -4545,7 +4545,7 @@ For example:
       <location filename="../../../Path/Post/Command.py" line="561"/>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
-      <translation>Абраць шлях да задання</translation>
+      <translation>Абраць траекторыю да задання</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
@@ -5329,7 +5329,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="125"/>
       <source>The desired width of the chamfer</source>
-      <translation>Жаданая шырыня фаскі</translation>
+      <translation>Патрэбная шырыня фаскі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="131"/>
@@ -6159,7 +6159,7 @@ For example:
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="566"/>
       <source>Tag</source>
-      <translation>Метка</translation>
+      <translation>Перамычка</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="569"/>
@@ -6229,7 +6229,7 @@ For example:
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1361"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="329"/>
       <source>Dogbone</source>
-      <translation>Сабачая костка</translation>
+      <translation>Форма сабачай косткі</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1365"/>
@@ -6417,7 +6417,7 @@ For example:
       <location filename="../../../Path/Main/Job.py" line="260"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="61"/>
       <source>2D</source>
-      <translation>дзвюхмерны</translation>
+      <translation>Двухмернасць</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="261"/>
@@ -6482,7 +6482,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1600"/>
       <source>Ok</source>
-      <translation>OK</translation>
+      <translation>Ok</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1602"/>
@@ -6512,7 +6512,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="60"/>
       <source>Solids</source>
-      <translation>Суцэльная целы</translation>
+      <translation>Суцэльныя целы</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
@@ -6586,7 +6586,7 @@ For example:
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;Заўвага&lt;/b&gt;: У дыялогавым акне паказваюцца каманды вызначэння шляху ў асноўных адзінках FreeCAD (мм/с).
-Значэнні будуць пераўтвораныя ў пажаданыя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
+Значэнні будуць пераўтвораныя ў патрэбныя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="268"/>
@@ -6920,7 +6920,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="378"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="379"/>
@@ -6968,7 +6968,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="73"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="74"/>
@@ -6996,12 +6996,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
       <source>CW</source>
-      <translation>па гадзінніку</translation>
+      <translation>Па гадзінніку</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="72"/>
       <source>CCW</source>
-      <translation>супраць гадзінніка</translation>
+      <translation>Супраць гадзінніка</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="112"/>
@@ -7031,12 +7031,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Profile.py" line="196"/>
       <source>CW</source>
-      <translation>па гадзінніку</translation>
+      <translation>Па гадзінніку</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="197"/>
       <source>CCW</source>
-      <translation>супраць гадзінніка</translation>
+      <translation>Супраць гадзінніка</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="200"/>
@@ -7124,7 +7124,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
       <source>Center</source>
-      <translation>Па цэнтры</translation>
+      <translation>Цэнтр</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="66"/>
@@ -7220,7 +7220,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="259"/>
       <source>Multi-pass</source>
-      <translation>Шматпраходны</translation>
+      <translation>Шмат праходаў</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="262"/>
@@ -7230,7 +7230,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="263"/>
       <source>Perpendicular</source>
-      <translation>Перпендыкуляр</translation>
+      <translation>Перпендыкулярна</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="266"/>
@@ -7270,7 +7270,7 @@ For example:
       <location filename="../../../Path/Op/Slot.py" line="275"/>
       <location filename="../../../Path/Op/Slot.py" line="285"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Вяршыня</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="604"/>
@@ -7566,12 +7566,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="480"/>
       <source>Multi-pass</source>
-      <translation>Шматпраходны</translation>
+      <translation>Шмат праходаў</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="483"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="484"/>
@@ -7581,7 +7581,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="485"/>
       <source>First</source>
-      <translation>ГОСТ/Еўропа (First-angle projection)</translation>
+      <translation>Першы</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="486"/>
@@ -7862,7 +7862,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="134"/>
@@ -7882,7 +7882,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="139"/>
       <source>Multi-pass</source>
-      <translation>Шматпраходны</translation>
+      <translation>Шмат праходаў</translation>
     </message>
   </context>
   <context>
@@ -7955,7 +7955,7 @@ For example:
       <location filename="../../../Path/Op/Gui/Array.py" line="142"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="205"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation>Задаць False, каб прадухіліць стварэнне G-кода для аперацыи</translation>
+      <translation>Задаць False, каб прадухіліць стварэнне G-кода для аперацыі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="189"/>
@@ -8292,7 +8292,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="133"/>
       <source>None</source>
-      <translation>Нічога</translation>
+      <translation>Адсутнічае</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="144"/>
@@ -8469,12 +8469,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="178"/>
       <source>Custom file %s could not be found.</source>
-      <translation type="unfinished">Custom file %s could not be found.</translation>
+      <translation>Карыстальніцкі файл %s не знойдзены.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <translation>Хібны радок gcode: %s</translation>
     </message>
   </context>
 </TS>

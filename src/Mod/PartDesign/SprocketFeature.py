@@ -125,7 +125,7 @@ class Sprocket:
         obj.addProperty("App::PropertyEnumeration","SprocketReference","Sprocket","Sprocket Reference")
         obj.addProperty("App::PropertyLength","Thickness","Sprocket","Thickness as stated in the reference specification")
 
-        obj.SprocketReference = list(self.SprocketReferenceRollerTable.keys())
+        obj.SprocketReference = list(self.SprocketReferenceRollerTable)
 
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in"

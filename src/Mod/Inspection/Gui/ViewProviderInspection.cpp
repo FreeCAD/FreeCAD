@@ -269,8 +269,8 @@ void ViewProviderInspection::setupNormals(const std::vector<Base::Vector3f>& nor
     SbVec3f* norm = normalNode->vector.startEditing();
 
     std::size_t i=0;
-    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
-        norm[i++].setValue(it->x, it->y, it->z);
+    for (const auto& it : normals) {
+        norm[i++].setValue(it.x, it.y, it.z);
     }
 
     normalNode->vector.finishEditing();
@@ -445,7 +445,7 @@ class ViewProviderProxyObject : public QObject
 {
 public:
     explicit ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
-    ~ViewProviderProxyObject() override {}
+    ~ViewProviderProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         if (!widget.isNull()) {
@@ -456,8 +456,8 @@ public:
                     QObject::tr("Do you want to remove all annotations?"),
                     QMessageBox::Yes,QMessageBox::No);
                 if (ret == QMessageBox::Yes) {
-                    for (QList<Gui::Flag*>::iterator it = flags.begin(); it != flags.end(); ++it)
-                        (*it)->deleteLater();
+                    for (auto it : flags)
+                        it->deleteLater();
                 }
             }
         }
@@ -682,13 +682,9 @@ PROPERTY_SOURCE(InspectionGui::ViewProviderInspectionGroup, Gui::ViewProviderDoc
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderInspectionGroup::ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::ViewProviderInspectionGroup() = default;
 
-ViewProviderInspectionGroup::~ViewProviderInspectionGroup()
-{
-}
+ViewProviderInspectionGroup::~ViewProviderInspectionGroup() = default;
 
 /**
  * Returns the pixmap for the opened list item.

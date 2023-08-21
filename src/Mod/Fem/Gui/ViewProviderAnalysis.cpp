@@ -97,9 +97,7 @@ ViewProviderFemAnalysis::ViewProviderFemAnalysis()
     sPixmap = "FEM_Analysis";
 }
 
-ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
-{
-}
+ViewProviderFemAnalysis::~ViewProviderFemAnalysis() = default;
 
 void ViewProviderFemAnalysis::attach(App::DocumentObject *obj)
 {
@@ -117,7 +115,7 @@ void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject *vie
     extension.highlightView(view);
 }
 
-bool ViewProviderFemAnalysis::doubleClicked(void)
+bool ViewProviderFemAnalysis::doubleClicked()
 {
     Gui::Command::assureWorkbench("FemWorkbench");
     Gui::Command::addModule(Gui::Command::Gui, "FemGui");
@@ -137,22 +135,22 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
     return true;
 }
 
-std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren(void) const
+std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren() const
 {
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
-std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes() const
 {
     return {"Analysis"};
 }
 
-void ViewProviderFemAnalysis::hide(void)
+void ViewProviderFemAnalysis::hide()
 {
     Gui::ViewProviderDocumentObjectGroup::hide();
 }
 
-void ViewProviderFemAnalysis::show(void)
+void ViewProviderFemAnalysis::show()
 {
     Gui::ViewProviderDocumentObjectGroup::show();
 }
@@ -161,7 +159,9 @@ void ViewProviderFemAnalysis::setupContextMenu(QMenu *menu, QObject *, const cha
 {
     Gui::ActionFunction *func = new Gui::ActionFunction(menu);
     QAction *act = menu->addAction(tr("Activate analysis"));
-    func->trigger(act, std::bind(&ViewProviderFemAnalysis::doubleClicked, this));
+    func->trigger(act, [this](){
+        this->doubleClicked();
+    });
 }
 
 bool ViewProviderFemAnalysis::setEdit(int ModNum)

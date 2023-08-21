@@ -95,34 +95,34 @@ vz.z=0
 
 SbRotation Camera::top()
 {
-    return SbRotation(0, 0, 0, 1);
+    return {0, 0, 0, 1};
 }
 
 SbRotation Camera::bottom()
 {
-    return SbRotation(1, 0, 0, 0);
+    return {1, 0, 0, 0};
 }
 
 SbRotation Camera::front()
 {
     auto root = (float)(sqrt(2.0)/2.0);
-    return SbRotation(root, 0, 0, root);
+    return {root, 0, 0, root};
 }
 
 SbRotation Camera::rear()
 {
     auto root = (float)(sqrt(2.0)/2.0);
-    return SbRotation(0, root, root, 0);
+    return {0, root, root, 0};
 }
 
 SbRotation Camera::right()
 {
-    return SbRotation(0.5, 0.5, 0.5, 0.5);
+    return {0.5, 0.5, 0.5, 0.5};
 }
 
 SbRotation Camera::left()
 {
-    return SbRotation(-0.5, 0.5, 0.5, -0.5);
+    return {-0.5, 0.5, 0.5, -0.5};
 }
 
 SbRotation Camera::isometric()
@@ -146,17 +146,17 @@ SbRotation Camera::isometric()
     //#p3=App.Rotation(App.Vector(1,1,0),45)
     //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
     //p4=p3.multiply(p2).multiply(p1)
-    return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);
+    return {0.424708F, 0.17592F, 0.339851F, 0.820473F};
 }
 
 SbRotation Camera::dimetric()
 {
-    return SbRotation(0.567952f, 0.103751f, 0.146726f, 0.803205f);
+    return {0.567952F, 0.103751F, 0.146726F, 0.803205F};
 }
 
 SbRotation Camera::trimetric()
 {
-    return SbRotation(0.446015f, 0.119509f, 0.229575f, 0.856787f);
+    return {0.446015F, 0.119509F, 0.229575F, 0.856787F};
 }
 
 SbRotation Camera::rotation(Camera::Orientation view)

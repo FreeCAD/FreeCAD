@@ -205,9 +205,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     Fem::FemMeshObject* pcMesh = nullptr;
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
-                pcMesh = static_cast<Fem::FemMeshObject*>(*it);
+        for (auto it : fem) {
+            if (it->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+                pcMesh = static_cast<Fem::FemMeshObject*>(it);
         }
     }
     else {
@@ -241,9 +241,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     pcSolver = nullptr;  // this is an private object of type Fem::FemSolverObject*
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
-                pcSolver = static_cast<Fem::FemSolverObject*>(*it);
+        for (auto it : fem) {
+            if (it->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
+                pcSolver = static_cast<Fem::FemSolverObject*>(it);
         }
     }
 
@@ -342,7 +342,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     updateUI();
 }
 
-const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver(void) const
+const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver() const
 {
     return pcSolver;
 }
@@ -535,7 +535,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
     }
 }
 
-void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
+void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -556,7 +556,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
     }
 }
 
-void TaskFemConstraintFluidBoundary::onSubtypeChanged(void)
+void TaskFemConstraintFluidBoundary::onSubtypeChanged()
 {
     updateSubtypeUI();// todo: change color for different kind of subtype,
                       // Fem::ConstraintFluidBoundary::onChanged() and viewProvider
@@ -566,7 +566,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
 {
     //left empty for future extension
 }
-void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged(void)
+void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -575,7 +575,7 @@ void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged(void)
     updateTurbulenceUI();
 }
 
-void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged(void)
+void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -668,23 +668,23 @@ void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
     pcConstraint->Reversed.setValue(pressed);
 }
 
-std::string TaskFemConstraintFluidBoundary::getBoundaryType(void) const
+std::string TaskFemConstraintFluidBoundary::getBoundaryType() const
 {
     return Base::Tools::toStdString(ui->comboBoundaryType->currentText());
 }
 
-std::string TaskFemConstraintFluidBoundary::getSubtype(void) const
+std::string TaskFemConstraintFluidBoundary::getSubtype() const
 {
     return Base::Tools::toStdString(ui->comboSubtype->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getBoundaryValue(void) const
+double TaskFemConstraintFluidBoundary::getBoundaryValue() const
 {
     return ui->spinBoundaryValue->value();
 }
 
 
-std::string TaskFemConstraintFluidBoundary::getTurbulenceModel(void) const
+std::string TaskFemConstraintFluidBoundary::getTurbulenceModel() const
 {
     if (pTurbulenceModel) {
         return pTurbulenceModel->getValueAsString();
@@ -694,22 +694,22 @@ std::string TaskFemConstraintFluidBoundary::getTurbulenceModel(void) const
     }
 }
 
-std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification(void) const
+std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification() const
 {
     return Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue(void) const
+double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue() const
 {
     return ui->spinTurbulentIntensityValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getTurbulentLengthValue(void) const
+double TaskFemConstraintFluidBoundary::getTurbulentLengthValue() const
 {
     return ui->spinTurbulentLengthValue->value();
 }
 
-bool TaskFemConstraintFluidBoundary::getHeatTransferring(void) const
+bool TaskFemConstraintFluidBoundary::getHeatTransferring() const
 {
     if (pHeatTransferring) {
         return pHeatTransferring->getValue();
@@ -719,22 +719,22 @@ bool TaskFemConstraintFluidBoundary::getHeatTransferring(void) const
     }
 }
 
-std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType(void) const
+std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType() const
 {
     return Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
 }
 
-double TaskFemConstraintFluidBoundary::getTemperatureValue(void) const
+double TaskFemConstraintFluidBoundary::getTemperatureValue() const
 {
     return ui->spinTemperatureValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getHeatFluxValue(void) const
+double TaskFemConstraintFluidBoundary::getHeatFluxValue() const
 {
     return ui->spinHeatFluxValue->value();
 }
 
-double TaskFemConstraintFluidBoundary::getHTCoeffValue(void) const
+double TaskFemConstraintFluidBoundary::getHTCoeffValue() const
 {
     return ui->spinHTCoeffValue->value();
 }
@@ -749,7 +749,7 @@ const std::string TaskFemConstraintFluidBoundary::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintFluidBoundary::getDirectionName(void) const
+const std::string TaskFemConstraintFluidBoundary::getDirectionName() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -759,7 +759,7 @@ const std::string TaskFemConstraintFluidBoundary::getDirectionName(void) const
     return dir.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintFluidBoundary::getDirectionObject(void) const
+const std::string TaskFemConstraintFluidBoundary::getDirectionObject() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -774,8 +774,7 @@ bool TaskFemConstraintFluidBoundary::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
-TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary()
-{}
+TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary() = default;
 
 void TaskFemConstraintFluidBoundary::addToSelection()
 {
@@ -790,22 +789,21 @@ void TaskFemConstraintFluidBoundary::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
-        for (size_t subIt = 0; subIt < subNames.size(); ++subIt) {// for every selected sub element
+        const std::vector<std::string>& subNames = it.getSubNames();
+        App::DocumentObject* obj = it.getObject();
+        for (const auto & subName : subNames) {// for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(
@@ -818,15 +816,15 @@ void TaskFemConstraintFluidBoundary::addToSelection()
             // limit constraint such that only vertexes or faces or edges can be used depending on
             // what was selected first
             std::string searchStr;
-            if (subNames[subIt].find("Vertex") != std::string::npos)
+            if (subName.find("Vertex") != std::string::npos)
                 searchStr = "Vertex";
-            else if (subNames[subIt].find("Edge") != std::string::npos)
+            else if (subName.find("Edge") != std::string::npos)
                 searchStr = "Edge";
             else
                 searchStr = "Face";
 
-            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
-                if (SubElements[iStr].find(searchStr) == std::string::npos) {
+            for (const auto & SubElement : SubElements) {
+                if (SubElement.find(searchStr) == std::string::npos) {
                     QString msg = tr(
                         "Only one type of selection (vertex,face or edge) per constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
@@ -837,8 +835,8 @@ void TaskFemConstraintFluidBoundary::addToSelection()
             if (addMe) {
                 QSignalBlocker block(ui->listReferences);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->listReferences->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->listReferences->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -860,23 +858,21 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto & it : selection) {// for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto & subName : subNames) {// for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
+                                 subName)) {// for every sub element in selection that
                                                     // matches one in old list
                 if (obj
                     == Objects[std::distance(

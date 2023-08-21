@@ -116,6 +116,7 @@ locations = [
         "../Mod/Draft/Resources/translations",
         "../Mod/Draft/Resources/Draft.qrc",
     ],
+    ["Base", "../Base/Resources/translations", "../Base/Resources/Base.qrc"],
     [
         "Drawing",
         "../Mod/Drawing/Gui/Resources/translations",
@@ -435,7 +436,7 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
     basename = os.path.basename(tsfilepath)[:-3]
     # filename fixes
     if basename + ".ts" in LEGACY_NAMING_MAP.values():
-        basename = list(LEGACY_NAMING_MAP.keys())[
+        basename = list(LEGACY_NAMING_MAP)[
             list(LEGACY_NAMING_MAP.values()).index(basename + ".ts")
         ][:-3]
     newname = basename + "_" + lncode + ".ts"

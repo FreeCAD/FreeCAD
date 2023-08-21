@@ -529,6 +529,9 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                        featName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewBalloon', 'Balloon', '%s')",
+              featName.c_str(), featName.c_str());
+
     TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(
         getDrawPage()->getDocument()->getObject(featName.c_str()));
     if (!balloon) {
@@ -537,7 +540,6 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
                        featName.c_str(), parent->getNameInDocument());
-
     QGIView* qgParent = getQGIVByName(parent->getNameInDocument());
     //convert from scene coords to qgParent coords and unscale
     QPointF parentOrigin = qgParent->mapFromScene(origin) / parent->getScale();

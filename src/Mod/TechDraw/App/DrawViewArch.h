@@ -41,7 +41,7 @@ class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewArch();
-    ~DrawViewArch() = default;
+    ~DrawViewArch() override = default;
 
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;

@@ -49,9 +49,7 @@ ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
     sPixmap = "FEM_ConstraintForce";
 }
 
-ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()
-{
-}
+ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce() = default;
 
 bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 {
@@ -149,9 +147,8 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
         SbRotation rot(SbVec3f(0,1,0), dir);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             if (forceDirection.GetAngle(normal)
                 < M_PI_2)// Move arrow so it doesn't disappear inside the solid
                 base = base + dir * scaledlength; //OvG: Scaling
@@ -191,9 +188,8 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 #endif
         int idx = 0;
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
+        for (const auto & point : points) {
+            SbVec3f base(point.x, point.y, point.z);
             if (forceDirection.GetAngle(normal) < M_PI_2)
                 base = base + dir * scaledlength; //OvG: Scaling
 #ifdef USE_MULTIPLE_COPY

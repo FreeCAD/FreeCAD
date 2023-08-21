@@ -95,10 +95,7 @@ ReportView::ReportView( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-ReportView::~ReportView()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+ReportView::~ReportView() = default;
 
 void ReportView::changeEvent(QEvent *e)
 {
@@ -134,9 +131,7 @@ ReportHighlighter::ReportHighlighter(QTextEdit* edit)
     errCol = Qt::red;
 }
 
-ReportHighlighter::~ReportHighlighter()
-{
-}
+ReportHighlighter::~ReportHighlighter() = default;
 
 void ReportHighlighter::highlightBlock (const QString & text)
 {
@@ -288,8 +283,7 @@ public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
     : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
-    ~CustomReportEvent() override
-    { }
+    ~CustomReportEvent() override = default;
     const QString& message() const
     { return msg; }
     ReportHighlighter::Paragraph messageType() const
@@ -653,7 +647,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy, QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
+    copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -661,7 +656,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, &ReportOutput::selectAll, QKeySequence(QKeySequence::SelectAll));
+    QAction* select = menu->addAction(selectStr, this, &ReportOutput::selectAll);
+    select->setShortcut(QKeySequence(QKeySequence::SelectAll));
 
     menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();

@@ -86,7 +86,7 @@
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace {
 // A helper class to open a transaction when changing properties of view providers.
@@ -287,7 +287,7 @@ class StdCmdFreezeViews : public Gui::Command
 {
 public:
     StdCmdFreezeViews();
-    ~StdCmdFreezeViews() override{}
+    ~StdCmdFreezeViews() override = default;
     const char* className() const override
     { return "StdCmdFreezeViews"; }
 
@@ -297,7 +297,7 @@ public:
 protected:
     void activated(int iMsg) override;
     bool isActive() override;
-    Action * createAction(void) override;
+    Action * createAction() override;
     void languageChange() override;
 
 private:
@@ -636,7 +636,7 @@ class StdCmdDrawStyle : public Gui::Command
 {
 public:
     StdCmdDrawStyle();
-    ~StdCmdDrawStyle() override{}
+    ~StdCmdDrawStyle() override = default;
     void languageChange() override;
     const char* className() const override {return "StdCmdDrawStyle";}
     void updateIcon(const Gui::MDIView* view);
@@ -657,7 +657,9 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
-    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, bp::_1));
+    this->getGuiApplication()->signalActivateView.connect([this](auto view) {
+        this->updateIcon(view);
+    });
 }
 
 Gui::Action * StdCmdDrawStyle::createAction()
@@ -2500,7 +2502,7 @@ public:
             return;
         }
 
-        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        currentSelectionHandler = std::make_unique<SelectionCallbackHandler>();
         if (viewer)
         {
             currentSelectionHandler->userData = ud;

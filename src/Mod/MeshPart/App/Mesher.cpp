@@ -192,9 +192,8 @@ public:
         std::vector< std::vector<MeshCore::FacetIndex> > meshSegments;
         std::size_t numMeshFaces = 0;
 
-        for (std::size_t i = 0; i < domains.size(); ++i) {
+        for (const auto& domain : domains) {
             std::size_t numDomainFaces = 0;
-            const Part::TopoShape::Domain& domain = domains[i];
             for (std::size_t j = 0; j < domain.facets.size(); ++j) {
                 const Part::TopoShape::Facet& tria = domain.facets[j];
                 x1 = domain.points[tria.I1].x;
@@ -525,8 +524,8 @@ Mesh::MeshObject* Mesher::createMesh() const
     mesh->ShapeToMesh(aNull);
     mesh->Clear();
     delete mesh;
-    for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
-        delete *it;
+    for (auto it : hypoth)
+        delete it;
 
     return meshdata;
 #endif // HAVE_SMESH

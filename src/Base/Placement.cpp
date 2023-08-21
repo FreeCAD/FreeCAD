@@ -36,31 +36,25 @@ Placement::Placement(const Base::Matrix4D& matrix)
     fromMatrix(matrix);
 }
 
-Placement::Placement(const Placement& that)
-{
-    this->_pos = that._pos;
-    this->_rot = that._rot;
-}
-
 Placement::Placement(const Vector3d& Pos, const Rotation &Rot)
+    : _pos(Pos)
+    , _rot(Rot)
 {
-    this->_pos = Pos;
-    this->_rot = Rot;
 }
 
 Placement::Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& Cnt)
+    : _rot(Rot)
 {
     Vector3d RotC = Cnt;
     Rot.multVec(RotC, RotC);
     this->_pos = Pos + Cnt - RotC;
-    this->_rot = Rot;
 }
 
 Placement Placement::fromDualQuaternion(DualQuat qq)
 {
     Rotation rot(qq.x.re, qq.y.re, qq.z.re, qq.w.re);
     DualQuat mvq = 2 * qq.dual() * qq.real().conj();
-    return Placement(Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot);
+    return {Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot};
 }
 
 Base::Matrix4D Placement::toMatrix() const
@@ -161,13 +155,6 @@ Placement Placement::operator*(const Placement & p) const
     return plm;
 }
 
-Placement& Placement::operator = (const Placement& New)
-{
-    this->_pos = New._pos;
-    this->_rot = New._rot;
-    return *this;
-}
-
 Placement Placement::pow(double t, bool shorten) const
 {
     return Placement::fromDualQuaternion(this->toDualQuaternion().pow(t, shorten));
@@ -217,7 +204,7 @@ Placement Placement::slerp(const Placement & p0, const Placement & p1, double t)
 {
     Rotation rot = Rotation::slerp(p0.getRotation(), p1.getRotation(), t);
     Vector3d pos = p0.getPosition() * (1.0-t) + p1.getPosition() * t;
-    return Placement(pos, rot);
+    return {pos, rot};
 }
 
 Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, bool shorten)

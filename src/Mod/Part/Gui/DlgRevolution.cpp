@@ -247,8 +247,8 @@ std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
         throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for (int i = 0; i < items.size(); i++) {
-        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+    for (auto item : items) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
@@ -341,8 +341,8 @@ void DlgRevolution::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -356,9 +356,9 @@ void DlgRevolution::findShapes()
         if (xp.More()) continue; // compound solids not allowed
         // So allowed are: vertex, edge, wire, face, shell and compound
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-        item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
-        Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+        item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+        item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+        Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
         if (vp) item->setIcon(0, vp->getIcon());
     }
 }
@@ -398,8 +398,8 @@ void DlgRevolution::accept()
         else {
             symmetric = QString::fromLatin1("False");}
 
-        for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-            shape = (*it)->data(0, Qt::UserRole).toString();
+        for (auto item : items) {
+            shape = item->data(0, Qt::UserRole).toString();
             type = QString::fromLatin1("Part::Revolution");
             name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
             Base::Vector3d axis = this->getDirection();

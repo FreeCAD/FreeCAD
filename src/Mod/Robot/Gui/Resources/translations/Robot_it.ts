@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="146"/>
       <source>Insert in trajectory</source>
-      <translation>Inserisci un punto nella traiettoria</translation>
+      <translation>Inserisci nella traiettoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="147"/>

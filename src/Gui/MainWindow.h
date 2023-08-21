@@ -58,8 +58,7 @@ public:
     explicit UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
-    ~UrlHandler() override {
-    }
+    ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&) {
     }
 };
@@ -291,6 +290,8 @@ private:
     bool setupDAGView(const std::string&);
     bool setupReportView(const std::string&);
     bool setupPythonConsole(const std::string&);
+
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 
 private Q_SLOTS:
     /**

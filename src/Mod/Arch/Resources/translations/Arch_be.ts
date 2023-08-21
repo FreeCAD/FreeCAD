@@ -139,7 +139,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
       <source>Idle</source>
-      <translation>Бяздзейнасць</translation>
+      <translation>Чаканне</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
@@ -359,12 +359,12 @@ IfcType:Wall - будуць улічвацца толькі аб'екты, ты�
     <message>
       <location filename="../ui/ArchSchedule.ui" line="197"/>
       <source>Import</source>
-      <translation>Імпарт</translation>
+      <translation>Імпартаваць</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="211"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Экспартаваць</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -394,7 +394,7 @@ IfcType:Wall - будуць улічвацца толькі аб'екты, ты�
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Дыялог</translation>
+      <translation>Дыялогавае акно</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -467,13 +467,13 @@ IfcType:Wall - будуць улічвацца толькі аб'екты, ты�
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>Пазначыць усё</translation>
+      <translation>Абраць усё</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
       <location filename="../ui/GitTaskPanel.ui" line="147"/>
       <source>Commit</source>
-      <translation>Commit</translation>
+      <translation>Фіксаваць</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="120"/>
@@ -886,7 +886,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="731"/>
       <source>Survey</source>
-      <translation>Апытанне</translation>
+      <translation>Спіс памераў</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="739"/>
@@ -971,7 +971,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-archdefaults.ui" line="663"/>
       <location filename="../ui/preferences-archdefaults.ui" line="820"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Даўжыня:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
@@ -1095,17 +1095,17 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
       <source>Dashed</source>
-      <translation>Штрыхавая</translation>
+      <translation>Штрыхавы</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1145"/>
       <source>Dotted</source>
-      <translation>Пункцірная</translation>
+      <translation>Пункцірны</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1150"/>
       <source>Dashdot</source>
-      <translation>Штрых-пункцірная</translation>
+      <translation>Штрых-пункцірны</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1158"/>
@@ -1751,7 +1751,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="122"/>
       <source>Structure</source>
-      <translation>Структура</translation>
+      <translation>Канструкцыя</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
@@ -2001,7 +2001,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
-      <translation>Гатова</translation>
+      <translation>Зроблена</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="757"/>
@@ -2134,7 +2134,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchSite.py" line="74"/>
       <source>Site</source>
-      <translation>Сайт</translation>
+      <translation>Мясцовасць</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
@@ -2220,7 +2220,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
-      <translation>№</translation>
+      <translation>Ідэнтыфікатар</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1013"/>
@@ -2253,7 +2253,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Вышыня (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="505"/>
+      <location filename="../../ArchWindowPresets.py" line="510"/>
       <source>Door</source>
       <translation>Дзверы</translation>
     </message>
@@ -2303,7 +2303,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Адчыніць апорны элемент</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="758"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Create external reference</source>
       <translation>Стварыць вонкавы апорны элемент</translation>
     </message>
@@ -3056,7 +3056,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="59"/>
       <source>Pipe</source>
-      <translation>Труба</translation>
+      <translation>Трубаправод</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
@@ -3262,7 +3262,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="809"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Адлегласць</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="810"/>
@@ -3560,7 +3560,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="186"/>
       <source>Space</source>
-      <translation>Прагал</translation>
+      <translation>Памяшканне</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="241"/>
@@ -3703,7 +3703,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
-      <translation>Апытанне</translation>
+      <translation>Спіс памераў</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
@@ -3805,7 +3805,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1645"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation>У аб'екта няма атрыбуту IfcProperties. Адмяніць стварэнне аркуша для аб'екта:</translation>
+      <translation>У аб'екта няма атрыбуту IfcProperties. Скасаваць стварэнне аркуша для аб'екта:</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1663"/>
@@ -3844,7 +3844,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="270"/>
       <source>Structure</source>
-      <translation>Структура</translation>
+      <translation>Канструкцыя</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
@@ -5785,7 +5785,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="275"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation>Аб'екты, якія ўтвараюць межы гэтага аб'екта памяшкання</translation>
+      <translation>Аб'екты, якія ўтвараюць межы аб'екта памяшкання</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="277"/>
@@ -6158,7 +6158,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSite.py" line="514"/>
       <source>Site</source>
-      <translation>Сайт</translation>
+      <translation>Мясцовасць</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="518"/>
@@ -6208,12 +6208,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="747"/>
+      <location filename="../../ArchReference.py" line="749"/>
       <source>External reference</source>
       <translation>Вонкавы спасылак</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="751"/>
+      <location filename="../../ArchReference.py" line="753"/>
       <source>Creates an external reference object</source>
       <translation>Стварае аб'ект вонкавай спасылкі</translation>
     </message>
@@ -6301,7 +6301,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="231"/>
       <source>Space</source>
-      <translation>Прагал</translation>
+      <translation>Памяшканне</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="235"/>
@@ -6509,7 +6509,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
-      <translation>Труба</translation>
+      <translation>Трубаправод</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="112"/>
@@ -6549,7 +6549,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="63"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation>Стварае графік для збору дадзеных з мадэлі</translation>
+      <translation>Стварае наменклатуру для збору дадзеных з мадэлі</translation>
     </message>
   </context>
   <context>
@@ -6761,12 +6761,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="1549"/>
       <source>Survey</source>
-      <translation>Апытанне</translation>
+      <translation>Спіс памераў</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1552"/>
       <source>Starts survey</source>
-      <translation>Пачынае даследаванне</translation>
+      <translation>Пачынае даследаванне спісу памераў</translation>
     </message>
   </context>
   <context>
@@ -6858,7 +6858,7 @@ Building creation aborted.</source>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <source>Draft</source>
-      <translation>Асадка</translation>
+      <translation>Чарнавік</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="256"/>
