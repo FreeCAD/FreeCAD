@@ -30,6 +30,7 @@ import os
 import FreeCAD
 
 from materialtools.cardutils import get_material_template
+import Material
 
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -97,6 +98,10 @@ def decode(name):
 # as we had and we might will have problems again and again
 # https://github.com/berndhahnebach/FreeCAD_bhb/commits/materialdev
 
+def read(filename):
+    materialManager = Material.MaterialManager()
+    material = materialManager.getMaterialByPath(filename)
+    return material.Properties
 
 # Metainformation
 # first two lines HAVE, REALLY HAVE to be the same (no comment) in any card file !!!!!
@@ -106,7 +111,7 @@ def decode(name):
 # Line3: information string
 # Line4: information link
 # Line5: FreeCAD version info or empty
-def read(filename):
+def read_old(filename):
     "reads a FCMat file and returns a dictionary from it"
 
     # the reader returns a dictionary in any case even if the file  has problems

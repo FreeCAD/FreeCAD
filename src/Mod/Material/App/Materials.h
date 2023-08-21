@@ -143,8 +143,10 @@ public:
     const MaterialProperty &getPhysicalProperty(const QString &name) const;
     MaterialProperty &getAppearanceProperty(const QString &name);
     const MaterialProperty &getAppearanceProperty(const QString &name) const;
-    const QString getPhysicalValue(const QString &name) const;
-    const QString getAppearanceValue(const QString &name) const;
+    const QVariant getPhysicalValue(const QString &name) const;
+    const QString getPhysicalValueString(const QString &name) const;
+    const QVariant getAppearanceValue(const QString &name) const;
+    const QString getAppearanceValueString(const QString &name) const;
     bool hasPhysicalProperty(const QString& name) const;
     bool hasAppearanceProperty(const QString& name) const;
 

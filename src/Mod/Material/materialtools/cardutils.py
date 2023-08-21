@@ -28,6 +28,7 @@ from os.path import join
 from pathlib import Path
 
 import FreeCAD
+import Material
 
 
 unicode = str
@@ -259,22 +260,44 @@ def output_resources(resources):
 # used in material editor and FEM material task panels
 
 def import_materials(category='Solid', template=False):
-
-    resources = get_material_resources(category)
-
+    materialManager = Material.MaterialManager()
+    mats = materialManager.Materials
     materials = {}
     cards = {}
     icons = {}
-    for path in resources.keys():
-        materials, cards, icons = add_cards_from_a_dir(
-            materials,
-            cards,
-            icons,
-            path,
-            resources[path]
-        )
+    for matUUID in mats:
+        mat = materialManager.getMaterial(matUUID)
+        physicalModels = mat.PhysicalModels
+        fluid = ('1ae66d8c-1ba1-4211-ad12-b9917573b202' in physicalModels)
+        if not fluid:
+            path = mat.LibraryRoot + "/" + mat.RelativePath
+            print(path)
+            materials[path] = mat.Properties
+            cards[path] = mat.Name
+            icons[path] = mat.LibraryIcon
+
+            print(path)
+            print(mat.Properties)
 
     return (materials, cards, icons)
+
+# def import_materials(category='Solid', template=False):
+
+#     resources = get_material_resources(category)
+
+#     materials = {}
+#     cards = {}
+#     icons = {}
+#     for path in resources.keys():
+#         materials, cards, icons = add_cards_from_a_dir(
+#             materials,
+#             cards,
+#             icons,
+#             path,
+#             resources[path]
+#         )
+
+#     return (materials, cards, icons)
 
 
 def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False):

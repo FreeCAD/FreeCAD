@@ -452,7 +452,16 @@ const MaterialProperty &Material::getAppearanceProperty(const QString &name) con
     }
 }
 
-const QString Material::getPhysicalValue(const QString &name) const
+const QVariant Material::getPhysicalValue(const QString &name) const
+{
+    try {
+        return _physical.at(name).getValue();
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
+const QString Material::getPhysicalValueString(const QString &name) const
 {
     try {
         return _physical.at(name).getValue().toString();
@@ -461,7 +470,16 @@ const QString Material::getPhysicalValue(const QString &name) const
     }
 }
 
-const QString Material::getAppearanceValue(const QString &name) const
+const QVariant Material::getAppearanceValue(const QString &name) const
+{
+    try {
+        return _appearance.at(name).getValue();
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
+const QString Material::getAppearanceValueString(const QString &name) const
 {
     try {
         return _appearance.at(name).getValue().toString();

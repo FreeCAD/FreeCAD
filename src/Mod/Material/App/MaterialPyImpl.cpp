@@ -266,6 +266,14 @@ Py::Dict MaterialPy::getProperties() const
 {
     Py::Dict dict;
 
+    // Maintain backwards compatibility
+    dict.setItem(Py::String("CardName"), Py::String(getMaterialPtr()->getName().toStdString()));
+    dict.setItem(Py::String("AuthorAndLicense"), Py::String(getMaterialPtr()->getAuthorAndLicense().toStdString()));
+    dict.setItem(Py::String("Name"), Py::String(getMaterialPtr()->getName().toStdString()));
+    dict.setItem(Py::String("Description"), Py::String(getMaterialPtr()->getDescription().toStdString()));
+    dict.setItem(Py::String("ReferenceSource"), Py::String(getMaterialPtr()->getReference().toStdString()));
+    dict.setItem(Py::String("SourceURL"), Py::String(getMaterialPtr()->getURL().toStdString()));
+
     auto properties = getMaterialPtr()->getPhysicalProperties();
     for (auto it = properties.begin(); it != properties.end(); it++)
     {

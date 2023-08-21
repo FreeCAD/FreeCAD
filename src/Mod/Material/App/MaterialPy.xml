@@ -137,19 +137,19 @@
     </Methode>
     <Attribute Name="Properties" ReadOnly="true">
       <Documentation>
-        <UserDocu>Dictionary of all material properties.</UserDocu>
+        <UserDocu>deprecated -- Dictionary of all material properties.</UserDocu>
       </Documentation>
       <Parameter Name="Properties" Type="Dict"/>
     </Attribute>
     <Attribute Name="PhysicalProperties" ReadOnly="true">
       <Documentation>
-        <UserDocu>Dictionary of material physical properties.</UserDocu>
+        <UserDocu>deprecated -- Dictionary of material physical properties.</UserDocu>
       </Documentation>
       <Parameter Name="PhysicalProperties" Type="Dict"/>
     </Attribute>
     <Attribute Name="AppearanceProperties" ReadOnly="true">
       <Documentation>
-        <UserDocu>Dictionary of material appearance properties.</UserDocu>
+        <UserDocu>deprecated -- Dictionary of material appearance properties.</UserDocu>
       </Documentation>
       <Parameter Name="AppearanceProperties" Type="Dict"/>
     </Attribute>

@@ -619,17 +619,17 @@ void MaterialsEditor::updatePreview() const
     QString sectionColor;
 
     if (_material.hasAppearanceProperty(QString::fromStdString("DiffuseColor")))
-        diffuseColor = _material.getAppearanceValue(QString::fromStdString("DiffuseColor"));
+        diffuseColor = _material.getAppearanceValueString(QString::fromStdString("DiffuseColor"));
     else if (_material.hasAppearanceProperty(QString::fromStdString("ViewColor")))
-        diffuseColor = _material.getAppearanceValue(QString::fromStdString("ViewColor"));
+        diffuseColor = _material.getAppearanceValueString(QString::fromStdString("ViewColor"));
     else if (_material.hasAppearanceProperty(QString::fromStdString("Color")))
-        diffuseColor = _material.getAppearanceValue(QString::fromStdString("Color"));
+        diffuseColor = _material.getAppearanceValueString(QString::fromStdString("Color"));
 
     if (_material.hasAppearanceProperty(QString::fromStdString("SpecularColor")))
-        highlightColor = _material.getAppearanceValue(QString::fromStdString("SpecularColor"));
+        highlightColor = _material.getAppearanceValueString(QString::fromStdString("SpecularColor"));
 
     if (_material.hasAppearanceProperty(QString::fromStdString("SectionColor")))
-        sectionColor = _material.getAppearanceValue(QString::fromStdString("SectionColor"));
+        sectionColor = _material.getAppearanceValueString(QString::fromStdString("SectionColor"));
 
     if ((diffuseColor.length() + highlightColor.length()) > 0)
     {
@@ -735,7 +735,7 @@ void MaterialsEditor::updateMaterialAppearance()
                     propertyItem->setToolTip(itp->second.getDescription());
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(_material.getAppearanceValue(key));
+                    auto valueItem = new QStandardItem(_material.getAppearanceValueString(key));
                     valueItem->setToolTip(itp->second.getDescription());
                     QVariant variant;
                     variant.setValue(&_material);
@@ -797,7 +797,7 @@ void MaterialsEditor::updateMaterialProperties()
                     propertyItem->setToolTip(modelProperty.getDescription());
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(_material.getPhysicalValue(key));
+                    auto valueItem = new QStandardItem(_material.getPhysicalValueString(key));
                     valueItem->setToolTip(modelProperty.getDescription());
                     QVariant variant;
                     variant.setValue(&_material);
