@@ -50,8 +50,8 @@ namespace Inspection
 class InspectionExport InspectActualGeometry
 {
 public:
-    InspectActualGeometry() {}
-    virtual ~InspectActualGeometry() {}
+    InspectActualGeometry() = default;
+    virtual ~InspectActualGeometry() = default;
     /// Number of points to be checked
     virtual unsigned long countPoints() const = 0;
     virtual Base::Vector3f getPoint(unsigned long) const = 0;
@@ -101,8 +101,8 @@ private:
 class InspectionExport InspectNominalGeometry
 {
 public:
-    InspectNominalGeometry() {}
-    virtual ~InspectNominalGeometry() {}
+    InspectNominalGeometry() = default;
+    virtual ~InspectNominalGeometry() = default;
     virtual float getDistance(const Base::Vector3f&) const = 0;
 };
 
