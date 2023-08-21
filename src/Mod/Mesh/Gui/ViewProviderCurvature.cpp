@@ -425,9 +425,6 @@ public:
         : vp(vp), s(s), p(p), n(n)
     {
     }
-    ~Annotation()
-    {
-    }
 
     static void run(void * data, SoSensor * sensor)
     {

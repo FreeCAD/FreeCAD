@@ -37,10 +37,6 @@ MeshTrimByPlane::MeshTrimByPlane(MeshKernel &rclM)
 {
 }
 
-MeshTrimByPlane::~MeshTrimByPlane()
-{
-}
-
 void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
                                   std::vector<FacetIndex> &trimFacets, std::vector<FacetIndex>& removeFacets) const
 {

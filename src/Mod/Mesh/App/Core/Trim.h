@@ -40,7 +40,6 @@ public:
 
 public:
     MeshTrimming(MeshKernel& mesh, const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly);
-    ~MeshTrimming();
 
 public:
     /**

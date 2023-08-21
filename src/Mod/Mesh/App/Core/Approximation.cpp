@@ -142,10 +142,6 @@ PlaneFit::PlaneFit()
 {
 }
 
-PlaneFit::~PlaneFit()
-{
-}
-
 float PlaneFit::Fit()
 {
     _bIsFitted = true;
@@ -1038,10 +1034,6 @@ CylinderFit::CylinderFit()
 {
 }
 
-CylinderFit::~CylinderFit()
-{
-}
-
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
 #if 0
@@ -1308,11 +1300,6 @@ SphereFit::SphereFit()
 {
 }
 
-SphereFit::~SphereFit()
-{
-
-}
-
 float SphereFit::GetRadius() const
 {
     if (_bIsFitted)
@@ -1433,10 +1420,6 @@ PolynomialFit::PolynomialFit()
 {
     for (float & i : _fCoeff)
         i = 0.0f;
-}
-
-PolynomialFit::~PolynomialFit()
-{
 }
 
 float PolynomialFit::Fit()

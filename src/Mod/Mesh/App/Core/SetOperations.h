@@ -57,8 +57,6 @@ public:
 
   /// Construction
   SetOperations (const MeshKernel &cutMesh1, const MeshKernel &cutMesh2, MeshKernel &result, OperationType opType, float minDistanceToPoint = 1e-5f);
-  /// Destruction
-  virtual ~SetOperations ();
 
 public:
 
@@ -81,9 +79,7 @@ private:
     public:
       MeshPoint         pt1, pt2;              // edge
 
-      Edge ()
-      {
-      }
+      Edge () = default;
 
       Edge (MeshPoint p1, MeshPoint p2)
       {
@@ -208,9 +204,6 @@ public:
         : kernel1(m1)
         , kernel2(m2)
         , minDistance(dist)
-    {
-    }
-    ~MeshIntersection()
     {
     }
 

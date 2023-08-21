@@ -78,9 +78,6 @@ public:
         , epsilonDegenerated(0.0f)
     {
     }
-    ~Private()
-    {
-    }
 
     void showFoldsFunction(bool on)
     {

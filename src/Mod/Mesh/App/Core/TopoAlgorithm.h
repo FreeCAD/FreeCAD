@@ -47,7 +47,7 @@ class MeshExport MeshTopoAlgorithm
 public:
     // construction/destruction
     explicit MeshTopoAlgorithm (MeshKernel &rclM);
-    virtual ~MeshTopoAlgorithm ();
+    ~MeshTopoAlgorithm ();
 
 public:
     /** @name Topological Operations */
@@ -331,7 +331,6 @@ public:
     enum TMode {OverEdge, OverPoint};
 
     explicit MeshComponents( const MeshKernel& rclMesh );
-    ~MeshComponents();
 
     /**
      * Searches for 'isles' of the mesh. If \a tMode is \a OverEdge then facets

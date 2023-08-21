@@ -516,10 +516,6 @@ MeshSurfaceVisitor::MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<Fa
 {
 }
 
-MeshSurfaceVisitor::~MeshSurfaceVisitor ()
-{
-}
-
 bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
                                      FacetIndex, unsigned long, unsigned short)
 {

@@ -61,7 +61,6 @@ class TaskDecimating : public Gui::TaskView::TaskDialog
 
 public:
     TaskDecimating();
-    ~TaskDecimating() override;
 
 public:
     bool accept() override;

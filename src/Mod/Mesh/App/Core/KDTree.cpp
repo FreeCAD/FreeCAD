@@ -39,17 +39,13 @@ struct Point3d
    {
    }
 
-   Point3d(const Point3d& pnt) : p(pnt.p), i(pnt.i)
-   {
-   }
+   Point3d(const Point3d& pnt) = default;
 
    Point3d(Point3d&& pnt) : p(pnt.p), i(pnt.i)
    {
    }
 
-   ~Point3d()
-   {
-   }
+   ~Point3d() = default;
 
    inline value_type operator[](const int N) const
    {
@@ -66,16 +62,13 @@ struct Point3d
       return (this->p) != (other.p);
    }
 
-   inline void operator=(const Point3d& other)
-   {
-       this->p = other.p;
-       this->i = other.i;
-   }
+   inline Point3d& operator=(const Point3d& other) = default;
 
-   inline void operator=(Point3d&& other)
+   inline Point3d& operator=(Point3d&& other)
    {
        this->p = other.p;
        this->i = other.i;
+       return *this;
    }
 
    Base::Vector3f p;

@@ -104,7 +104,6 @@ class TaskSmoothing : public Gui::TaskView::TaskDialog
 
 public:
     TaskSmoothing();
-    ~TaskSmoothing() override;
 
 public:
     bool accept() override;
