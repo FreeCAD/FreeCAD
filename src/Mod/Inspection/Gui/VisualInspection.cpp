@@ -54,9 +54,7 @@ public:
     {
     }
 
-    ~SingleSelectionItem () override
-    {
-    }
+    ~SingleSelectionItem () override = default;
 
     SingleSelectionItem* getCompetitiveItem() const
     {
