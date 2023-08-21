@@ -135,8 +135,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     updateUI();
 }
 
-TaskFemConstraintHeatflux::~TaskFemConstraintHeatflux()
-{}
+TaskFemConstraintHeatflux::~TaskFemConstraintHeatflux() = default;
 
 void TaskFemConstraintHeatflux::updateUI()
 {

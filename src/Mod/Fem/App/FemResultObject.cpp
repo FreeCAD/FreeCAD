@@ -47,9 +47,7 @@ FemResultObject::FemResultObject()
     Time.setStatus(App::Property::ReadOnly, true);
 }
 
-FemResultObject::~FemResultObject()
-{
-}
+FemResultObject::~FemResultObject() = default;
 
 short FemResultObject::mustExecute() const
 {

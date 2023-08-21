@@ -50,9 +50,7 @@ ViewProviderFemConstraintGear::ViewProviderFemConstraintGear()
     sPixmap = "FEM_ConstraintGear";
 }
 
-ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear()
-{
-}
+ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear() = default;
 
 bool ViewProviderFemConstraintGear::setEdit(int ModNum)
 {

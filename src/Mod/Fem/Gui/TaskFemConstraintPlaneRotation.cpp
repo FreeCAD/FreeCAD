@@ -96,8 +96,7 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(
     updateUI();
 }
 
-TaskFemConstraintPlaneRotation::~TaskFemConstraintPlaneRotation()
-{}
+TaskFemConstraintPlaneRotation::~TaskFemConstraintPlaneRotation() = default;
 
 void TaskFemConstraintPlaneRotation::updateUI()
 {

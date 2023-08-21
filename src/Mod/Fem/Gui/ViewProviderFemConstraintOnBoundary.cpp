@@ -36,13 +36,9 @@ using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintOnBoundary, FemGui::ViewProviderFemConstraint)
 
-ViewProviderFemConstraintOnBoundary::ViewProviderFemConstraintOnBoundary()
-{
-}
+ViewProviderFemConstraintOnBoundary::ViewProviderFemConstraintOnBoundary() = default;
 
-ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary()
-{
-}
+ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary() = default;
 
 void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 {

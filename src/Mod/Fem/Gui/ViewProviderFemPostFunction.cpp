@@ -86,13 +86,9 @@ void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App:
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunctionProvider, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider()
-{
-}
+ViewProviderFemPostFunctionProvider::ViewProviderFemPostFunctionProvider() = default;
 
-ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider()
-{
-}
+ViewProviderFemPostFunctionProvider::~ViewProviderFemPostFunctionProvider() = default;
 
 std::vector< App::DocumentObject* > ViewProviderFemPostFunctionProvider::claimChildren() const
 {
@@ -379,9 +375,7 @@ ViewProviderFemPostBoxFunction::ViewProviderFemPostBoxFunction()
     getGeometryNode()->addChild(ShapeNodes::postBox());
 }
 
-ViewProviderFemPostBoxFunction::~ViewProviderFemPostBoxFunction()
-{
-}
+ViewProviderFemPostBoxFunction::~ViewProviderFemPostBoxFunction() = default;
 
 void ViewProviderFemPostBoxFunction::draggerUpdate(SoDragger* m)
 {
@@ -461,9 +455,7 @@ BoxWidget::BoxWidget()
         this, &BoxWidget::heightChanged);
 }
 
-BoxWidget::~BoxWidget()
-{
-}
+BoxWidget::~BoxWidget() = default;
 
 void BoxWidget::applyPythonCode()
 {
@@ -564,9 +556,7 @@ ViewProviderFemPostCylinderFunction::ViewProviderFemPostCylinderFunction()
     getGeometryNode()->addChild(ShapeNodes::postCylinder());
 }
 
-ViewProviderFemPostCylinderFunction::~ViewProviderFemPostCylinderFunction()
-{
-}
+ViewProviderFemPostCylinderFunction::~ViewProviderFemPostCylinderFunction() = default;
 
 void ViewProviderFemPostCylinderFunction::draggerUpdate(SoDragger* m)
 {
@@ -646,9 +636,7 @@ CylinderWidget::CylinderWidget()
         this, &CylinderWidget::radiusChanged);
 }
 
-CylinderWidget::~CylinderWidget()
-{
-}
+CylinderWidget::~CylinderWidget() = default;
 
 void CylinderWidget::applyPythonCode()
 {
@@ -741,9 +729,7 @@ ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
     getGeometryNode()->addChild(ShapeNodes::postPlane());
 }
 
-ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction()
-{
-}
+ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() = default;
 
 void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m)
 {
@@ -860,9 +846,7 @@ PlaneWidget::PlaneWidget()
         this, &PlaneWidget::normalChanged);
 }
 
-PlaneWidget::~PlaneWidget()
-{
-}
+PlaneWidget::~PlaneWidget() = default;
 
 void PlaneWidget::applyPythonCode()
 {
@@ -936,9 +920,7 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction()
     getGeometryNode()->addChild(ShapeNodes::postSphere());
 }
 
-ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction()
-{
-}
+ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() = default;
 
 SoTransformManip* ViewProviderFemPostSphereFunction::setupManipulator()
 {
@@ -1022,9 +1004,7 @@ SphereWidget::SphereWidget()
         this, &SphereWidget::radiusChanged);
 }
 
-SphereWidget::~SphereWidget()
-{
-}
+SphereWidget::~SphereWidget() = default;
 
 void SphereWidget::applyPythonCode()
 {

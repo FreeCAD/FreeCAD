@@ -48,9 +48,7 @@ ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
     sPixmap = "FEM_ConstraintTransform";
 }
 
-ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform()
-{
-}
+ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform() = default;
 
 //FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintTransform::setEdit(int ModNum)

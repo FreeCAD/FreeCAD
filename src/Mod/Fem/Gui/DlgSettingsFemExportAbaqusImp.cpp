@@ -42,8 +42,7 @@ DlgSettingsFemExportAbaqusImp::DlgSettingsFemExportAbaqusImp(QWidget* parent)
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsFemExportAbaqusImp::~DlgSettingsFemExportAbaqusImp()
-{}
+DlgSettingsFemExportAbaqusImp::~DlgSettingsFemExportAbaqusImp() = default;
 
 void DlgSettingsFemExportAbaqusImp::saveSettings()
 {
