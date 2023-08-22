@@ -64,7 +64,7 @@ protected:
                                            const char *PropName) override;
 
 private:
-    bool lockOnChangeMutex;
+    bool lockOnChangeMutex{false};
 };
 
 }//Namespace Surface
