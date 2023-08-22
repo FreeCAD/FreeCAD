@@ -58,8 +58,8 @@ class SpreadsheetExport PropertySpreadsheetQuantity : public App::PropertyQuanti
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    PropertySpreadsheetQuantity(){}
-    ~PropertySpreadsheetQuantity() override{}
+    PropertySpreadsheetQuantity() = default;
+    ~PropertySpreadsheetQuantity() override = default;
 
     Property *Copy() const override;
     void Paste(const Property &from) override;

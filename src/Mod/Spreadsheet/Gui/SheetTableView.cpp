@@ -459,10 +459,7 @@ void SheetTableView::removeColumns()
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
-SheetTableView::~SheetTableView()
-{
-
-}
+SheetTableView::~SheetTableView() = default;
 
 void SheetTableView::updateCellSpan()
 {
