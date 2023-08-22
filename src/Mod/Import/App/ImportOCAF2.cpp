@@ -172,7 +172,7 @@ ImportOCAFOptions::ImportOCAFOptions()
 }
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), pDocument(d), default_name(name), sequencer(nullptr)
+    : pDoc(h), pDocument(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
