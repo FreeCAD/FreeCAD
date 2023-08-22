@@ -39,10 +39,6 @@ TrajectoryCompound::TrajectoryCompound()
 
 }
 
-TrajectoryCompound::~TrajectoryCompound()
-{
-}
-
 App::DocumentObjectExecReturn *TrajectoryCompound::execute()
 {
     const std::vector<DocumentObject*> &Tracs = Source.getValues();

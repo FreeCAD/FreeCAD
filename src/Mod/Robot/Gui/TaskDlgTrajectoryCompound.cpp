@@ -47,11 +47,6 @@ TaskDlgTrajectoryCompound::TaskDlgTrajectoryCompound(Robot::TrajectoryCompound *
     Content.push_back(select);
 }
 
-TaskDlgTrajectoryCompound::~TaskDlgTrajectoryCompound()
-{
-
-}
-
 //==== calls from the TaskView ===============================================================
 
 

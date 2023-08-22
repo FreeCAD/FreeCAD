@@ -38,7 +38,6 @@ class RobotExport TrajectoryCompound : public TrajectoryObject
 public:
     /// Constructor
     TrajectoryCompound();
-    ~TrajectoryCompound() override;
 
     App::PropertyLinkList     Source;
 

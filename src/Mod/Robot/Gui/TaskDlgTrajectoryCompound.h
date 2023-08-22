@@ -39,7 +39,6 @@ class RobotGuiExport TaskDlgTrajectoryCompound : public Gui::TaskView::TaskDialo
 
 public:
     TaskDlgTrajectoryCompound(Robot::TrajectoryCompound *);
-    ~TaskDlgTrajectoryCompound() override;
 
 public:
     /// is called the TaskView when the dialog is opened

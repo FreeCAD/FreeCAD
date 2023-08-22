@@ -60,10 +60,6 @@ RobotObject::RobotObject()
 
 }
 
-RobotObject::~RobotObject()
-{
-}
-
 short RobotObject::mustExecute() const
 {
     return 0;
