@@ -89,7 +89,7 @@ private:
     Eigen::MatrixXd get_nullspace();
 
 public:
-    LscmRelax() {}
+    LscmRelax() = default;
     LscmRelax(
         RowMat<double, 3> vertices,
         RowMat<long, 3> triangles,

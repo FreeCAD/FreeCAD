@@ -40,14 +40,9 @@
 
 using namespace Import;
 
-StepShape::StepShape()
-{
-}
+StepShape::StepShape() = default;
 
-
-StepShape::~StepShape()
-{
-}
+StepShape::~StepShape() = default;
 
 int StepShape::read(const char* fileName)
 {

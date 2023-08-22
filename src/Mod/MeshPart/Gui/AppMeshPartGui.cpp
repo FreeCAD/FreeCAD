@@ -52,8 +52,6 @@ public:
         initialize("This module is the MeshPartGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
 };
 

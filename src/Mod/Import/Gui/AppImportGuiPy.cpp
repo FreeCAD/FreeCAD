@@ -372,8 +372,6 @@ public:
         initialize("This module is the ImportGui module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {

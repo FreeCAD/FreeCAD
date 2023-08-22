@@ -85,9 +85,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     }
 }
 
-ExportOCAF::~ExportOCAF()
-{
-}
+ExportOCAF::~ExportOCAF() = default;
 
 std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
 {

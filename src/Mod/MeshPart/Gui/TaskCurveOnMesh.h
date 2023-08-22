@@ -68,7 +68,6 @@ class TaskCurveOnMesh : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskCurveOnMesh(Gui::View3DInventor* view);
-    ~TaskCurveOnMesh() override;
 
 public:
     bool reject() override;
