@@ -40,6 +40,7 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import utils
 from draftutils.translate import translate
 
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
@@ -1310,6 +1311,16 @@ class Plane:
         return None
 
 plane = Plane
+
+
+# Compatibility function:
+def getPlacementFromPoints(points):
+    """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
+
+    Calls DraftGeomUtils.placement_from_points(). See there.
+    """
+    utils.use_instead("DraftGeomUtils.placement_from_points")
+    return DraftGeomUtils.placement_from_points(*points[:3])
 
 
 def getPlacementFromFace(face, rotated=False):

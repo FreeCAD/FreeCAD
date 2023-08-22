@@ -517,6 +517,60 @@ def mirror(point, edge):
         return None
 
 
+def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
+    """Return a placement from 3 points defining an origin, an X axis and a Y axis.
+
+    If the vectors calculated from the arguments are too short or parallel,
+    the returned placement will have a default rotation.
+
+    Parameters
+    ----------
+    pt_pos : Base::Vector3
+        Origin (Base of Placement).
+
+    pt_x : Base::Vector3
+        Point on positive X axis. Or X axis vector if as_vectors is `True`.
+
+    pt_y : Base::Vector3
+        Point on positive Y axis. Or Y axis vector if as_vectors is `True`.
+
+    as_vectors : bool
+        If `True` treat pt_x and pt_y as axis vectors.
+
+    tol : float
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    See also:
+    ---------
+    DraftVecUtils.getRotation
+    DraftGeomUtils.getRotation
+
+    Return
+    ------
+    Base::Placement
+    """
+    err = 1e-7 if tol <= 0 else tol
+    if as_vectors is False:
+        vec_u = pt_x - pt_pos
+        vec_v = pt_y - pt_pos
+    else:
+        vec_u = App.Vector(pt_x)
+        vec_v = App.Vector(pt_y)
+
+    if vec_u.Length < err or vec_v.Length < err:
+        rot = App.Rotation()
+    else:
+        vec_u.normalize()
+        vec_v.normalize()
+        if vec_u.isEqual(vec_v, err) \
+                or vec_u.isEqual(vec_v.negative(), err):
+            rot = App.Rotation()
+        else:
+            rot = App.Rotation(vec_u, vec_v, App.Vector(), "XYZ")
+
+    return App.Placement(pt_pos, rot)
+
+
 #compatibility layer
 
 getSplineNormal = get_spline_normal
