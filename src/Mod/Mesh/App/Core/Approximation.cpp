@@ -51,10 +51,7 @@
 
 using namespace MeshCore;
 
-Approximation::Approximation()
-  : _bIsFitted(false), _fLastResult(FLOAT_MAX)
-{
-}
+Approximation::Approximation() = default;
 
 Approximation::~Approximation()
 {
@@ -567,18 +564,8 @@ void QuadraticFit::CalcZValues( double x, double y, double &dZ1, double &dZ2 ) c
 // -------------------------------------------------------------------------------
 
 SurfaceFit::SurfaceFit()
-   : PlaneFit()
+    : _fCoeff{}
 {
-    _fCoeff[0] = 0.0;
-    _fCoeff[1] = 0.0;
-    _fCoeff[2] = 0.0;
-    _fCoeff[3] = 0.0;
-    _fCoeff[4] = 0.0;
-    _fCoeff[5] = 0.0;
-    _fCoeff[6] = 0.0;
-    _fCoeff[7] = 0.0;
-    _fCoeff[8] = 0.0;
-    _fCoeff[9] = 0.0;
 }
 
 float SurfaceFit::Fit()
@@ -1029,8 +1016,6 @@ struct LMCylinderFunctor
 CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
-  , _fRadius(0)
-  , _initialGuess(false)
 {
 }
 
@@ -1296,7 +1281,6 @@ void CylinderFit::ProjectToCylinder()
 
 SphereFit::SphereFit()
   : _vCenter(0,0,0)
-  , _fRadius(0)
 {
 }
 
@@ -1417,9 +1401,8 @@ void SphereFit::ProjectToSphere()
 // -------------------------------------------------------------------------------
 
 PolynomialFit::PolynomialFit()
+    : _fCoeff{}
 {
-    for (float & i : _fCoeff)
-        i = 0.0f;
 }
 
 float PolynomialFit::Fit()

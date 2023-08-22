@@ -93,7 +93,7 @@ protected:
     ~SoFCMeshPickNode() override;
 
 private:
-    MeshCore::MeshFacetGrid* meshGrid;
+    MeshCore::MeshFacetGrid* meshGrid{nullptr};
 };
 
 // -------------------------------------------------------
@@ -212,13 +212,13 @@ private:
     void renderCoordsGLArray(SoGLRenderAction *action);
 
 private:
-    GLuint *selectBuf;
-    GLfloat modelview[16];
-    GLfloat projection[16];
+    GLuint *selectBuf{nullptr};
+    GLfloat modelview[16]{};
+    GLfloat projection[16]{};
     // Vertex array handling
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
-    SbBool updateGLArray;
+    SbBool updateGLArray{false};
 };
 
 class MeshGuiExport SoFCMeshSegmentShape : public SoShape {

@@ -36,9 +36,7 @@ MeshSearchNeighbours::MeshSearchNeighbours (const MeshKernel &rclM, float fSampl
   , _rclFAry(rclM.GetFacets())
   , _rclPAry(rclM.GetPoints())
   , _clPt2Fa(rclM)
-  , _fMaxDistanceP2(0)
   , _fSampleDistance(fSampleDistance)
-  , _bTooFewPoints(false)
 {
     MeshAlgorithm(_rclMesh).ResetFacetFlag(MeshFacet::MARKED);
     MeshAlgorithm(_rclMesh).ResetPointFlag(MeshPoint::MARKED);

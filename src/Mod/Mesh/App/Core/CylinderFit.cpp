@@ -72,12 +72,6 @@ using namespace MeshCoreFit;
 CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
-  , _dRadius(0)
-  , _numIter(0)
-  , _posConvLimit(0.0001)
-  , _dirConvLimit(0.000001)
-  , _vConvLimit(0.001)
-  , _maxIter(50)
 {
 }
 

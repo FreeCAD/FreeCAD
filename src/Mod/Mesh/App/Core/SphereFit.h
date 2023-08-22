@@ -112,11 +112,11 @@ protected:
 
 protected:
     Base::Vector3d _vCenter;/**< Center of sphere. */
-    double _dRadius;		/**< Radius of the sphere. */
-	int _numIter;			/**< Number of iterations for solution to converge. */
-	double _posConvLimit;	/**< Position and radius parameter convergence threshold. */
-	double _vConvLimit;		/**< Residual convergence threshold. */
-	int _maxIter;			/**< Maximum number of iterations. */
+    double _dRadius{0};		/**< Radius of the sphere. */
+	int _numIter{0};			/**< Number of iterations for solution to converge. */
+	double _posConvLimit{0.0001};	/**< Position and radius parameter convergence threshold. */
+	double _vConvLimit{0.001};		/**< Residual convergence threshold. */
+	int _maxIter{50};			/**< Maximum number of iterations. */
 
 };
 

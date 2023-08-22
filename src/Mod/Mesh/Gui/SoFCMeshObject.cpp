@@ -331,7 +331,7 @@ SO_NODE_SOURCE(SoFCMeshPickNode)
 /*!
   Constructor.
 */
-SoFCMeshPickNode::SoFCMeshPickNode() : meshGrid(nullptr)
+SoFCMeshPickNode::SoFCMeshPickNode()
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshPickNode);
 
@@ -585,8 +585,6 @@ void SoFCMeshObjectShape::initClass()
 
 SoFCMeshObjectShape::SoFCMeshObjectShape()
     : renderTriangleLimit(UINT_MAX)
-    , selectBuf(nullptr)
-    , updateGLArray(false)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
     setName(SoFCMeshObjectShape::getClassTypeId().getName());
