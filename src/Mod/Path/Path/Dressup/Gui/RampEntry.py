@@ -479,9 +479,9 @@ class ObjectDressup:
         ):
             return Part.makeLine(startPoint, endPoint)
         elif type(originalEdge.Curve) == Part.Circle:
-            arcMid = originalEdge.valueAt(
-                (originalEdge.FirstParameter + originalEdge.LastParameter) / 2
-            )
+            firstParameter = originalEdge.Curve.parameter(startPoint)
+            lastParameter = originalEdge.Curve.parameter(endPoint)
+            arcMid = originalEdge.valueAt((firstParameter + lastParameter) / 2)
             arcMid.z = (startPoint.z + endPoint.z) / 2
             return Part.Arc(startPoint, arcMid, endPoint).toShape()
         else:
