@@ -68,7 +68,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {
 
 PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocumentObject)
 
-ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
+ViewProviderInspection::ViewProviderInspection()
 {
     ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",(App::PropertyType) (App::Prop_Output|App::Prop_Hidden),"");
     ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");

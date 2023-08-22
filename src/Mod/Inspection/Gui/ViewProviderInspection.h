@@ -103,7 +103,7 @@ protected:
     SoCoordinate3    * pcCoords;
 
 private:
-    float search_radius;
+    float search_radius{FLT_MAX};
     static bool addflag;
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
