@@ -164,7 +164,7 @@ inline const QStringList editModeToolbarNames()
                         QString::fromLatin1("Sketcher constraints"),
                         QString::fromLatin1("Sketcher tools"),
                         QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher virtual space"),
+                        QString::fromLatin1("Sketcher visual"),
                         QString::fromLatin1("Sketcher edit tools")};
 }
 
