@@ -459,7 +459,6 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
 
 InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float /*radius*/)
     : _rShape(shape)
-    , isSolid(false)
 {
     distss = new BRepExtrema_DistShapeShape();
     distss->LoadS1(_rShape);
@@ -717,7 +716,7 @@ struct DistanceInspection
 // Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
 class DistanceInspectionRMS {
 public:
-    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {}
+    DistanceInspectionRMS() = default;
     DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
     {
         this->m_numv += rhs.m_numv;
@@ -730,8 +729,8 @@ public:
             return 0.0;
         return sqrt(this->m_sumsq / (double)this->m_numv);
     }
-    int m_numv;
-    double m_sumsq;
+    int m_numv{0};
+    double m_sumsq{0.0};
 };
 }
 
