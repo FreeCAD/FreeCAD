@@ -58,7 +58,6 @@ class TaskFitBSplineSurface : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskFitBSplineSurface(const App::DocumentObjectT&);
-    ~TaskFitBSplineSurface() override;
 
 public:
     void open() override;
