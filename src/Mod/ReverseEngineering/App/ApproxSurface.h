@@ -337,23 +337,23 @@ public:
     virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
 protected:
-    bool                    _bGetUVDir;        //! Determines whether u/v direction is given
-    bool                    _bSmoothing;       //! Use smoothing
-    double                  _fSmoothInfluence; //! Influence of smoothing
-    unsigned                _usUOrder;         //! Order in u-direction
-    unsigned                _usVOrder;         //! Order in v-direction
-    unsigned                _usUCtrlpoints;    //! Number of control points in the u-direction
-    unsigned                _usVCtrlpoints;    //! Number of control points in the v-direction
-    Base::Vector3d          _clU;              //! u-direction
-    Base::Vector3d          _clV;              //! v-direction
-    Base::Vector3d          _clW;              //! w-direction (perpendicular to u & v directions)
-    TColgp_Array1OfPnt*     _pvcPoints;        //! Raw data point list
-    TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameter value for the points in the list
-    TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array of control points
-    TColStd_Array1OfReal    _vUKnots;          //! Knot vector of the B-spline surface in the u-direction
-    TColStd_Array1OfReal    _vVKnots;          //! Knot vector of the B-spline surface in the v-direction
-    TColStd_Array1OfInteger _vUMults;          //! Multiplicity of the knots in the knot vector
-    TColStd_Array1OfInteger _vVMults;          //! Multiplicity of the knots in the knot vector
+    bool                    _bGetUVDir;             //! Determines whether u/v direction is given
+    bool                    _bSmoothing;            //! Use smoothing
+    double                  _fSmoothInfluence;      //! Influence of smoothing
+    unsigned                _usUOrder;              //! Order in u-direction
+    unsigned                _usVOrder;              //! Order in v-direction
+    unsigned                _usUCtrlpoints;         //! Number of control points in the u-direction
+    unsigned                _usVCtrlpoints;         //! Number of control points in the v-direction
+    Base::Vector3d          _clU;                   //! u-direction
+    Base::Vector3d          _clV;                   //! v-direction
+    Base::Vector3d          _clW;                   //! w-direction (perpendicular to u & v directions)
+    TColgp_Array1OfPnt*     _pvcPoints{nullptr};    //! Raw data point list
+    TColgp_Array1OfPnt2d*   _pvcUVParam{nullptr};   //! Parameter value for the points in the list
+    TColgp_Array2OfPnt      _vCtrlPntsOfSurf;       //! Array of control points
+    TColStd_Array1OfReal    _vUKnots;               //! Knot vector of the B-spline surface in the u-direction
+    TColStd_Array1OfReal    _vVKnots;               //! Knot vector of the B-spline surface in the v-direction
+    TColStd_Array1OfInteger _vUMults;               //! Multiplicity of the knots in the knot vector
+    TColStd_Array1OfInteger _vVMults;               //! Multiplicity of the knots in the knot vector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
