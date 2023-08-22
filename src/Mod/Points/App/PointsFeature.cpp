@@ -42,10 +42,6 @@ Feature::Feature()
     ADD_PROPERTY(Points, (PointKernel()));
 }
 
-Feature::~Feature()
-{
-}
-
 short Feature::mustExecute() const
 {
     return 0;

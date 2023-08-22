@@ -62,7 +62,7 @@ public:
   /// Construction
   PointsGrid (const PointKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Destruction
-  virtual ~PointsGrid () { }
+  virtual ~PointsGrid () = default;
   //@}
 
 public:

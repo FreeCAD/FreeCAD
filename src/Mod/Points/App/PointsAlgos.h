@@ -77,7 +77,6 @@ class AscReader : public Reader
 {
 public:
     AscReader();
-    ~AscReader() override;
     void read(const std::string& filename) override;
 };
 
@@ -85,7 +84,6 @@ class PlyReader : public Reader
 {
 public:
     PlyReader();
-    ~PlyReader() override;
     void read(const std::string& filename) override;
 
 private:
@@ -103,7 +101,6 @@ class PcdReader : public Reader
 {
 public:
     PcdReader();
-    ~PcdReader() override;
     void read(const std::string& filename) override;
 
 private:
@@ -120,7 +117,6 @@ class E57Reader : public Reader
 {
 public:
     E57Reader(const bool& Color, const bool& State, const float& Distance);
-    ~E57Reader() override;
     void read(const std::string& filename) override;
 protected:
     bool useColor, checkState;
@@ -154,7 +150,6 @@ class AscWriter : public Writer
 {
 public:
     explicit AscWriter(const PointKernel&);
-    ~AscWriter() override;
     void write(const std::string& filename) override;
 };
 
@@ -162,7 +157,6 @@ class PlyWriter : public Writer
 {
 public:
     explicit PlyWriter(const PointKernel&);
-    ~PlyWriter() override;
     void write(const std::string& filename) override;
 };
 
@@ -170,7 +164,6 @@ class PcdWriter : public Writer
 {
 public:
     explicit PcdWriter(const PointKernel&);
-    ~PcdWriter() override;
     void write(const std::string& filename) override;
 };
 

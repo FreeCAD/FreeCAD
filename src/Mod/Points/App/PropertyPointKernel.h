@@ -37,7 +37,6 @@ class PointsExport PropertyPointKernel : public App::PropertyComplexGeoData
 
 public:
     PropertyPointKernel();
-    ~PropertyPointKernel() override;
 
     /** @name Getter/setter */
     //@{
