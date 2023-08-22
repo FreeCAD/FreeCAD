@@ -70,7 +70,6 @@ using namespace Import;
 ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)
-    , filterBaseFeature(true)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
