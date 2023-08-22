@@ -277,13 +277,9 @@ std::string ShapeSegment::getName() const
 
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData)
 
-TopoShape::TopoShape()
-{
-}
+TopoShape::TopoShape() = default;
 
-TopoShape::~TopoShape()
-{
-}
+TopoShape::~TopoShape() = default;
 
 TopoShape::TopoShape(const TopoDS_Shape& shape)
   : _Shape(shape)

@@ -45,10 +45,7 @@ ViewProviderPrimitive::ViewProviderPrimitive()
     extension.setIgnoreOverlayIcon(true);
 }
 
-ViewProviderPrimitive::~ViewProviderPrimitive()
-{
-
-}
+ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {

@@ -80,10 +80,7 @@ Mirroring::Mirroring(QWidget* parent)
 /*
  *  Destroys the object and frees any allocated resources
  */
-Mirroring::~Mirroring()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+Mirroring::~Mirroring() = default;
 
 void Mirroring::changeEvent(QEvent *e)
 {
@@ -199,11 +196,6 @@ TaskMirroring::TaskMirroring()
         widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskMirroring::~TaskMirroring()
-{
-    // automatically deleted in the sub-class
 }
 
 bool TaskMirroring::accept()

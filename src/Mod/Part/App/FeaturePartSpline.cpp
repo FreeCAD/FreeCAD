@@ -30,8 +30,6 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Spline, Part::Feature)
 
 
-Spline::Spline()
-{
-}
+Spline::Spline() = default;
 
 

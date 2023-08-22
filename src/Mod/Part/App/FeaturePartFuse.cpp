@@ -42,9 +42,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
 
-Fuse::Fuse()
-{
-}
+Fuse::Fuse() = default;
 
 BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {

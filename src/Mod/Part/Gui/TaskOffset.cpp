@@ -50,9 +50,7 @@ public:
     Private() : offset(nullptr)
     {
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::OffsetWidget */
@@ -251,9 +249,7 @@ TaskOffset::TaskOffset(Part::Offset* offset)
     Content.push_back(taskbox);
 }
 
-TaskOffset::~TaskOffset()
-{
-}
+TaskOffset::~TaskOffset() = default;
 
 Part::Offset* TaskOffset::getObject() const
 {

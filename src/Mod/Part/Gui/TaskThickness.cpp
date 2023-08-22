@@ -55,9 +55,7 @@ public:
     Private() : thickness(nullptr)
     {
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 
     class FaceSelection : public Gui::SelectionFilterGate
     {
@@ -307,10 +305,6 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskThickness::~TaskThickness()
-{
 }
 
 Part::Thickness* TaskThickness::getObject() const

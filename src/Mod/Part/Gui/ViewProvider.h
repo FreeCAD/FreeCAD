@@ -36,8 +36,8 @@ namespace PartGui {
 class ViewProviderShapeBuilder : public Gui::ViewProviderBuilder
 {
 public:
-    ViewProviderShapeBuilder(){}
-    ~ViewProviderShapeBuilder() override{}
+    ViewProviderShapeBuilder() = default;
+    ~ViewProviderShapeBuilder() override = default;
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createShape(const App::Property*, SoSeparator*) const;
 };

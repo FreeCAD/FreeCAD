@@ -1010,9 +1010,7 @@ FilletEdgesDialog::FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::Fill
     hboxLayout->addWidget(buttonBox);
 }
 
-FilletEdgesDialog::~FilletEdgesDialog()
-{
-}
+FilletEdgesDialog::~FilletEdgesDialog() = default;
 
 void FilletEdgesDialog::accept()
 {
@@ -1072,9 +1070,7 @@ DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt:
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgChamferEdges::~DlgChamferEdges()
-{
-}
+DlgChamferEdges::~DlgChamferEdges() = default;
 
 const char* DlgChamferEdges::getFilletType() const
 {

@@ -478,11 +478,6 @@ TaskBooleanOperation::TaskBooleanOperation()
     Content.push_back(taskbox);
 }
 
-TaskBooleanOperation::~TaskBooleanOperation()
-{
-    // automatically deleted in the sub-class
-}
-
 void TaskBooleanOperation::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {

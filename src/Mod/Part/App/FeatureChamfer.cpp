@@ -38,9 +38,7 @@ using namespace Part;
 
 PROPERTY_SOURCE(Part::Chamfer, Part::FilletBase)
 
-Chamfer::Chamfer()
-{
-}
+Chamfer::Chamfer() = default;
 
 App::DocumentObjectExecReturn *Chamfer::execute()
 {
