@@ -258,9 +258,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     this->groupLayout()->addWidget(proxy);
 }
 
-TaskHoleParameters::~TaskHoleParameters()
-{
-}
+TaskHoleParameters::~TaskHoleParameters() = default;
 
 void TaskHoleParameters::threadedChanged()
 {
@@ -1189,10 +1187,7 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     Content.push_back(parameter);
 }
 
-TaskDlgHoleParameters::~TaskDlgHoleParameters()
-{
-
-}
+TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;
 
 #include "moc_TaskHoleParameters.cpp"
 

@@ -123,9 +123,7 @@ FeatureAdditivePython::FeatureAdditivePython()
     addSubType = Additive;
 }
 
-FeatureAdditivePython::~FeatureAdditivePython()
-{
-}
+FeatureAdditivePython::~FeatureAdditivePython() = default;
 
 
 PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubPython)
@@ -135,8 +133,6 @@ FeatureSubtractivePython::FeatureSubtractivePython()
     addSubType = Subtractive;
 }
 
-FeatureSubtractivePython::~FeatureSubtractivePython()
-{
-}
+FeatureSubtractivePython::~FeatureSubtractivePython() = default;
 
 }
