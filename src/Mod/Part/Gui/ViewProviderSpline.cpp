@@ -77,7 +77,6 @@ EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderSplineExtension, Gui::ViewProvide
 
 
 ViewProviderSplineExtension::ViewProviderSplineExtension()
-    : pcControlPoints(nullptr)
 {
     initExtensionType(ViewProviderSplineExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY(ControlPoints,(false));

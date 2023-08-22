@@ -56,9 +56,9 @@ namespace PartGui {
     {
     public:
         enum Type {VERTEX, EDGE, FACE, ALL};
-        Type mode;
+        Type mode{ALL};
         ShapeSelection()
-            : Gui::SelectionFilterGate(nullPointer()), mode(ALL)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         void setMode(Type mode)

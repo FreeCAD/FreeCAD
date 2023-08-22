@@ -165,11 +165,12 @@ QVariant FilletRadiusModel::data(const QModelIndex& index, int role) const
 namespace PartGui {
     class EdgeFaceSelection : public Gui::SelectionFilterGate
     {
-        bool allowEdge;
+        bool allowEdge{true};
         App::DocumentObject*& object;
     public:
         explicit EdgeFaceSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate(nullPointer()), allowEdge(true), object(obj)
+            : Gui::SelectionFilterGate(nullPointer())
+            , object(obj)
         {
         }
         void selectEdges()

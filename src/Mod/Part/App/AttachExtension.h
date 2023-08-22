@@ -125,7 +125,7 @@ public:
     void updateAttacherVals();
 
 private:
-    Attacher::AttachEngine* _attacher;
+    Attacher::AttachEngine* _attacher = nullptr;
     mutable int _active = -1;
 };
 

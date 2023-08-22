@@ -363,10 +363,10 @@ public: //enums
 public: //members
     App::PropertyLinkSubList references;
 
-    eMapMode mapMode;
-    bool mapReverse;
-    double attachParameter;
-    double surfU, surfV;
+    eMapMode mapMode = mmDeactivated;
+    bool mapReverse = false;
+    double attachParameter = 0.0;
+    double surfU = 0.0, surfV = 0.0;
     Base::Placement attachmentOffset;
 
     /**

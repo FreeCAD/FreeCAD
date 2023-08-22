@@ -61,8 +61,8 @@ private:
     static void selectionCallback(void * ud, SoEventCallback * cb);
 
 private:
-    bool autodelete;
-    TopAbs_ShapeEnum shapeEnum;
+    bool autodelete{false};
+    TopAbs_ShapeEnum shapeEnum{TopAbs_SHAPE};
 };
 
 } //namespace PartGui

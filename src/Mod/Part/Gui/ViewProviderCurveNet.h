@@ -76,11 +76,11 @@ protected:
 
     std::list<Node> NodeList;
 
-    bool bInEdit;
-    bool bMovePointMode;
+    bool bInEdit{false};
+    bool bMovePointMode{false};
     Node PointToMove;
     /// root of the edge and vertex points
-    SoSeparator *EdgeRoot, *VertexRoot;
+    SoSeparator *EdgeRoot{nullptr}, *VertexRoot{nullptr};
 
     Standard_Boolean computeEdges   (SoSeparator* root, const TopoDS_Shape &myShape);
     Standard_Boolean computeVertices(SoSeparator* root, const TopoDS_Shape &myShape);
