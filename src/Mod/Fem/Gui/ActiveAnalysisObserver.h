@@ -55,9 +55,9 @@ private:
 
 private:
     static ActiveAnalysisObserver* inst;
-    Fem::FemAnalysis* activeObject;
-    Gui::ViewProviderDocumentObject* activeView;
-    Gui::Document* activeDocument;
+    Fem::FemAnalysis* activeObject{nullptr};
+    Gui::ViewProviderDocumentObject* activeView{nullptr};
+    Gui::Document* activeDocument{nullptr};
 };
 
 } //namespace FemGui
