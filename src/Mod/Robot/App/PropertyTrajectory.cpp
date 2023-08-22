@@ -36,13 +36,9 @@ using namespace Robot;
 
 TYPESYSTEM_SOURCE(Robot::PropertyTrajectory , App::Property)
 
-PropertyTrajectory::PropertyTrajectory()
-{
-}
+PropertyTrajectory::PropertyTrajectory() = default;
 
-PropertyTrajectory::~PropertyTrajectory()
-{
-}
+PropertyTrajectory::~PropertyTrajectory() = default;
 
 void PropertyTrajectory::setValue(const Trajectory& sh)
 {

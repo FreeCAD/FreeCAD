@@ -51,9 +51,7 @@ Simulation::Simulation(const Robot::Trajectory &Trac,Robot::Robot6Axis &Rob)
 
 }
 
-Simulation::~Simulation()
-{
-}
+Simulation::~Simulation() = default;
 
 void Simulation::step(double tick)
 {

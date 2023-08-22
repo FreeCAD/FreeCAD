@@ -50,10 +50,6 @@ TrajectoryDressUpObject::TrajectoryDressUpObject()
 
 }
 
-TrajectoryDressUpObject::~TrajectoryDressUpObject()
-{
-}
-
 App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
 {
     Robot::Trajectory result;

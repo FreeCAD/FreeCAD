@@ -39,7 +39,6 @@ class RobotExport TrajectoryDressUpObject : public TrajectoryObject
 public:
     /// Constructor
     TrajectoryDressUpObject();
-    ~TrajectoryDressUpObject() override;
 
     App::PropertyLink         Source;
     App::PropertySpeed        Speed;
