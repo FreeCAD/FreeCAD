@@ -1726,11 +1726,11 @@ private:
 };
 }
 
-E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
+E57Reader::E57Reader(bool Color,  bool State, double Distance)
+    : useColor{Color}
+    , checkState{State}
+    , minDistance{Distance}
 {
-    useColor = Color;
-    checkState = State;
-    minDistance = Distance;
 }
 
 void E57Reader::read(const std::string& filename)

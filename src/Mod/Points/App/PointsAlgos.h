@@ -116,11 +116,11 @@ private:
 class E57Reader : public Reader
 {
 public:
-    E57Reader(const bool& Color, const bool& State, const float& Distance);
+    E57Reader(bool Color, bool State, double Distance);
     void read(const std::string& filename) override;
 protected:
     bool useColor, checkState;
-    float minDistance;
+    double minDistance;
 };
 
 class Writer
