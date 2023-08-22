@@ -41,12 +41,8 @@ class PoissonWidget::Private
 public:
     Ui_PoissonWidget ui;
     App::DocumentObjectT obj;
-    Private()
-    {
-    }
-    ~Private()
-    {
-    }
+    Private() = default;
+    ~Private() = default;
 };
 
 /* TRANSLATOR ReenGui::PoissonWidget */
@@ -123,9 +119,7 @@ TaskPoisson::TaskPoisson(const App::DocumentObjectT& obj)
     Content.push_back(taskbox);
 }
 
-TaskPoisson::~TaskPoisson()
-{
-}
+TaskPoisson::~TaskPoisson() = default;
 
 void TaskPoisson::open()
 {

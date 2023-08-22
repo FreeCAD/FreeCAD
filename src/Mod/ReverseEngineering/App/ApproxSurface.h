@@ -375,7 +375,7 @@ public:
                                unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
                                unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction
 
-    ~BSplineParameterCorrection() override{}
+    ~BSplineParameterCorrection() override = default;
 
 protected:
     /**
