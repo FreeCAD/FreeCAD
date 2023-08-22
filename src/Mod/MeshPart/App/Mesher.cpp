@@ -127,11 +127,11 @@ namespace MeshPart {
 struct Vertex {
     static const double deflection;
     Standard_Real x,y,z;
-    Standard_Integer i;
+    Standard_Integer i = 0;
     mutable MeshCore::MeshPoint p;
 
     Vertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
-        : x(X),y(Y),z(Z),i(0)
+        : x(X),y(Y),z(Z)
     {
         p.x = static_cast<float>(x);
         p.y = static_cast<float>(y);
@@ -306,26 +306,6 @@ public:
 
 Mesher::Mesher(const TopoDS_Shape& s)
   : shape(s)
-  , method(None)
-  , maxLength(0)
-  , maxArea(0)
-  , localLength(0)
-  , deflection(0)
-  , angularDeflection(0.5)
-  , minLen(0)
-  , maxLen(0)
-  , relative(false)
-  , regular(false)
-  , segments(false)
-#if defined (HAVE_NETGEN)
-  , fineness(5)
-  , growthRate(0)
-  , nbSegPerEdge(0)
-  , nbSegPerRadius(0)
-  , secondOrder(false)
-  , optimize(true)
-  , allowquad(false)
-#endif
 {
 }
 
