@@ -259,23 +259,13 @@ PointKernel::const_point_iterator::const_point_iterator
 }
 
 PointKernel::const_point_iterator::const_point_iterator
-(const PointKernel::const_point_iterator& fi)
-  : _kernel(fi._kernel), _point(fi._point), _p_it(fi._p_it)
-{
-}
+(const PointKernel::const_point_iterator& fi) = default;
 
-//PointKernel::const_point_iterator::~const_point_iterator()
-//{
-//}
+PointKernel::const_point_iterator::~const_point_iterator() = default;
 
 PointKernel::const_point_iterator&
-PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iterator& pi)
-{
-    this->_kernel  = pi._kernel;
-    this->_point = pi._point;
-    this->_p_it  = pi._p_it;
-    return *this;
-}
+PointKernel::const_point_iterator::operator=
+(const PointKernel::const_point_iterator& pi) = default;
 
 void PointKernel::const_point_iterator::dereference()
 {

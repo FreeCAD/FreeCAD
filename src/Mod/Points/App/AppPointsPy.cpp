@@ -59,8 +59,6 @@ public:
         initialize("This module is the Points module."); // register with Python
     }
 
-    ~Module() override {}
-
 private:
     std::tuple<bool, bool, float> readE57Settings() const
     {

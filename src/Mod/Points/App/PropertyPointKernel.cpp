@@ -45,10 +45,6 @@ PropertyPointKernel::PropertyPointKernel()
 
 }
 
-PropertyPointKernel::~PropertyPointKernel()
-{
-}
-
 void PropertyPointKernel::setValue(const PointKernel& m)
 {
     aboutToSetValue();

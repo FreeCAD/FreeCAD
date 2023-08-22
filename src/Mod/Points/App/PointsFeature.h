@@ -55,7 +55,6 @@ class PointsExport Feature : public App::GeoFeature
 public:
     /// Constructor
     Feature();
-    ~Feature() override;
 
     /** @name methods override Feature */
     //@{
