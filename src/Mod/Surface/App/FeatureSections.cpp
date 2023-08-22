@@ -46,10 +46,6 @@ Sections::Sections()
     NSections.setScope(App::LinkScope::Global);
 }
 
-Sections::~Sections()
-{
-}
-
 App::DocumentObjectExecReturn *Sections::execute()
 {
     TColGeom_SequenceOfCurve curveSeq;

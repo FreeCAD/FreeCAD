@@ -37,7 +37,6 @@ class SurfaceExport Sections :  public Part::Spline
 
 public:
     Sections();
-    ~Sections() override;
 
     App::PropertyLinkSubList NSections;
 

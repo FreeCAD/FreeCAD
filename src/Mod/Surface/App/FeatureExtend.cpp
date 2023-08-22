@@ -72,10 +72,6 @@ Extend::Extend() : lockOnChangeMutex(false)
     SampleV.setConstraints(&SampleRange);
 }
 
-Extend::~Extend()
-{
-}
-
 short Extend::mustExecute() const
 {
     if (Face.isTouched())

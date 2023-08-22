@@ -117,7 +117,6 @@ class TaskGeomFillSurface : public Gui::TaskView::TaskDialog
 
 public:
     TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
-    ~TaskGeomFillSurface() override;
     void setEditedObject(Surface::GeomFillSurface* obj);
 
 public:

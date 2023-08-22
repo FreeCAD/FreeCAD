@@ -127,7 +127,6 @@ class TaskFilling : public Gui::TaskView::TaskDialog
 
 public:
     TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~TaskFilling() override;
     void setEditedObject(Surface::Filling* obj);
 
 public:
