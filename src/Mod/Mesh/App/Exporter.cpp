@@ -309,8 +309,7 @@ void Exporter3MF::write()
 
 ExporterAMF::ExporterAMF( std::string fileName,
                           const std::map<std::string, std::string> &meta,
-                          bool compress ) :
-    outputStreamPtr(nullptr), nextObjectIndex(0)
+                          bool compress )
 {
     // ask for write permission
     throwIfNoPermission(fileName);

@@ -146,15 +146,15 @@ protected:
      */
 	bool updateParameters(SolutionD solDir, const Eigen::VectorXd &x);
 
-protected:
+private:
     Base::Vector3d _vBase;	/**< Base vector of the cylinder (point on axis). */
     Base::Vector3d _vAxis;	/**< Axis of the cylinder. */
-    double _dRadius;		/**< Radius of the cylinder. */
-	int _numIter;			/**< Number of iterations for solution to converge. */
-	double _posConvLimit;	/**< Position and radius parameter convergence threshold. */
-	double _dirConvLimit;	/**< Direction parameter convergence threshold. */
-	double _vConvLimit;		/**< Residual convergence threshold. */
-	int _maxIter;			/**< Maximum number of iterations. */
+    double _dRadius{0};		/**< Radius of the cylinder. */
+	int _numIter{0};			/**< Number of iterations for solution to converge. */
+	double _posConvLimit{0.0001};	/**< Position and radius parameter convergence threshold. */
+	double _dirConvLimit{0.000001};	/**< Direction parameter convergence threshold. */
+	double _vConvLimit{0.001};		/**< Residual convergence threshold. */
+	int _maxIter{50};			/**< Maximum number of iterations. */
 
 };
 

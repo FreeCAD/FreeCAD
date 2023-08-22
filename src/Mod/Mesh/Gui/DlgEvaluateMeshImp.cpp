@@ -69,13 +69,7 @@ void CleanupHandler::cleanup()
 class DlgEvaluateMeshImp::Private
 {
 public:
-    Private()
-        : meshFeature(nullptr)
-        , view(nullptr)
-        , enableFoldsCheck(false)
-        , checkNonManfoldPoints(false)
-        , strictlyDegenerated(true)
-        , epsilonDegenerated(0.0f)
+    Private() : view(nullptr)
     {
     }
 
@@ -88,15 +82,15 @@ public:
         ui.repairFoldsButton->setVisible(on);
     }
 
-    Ui_DlgEvaluateMesh ui;
+    Ui_DlgEvaluateMesh ui{};
     std::map<std::string, ViewProviderMeshDefects*> vp;
-    Mesh::Feature* meshFeature;
+    Mesh::Feature* meshFeature{nullptr};
     QPointer<Gui::View3DInventor> view;
     std::vector<Mesh::FacetIndex> self_intersections;
-    bool enableFoldsCheck;
-    bool checkNonManfoldPoints;
-    bool strictlyDegenerated;
-    float epsilonDegenerated;
+    bool enableFoldsCheck{false};
+    bool checkNonManfoldPoints{false};
+    bool strictlyDegenerated{true};
+    float epsilonDegenerated{0.0f};
 };
 
 /* TRANSLATOR MeshGui::DlgEvaluateMeshImp */

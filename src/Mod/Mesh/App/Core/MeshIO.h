@@ -289,7 +289,7 @@ private:
 private:
     MeshPointArray& pointArray;
     MeshFacetArray& facetArray;
-    Material* materialArray;
+    Material* materialArray{nullptr};
 };
 
 /*!

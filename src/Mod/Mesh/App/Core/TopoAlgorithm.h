@@ -307,7 +307,7 @@ private:
 
 private:
     MeshKernel& _rclMesh;
-    bool _needsCleanup;
+    bool _needsCleanup{false};
 
     struct Vertex_Less
     {
@@ -316,7 +316,7 @@ private:
 
     // cache
     using tCache = std::map<Base::Vector3f,PointIndex,Vertex_Less>;
-    tCache* _cache;
+    tCache* _cache{nullptr};
 };
 
 /**

@@ -99,7 +99,7 @@ public:
     bool HasNonUnifomOrientedFacets() const;
 
 private:
-    bool _nonuniformOrientation;
+    bool _nonuniformOrientation{false};
 };
 
 /**

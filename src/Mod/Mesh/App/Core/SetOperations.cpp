@@ -491,8 +491,7 @@ SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh,
   , _edges(edges)
   , _side(side)
   , _mult(mult)
-  , _addFacets(-1)
-  ,_builder(builder)
+  , _builder(builder)
 {
 }
 

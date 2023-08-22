@@ -75,14 +75,6 @@ unsigned char MeshSelection::cross_mask_bitmap[] = {
 };
 
 MeshSelection::MeshSelection()
-  : onlyPointToUserTriangles(false)
-  , onlyVisibleTriangles(false)
-  , addToSelection(false)
-  , addComponent(false)
-  , removeComponent(false)
-  , activeCB(nullptr)
-  , selectionCB(nullptr)
-  , ivViewer(nullptr)
 {
     setCallback(selectGLCallback);
 }
@@ -464,7 +456,6 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
 
     SbVec3f pnt, dir;
     view->getNearPlane(pnt, dir);
-    Base::Vector3f point (pnt[0],pnt[1],pnt[2]);
     Base::Vector3f normal(dir[0],dir[1],dir[2]);
 
     std::list<ViewProviderMesh*> views = self->getViewProviders();

@@ -42,7 +42,7 @@
 using namespace MeshCore;
 
 MeshTopoAlgorithm::MeshTopoAlgorithm (MeshKernel &rclM)
-: _rclMesh(rclM), _needsCleanup(false), _cache(nullptr)
+: _rclMesh(rclM)
 {
 }
 

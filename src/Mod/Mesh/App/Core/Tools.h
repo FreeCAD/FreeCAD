@@ -78,7 +78,7 @@ protected:
   const MeshFacetArray &_rclFAry;
   const MeshPointArray &_rclPAry;
   MeshRefPointToFacets _clPt2Fa;
-  float _fMaxDistanceP2;   // square distance
+  float _fMaxDistanceP2{0};   // square distance
   Base::Vector3f _clCenter;         // center points of start facet
   std::set<PointIndex> _aclResult;        // result container (point indices)
   std::set<PointIndex> _aclOuter;         // next searching points
@@ -86,7 +86,7 @@ protected:
   std::vector<std::vector<Base::Vector3f> > _aclSampledFacets; // sample points from each facet
   float _fSampleDistance;  // distance between two sampled points
   Wm4::Sphere3<float> _akSphere;
-  bool _bTooFewPoints;
+  bool _bTooFewPoints{false};
 
 public:
   MeshSearchNeighbours (const MeshSearchNeighbours&) = delete;
@@ -175,7 +175,7 @@ class MeshNearestIndexToPlane
 public:
     using Index = typename T::Index;
     MeshNearestIndexToPlane(const MeshKernel& mesh, const Base::Vector3f& b, const Base::Vector3f& n)
-        : nearest_index(-1),nearest_dist(FLOAT_MAX), it(mesh), base(b), normal(n) {}
+        : nearest_index(-1), it(mesh), base(b), normal(n) {}
     void operator() (Index index)
     {
         float dist = (float)fabs(it(index).DistanceToPlane(base, normal));
@@ -186,7 +186,7 @@ public:
     }
 
     Index nearest_index;
-    float nearest_dist;
+    float nearest_dist{FLOAT_MAX};
 
 private:
     T it;

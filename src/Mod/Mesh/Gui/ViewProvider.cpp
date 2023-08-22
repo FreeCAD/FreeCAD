@@ -221,7 +221,7 @@ const char* ViewProviderMesh::LightingEnums[]= {"One side", "Two side", nullptr}
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 
-ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(nullptr)
+ViewProviderMesh::ViewProviderMesh() : highlightMode{HighlighMode::None}
 {
     static const char *osgroup = "Object Style";
 

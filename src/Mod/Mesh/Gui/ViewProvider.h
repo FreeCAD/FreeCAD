@@ -236,16 +236,18 @@ protected:
         Segment,
         Color
     };
+    //NOLINTBEGIN
     HighlighMode highlightMode;
-    Gui::SoFCSelection  * pcHighlight;
-    SoGroup             * pcShapeGroup;
-    SoDrawStyle         * pcLineStyle;
-    SoDrawStyle         * pcPointStyle;
-    SoSeparator         * pcOpenEdge;
-    SoBaseColor         * pOpenColor;
-    SoMaterial          * pLineColor;
-    SoShapeHints        * pShapeHints;
-    SoMaterialBinding   * pcMatBinding;
+    Gui::SoFCSelection  * pcHighlight{nullptr};
+    SoGroup             * pcShapeGroup{nullptr};
+    SoDrawStyle         * pcLineStyle{nullptr};
+    SoDrawStyle         * pcPointStyle{nullptr};
+    SoSeparator         * pcOpenEdge{nullptr};
+    SoBaseColor         * pOpenColor{nullptr};
+    SoMaterial          * pLineColor{nullptr};
+    SoShapeHints        * pShapeHints{nullptr};
+    SoMaterialBinding   * pcMatBinding{nullptr};
+    //NOLINTEND
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

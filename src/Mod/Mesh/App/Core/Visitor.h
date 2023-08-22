@@ -89,8 +89,8 @@ protected:
     const MeshKernel& _rclMeshBase; /**< The mesh kernel. */
     Base::Vector3f    _clCenter; /**< Center. */
     float  _fRadius; /**< Search radius. */
-    unsigned long _ulCurrentLevel;
-    bool _bFacetsFoundInCurrentLevel;
+    unsigned long _ulCurrentLevel{0};
+    bool _bFacetsFoundInCurrentLevel{false};
     std::vector<FacetIndex>  _vecFacets; /**< Found facets. */
 };
 

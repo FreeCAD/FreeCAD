@@ -169,9 +169,11 @@ protected:
     void GetMgcVectorArray( std::vector< Wm4::Vector3<double> >& rcPts ) const;
 
 protected:
+    //NOLINTBEGIN
     std::list< Base::Vector3f > _vPoints; /**< Holds the points for the fit algorithm.  */
-    bool _bIsFitted; /**< Flag, whether the fit has been called. */
-    float _fLastResult; /**< Stores the last result of the fit */
+    bool _bIsFitted{false}; /**< Flag, whether the fit has been called. */
+    float _fLastResult{FLOAT_MAX}; /**< Stores the last result of the fit */
+    //NOLINTEND
 };
 
 // -------------------------------------------------------------------------------
@@ -233,10 +235,12 @@ public:
     Base::BoundBox3f GetBoundings() const;
 
 protected:
+    //NOLINTBEGIN
     Base::Vector3f _vBase; /**< Base vector of the plane. */
     Base::Vector3f _vDirU;
     Base::Vector3f _vDirV;
     Base::Vector3f _vDirW; /**< Normal of the plane. */
+    //NOLINTEND
 };
 
 // -------------------------------------------------------------------------------
@@ -398,8 +402,8 @@ public:
 protected:
     Base::Vector3f _vBase; /**< Base vector of the cylinder. */
     Base::Vector3f _vAxis; /**< Axis of the cylinder. */
-    float _fRadius; /**< Radius of the cylinder. */
-    bool _initialGuess;
+    float _fRadius{0}; /**< Radius of the cylinder. */
+    bool _initialGuess{false};
 };
 
 // -------------------------------------------------------------------------------
@@ -434,7 +438,7 @@ public:
 
 protected:
     Base::Vector3f _vCenter; /**< Center of the sphere. */
-    float _fRadius; /**< Radius of the cylinder. */
+    float _fRadius{0}; /**< Radius of the cylinder. */
 };
 
 // -------------------------------------------------------------------------------

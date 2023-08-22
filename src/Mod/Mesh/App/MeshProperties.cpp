@@ -725,7 +725,7 @@ bool PropertyMaterial::isSame(const App::Property& other) const
 // ----------------------------------------------------------------------------
 
 PropertyMeshKernel::PropertyMeshKernel()
-  : _meshObject(new MeshObject()), meshPyObject(nullptr)
+  : _meshObject(new MeshObject())
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
     // method gets called in the constructor of a subclass of DocumentObject, e.g. Mesh::Feature.
