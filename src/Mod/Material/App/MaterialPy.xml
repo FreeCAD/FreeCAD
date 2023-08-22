@@ -153,5 +153,15 @@
       </Documentation>
       <Parameter Name="AppearanceProperties" Type="Dict"/>
     </Attribute>
+    <Methode Name="getPhysicalValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the value associated with the property</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAppearanceValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the value associated with the property</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

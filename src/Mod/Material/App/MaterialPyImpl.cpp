@@ -26,9 +26,16 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <QMetaType>
+
+#include <Base/Quantity.h>
+#include <Base/QuantityPy.h>
+#include <Gui/MetaTypes.h>
+
 #include "MaterialPy.h"
 #include "MaterialPy.cpp"
 #include "Materials.h"
+#include "Exceptions.h"
 
 
 using namespace Materials;
@@ -341,4 +348,46 @@ Py::Dict MaterialPy::getAppearanceProperties() const
     }
 
     return dict;
+}
+
+static PyObject *_pyObjectFromVariant(const QVariant &value) {
+    if(value.isNull())
+        return new PyObject();
+
+    if (value.userType() == QMetaType::type("Base::Quantity"))
+        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
+    else if (value.type() == QMetaType::Double)
+        return PyFloat_FromDouble(value.toDouble());
+    else if (value.type() == QMetaType::Float)
+        return PyFloat_FromDouble(value.toFloat());
+    else if (value.type() == QMetaType::Int)
+        return PyLong_FromLong(value.toInt());
+    else if (value.type() == QMetaType::Long)
+        return PyLong_FromLong(value.toInt());
+    else if (value.type() == QMetaType::Bool)
+        return value.toBool() ? Py_True : Py_False;
+    else if (value.type() == QMetaType::QString)
+        return PyUnicode_FromString(value.toString().toStdString().c_str());
+
+    throw UnknownValueType();
+}
+
+PyObject *MaterialPy::getPhysicalValue(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    QVariant value = getMaterialPtr()->getPhysicalValue(QString::fromStdString(name));
+    return _pyObjectFromVariant(value);
+}
+
+PyObject *MaterialPy::getAppearanceValue(PyObject *args)
+{
+    char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
+
+    QVariant value = getMaterialPtr()->getAppearanceValue(QString::fromStdString(name));
+    return _pyObjectFromVariant(value);
 }

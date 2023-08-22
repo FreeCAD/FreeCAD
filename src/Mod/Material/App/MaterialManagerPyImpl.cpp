@@ -146,7 +146,7 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject *args)
         if (material->hasModel(QString::fromStdString(uuid)))
         {
             PyObject *materialPy = new MaterialPy(new Material(*material));
-            PyDict_SetItem(dict, PyBytes_FromString(key.toStdString().c_str()), materialPy);
+            PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
         }
     }
 
@@ -170,7 +170,7 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject *args)
         if (material->isModelComplete(QString::fromStdString(uuid)))
         {
             PyObject *materialPy = new MaterialPy(new Material(*material));
-            PyDict_SetItem(dict, PyBytes_FromString(key.toStdString().c_str()), materialPy);
+            PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
         }
     }
 

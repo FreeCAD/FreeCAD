@@ -84,6 +84,11 @@ MaterialValue* MaterialProperty::getMaterialValue(void)
 
 const QString MaterialProperty::getString(void) const
 {
+    if (getType() == MaterialValue::Quantity)
+    {
+        Base::Quantity quantity = getValue().value<Base::Quantity>();
+        return quantity.getUserString();
+    }
     return getValue().toString();
 }
 
@@ -202,15 +207,29 @@ void MaterialProperty::setValue(const QVariant& value)
 void MaterialProperty::setValue(const QString& value)
 {
     if (_valuePtr->getType() == MaterialValue::Boolean)
-       setBoolean(value);
+        setBoolean(value);
     else if (_valuePtr->getType() == MaterialValue::Integer)
-       setInt(value);
+        setInt(value);
     else if (_valuePtr->getType() == MaterialValue::Float)
-       setFloat(value);
+        setFloat(value);
     else if (_valuePtr->getType() == MaterialValue::URL)
-       setURL(value);
+        setURL(value);
+    else if (_valuePtr->getType() == MaterialValue::Quantity)
+    {
+        Base::Console().Log("\tParse quantity '%s'\n", value.toStdString().c_str());
+        try
+        {
+            setQuantity(Base::Quantity::parse(value));
+        }
+        catch(const Base::ParserError& e)
+        {
+            Base::Console().Log("Error '%s'\n", e.what());
+            // Save as a string
+            setString(value);
+        }
+    }
     else
-       setString(value);
+        setString(value);
 }
 
 void MaterialProperty::setString(const QString& value)
