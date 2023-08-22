@@ -241,14 +241,7 @@ public:
         }
     };
     Private()
-        : wireClosed(false)
-        , distance(1.0)
-        , cosAngle(0.7071) // 45 degree
-        , approximate(true)
-        , curve(new ViewProviderCurveOnMesh)
-        , mesh(nullptr)
-        , grid(nullptr)
-        , viewer(nullptr)
+        : curve(new ViewProviderCurveOnMesh)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
     }
@@ -322,13 +315,13 @@ public:
 
     std::vector<PickedPoint> pickedPoints;
     std::list<std::vector<Base::Vector3f> > cutLines;
-    bool wireClosed;
-    double distance;
-    double cosAngle;
-    bool approximate;
+    bool wireClosed{false};
+    double distance{1};
+    double cosAngle{0.7071}; // 45 degree
+    bool approximate{true};
     ViewProviderCurveOnMesh* curve;
-    Gui::ViewProviderDocumentObject* mesh;
-    MeshCore::MeshFacetGrid* grid;
+    Gui::ViewProviderDocumentObject* mesh{0};
+    MeshCore::MeshFacetGrid* grid{nullptr};
     MeshCore::MeshKernel kernel;
     QPointer<Gui::View3DInventor> viewer;
     QCursor editcursor;
