@@ -75,10 +75,10 @@ protected:
   //SoTransform           * pcTcpTransform;
 
     //SoTrackballDragger    * pcDragger;
-    SoJackDragger         * pcDragger;
+    SoJackDragger         * pcDragger{nullptr};
 
     // view provider of the toolshape if set
-    Gui::ViewProvider *toolShape;
+    Gui::ViewProvider *toolShape{nullptr};
 
 	// Pointers to the robot axis nodes in the VRML model
 	SoVRMLTransform *Axis1Node;

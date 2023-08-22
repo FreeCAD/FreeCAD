@@ -76,7 +76,7 @@ protected:
 
     Robot6Axis robot;
 
-    bool block;
+    bool block{false};
 
 };
 

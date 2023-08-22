@@ -37,7 +37,6 @@ PROPERTY_SOURCE(Robot::RobotObject, App::GeoFeature)
 
 
 RobotObject::RobotObject()
-:block(false)
 {
     ADD_PROPERTY_TYPE(RobotVrmlFile     ,(nullptr),"Robot definition"    ,Prop_None,"Included file with the VRML representation of the robot");
     ADD_PROPERTY_TYPE(RobotKinematicFile,(nullptr),"Robot definition",Prop_None,"Included file with kinematic definition of the robot Axis");

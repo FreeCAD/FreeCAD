@@ -58,11 +58,7 @@ using namespace Base;
 
 TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
-Trajectory::Trajectory()
-:pcTrajectory(nullptr)
-{
-
-}
+Trajectory::Trajectory() = default;
 
 Trajectory::Trajectory(const Trajectory& Trac)
 :vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(nullptr)
