@@ -57,7 +57,7 @@ private:
 private:
     Gui::Document* guidocument;
     App::Document* appdocument;
-    PartDesign::Body* activeBody;
+    PartDesign::Body* activeBody{nullptr};
 };
 
 } // namespace PartDesignGui
