@@ -61,9 +61,6 @@ namespace PartGui {
 class Picker
 {
 public:
-    Picker() : exitCode(-1)
-    {
-    }
     virtual ~Picker() = default;
 
     virtual bool pickedPoint(const SoPickedPoint * point) = 0;
@@ -71,7 +68,7 @@ public:
     void createPrimitive(QWidget* widget, const QString&, Gui::Document*);
     QString toPlacement(const gp_Ax2&) const;
 
-    int exitCode;
+    int exitCode{-1};
     QEventLoop loop;
 };
 

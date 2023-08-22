@@ -72,7 +72,7 @@ private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor;
+    uint32_t packedColor{0};
 };
 
 } // namespace PartGui

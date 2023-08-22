@@ -67,12 +67,7 @@ public:
     }
 };
 
-BoxSelection::BoxSelection()
-    : autodelete(false)
-    , shapeEnum(TopAbs_SHAPE)
-{
-
-}
+BoxSelection::BoxSelection() = default;
 
 BoxSelection::~BoxSelection() = default;
 

@@ -34,7 +34,6 @@ using namespace Attacher;
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
-   :  _attacher(nullptr)
 {
     EXTENSION_ADD_PROPERTY_TYPE(AttacherType, ("Attacher::AttachEngine3D"), "Attachment",(App::PropertyType)(App::Prop_None),"Class name of attach engine object driving the attachment.");
     this->AttacherType.setStatus(App::Property::Status::Hidden, true);
