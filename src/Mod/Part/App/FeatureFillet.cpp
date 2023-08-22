@@ -40,9 +40,7 @@ using namespace Part;
 
 PROPERTY_SOURCE(Part::Fillet, Part::FilletBase)
 
-Fillet::Fillet()
-{
-}
+Fillet::Fillet() = default;
 
 App::DocumentObjectExecReturn *Fillet::execute()
 {

@@ -72,10 +72,7 @@ ViewProviderCurveNet::ViewProviderCurveNet()
     */
 }
 
-ViewProviderCurveNet::~ViewProviderCurveNet()
-{
-
-}
+ViewProviderCurveNet::~ViewProviderCurveNet() = default;
 
 void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 {

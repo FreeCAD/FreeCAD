@@ -98,9 +98,7 @@ public:
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
         Gui::Command::runCommand(Gui::Command::App, "import Part");
     }
-    ~Private()
-    {
-    }
+    ~Private() = default;
 };
 
 /* TRANSLATOR PartGui::ShapeBuilderWidget */
@@ -608,9 +606,7 @@ TaskShapeBuilder::TaskShapeBuilder()
     Content.push_back(taskbox);
 }
 
-TaskShapeBuilder::~TaskShapeBuilder()
-{
-}
+TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
 {

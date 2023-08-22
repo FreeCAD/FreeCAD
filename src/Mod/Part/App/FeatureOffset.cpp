@@ -52,10 +52,7 @@ Offset::Offset()
     Source.setScope(App::LinkScope::Global);
 }
 
-Offset::~Offset()
-{
-
-}
+Offset::~Offset() = default;
 
 short Offset::mustExecute() const
 {
@@ -108,10 +105,7 @@ Offset2D::Offset2D()
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
 
-Offset2D::~Offset2D()
-{
-
-}
+Offset2D::~Offset2D() = default;
 
 short Offset2D::mustExecute() const
 {

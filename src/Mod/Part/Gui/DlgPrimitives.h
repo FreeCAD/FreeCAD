@@ -64,9 +64,7 @@ public:
     Picker() : exitCode(-1)
     {
     }
-    virtual ~Picker()
-    {
-    }
+    virtual ~Picker() = default;
 
     virtual bool pickedPoint(const SoPickedPoint * point) = 0;
     virtual QString command(App::Document*) const = 0;
@@ -454,7 +452,6 @@ class TaskPrimitives : public Gui::TaskView::TaskDialog
 
 public:
     TaskPrimitives();
-    ~TaskPrimitives() override;
 
 public:
     bool accept() override;
@@ -473,7 +470,6 @@ class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskPrimitivesEdit(Part::Primitive* feature);
-    ~TaskPrimitivesEdit() override;
 
 public:
     bool accept() override;

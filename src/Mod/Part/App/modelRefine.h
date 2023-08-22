@@ -56,7 +56,7 @@ namespace ModelRefine
     class FaceTypedBase
     {
     private:
-        FaceTypedBase(){}
+        FaceTypedBase() = default;
     protected:
         FaceTypedBase(const GeomAbs_SurfaceType &typeIn){surfaceType = typeIn;}
     public:
@@ -114,7 +114,7 @@ namespace ModelRefine
     {
         using SplitMapType = std::map<GeomAbs_SurfaceType, FaceVectorType>;
     public:
-        FaceTypeSplitter(){}
+        FaceTypeSplitter() = default;
         void addShell(const TopoDS_Shell &shellIn);
         void registerType(const GeomAbs_SurfaceType &type);
         bool hasType(const GeomAbs_SurfaceType &type) const;
@@ -134,7 +134,7 @@ namespace ModelRefine
         const FaceVectorType& getGroup(const std::size_t &index) const {return adjacencyArray[index];}
 
     private:
-        FaceAdjacencySplitter(){}
+        FaceAdjacencySplitter() = default;
         void recursiveFind(const TopoDS_Face &face, FaceVectorType &outVector);
         std::vector<FaceVectorType> adjacencyArray;
         TopTools_MapOfShape processedMap;
@@ -147,7 +147,7 @@ namespace ModelRefine
     class FaceEqualitySplitter
     {
     public:
-        FaceEqualitySplitter(){}
+        FaceEqualitySplitter() = default;
         void split(const FaceVectorType &faces,  FaceTypedBase *object);
         std::size_t getGroupCount() const {return equalityVector.size();}
         const FaceVectorType& getGroup(const std::size_t &index) const {return equalityVector[index];}
@@ -159,7 +159,7 @@ namespace ModelRefine
     class FaceUniter
     {
     private:
-        FaceUniter(){}
+        FaceUniter() = default;
     public:
         FaceUniter(const TopoDS_Shell &shellIn);
         bool process();

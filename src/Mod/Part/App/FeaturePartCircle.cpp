@@ -48,9 +48,7 @@ Circle::Circle()
     Angle2.setConstraints(&angleRange);
 }
 
-Circle::~Circle()
-{
-}
+Circle::~Circle() = default;
 
 short Circle::mustExecute() const
 {

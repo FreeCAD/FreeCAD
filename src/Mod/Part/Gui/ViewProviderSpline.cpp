@@ -64,9 +64,7 @@ ViewProviderSpline::ViewProviderSpline()
     extension.initExtension(this);
 }
 
-ViewProviderSpline::~ViewProviderSpline()
-{
-}
+ViewProviderSpline::~ViewProviderSpline() = default;
 
 QIcon ViewProviderSpline::getIcon() const
 {

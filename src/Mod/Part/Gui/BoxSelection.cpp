@@ -57,9 +57,7 @@ public:
         : Gui::SelectionFilterGate()
     {
     }
-    ~FaceSelectionGate() override
-    {
-    }
+    ~FaceSelectionGate() override = default;
     bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
     {
         if (!sSubName || sSubName[0] == '\0')
@@ -76,10 +74,7 @@ BoxSelection::BoxSelection()
 
 }
 
-BoxSelection::~BoxSelection()
-{
-
-}
+BoxSelection::~BoxSelection() = default;
 
 void BoxSelection::setAutoDelete(bool on)
 {

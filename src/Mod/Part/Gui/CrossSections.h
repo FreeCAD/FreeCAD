@@ -86,7 +86,6 @@ class TaskCrossSections : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskCrossSections(const Base::BoundBox3d& bb);
-    ~TaskCrossSections() override;
 
 public:
     bool accept() override;

@@ -61,7 +61,6 @@ class TaskMirroring : public Gui::TaskView::TaskDialog
 
 public:
     TaskMirroring();
-    ~TaskMirroring() override;
 
 public:
     bool accept() override;

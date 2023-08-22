@@ -192,10 +192,7 @@ Geometry::Geometry()
     createNewTag();
 }
 
-Geometry::~Geometry()
-{
-
-}
+Geometry::~Geometry() = default;
 
 // Persistence implementer
 unsigned int Geometry::getMemSize () const
@@ -484,9 +481,7 @@ GeomPoint::GeomPoint(const Base::Vector3d& p)
     this->myPoint = new Geom_CartesianPoint(p.x,p.y,p.z);
 }
 
-GeomPoint::~GeomPoint()
-{
-}
+GeomPoint::~GeomPoint() = default;
 
 const Handle(Geom_Geometry)& GeomPoint::handle() const
 {
@@ -568,13 +563,9 @@ PyObject *GeomPoint::getPyObject()
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomCurve,Part::Geometry)
 
-GeomCurve::GeomCurve()
-{
-}
+GeomCurve::GeomCurve() = default;
 
-GeomCurve::~GeomCurve()
-{
-}
+GeomCurve::~GeomCurve() = default;
 
 TopoDS_Shape GeomCurve::toShape() const
 {
@@ -902,13 +893,9 @@ void GeomCurve::reverse()
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomBoundedCurve, Part::GeomCurve)
 
-GeomBoundedCurve::GeomBoundedCurve()
-{
-}
+GeomBoundedCurve::GeomBoundedCurve() = default;
 
-GeomBoundedCurve::~GeomBoundedCurve()
-{
-}
+GeomBoundedCurve::~GeomBoundedCurve() = default;
 
 Base::Vector3d GeomBoundedCurve::getStartPoint() const
 {
@@ -959,9 +946,7 @@ GeomBezierCurve::GeomBezierCurve( const std::vector<Base::Vector3d>& poles, cons
     this->myCurve = new Geom_BezierCurve (p, w);
 }
 
-GeomBezierCurve::~GeomBezierCurve()
-{
-}
+GeomBezierCurve::~GeomBezierCurve() = default;
 
 void GeomBezierCurve::setHandle(const Handle(Geom_BezierCurve)& c)
 {
@@ -1147,9 +1132,7 @@ GeomBSplineCurve::GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, co
 }
 
 
-GeomBSplineCurve::~GeomBSplineCurve()
-{
-}
+GeomBSplineCurve::~GeomBSplineCurve() = default;
 
 void GeomBSplineCurve::setHandle(const Handle(Geom_BSplineCurve)& c)
 {
@@ -1756,13 +1739,9 @@ PyObject *GeomBSplineCurve::getPyObject()
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomConic, Part::GeomCurve)
 
-GeomConic::GeomConic()
-{
-}
+GeomConic::GeomConic() = default;
 
-GeomConic::~GeomConic()
-{
-}
+GeomConic::~GeomConic() = default;
 
 Base::Vector3d GeomConic::getLocation() const
 {
@@ -1903,18 +1882,14 @@ GeomBSplineCurve* GeomConic::toNurbs(double first, double last) const
 
 TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomBoundedCurve)
 
-GeomTrimmedCurve::GeomTrimmedCurve()
-{
-}
+GeomTrimmedCurve::GeomTrimmedCurve() = default;
 
 GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
 {
     setHandle(c);
 }
 
-GeomTrimmedCurve::~GeomTrimmedCurve()
-{
-}
+GeomTrimmedCurve::~GeomTrimmedCurve() = default;
 
 void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -1996,13 +1971,9 @@ void GeomTrimmedCurve::setRange(double u, double v)
 // -------------------------------------------------
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomTrimmedCurve)
 
-GeomArcOfConic::GeomArcOfConic()
-{
-}
+GeomArcOfConic::GeomArcOfConic() = default;
 
-GeomArcOfConic::~GeomArcOfConic()
-{
-}
+GeomArcOfConic::~GeomArcOfConic() = default;
 
 /*!
  * \brief GeomArcOfConic::getStartPoint
@@ -2215,9 +2186,7 @@ GeomCircle::GeomCircle(const Handle(Geom_Circle)& c)
     setHandle(c);
 }
 
-GeomCircle::~GeomCircle()
-{
-}
+GeomCircle::~GeomCircle() = default;
 
 const Handle(Geom_Geometry)& GeomCircle::handle() const
 {
@@ -2396,9 +2365,7 @@ GeomArcOfCircle::GeomArcOfCircle(const Handle(Geom_Circle)& c)
     setHandle(c);
 }
 
-GeomArcOfCircle::~GeomArcOfCircle()
-{
-}
+GeomArcOfCircle::~GeomArcOfCircle() = default;
 
 void GeomArcOfCircle::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -2635,9 +2602,7 @@ GeomEllipse::GeomEllipse(const Handle(Geom_Ellipse)& e)
     setHandle(e);
 }
 
-GeomEllipse::~GeomEllipse()
-{
-}
+GeomEllipse::~GeomEllipse() = default;
 
 const Handle(Geom_Geometry)& GeomEllipse::handle() const
 {
@@ -2887,9 +2852,7 @@ GeomArcOfEllipse::GeomArcOfEllipse(const Handle(Geom_Ellipse)& e)
     setHandle(e);
 }
 
-GeomArcOfEllipse::~GeomArcOfEllipse()
-{
-}
+GeomArcOfEllipse::~GeomArcOfEllipse() = default;
 
 void GeomArcOfEllipse::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -3160,9 +3123,7 @@ GeomHyperbola::GeomHyperbola(const Handle(Geom_Hyperbola)& h)
     setHandle(h);
 }
 
-GeomHyperbola::~GeomHyperbola()
-{
-}
+GeomHyperbola::~GeomHyperbola() = default;
 
 const Handle(Geom_Geometry)& GeomHyperbola::handle() const
 {
@@ -3321,9 +3282,7 @@ GeomArcOfHyperbola::GeomArcOfHyperbola(const Handle(Geom_Hyperbola)& h)
     setHandle(h);
 }
 
-GeomArcOfHyperbola::~GeomArcOfHyperbola()
-{
-}
+GeomArcOfHyperbola::~GeomArcOfHyperbola() = default;
 
 void GeomArcOfHyperbola::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -3585,9 +3544,7 @@ GeomParabola::GeomParabola(const Handle(Geom_Parabola)& p)
     setHandle(p);
 }
 
-GeomParabola::~GeomParabola()
-{
-}
+GeomParabola::~GeomParabola() = default;
 
 const Handle(Geom_Geometry)& GeomParabola::handle() const
 {
@@ -3726,9 +3683,7 @@ GeomArcOfParabola::GeomArcOfParabola(const Handle(Geom_Parabola)& h)
     setHandle(h);
 }
 
-GeomArcOfParabola::~GeomArcOfParabola()
-{
-}
+GeomArcOfParabola::~GeomArcOfParabola() = default;
 
 void GeomArcOfParabola::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -3944,9 +3899,7 @@ GeomLine::GeomLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir)
 }
 
 
-GeomLine::~GeomLine()
-{
-}
+GeomLine::~GeomLine() = default;
 
 void GeomLine::setLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir)
 {
@@ -4052,9 +4005,7 @@ GeomLineSegment::GeomLineSegment(const Handle(Geom_Line)& l)
     setHandle(l);
 }
 
-GeomLineSegment::~GeomLineSegment()
-{
-}
+GeomLineSegment::~GeomLineSegment() = default;
 
 void GeomLineSegment::setHandle(const Handle(Geom_TrimmedCurve)& c)
 {
@@ -4199,9 +4150,7 @@ PyObject *GeomLineSegment::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomOffsetCurve,Part::GeomCurve)
 
-GeomOffsetCurve::GeomOffsetCurve()
-{
-}
+GeomOffsetCurve::GeomOffsetCurve() = default;
 
 GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, const gp_Dir& dir)
 {
@@ -4217,9 +4166,7 @@ GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_OffsetCurve)& c)
     setHandle(c);
 }
 
-GeomOffsetCurve::~GeomOffsetCurve()
-{
-}
+GeomOffsetCurve::~GeomOffsetCurve() = default;
 
 Geometry *GeomOffsetCurve::copy() const
 {
@@ -4264,13 +4211,9 @@ PyObject *GeomOffsetCurve::getPyObject()
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomSurface,Part::Geometry)
 
-GeomSurface::GeomSurface()
-{
-}
+GeomSurface::GeomSurface() = default;
 
-GeomSurface::~GeomSurface()
-{
-}
+GeomSurface::~GeomSurface() = default;
 
 TopoDS_Shape GeomSurface::toShape() const
 {
@@ -4392,9 +4335,7 @@ GeomBezierSurface::GeomBezierSurface(const Handle(Geom_BezierSurface)& b)
     setHandle(b);
 }
 
-GeomBezierSurface::~GeomBezierSurface()
-{
-}
+GeomBezierSurface::~GeomBezierSurface() = default;
 
 const Handle(Geom_Geometry)& GeomBezierSurface::handle() const
 {
@@ -4469,9 +4410,7 @@ GeomBSplineSurface::GeomBSplineSurface(const Handle(Geom_BSplineSurface)& b)
     setHandle(b);
 }
 
-GeomBSplineSurface::~GeomBSplineSurface()
-{
-}
+GeomBSplineSurface::~GeomBSplineSurface() = default;
 
 void GeomBSplineSurface::setHandle(const Handle(Geom_BSplineSurface)& s)
 {
@@ -4564,9 +4503,7 @@ GeomCylinder::GeomCylinder(const Handle(Geom_CylindricalSurface)& c)
     setHandle(c);
 }
 
-GeomCylinder::~GeomCylinder()
-{
-}
+GeomCylinder::~GeomCylinder() = default;
 
 void GeomCylinder::setHandle(const Handle(Geom_CylindricalSurface)& s)
 {
@@ -4622,9 +4559,7 @@ GeomCone::GeomCone(const Handle(Geom_ConicalSurface)& c)
     setHandle(c);
 }
 
-GeomCone::~GeomCone()
-{
-}
+GeomCone::~GeomCone() = default;
 
 void GeomCone::setHandle(const Handle(Geom_ConicalSurface)& s)
 {
@@ -4728,9 +4663,7 @@ GeomToroid::GeomToroid(const Handle(Geom_ToroidalSurface)& t)
     setHandle(t);
 }
 
-GeomToroid::~GeomToroid()
-{
-}
+GeomToroid::~GeomToroid() = default;
 
 void GeomToroid::setHandle(const Handle(Geom_ToroidalSurface)& s)
 {
@@ -4786,9 +4719,7 @@ GeomSphere::GeomSphere(const Handle(Geom_SphericalSurface)& s)
     setHandle(s);
 }
 
-GeomSphere::~GeomSphere()
-{
-}
+GeomSphere::~GeomSphere() = default;
 
 void GeomSphere::setHandle(const Handle(Geom_SphericalSurface)& s)
 {
@@ -4844,9 +4775,7 @@ GeomPlane::GeomPlane(const Handle(Geom_Plane)& p)
     setHandle(p);
 }
 
-GeomPlane::~GeomPlane()
-{
-}
+GeomPlane::~GeomPlane() = default;
 
 void GeomPlane::setHandle(const Handle(Geom_Plane)& s)
 {
@@ -4891,9 +4820,7 @@ PyObject *GeomPlane::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomOffsetSurface,Part::GeomSurface)
 
-GeomOffsetSurface::GeomOffsetSurface()
-{
-}
+GeomOffsetSurface::GeomOffsetSurface() = default;
 
 GeomOffsetSurface::GeomOffsetSurface(const Handle(Geom_Surface)& s, double offset)
 {
@@ -4905,9 +4832,7 @@ GeomOffsetSurface::GeomOffsetSurface(const Handle(Geom_OffsetSurface)& s)
     setHandle(s);
 }
 
-GeomOffsetSurface::~GeomOffsetSurface()
-{
-}
+GeomOffsetSurface::~GeomOffsetSurface() = default;
 
 void GeomOffsetSurface::setHandle(const Handle(Geom_OffsetSurface)& s)
 {
@@ -4951,9 +4876,7 @@ PyObject *GeomOffsetSurface::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomPlateSurface,Part::GeomSurface)
 
-GeomPlateSurface::GeomPlateSurface()
-{
-}
+GeomPlateSurface::GeomPlateSurface() = default;
 
 GeomPlateSurface::GeomPlateSurface(const Handle(Geom_Surface)& s, const Plate_Plate& plate)
 {
@@ -4971,9 +4894,7 @@ GeomPlateSurface::GeomPlateSurface(const Handle(GeomPlate_Surface)& s)
     setHandle(s);
 }
 
-GeomPlateSurface::~GeomPlateSurface()
-{
-}
+GeomPlateSurface::~GeomPlateSurface() = default;
 
 void GeomPlateSurface::setHandle(const Handle(GeomPlate_Surface)& s)
 {
@@ -5017,18 +4938,14 @@ PyObject *GeomPlateSurface::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomTrimmedSurface,Part::GeomSurface)
 
-GeomTrimmedSurface::GeomTrimmedSurface()
-{
-}
+GeomTrimmedSurface::GeomTrimmedSurface() = default;
 
 GeomTrimmedSurface::GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)& s)
 {
    setHandle(s);
 }
 
-GeomTrimmedSurface::~GeomTrimmedSurface()
-{
-}
+GeomTrimmedSurface::~GeomTrimmedSurface() = default;
 
 void GeomTrimmedSurface::setHandle(const Handle(Geom_RectangularTrimmedSurface)& s)
 {
@@ -5072,9 +4989,7 @@ PyObject *GeomTrimmedSurface::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomSurfaceOfRevolution,Part::GeomSurface)
 
-GeomSurfaceOfRevolution::GeomSurfaceOfRevolution()
-{
-}
+GeomSurfaceOfRevolution::GeomSurfaceOfRevolution() = default;
 
 GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle(Geom_Curve)& c, const gp_Ax1& a)
 {
@@ -5086,9 +5001,7 @@ GeomSurfaceOfRevolution::GeomSurfaceOfRevolution(const Handle(Geom_SurfaceOfRevo
     setHandle(s);
 }
 
-GeomSurfaceOfRevolution::~GeomSurfaceOfRevolution()
-{
-}
+GeomSurfaceOfRevolution::~GeomSurfaceOfRevolution() = default;
 
 void GeomSurfaceOfRevolution::setHandle(const Handle(Geom_SurfaceOfRevolution)& c)
 {
@@ -5132,9 +5045,7 @@ PyObject *GeomSurfaceOfRevolution::getPyObject()
 
 TYPESYSTEM_SOURCE(Part::GeomSurfaceOfExtrusion,Part::GeomSurface)
 
-GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion()
-{
-}
+GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion() = default;
 
 GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle(Geom_Curve)& c, const gp_Dir& d)
 {
@@ -5146,9 +5057,7 @@ GeomSurfaceOfExtrusion::GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinear
     setHandle(s);
 }
 
-GeomSurfaceOfExtrusion::~GeomSurfaceOfExtrusion()
-{
-}
+GeomSurfaceOfExtrusion::~GeomSurfaceOfExtrusion() = default;
 
 void GeomSurfaceOfExtrusion::setHandle(const Handle(Geom_SurfaceOfLinearExtrusion)& c)
 {

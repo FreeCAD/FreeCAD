@@ -417,10 +417,7 @@ PartGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
 }
 
-PartGui::DimensionLinear::~DimensionLinear()
-{
-
-}
+PartGui::DimensionLinear::~DimensionLinear() = default;
 
 SbBool PartGui::DimensionLinear::affectsState() const
 {
@@ -1179,10 +1176,7 @@ PartGui::DimensionAngular::DimensionAngular()
                                0.0, 0.0, 0.0, 1.0));
 }
 
-PartGui::DimensionAngular::~DimensionAngular()
-{
-
-}
+PartGui::DimensionAngular::~DimensionAngular() = default;
 
 SbBool PartGui::DimensionAngular::affectsState() const
 {

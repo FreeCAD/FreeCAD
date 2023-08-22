@@ -53,13 +53,9 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE(Part::PropertyPartShape , App::PropertyComplexGeoData)
 
-PropertyPartShape::PropertyPartShape()
-{
-}
+PropertyPartShape::PropertyPartShape() = default;
 
-PropertyPartShape::~PropertyPartShape()
-{
-}
+PropertyPartShape::~PropertyPartShape() = default;
 
 void PropertyPartShape::setValue(const TopoShape& sh)
 {
@@ -412,13 +408,9 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
 TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists)
 
-PropertyShapeHistory::PropertyShapeHistory()
-{
-}
+PropertyShapeHistory::PropertyShapeHistory() = default;
 
-PropertyShapeHistory::~PropertyShapeHistory()
-{
-}
+PropertyShapeHistory::~PropertyShapeHistory() = default;
 
 void PropertyShapeHistory::setValue(const ShapeHistory& sh)
 {
@@ -478,13 +470,9 @@ void PropertyShapeHistory::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists)
 
-PropertyFilletEdges::PropertyFilletEdges()
-{
-}
+PropertyFilletEdges::PropertyFilletEdges() = default;
 
-PropertyFilletEdges::~PropertyFilletEdges()
-{
-}
+PropertyFilletEdges::~PropertyFilletEdges() = default;
 
 void PropertyFilletEdges::setValue(int id, double r1, double r2)
 {
