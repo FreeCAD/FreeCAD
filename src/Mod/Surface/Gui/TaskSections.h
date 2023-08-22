@@ -116,7 +116,6 @@ class TaskSections : public Gui::TaskView::TaskDialog
 
 public:
     TaskSections(ViewProviderSections* vp, Surface::Sections* obj);
-    ~TaskSections() override;
     void setEditedObject(Surface::Sections* obj);
 
 public:

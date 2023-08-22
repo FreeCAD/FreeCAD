@@ -934,11 +934,6 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     taskbox3->hideGroupBox();
 }
 
-TaskFilling::~TaskFilling()
-{
-    // automatically deleted in the sub-class
-}
-
 void TaskFilling::setEditedObject(Surface::Filling* obj)
 {
     widget1->setEditedObject(obj);

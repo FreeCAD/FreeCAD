@@ -37,7 +37,6 @@ class SurfaceExport Extend :  public Part::Spline
 
 public:
     Extend();
-    ~Extend() override;
 
     App::PropertyLinkSub Face;
     App::PropertyFloatConstraint Tolerance;

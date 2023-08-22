@@ -276,9 +276,7 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
 /*
  *  Destroys the object and frees any allocated resources
  */
-SectionsPanel::~SectionsPanel()
-{
-}
+SectionsPanel::~SectionsPanel() = default;
 
 void SectionsPanel::setupConnections()
 {
@@ -588,11 +586,6 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
         widget1->windowTitle(), true, nullptr);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);
-}
-
-TaskSections::~TaskSections()
-{
-    // automatically deleted in the sub-class
 }
 
 void TaskSections::setEditedObject(Surface::Sections* obj)

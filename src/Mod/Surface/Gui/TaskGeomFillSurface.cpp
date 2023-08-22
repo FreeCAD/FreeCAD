@@ -636,11 +636,6 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surfac
     Content.push_back(taskbox);
 }
 
-TaskGeomFillSurface::~TaskGeomFillSurface()
-{
-    // automatically deleted in the sub-class
-}
-
 void TaskGeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 {
     widget->setEditedObject(obj);
