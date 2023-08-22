@@ -47,7 +47,7 @@ const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0, 10.0, 0.0
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5, 10.0, 0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
-Extend::Extend() : lockOnChangeMutex(false)
+Extend::Extend()
 {
     ADD_PROPERTY(Face,(nullptr));
     Face.setScope(App::LinkScope::Global);
