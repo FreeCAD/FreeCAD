@@ -90,9 +90,7 @@ ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 }
 
-ImportOCAF::~ImportOCAF()
-{
-}
+ImportOCAF::~ImportOCAF() = default;
 
 void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Location& part_loc)
 {
@@ -483,9 +481,7 @@ ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::
     hColors = XCAFDoc_DocumentTool::ColorTool(hdoc->Main());
 }
 
-ImportXCAF::~ImportXCAF()
-{
-}
+ImportXCAF::~ImportXCAF() = default;
 
 void ImportXCAF::loadShapes()
 {

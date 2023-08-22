@@ -329,9 +329,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
 {
 }
 
-Mesher::~Mesher()
-{
-}
+Mesher::~Mesher() = default;
 
 Mesh::MeshObject* Mesher::createStandard() const
 {

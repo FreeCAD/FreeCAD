@@ -52,7 +52,7 @@ class MeshPartExport CurveProjector
 {
 public:
   CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjector() {}
+  virtual ~CurveProjector() = default;
 
   struct FaceSplitEdge
   {
@@ -89,7 +89,7 @@ class MeshPartExport CurveProjectorShape: public CurveProjector
 {
 public:
   CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  ~CurveProjectorShape() override {}
+  ~CurveProjectorShape() override = default;
 
   void projectCurve(const TopoDS_Edge& aEdge,
                     std::vector<FaceSplitEdge> &vSplitEdges);
@@ -110,7 +110,7 @@ class MeshPartExport CurveProjectorSimple: public CurveProjector
 {
 public:
   CurveProjectorSimple(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  ~CurveProjectorSimple() override {}
+  ~CurveProjectorSimple() override = default;
 
   /// helper to discredicice a Edge...
   void GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints = 30);
@@ -139,7 +139,7 @@ public:
   };
 
   CurveProjectorWithToolMesh(const TopoDS_Shape &aShape, const MeshKernel &pMesh,MeshKernel &rToolMesh);
-  ~CurveProjectorWithToolMesh() override {}
+  ~CurveProjectorWithToolMesh() override = default;
 
 
   void makeToolMesh(const TopoDS_Edge& aEdge,std::vector<MeshGeomFacet> &cVAry );
@@ -174,10 +174,7 @@ public:
         std::vector<Base::Vector3f> points;
     };
 
-    /// Construction
     explicit MeshProjection(const MeshKernel& rMesh);
-    /// Destruction
-    ~MeshProjection();
 
     /**
      * @brief findSectionParameters
