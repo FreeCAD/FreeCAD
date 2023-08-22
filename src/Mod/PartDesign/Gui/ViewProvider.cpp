@@ -55,9 +55,7 @@ ViewProvider::ViewProvider()
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
-ViewProvider::~ViewProvider()
-{
-}
+ViewProvider::~ViewProvider() = default;
 
 bool ViewProvider::doubleClicked()
 {

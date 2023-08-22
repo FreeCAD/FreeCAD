@@ -86,7 +86,7 @@ class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
-    ~TaskDlgMirroredParameters() override {}
+    ~TaskDlgMirroredParameters() override = default;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)

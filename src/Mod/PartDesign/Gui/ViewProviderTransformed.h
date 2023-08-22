@@ -39,8 +39,7 @@ public:
     ViewProviderTransformed()
         : pcRejectedRoot(nullptr) {}
     /// destructor
-    ~ViewProviderTransformed() override
-        {}
+    ~ViewProviderTransformed() override  = default;
 
     // The feature name of the subclass
     virtual const std::string & featureName() const;

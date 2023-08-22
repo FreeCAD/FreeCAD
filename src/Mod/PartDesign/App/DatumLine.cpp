@@ -65,9 +65,7 @@ Line::Line()
     Support.touch();
 }
 
-Line::~Line()
-{
-}
+Line::~Line() = default;
 
 Base::Vector3d Line::getDirection() const
 {
