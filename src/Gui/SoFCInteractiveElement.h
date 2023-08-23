@@ -117,7 +117,7 @@ public:
     static void initClass();
     SoGLWidgetNode();
 
-    QtGLWidget * window;
+    QtGLWidget * window{nullptr};
 
     void doAction(SoAction * action) override;
     void GLRender(SoGLRenderAction * action) override;

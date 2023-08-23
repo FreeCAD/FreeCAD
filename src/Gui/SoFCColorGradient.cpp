@@ -50,7 +50,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(5.0f, -4.0f, 5.5f, 4.0f)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;

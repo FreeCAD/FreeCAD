@@ -671,7 +671,7 @@ protected:
     mutable std::list<_SelObj> _SelList;
 
     mutable std::list<_SelObj> _PickedList;
-    bool _needPickedList;
+    bool _needPickedList{false};
 
     using SelStackItem = std::set<App::SubObjectT>;
     std::deque<SelStackItem> _SelStackBack;

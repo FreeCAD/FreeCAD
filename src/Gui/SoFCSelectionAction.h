@@ -243,7 +243,7 @@ public:
     SbString componentName;
 
 private:
-    SbBool _handled;
+    SbBool _handled{false};
 };
 
 /**
@@ -276,7 +276,7 @@ public:
 private:
     const SbViewportRegion& vpregion;
     const SbViewportRegion& vpselect;
-    SbBool _handled;
+    SbBool _handled{false};
 };
 
 /**
@@ -302,7 +302,7 @@ private:
     static void callDoAction(SoAction *action,SoNode *node);
 
 private:
-    SbBool _handled;
+    SbBool _handled{false};
 };
 
 class SoBoxSelectionRenderActionP;

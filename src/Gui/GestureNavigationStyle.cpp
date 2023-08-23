@@ -93,7 +93,7 @@ namespace Gui {
 class NS::Event : public sc::event<NS::Event>
 {
 public:
-    Event():inventor_event(nullptr), modifiers{}, flags(new Flags){}
+    Event() : flags(new Flags){}
     virtual ~Event() = default;
 
     void log() const {
@@ -197,8 +197,8 @@ public:
     };
 
 public:
-    const SoEvent* inventor_event;
-    unsigned int modifiers;
+    const SoEvent* inventor_event{nullptr};
+    unsigned int modifiers{0};
     unsigned int mbstate() const {return modifiers & MASKBUTTONS;}
     unsigned int kbdstate() const {return modifiers & MASKMODIFIERS;}
 

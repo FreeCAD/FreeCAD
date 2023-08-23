@@ -53,9 +53,7 @@ void ToolBoxManager::destruct()
     _instance = nullptr;
 }
 
-ToolBoxManager::ToolBoxManager() : _toolBox(nullptr)
-{
-}
+ToolBoxManager::ToolBoxManager() = default;
 
 ToolBoxManager::~ToolBoxManager() = default;
 

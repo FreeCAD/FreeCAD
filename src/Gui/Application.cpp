@@ -170,11 +170,7 @@ public:
 // Pimpl class
 struct ApplicationP
 {
-    explicit ApplicationP(bool GUIenabled) :
-    activeDocument(nullptr),
-    editDocument(nullptr),
-    isClosing(false),
-    startingUp(true)
+    explicit ApplicationP(bool GUIenabled)
     {
         // create the macro manager
         if (GUIenabled)
@@ -195,14 +191,14 @@ struct ApplicationP
     /// list of all handled documents
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
-    Gui::Document*   activeDocument;
-    Gui::Document*  editDocument;
+    Gui::Document*   activeDocument{nullptr};
+    Gui::Document*  editDocument{nullptr};
     MacroManager*  macroMngr;
     PreferencePackManager* prefPackManager;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
-    bool isClosing;
-    bool startingUp;
+    bool isClosing{false};
+    bool startingUp{true};
     /// Handles all commands
     CommandManager commandManager;
     ViewProviderMap viewproviderMap;

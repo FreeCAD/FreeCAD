@@ -95,10 +95,10 @@ protected:
     virtual unsigned long getBoundColor() const;
 
 protected:
-    SoMaterial       * pcShapeMaterial;
-    SoFCBoundingBox  * pcBoundingBox;
-    SoSwitch         * pcBoundSwitch;
-    SoBaseColor      * pcBoundColor;
+    SoMaterial       * pcShapeMaterial{nullptr};
+    SoFCBoundingBox  * pcBoundingBox{nullptr};
+    SoSwitch         * pcBoundSwitch{nullptr};
+    SoBaseColor      * pcBoundColor{nullptr};
 };
 
 } // namespace Gui

@@ -1608,7 +1608,6 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
  */
 SelectionSingleton::SelectionSingleton()
     :CurrentPreselection(SelectionChanges::ClrSelection)
-    ,_needPickedList(false)
 {
     hx = 0;
     hy = 0;
