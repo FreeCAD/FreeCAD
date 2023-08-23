@@ -117,13 +117,10 @@ ConsoleOutput* ConsoleOutput::instance = nullptr;
 
 
 ConsoleSingleton::ConsoleSingleton()
-  : _bVerbose(true)
-  , _bCanRefresh(true)
-  , connectionMode(Direct)
 #ifdef FC_DEBUG
-  ,_defaultLogLevel(FC_LOGLEVEL_LOG)
+  : _defaultLogLevel(FC_LOGLEVEL_LOG)
 #else
-  ,_defaultLogLevel(FC_LOGLEVEL_MSG)
+  : _defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
 }

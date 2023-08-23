@@ -55,10 +55,8 @@ typedef struct {
 } PyBaseProxy;
 
 // Constructor
-PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
-  : _pcTwinPointer(p)
-  , baseProxy(nullptr)
-  , attrDict(nullptr)
+PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
+  : _pcTwinPointer(voidp)
 {
 #if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;

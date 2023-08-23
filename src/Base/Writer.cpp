@@ -77,10 +77,6 @@ struct cdata_filter {
 // ---------------------------------------------------------------------------
 
 Writer::Writer()
-  : indent(0)
-  , indBuf{}
-  , forceXML(false)
-  , fileVersion(1)
 {
     indBuf[0] = '\0';
 }

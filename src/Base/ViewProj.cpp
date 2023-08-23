@@ -26,10 +26,7 @@
 
 using namespace Base;
 
-ViewProjMethod::ViewProjMethod()
-  : hasTransform(false)
-{
-}
+ViewProjMethod::ViewProjMethod() = default;
 
 bool ViewProjMethod::isValid() const
 {
