@@ -335,7 +335,7 @@ protected:
                               static_cast<float>(tmp.z));
     }
 public:
-    mutable long Tag;
+    mutable long Tag{0};
 
 
 public:

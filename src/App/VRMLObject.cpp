@@ -37,7 +37,7 @@ using namespace App;
 PROPERTY_SOURCE(App::VRMLObject, App::GeoFeature)
 
 
-VRMLObject::VRMLObject() : index(0)
+VRMLObject::VRMLObject()
 {
     ADD_PROPERTY_TYPE(VrmlFile,(nullptr),"",Prop_None,"Included file with the VRML definition");
     ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output|Prop_Transient),
@@ -47,8 +47,6 @@ VRMLObject::VRMLObject() : index(0)
     Urls.setSize(0);
     Resources.setSize(0);
 }
-
-VRMLObject::~VRMLObject() = default;
 
 short VRMLObject::mustExecute() const
 {

@@ -448,16 +448,16 @@ protected:
 
         explicit ResolveResults(const ObjectIdentifier & oi);
 
-        int propertyIndex;
-        App::Document * resolvedDocument;
+        int propertyIndex{0};
+        App::Document * resolvedDocument{nullptr};
         String resolvedDocumentName;
-        App::DocumentObject * resolvedDocumentObject;
+        App::DocumentObject * resolvedDocumentObject{nullptr};
         String resolvedDocumentObjectName;
         String subObjectName;
-        App::DocumentObject * resolvedSubObject;
-        App::Property * resolvedProperty;
+        App::DocumentObject * resolvedSubObject{nullptr};
+        App::Property * resolvedProperty{nullptr};
         std::string propertyName;
-        int propertyType;
+        int propertyType{0};
         std::bitset<32> flags;
 
         std::string resolveErrorString() const;

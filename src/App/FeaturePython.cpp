@@ -38,7 +38,7 @@
 using namespace App;
 
 FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
-    : object(o), has__object__(false)
+    : object(o)
 {
 }
 

@@ -157,16 +157,7 @@ void ColorField::interpolate (Color clCol1, std::size_t usInd1, Color clCol2, st
 }
 
 
-ColorGradientProfile::ColorGradientProfile()
-  : tStyle{ColorBarStyle::FLOW}
-  , fMin{}
-  , fMax{}
-  , ctColors{}
-  , tColorModel{}
-  , visibility{Visibility::Default}
-{
-
-}
+ColorGradientProfile::ColorGradientProfile() = default;
 
 bool ColorGradientProfile::isEqual(const ColorGradientProfile& cg) const
 {
@@ -309,8 +300,7 @@ void ColorGradient::setColorModel ()
     }
 }
 
-ColorLegend::ColorLegend ()
-  : outsideGrayed(false)
+ColorLegend::ColorLegend()
 {
     // default  blue, green, red
     colorFields.emplace_back(0, 0, 1);
