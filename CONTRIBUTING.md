@@ -94,7 +94,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 ## 8. Project Administration
 
 1. Project Administrators are those individuals who are members of the FreeCAD Github organization and have the role of 'owner'.  They have the task of administering the organization including adding and removing individuals from various teams.
-2. Project Administrator is a technical role necessitated by the GitHub platform. Except for the specific exceptions listed below, the Project Administrators do not make the decision about individual team members. Rather, they carry out the collective wishes of the Maintainers team. Project Administrators will be selected from the Maintainers team but the Maintainers themselves.
+2. Project Administrator is a technical role necessitated by the GitHub platform. Except for the specific exceptions listed below, the Project Administrators do not make the decision about individual team members. Rather, they carry out the collective wishes of the Maintainers team. Project Administrators will be selected from the Maintainers team by the Maintainers themselves.
 3. To ensure continuity there SHALL be at least four Project Administrators at all times.
 4. The project Administrators will manage the set of project Maintainers.  They SHALL maintain a sufficiently large pool of Maintainers to ensure their succession and permit timely review of contributions. If the pool of Maintainers is insufficient, the Project Administrators will request that the Maintainers select additional individuals to add.
 5. Contributors who have a history of successful PRs and have demonstrated continued professionalism should be invited to be Maintainers.
