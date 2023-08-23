@@ -517,6 +517,79 @@ def mirror(point, edge):
         return None
 
 
+def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
+    """Return the u and v vectors of a planar face.
+
+    It is up to the calling function to ensure the face is planar.
+
+    If the u vector matches +/-vec_z, or the v vector matches -vec_z, the
+    vectors are rotated to ensure the v vector matches +vec_z.
+
+    face: Part.Face
+        Face.
+    vec_z: Base::Vector3, optional
+        Defaults to Vector(0, 0, 1).
+        Z axis vector used for reference.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Return
+    ------
+    tuple
+        U and v vector (Base::Vector3).
+    """
+    err = 1e-7 if tol <= 0 else tol
+    vec_u, vec_v = face.tangentAt(0, 0)
+    if face.Orientation == "Reversed":
+        vec_u, vec_v = vec_v, vec_u
+    if vec_v.isEqual(vec_z.negative(), err):
+        vec_u, vec_v = vec_u.negative(), vec_v.negative()
+    elif vec_u.isEqual(vec_z, err):
+        vec_u, vec_v = vec_v.negative(), vec_u
+    elif vec_u.isEqual(vec_z.negative(), err):
+        vec_u, vec_v = vec_v, vec_u.negative()
+    return vec_u, vec_v
+
+
+def placement_from_face(face, vec_z=App.Vector(0, 0, 1), rotated=False, tol=-1):
+    """Return a placement from the center of gravity, and the u and v vectors of a planar face.
+
+    It is up to the calling function to ensure the face is planar.
+
+    Parameters
+    ----------
+    face: Part.Face
+        Face.
+    vec_z: Base::Vector3, optional
+        Defaults to Vector(0, 0, 1).
+        Z axis vector used for reference.
+    rotated: bool, optional
+        Defaults to `False`.
+        If `False` the v vector of the face defines the Y axis of the placement.
+        If `True` the -v vector of the face defines the Z axis of the placement
+        (used by Arch_Window).
+        The u vector defines the X axis in both cases.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Return
+    ------
+    Base::Placement
+
+    See also
+    --------
+    DraftGeomUtils.uv_vectors_from_face
+    """
+    pt_pos = face.CenterOfGravity
+    vec_u, vec_v = uv_vectors_from_face(face, vec_z, tol)
+    if rotated:
+        return App.Placement(pt_pos, App.Rotation(vec_u, App.Vector(), vec_v.negative(), "XZY"))
+    else:
+        return App.Placement(pt_pos, App.Rotation(vec_u, vec_v, App.Vector(), "XYZ"))
+
+
 def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
     """Return a placement from 3 points defining an origin, an X axis and a Y axis.
 
@@ -525,29 +598,27 @@ def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
 
     Parameters
     ----------
-    pt_pos : Base::Vector3
+    pt_pos: Base::Vector3
         Origin (Base of Placement).
-
-    pt_x : Base::Vector3
+    pt_x: Base::Vector3
         Point on positive X axis. Or X axis vector if as_vectors is `True`.
-
-    pt_y : Base::Vector3
+    pt_y: Base::Vector3
         Point on positive Y axis. Or Y axis vector if as_vectors is `True`.
-
-    as_vectors : bool
+    as_vectors: bool, optional
+        Defaults to `False`.
         If `True` treat pt_x and pt_y as axis vectors.
-
-    tol : float
+    tol: float, optional
+        Defaults to -1.
         Internal tolerance. 1e-7 is used if tol <=0.
-
-    See also:
-    ---------
-    DraftVecUtils.getRotation
-    DraftGeomUtils.getRotation
 
     Return
     ------
     Base::Placement
+
+    See also
+    --------
+    DraftGeomUtils.getRotation
+    DraftVecUtils.getRotation
     """
     err = 1e-7 if tol <= 0 else tol
     if as_vectors is False:
