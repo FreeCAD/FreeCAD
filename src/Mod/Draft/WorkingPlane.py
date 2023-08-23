@@ -1313,7 +1313,7 @@ class Plane:
 plane = Plane
 
 
-# Compatibility function:
+# Compatibility function (V0.22, 2023):
 def getPlacementFromPoints(points):
     """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
@@ -1323,39 +1323,11 @@ def getPlacementFromPoints(points):
     return DraftGeomUtils.placement_from_points(*points[:3])
 
 
+# Compatibility function (V0.22, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 
-    It creates a temporary `plane` and uses `alignToFace(face)`
-    to set its orientation.
-
-    Then it returns the `Base::Placement` returned
-    from `plane.getPlacement(rotated)`.
-
-    Parameter
-    ---------
-    face : Part.Face
-        A shape of type `'Face'`.
-    rotated : bool, optional
-        It defaults to `False`. If it is `True`, the temporary plane
-        switches `axis` with `-v` to produce a rotated placement.
-
-    Returns
-    -------
-    Base::Placement
-        A placement obtained from the temporary plane
-        defined by `face`,
-        or `None` if it fails to use `face`.
-
-    See Also
-    --------
-    alignToFace, getPlacement
+    Calls DraftGeomUtils.placement_from_face(). See there.
     """
-    pl = plane()
-    try:
-        pl.alignToFace(face)
-    except Exception:
-        return None
-    p = pl.getPlacement(rotated)
-    del pl
-    return p
+    utils.use_instead("DraftGeomUtils.placement_from_face")
+    return DraftGeomUtils.placement_from_face(face, rotated)
