@@ -81,9 +81,7 @@ public:
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() :
-            fSawErrors(false) {
-    }
+    DOMTreeErrorReporter() = default;
 
     ~DOMTreeErrorReporter() override = default;
 
@@ -109,7 +107,7 @@ public:
     //      method. Its used by the main code to suppress output if there are
     //      errors.
     // -----------------------------------------------------------------------
-    bool    fSawErrors;
+    bool    fSawErrors{false};
 };
 
 
@@ -1441,7 +1439,6 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(nullptr), paramSerializer(nullptr)
 {
     _Manager = this;
 

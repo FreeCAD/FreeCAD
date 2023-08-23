@@ -49,14 +49,19 @@ public:
 
     ByteOrder byteOrder() const;
     void setByteOrder(ByteOrder);
+    virtual ~Stream();
 
 protected:
     Stream();
     Stream(const Stream&) = default;
+    Stream(Stream&&) = default;
     Stream& operator=(const Stream&) = default;
-    virtual ~Stream();
+    Stream& operator=(Stream&&) = default;
 
-    bool _swap;
+    bool isSwapped() const { return _swap; };
+
+private:
+    bool _swap{false};
 };
 
 /**
@@ -82,7 +87,9 @@ public:
     OutputStream& operator << (double d);
 
     OutputStream (const OutputStream&) = delete;
+    OutputStream (OutputStream&&) = delete;
     void operator = (const OutputStream&) = delete;
+    void operator = (OutputStream&&) = delete;
 
 private:
     std::ostream& _out;
@@ -117,7 +124,9 @@ public:
     }
 
     InputStream (const InputStream&) = delete;
+    InputStream (InputStream&&) = delete;
     void operator = (const InputStream&) = delete;
+    void operator = (InputStream&&) = delete;
 
 private:
     std::istream& _in;
@@ -149,7 +158,9 @@ protected:
 
 public:
     ByteArrayOStreambuf(const ByteArrayOStreambuf&) = delete;
+    ByteArrayOStreambuf(ByteArrayOStreambuf&&) = delete;
     ByteArrayOStreambuf& operator=(const ByteArrayOStreambuf&) = delete;
+    ByteArrayOStreambuf& operator=(ByteArrayOStreambuf&&) = delete;
 
 private:
     QBuffer* _buffer;
@@ -180,7 +191,9 @@ protected:
             std::ios::in | std::ios::out) override;
 public:
     ByteArrayIStreambuf(const ByteArrayIStreambuf&) = delete;
+    ByteArrayIStreambuf(ByteArrayIStreambuf&&) = delete;
     ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&) = delete;
+    ByteArrayIStreambuf& operator=(ByteArrayIStreambuf&&) = delete;
 
 private:
     const QByteArray& _buffer;
@@ -210,9 +223,11 @@ protected:
             std::ios::in | std::ios::out) override;
 public:
     IODeviceOStreambuf(const IODeviceOStreambuf&) = delete;
+    IODeviceOStreambuf(IODeviceOStreambuf&&) = delete;
     IODeviceOStreambuf& operator=(const IODeviceOStreambuf&) = delete;
+    IODeviceOStreambuf& operator=(IODeviceOStreambuf&&) = delete;
 
-protected:
+private:
     QIODevice* device;
 };
 
@@ -238,9 +253,11 @@ protected:
             std::ios::in | std::ios::out) override;
 public:
     IODeviceIStreambuf(const IODeviceIStreambuf&) = delete;
+    IODeviceIStreambuf(IODeviceIStreambuf&&) = delete;
     IODeviceIStreambuf& operator=(const IODeviceIStreambuf&) = delete;
+    IODeviceIStreambuf& operator=(IODeviceIStreambuf&&) = delete;
 
-protected:
+private:
     QIODevice* device;
     /* data buffer:
      * - at most, pbSize characters in putback area plus
@@ -248,7 +265,7 @@ protected:
      */
     static const int pbSize = 4;        // size of putback area
     static const int bufSize = 1024;    // size of the data buffer
-    char buffer[bufSize+pbSize];        // data buffer
+    char buffer[bufSize+pbSize]{};      // data buffer
 };
 
 class BaseExport PyStreambuf : public std::streambuf
@@ -286,11 +303,13 @@ private:
 
 public:
     PyStreambuf(const PyStreambuf&) = delete;
+    PyStreambuf(PyStreambuf&&) = delete;
     PyStreambuf& operator=(const PyStreambuf&) = delete;
+    PyStreambuf& operator=(PyStreambuf&&) = delete;
 
 private:
     PyObject* inp;
-    Type type;
+    Type type{Unknown};
     const std::size_t put_back;
     std::vector<char> buffer;
 };
@@ -316,7 +335,9 @@ protected:
 
 public:
     Streambuf(const Streambuf&) = delete;
+    Streambuf(Streambuf&&) = delete;
     Streambuf& operator=(const Streambuf&) = delete;
+    Streambuf& operator=(Streambuf&&) = delete;
 
 private:
     std::string::const_iterator _beg;
@@ -338,6 +359,8 @@ class ofstream : public std::ofstream
 {
 public:
     ofstream() = default;
+    ofstream(const ofstream&) = delete;
+    ofstream(ofstream&&) = delete;
     ofstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
@@ -354,6 +377,9 @@ public:
         std::ofstream::open(fi.filePath().c_str(), mode);
 #endif
     }
+
+    ofstream& operator = (const ofstream&) = delete;
+    ofstream& operator = (ofstream&&) = delete;
 };
 
 /**
@@ -366,6 +392,8 @@ class ifstream : public std::ifstream
 {
 public:
     ifstream() = default;
+    ifstream(const ifstream&) = delete;
+    ifstream(ifstream&&) = delete;
     ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
 #ifdef _MSC_VER
@@ -382,6 +410,9 @@ public:
         std::ifstream::open(fi.filePath().c_str(), mode);
 #endif
     }
+
+    ifstream& operator = (const ifstream&) = delete;
+    ifstream& operator = (ifstream&&) = delete;
 };
 
 } // namespace Base

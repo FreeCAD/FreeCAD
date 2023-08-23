@@ -414,8 +414,8 @@ public:
 
 private:
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
-    ParameterSerializer * paramSerializer;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument{nullptr};
+    ParameterSerializer * paramSerializer{nullptr};
 
     bool          gDoNamespaces         ;
     bool          gDoSchema             ;

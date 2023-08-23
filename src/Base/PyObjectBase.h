@@ -342,10 +342,10 @@ protected:
     void * _pcTwinPointer;
 
 public:
-    PyObject* baseProxy;
+    PyObject* baseProxy{nullptr};
 
 private:
-    PyObject* attrDict;
+    PyObject* attrDict{nullptr};
 };
 
 
