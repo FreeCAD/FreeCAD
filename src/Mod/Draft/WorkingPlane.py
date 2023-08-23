@@ -40,6 +40,7 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import utils
 from draftutils.translate import translate
 
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
@@ -1312,53 +1313,14 @@ class Plane:
 plane = Plane
 
 
+# Compatibility function:
 def getPlacementFromPoints(points):
-    """Return a placement from a list of 3 or 4 points.
+    """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
-    With these points a temporary `plane` is defined.
-
-    Then it returns the `Base::Placement` returned from `plane.getPlacement()`.
-
-    Parameters
-    ----------
-    points : list of Base::Vector3
-        A list with 3 or 4 points to create a temporary plane
-        from which to extract the placement.
-
-        The first point is the plane's `position`.
-        The other two points are used to define the `u` and `v` axes,
-        as originating from the first point.
-
-        If the fourth point exists, it is used to define the plane's `axis`
-        as originating from the first point.
-        If no fourth point is provided, the cross product bewtween
-        the previously defined `u` and `v` is used as `axis`.
-
-    Return
-    ------
-    Base::Placement
-        A placement obtained from the temporary plane
-        defined by `points`,
-        or `None` is it fails to use the points.
-
-    See Also
-    --------
-    getPlacement
+    Calls DraftGeomUtils.placement_from_points(). See there.
     """
-    pl = plane()
-    try:
-        pl.position = points[0]
-        pl.u = (points[1].sub(points[0]).normalize())
-        pl.v = (points[2].sub(points[0]).normalize())
-        if len(points) == 4:
-            pl.axis = (points[3].sub(points[0]).normalize())
-        else:
-            pl.axis = ((pl.u).cross(pl.v)).normalize()
-    except Exception:
-        return None
-    p = pl.getPlacement()
-    del pl
-    return p
+    utils.use_instead("DraftGeomUtils.placement_from_points")
+    return DraftGeomUtils.placement_from_points(*points[:3])
 
 
 def getPlacementFromFace(face, rotated=False):
