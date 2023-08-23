@@ -1330,4 +1330,4 @@ def getPlacementFromFace(face, rotated=False):
     Calls DraftGeomUtils.placement_from_face(). See there.
     """
     utils.use_instead("DraftGeomUtils.placement_from_face")
-    return DraftGeomUtils.placement_from_face(face, rotated)
+    return DraftGeomUtils.placement_from_face(face, rotated=rotated)
