@@ -63,7 +63,7 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 //===========================================================================
 
 DocumentObject::DocumentObject()
-    : ExpressionEngine(),_pDoc(nullptr),pcNameInDocument(nullptr),_Id(0)
+    : ExpressionEngine()
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");

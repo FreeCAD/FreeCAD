@@ -84,7 +84,6 @@ public:
         : prop(_prop)
         , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
         , signaller(_prop,false)
-        , _changed(0)
     {}
 
     ~ExpressionModifier() override = default;
@@ -104,7 +103,7 @@ protected:
     P & prop;
     App::PropertyLinkBase *propLink;
     typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange signaller;
-    int _changed;
+    int _changed{0};
 };
 
 /**

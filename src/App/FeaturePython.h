@@ -86,7 +86,7 @@ public:
 
 private:
     App::DocumentObject* object;
-    bool has__object__;
+    bool has__object__{false};
 
 #define FC_PY_FEATURE_PYTHON \
     FC_PY_ELEMENT(execute)\

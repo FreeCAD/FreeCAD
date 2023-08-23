@@ -310,7 +310,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 /** Percent property
@@ -613,7 +613,7 @@ public:
     void setPyObject(PyObject *) override;
 
 protected:
-    const Constraints* _ConstStruct;
+    const Constraints* _ConstStruct{nullptr};
 };
 
 

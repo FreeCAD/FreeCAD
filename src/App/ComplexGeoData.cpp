@@ -55,10 +55,7 @@ using namespace Data;
 
 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-ComplexGeoData::ComplexGeoData()
-    :Tag(0)
-{
-}
+ComplexGeoData::ComplexGeoData() = default;
 
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {

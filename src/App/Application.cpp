@@ -233,9 +233,7 @@ init_image_module()
 }
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(nullptr), _isRestoring(false),_allowPartial(false)
-  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
-  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
+  : _mConfig(mConfig)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
