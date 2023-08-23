@@ -25,37 +25,37 @@
 // No CMake version info for libarea, Zipios, or KDL
 
 // Coin3D
-constexpr char * fcCoin3dVersion = "${COIN3D_VERSION}";
+constexpr const char * fcCoin3dVersion = "${COIN3D_VERSION}";
 
 // Eigen3
-constexpr char * fcEigen3Version = "${EIGEN3_VERSION}";
+constexpr const char * fcEigen3Version = "${EIGEN3_VERSION}";
 
 // FreeType
-constexpr char * fcFreetypeVersion = "${FREETYPE_VERSION_STRING}";
+constexpr const char * fcFreetypeVersion = "${FREETYPE_VERSION_STRING}";
 
 // pcl
-constexpr char * fcPclVersion = "${PCL_VERSION}";
+constexpr const char * fcPclVersion = "${PCL_VERSION}";
 
 // PyCXX
-constexpr char * fcPycxxVersion = "${PYCXX_VERSION}";
+constexpr const char * fcPycxxVersion = "${PYCXX_VERSION}";
 
 // PySide
-constexpr char * fcPysideVersion = "${PySide2_VERSION}";
+constexpr const char * fcPysideVersion = "${PySide2_VERSION}";
 
 // PyBind
-constexpr char * fcPybind11Version = "${pybind11_VERSION}";
+constexpr const char * fcPybind11Version = "${pybind11_VERSION}";
 
 // Shiboken
-constexpr char * fcShibokenVersion = "${Shiboken2_VERSION}";
+constexpr const char * fcShibokenVersion = "${Shiboken2_VERSION}";
 
 // vtk
-constexpr char * fcVtkVersion = "${VTK_VERSION}";
+constexpr const char * fcVtkVersion = "${VTK_VERSION}";
 
 // Xerces-C
-constexpr char * fcXercescVersion = "${XercesC_VERSION}";
+constexpr const char * fcXercescVersion = "${XercesC_VERSION}";
 
 // Pivy
-constexpr char * fcPivyVersion = "${PIVY_VERSION}";
+constexpr const char * fcPivyVersion = "${PIVY_VERSION}";
 
 
 #endif // LIBRARY_VERSIONS_H

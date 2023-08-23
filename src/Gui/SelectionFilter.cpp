@@ -236,7 +236,7 @@ SelectionFilter* ActFilter=nullptr;
 Node_Block *TopBlock=nullptr;
 
 // error func
-void yyerror(char *errorinfo)
+void yyerror(const char *errorinfo)
     {  ActFilter->addError(errorinfo);  }
 
 

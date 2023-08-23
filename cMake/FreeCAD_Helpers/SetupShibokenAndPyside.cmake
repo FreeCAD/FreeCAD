@@ -42,29 +42,11 @@ macro(SetupShibokenAndPyside)
         get_property(SHIBOKEN_INCLUDE_DIR TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
     endif(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken)
 
-    if(NOT SHIBOKEN_INCLUDE_DIR)
-        find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
-        if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
-            set(Shiboken_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(Shiboken_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
-            set(Shiboken_FOUND TRUE)
-        endif()
-    endif()
-
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
 
     if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
         get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
     endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
-
-    if(NOT PYSIDE_INCLUDE_DIR)
-        find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
-        if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
-            set(PySide_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(PySide_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
-            set(PySide_FOUND TRUE)
-        endif()
-    endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION}Tools QUIET) # PySide utilities (uic & rcc executables)
     if(NOT PYSIDE_TOOLS_FOUND)
@@ -169,35 +151,6 @@ macro(SetupShibokenAndPyside)
     endif()
 
 endmacro(SetupShibokenAndPyside)
-
-# Locate the include directory for a pip-installed package -- uses pip show to find the base pip
-# install directory, and then appends the package name and  "/include" to the end
-macro(find_pip_package PACKAGE)
-    execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
-        RESULT_VARIABLE FAILURE
-        OUTPUT_VARIABLE PRINT_OUTPUT
-    )
-    if(NOT FAILURE)
-        # Extract Name: and Location: lines and use them to construct the include directory
-        string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
-        foreach(LINE IN LISTS PIP_OUTPUT_LINES)
-            STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
-            STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
-            if(${NAME_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
-            elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
-            endif()
-        endforeach()
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR)
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
-        set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
-        set(${PACKAGE}_LIBRARIES ${LIBRARY} PARENT_SCOPE)
-        set(${PACKAGE}_FOUND ${LIBRARY} TRUE)
-        message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
-    endif()
-endmacro()
 
 
 # Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python

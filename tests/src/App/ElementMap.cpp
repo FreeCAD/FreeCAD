@@ -47,9 +47,9 @@ protected:
     {
         if (App::Application::GetARGC() == 0) {
             int argc = 1;
-            char* argv[] = {"FreeCAD"};
+            const char* argv[] = {"FreeCAD"};
             App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv);
+            App::Application::init(argc, const_cast<char**>(argv));
         }
     }
 
@@ -367,7 +367,7 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
     //   pattern: new doc, create Cube, create Cylinder, Union of both (Cube first)
     std::ostringstream ss;
     std::ostringstream finalSs;
-    char* docName = "Unnamed";
+    const char* docName = "Unnamed";
 
     LessComplexPart cube(1L, "Box", _hasher);
     LessComplexPart cylinder(2L, "Cylinder", _hasher);

@@ -856,7 +856,9 @@ Py::Object View3DInventorPy::isPopupMenuEnabled()
 
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
-    char *cFileName,*cColor="Current",*cComment="$MIBA";
+    char *cFileName = nullptr;
+    const char *cColor="Current";
+    const char *cComment="$MIBA";
     int w=-1,h=-1;
     int s=View3DInventorViewer::getNumSamples();
 
@@ -891,7 +893,7 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
 {
     char* filename;
     int ps=4;
-    char* name="white";
+    const char* name="white";
 
     if (!PyArg_ParseTuple(args.ptr(), "s|is",&filename,&ps,&name))
         throw Py::Exception();

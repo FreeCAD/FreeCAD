@@ -148,7 +148,7 @@ PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
     int maxDegree=3;
     double dmax = 0.0001;
     int critOrder=0;
-    char* cont = "C1";
+    const char* cont = "C1";
     double enlargeCoeff = 1.1;
 
     if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|diidisd", kwds_Parameter,

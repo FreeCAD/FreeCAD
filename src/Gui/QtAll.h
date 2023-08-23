@@ -97,6 +97,7 @@
 #include <QSessionManager>
 #include <QShortcut>
 #include <QStandardItemModel>
+#include <QStandardPaths>
 #include <QSurfaceFormat>
 #include <QSyntaxHighlighter>
 #include <QTextDocument>

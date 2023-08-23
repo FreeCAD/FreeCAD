@@ -48,6 +48,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
+#include <QtQuick/QQuickWindow>
 
 // FreeCAD header
 #include <App/Application.h>
@@ -274,9 +275,9 @@ int main( int argc, char ** argv )
         if (App::Application::Config()["Console"] == "1")
             App::Application::runApplication();
         if (App::Application::Config()["RunMode"] == "Gui" ||
-            App::Application::Config()["RunMode"] == "Internal")
+            App::Application::Config()["RunMode"] == "Internal") {
             Gui::Application::runApplication();
-        else
+        } else
             App::Application::runApplication();
     }
     catch (const Base::SystemExitException& e) {

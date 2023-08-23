@@ -318,8 +318,11 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     return virtualkey;
 }
 
-
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, long *result)
+#else
+bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, qintptr *result)
+#endif
 {
     if (gMouseInput == 0)
         return false;
@@ -1071,6 +1074,12 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     bool processed = false;
     bool bIsForeground = (nInputCode == RIM_INPUT);
 
+    // Initialize with some random bit of data before we look up the real value later on
+    if (fDevice2Data.empty()) {
+        return false;
+    }
+    TInputData &deviceData = fDevice2Data.begin()->second;
+
     PHIDP_PREPARSED_DATA pPreparsedData;
     HIDP_CAPS            Caps;
     PHIDP_BUTTON_CAPS    pButtonCaps;
@@ -1141,7 +1150,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     // Get the state of discrete-valued-controls
     //
 
-    TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+    deviceData = fDevice2Data[pRawInput->header.hDevice];
     deviceData.fTimeToLive = kTimeToLive;
     if (bIsForeground) {
         for (i = 0; i < Caps.NumberInputValueCaps; i++) {

@@ -795,9 +795,9 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     Standard_Integer degMin = 3;
     Standard_Integer degMax = 8;
     Standard_Integer segMax = 8;
-    char *continuity = "C2";
+    const char *continuity = "C2";
     double tol3d = 1e-3;
-    char *parType = "ChordLength";
+    const char *parType = "ChordLength";
     PyObject *par = nullptr;
     double weight1 = 0;
     double weight2 = 0;
