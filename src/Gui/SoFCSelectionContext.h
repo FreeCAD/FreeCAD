@@ -32,6 +32,7 @@
 
 #include <App/Material.h>
 
+class SoState;
 
 namespace Gui {
 
@@ -131,8 +132,8 @@ public:
     void checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx);
 protected:
     std::shared_ptr<int> counter;
-    bool hasSelection;
-    bool hasPreselection;
+    bool hasSelection{false};
+    bool hasPreselection{false};
     static int cachingMode;
 };
 

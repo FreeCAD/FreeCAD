@@ -264,7 +264,7 @@ private:
     // auto scale.
     SbVec3f axisScale;
 
-    bool scaleInited;
+    bool scaleInited{false};
 
     void updateAxisScale();
 

@@ -722,10 +722,12 @@ class TestConsoleObserver : public Base::ILogger
 {
     QMutex mutex;
 public:
-    int matchMsg, matchWrn, matchErr, matchLog, matchCritical;
-    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0), matchCritical(0)
-    {
-    }
+    int matchMsg{0};
+    int matchWrn{0};
+    int matchErr{0};
+    int matchLog{0};
+    int matchCritical{0};
+    TestConsoleObserver() = default;
     void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                  Base::IntendedRecipient recipient, Base::ContentType content) override{
 

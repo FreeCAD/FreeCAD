@@ -39,7 +39,7 @@ public:
     static void initClass(){
         SO_EVENT_INIT_CLASS(SoGestureEvent, SoEvent);
     }
-    SoGestureEvent() : state(SbGSNoGesture) {}
+    SoGestureEvent() = default;
     ~SoGestureEvent() override = default;
     SbBool isSoGestureEvent(const SoEvent* ev) const;
 
@@ -50,7 +50,7 @@ public:
         SbGSEnd = Qt::GestureFinished,
         SbGsCanceled = Qt::GestureCanceled
     };
-    SbGestureState state;
+    SbGestureState state{SbGSNoGesture};
 };
 
 class SoGesturePanEvent : public SoGestureEvent {
