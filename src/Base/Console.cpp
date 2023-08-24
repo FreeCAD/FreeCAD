@@ -294,7 +294,7 @@ void ConsoleSingleton::postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, 
 
 ILogger *ConsoleSingleton::Get(const char *Name) const
 {
-    const char* OName;
+    const char* OName{};
     for (ILogger* Iter : _aclObservers) {
         OName = Iter->Name();   // get the name
         if (OName && strcmp(OName,Name) == 0)
@@ -424,8 +424,8 @@ PyMethodDef ConsoleSingleton::Methods[] = {
 namespace {
 PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char *)> func, PyObject* args)
 {
-    PyObject *output;
-    PyObject *notifier;
+    PyObject *output{};
+    PyObject *notifier{};
 
     const char* notifierStr = "";
 
@@ -592,8 +592,8 @@ PyObject *ConsoleSingleton::sPyTranslatedNotification(PyObject * /*self*/, PyObj
 
 PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr1;
-    char *pstr2;
+    char *pstr1{};
+    char *pstr2{};
     if (!PyArg_ParseTuple(args, "ss", &pstr1, &pstr2))
         return nullptr;
 
@@ -625,9 +625,9 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
 
 PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr1;
-    char *pstr2;
-    PyObject* pyStatus;
+    char *pstr1{};
+    char *pstr2{};
+    PyObject* pyStatus{};
     if (!PyArg_ParseTuple(args, "ssO!", &pstr1, &pstr2, &PyBool_Type, &pyStatus))
         return nullptr;
 

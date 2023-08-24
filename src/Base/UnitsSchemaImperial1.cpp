@@ -218,18 +218,18 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         double totalInches = std::abs(quant.getValue())/factor;
 
         // minimum denominator (8 for 1/8, 16 for 1/16, etc)
-        int       minden;
+        int       minden{};
 
         // Outputs
-        int       feet;    // whole feet
-        int       inches;  // whole inches
-        int       num,den; // numerator and denominator of fractional val
+        int       feet{};      // whole feet
+        int       inches{};    // whole inches
+        int       num{},den{}; // numerator and denominator of fractional val
         std::stringstream output; // output stream
 
         // Intermediate values
-        int       ntot;    // total fractional units
-        int       a,b,d;   // used to compute greatest common denominator
-        int       tmp;     // temporary variable for GCD
+        int       ntot{};        // total fractional units
+        int       a{},b{},d{};   // used to compute greatest common denominator
+        int       tmp{};         // temporary variable for GCD
 
         // Get the current user specified minimum denominator
         minden = quant.getFormat().getDenominator();

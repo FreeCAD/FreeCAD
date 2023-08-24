@@ -150,7 +150,7 @@ bool ZipHeader::readEndOfCentralDirectory(std::istream &_zipfile)
 bool ZipHeader::confirmLocalHeaders(std::istream &_zipfile)
 {
     zipios::Entries::const_iterator it;
-    zipios::ZipCDirEntry *ent;
+    zipios::ZipCDirEntry *ent{};
     int inconsistencies = 0;
     zipios::ZipLocalEntry zlh;
     for (it = _entries.begin(); it != _entries.end(); ++it) {

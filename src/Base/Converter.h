@@ -64,7 +64,7 @@ struct vec_traits<Rotation> {
     using float_type = double;
     vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type,float_type> get() const {
-        float_type q1,q2,q3,q4;
+        float_type q1{},q2{},q3{},q4{};
         v.getValue(q1,q2,q3,q4);
         return std::make_tuple(q1, q2, q3, q4);
     }

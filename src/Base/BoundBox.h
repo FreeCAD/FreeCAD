@@ -172,7 +172,7 @@ public:
      */
     BoundBox3<_Precision> Transformed(const Matrix4D& mat) const;
 
-    /** Returns the center.of the box. */
+    /** Returns the center of the box. */
     inline Vector3<_Precision> GetCenter () const;
     /** Compute the diagonal length of this bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
@@ -180,9 +180,9 @@ public:
     inline _Precision CalcDiagonalLength () const;
     void SetVoid ();
 
-    /** Enlarges the box with factor \a fLen. */
+    /** Enlarges the box with \a fLen. */
     inline void Enlarge (_Precision fLen);
-    /** Shrinks the box with factor \a fLen. */
+    /** Shrinks the box with \a fLen. */
     inline void Shrink  (_Precision fLen);
 
     /** Calculates expansion in x-direction. */
@@ -240,7 +240,7 @@ inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> *pclVect, uns
   , MaxY(-std::numeric_limits<_Precision>::max())
   , MaxZ(-std::numeric_limits<_Precision>::max())
 {
-    const Vector3<_Precision>  *pI, *pEnd = pclVect + ulCt;
+    const Vector3<_Precision>  *pI = nullptr, *pEnd = pclVect + ulCt;
     for (pI = pclVect; pI < pEnd; ++pI) {
         MinX = std::min<_Precision>(MinX, pI->x);
         MinY = std::min<_Precision>(MinY, pI->y);
@@ -596,7 +596,7 @@ inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> 
 {
     bool rc=false;
     BoundBox3<_Precision> cCmpBound(*this);
-    unsigned short i;
+    unsigned short i{};
 
     // enlarge bounding box by epsilon
     cCmpBound.Enlarge(epsilon);
@@ -637,7 +637,7 @@ inline bool BoundBox3<_Precision>::IsCutLine (const Vector3<_Precision>& rcBase,
         return false;
     }
     else { // more detailed test here
-        unsigned char i;
+        unsigned char i{};
         Vector3<_Precision>  clVectRes;
 
         // intersect each face with the line
