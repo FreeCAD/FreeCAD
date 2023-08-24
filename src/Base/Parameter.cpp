@@ -396,7 +396,7 @@ Base::Reference<ParameterGrp> ParameterGrp::_GetGroup(const char* Name)
         return rParamGrp;
     }
 
-    DOMElement *pcTemp;
+    DOMElement *pcTemp{};
 
     // search if Group node already there
     pcTemp = FindElement(_pGroupNode,"FCParamGroup",Name);

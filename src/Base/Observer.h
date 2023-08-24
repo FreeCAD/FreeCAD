@@ -191,7 +191,7 @@ public:
    */
   Observer<_MessageType> * Get(const char *Name)
   {
-    const char* OName;
+    const char* OName = nullptr;
     for(typename std::set<Observer<_MessageType> * >::iterator Iter=_ObserverSet.begin();Iter!=_ObserverSet.end();++Iter)
     {
       OName = (*Iter)->Name();   // get the name

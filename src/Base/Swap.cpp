@@ -42,7 +42,7 @@ void Base::SwapVar (unsigned char&)
 void Base::SwapVar (short& s)
 {
   short sTmp = s;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (short); i++)
     *(((char*) &sTmp) + i) = *(((char*) &s) + sizeof (short) - i - 1);
@@ -52,7 +52,7 @@ void Base::SwapVar (short& s)
 void Base::SwapVar (unsigned short& s)
 {
   short sTmp = s;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (short); i++)
     *(((char*) &sTmp) + i) = *(((char*) &s) + sizeof (short) - i - 1);
@@ -62,7 +62,7 @@ void Base::SwapVar (unsigned short& s)
 void Base::SwapVar (long& l)
 {
   long lTmp = l;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (long); i++)
     *(((char*) &lTmp) + i) = *(((char*) &l) + sizeof (long) - i - 1);
@@ -72,7 +72,7 @@ void Base::SwapVar (long& l)
 void Base::SwapVar (unsigned long& l)
 {
   long lTmp = l;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (long); i++)
     *(((char*) &lTmp) + i) = *(((char*) &l) + sizeof (long) - i - 1);
@@ -82,7 +82,7 @@ void Base::SwapVar (unsigned long& l)
 void Base::SwapVar (float& f)
 {
   float fTmp = f;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (float); i++)
     *(((char*) &fTmp) + i) = *(((char*) &f) + sizeof (float) - i - 1);
@@ -92,7 +92,7 @@ void Base::SwapVar (float& f)
 void Base::SwapVar (double& d)
 {
   double dTmp = d;
-  int i;
+  int i = 0;
 
   for (i = 0; i < (int)sizeof (double); i++)
     *(((char*) &dTmp) + i) = *(((char*) &d) + sizeof (double) - i - 1);

@@ -62,7 +62,7 @@ PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *object;
+    PyObject *object{};
     Unit *self = getUnitPtr();
 
     // get quantity
@@ -80,7 +80,7 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear(); // set by PyArg_ParseTuple()
 
     // get string
-    char* string;
+    char* string{};
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
         QString qstr = QString::fromUtf8(string);
         PyMem_Free(string);
@@ -194,12 +194,12 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
             return nullptr;
         }
         else if (op == Py_EQ) {
-            res = (*u1 == *u2) ? Py_True : Py_False;
+            res = (*u1 == *u2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }
         else {
-            res = (*u1 != *u2) ? Py_True : Py_False;
+            res = (*u1 != *u2) ? Py_True : Py_False; //NOLINT
             Py_INCREF(res);
             return res;
         }

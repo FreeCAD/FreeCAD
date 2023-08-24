@@ -20,7 +20,7 @@ is provided on an as is basis, without warranties of any kind.
 #include <eval.h>
 #endif
 
-
+//NOLINTBEGIN
 /*****************************************************************************
  * RUN EMBEDDED OBJECT METHODS, ACCESS OBJECT ATTRIBUTES 
  * handles attribute fetch, debugging, input/output conversions; 
@@ -32,7 +32,7 @@ PP_Run_Method(PyObject *pobject,  const char *method,
                   const char *resfmt,   void *cresult,        /* convert to c/c++ */
                   const char *argfmt,   ... /* arg,... */ )   /* convert to python */
 {
-    PyObject *pmeth, *pargs, *presult;
+    PyObject *pmeth = NULL, *pargs = NULL, *presult = NULL;
     va_list argslist;                              /* "pobject.method(args)" */
     va_start(argslist, argfmt);
 
@@ -75,7 +75,7 @@ int
 PP_Get_Member(PyObject *pobject, const char *attrname,
                   const char *resfmt,  void *cresult)         /* convert to c/c++ */
 {
-    PyObject *pmemb;                                    /* "pobject.attrname" */
+    PyObject *pmemb = NULL;                                    /* "pobject.attrname" */
     Py_Initialize();                        
     pmemb = PyObject_GetAttrString(pobject, attrname);  /* incref'd */
     return PP_Convert_Result(pmemb, resfmt, cresult);   /* to C form, decrefs */
@@ -86,8 +86,8 @@ int
 PP_Set_Member(PyObject *pobject, const char *attrname,
                   const char *argfmt,  ... /* arg,... */ )    /* convert to python */
 {
-    int result;
-    PyObject *pval;
+    int result = 0;
+    PyObject *pval = NULL;
     va_list argslist;                             /* "pobject.attrname = v" */
     va_start(argslist, argfmt);
     Py_Initialize();                              /* init if first time */
@@ -117,7 +117,7 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
                 const char *argfmt,  ... /* arg, arg... */ )  /* convert to python */
 {
     /* call a function or class in a module */
-    PyObject *func, *args, *presult;
+    PyObject *func = NULL, *args = NULL, *presult = NULL;
     va_list argslist;
     va_start(argslist, argfmt);                   /* "modname.funcname(args)" */
 
@@ -150,8 +150,8 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
 PyObject *
 PP_Debug_Function(PyObject *func, PyObject *args)
 {
-    int oops, res;
-    PyObject *presult;
+    int oops = 0, res = 0;
+    PyObject *presult = NULL;
 
     /* expand tuple at front */
     // it seems that some versions of python want just 2 arguments; in that
@@ -175,7 +175,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
                       const char *argfmt, ... /* arg,.. */) /* convert args, result */
 {
     /* call a known callable object */
-    PyObject *args, *presult;
+    PyObject *args = NULL, *presult = NULL;
     va_list argslist;
     va_start(argslist, argfmt);                     /* "return object(args)" */
 
@@ -234,8 +234,8 @@ void PP_Fetch_Error_Text()
     // called without exception happened!
     //assert(PyErr_Occurred());
 
-    char *tempstr;
-    PyObject *errobj, *errdata, *errtraceback, *pystring, *pydict;
+    char *tempstr = NULL;
+    PyObject *errobj = NULL, *errdata = NULL, *errtraceback = NULL, *pystring = NULL, *pydict = NULL;
 
     /* get latest python exception information */
     /* this also clears the current exception  */
@@ -393,7 +393,7 @@ PP_Convert_Result(PyObject *presult, const char *resFormat, void *resTarget)
 int
 PP_Get_Global(const char *modname, const char *varname, const char *resfmt, void *cresult)
 {
-    PyObject *var;                                   /* "x = modname.varname" */
+    PyObject *var = NULL;                                   /* "x = modname.varname" */
     var = PP_Load_Attribute(modname, varname);       /* var is incref'd */
     return PP_Convert_Result(var, resfmt, cresult);  /* convert var to C form */
 }
@@ -402,8 +402,8 @@ PP_Get_Global(const char *modname, const char *varname, const char *resfmt, void
 int
 PP_Set_Global(const char *modname, const char *varname, const char *valfmt, ... /* cval(s) */) 
 {
-    int result;
-    PyObject *module, *val;                     /* "modname.varname = val" */
+    int result = 0;
+    PyObject *module = NULL, *val = NULL;                     /* "modname.varname = val" */
     va_list cvals;
     va_start(cvals, valfmt);                    /* C args after valfmt */
 
@@ -456,7 +456,7 @@ const char *PP_Init(const char *modname) {
 int
 PP_Make_Dummy_Module(const char *modname)   /* namespace for strings, if no file */
 {                                     /* instead of sharing __main__ for all */
-    PyObject *module, *dict;          /* note: __main__ is created in py_init */
+    PyObject *module = NULL, *dict = NULL;          /* note: __main__ is created in py_init */
     Py_Initialize();
     module = PyImport_AddModule(modname);    /* fetch or make, no load */
     if (module == NULL)                      /* module not incref'd */
@@ -481,7 +481,7 @@ PP_Load_Module(const char *modname)       /* modname can be "package.module" for
      * - not loaded yet, or loaded but reload=off: "import" to fetch or load 
      */
 
-    PyObject *module, *sysmods;                  
+    PyObject *module = NULL, *sysmods = NULL;                  
     modname = PP_Init(modname);                       /* default to __main__ */
 
     if (strcmp(modname, "__main__") == 0)             /* main: no file */
@@ -512,7 +512,7 @@ PP_Load_Module(const char *modname)       /* modname can be "package.module" for
 PyObject *
 PP_Load_Attribute(const char *modname, const char *attrname)
 {
-    PyObject *module;                         /* fetch "module.attr" */
+    PyObject *module = NULL;                         /* fetch "module.attr" */
     modname = PP_Init(modname);               /* use before PyEval_CallObject */
     module  = PP_Load_Module(modname);        /* not incref'd, may reload */
     if (module == NULL)
@@ -525,7 +525,7 @@ PP_Load_Attribute(const char *modname, const char *attrname)
 int
 PP_Run_Command_Line(const char *prompt)
 {
-    int res;               /* interact with python, in "__main__" */
+    int res = 0;               /* interact with python, in "__main__" */
     Py_Initialize();       /* in the program's "stdio" window     */
     if (prompt != NULL)
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX)
@@ -553,8 +553,8 @@ PP_Run_Codestr(PPStringModes mode, const char *code,  /* expr or stmt string */
                const char *resfmt, void *cresult)     /* converts expr result to C */
 {
     /* run a string of Python code */
-    int parse_mode;                             /* "eval(code, d, d)", or */
-    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+    int parse_mode = 0;                             /* "eval(code, d, d)", or */
+    PyObject *module = NULL, *dict = NULL, *presult = NULL;          /* "exec code in d, d" */
 
     module = PP_Load_Module(modname);           /* get module, init python */
     if (module == NULL)                         /* not incref'd */
@@ -582,7 +582,7 @@ PyObject *
 PP_Compile_Codestr(PPStringModes mode,    /* precompile string to bytecode */
                    const char *codestr)         /* pass result to PP_Run_Bytecode */
 {
-    int start;
+    int start = 0;
     Py_Initialize();
     switch (mode) {
     case PP_STATEMENT:
@@ -601,7 +601,7 @@ PP_Run_Bytecode(PyObject *codeobj,           /* run compiled bytecode object */
                 const char     *modname,           /* in named module's namespace */
                 const char     *resfmt, void *restarget)
 {
-    PyObject *presult, *module, *dict;
+    PyObject *presult = NULL, *module = NULL, *dict = NULL;
 
     if (! PyCode_Check(codeobj))             /* make sure it's bytecode */
         return -1;
@@ -655,8 +655,8 @@ static void fixPdbRetval(PyObject *moddict)
 PyObject *
 PP_Debug_Codestr(PPStringModes mode, const char *codestring, PyObject *moddict)
 {
-    int res;
-    PyObject *presult;
+    int res = 0;
+    PyObject *presult = NULL;
     const char *pdbname = (mode == PP_EXPRESSION ? "runeval" : "run");
     fixPdbRetval(moddict);
                                       /* pass code to a pbd.py function    */
@@ -671,8 +671,8 @@ PP_Debug_Codestr(PPStringModes mode, const char *codestring, PyObject *moddict)
 PyObject *
 PP_Debug_Bytecode(PyObject *codeobject, PyObject *moddict)
 {
-    int res;
-    PyObject *presult;
+    int res = 0;
+    PyObject *presult = NULL;
     fixPdbRetval(moddict);
     res = PP_Run_Function(            /* "pdb.runeval(codeobj, gdict, ldict)" */
              "pdb",    "runeval",     /* accepts string|code, code=stmt|expr  */
@@ -680,7 +680,4 @@ PP_Debug_Bytecode(PyObject *codeobject, PyObject *moddict)
              "(OOO)",  codeobject, moddict, moddict); 
     return (res != 0) ? NULL : presult;     /* null if error in run_function */
 }
-
-
-
-
+// NOLINTEND

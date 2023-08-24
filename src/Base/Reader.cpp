@@ -231,7 +231,7 @@ bool Base::XMLReader::read()
 
 void Base::XMLReader::readElement(const char* ElementName)
 {
-    bool ok;
+    bool ok{};
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -268,7 +268,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int level)
         throw Base::XMLParseException("End of document reached");
     }
 
-    bool ok;
+    bool ok{};
     do {
         ok = read(); if (!ok) break;
         if (ReadType == EndDocument)
@@ -369,7 +369,7 @@ void Base::XMLReader::readBinFile(const char* filename)
     if (!to)
         throw Base::FileException("XMLReader::readBinFile() Could not open file!");
 
-    bool ok;
+    bool ok{};
     do {
         ok = read(); if (!ok) break;
     } while (ReadType != EndCDATA);
