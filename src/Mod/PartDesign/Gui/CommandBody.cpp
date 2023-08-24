@@ -61,7 +61,7 @@ App::Part* assertActivePart () {
 
     if ( !rv ) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        rcCmdMgr.runCommandByName("Std_Part");
+        rcCmdMgr.runCommandByName("Std_Assembly");
         rv = Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
         if ( !rv ) {
             QMessageBox::critical ( nullptr, QObject::tr( "Part creation failed" ),

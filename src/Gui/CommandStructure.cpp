@@ -42,28 +42,31 @@ using namespace Gui;
 //===========================================================================
 // Std_Part
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPart)
+DEF_STD_CMD_A(StdCmdAssembly)
 
-StdCmdPart::StdCmdPart()
-  : Command("Std_Part")
+StdCmdAssembly::StdCmdAssembly()
+  : Command("Std_Assembly")
 {
     sGroup        = "Structure";
-    sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
+    sMenuText     = QT_TR_NOOP("Create assembly");
+    sToolTipText = QT_TR_NOOP("Create a new assembly and make it active.\n"
+        "An assembly is meant to arrange objects like Part Primitives,\n"
+        "PartDesign Bodies, and other Assemblies. It provides an Origin object,\n"
+        "that can be used as reference to position the contained objects.");
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
     sPixmap       = "Geofeaturegroup";
 }
 
-void StdCmdPart::activated(int iMsg)
+void StdCmdAssembly::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
-    std::string FeatName = getUniqueObjectName("Part");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add an assembly"));
+    std::string FeatName = getUniqueObjectName("Assembly");
 
     std::string PartName;
-    PartName = getUniqueObjectName("Part");
+    PartName = getUniqueObjectName("Assembly");
     doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
     // TODO We really must set label ourselves? (2015-08-17, Fat-Zer)
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
@@ -75,7 +78,7 @@ void StdCmdPart::activated(int iMsg)
     updateActive();
 }
 
-bool StdCmdPart::isActive()
+bool StdCmdAssembly::isActive()
 {
     return hasActiveDocument();
 }
@@ -128,7 +131,7 @@ void CreateStructureCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdPart());
+    rcCmdMgr.addCommand(new StdCmdAssembly());
     rcCmdMgr.addCommand(new StdCmdGroup());
 }
 

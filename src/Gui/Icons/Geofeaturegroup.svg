@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64"
    height="64"
    version="1.1"
    viewBox="0 0 64 64"
    id="svg96"
    sodipodi:docname="Geofeaturegroup.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -24,17 +24,18 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1066"
-     inkscape:window-height="791"
+     inkscape:window-width="1384"
+     inkscape:window-height="997"
      id="namedview98"
      showgrid="false"
-     inkscape:zoom="5"
-     inkscape:cx="32"
-     inkscape:cy="28"
-     inkscape:window-x="67"
-     inkscape:window-y="23"
+     inkscape:zoom="2.5"
+     inkscape:cx="71.4"
+     inkscape:cy="61.4"
+     inkscape:window-x="1480"
+     inkscape:window-y="277"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg96" />
+     inkscape:current-layer="svg96"
+     inkscape:pagecheckerboard="0" />
   <defs
      id="defs26">
     <linearGradient
@@ -131,7 +132,7 @@
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient69056"
+       xlink:href="#linearGradient4383"
        id="linearGradient920"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-1.2435,-2.5881)"
@@ -141,7 +142,7 @@
        y2="27.587999" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient73208"
+       xlink:href="#linearGradient4383"
        id="linearGradient69042-3"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-12.714351,-17.585786)"
@@ -149,18 +150,6 @@
        y1="45.585785"
        x2="46.714352"
        y2="35.585785" />
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient73208">
-      <stop
-         style="stop-color:#c4a000;stop-opacity:1"
-         offset="0"
-         id="stop73210" />
-      <stop
-         style="stop-color:#edd400;stop-opacity:1"
-         offset="1"
-         id="stop73212" />
-    </linearGradient>
   </defs>
   <metadata
      id="metadata28">
@@ -170,7 +159,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
         <dc:title>Path-Stock</dc:title>
         <dc:date>2015-07-04</dc:date>
         <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
@@ -277,15 +265,15 @@
   <path
      d="M 9,35 V 21 l 14,5 v 14 z"
      id="path912"
-     style="fill:url(#linearGradient920);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round"
+     style="fill:url(#linearGradient920);fill-opacity:1.0;stroke:#172a04;stroke-width:2;stroke-linejoin:round"
      inkscape:connector-curvature="0" />
   <path
      d="M 9,21 28.585,5.209 42,10.0001 l -19,16 z"
      id="path914"
      inkscape:connector-curvature="0"
-     style="fill:#fce94f;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
+     style="fill:#729fcf;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#fce94f;stroke-width:2;stroke-opacity:1"
+     style="fill:none;stroke:#729fcf;stroke-width:2;stroke-opacity:1"
      inkscape:connector-curvature="0"
      id="path52"
      d="m 10.951,33.746 0.08695,-9.9796 9.9568,3.5229 -0.02105,9.9613 z" />
@@ -294,11 +282,11 @@
      inkscape:connector-curvature="0"
      id="path69040"
      d="M 23,40 V 26 L 42,10 v 13 z"
-     style="fill:url(#linearGradient69042-3);fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+     style="fill:url(#linearGradient69042-3);fill-opacity:1.0;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
   <path
      sodipodi:nodetypes="ccccc"
      inkscape:connector-curvature="0"
      id="path69044-6"
      d="M 25,36 V 27 L 40,14 v 8 z"
-     style="fill:none;stroke:#edd400;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
+     style="fill:none;stroke:#5a8ec7;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>

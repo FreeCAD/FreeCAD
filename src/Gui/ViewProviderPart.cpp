@@ -113,7 +113,7 @@ QIcon ViewProviderPart::getIcon() const
 {
     // the original Part object for this ViewProviderPart
     auto part = static_cast<App::Part*>(this->getObject());
-    // the normal case for Std_Part
+    // the normal case for Std_Assembly
     const char* pixmap = sPixmap;
     // if it's flagged as an Assembly in its Type, it gets another icon
     if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
