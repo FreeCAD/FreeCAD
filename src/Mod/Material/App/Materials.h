@@ -167,6 +167,9 @@ public:
 protected:
     void addModel(const QString& uuid);
 
+    const QVariant getValue(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const;
+    const QString getValueString(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const;
+
 private:
     MaterialLibrary _library;
     QDir _directory;

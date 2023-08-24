@@ -103,44 +103,6 @@ MaterialsEditor::~MaterialsEditor()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void MaterialsEditor::tryPython()
-{
-    Base::Console().Log("MaterialsEditor::tryPython()\n");
-
-    // from materialtools.cardutils import get_material_template
-    // template_data = get_material_template(True)
-    Gui::WaitCursor wc;
-    App::GetApplication().setActiveTransaction(QT_TRANSLATE_NOOP("Command", "Python test"));
-
-    Base::PyGILStateLocker lock;
-    try {
-        PyObject* module = PyImport_ImportModule("materialtools.cardutils");
-        if (!module) {
-            throw Py::Exception();
-        }
-        Py::Module utils(module, true);
-
-        // Py::Tuple args(2);
-        // args.setItem(0, Py::asObject(it->getPyObject()));
-        // args.setItem(1, Py::Float(distance));
-        auto ret = utils.callMemberFunction("get_material_template");
-        // if (ret != nullptr)
-        //     Base::Console().Log("MaterialsEditor::tryPython() - null return\n");
-        // else
-        //     Base::Console().Log("MaterialsEditor::tryPython() - data!\n");
-
-        Base::Console().Log("MaterialsEditor::tryPython() - call complete\n");
-
-    }
-    catch (Py::Exception&) {
-        Base::PyException e;
-        e.ReportException();
-    }
-
-    App::GetApplication().closeActiveTransaction();
-    Base::Console().Log("MaterialsEditor::tryPython() - finished\n");
-}
-
 void MaterialsEditor::getFavorites()
 {
     _favorites.clear();
@@ -408,10 +370,6 @@ void MaterialsEditor::accept()
 void MaterialsEditor::reject()
 {
     QDialog::reject();
-    // auto dw = qobject_cast<QDockWidget*>(parent());
-    // if (dw) {
-    //     dw->deleteLater();
-    // }
 }
 
 // QIcon MaterialsEditor::errorIcon(const QIcon &icon) const {

@@ -471,40 +471,49 @@ const MaterialProperty &Material::getAppearanceProperty(const QString &name) con
     }
 }
 
-const QVariant Material::getPhysicalValue(const QString &name) const
+const QVariant Material::getValue(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const
 {
     try {
-        return _physical.at(name).getValue();
+        return propertyList.at(name).getValue();
     } catch (std::out_of_range const &) {
         throw PropertyNotFound();
     }
+}
+
+const QString Material::getValueString(const std::map<QString, MaterialProperty> &propertyList, const QString &name) const
+{
+    try {
+        if (propertyList.at(name).getType() == MaterialValue::Quantity)
+        {
+            auto value = propertyList.at(name).getValue();
+            if (value.isNull())
+                return QString();
+            return value.value<Base::Quantity>().getUserString();
+        }
+        return propertyList.at(name).getValue().toString();
+    } catch (std::out_of_range const &) {
+        throw PropertyNotFound();
+    }
+}
+
+const QVariant Material::getPhysicalValue(const QString &name) const
+{
+    return getValue(_physical, name);
 }
 
 const QString Material::getPhysicalValueString(const QString &name) const
 {
-    try {
-        return _physical.at(name).getValue().toString();
-    } catch (std::out_of_range const &) {
-        throw PropertyNotFound();
-    }
+    return getValueString(_physical, name);
 }
 
 const QVariant Material::getAppearanceValue(const QString &name) const
 {
-    try {
-        return _appearance.at(name).getValue();
-    } catch (std::out_of_range const &) {
-        throw PropertyNotFound();
-    }
+    return getValue(_appearance, name);
 }
 
 const QString Material::getAppearanceValueString(const QString &name) const
 {
-    try {
-        return _appearance.at(name).getValue().toString();
-    } catch (std::out_of_range const &) {
-        throw PropertyNotFound();
-    }
+    return getValueString(_appearance, name);
 }
 
 bool Material::hasPhysicalProperty(const QString& name) const

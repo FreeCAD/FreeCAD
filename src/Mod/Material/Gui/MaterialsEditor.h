@@ -94,7 +94,6 @@ private:
     void updatePreview() const;
     QString getColorHash(const QString& colorString, int colorRange=255) const;
 
-    void tryPython();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void addRecents(QStandardItem* parent);
