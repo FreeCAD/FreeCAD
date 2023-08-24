@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <QDebug>
+#include <QLayout>
+#include <QMainWindow>
 #include <QTest>
 
 #include <App/Application.h>
@@ -16,9 +18,28 @@ class testQuantitySpinBox: public QObject
 
 public:
     testQuantitySpinBox()
+        : qsb(nullptr)
+        , mainWindow(nullptr)
     {
         tests::initApplication();
-        qsb = std::make_unique<Gui::QuantitySpinBox>();
+        auto topLevel = qApp->topLevelWindows();
+
+        for (const auto window : topLevel) {
+            if (auto mw = qobject_cast<QMainWindow*>(window)) {
+                mainWindow = mw;
+                break;
+            }
+        }
+        if (!mainWindow) {
+            mainWindow = new QMainWindow();
+        }
+        qsb = new Gui::QuantitySpinBox;
+        if (!mainWindow->layout()) {
+            mainWindow->setLayout(new QVBoxLayout);
+        }
+        mainWindow->layout()->addWidget(qsb);
+        qsb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        mainWindow->show();
     }
 
 private Q_SLOTS:
@@ -65,8 +86,32 @@ private Q_SLOTS:
         QCOMPARE(val2.getFormat().precision, 7);
     }
 
+    void test_DefaultUnitLost()// NOLINT
+    {
+        // Arrange
+        auto foundWindow = QTest::qWaitForWindowActive(mainWindow);
+        QTEST_ASSERT(foundWindow);
+        qsb->activateWindow();
+        qsb->clear();
+        QTest::keyClicks(qsb, "1um");
+        QTest::keyClick(qsb, Qt::Key_Enter);
+        QTEST_ASSERT(qsb->value() == Base::Quantity(1, "um"));
+        QTest::qWait(5000);
+
+        // Act
+        QTest::mouseClick(qsb, Qt::MouseButton::LeftButton);
+        QTest::keyClicks(qsb, "3");
+        QTest::keyClick(qsb, Qt::Key_Enter);
+        qsb->evaluateExpression();
+        QTest::qWait(5000);
+
+        // Assert
+        QCOMPARE(qsb->value(), Base::Quantity(3, "um"));
+    }
+
 private:
-    std::unique_ptr<Gui::QuantitySpinBox> qsb;
+    Gui::QuantitySpinBox* qsb;
+    QMainWindow* mainWindow;
 };
 
 // NOLINTEND(readability-magic-numbers)
